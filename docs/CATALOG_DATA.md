@@ -1,6 +1,6 @@
 # Contrato del catálogo y economía
 
-CODEX-002 · DL-F02-DATA-001. Primera versión futura: `catalog_v1`. Esta entrega no contiene futbolistas reales; los fixtures son exclusivamente sintéticos.
+Vigente desde CODEX-003A · DL-F02-DATA-002. `catalog_v1` amplía explícitamente el alcance anterior de 100 a 500 futbolistas: 300 contemporary y 200 legend. Solo B01 (50 contemporáneos) está implementado. Los fixtures de pruebas siguen siendo exclusivamente sintéticos. ADR-0004 sustituye los límites de tamaño de ADR-0003; los informes históricos no se reescriben.
 
 ## Diccionario de datos
 
@@ -8,9 +8,11 @@ CODEX-002 · DL-F02-DATA-001. Primera versión futura: `catalog_v1`. Esta entreg
 
 | Campo | Tipo | Regla |
 |---|---|---|
-| id | string | Exactamente plr_001 a plr_100; único y permanente |
+| id | string | Exactamente plr_001 a plr_500; único y permanente |
 | name | string | Nombre canónico, no vacío, con letras o números; no se traduce |
 | position | Position | ARQ, DEF, MED o DEL; una sola posición MVP |
+| category | PlayerCategory | contemporary o legend; cada persona aparece una sola vez |
+| reference_year | number | Año entero 1950–2026; contemporary 2016–2026, legend 1950–2015 |
 | era | Era | 1950s, 1960s, 1970s, 1980s, 1990s, 2000s, 2010s, 2020s |
 | nationality | string | Código de asociación futbolística FIFA admitido en NATIONALITY_CODES |
 | club_tag | string | Identificador canónico del club de referencia, minúsculas y snake_case; patrón `[a-z][a-z0-9]*(?:_[a-z0-9]+)*` |
@@ -27,21 +29,21 @@ No se almacena tier: getPlayerTier lo deriva de overall_rating. `price` es un ca
 
 | Código | Cantidad catálogo | Once 4-3-3 |
 |---|---:|---:|
-| ARQ | 12 | 1 |
-| DEF | 32 | 4 |
-| MED | 30 | 3 |
-| DEL | 26 | 3 |
-| Total | 100 | 11 |
+| ARQ | 60 | 1 |
+| DEF | 160 | 4 |
+| MED | 150 | 3 |
+| DEL | 130 | 3 |
+| Total | 500 | 11 |
 
 Las etiquetas reutilizan `positions.<código>` de i18next. Nunca comparar nombres traducidos para validar posiciones.
 
 | Tier | Rating | Cantidad |
 |---|---|---:|
-| S | 94–99 | 12 |
-| A | 89–93 | 20 |
-| B | 84–88 | 30 |
-| C | 79–83 | 24 |
-| D | 75–78 | 14 |
+| S | 94–99 | 60 |
+| A | 89–93 | 100 |
+| B | 84–88 | 150 |
+| C | 79–83 | 120 |
+| D | 75–78 | 70 |
 
 ## Criterio editorial para CODEX-003
 
@@ -58,9 +60,9 @@ Usar la misma escala entre posiciones; un 95 debe ser excepcional dentro de su r
 
 ## Épocas y nacionalidades
 
-Era identifica la década que contiene la mayor parte del período elegido, no la fecha de nacimiento ni la temporada actual. Si abarca dos décadas por igual, elegir la que contiene el hito editorial principal y documentar el criterio. Se incluye expresamente 1950s para figuras anteriores a 1960. No había una lista anterior que modificar; décadas anteriores a 1950 o posteriores a 2020 requieren una extensión explícita del esquema.
+reference_year ancla la versión deportiva seleccionada y era es la década de ese año. El período concreto (temporada o torneo) se documenta editorialmente por ID. No se usa nacimiento ni temporada actual. La ventana contemporary 2016–2026 y la fecha 2026-10-16 son constantes editoriales; nunca dependen del reloj. Leyendas con referencia posterior a 2015 requieren otra decisión explícita antes de incluirlas. Se incluye expresamente 1950s para figuras anteriores a 1960. No había una lista anterior que modificar; décadas anteriores a 1950 o posteriores a 2020 requieren una extensión explícita del esquema.
 
-Nacionalidad usa códigos futbolísticos de asociación FIFA, con ejemplos ARG, ENG, NED y GER. No usar ISO como DEU, NLD o GBR. El registro inicial es un subconjunto explícito de 38 asociaciones, en `src/data/catalogRules.ts`; no pretende cubrir todas las asociaciones del mundo. Agregar asociaciones faltantes con revisión documental antes de usar sus códigos. La sintaxis de tres letras por sí sola no acredita validez.
+Nacionalidad usa códigos futbolísticos de asociación FIFA, con ejemplos ARG, ENG, NED y GER. No usar ISO como DEU, NLD o GBR. El registro inicial es un subconjunto explícito de 41 asociaciones (incluye SUI, ISL y CRC, requeridas por B01), en `src/data/catalogRules.ts`; no pretende cubrir todas las asociaciones del mundo. Agregar asociaciones faltantes con revisión documental antes de usar sus códigos. La sintaxis de tres letras por sí sola no acredita validez.
 
 Para jugadores con varias nacionalidades, usar una sola asociación de selección absoluta representativa del período. Cuando el caso histórico no tenga equivalencia clara o haya representado varias selecciones, resolverlo editorialmente antes de incluir el registro; no convertir países históricos silenciosamente. No se agrega historial de nacionalidades en esta fase.
 
@@ -76,23 +78,26 @@ Math.round(3 + 22 * Math.pow((overallRating - 75) / 24, 2.2))
 
 75 → 3M; 84 → 6M; 90 → 11M; 99 → 25M. Entradas fuera de 75–99, fraccionarias o no finitas lanzan RangeError con código técnico `invalid_overall_rating`. No se hace clamp ni conversión de strings. La futura UI debe traducir errores técnicos antes de mostrarlos.
 
-El validador selecciona los 1/4/3/3 jugadores válidos más baratos de cada posición, con desempate por ID. Esto da un mínimo global porque cada jugador tiene una sola posición y no existen restricciones cruzadas ni multiplicadores en el MVP. Suma <=100 prueba existencia de un once; suma >100 prueba inviabilidad bajo estas reglas. Devuelve IDs testigo y costo mínimo, sin implementar un draft interactivo. Si faltan posiciones no inventa un costo. Si hay registros inválidos o duplicados, la economía se marca `not_evaluated` para evitar conclusiones apoyadas en datos inseguros.
+El validador selecciona los 1/4/3/3 jugadores válidos más baratos de cada posición, con desempate por ID. Esto da un mínimo global porque cada jugador tiene una sola posición y no existen restricciones cruzadas ni multiplicadores en el MVP. En una prueba económica habilitada, suma <=100 prueba existencia de un once; suma >100 prueba inviabilidad bajo estas reglas. Devuelve IDs testigo y costo mínimo, sin implementar un draft interactivo. Si faltan posiciones no inventa un costo. Si hay registros inválidos o duplicados, la economía se marca `not_evaluated` para evitar conclusiones apoyadas en datos inseguros.
 
-El test adversarial completo respeta todos los cupos y tiers pero cuesta como mínimo 101M: ARQ con 12 D; DEF con 12 S y 20 A; MED con 30 B; DEL con 24 C y 2 D, todos en el extremo alto de su tier. Los cupos por sí solos no garantizan asequibilidad.
+La regresión histórica de CODEX-002 conserva un subconjunto sintético de 100 registros con costo mínimo 101M (no es el catálogo actual): ARQ con 12 D; DEF con 12 S y 20 A; MED con 30 B; DEL con 24 C y 2 D, todos en el extremo alto de su tier. Los cupos por sí solos no garantizan asequibilidad.
 
 ## Validadores e informes
 
 - `validatePlayer(unknown)`: no exige tamaño de catálogo. Devuelve unión discriminada; solo `valid: true` incluye un Player validado.
-- `validateCatalog(unknown)`: espera el array de registros y comprueba 100 elementos, cada registro, los 100 IDs exactos, duplicados, cupos y economía. Los arrays dispersos también se verifican.
+- `validateBatch(unknown, batchId)`: modalidad parcial de 50 registros; verifica el intervalo de IDs reservado, categoría, cupos posicionales y tiers. Nunca aprueba el catálogo completo.
+- `validateCatalog(unknown)`: modalidad completa de 500 registros con los 500 IDs exactos, matriz categoría/posición, cupos globales y duplicados. Los arrays dispersos también se verifican.
+- `checkEconomicViability(unknown)`: prueba reutilizable sobre un subconjunto válido con IDs y nombres distintos; no acredita completitud.
+- `assembleCatalog(manifest, batches)`: valida manifest, coherencia con archivos suministrados, cada lote y duplicados entre lotes. Orden canónico de lotes e IDs, independiente de orden de importación.
 - `validateVersionedCatalog(unknown)`: comprueba adicionalmente el sobre `{version: 'catalog_v1', players: [...]}`.
 
-CatalogValidation contiene valid, issues, validPlayerCount, positionCounts, tierCounts y economy. Cada incidencia tiene code estable, index de base cero si corresponde, field, expected y actual cuando ayudan. No son mensajes de interfaz. Los conteos incluyen únicamente registros individualmente válidos; los errores derivados de cupos son deliberados y se deben interpretar junto a los errores de registros. La economía de un fixture pequeño puede ser factible sin que el catálogo completo sea válido.
+CatalogValidation contiene mode (partial/complete), status (approved/invalid/pending), valid, issues, validPlayerCount, positionCounts, tierCounts, categoryCounts, categoryPositionCounts y economy. En modo completo valid nunca es true con menos de 500 registros. Cada incidencia tiene code estable, index de base cero si corresponde, field, expected y actual cuando ayudan. No son mensajes de interfaz. Los conteos incluyen únicamente registros individualmente válidos; los errores derivados de cupos son deliberados y se deben interpretar junto a los errores de registros. La economía de un fixture pequeño se verifica únicamente mediante checkEconomicViability; validar un lote o catálogo incompleto deja economy en not_evaluated. La auditoría global real y CPU 95–100M permanecen pendientes hasta disponer de los diez lotes.
 
 Duplicados: IDs exactos y nombre normalizado (Unicode NFD, sin diacríticos, puntuación o espacios; minúsculas), incluso entre clubes/épocas diferentes. Esta regla detecta variantes tipográficas, no identidades humanas con certeza: alias distintos y homónimos requieren revisión editorial. El esquema no añade otro campo de identidad fuera de los solicitados.
 
 ## Identificadores, migración y versionado
 
-IDs de negocio son texto permanente. `plr_001` identifica siempre a la misma persona; nunca renumerar por orden, rating o eliminación. No reciclar identificadores. Los 100 slots se asignarán al preparar CODEX-003.
+IDs de negocio son texto permanente. `plr_001` identifica siempre a la misma persona; nunca renumerar por orden, rating o eliminación. No reciclar identificadores. IDs por lote: B01 plr_001–plr_050, B02 plr_051–plr_100, y así hasta B10 plr_451–plr_500. B01–B06 son contemporary, B07–B10 legend. Nunca reasignar los primeros 50 IDs. Antes de esta ampliación no existía un catálogo real publicado ni partidas que migrar.
 
 En una futura base PostgreSQL/Supabase conservar un identificador de jugador `text` con unicidad. Para versiones, usar conceptualmente clave compuesta `(catalog_version, player_id)` en registros de balance y referencias de partida a ambos. Si infraestructura exige UUID, agregar una columna técnica separada y un mapeo explícito; no castear plr_001 a UUID ni cambiar su significado. No se configura Supabase ni se crea SQL en esta entrega.
 

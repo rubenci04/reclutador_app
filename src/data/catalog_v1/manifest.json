@@ -1,0 +1,67 @@
+{
+  "version": "catalog_v1",
+  "referenceDate": "2026-10-16",
+  "expectedTotal": 500,
+  "batches": [
+    {
+      "id": "B01",
+      "category": "contemporary",
+      "expectedCount": 50,
+      "status": "implemented"
+    },
+    {
+      "id": "B02",
+      "category": "contemporary",
+      "expectedCount": 50,
+      "status": "pending"
+    },
+    {
+      "id": "B03",
+      "category": "contemporary",
+      "expectedCount": 50,
+      "status": "pending"
+    },
+    {
+      "id": "B04",
+      "category": "contemporary",
+      "expectedCount": 50,
+      "status": "pending"
+    },
+    {
+      "id": "B05",
+      "category": "contemporary",
+      "expectedCount": 50,
+      "status": "pending"
+    },
+    {
+      "id": "B06",
+      "category": "contemporary",
+      "expectedCount": 50,
+      "status": "pending"
+    },
+    {
+      "id": "B07",
+      "category": "legend",
+      "expectedCount": 50,
+      "status": "pending"
+    },
+    {
+      "id": "B08",
+      "category": "legend",
+      "expectedCount": 50,
+      "status": "pending"
+    },
+    {
+      "id": "B09",
+      "category": "legend",
+      "expectedCount": 50,
+      "status": "pending"
+    },
+    {
+      "id": "B10",
+      "category": "legend",
+      "expectedCount": 50,
+      "status": "pending"
+    }
+  ]
+}

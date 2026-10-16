@@ -4,6 +4,9 @@ export const ERAS = ['1950s', '1960s', '1970s', '1980s', '1990s', '2000s', '2010
 export type Era = (typeof ERAS)[number]
 export const PLAYER_TIERS = ['S', 'A', 'B', 'C', 'D'] as const
 export type PlayerTier = (typeof PLAYER_TIERS)[number]
+export const PLAYER_CATEGORIES = ['contemporary', 'legend'] as const
+export type PlayerCategory = (typeof PLAYER_CATEGORIES)[number]
+export type BatchId = `B0${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}` | 'B10'
 
 /** Editorial peak-period version of one footballer. Prices are integer millions. */
 export interface Player {
@@ -11,6 +14,8 @@ export interface Player {
   readonly name: string
   readonly position: Position
   readonly era: Era
+  readonly category: PlayerCategory
+  readonly reference_year: number
   readonly nationality: string
   readonly club_tag: string
   readonly overall_rating: number
@@ -36,11 +41,15 @@ export type ValidationCode =
   | 'invalid_number' | 'price_mismatch' | 'invalid_catalog' | 'invalid_version'
   | 'invalid_count' | 'duplicate_id' | 'missing_id' | 'duplicate_player'
   | 'position_distribution' | 'tier_distribution' | 'budget_exceeded' | 'insufficient_positions'
+  | 'invalid_category' | 'invalid_reference_year' | 'era_mismatch' | 'category_year_mismatch'
+  | 'category_distribution' | 'category_position_distribution' | 'batch_category'
+  | 'invalid_manifest' | 'batch_state_mismatch' | 'unexpected_batch'
 
 /** Machine-readable diagnostics. UI consumers must translate codes before display. */
 export interface ValidationIssue {
   readonly code: ValidationCode
   readonly index?: number
+  readonly batchId?: string
   readonly field?: string
   readonly expected?: string | number
   readonly actual?: unknown
@@ -57,10 +66,28 @@ export interface EconomicViability {
 }
 
 export interface CatalogValidation {
+  readonly mode: 'partial' | 'complete'
+  readonly status: 'approved' | 'invalid' | 'pending'
   readonly valid: boolean
   readonly issues: readonly ValidationIssue[]
   readonly validPlayerCount: number
   readonly positionCounts: Readonly<Record<Position, number>>
   readonly tierCounts: Readonly<Record<PlayerTier, number>>
+  readonly categoryCounts: Readonly<Record<PlayerCategory, number>>
+  readonly categoryPositionCounts: Readonly<Record<PlayerCategory, Readonly<Record<Position, number>>>>
   readonly economy: EconomicViability
+}
+
+export interface BatchDefinition {
+  readonly id: BatchId
+  readonly category: PlayerCategory
+  readonly expectedCount: 50
+  readonly status: 'implemented' | 'pending'
+}
+
+export interface CatalogManifest {
+  readonly version: 'catalog_v1'
+  readonly referenceDate: '2026-10-16'
+  readonly expectedTotal: 500
+  readonly batches: readonly BatchDefinition[]
 }

@@ -7,7 +7,7 @@ import { ERAS, PLAYER_TIERS, type ChemistryIdentity, type Era, type Player, type
 import { calculatePlayerPrice } from './calculatePlayerPrice'
 import { getPlayerTier } from './getPlayerTier'
 import { syntheticCatalog, syntheticEleven, syntheticPlayer } from './testFixtures'
-import { validateCatalog, validateVersionedCatalog } from './validateCatalog'
+import { checkEconomicViability, validateCatalog, validateVersionedCatalog } from './validateCatalog'
 import { validatePlayer } from './validatePlayer'
 
 describe('pricing and tiers', () => {
@@ -50,14 +50,15 @@ describe('individual runtime validation', () => {
   it.each(['name', 'nationality', 'club_tag', 'era'])('rejects blank %s', (field) => {
     expect(validatePlayer({ ...syntheticPlayer(0), [field]: '  ' }).valid).toBe(false)
   })
-  it.each(['plr_000', 'plr_101', 'plr_1', 'PLR_001', '', 'plr_001 '])('rejects invalid id %s', (id) => {
+  it.each(['plr_000', 'plr_501', 'plr_1', 'PLR_001', '', 'plr_001 '])('rejects invalid id %s', (id) => {
     expect(validatePlayer({ ...syntheticPlayer(0), id }).valid).toBe(false)
   })
   it.each(['GK', 'CB', 'Arquero', 'DEF/MED'])('rejects non-MVP position %s', (position) => {
     expect(validatePlayer({ ...syntheticPlayer(0), position }).issues).toContainEqual({ code: 'invalid_position', field: 'position', actual: position })
   })
   it.each(ERAS)('accepts reference decade %s', (era) => {
-    expect(validatePlayer({ ...syntheticPlayer(0), era }).valid).toBe(true)
+    const reference_year = Number(era.slice(0, 4)) + (era === '2020s' ? 2 : 8)
+    expect(validatePlayer({ ...syntheticPlayer(0), era, reference_year, category: reference_year >= 2016 ? 'contemporary' : 'legend' }).valid).toBe(true)
   })
   it.each(['1940s', '2030s', '1950', 1950])('rejects unknown era %s', (era) => {
     expect(validatePlayer({ ...syntheticPlayer(0), era }).valid).toBe(false)
@@ -89,13 +90,13 @@ describe('individual runtime validation', () => {
 })
 
 describe('full catalog consistency', () => {
-  it('accepts exactly 100 distinct synthetic records with all quotas and a viable eleven', () => {
+  it('accepts exactly 500 distinct synthetic records with all quotas and a viable eleven', () => {
     const result = validateCatalog(syntheticCatalog())
     expect(result.valid).toBe(true)
     expect(result.issues).toEqual([])
     expect(result.positionCounts).toEqual(POSITION_QUOTAS)
-    expect(result.tierCounts).toEqual({ S: 12, A: 20, B: 30, C: 24, D: 14 })
-    expect(result.validPlayerCount).toBe(100)
+    expect(result.tierCounts).toEqual({ S: 60, A: 100, B: 150, C: 120, D: 70 })
+    expect(result.validPlayerCount).toBe(500)
     expect(result.economy.status).toBe('feasible')
     expect(new Set(result.economy.playerIds).size).toBe(11)
     expect(result.economy.minimumCost).toBeLessThanOrEqual(100)
@@ -104,9 +105,9 @@ describe('full catalog consistency', () => {
     expect(validateCatalog(input).issues).toContainEqual({ code: 'invalid_catalog', expected: 'array' })
   })
   it('detects missing count and exact missing ID', () => {
-    const result = validateCatalog(syntheticCatalog().slice(0, 99))
-    expect(result.issues).toContainEqual({ code: 'invalid_count', expected: 100, actual: 99 })
-    expect(result.issues).toContainEqual({ code: 'missing_id', field: 'id', expected: 'plr_100' })
+    const result = validateCatalog(syntheticCatalog().slice(0, 499))
+    expect(result.issues).toContainEqual({ code: 'invalid_count', expected: 500, actual: 499 })
+    expect(result.issues).toContainEqual({ code: 'missing_id', field: 'id', expected: 'plr_500' })
   })
   it('detects duplicate IDs and their displaced IDs', () => {
     const records = syntheticCatalog()
@@ -119,18 +120,18 @@ describe('full catalog consistency', () => {
   it('detects normalized duplicate names even across positions and eras', () => {
     const records = syntheticCatalog()
     records[0] = { ...records[0], name: 'Fútbol Ejemplo' }
-    records[99] = { ...records[99], name: ' FUTBOL-EJEMPLO ', era: '2020s' }
+    records[99] = { ...records[99], name: ' FUTBOL-EJEMPLO ', era: '2020s', reference_year: 2022 }
     expect(validateCatalog(records).issues.some((issue) => issue.code === 'duplicate_player')).toBe(true)
   })
   it('detects positional distribution drift', () => {
     const records = syntheticCatalog()
     records[0] = { ...records[0], position: 'DEL' }
-    expect(validateCatalog(records).issues).toContainEqual({ code: 'position_distribution', field: 'ARQ', expected: 12, actual: 11 })
+    expect(validateCatalog(records).issues).toContainEqual({ code: 'position_distribution', field: 'ARQ', expected: 60, actual: 59 })
   })
   it('detects tier drift independently from valid prices', () => {
     const records = syntheticCatalog()
     records[0] = { ...records[0], overall_rating: 75, price: 3 }
-    expect(validateCatalog(records).issues).toContainEqual({ code: 'tier_distribution', field: 'S', expected: 12, actual: 11 })
+    expect(validateCatalog(records).issues).toContainEqual({ code: 'tier_distribution', field: 'S', expected: 60, actual: 59 })
   })
   it('includes indices for record errors and refuses to use tampered prices for feasibility', () => {
     const records = syntheticCatalog()
@@ -155,36 +156,36 @@ describe('economic proof', () => {
   it('finds the cheapest distinct eleven regardless of input order and does not mutate data', () => {
     const records = [...syntheticEleven(75), syntheticPlayer(11, 'DEL', 99)].reverse()
     const before = structuredClone(records)
-    const result = validateCatalog(records)
-    expect(result.economy).toMatchObject({ status: 'feasible', minimumCost: 33 })
-    expect(result.economy.playerIds).not.toContain('plr_012')
+    const economy = checkEconomicViability(records)
+    expect(economy).toMatchObject({ status: 'feasible', minimumCost: 33 })
+    expect(economy.playerIds).not.toContain('plr_012')
     expect(records).toEqual(before)
-    const chosen = records.filter((player) => result.economy.playerIds.includes(player.id))
+    const chosen = records.filter((player) => economy.playerIds.includes(player.id))
     for (const [position, count] of Object.entries(FORMATION_QUOTAS)) {
       expect(chosen.filter((player) => player.position === position)).toHaveLength(count)
     }
-    expect(result.valid).toBe(false) // Small fixture proves economics, not catalog completeness.
+    expect(validateCatalog(records).valid).toBe(false) // Subset economics never implies catalog completeness.
   })
-  it('rejects an otherwise complete, quota-correct catalog whose cheapest eleven costs 101M', () => {
+  it('retains the CODEX-002 100-record adversarial 101M economic fixture as a subset', () => {
     // ARQ: 12 D; DEF: 12 S + 20 A; MED: 30 B; DEL: 24 C + 2 D.
     const ratings = [
       ...Array<number>(12).fill(78), ...Array<number>(12).fill(99), ...Array<number>(20).fill(93),
       ...Array<number>(30).fill(88), ...Array<number>(24).fill(83), ...Array<number>(2).fill(78),
     ]
-    const records = syntheticCatalog().map((player, index) => ({ ...player, overall_rating: ratings[index], price: calculatePlayerPrice(ratings[index]) }))
-    const result = validateCatalog(records)
-    expect(result.economy).toMatchObject({ status: 'over_budget', minimumCost: 101 })
-    expect(result.issues).toEqual([{ code: 'budget_exceeded', expected: 100, actual: 101 }])
+    const positions: Position[] = [...Array<Position>(12).fill('ARQ'), ...Array<Position>(32).fill('DEF'), ...Array<Position>(30).fill('MED'), ...Array<Position>(26).fill('DEL')]
+    const records = positions.map((position, index) => syntheticPlayer(index, position, ratings[index]))
+    expect(checkEconomicViability(records)).toMatchObject({ status: 'over_budget', minimumCost: 101 })
+    expect(validateCatalog(records)).toMatchObject({ valid: false, status: 'pending', economy: { status: 'not_evaluated' } })
   })
   it('accepts exactly the 100M budget boundary', () => {
     const records = syntheticEleven(90) // 11 × 11 − 8 − 8 − 5 = 100, using independently known prices.
     records[0] = syntheticPlayer(0, 'ARQ', 75)
     records[1] = syntheticPlayer(1, 'DEF', 75)
     records[2] = syntheticPlayer(2, 'DEF', 84)
-    expect(validateCatalog(records).economy).toMatchObject({ status: 'feasible', minimumCost: 100 })
+    expect(checkEconomicViability(records)).toMatchObject({ status: 'feasible', minimumCost: 100 })
   })
   it('reports insufficient positions instead of an invented minimum', () => {
-    expect(validateCatalog(syntheticEleven().slice(1)).economy).toEqual({ status: 'insufficient_players', minimumCost: null, playerIds: [] })
+    expect(checkEconomicViability(syntheticEleven().slice(1))).toEqual({ status: 'insufficient_players', minimumCost: null, playerIds: [] })
   })
 })
 
@@ -196,8 +197,8 @@ describe('contract compatibility', () => {
     expectTypeOf<PlayerCatalog['version']>().toEqualTypeOf<'catalog_v1'>()
     expectTypeOf<ChemistryIdentity>().toEqualTypeOf<Pick<Player, 'id' | 'nationality' | 'club_tag' | 'era'>>()
     expect(PLAYER_TIERS).toHaveLength(5)
-    expect(EXPECTED_PLAYER_IDS).toHaveLength(100)
-    expect(new Set(EXPECTED_PLAYER_IDS).size).toBe(100)
+    expect(EXPECTED_PLAYER_IDS).toHaveLength(500)
+    expect(new Set(EXPECTED_PLAYER_IDS).size).toBe(500)
   })
   it('keeps UI setup and illustrative slots consistent with shared rules', () => {
     expect(INITIAL_SETUP).toEqual({ budgetMillions: 100, formation: '4-3-3', starters: 0, teamSize: 11 })

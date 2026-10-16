@@ -27,3 +27,14 @@ Las pruebas DOM usan Vitest + Testing Library + jsdom. Las verificaciones visual
 - Economía: once mínimo sin mutación, jugadores distintos, posiciones completas, frontera 100M, catálogo completo imposible de 101M y datos inválidos sin prueba de asequibilidad.
 - Contratos estáticos: expectTypeOf evaluado por TypeScript, versión explícita, química como subconjunto de Player, coherencia del estado inicial y la cancha.
 - No se repite revisión visual por cambios exclusivamente de dominio; la apariencia no se modifica. Pruebas DOM no equivalen a una auditoría visual nueva.
+
+## CODEX-003A
+
+- Ejecutar npm run typecheck, npm run lint, npm run test, npm run build y npm run catalog:audit.
+- Ejecutar npm run catalog:audit -- --complete: debe rechazar completitud con salida 1 mientras solo exista B01; registrar globalStatus pending, no PASS global.
+- Validar individualmente los 50 registros reales y sus precios por la función de producción; verificar 6/16/15/13 posiciones y 6/10/15/12/7 tiers, IDs plr_001..plr_050 y categoría contemporary.
+- Mantener los 15 tests originales de CODEX-001. Adaptar los de CODEX-002 al cambio explícito de tamaño/campos: fixtures completos de 500, precios y rangos idénticos, casos económicos pequeños mediante checkEconomicViability. La antigua prueba de 100/101M se conserva como subconjunto sintético y debe dejar el estado global pendiente.
+- Probar años 2016/2026, categorías, década coherente, extensión de IDs, matriz de categoría/posición y traducciones de ambas categorías.
+- Probar manifest íntegro, estados contra datos suministrados, intervalos por lote, archivos realmente creados, consolidación ordenada sin mutación, duplicados internos y entre lotes normalizados.
+- Probar ruta de aprobación de diez lotes con fixtures sintéticos, claramente separada de la auditoría real. Nunca usar ese resultado para marcar completo catalog_v1.
+- Auditoría real global de 500, prueba económica global y selección CPU 95–100M: PENDIENTES hasta disponer de los diez lotes. UI inicial sin cambios visuales; no se exige nueva revisión de navegador en esta entrega.

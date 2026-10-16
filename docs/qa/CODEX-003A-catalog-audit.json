@@ -1,0 +1,55 @@
+{
+  "version": "catalog_v1",
+  "referenceDate": "2026-10-16",
+  "expectedTotal": 500,
+  "implementedTotal": 50,
+  "assemblyStatus": "partial",
+  "batches": {
+    "B01": {
+      "mode": "partial",
+      "status": "approved",
+      "count": 50,
+      "positions": {
+        "ARQ": 6,
+        "DEF": 16,
+        "MED": 15,
+        "DEL": 13
+      },
+      "tiers": {
+        "S": 6,
+        "A": 10,
+        "B": 15,
+        "C": 12,
+        "D": 7
+      },
+      "issues": []
+    }
+  },
+  "categories": {
+    "contemporary": 50,
+    "legend": 0
+  },
+  "positions": {
+    "ARQ": 6,
+    "DEF": 16,
+    "MED": 15,
+    "DEL": 13
+  },
+  "tiers": {
+    "S": 6,
+    "A": 10,
+    "B": 15,
+    "C": 12,
+    "D": 7
+  },
+  "globalStatus": "pending",
+  "globalValid": false,
+  "missingIds": 450,
+  "globalEconomy": {
+    "status": "not_evaluated",
+    "minimumCost": null,
+    "playerIds": []
+  },
+  "cpuSelection": "pending",
+  "issues": []
+}

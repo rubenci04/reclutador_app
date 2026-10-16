@@ -1,10 +1,10 @@
-import { ATTRIBUTE_RANGE, EXPECTED_PLAYER_IDS, NATIONALITY_CODES, OVERALL_RANGE } from '../../data/catalogRules'
+import { ATTRIBUTE_RANGE, CONTEMPORARY_PERIOD, EXPECTED_PLAYER_IDS, NATIONALITY_CODES, OVERALL_RANGE } from '../../data/catalogRules'
 import { POSITIONS } from '../../types/football'
-import { ERAS, type Player, type PlayerValidation, type ValidationIssue } from '../../types/player'
+import { ERAS, PLAYER_CATEGORIES, type Player, type PlayerValidation, type ValidationIssue } from '../../types/player'
 import { calculatePlayerPrice } from './calculatePlayerPrice'
 
 const REQUIRED_FIELDS = [
-  'id', 'name', 'position', 'era', 'nationality', 'club_tag',
+  'id', 'name', 'position', 'era', 'category', 'reference_year', 'nationality', 'club_tag',
   'overall_rating', 'att_rating', 'def_rating', 'phy_rating', 'men_rating', 'price',
 ] as const satisfies readonly (keyof Player)[]
 const NUMERIC_FIELDS = ['overall_rating', 'att_rating', 'def_rating', 'phy_rating', 'men_rating', 'price'] as const
@@ -39,7 +39,21 @@ export function validatePlayer(input: unknown): PlayerValidation {
   member(EXPECTED_PLAYER_IDS, 'id', 'invalid_id')
   member(POSITIONS, 'position', 'invalid_position')
   member(ERAS, 'era', 'invalid_era')
+  member(PLAYER_CATEGORIES, 'category', 'invalid_category')
   member(NATIONALITY_CODES, 'nationality', 'invalid_nationality')
+  if (present('reference_year')) {
+    const year = record.reference_year
+    if (typeof year !== 'number' || !Number.isInteger(year) || year < 1950 || year > CONTEMPORARY_PERIOD.max) {
+      issues.push({ code: 'invalid_reference_year', field: 'reference_year', expected: '1950..2026 integer', actual: year })
+    } else {
+      if (present('era') && record.era !== `${Math.floor(year / 10) * 10}s`) {
+        issues.push({ code: 'era_mismatch', field: 'era', expected: `${Math.floor(year / 10) * 10}s`, actual: record.era })
+      }
+      if (present('category') && ((record.category === 'contemporary' && year < CONTEMPORARY_PERIOD.min) || (record.category === 'legend' && year >= CONTEMPORARY_PERIOD.min))) {
+        issues.push({ code: 'category_year_mismatch', field: 'reference_year', actual: year })
+      }
+    }
+  }
   if (present('name') && !normalizePlayerName(record.name as string)) {
     issues.push({ code: 'empty_text', field: 'name', actual: record.name })
   }
