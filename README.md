@@ -2,6 +2,8 @@
 
 Videojuego web de draft de fútbol. CODEX-001 entrega solamente una pantalla inicial ilustrativa y arquitectura multilingüe. Jugar está deshabilitado; no hay catálogo, simulación ni conexión online.
 
+CODEX-002 agrega el contrato de futbolista, reglas de precios y tiers, validación de registros/catálogos y comprobación de viabilidad del once 4-3-3. Todavía no incluye los 100 futbolistas reales. Referencia: [diccionario del catálogo](docs/CATALOG_DATA.md), [ADR-0003](docs/decisions/ADR-0003.md) e [informe CODEX-002](docs/qa/CODEX-002.md).
+
 ## Ejecución local
 
 Requiere Node.js >=22.12 y npm. Entorno verificado: Node 24.21.0, npm 11.19.0, Git 2.53.0.windows.2.
@@ -29,6 +31,7 @@ El último comando sirve dist/ para revisar el build, normalmente en http://127.
 - src/app: arranque y proveedores.
 - src/components: interfaz compartida (selector de idioma).
 - src/features/home: pantalla inicial y cancha ilustrativa.
+- src/features/player-catalog: funciones puras y validadores; fixtures exclusivamente sintéticos para pruebas.
 - src/data: configuración inicial y coordenadas visuales.
 - src/types: códigos de posiciones estables.
 - src/i18n/locales: diccionarios independientes y configuración centralizada.

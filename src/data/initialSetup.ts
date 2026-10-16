@@ -1,6 +1,7 @@
 import type { Position } from '../types/football'
+import { DRAFT_BUDGET_MILLIONS, INITIAL_FORMATION, TEAM_SIZE } from './catalogRules'
 
-export const INITIAL_SETUP = { budgetMillions: 100, formation: '4-3-3', starters: 0, teamSize: 11 } as const
+export const INITIAL_SETUP = { budgetMillions: DRAFT_BUDGET_MILLIONS, formation: INITIAL_FORMATION, starters: 0, teamSize: TEAM_SIZE } as const
 // Visual coordinates only. No selection, player catalog or game rules yet.
 export const PITCH_SLOTS: { position: Position; x: number; y: number }[] = [
   { position: 'DEL', x: 23, y: 18 }, { position: 'DEL', x: 50, y: 14 }, { position: 'DEL', x: 77, y: 18 },
