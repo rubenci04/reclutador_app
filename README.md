@@ -1,6 +1,6 @@
 # El Reclutador
 
-Videojuego web de draft de fútbol. CODEX-004B entrega el primer ciclo local completo: armá un once en 4-3-3, enfrentá un rival CPU generado desde los mismos 150 futbolistas reales y reproducí una simulación deportiva de 15 segundos. La conexión online sigue pendiente.
+Videojuego web de draft de fútbol. El modo principal es **Duelo de Reclutadores**: dos personas comparten una computadora, sortean 22 futbolistas reales en once parejas posicionales, compiten por subastas y luego enfrentan sus equipos con el simulador existente. Draft Libre conserva la construcción individual y Contra CPU podrá reutilizar las reglas de oferta en una entrega futura.
 
 El nombre comercial pasó de Draft Legends a **El Reclutador** en CODEX-004C. La clave persistida `draft-legends.draft-v1`, la versión `catalog_v1`, los IDs `plr_*`, rutas y carpetas históricas se mantienen deliberadamente: los borradores locales compatibles no requieren migración y continúan restaurándose con el mismo esquema.
 
@@ -48,6 +48,7 @@ El último comando sirve dist/ para revisar el build, normalmente en http://127.
 - src/features/player-catalog: funciones puras y validadores; fixtures exclusivamente sintéticos para pruebas.
 - src/features/themed-modes: contratos de metadatos, reglas puras y diagnóstico de modalidades; no contiene datos históricos inventados.
 - src/features/local-match: generador CPU, simulador y diagnóstico estadístico reproducible.
+- src/features/recruiter-duel: motor puro de subastas hot-seat, registro reproducible e interfaz del Duelo de Reclutadores.
 - src/data: configuración inicial y coordenadas visuales.
 - src/data/catalog_v1: manifest de diez lotes, B01/B02/B03 implementados y registro explícito de alias; carga validada y determinista.
 - src/types: códigos de posiciones estables.
@@ -58,4 +59,4 @@ El último comando sirve dist/ para revisar el build, normalmente en http://127.
 
 Zustand persiste exclusivamente el draft. El partido se calcula en un módulo puro con semilla explícita y conserva su resultado durante la reproducción. Las cantidades del presupuesto se expresan en millones; el encargo no define moneda.
 
-Consultar [ROADMAP](docs/ROADMAP.md), [tablero](docs/TASK_BOARD.md), [pruebas](docs/TEST_PLAN.md), la [política de modalidades y fuentes](docs/decisions/ADR-0006.md) y la [evaluación de fuentes](docs/research/FOOTBALL_DATA_SOURCES.md). Resultados reales de CODEX-001 en docs/qa/CODEX-001.md.
+Consultar [ROADMAP](docs/ROADMAP.md), [tablero](docs/TASK_BOARD.md), [pruebas](docs/TEST_PLAN.md), las [reglas de subasta](docs/decisions/ADR-0007.md), la [política de modalidades y fuentes](docs/decisions/ADR-0006.md) y la [evaluación de fuentes](docs/research/FOOTBALL_DATA_SOURCES.md). Resultados reales de CODEX-001 en docs/qa/CODEX-001.md.

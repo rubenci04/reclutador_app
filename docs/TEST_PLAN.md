@@ -26,6 +26,15 @@ Las pruebas DOM usan Vitest + Testing Library + jsdom. Las verificaciones visual
 - Ejecutar el diagnóstico de 2.400 partidos: 800 equilibrados, 800 con diferencia de presupuesto y 800 con ataque concentrado. Registrar marcadores, 0-0, extremos, resultados y fortaleza relativa sin cambiar las probabilidades.
 - Intentar renderizado real en escritorio, 390 px y 360 px. Si el navegador integrado no puede abrir Vite, dejar el resultado como no ejecutado y seguir la checklist manual del informe QA.
 
+## CODEX-005A
+
+- Generar exactamente 22 IDs únicos en 1 ARQ, 4 DEF, 3 MED y 3 DEL parejas; exigir misma posición dentro de cada pareja y semilla reproducible.
+- Ejercitar 1.000 semillas, pasando legalmente en todas las rondas: ambos equipos terminan con once, 0–100M, posiciones válidas y ningún futbolista compartido.
+- Verificar cara o cruz almacenado, alternancia de prioridad, oferta inicial al precio base, incremento de 1M, turno correcto y retiro mediante pasar.
+- Probar adjudicación doble de cada pareja, resolución de doble pase, máximo seguro y rechazo de una oferta que consume el presupuesto necesario para los pares restantes.
+- Validar el registro estructurado y que la simulación de los dos onces se inicia una sola vez tras los equipos completos.
+- Comprobar textos es-AR, en y pt-BR, selector de idioma en el duelo y retorno a Draft Libre. Ejecutar typecheck, lint, Vitest, build y catalog:audit.
+
 ## CODEX-002
 
 - Ejecutar npm run build, npm run lint, npm run test y npx tsc --noEmit.

@@ -19,7 +19,9 @@ import type { ThemedModeId } from '../themed-modes/modeTypes'
 
 function money(value: number) { return `${value}M` }
 
-export function DraftPage() {
+interface DraftPageProps { readonly onDuel?: () => void }
+
+export function DraftPage({ onDuel }: DraftPageProps) {
   const { t } = useTranslation()
   const lineup = useDraftStore((state) => state.lineup)
   const confirmed = useDraftStore((state) => state.confirmed)
@@ -48,10 +50,10 @@ export function DraftPage() {
     setMatchRun(nextRun)
     setMatchResult(simulateMatch({ localLineup: lineup, cpuLineup: cpu.team.lineup, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed }))
   }
-  if (matchResult) return <div className="draft-app"><header className="draft-header"><a className="brand" href="#draft-main" aria-label={PRODUCT.name}><span className="brand-emblem">ER</span><span>{PRODUCT.name}</span></a><LanguageSelector /></header><MatchScreen key={matchResult.seed} result={matchResult} onRematch={startCpuMatch} onReturn={() => setMatchResult(null)} /></div>
+  if (matchResult) return <div className="draft-app"><header className="draft-header"><a className="brand" href="#draft-main" aria-label={PRODUCT.name}><span className="brand-emblem">ER</span><span>{PRODUCT.name}</span></a><div className="header-actions">{onDuel && <button className="header-mode" onClick={onDuel}>{t('duel.backToDuel')}</button>}<LanguageSelector /></div></header><MatchScreen key={matchResult.seed} result={matchResult} onRematch={startCpuMatch} onReturn={() => setMatchResult(null)} /></div>
   return <div className="draft-app">
     <a href="#draft-main" className="skip-link">{t('home.skip')}</a>
-    <header className="draft-header"><a className="brand" href="#draft-main" aria-label={PRODUCT.name}><span className="brand-emblem">ER</span><span>{PRODUCT.name}</span></a><LanguageSelector /></header>
+    <header className="draft-header"><a className="brand" href="#draft-main" aria-label={PRODUCT.name}><span className="brand-emblem">ER</span><span>{PRODUCT.name}</span></a><div className="header-actions">{onDuel && <button className="header-mode" onClick={onDuel}>{t('duel.backToDuel')}</button>}<LanguageSelector /></div></header>
     <main id="draft-main">
       <section className="draft-hero"><div><p className="eyebrow"><span />{t('draft.edition')}</p><h1>{t('draft.title')}</h1><p>{t('draft.subtitle')}</p></div><button className="catalog-open" onClick={() => setSelectedSlot(firstOpenSlot)}>{t('draft.catalog')} <span>↗</span></button></section>
       <ModeSelector selected={mode} onChange={setMode} />
