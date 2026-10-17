@@ -1,6 +1,6 @@
 # Reclutador
 
-Videojuego web de draft de fútbol. El modo principal es **Duelo de Reclutadores**: dos personas comparten una computadora, sortean 22 futbolistas reales de a uno, compiten por cada subasta y luego enfrentan sus equipos con el simulador existente. Draft Libre conserva la construcción individual y Contra CPU incorpora tres perfiles de puja estratégica reproducible.
+Videojuego web de draft de fútbol. El modo principal es **Duelo de Reclutadores**: dos personas comparten una computadora, compiten por cada subasta y completan 22 fichajes exclusivos antes de enfrentar sus equipos. Disponen de tres descartes compartidos por doble pase sin oferta, con reemplazo viable de la misma posición: hasta 25 candidatos. Draft Libre conserva la construcción individual y Contra CPU incorpora tres perfiles de puja estratégica reproducible.
 
 El nombre comercial pasó de Draft Legends a **Reclutador** en CODEX-005B. La clave persistida `draft-legends.draft-v1`, la versión `catalog_v1`, los IDs `plr_*`, rutas y carpetas históricas se mantienen deliberadamente: los borradores locales compatibles no requieren migración y continúan restaurándose con el mismo esquema.
 

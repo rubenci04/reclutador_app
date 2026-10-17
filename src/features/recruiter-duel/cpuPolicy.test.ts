@@ -2,7 +2,7 @@ import { writeFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { DRAFT_CATALOG } from '../draft/catalog'
 import { DRAFT_SLOTS } from '../draft/draftTypes'
-import { beginBidding, createRecruiterDuel, currentRound, maximumSafeBid, nextAuctionRound, passAuction, placeBid, revealCoinToss, revealNextAuctionRound, startCoinToss, startDuelMatch } from './auctionEngine'
+import { beginBidding, createRecruiterDuel, currentRound, maximumSafeBid, nextAuctionRound, passAuction, placeBid, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss, startDuelMatch } from './auctionEngine'
 import { CPU_STRATEGIES, decideCpu, privateValuation, takeCpuTurn, type CpuPublicContext } from './cpuPolicy'
 import type { AuctionTransition } from './auctionTypes'
 import { flagUrl, NATIONALITY_FLAGS, PHOTO_MANIFEST } from './visualAssets'
@@ -65,6 +65,7 @@ it('plays 3,000 CPU games against three simulated human policies with no illegal
           game=get(interested && cap>=minimum ? placeBid(game,'recruiter_one',minimum,DRAFT_CATALOG) : passAuction(game,'recruiter_one',DRAFT_CATALOG))
         }
       }
+      if(game.phase==='DISCARD_RESULT'){game=get(revealDiscardReplacement(game));continue}
       game=get(nextAuctionRound(game,DRAFT_CATALOG))
       if(game.phase==='NEXT_ROUND') game=get(revealNextAuctionRound(game))
     }

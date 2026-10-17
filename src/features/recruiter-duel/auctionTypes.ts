@@ -7,7 +7,7 @@ export const RECRUITERS = ['recruiter_one', 'recruiter_two'] as const
 export type RecruiterId = (typeof RECRUITERS)[number]
 export type CoinSide = 'heads' | 'tails'
 export type AwardReason = 'voluntary_bid' | 'double_pass_priority' | 'forced_viability'
-export type AuctionPhase = 'LOBBY' | 'COIN_TOSS' | 'REVEAL_PLAYER' | 'BIDDING' | 'ROUND_RESULT' | 'NEXT_ROUND' | 'TEAMS_COMPLETED' | 'SIMULATING' | 'MATCH_RESULT'
+export type AuctionPhase = 'LOBBY' | 'COIN_TOSS' | 'REVEAL_PLAYER' | 'BIDDING' | 'DISCARD_RESULT' | 'ROUND_RESULT' | 'NEXT_ROUND' | 'TEAMS_COMPLETED' | 'SIMULATING' | 'MATCH_RESULT'
 
 /** A single card offered during one auction round. */
 export interface AuctionRound {
@@ -23,11 +23,12 @@ export interface RecruiterTeam {
 export interface AuctionBid { readonly participant: RecruiterId; readonly amount: number }
 
 export type AuctionRecord =
+  | { readonly type: 'discard'; readonly round: number; readonly playerId: string; readonly replacementId: string }
   | { readonly type: 'coin_toss'; readonly calledSide: CoinSide; readonly result: CoinSide; readonly winner: RecruiterId }
   | { readonly type: 'bid'; readonly round: number; readonly participant: RecruiterId; readonly amount: number }
   | { readonly type: 'pass'; readonly round: number; readonly participant: RecruiterId }
   | { readonly type: 'award'; readonly round: number; readonly winner: RecruiterId; readonly playerId: string; readonly price: number; readonly reason: AwardReason }
-  | { readonly type: 'cpu_decision'; readonly round: number; readonly action: 'bid' | 'pass'; readonly amount?: number; readonly reason: string; readonly strategy: 'CONSERVATIVE' | 'BALANCED' | 'AGGRESSIVE'; readonly privateMaximum: number }
+  | { readonly type: 'cpu_decision'; readonly round: number; readonly playerId: string; readonly action: 'bid' | 'pass'; readonly amount?: number; readonly reason: string; readonly strategy: 'CONSERVATIVE' | 'BALANCED' | 'AGGRESSIVE'; readonly privateMaximum: number }
 
 export interface RoundAward {
   readonly reason: AwardReason
@@ -43,6 +44,9 @@ export interface RecruiterDuelGame {
   readonly phase: AuctionPhase
   readonly rounds: readonly AuctionRound[]
   readonly roundIndex: number
+  readonly discardsRemaining: number
+  readonly discardedPlayerIds: readonly string[]
+  readonly lastDiscard: { readonly playerId: string; readonly replacementId: string } | null
   readonly coinCall: CoinSide | null
   readonly coinResult: CoinSide | null
   readonly coinTossWinner: RecruiterId | null
@@ -61,7 +65,7 @@ export type AuctionCreation =
   | { readonly ok: false; readonly error: 'auction_pool_unavailable' }
 
 export type AuctionActionError =
-  | 'invalid_transition' | 'not_your_turn' | 'invalid_bid' | 'unsafe_bid' | 'invalid_award' | 'teams_invalid'
+  | 'invalid_transition' | 'not_your_turn' | 'invalid_bid' | 'unsafe_bid' | 'invalid_award' | 'teams_invalid' | 'no_legal_assignment'
 
 export type AuctionTransition =
   | { readonly ok: true; readonly game: RecruiterDuelGame }

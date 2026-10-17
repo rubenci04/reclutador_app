@@ -6,7 +6,7 @@ import { DRAFT_SLOTS, type DraftLineup } from '../draft/draftTypes'
 import { generateCpuTeam } from './cpuTeam'
 import { runBalanceDiagnostic } from './balanceDiagnostics'
 import { MATCH_RULES_VERSION } from './matchTypes'
-import { calculateTeamStrength, simulateMatch } from './simulator'
+import { calculateTeamStrength, initiativeChance, simulateMatch } from './simulator'
 
 function validLineup(catalog: readonly Player[], offset = 0): DraftLineup {
   const lineup = createEmptyLineup()
@@ -25,6 +25,29 @@ function simulate(seed: string) {
 }
 
 describe('local CPU match', () => {
+  it('uses symmetric initiative and validates unique positional elevens before simulating', () => {
+    const first = { attack: 95, defense: 65, midfield: 80, global: 80 }
+    const second = { attack: 75, defense: 85, midfield: 70, global: 76.7 }
+    expect(initiativeChance(first, first)).toBe(.5)
+    expect(initiativeChance(first, second) + initiativeChance(second, first)).toBeCloseTo(1, 12)
+    const lineup = validLineup(DRAFT_CATALOG)
+    const input = { localLineup: lineup, cpuLineup: lineup, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1' as const, rulesVersion: MATCH_RULES_VERSION, seed: 'invalid-complete' }
+    expect(() => simulateMatch({ ...input, localLineup: { ...lineup, ST: lineup.LW } })).toThrow('invalid_match_lineup')
+    expect(() => simulateMatch({ ...input, localLineup: { ...lineup, GK: lineup.ST, ST: lineup.GK } })).toThrow('invalid_match_lineup')
+  })
+  it('derives global power from all sectors and gives no scoring bonus for spending', () => {
+    const lineup = validLineup(DRAFT_CATALOG)
+    const input = { localLineup: lineup, cpuLineup: validLineup(DRAFT_CATALOG, 1), catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1' as const, rulesVersion: MATCH_RULES_VERSION, seed: 'spending-independent' }
+    const result = simulateMatch(input)
+    const strength = result.strengths.local
+    expect(strength.global).toBe(Math.round((strength.attack + strength.defense + strength.midfield) / 3 * 10) / 10)
+    const changedPrices = DRAFT_CATALOG.map((player) => ({ ...player, price: 5 }))
+    const changed = simulateMatch({ ...input, catalog: changedPrices })
+    expect(changed.blocks).toEqual(result.blocks)
+    expect(changed.strengths).toEqual(result.strengths)
+    const strongerPhysicalMidfield = { ...result.local, players: result.local.players.map((player) => player.position === 'MED' ? { ...player, phy_rating: 99 } : player) }
+    expect(calculateTeamStrength(strongerPhysicalMidfield).midfield).toBeGreaterThan(strength.midfield)
+  })
   it('builds a valid seeded CPU 4-3-3 under 100M, preferring the target band', () => {
     const cpu = generateCpuTeam(DRAFT_CATALOG, 'cpu-proof')
     expect(cpu.team.players).toHaveLength(11)

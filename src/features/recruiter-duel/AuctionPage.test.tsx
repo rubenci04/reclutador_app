@@ -7,7 +7,7 @@ import { PlayerIdentity } from './PlayerIdentity'
 import { DRAFT_CATALOG } from '../draft/catalog'
 import * as drawHistory from './drawHistory'
 import * as engine from './auctionEngine'
-import { beginBidding, createRecruiterDuel, maximumSafeBid, nextAuctionRound, passAuction, positionProgress, revealCoinToss, revealNextAuctionRound, startCoinToss } from './auctionEngine'
+import { beginBidding, createRecruiterDuel, maximumSafeBid, nextAuctionRound, passAuction, positionProgress, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss } from './auctionEngine'
 import type { AuctionCreation, AuctionTransition } from './auctionTypes'
 
 beforeEach(() => { localStorage.clear(); vi.spyOn(drawHistory, 'newDrawSeed').mockReturnValue('hot-seat-001') })
@@ -53,8 +53,8 @@ describe('single-player auction interface', () => {
     expect(bid).toBeDisabled()
     expect(bid).toHaveAccessibleDescription(/remaining budget cannot cover/)
     fireEvent.click(screen.getByRole('button', { name: 'Pass' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Confirm mandatory assignment' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Next round' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Confirm shared discard' }))
+    act(() => vi.advanceTimersByTime(350))
     fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
     expect(screen.getByLabelText('Bid amount')).not.toHaveValue(101)
   })
@@ -84,10 +84,15 @@ describe('single-player auction interface', () => {
         if (position === 'DEF' && progress.filled === 1 && maximumSafeBid(expected, participant, DRAFT_CATALOG) > 0) {
           expect(screen.getByRole('button', { name: 'Bid' })).toBeEnabled(); checkedOneDefender = true
         }
-        const passAction = screen.getByRole('button', { name: turn ? 'Confirm mandatory assignment' : 'Pass' })
+        const passAction = screen.getByRole('button', { name: turn ? (engine.auctionAvailability(expected, participant, DRAFT_CATALOG).replacement ? 'Confirm shared discard' : 'Confirm mandatory assignment') : 'Pass' })
         expect(passAction).toBeEnabled()
         fireEvent.click(passAction)
         expected = get(passAuction(expected, participant, DRAFT_CATALOG))
+      }
+      if (expected.phase === 'DISCARD_RESULT') {
+        act(() => vi.advanceTimersByTime(350))
+        expected = get(revealDiscardReplacement(expected))
+        continue
       }
       fireEvent.click(screen.getByRole('button', { name: 'Next round' }))
       expected = get(nextAuctionRound(expected, DRAFT_CATALOG))
@@ -146,15 +151,27 @@ describe('single-player auction interface', () => {
     expect(screen.getByRole('alert')).toHaveTextContent('context is invalid')
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     expect(screen.getByRole('button', { name: 'Heads' })).toBeInTheDocument()
-    expect(screen.getByRole('status')).toHaveTextContent('Recent history could not be restored or saved')
+    expect(screen.getByText(/Recent history could not be restored or saved/)).toHaveAttribute('role', 'status')
   })
-  it('labels a double-pass assignment separately from a voluntary bid', async () => {
+  it('labels a shared discard and announces mandatory assignment after exhaustion', async () => {
     vi.useFakeTimers()
     const i18n = await createI18n('en')
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
     act(() => vi.advanceTimersByTime(850))
+    fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Pass' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Confirm shared discard' }))
+    expect(screen.getByRole('heading', { name: 'NEW DRAW' })).toBeInTheDocument()
+    act(() => vi.advanceTimersByTime(350))
+    for (let remaining = 2; remaining > 0; remaining--) {
+      fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Pass' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Confirm shared discard' }))
+      act(() => vi.advanceTimersByTime(350))
+    }
+    expect(screen.getByText(/DISCARDS AVAILABLE: 0\/3/)).toBeVisible()
     fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
     fireEvent.click(screen.getByRole('button', { name: 'Pass' }))
     expect(screen.getByText(/Mandatory assignment:/)).toBeVisible()

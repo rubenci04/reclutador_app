@@ -18,6 +18,13 @@ describe('match playback', () => {
     const result = simulateMatch({ localLineup: local.team.lineup, cpuLineup: cpu.team.lineup, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: 'screen-result' })
     const rematch = vi.fn(); const back = vi.fn(); const finished = vi.fn(); const i18n = await createI18n('en')
     render(<I18nextProvider i18n={i18n}><MatchScreen result={result} onRematch={rematch} onReturn={back} onFinished={finished} /></I18nextProvider>)
+    expect(screen.getByText(`Global power: ${result.strengths.local.global}`)).toBeInTheDocument()
+    const goalIndex = result.blocks.findIndex((block) => block.events.some((event) => event.type === 'goal'))
+    expect(goalIndex).toBeGreaterThanOrEqual(0)
+    if (goalIndex >= 0) {
+      act(() => vi.advanceTimersByTime((goalIndex + 1) * 2500))
+      expect(screen.getByText(/Goal for /)).toHaveClass('goal-flash')
+    }
     act(() => vi.advanceTimersByTime(15_000))
     expect(screen.getByText('Full time')).toBeInTheDocument()
     expect(finished).toHaveBeenCalledTimes(1)

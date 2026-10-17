@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { DRAFT_CATALOG } from '../draft/catalog'
-import { auctionAvailability, beginBidding, createRecruiterDuel, nextAuctionRound, passAuction, placeBid, positionProgress, revealCoinToss, revealNextAuctionRound, startCoinToss } from './auctionEngine'
+import { auctionAvailability, beginBidding, createRecruiterDuel, nextAuctionRound, passAuction, placeBid, positionProgress, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss } from './auctionEngine'
 import { RECRUITERS, type AuctionCreation, type AuctionTransition } from './auctionTypes'
 
 function get(result: AuctionCreation | AuctionTransition) { if (!result.ok) throw new Error(result.error); return result.game }
@@ -36,6 +36,13 @@ describe('central auction action diagnosis', () => {
       expect(first.passAward).toBeNull(); expect(first.fallback).not.toBeNull()
       game = get(passAuction(game, game.activeParticipant!, DRAFT_CATALOG))
       const second = auctionAvailability(game, game.activeParticipant!, DRAFT_CATALOG)
+      if (second.replacement) {
+        expect(second.passAward).toBeNull()
+        game = get(passAuction(game, game.activeParticipant!, DRAFT_CATALOG))
+        expect(game.phase).toBe('DISCARD_RESULT')
+        game = get(beginBidding(get(revealDiscardReplacement(game))))
+        continue
+      }
       expect(second.passAward).not.toBeNull()
       expect(second.assignmentCode).toBe('MANDATORY_ASSIGNMENT')
       if (second.passAward!.reason === 'forced_viability') forced++

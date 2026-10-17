@@ -75,13 +75,32 @@ export function createRecruiterDuel(catalog: readonly Player[], seed: string, co
     const relaxation = attempt < 16 ? 1 : attempt < 32 ? .5 : 0
     const rounds = createRounds(catalog, `${seed}:attempt:${attempt}`, context, relaxation)
     if (!rounds) continue
-    return { ok: true, game: { seed, ...(context ? { drawContext: structuredClone(context) } : {}), drawDiagnostics: { attempts: attempt + 1, relaxation, smallPoolPositions: POSITIONS.filter((position) => catalog.filter((player) => player.position === position).length < 2 * ({ ARQ: 2, DEF: 8, MED: 6, DEL: 6 }[position])) }, phase: 'LOBBY', rounds, roundIndex: 0, coinCall: null, coinResult: null, coinTossWinner: null, openingOrder: [], teams: { recruiter_one: emptyTeam(), recruiter_two: emptyTeam() }, activeParticipant: null, currentBid: null, passedParticipants: [], lastAward: null, record: [], matchResult: null } }
+    return { ok: true, game: { seed, ...(context ? { drawContext: structuredClone(context) } : {}), drawDiagnostics: { attempts: attempt + 1, relaxation, smallPoolPositions: POSITIONS.filter((position) => catalog.filter((player) => player.position === position).length < 2 * ({ ARQ: 2, DEF: 8, MED: 6, DEL: 6 }[position])) }, phase: 'LOBBY', rounds, roundIndex: 0, discardsRemaining: 3, discardedPlayerIds: [], lastDiscard: null, coinCall: null, coinResult: null, coinTossWinner: null, openingOrder: [], teams: { recruiter_one: emptyTeam(), recruiter_two: emptyTeam() }, activeParticipant: null, currentBid: null, passedParticipants: [], lastAward: null, record: [], matchResult: null } }
   }
   return { ok: false, error: 'auction_pool_unavailable' }
 }
 
 export const currentRound = (game: RecruiterDuelGame) => game.rounds[game.roundIndex]
 export const openingPriority = (game: RecruiterDuelGame) => game.openingOrder[game.roundIndex]
+/** Bounded search; never reuses an awarded, reserved or discarded candidate. */
+export function discardReplacement(game: RecruiterDuelGame, catalog: readonly Player[]): AuctionRound | null {
+  if (game.discardsRemaining <= 0 || game.phase !== 'BIDDING' || game.currentBid) return null
+  const round = currentRound(game)
+  if (!round) return null
+  const unavailable = new Set([...game.rounds.map((entry) => entry.playerId), ...game.discardedPlayerIds, ...Object.values(game.teams).flatMap((team) => Object.values(team.lineup))])
+  const random = createSeededRandom(`${game.seed}:discard:${3 - game.discardsRemaining}:${game.roundIndex}`)
+  const candidates = catalog.filter((player) => player.position === round.position && !unavailable.has(player.id)).sort((a, b) => a.id.localeCompare(b.id)).map((player) => {
+    const appearances = game.drawContext?.recent.filter((draw) => draw.includes(player.id)).length ?? 0
+    return { player, key: -Math.log(Math.max(Number.MIN_VALUE, random())) * (1 + 2 * appearances) }
+  }).sort((a, b) => a.key - b.key || a.player.id.localeCompare(b.player.id))
+  const map = playerMap(catalog)
+  for (const { player } of candidates) {
+    const replacement = { position: round.position, playerId: player.id }
+    const rounds = game.rounds.map((entry, index) => index === game.roundIndex ? replacement : entry)
+    if (canFinishRounds(rounds, game.roundIndex, game.teams, map)) return replacement
+  }
+  return null
+}
 const transition = (game: RecruiterDuelGame, patch: Partial<RecruiterDuelGame>): AuctionTransition => ({ ok: true, game: { ...game, ...patch } })
 
 export function startCoinToss(game: RecruiterDuelGame, calledSide: CoinSide): AuctionTransition {
@@ -134,7 +153,7 @@ export function maximumSafeBid(game: RecruiterDuelGame, participant: RecruiterId
   return low
 }
 
-export type AuctionBlockCode = 'NOT_YOUR_TURN' | 'POSITION_FULL' | 'INSUFFICIENT_BUDGET' | 'FUTURE_BUDGET_RESERVED' | 'CPU_THINKING' | 'ACTION_PENDING' | 'INVALID_OFFER'
+export type AuctionBlockCode = 'NOT_YOUR_TURN' | 'POSITION_FULL' | 'INSUFFICIENT_BUDGET' | 'FUTURE_BUDGET_RESERVED' | 'CPU_THINKING' | 'ACTION_PENDING' | 'INVALID_OFFER' | 'NO_LEGAL_ASSIGNMENT'
 /** One source for UI diagnostics, using exactly the award feasibility predicate. */
 export function auctionAvailability(game: RecruiterDuelGame, participant: RecruiterId, catalogInput: readonly Player[], offer?: number, cpuThinking = false) {
   const catalog = playerMap(catalogInput)
@@ -160,11 +179,13 @@ export function auctionAvailability(game: RecruiterDuelGame, participant: Recrui
     const otherViable = canAward(game, opponent(priority), candidate.price, catalog)
     if (priorityViable || otherViable) fallback = { winner: priorityViable ? priority : opponent(priority), playerId: candidate.id, price: candidate.price, reason: priorityViable && otherViable ? 'double_pass_priority' : 'forced_viability' }
   }
+  const replacement = discardReplacement(game, catalogInput)
   const passAward: RoundAward | null = game.currentBid
     ? { winner: game.currentBid.participant, playerId: candidate?.id ?? '', price: game.currentBid.amount, reason: 'voluntary_bid' }
-    : game.passedParticipants.length ? fallback : null
+    : game.passedParticipants.length && !replacement ? fallback : null
   const assignmentCode = passAward && passAward.reason !== 'voluntary_bid' ? 'MANDATORY_ASSIGNMENT' as const : null
-  return { minimum, maximum, bid: { enabled: reason === null, reason }, pass: { enabled: pending === null, reason: pending }, fallback, passAward, assignmentCode }
+  const passReason = pending ?? (!game.currentBid && !replacement && !fallback ? 'NO_LEGAL_ASSIGNMENT' as const : null)
+  return { minimum, maximum, bid: { enabled: reason === null, reason }, pass: { enabled: passReason === null, reason: passReason }, fallback, passAward, assignmentCode, replacement, discardReason: game.discardsRemaining > 0 && !game.currentBid && !replacement ? 'NO_LEGAL_REPLACEMENT' as const : null }
 }
 
 export function placeBid(game: RecruiterDuelGame, participant: RecruiterId, amount: number, catalogInput: readonly Player[]): AuctionTransition {
@@ -195,12 +216,21 @@ export function passAuction(game: RecruiterDuelGame, participant: RecruiterId, c
   const passed = { ...game, passedParticipants: [...game.passedParticipants, participant], record: [...game.record, { type: 'pass' as const, round: game.roundIndex, participant }] }
   if (game.currentBid) return award(passed, game.currentBid.participant, game.currentBid.amount, catalog)
   if (game.passedParticipants.length === 0) return transition(passed, { activeParticipant: opponent(participant) })
+  const replacement = discardReplacement(game, catalogInput)
+  if (replacement) {
+    const playerId = currentRound(game).playerId
+    return transition(passed, { phase: 'DISCARD_RESULT', rounds: game.rounds.map((round, index) => index === game.roundIndex ? replacement : round), discardsRemaining: game.discardsRemaining - 1, discardedPlayerIds: [...game.discardedPlayerIds, playerId], lastDiscard: { playerId, replacementId: replacement.playerId }, passedParticipants: [], activeParticipant: null, currentBid: null, record: [...passed.record, { type: 'discard', round: game.roundIndex, playerId, replacementId: replacement.playerId }] })
+  }
   const round = currentRound(game); const candidate = round && catalog.get(round.playerId); const priority = openingPriority(game)
   if (!candidate || !priority) return { ok: false, error: 'invalid_award' }
   const otherViable = canAward(passed, opponent(priority), candidate.price, catalog)
   const direct = award(passed, priority, candidate.price, catalog, otherViable ? 'double_pass_priority' : 'forced_viability')
-  return direct.ok ? direct : award(passed, opponent(priority), candidate.price, catalog, 'forced_viability')
+  if (direct.ok) return direct
+  const other = award(passed, opponent(priority), candidate.price, catalog, 'forced_viability')
+  return other.ok ? other : { ok: false, error: 'no_legal_assignment' }
 }
+
+export const revealDiscardReplacement = (game: RecruiterDuelGame): AuctionTransition => game.phase === 'DISCARD_RESULT' && game.lastDiscard ? transition(game, { phase: 'REVEAL_PLAYER', lastDiscard: null }) : { ok: false, error: 'invalid_transition' }
 
 export function nextAuctionRound(game: RecruiterDuelGame, catalog: readonly Player[]): AuctionTransition {
   if (game.phase !== 'ROUND_RESULT') return { ok: false, error: 'invalid_transition' }

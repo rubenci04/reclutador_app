@@ -1,0 +1,259 @@
+{
+  "rulesVersion": "local-match-v1",
+  "seedPattern": "005G-B-calibration-0..999",
+  "fixture": "synthetic disjoint 4-3-3 squads, rating 80, price 4M each; ATT/DEF/PHY/MEN gaps 0/5/15; no catalog changes",
+  "totalMatches": 6000,
+  "scenarios": [
+    {
+      "attributeGap": 0,
+      "orientations": [
+        {
+          "swapped": false,
+          "matches": 1000,
+          "winsA": 362,
+          "draws": 373,
+          "lossesA": 265,
+          "meanGoalsA": 0.76,
+          "meanGoalsB": 0.592,
+          "scorelines": {
+            "1-1": 145,
+            "1-0": 193,
+            "0-1": 168,
+            "2-0": 97,
+            "1-2": 30,
+            "0-0": 220,
+            "2-1": 44,
+            "3-0": 16,
+            "0-3": 8,
+            "0-2": 53,
+            "3-1": 6,
+            "1-3": 4,
+            "4-0": 4,
+            "2-3": 1,
+            "2-2": 8,
+            "3-2": 2,
+            "0-4": 1
+          },
+          "strengths": {
+            "a": {
+              "attack": 80,
+              "defense": 70,
+              "midfield": 75
+            },
+            "b": {
+              "attack": 80,
+              "defense": 70,
+              "midfield": 75
+            }
+          }
+        },
+        {
+          "swapped": true,
+          "matches": 1000,
+          "winsA": 265,
+          "draws": 373,
+          "lossesA": 362,
+          "meanGoalsA": 0.592,
+          "meanGoalsB": 0.76,
+          "scorelines": {
+            "1-1": 145,
+            "0-1": 193,
+            "1-0": 168,
+            "0-2": 97,
+            "2-1": 30,
+            "0-0": 220,
+            "1-2": 44,
+            "0-3": 16,
+            "3-0": 8,
+            "2-0": 53,
+            "1-3": 6,
+            "3-1": 4,
+            "0-4": 4,
+            "3-2": 1,
+            "2-2": 8,
+            "2-3": 2,
+            "4-0": 1
+          },
+          "strengths": {
+            "a": {
+              "attack": 80,
+              "defense": 70,
+              "midfield": 75
+            },
+            "b": {
+              "attack": 80,
+              "defense": 70,
+              "midfield": 75
+            }
+          }
+        }
+      ]
+    },
+    {
+      "attributeGap": 5,
+      "orientations": [
+        {
+          "swapped": false,
+          "matches": 1000,
+          "winsA": 476,
+          "draws": 338,
+          "lossesA": 186,
+          "meanGoalsA": 0.954,
+          "meanGoalsB": 0.455,
+          "scorelines": {
+            "1-1": 129,
+            "1-0": 228,
+            "0-1": 132,
+            "3-0": 36,
+            "0-0": 203,
+            "2-0": 143,
+            "2-1": 50,
+            "1-2": 19,
+            "4-0": 8,
+            "0-3": 5,
+            "0-2": 25,
+            "2-2": 6,
+            "3-1": 8,
+            "2-3": 2,
+            "1-3": 3,
+            "3-2": 3
+          },
+          "strengths": {
+            "a": {
+              "attack": 85,
+              "defense": 75,
+              "midfield": 80
+            },
+            "b": {
+              "attack": 80,
+              "defense": 70,
+              "midfield": 75
+            }
+          }
+        },
+        {
+          "swapped": true,
+          "matches": 1000,
+          "winsA": 358,
+          "draws": 374,
+          "lossesA": 268,
+          "meanGoalsA": 0.761,
+          "meanGoalsB": 0.617,
+          "scorelines": {
+            "1-1": 150,
+            "0-1": 154,
+            "1-0": 195,
+            "2-1": 46,
+            "0-0": 216,
+            "0-2": 62,
+            "2-0": 89,
+            "1-2": 36,
+            "0-3": 8,
+            "3-0": 20,
+            "2-2": 8,
+            "1-3": 8,
+            "3-1": 5,
+            "4-0": 2,
+            "3-2": 1
+          },
+          "strengths": {
+            "a": {
+              "attack": 85,
+              "defense": 75,
+              "midfield": 80
+            },
+            "b": {
+              "attack": 80,
+              "defense": 70,
+              "midfield": 75
+            }
+          }
+        }
+      ]
+    },
+    {
+      "attributeGap": 15,
+      "orientations": [
+        {
+          "swapped": false,
+          "matches": 1000,
+          "winsA": 692,
+          "draws": 233,
+          "lossesA": 75,
+          "meanGoalsA": 1.411,
+          "meanGoalsB": 0.249,
+          "scorelines": {
+            "1-1": 79,
+            "4-0": 26,
+            "0-0": 150,
+            "3-1": 16,
+            "1-0": 259,
+            "2-0": 239,
+            "0-1": 52,
+            "1-2": 14,
+            "3-0": 107,
+            "2-1": 41,
+            "2-2": 4,
+            "2-3": 1,
+            "0-2": 7,
+            "3-2": 2,
+            "5-0": 1,
+            "1-3": 1,
+            "4-1": 1
+          },
+          "strengths": {
+            "a": {
+              "attack": 95,
+              "defense": 85,
+              "midfield": 90
+            },
+            "b": {
+              "attack": 80,
+              "defense": 70,
+              "midfield": 75
+            }
+          }
+        },
+        {
+          "swapped": true,
+          "matches": 1000,
+          "winsA": 559,
+          "draws": 303,
+          "lossesA": 138,
+          "meanGoalsA": 1.113,
+          "meanGoalsB": 0.392,
+          "scorelines": {
+            "0-0": 179,
+            "0-3": 4,
+            "1-0": 248,
+            "0-1": 93,
+            "2-0": 175,
+            "2-1": 56,
+            "3-0": 54,
+            "1-1": 118,
+            "0-2": 20,
+            "1-2": 18,
+            "3-1": 14,
+            "4-0": 10,
+            "2-2": 6,
+            "1-3": 3,
+            "5-0": 1,
+            "3-2": 1
+          },
+          "strengths": {
+            "a": {
+              "attack": 95,
+              "defense": 85,
+              "midfield": 90
+            },
+            "b": {
+              "attack": 80,
+              "defense": 70,
+              "midfield": 75
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

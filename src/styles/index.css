@@ -90,3 +90,21 @@
 @keyframes football-toss { 0% { transform: translateY(0) rotateY(0); } 45% { transform: translateY(-45px) rotateY(540deg); } 100% { transform: translateY(0) rotateY(1080deg); } }
 @media(max-width:640px) { .team-pitch { min-height: 470px; } .pitch-shirt { font-size: 10px; } }
 @media(prefers-reduced-motion:reduce) { .football-coin.tossing svg { animation: none; } }
+
+/* Short, presentation-only transitions; authoritative actions precede animation. */
+.auction-candidate { animation: candidate-reveal 240ms ease-out; }
+.card-discard { animation: card-discard 350ms ease-in forwards; pointer-events: none; }
+.bid-highlight { animation: bid-highlight 300ms ease-out; border-left: 3px solid #d5fb76; padding-left: .7rem; }
+.pitch-shirt.occupied { animation: shirt-arrival 280ms ease-out; }
+.discard-counter { padding: .8rem; color: #d5fb76; border-bottom: 1px solid #ffffff36; font-weight: 750; }
+.discard-counter span, .power-explanation { font-size: .85rem; color: #c8d7c3; font-weight: 400; }
+.discard-scene { overflow: hidden; }
+.goal-flash { display: flex; align-items: center; justify-content: center; gap: .7rem; color: #d5fb76; font-weight: 800; animation: goal-celebrate 700ms ease-out forwards; pointer-events: none; }
+.goal-flash svg { width: 34px; height: 34px; fill: #edf6e8; stroke: #24452d; stroke-width: 2; }
+.goal-flash path { fill: #24452d; }
+@keyframes candidate-reveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes card-discard { to { opacity: 0; transform: translateX(35px) scale(.96); } }
+@keyframes bid-highlight { from { background: #d5fb7640; } to { background: transparent; } }
+@keyframes shirt-arrival { from { opacity: .25; transform: scale(.88); } to { opacity: 1; transform: scale(1); } }
+@keyframes goal-celebrate { 0% { opacity: 0; transform: scale(.9); } 30%,75% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1); } }
+@media(prefers-reduced-motion:reduce) { .auction-candidate, .card-discard, .bid-highlight, .pitch-shirt.occupied, .goal-flash { animation: none; transform: none; opacity: 1; } }

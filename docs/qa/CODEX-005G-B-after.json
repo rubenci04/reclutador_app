@@ -1,0 +1,269 @@
+{
+  "rulesVersion": "local-match-v2",
+  "seedPattern": "005G-B-calibration-0..999",
+  "fixture": "synthetic disjoint 4-3-3 squads, rating 80, price 4M each; ATT/DEF/PHY/MEN gaps 0/5/15; no catalog changes",
+  "totalMatches": 6000,
+  "scenarios": [
+    {
+      "attributeGap": 0,
+      "orientations": [
+        {
+          "swapped": false,
+          "matches": 1000,
+          "winsA": 309,
+          "draws": 379,
+          "lossesA": 312,
+          "meanGoalsA": 0.678,
+          "meanGoalsB": 0.674,
+          "scorelines": {
+            "1-1": 153,
+            "1-0": 173,
+            "0-1": 188,
+            "2-0": 76,
+            "1-2": 35,
+            "0-0": 220,
+            "0-2": 66,
+            "2-1": 40,
+            "3-0": 11,
+            "0-3": 12,
+            "2-2": 6,
+            "1-3": 6,
+            "3-1": 8,
+            "2-3": 3,
+            "0-4": 2,
+            "4-0": 1
+          },
+          "strengths": {
+            "a": {
+              "attack": 80,
+              "defense": 70,
+              "midfield": 75,
+              "global": 75
+            },
+            "b": {
+              "attack": 80,
+              "defense": 70,
+              "midfield": 75,
+              "global": 75
+            }
+          }
+        },
+        {
+          "swapped": true,
+          "matches": 1000,
+          "winsA": 312,
+          "draws": 379,
+          "lossesA": 309,
+          "meanGoalsA": 0.674,
+          "meanGoalsB": 0.678,
+          "scorelines": {
+            "1-1": 153,
+            "0-1": 173,
+            "1-0": 188,
+            "0-2": 76,
+            "2-1": 35,
+            "0-0": 220,
+            "2-0": 66,
+            "1-2": 40,
+            "0-3": 11,
+            "3-0": 12,
+            "2-2": 6,
+            "3-1": 6,
+            "1-3": 8,
+            "3-2": 3,
+            "4-0": 2,
+            "0-4": 1
+          },
+          "strengths": {
+            "a": {
+              "attack": 80,
+              "defense": 70,
+              "midfield": 75,
+              "global": 75
+            },
+            "b": {
+              "attack": 80,
+              "defense": 70,
+              "midfield": 75,
+              "global": 75
+            }
+          }
+        }
+      ]
+    },
+    {
+      "attributeGap": 5,
+      "orientations": [
+        {
+          "swapped": false,
+          "matches": 1000,
+          "winsA": 409,
+          "draws": 355,
+          "lossesA": 236,
+          "meanGoalsA": 0.846,
+          "meanGoalsB": 0.554,
+          "scorelines": {
+            "1-1": 142,
+            "1-0": 209,
+            "0-1": 154,
+            "3-0": 21,
+            "0-0": 207,
+            "2-1": 53,
+            "2-0": 110,
+            "1-2": 31,
+            "0-3": 8,
+            "4-0": 6,
+            "0-2": 35,
+            "1-3": 5,
+            "3-1": 8,
+            "2-3": 2,
+            "2-2": 6,
+            "3-2": 2,
+            "0-4": 1
+          },
+          "strengths": {
+            "a": {
+              "attack": 85,
+              "defense": 75,
+              "midfield": 80,
+              "global": 80
+            },
+            "b": {
+              "attack": 80,
+              "defense": 70,
+              "midfield": 75,
+              "global": 75
+            }
+          }
+        },
+        {
+          "swapped": true,
+          "matches": 1000,
+          "winsA": 420,
+          "draws": 361,
+          "lossesA": 219,
+          "meanGoalsA": 0.85,
+          "meanGoalsB": 0.543,
+          "scorelines": {
+            "1-1": 140,
+            "0-1": 126,
+            "1-0": 223,
+            "2-1": 51,
+            "0-0": 211,
+            "2-0": 113,
+            "3-0": 23,
+            "0-2": 50,
+            "1-2": 31,
+            "0-3": 6,
+            "2-2": 10,
+            "1-3": 6,
+            "3-1": 6,
+            "4-0": 3,
+            "3-2": 1
+          },
+          "strengths": {
+            "a": {
+              "attack": 85,
+              "defense": 75,
+              "midfield": 80,
+              "global": 80
+            },
+            "b": {
+              "attack": 80,
+              "defense": 70,
+              "midfield": 75,
+              "global": 75
+            }
+          }
+        }
+      ]
+    },
+    {
+      "attributeGap": 15,
+      "orientations": [
+        {
+          "swapped": false,
+          "matches": 1000,
+          "winsA": 639,
+          "draws": 268,
+          "lossesA": 93,
+          "meanGoalsA": 1.28,
+          "meanGoalsB": 0.303,
+          "scorelines": {
+            "1-1": 97,
+            "4-0": 17,
+            "0-0": 166,
+            "3-1": 19,
+            "1-0": 257,
+            "2-0": 221,
+            "2-1": 47,
+            "0-1": 65,
+            "1-2": 17,
+            "3-0": 74,
+            "2-2": 5,
+            "0-2": 9,
+            "2-3": 1,
+            "3-2": 3,
+            "4-1": 1,
+            "1-3": 1
+          },
+          "strengths": {
+            "a": {
+              "attack": 95,
+              "defense": 85,
+              "midfield": 90,
+              "global": 90
+            },
+            "b": {
+              "attack": 80,
+              "defense": 70,
+              "midfield": 75,
+              "global": 75
+            }
+          }
+        },
+        {
+          "swapped": true,
+          "matches": 1000,
+          "winsA": 617,
+          "draws": 275,
+          "lossesA": 108,
+          "meanGoalsA": 1.24,
+          "meanGoalsB": 0.334,
+          "scorelines": {
+            "0-0": 162,
+            "0-3": 1,
+            "1-0": 259,
+            "0-1": 71,
+            "2-0": 197,
+            "2-1": 52,
+            "3-0": 77,
+            "1-1": 108,
+            "0-2": 18,
+            "1-2": 14,
+            "1-3": 4,
+            "3-1": 12,
+            "4-0": 18,
+            "2-2": 5,
+            "5-0": 1,
+            "3-2": 1
+          },
+          "strengths": {
+            "a": {
+              "attack": 95,
+              "defense": 85,
+              "midfield": 90,
+              "global": 90
+            },
+            "b": {
+              "attack": 80,
+              "defense": 70,
+              "midfield": 75,
+              "global": 75
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,4 +1,8 @@
-/** Small deterministic PRNG: every game action carries its seed in the result. */
+/** Event-only cryptographic seed creation; never call during render. */
+export function createSecureSeed(): string {
+  return Array.from(globalThis.crypto.getRandomValues(new Uint32Array(4)), (word) => word.toString(16).padStart(8, '0')).join('')
+}
+
 export function hashSeed(seed: string) {
   let value = 2166136261
   for (let index = 0; index < seed.length; index++) value = Math.imul(value ^ seed.charCodeAt(index), 16777619)

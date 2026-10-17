@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { DRAFT_CATALOG } from '../draft/catalog'
-import { beginBidding, completeDuelMatch, createRecruiterDuel, maximumSafeBid, nextAuctionRound, passAuction, placeBid, revealCoinToss, revealNextAuctionRound, startCoinToss, startDuelMatch } from './auctionEngine'
+import { beginBidding, completeDuelMatch, createRecruiterDuel, maximumSafeBid, nextAuctionRound, passAuction, placeBid, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss, startDuelMatch } from './auctionEngine'
 import type { AuctionTransition, RecruiterDuelGame } from './auctionTypes'
 
 function gameFor(seed = 'auction-test') {
@@ -17,7 +17,8 @@ function completeByPassing(seed = 'auction-pass') {
   let game = gameFor(seed)
   game = get(startCoinToss(game, 'heads')); game = get(revealCoinToss(game))
   while (game.phase !== 'TEAMS_COMPLETED') {
-    game = get(beginBidding(game)); game = get(passAuction(game, game.activeParticipant!, DRAFT_CATALOG)); game = get(passAuction(game, game.activeParticipant!, DRAFT_CATALOG)); game = get(nextAuctionRound(game, DRAFT_CATALOG))
+    game = get(beginBidding(game)); game = get(passAuction(game, game.activeParticipant!, DRAFT_CATALOG)); game = get(passAuction(game, game.activeParticipant!, DRAFT_CATALOG)); if (game.phase === 'DISCARD_RESULT') { game = get(revealDiscardReplacement(game)); continue }
+    game = get(nextAuctionRound(game, DRAFT_CATALOG))
     if (game.phase === 'NEXT_ROUND') game = get(revealNextAuctionRound(game))
   }
   return game

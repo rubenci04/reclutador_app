@@ -13,6 +13,7 @@ import { generateCpuTeam } from '../local-match/cpuTeam'
 import { MatchScreen } from '../local-match/MatchScreen'
 import { MATCH_RULES_VERSION, type MatchResult } from '../local-match/matchTypes'
 import { simulateMatch } from '../local-match/simulator'
+import { createSecureSeed } from '../local-match/seededRandom'
 import { PRODUCT } from '../../config/product'
 import { ModeSelector } from '../themed-modes/ModeSelector'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
@@ -36,7 +37,7 @@ export function DraftPage({ onDuel }: DraftPageProps) {
   const clearRestoreIssue = useDraftStore((state) => state.clearRestoreIssue)
   const [selectedSlot, setSelectedSlot] = useState<DraftSlotId | null>(null)
   const [matchResult, setMatchResult] = useState<MatchResult | null>(null)
-  const [matchRun, setMatchRun] = useState(0)
+  const [matchError, setMatchError] = useState(false)
   const [mode, setMode] = useState<ThemedModeId>('GLOBAL_CLASSIC')
   const summary = summarizeDraft(lineup, DRAFT_CATALOG)
   const slot = DRAFT_SLOTS.find((item) => item.id === selectedSlot)
@@ -44,10 +45,11 @@ export function DraftPage({ onDuel }: DraftPageProps) {
   const tierCount = (tier: string) => summary.selectedPlayers.filter((player) => getPlayerTier(player.overall_rating) === tier).length
   const startCpuMatch = () => {
     if (!summary.canConfirm) return
-    const nextRun = matchRun + 1
-    const seed = `local-match-${nextRun}-${DRAFT_SLOTS.map((item) => lineup[item.id]).join('-')}`
+    let seed: string
+    try { seed = `local-match-${createSecureSeed()}` }
+    catch { setMatchError(true); return }
     const cpu = generateCpuTeam(DRAFT_CATALOG, seed)
-    setMatchRun(nextRun)
+    setMatchError(false)
     setMatchResult(simulateMatch({ localLineup: lineup, cpuLineup: cpu.team.lineup, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed }))
   }
   if (matchResult) return <div className="draft-app"><header className="draft-header"><a className="brand" href="#draft-main" aria-label={PRODUCT.name}><span className="brand-emblem">ER</span><span>{PRODUCT.name}</span></a><div className="header-actions">{onDuel && <button className="header-mode" onClick={onDuel}>{t('duel.backToDuel')}</button>}<LanguageSelector /></div></header><MatchScreen key={matchResult.seed} result={matchResult} onRematch={startCpuMatch} onReturn={() => setMatchResult(null)} /></div>
@@ -58,6 +60,7 @@ export function DraftPage({ onDuel }: DraftPageProps) {
       <section className="draft-hero"><div><p className="eyebrow"><span />{t('draft.edition')}</p><h1>{t('draft.title')}</h1><p>{t('draft.subtitle')}</p></div><button className="catalog-open" onClick={() => setSelectedSlot(firstOpenSlot)}>{t('draft.catalog')} <span>↗</span></button></section>
       <ModeSelector selected={mode} onChange={setMode} />
       {restoreIssue && <div className="draft-alert" role="alert">{t('draft.messages.invalidDraft')}<button onClick={clearRestoreIssue}>×</button></div>}
+      {matchError && <p className="draft-alert" role="alert">{t('draw.randomError')}</p>}
       {message && <div className="draft-alert" role="alert">{t(`draft.messages.${message}`)}<button onClick={clearMessage}>×</button></div>}
       <section className="draft-workspace" aria-label={t('game.myTeam')}>
         <aside className="draft-summary"><p className="eyebrow"><span />{t('draft.formation')}</p><h2>{t('game.myTeam')}</h2><div className="budget-amount"><small>{t('game.budget')}</small><strong>{money(DRAFT_BUDGET_MILLIONS)}</strong></div><dl className="summary-stats"><div><dt>{t('draft.selected')}</dt><dd>{summary.selectedCount}/11</dd></div><div><dt>{t('draft.spent')}</dt><dd>{money(summary.spent)}</dd></div><div><dt>{t('draft.remaining')}</dt><dd>{money(summary.remaining)}</dd></div><div><dt>{t('draft.minimumToFinish')}</dt><dd>{summary.minimumCompletionCost === null ? '—' : money(summary.minimumCompletionCost)}</dd></div></dl><p className={`viability ${summary.canCompleteWithinBudget ? 'is-good' : ''}`}>{summary.canCompleteWithinBudget ? t('draft.viability') : t('draft.messages.impossibleBudget')}</p><div className="draft-actions"><button className="primary-action" disabled={!summary.canConfirm} title={!summary.canConfirm ? t('draft.confirmDisabled') : undefined} onClick={confirm}>{t('draft.confirm')}</button><button className="secondary-action" onClick={reset}>{t('draft.reset')}</button></div></aside>

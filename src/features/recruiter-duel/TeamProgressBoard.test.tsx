@@ -5,7 +5,7 @@ import { createI18n } from '../../i18n'
 import { DRAFT_CATALOG } from '../draft/catalog'
 import { DRAFT_SLOTS } from '../draft/draftTypes'
 import { TeamProgressBoard } from './TeamProgressBoard'
-import { beginBidding, createRecruiterDuel, maximumSafeBid, nextAuctionRound, passAuction, placeBid, positionProgress, revealCoinToss, revealNextAuctionRound, startCoinToss } from './auctionEngine'
+import { beginBidding, createRecruiterDuel, maximumSafeBid, nextAuctionRound, passAuction, placeBid, positionProgress, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss } from './auctionEngine'
 import { createDrawContext } from './drawHistory'
 import { RECRUITERS, type AuctionCreation, type AuctionTransition, type RecruiterDuelGame } from './auctionTypes'
 
@@ -39,6 +39,7 @@ describe('live authoritative team progress', () => {
     while (game.phase !== 'TEAMS_COMPLETED') {
       if (game.phase === 'BIDDING') game = get(passAuction(game, game.activeParticipant!, DRAFT_CATALOG))
       else if (game.phase === 'ROUND_RESULT') game = get(nextAuctionRound(game, DRAFT_CATALOG))
+      else if (game.phase === 'DISCARD_RESULT') game = get(revealDiscardReplacement(game))
       else if (game.phase === 'NEXT_ROUND') game = get(revealNextAuctionRound(game))
       else game = get(beginBidding(game))
     }
@@ -91,6 +92,7 @@ describe('live authoritative team progress', () => {
       }
       game = get(passAuction(game, game.activeParticipant!, DRAFT_CATALOG))
       game = get(passAuction(game, game.activeParticipant!, DRAFT_CATALOG))
+      if (game.phase === 'DISCARD_RESULT') { game = get(beginBidding(get(revealDiscardReplacement(game)))); continue }
       game = get(nextAuctionRound(game, DRAFT_CATALOG))
       if (game.phase === 'NEXT_ROUND') game = get(beginBidding(get(revealNextAuctionRound(game))))
     }

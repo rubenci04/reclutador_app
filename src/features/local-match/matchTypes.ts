@@ -1,7 +1,7 @@
 import type { Player } from '../../types/player'
 import type { DraftLineup } from '../draft/draftTypes'
 
-export const MATCH_RULES_VERSION = 'local-match-v1' as const
+export const MATCH_RULES_VERSION = 'local-match-v2' as const
 export const MATCH_MINUTES = [15, 30, 45, 60, 75, 90] as const
 export type MatchSide = 'local' | 'cpu'
 export type MatchEventType = 'attack' | 'shot' | 'save' | 'recovery' | 'goal' | 'final'
@@ -14,6 +14,7 @@ export interface MatchTeam {
 }
 
 export interface TeamStrength {
+  readonly global: number
   readonly attack: number
   readonly defense: number
   readonly midfield: number

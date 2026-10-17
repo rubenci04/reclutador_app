@@ -1,6 +1,6 @@
 import type { Player } from '../../types/player'
 import { summarizeDraft } from '../draft/draftModel'
-import type { DraftLineup } from '../draft/draftTypes'
+import { DRAFT_SLOTS, type DraftLineup } from '../draft/draftTypes'
 import { createSeededRandom } from './seededRandom'
 import { MATCH_MINUTES, MATCH_RULES_VERSION, type MatchBlock, type MatchEvent, type MatchResult, type MatchSide, type MatchStats, type MatchTeam, type TeamStrength } from './matchTypes'
 
@@ -17,7 +17,7 @@ const clamp = (value: number, lower: number, upper: number) => Math.max(lower, M
 
 function teamFrom(lineup: DraftLineup, catalog: readonly Player[]): MatchTeam {
   const summary = summarizeDraft(lineup, catalog)
-  if (!summary.canConfirm) throw new Error('invalid_match_lineup')
+  if (!summary.canConfirm || new Set(DRAFT_SLOTS.map((slot) => lineup[slot.id])).size !== 11 || !DRAFT_SLOTS.every((slot) => catalog.find((player) => player.id === lineup[slot.id])?.position === slot.position)) throw new Error('invalid_match_lineup')
   return { lineup, players: summary.selectedPlayers, spent: summary.spent, averageRating: summary.averageRating ?? 0 }
 }
 
@@ -30,7 +30,14 @@ export function calculateTeamStrength(team: MatchTeam): TeamStrength {
   const attack = average(group('DEL'), 'att_rating') * .55 + average(group('MED'), 'att_rating') * .25 + average(group('DEF'), 'att_rating') * .1 + average(group('ARQ'), 'att_rating') * .1
   const defense = average(group('ARQ'), 'def_rating') * .3 + average(group('DEF'), 'def_rating') * .48 + average(group('MED'), 'def_rating') * .16 + average(group('DEL'), 'def_rating') * .06
   const midfield = average(group('MED'), 'men_rating') * .45 + average(group('MED'), 'phy_rating') * .2 + average(group('DEF'), 'men_rating') * .15 + average(group('DEL'), 'men_rating') * .1 + average(group('ARQ'), 'men_rating') * .1
-  return { attack: Math.round(attack), defense: Math.round(defense), midfield: Math.round(midfield) }
+  const sectors = { attack: Math.round(attack), defense: Math.round(defense), midfield: Math.round(midfield) }
+  return { ...sectors, global: Math.round((sectors.attack + sectors.defense + sectors.midfield) / 3 * 10) / 10 }
+}
+
+/** Symmetric comparison of both attack-defense margins; swapping sides complements it. */
+export function initiativeChance(local: TeamStrength, cpu: TeamStrength) {
+  const pressure = ((local.attack - cpu.defense) - (cpu.attack - local.defense)) / 2 + (local.midfield - cpu.midfield) * .45
+  return clamp(.5 + pressure / 150, .24, .76)
 }
 
 function event(minute: MatchEvent['minute'], side: MatchSide | null, type: MatchEvent['type'], player?: Player): MatchEvent {
@@ -57,8 +64,7 @@ export function simulateMatch(input: SimulationInput): MatchResult {
   const random = createSeededRandom(input.seed)
   const blocks: MatchBlock[] = []
   for (const minute of MATCH_MINUTES) {
-    const pressure = (strengths.local.attack - strengths.cpu.defense) + (strengths.local.midfield - strengths.cpu.midfield) * .45
-    const localAttackChance = clamp(.5 + pressure / 150, .24, .76)
+    const localAttackChance = initiativeChance(strengths.local, strengths.cpu)
     const side: MatchSide = random() < localAttackChance ? 'local' : 'cpu'
     const opponent: MatchSide = side === 'local' ? 'cpu' : 'local'
     const events: MatchEvent[] = [event(minute, side, 'attack', attacker(teams[side], random))]

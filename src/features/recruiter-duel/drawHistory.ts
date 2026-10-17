@@ -1,4 +1,5 @@
 import type { Player } from '../../types/player'
+import { createSecureSeed } from '../local-match/seededRandom'
 
 export const DRAW_HISTORY_KEY = 'reclutador.duel-draws.v1'
 export interface DrawContext {
@@ -41,6 +42,5 @@ export function createDrawContext(catalog: readonly Player[], recent: readonly (
   return { version: 1, catalogKey: catalogKey(catalog), recent: recent.slice(-5).map((draw) => [...new Set(draw.filter((id) => ids.has(id)))].slice(0, 22)) }
 }
 export function newDrawSeed(): string {
-  const words = globalThis.crypto.getRandomValues(new Uint32Array(4))
-  return Array.from(words, (word) => word.toString(16).padStart(8, '0')).join('')
+  return createSecureSeed()
 }
