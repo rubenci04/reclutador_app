@@ -28,7 +28,7 @@ const summary = {
   cpuSelection: 'pending',
   issues: result.issues,
 }
-const destination = path.resolve(__dirname, '../docs/qa/CODEX-003B-catalog-audit.json')
+const destination = path.resolve(__dirname, '../docs/qa/CODEX-003C-catalog-audit.json')
 fs.writeFileSync(destination, JSON.stringify(summary, null, 2) + '\n')
 console.log(JSON.stringify(summary, null, 2))
 // Zero means the available batches are consistent, never that an incomplete catalog passed.

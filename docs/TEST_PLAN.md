@@ -48,3 +48,12 @@ Las pruebas DOM usan Vitest + Testing Library + jsdom. Las verificaciones visual
 - Comprobar alias de todos los nombres canónicos y abreviaturas registrados, nombres deportivos y variantes completas representativas. Inyectar colisiones entre lotes con distintos IDs, clubes y décadas: detectar duplicate_player e identity_mismatch. Distinguir homónimos y rechazar registros ambiguos de alias.
 - Mantener la regresión de 50/500 usando un manifest aislado de B01; adaptar solo las expectativas de integración real a B01+B02. Mantener los casos previos de 500 sintéticos, fórmula, idiomas y persistencia.
 - Verificar manifest y carga determinista al invertir lotes/jugadores; ausencia de B03–B10 reales. No modificar la interfaz inicial. Inspección visual nueva: NO EJECUTADA si no hay cambios visuales.
+
+## CODEX-003C
+
+- Ejecutar typecheck, lint, test, build y catalog:audit. Exigir --complete y registrar salida 1 con 350 IDs faltantes mientras solo estén B01–B03.
+- Verificar individualmente los 50 IDs plr_101–plr_150, versiones contemporary, década/año, precios por calculatePlayerPrice y cupos 6/16/15/13 y 6/10/15/12/7.
+- Auditar conjuntamente 150 IDs/personas, categorías 150/0, posiciones 18/48/45/39 y tiers 18/30/45/36/21; validar orden determinista sin mutación y manifest real.
+- Fijar hashes de B01/B02, comprobar conservación de datos/precios y alias previos. Mantener los escenarios históricos de 50/100 aislados sin eliminar pruebas anteriores.
+- Probar variantes completas/deportivas, apodos, transliteraciones y colisiones con otros IDs/clubes/décadas; dejar L. Martínez sin resolver y distinguir Lisandro/Lautaro/Emiliano y los Kim.
+- Registrar revisión visual NO EJECUTADA si no hay cambios de UI. No confundir auditoría parcial con cierre de 500.

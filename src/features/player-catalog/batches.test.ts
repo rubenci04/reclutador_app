@@ -4,6 +4,7 @@ import { resolve } from 'node:path'
 import manifest from '../../data/catalog_v1/manifest.json'
 import B01 from '../../data/catalog_v1/batches/B01.json'
 import B02 from '../../data/catalog_v1/batches/B02.json'
+import B03 from '../../data/catalog_v1/batches/B03.json'
 import { loadCatalogV1 } from '../../data/catalog_v1'
 import { BATCH_IDS, BATCH_POSITION_QUOTAS, BATCH_SIZE, CATEGORY_POSITION_QUOTAS, getBatchCategory, getBatchPlayerIds } from '../../data/catalogRules'
 import { POSITIONS, type Position } from '../../types/football'
@@ -57,8 +58,8 @@ describe('real B01 data audit', () => {
     expect(result.issues).toEqual([])
     expect(result.fullReport).toMatchObject({ mode: 'complete', valid: false, status: 'pending', validPlayerCount: 50, economy: { status: 'not_evaluated' } })
     expect(result.fullReport.issues).toContainEqual({ code: 'invalid_count', expected: 500, actual: 50 })
-    expect(manifest.batches.filter((batch) => batch.status === 'implemented').map((batch) => batch.id)).toEqual(['B01', 'B02'])
-    expect(readdirSync(resolve('src/data/catalog_v1/batches')).sort()).toEqual(['B01.json', 'B02.json'])
+    expect(manifest.batches.filter((batch) => batch.status === 'implemented').map((batch) => batch.id)).toEqual(['B01', 'B02', 'B03'])
+    expect(readdirSync(resolve('src/data/catalog_v1/batches')).sort()).toEqual(['B01.json', 'B02.json', 'B03.json'])
   })
 })
 
@@ -154,11 +155,11 @@ describe('manifest and deterministic consolidation', () => {
   it('detects unexpected files and discrepancies between supplied data and manifest states', () => {
     expect(assembleCatalog(manifest, {}).status).toBe('invalid')
     expect(assembleCatalog(manifest, { B01 }).issues.some((issue) => issue.code === 'batch_state_mismatch')).toBe(true)
-    expect(assembleCatalog(manifest, { B01, B02, B03: syntheticBatch('B03') }).issues.some((issue) => issue.code === 'batch_state_mismatch')).toBe(true)
+    expect(assembleCatalog(manifest, { B01, B02, B03, B04: syntheticBatch('B04') }).issues.some((issue) => issue.code === 'batch_state_mismatch')).toBe(true)
     expect(assembleCatalog(manifest, { B01, B11: [] }).issues.some((issue) => issue.code === 'unexpected_batch')).toBe(true)
   })
   it('sorts batches and players independently of input ordering without mutating inputs', () => {
-    const two = { ...manifest, batches: manifest.batches.map((batch) => batch.id === 'B02' ? { ...batch, status: 'implemented' } : batch).reverse() }
+    const two = { ...manifest, batches: manifest.batches.map((batch) => ({ ...batch, status: ['B01', 'B02'].includes(batch.id) ? 'implemented' : 'pending' })).reverse() }
     const first = syntheticBatch('B01').reverse()
     const second = syntheticBatch('B02').reverse()
     const before = structuredClone(first)
@@ -186,6 +187,6 @@ describe('manifest and deterministic consolidation', () => {
   })
   it('checks all implemented prices, tiers and counts through the same domain rules', () => {
     const result = loadCatalogV1()
-    for (const tier of PLAYER_TIERS) expect(result.fullReport.tierCounts[tier]).toBe([...B01, ...B02].filter((player) => getPlayerTier(player.overall_rating) === tier).length)
+    for (const tier of PLAYER_TIERS) expect(result.fullReport.tierCounts[tier]).toBe([...B01, ...B02, ...B03].filter((player) => getPlayerTier(player.overall_rating) === tier).length)
   })
 })

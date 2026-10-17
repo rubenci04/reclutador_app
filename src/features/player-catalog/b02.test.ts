@@ -4,7 +4,6 @@ import B01 from '../../data/catalog_v1/batches/B01.json'
 import B02 from '../../data/catalog_v1/batches/B02.json'
 import aliases from '../../data/catalog_v1/identityAliases.json'
 import manifest from '../../data/catalog_v1/manifest.json'
-import { loadCatalogV1 } from '../../data/catalog_v1'
 import { getBatchPlayerIds } from '../../data/catalogRules'
 import { assembleCatalog } from './assembleCatalog'
 import { calculatePlayerPrice } from './calculatePlayerPrice'
@@ -13,6 +12,9 @@ import { validateBatch, validateCatalog } from './validateCatalog'
 import { validatePlayer } from './validatePlayer'
 
 const cumulative = [...B01, ...B02]
+// Keep CODEX-003B's 100-player regression independent of later implemented batches.
+const twoBatchManifest = { ...manifest, batches: manifest.batches.map((batch) => ({ ...batch, status: ['B01', 'B02'].includes(batch.id) ? 'implemented' : 'pending' })) }
+const loadB01B02 = () => assembleCatalog(twoBatchManifest, { B01, B02 })
 const representativeAliases = [
   ['Leo Messi', 'plr_038'], [' L. MESSI ', 'plr_038'], ['Lionel Andrés Messi', 'plr_038'],
   ['CR7', 'plr_039'], ['Cristiano Ronaldo dos Santos Aveiro', 'plr_039'],
@@ -69,10 +71,10 @@ describe('accumulated B01 + B02', () => {
     // Parsed-record hash ignores checkout newline conversion, while pinning all values and IDs.
     expect(createHash('sha256').update(JSON.stringify(B01)).digest('hex'))
       .toBe('b065963920db1d597181621c5ee5eb3ba2426f274f9e605d40e3beebe30c02ee')
-    expect(loadCatalogV1().players.slice(0, 50)).toEqual(B01)
+    expect(loadB01B02().players.slice(0, 50)).toEqual(B01)
   })
   it('approves both partial batches and accumulates exactly 100 distinct contemporary identities', () => {
-    const report = loadCatalogV1()
+    const report = loadB01B02()
     expect(report.status).toBe('partial')
     expect(report.issues).toEqual([])
     expect(report.batchReports.B01?.valid).toBe(true)
@@ -92,18 +94,18 @@ describe('accumulated B01 + B02', () => {
     expect(report.economy.status).toBe('not_evaluated')
   })
   it('matches the manifest and remains deterministic for shuffled batches and rows', () => {
-    expect(manifest.batches.filter((batch) => batch.status === 'implemented').map((batch) => batch.id)).toEqual(['B01', 'B02'])
-    expect(manifest.batches.slice(2).every((batch) => batch.status === 'pending')).toBe(true)
+    expect(twoBatchManifest.batches.filter((batch) => batch.status === 'implemented').map((batch) => batch.id)).toEqual(['B01', 'B02'])
+    expect(twoBatchManifest.batches.slice(2).every((batch) => batch.status === 'pending')).toBe(true)
     const snapshot = structuredClone(cumulative)
-    const shuffled = assembleCatalog({ ...manifest, batches: [...manifest.batches].reverse() }, { B02: [...B02].reverse(), B01: [...B01].reverse() })
-    expect(shuffled.players).toEqual(loadCatalogV1().players)
+    const shuffled = assembleCatalog({ ...twoBatchManifest, batches: [...twoBatchManifest.batches].reverse() }, { B02: [...B02].reverse(), B01: [...B01].reverse() })
+    expect(shuffled.players).toEqual(loadB01B02().players)
     expect(cumulative).toEqual(snapshot)
   })
 })
 
 describe('reviewed aliases and person identity', () => {
   it('covers every implemented canonical name and abbreviation in a collision-free registry', () => {
-    expect(Object.keys(aliases)).toEqual(cumulative.map((player) => player.id))
+    expect(Object.keys(aliases).filter((id) => cumulative.some((player) => player.id === id))).toEqual(cumulative.map((player) => player.id))
     for (const player of cumulative) {
       expect(resolvePlayerIdentity(player.name)).toBe(player.id)
       for (const name of aliases[player.id as keyof typeof aliases]) {
@@ -138,8 +140,8 @@ describe('reviewed aliases and person identity', () => {
   })
   it('detects exact ID collisions as well as alias collisions between batches', () => {
     const wrongId = B02.map((player, index) => index === 0 ? { ...player, id: B01[0].id } : player)
-    expect(assembleCatalog(manifest, { B01, B02: wrongId }).issues.some((issue) => issue.code === 'duplicate_id')).toBe(true)
+    expect(assembleCatalog(twoBatchManifest, { B01, B02: wrongId }).issues.some((issue) => issue.code === 'duplicate_id')).toBe(true)
     const wrongName = B02.map((player, index) => index === 0 ? { ...player, name: 'Neymar Jr.' } : player)
-    expect(assembleCatalog(manifest, { B01, B02: wrongName }).issues.some((issue) => issue.code === 'duplicate_player')).toBe(true)
+    expect(assembleCatalog(twoBatchManifest, { B01, B02: wrongName }).issues.some((issue) => issue.code === 'duplicate_player')).toBe(true)
   })
 })

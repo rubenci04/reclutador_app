@@ -1,12 +1,12 @@
 # Avance de catalog_v1
 
-Fecha fija de referencia: **16/10/2026**. Alcance aprobado en CODEX-003A: **500**, sustituyendo explícitamente los 100 de CODEX-002. Avance actualizado en CODEX-003B: **100/500**, contemporary **100/300**, legend **0/200**. CODEX-003 / DL-F02-DATA-002: **EN CURSO**.
+Fecha fija de referencia: **16/10/2026**. Alcance aprobado en CODEX-003A: **500**, sustituyendo explícitamente los 100 de CODEX-002. Avance actualizado en CODEX-003C: **150/500**, contemporary **150/300**, legend **0/200**. CODEX-003 / DL-F02-DATA-002: **EN CURSO**.
 
 | Lote | Categoría | IDs reservados | Esperados | Implementados | Estado |
 |---|---|---|---:|---:|---|
 | B01 | contemporary | plr_001–plr_050 | 50 | 50 | Implementado; validación parcial aprobada |
 | B02 | contemporary | plr_051–plr_100 | 50 | 50 | Implementado; validación parcial y acumulada aprobadas |
-| B03 | contemporary | plr_101–plr_150 | 50 | 0 | Pendiente |
+| B03 | contemporary | plr_101–plr_150 | 50 | 50 | Implementado; validación parcial y acumulada aprobadas |
 | B04 | contemporary | plr_151–plr_200 | 50 | 0 | Pendiente |
 | B05 | contemporary | plr_201–plr_250 | 50 | 0 | Pendiente |
 | B06 | contemporary | plr_251–plr_300 | 50 | 0 | Pendiente |
@@ -15,7 +15,7 @@ Fecha fija de referencia: **16/10/2026**. Alcance aprobado en CODEX-003A: **500*
 | B09 | legend | plr_401–plr_450 | 50 | 0 | Pendiente |
 | B10 | legend | plr_451–plr_500 | 50 | 0 | Pendiente |
 
-Los archivos B03–B10 no existen. Sus estados figuran en manifest.json sin datos de relleno.
+Los archivos B04–B10 no existen. Sus estados figuran en manifest.json sin datos de relleno.
 
 B01 reúne 22 nacionalidades y 29 clubes, con 12 argentinos y 26 sudamericanos. Estas cifras describen lo implementado y no reemplazan los cupos del catálogo completo.
 
@@ -25,19 +25,19 @@ B02 agrega 50 futbolistas diferentes: 28 asociaciones y 34 clubes en el lote, in
 
 | Posición | Contemporary implementados / objetivo | Legend implementados / objetivo | Total implementado / objetivo |
 |---|---|---|---|
-| ARQ | 12 / 36 | 0 / 24 | 12 / 60 |
-| DEF | 32 / 96 | 0 / 64 | 32 / 160 |
-| MED | 30 / 90 | 0 / 60 | 30 / 150 |
-| DEL | 26 / 78 | 0 / 52 | 26 / 130 |
-| Total | 100 / 300 | 0 / 200 | 100 / 500 |
+| ARQ | 18 / 36 | 0 / 24 | 18 / 60 |
+| DEF | 48 / 96 | 0 / 64 | 48 / 160 |
+| MED | 45 / 90 | 0 / 60 | 45 / 150 |
+| DEL | 39 / 78 | 0 / 52 | 39 / 130 |
+| Total | 150 / 300 | 0 / 200 | 150 / 500 |
 
-| Tier | B01 | B02 | Acumulado | Objetivo global |
-|---|---:|---:|---:|---:|
-| S | 6 | 6 | 12 | 60 |
-| A | 10 | 10 | 20 | 100 |
-| B | 15 | 15 | 30 | 150 |
-| C | 12 | 12 | 24 | 120 |
-| D | 7 | 7 | 14 | 70 |
+| Tier | B01 | B02 | B03 | Acumulado | Objetivo global |
+|---|---:|---:|---:|---:|---:|
+| S | 6 | 6 | 6 | 18 | 60 |
+| A | 10 | 10 | 10 | 30 | 100 |
+| B | 15 | 15 | 15 | 45 | 150 |
+| C | 12 | 12 | 12 | 36 | 120 |
+| D | 7 | 7 | 7 | 21 | 70 |
 
 ## Calidad de datos y balance
 
@@ -51,10 +51,24 @@ Revisión de balance pendiente: las versiones representativas 2018 de algunos ve
 
 ## Pruebas y cierre
 
-Auditoría reproducible actual: npm run catalog:audit. Resultado real guardado en [CODEX-003B-catalog-audit.json](qa/CODEX-003B-catalog-audit.json): B01 y B02 approved en modo partial; acumulado partialValid:true, catálogo global pending/valid:false, 400 IDs faltantes; economía global not_evaluated y CPU pending. El modo --complete devuelve 1 por incompletitud esperada. La [auditoría histórica de CODEX-003A](qa/CODEX-003A-catalog-audit.json) permanece sin modificaciones.
+Auditoría histórica de CODEX-003B: npm run catalog:audit. Resultado real guardado en [CODEX-003B-catalog-audit.json](qa/CODEX-003B-catalog-audit.json): B01 y B02 approved en modo partial; acumulado partialValid:true, catálogo global pending/valid:false, 400 IDs faltantes; economía global not_evaluated y CPU pending. El modo --complete devuelve 1 por incompletitud esperada. La [auditoría histórica de CODEX-003A](qa/CODEX-003A-catalog-audit.json) permanece sin modificaciones.
 
 TypeScript, ESLint, Vitest (**320 pruebas**) y build ejecutados en CODEX-003B; detalle y límites en [informe QA](qa/CODEX-003B.md). Las 215 pruebas anteriores siguen cubiertas; se adapta la integración real a dos lotes y se conserva el escenario aislado de B01. La aprobación del cargador completo usando fixtures sintéticos verifica su lógica, no los 400 jugadores reales que faltan.
 
 Incidencias resueltas: tres expectativas de integración que suponían solo B01 se ajustaron a la nueva carga real sin rebajar la exigencia de 500; la detección anterior de alias no tipográficos se amplió mediante registro explícito. La ruta FIFA de SVN falló al consultarse y se documentó el contraste alternativo. No hubo correcciones de datos, ratings o precios de B01.
 
-Pendientes: B03–B10, segunda revisión editorial y auditoría global de identidad/distribuciones/precios, comprobación económica completa y posterior selección CPU 95–100M en su fase. La fórmula y el presupuesto siguen intactos. Próximo lote recomendado: **B03 / DL-F02-DATA-006**, sin reutilizar los 100 futbolistas incorporados. No iniciado.
+Pendientes actuales: B04–B10, segunda revisión editorial y auditoría global de identidad/distribuciones/precios, comprobación económica completa y posterior selección CPU 95–100M en su fase. La fórmula y el presupuesto siguen intactos. Próximo lote recomendado: **B04 / DL-F02-DATA-007**, sin reutilizar los 150 futbolistas incorporados. No iniciado.
+
+## CODEX-003C — auditoría actual de 150
+
+B03 completo: 50 IDs plr_101–plr_150. Tres lotes completos de diez; contemporary 150/300, legend 0/200. B03 representa 23 asociaciones y 32 clubes, con 6 argentinos y 12 sudamericanos. Agrega CMR/GHA/KSA/QAT a la representación; acumulado: 42 asociaciones, 67 clubes, 20 argentinos y 50 sudamericanos. KSA/QAT amplían el registro permitido a 49 códigos.
+
+Fuentes por los 50 IDs, períodos, posiciones, préstamos y consultas limitadas en [B03_EDITORIAL.md](catalog/B03_EDITORIAL.md). B01/B02 y sus precios se conservan íntegros mediante comparación Git y hashes parseados. No se corrigieron datos anteriores.
+
+El registro de alias cubre ahora 150 personas sin alterar entradas previas. Incidencias resueltas: L. Martínez era ambiguo para Lisandro/Lautaro y queda sin resolver; se registran Li. Martínez y La. Martínez. Se descartan abreviaturas sin apellido como R. Los apodos Gigi/Bono/La Araña/El Toro y nombres completos se trazan a fuentes. No se fusionan personas por apellido.
+
+Auditoría reproducible actual: npm run catalog:audit. Artefacto [CODEX-003C-catalog-audit.json](qa/CODEX-003C-catalog-audit.json): tres lotes approved, partialValid:true, global pending/valid:false, 350 IDs faltantes (plr_151–plr_500), economía not_evaluated y CPU pending. --complete devuelve 1 esperado. Auditorías anteriores intactas.
+
+TypeScript, ESLint, Vitest (**403 pruebas en 5 archivos: 320 anteriores y 83 nuevas**) y build aprobados. Se conservan escenarios históricos de 50 y 100 mediante manifests aislados; la carga actual prueba 150. Los validadores completos siguen exigiendo 500. Revisión visual NO EJECUTADA, sin cambios de UI ni idiomas. Detalle: [CODEX-003C.md](qa/CODEX-003C.md).
+
+Permanece pendiente la revisión editorial global de balance y alias desconocidos. Presupuesto y fórmula intactos. B04 no iniciado automáticamente.

@@ -36,6 +36,7 @@ export const NATIONALITY_CODES = [
   'SWE', 'DEN', 'NOR', 'JPN', 'KOR', 'AUS', 'SEN', 'CMR', 'CIV', 'GHA', 'NGA', 'EGY', 'MAR', 'ALG',
   'SUI', 'ISL', 'CRC',
   'SVN', 'AUT', 'BIH', 'PAN', 'TUN', 'IRN',
+  'KSA', 'QAT',
 ] as const
 
 export const EXPECTED_PLAYER_IDS: readonly string[] = Array.from(
