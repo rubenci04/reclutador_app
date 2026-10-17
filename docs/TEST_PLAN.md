@@ -57,3 +57,13 @@ Las pruebas DOM usan Vitest + Testing Library + jsdom. Las verificaciones visual
 - Fijar hashes de B01/B02, comprobar conservación de datos/precios y alias previos. Mantener los escenarios históricos de 50/100 aislados sin eliminar pruebas anteriores.
 - Probar variantes completas/deportivas, apodos, transliteraciones y colisiones con otros IDs/clubes/décadas; dejar L. Martínez sin resolver y distinguir Lisandro/Lautaro/Emiliano y los Kim.
 - Registrar revisión visual NO EJECUTADA si no hay cambios de UI. No confundir auditoría parcial con cierre de 500.
+
+## CODEX-004B
+
+- Generar un CPU 4-3-3 solo con el catálogo cargado: once distinto, posiciones 1/4/3/3, presupuesto no mayor a 100M y preferencia demostrable por 95–100M. Si ese rango es imposible, verificar el fallback legal y documentar la causa.
+- Comprobar que una misma semilla produce el mismo rival y el mismo partido; que semillas distintas dan variantes; y que no hay bucles ni aleatoriedad fuera del generador con semilla.
+- Rechazar alineaciones locales o CPU inválidas antes de simular. Contrastar que atributos y roles, en especial ARQ/DEF, afectan ataque, defensa y mediocampo.
+- Verificar seis bloques 15–90, goles iguales al marcador, tiros/al-arco/atajadas/recuperaciones coherentes con eventos y posesión que suma 100.
+- Ejecutar diagnóstico reproducible de al menos 1.000 partidos y registrar victorias, empates, derrotas, goles y extremos como observación de balance, sin inferir justicia estadística.
+- Integración: confirmar once, iniciar CPU una vez, esperar 15 segundos, reproducir sin recalcular, pedir revancha y volver al draft. Cambiar idioma durante la reproducción y comprobar que conserva resultado/eventos.
+- QA manual: escritorio, 390 px y 360 px; revisar cancha, modal, marcador, narración, barra de progreso, resumen, teclado, movimiento reducido y ausencia de scroll horizontal. Si el navegador no accede al host local, documentar la falla de acceso y entregar la lista al usuario.

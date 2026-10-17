@@ -7,7 +7,7 @@ Plan inicial creado en CODEX-001: no había documentos anteriores. Las fases pos
 | F01 | Base React, calidad, interfaz inicial e internacionalización | Implementada; resultados en qa/CODEX-001.md |
 | F02 | Contrato y catálogo de 500 futbolistas: 300 contemporáneos y 200 leyendas | B01 + B02 + B03 implementados (150/500); CODEX-003 sigue en curso |
 | F03 | Draft local con presupuesto y validación de once | Implementada por PLAYTEST_150 / CODEX-004A |
-| F04 | Simulación táctica y equipo CPU | Pendiente |
+| F04 | Simulación táctica y equipo CPU | Primer partido local implementado por CODEX-004B |
 | F05 | Versus online y salas entre amigos | Pendiente |
 | F06 | Resultados compartibles | Pendiente |
 
@@ -19,7 +19,9 @@ Plan inicial creado en CODEX-001: no había documentos anteriores. Las fases pos
 | EARLY_ACCESS_250 | Los 150 contemporáneos actuales más 100 leyendas | Pendiente; los 100 pueden llegar en B07 y B08 sin rellenar artificialmente B04–B06 |
 | FULL_CATALOG_500 | Diez lotes, distribución global 300/200 y auditoría final | Pendiente |
 
-La numeración, los rangos de IDs y la validación global de 500 se mantienen. PLAYTEST_150 no presenta el catálogo parcial como aprobación final. Para una futura distinción visual dentro del tier S, se proponen como íconos históricos Messi, Maradona, Pelé y dos plazas aún sin decidir; es una capa visual futura y no modifica rating, precio ni cartas en este hito.
+La numeración, los rangos de IDs y la validación global de 500 se mantienen. PLAYTEST_150 no presenta el catálogo parcial como aprobación final. La futura distinción editorial y visual S+ propone diez candidatos dentro del tier S, encabezados por Messi, Maradona y Pelé; no modifica rating, precio ni cartas.
+
+CODEX-004B completa el primer ciclo local: once confirmado, rival CPU 4-3-3 reproducible por semilla, simulación calculada antes de reproducirse y resultado final. No agrega multijugador, nuevas formaciones, jugadores ni exportación PNG.
 
 CODEX-002 completó el contrato, economía y validadores de DL-F02-DATA-001. El título histórico del tablero incluía el catálogo completo; se conserva ese ID para este contrato sin declarar creados los 100 registros.
 

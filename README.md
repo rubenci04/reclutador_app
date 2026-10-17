@@ -1,6 +1,6 @@
 # Draft Legends
 
-Videojuego web de draft de fútbol. CODEX-004A entrega **PLAYTEST_150**: un draft local jugable en 4-3-3 con presupuesto de 100M, selección desde los 150 futbolistas reales disponibles, validación de viabilidad, persistencia local e interfaz en español argentino, inglés y portugués brasileño. La simulación CPU y la conexión online siguen pendientes.
+Videojuego web de draft de fútbol. CODEX-004B entrega el primer ciclo local completo: armá un once en 4-3-3, enfrentá un rival CPU generado desde los mismos 150 futbolistas reales y reproducí una simulación deportiva de 15 segundos. La conexión online sigue pendiente.
 
 La progresión de producto es PLAYTEST_150, EARLY_ACCESS_250 y FULL_CATALOG_500; los 100 históricos del acceso temprano pueden llegar por B07 y B08 sin llenar artificialmente B04–B06. La decisión queda documentada en [ADR-0005](docs/decisions/ADR-0005.md).
 
@@ -52,6 +52,6 @@ El último comando sirve dist/ para revisar el build, normalmente en http://127.
 - src/test: preparación de pruebas DOM.
 - docs: roadmap, tablero, plan de pruebas, decisiones e informes.
 
-Zustand queda instalado para fases futuras; no se crea un store sin estado real. src/store y src/lib se incorporarán al aparecer responsabilidades concretas. Las cantidades del presupuesto se expresan en millones; el encargo no define moneda.
+Zustand persiste exclusivamente el draft. El partido se calcula en un módulo puro con semilla explícita y conserva su resultado durante la reproducción. Las cantidades del presupuesto se expresan en millones; el encargo no define moneda.
 
 Consultar [ROADMAP](docs/ROADMAP.md), [tablero](docs/TASK_BOARD.md), [pruebas](docs/TEST_PLAN.md) y [decisión de internacionalización](docs/decisions/ADR-0002.md). Resultados reales de CODEX-001 en docs/qa/CODEX-001.md.
