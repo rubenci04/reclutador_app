@@ -48,6 +48,8 @@ Implementado: nueva semilla por inicio/revancha, contexto exportable para reprod
 
 ## CODEX-005G — Estrategias futbolísticas (propuesta, pendiente)
 
+CODEX-005G-A entrega únicamente preparación visual y experiencia de subastas: canchas 4-3-3, moneda animada y diagnóstico/confirmación de acciones. La integración posterior de estrategias y enfrentamientos deberá usar roles y atributos verificados, aportar layouts de formación validados y medir sus riesgos antes de implementar bonificaciones. Las otras formaciones y el motor táctico continúan pendientes. QA de esta preparación en [CODEX-005G-A](qa/CODEX-005G-A.md), con revisión visual manual pendiente.
+
 Sin implementación ni bonificaciones asignadas. Las futuras estrategias deberán definir ventajas, riesgos y enfrentamientos tácticos mediante atributos disponibles y roles posicionales verificables, con pruebas de balance antes de alterar el simulador:
 
 | Estrategia | Ventaja propuesta | Riesgo y enfrentamiento por evaluar |

@@ -75,8 +75,7 @@ export function createRecruiterDuel(catalog: readonly Player[], seed: string, co
     const relaxation = attempt < 16 ? 1 : attempt < 32 ? .5 : 0
     const rounds = createRounds(catalog, `${seed}:attempt:${attempt}`, context, relaxation)
     if (!rounds) continue
-    const coinResult: CoinSide = createSeededRandom(`${seed}:coin`)() < .5 ? 'heads' : 'tails'
-    return { ok: true, game: { seed, ...(context ? { drawContext: structuredClone(context) } : {}), drawDiagnostics: { attempts: attempt + 1, relaxation, smallPoolPositions: POSITIONS.filter((position) => catalog.filter((player) => player.position === position).length < 2 * ({ ARQ: 2, DEF: 8, MED: 6, DEL: 6 }[position])) }, phase: 'LOBBY', rounds, roundIndex: 0, coinCall: null, coinResult, coinTossWinner: null, openingOrder: [], teams: { recruiter_one: emptyTeam(), recruiter_two: emptyTeam() }, activeParticipant: null, currentBid: null, passedParticipants: [], lastAward: null, record: [], matchResult: null } }
+    return { ok: true, game: { seed, ...(context ? { drawContext: structuredClone(context) } : {}), drawDiagnostics: { attempts: attempt + 1, relaxation, smallPoolPositions: POSITIONS.filter((position) => catalog.filter((player) => player.position === position).length < 2 * ({ ARQ: 2, DEF: 8, MED: 6, DEL: 6 }[position])) }, phase: 'LOBBY', rounds, roundIndex: 0, coinCall: null, coinResult: null, coinTossWinner: null, openingOrder: [], teams: { recruiter_one: emptyTeam(), recruiter_two: emptyTeam() }, activeParticipant: null, currentBid: null, passedParticipants: [], lastAward: null, record: [], matchResult: null } }
   }
   return { ok: false, error: 'auction_pool_unavailable' }
 }
@@ -86,12 +85,14 @@ export const openingPriority = (game: RecruiterDuelGame) => game.openingOrder[ga
 const transition = (game: RecruiterDuelGame, patch: Partial<RecruiterDuelGame>): AuctionTransition => ({ ok: true, game: { ...game, ...patch } })
 
 export function startCoinToss(game: RecruiterDuelGame, calledSide: CoinSide): AuctionTransition {
-  return game.phase === 'LOBBY' ? transition(game, { phase: 'COIN_TOSS', coinCall: calledSide }) : { ok: false, error: 'invalid_transition' }
+  if (game.phase !== 'LOBBY') return { ok: false, error: 'invalid_transition' }
+  const coinResult: CoinSide = createSeededRandom(`${game.seed}:coin`)() < .5 ? 'heads' : 'tails'
+  return transition(game, { phase: 'COIN_TOSS', coinCall: calledSide, coinResult })
 }
 
-/** Coin result is stored during creation; this transition only reveals it after the chosen side. */
+/** The decision was stored when confirming the side; animation never recalculates it. */
 export function revealCoinToss(game: RecruiterDuelGame): AuctionTransition {
-  if (game.phase !== 'COIN_TOSS' || !game.coinCall) return { ok: false, error: 'invalid_transition' }
+  if (game.phase !== 'COIN_TOSS' || !game.coinCall || !game.coinResult) return { ok: false, error: 'invalid_transition' }
   const winner: RecruiterId = game.coinCall === game.coinResult ? FIRST : SECOND
   const openingOrder = game.rounds.map((_, index) => index % 2 === 0 ? winner : opponent(winner))
   return transition(game, { phase: 'REVEAL_PLAYER', coinTossWinner: winner, openingOrder, record: [...game.record, { type: 'coin_toss', calledSide: game.coinCall, result: game.coinResult, winner }] })
@@ -131,6 +132,39 @@ export function maximumSafeBid(game: RecruiterDuelGame, participant: RecruiterId
     else high = middle - 1
   }
   return low
+}
+
+export type AuctionBlockCode = 'NOT_YOUR_TURN' | 'POSITION_FULL' | 'INSUFFICIENT_BUDGET' | 'FUTURE_BUDGET_RESERVED' | 'CPU_THINKING' | 'ACTION_PENDING' | 'INVALID_OFFER'
+/** One source for UI diagnostics, using exactly the award feasibility predicate. */
+export function auctionAvailability(game: RecruiterDuelGame, participant: RecruiterId, catalogInput: readonly Player[], offer?: number, cpuThinking = false) {
+  const catalog = playerMap(catalogInput)
+  const candidate = catalog.get(currentRound(game)?.playerId)
+  const minimum = game.currentBid ? game.currentBid.amount + 1 : candidate?.price ?? 0
+  const maximum = maximumSafeBid(game, participant, catalogInput)
+  let pending: AuctionBlockCode | null = null
+  if (game.phase !== 'BIDDING' || !candidate) pending = 'ACTION_PENDING'
+  else if (cpuThinking) pending = 'CPU_THINKING'
+  else if (game.activeParticipant !== participant) pending = 'NOT_YOUR_TURN'
+  const amount = offer ?? minimum
+  const reason: AuctionBlockCode | null = pending
+    ?? (candidate && !teamHasSpace(game.teams[participant], candidate.position) ? 'POSITION_FULL' : null)
+    ?? (minimum > DRAFT_BUDGET_MILLIONS - game.teams[participant].spent ? 'INSUFFICIENT_BUDGET' : null)
+    ?? (maximum < minimum ? 'FUTURE_BUDGET_RESERVED' : null)
+    ?? (!Number.isInteger(amount) || amount < minimum ? 'INVALID_OFFER' : null)
+    ?? (amount > DRAFT_BUDGET_MILLIONS - game.teams[participant].spent ? 'INSUFFICIENT_BUDGET' : null)
+    ?? (amount > maximum ? 'FUTURE_BUDGET_RESERVED' : null)
+  let fallback: RoundAward | null = null
+  const priority = openingPriority(game)
+  if (candidate && priority && !game.currentBid && game.phase === 'BIDDING') {
+    const priorityViable = canAward(game, priority, candidate.price, catalog)
+    const otherViable = canAward(game, opponent(priority), candidate.price, catalog)
+    if (priorityViable || otherViable) fallback = { winner: priorityViable ? priority : opponent(priority), playerId: candidate.id, price: candidate.price, reason: priorityViable && otherViable ? 'double_pass_priority' : 'forced_viability' }
+  }
+  const passAward: RoundAward | null = game.currentBid
+    ? { winner: game.currentBid.participant, playerId: candidate?.id ?? '', price: game.currentBid.amount, reason: 'voluntary_bid' }
+    : game.passedParticipants.length ? fallback : null
+  const assignmentCode = passAward && passAward.reason !== 'voluntary_bid' ? 'MANDATORY_ASSIGNMENT' as const : null
+  return { minimum, maximum, bid: { enabled: reason === null, reason }, pass: { enabled: pending === null, reason: pending }, fallback, passAward, assignmentCode }
 }
 
 export function placeBid(game: RecruiterDuelGame, participant: RecruiterId, amount: number, catalogInput: readonly Player[]): AuctionTransition {

@@ -44,7 +44,7 @@ export interface RecruiterDuelGame {
   readonly rounds: readonly AuctionRound[]
   readonly roundIndex: number
   readonly coinCall: CoinSide | null
-  readonly coinResult: CoinSide
+  readonly coinResult: CoinSide | null
   readonly coinTossWinner: RecruiterId | null
   readonly openingOrder: readonly RecruiterId[]
   readonly teams: Readonly<Record<RecruiterId, RecruiterTeam>>

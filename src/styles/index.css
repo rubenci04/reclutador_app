@@ -60,3 +60,33 @@
   .team-progress > button { width: 100%; }
   .team-slots li { grid-template-columns: minmax(4rem, .7fr) minmax(0, 1.4fr) auto; }
 }
+
+/* CODEX-005G-A: original shirts, neutral positional layout and seeded coin. */
+.team-progress article[hidden] { display: none; }
+.team-pitch { position: relative; min-height: 490px; border: 1px solid #b2cf9b; border-radius: 10px; margin-top: 1rem; background: repeating-linear-gradient(0deg,#255332 0 12.5%,#21482c 12.5% 25%); isolation: isolate; }
+.pitch-markings { position: absolute; inset: 12px; border: 1px solid #d7eacb80; pointer-events: none; }
+.pitch-markings i { position: absolute; border: 1px solid #d7eacb80; left: 50%; transform: translateX(-50%); }
+.pitch-markings i:nth-child(1) { top: 50%; width: 100%; height: 0; }
+.pitch-markings i:nth-child(2) { top: 42%; width: 27%; height: 16%; border-radius: 50%; }
+.pitch-markings i:nth-child(3) { bottom: 0; height: 18%; width: 55%; }
+.pitch-place { position: absolute; transform: translate(-50%,-50%); width: 23%; min-width: 44px; }
+.pitch-shirt { width: 100%; min-height: 82px; display: flex; align-items: center; flex-direction: column; gap: 2px; border: 0; border-radius: 5px; color: #fff; background: #122a20ed; font-size: 11px; cursor: pointer; padding: 4px 2px; }
+.pitch-shirt svg { width: 34px; height: 30px; fill: #d5fb76; stroke: #11251b; stroke-width: 2; }
+.pitch-shirt .shirt-stripe { fill: #315843; stroke: none; }
+.pitch-shirt.vacant { color: #e6f0e7; background: #152b20c9; border: 1px dashed #c3d7c4; cursor: default; }
+.pitch-shirt.vacant svg { fill: #56705e; stroke: #e6f0e7; }
+.pitch-short-name { max-width: 100%; font-weight: 750; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pitch-player-dialog { width: min(620px,calc(100vw - 24px)); max-height: calc(100dvh - 32px); overflow: auto; border: 1px solid #9cb484; border-radius: 12px; padding: 18px; background: #18271c; color: #eff2e9; margin: auto; }
+.pitch-player-dialog::backdrop { background: #081009dc; }
+.pitch-player-dialog .single-player-card { flex-wrap: wrap; }
+.pitch-team-switch { display: flex; flex-wrap: wrap; gap: .5rem; }
+.pitch-team-switch button[aria-pressed=true] { border-color: #d5fb76; background: #34512f; }
+.assignment-notice { border-left: 3px solid #d5fb76; padding: .8rem; background: #253725; color: #f0f6e7; }
+.football-coin { width: 120px; margin: 1rem auto; text-align: center; font-weight: 750; color: #f4d68b; }
+.football-coin svg { width: 100px; height: 100px; fill: #e6bc5d; stroke: #795118; stroke-width: 3; filter: drop-shadow(0 7px 5px #0006); }
+.football-coin svg path { fill: #4c3a20; }
+.football-coin .coin-rim, .football-coin .coin-detail { fill: none; stroke: #795118; }
+.football-coin.tossing svg { animation: football-toss 850ms ease-in-out both; }
+@keyframes football-toss { 0% { transform: translateY(0) rotateY(0); } 45% { transform: translateY(-45px) rotateY(540deg); } 100% { transform: translateY(0) rotateY(1080deg); } }
+@media(max-width:640px) { .team-pitch { min-height: 470px; } .pitch-shirt { font-size: 10px; } }
+@media(prefers-reduced-motion:reduce) { .football-coin.tossing svg { animation: none; } }

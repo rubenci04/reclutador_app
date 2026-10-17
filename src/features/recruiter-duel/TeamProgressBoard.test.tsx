@@ -21,7 +21,7 @@ describe('live authoritative team progress', () => {
     const element = (current: RecruiterDuelGame) => <I18nextProvider i18n={i18n}><TeamProgressBoard game={current} catalog={DRAFT_CATALOG} names={names} /></I18nextProvider>
     const view = render(element(game))
     expect(screen.getAllByText('0/11')).toHaveLength(2)
-    for (const name of ['A', 'B']) expect(within(screen.getByRole('article', { name })).getAllByRole('listitem')).toHaveLength(15)
+    for (const name of ['A', 'B']) expect(within(screen.getByRole('article', { name })).getAllByRole('listitem')).toHaveLength(4)
     const candidate = DRAFT_CATALOG.find((player) => player.id === game.rounds[0].playerId)!
     const participant = game.activeParticipant!
     const maximum = maximumSafeBid(game, participant, DRAFT_CATALOG)
@@ -30,7 +30,7 @@ describe('live authoritative team progress', () => {
     game = get(passAuction(game, game.activeParticipant!, DRAFT_CATALOG))
     view.rerender(element(game))
     const team = within(screen.getByRole('article', { name: names[participant] }))
-    expect(team.getByText(candidate.name)).toBeInTheDocument()
+    expect(team.getByRole('button', { name: new RegExp(candidate.name) })).toBeInTheDocument()
     expect(team.getByText(i18n.t('teamProgress.paid', { amount: candidate.price + 1 }))).toBeInTheDocument()
     expect(team.getByText(i18n.t('duel.balance', { amount: 99 - candidate.price }))).toBeInTheDocument()
     expect(team.getByText('1/11')).toBeInTheDocument()
@@ -48,7 +48,7 @@ describe('live authoritative team progress', () => {
     for (const participant of RECRUITERS) {
       const panel = within(screen.getByRole('article', { name: names[participant] }))
       expect(panel.getByText(i18n.t('duel.balance', { amount: 100 - game.teams[participant].spent }))).toBeInTheDocument()
-      for (const id of Object.values(game.teams[participant].lineup)) expect(panel.getByText(DRAFT_CATALOG.find((player) => player.id === id)!.name)).toBeInTheDocument()
+      for (const id of Object.values(game.teams[participant].lineup)) expect(panel.getByRole('button', { name: new RegExp(DRAFT_CATALOG.find((player) => player.id === id)!.name) })).toBeInTheDocument()
     }
   })
   it('collapses on mobile, exposes accessible controls and responds to viewport changes', async () => {
@@ -63,6 +63,11 @@ describe('live authoritative team progress', () => {
     fireEvent.click(toggle)
     expect(toggle).toHaveAttribute('aria-expanded', 'true')
     expect(screen.getByRole('article', { name: 'A' })).toBeVisible()
+    expect(screen.queryByRole('article', { name: 'B' })).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'B' }))
+    expect(screen.getByRole('button', { name: 'B' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('article', { name: 'B' })).toBeVisible()
+    expect(screen.queryByRole('article', { name: 'A' })).not.toBeInTheDocument()
     fireEvent.click(toggle)
     matches = false
     act(() => notify())

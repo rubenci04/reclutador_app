@@ -35,8 +35,9 @@ describe('single-player recruiter auctions', () => {
     expect(first.rounds.filter((round) => round.position === 'DEL')).toHaveLength(6)
   })
   it('persists the called coin side and stored result, then alternates priority', () => {
-    const game = gameFor('coin'); const result = game.coinResult
-    const revealed = get(revealCoinToss(get(startCoinToss(game, 'tails'))))
+    const game = gameFor('coin'); expect(game.coinResult).toBeNull()
+    const tossed = get(startCoinToss(game, 'tails')); const result = tossed.coinResult
+    const revealed = get(revealCoinToss(tossed))
     expect(revealed.coinResult).toBe(result); expect(revealed.coinCall).toBe('tails')
     expect(revealed.record).toContainEqual(expect.objectContaining({ type: 'coin_toss', calledSide: 'tails', result }))
     for (let index = 1; index < revealed.openingOrder.length; index++) expect(revealed.openingOrder[index]).not.toBe(revealed.openingOrder[index - 1])
