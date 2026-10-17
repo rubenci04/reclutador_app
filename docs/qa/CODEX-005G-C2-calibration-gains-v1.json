@@ -1,0 +1,1003 @@
+{
+  "rulesVersion": "local-match-v2",
+  "tacticsVersion": "tactics-v1",
+  "gains": {
+    "control": {
+      "midfield": 9,
+      "attackCost": 2.5
+    },
+    "wide": {
+      "attack": 9,
+      "midfieldCost": 2.5,
+      "defenseCost": 1.6
+    },
+    "counter": {
+      "attack": 10,
+      "midfieldCost": 3.2,
+      "defense": 2.4
+    },
+    "press": {
+      "midfield": 8,
+      "attack": 3.2,
+      "defenseCost": 5.6,
+      "fade": 0.5
+    },
+    "low": {
+      "defense": 9,
+      "attackCost": 4,
+      "midfieldCost": 2.4
+    }
+  },
+  "options": {
+    "equivalentTeams": 3,
+    "seedsPerEquivalentCell": 500,
+    "seedsPerStrengthCell": 1000,
+    "poolSize": 40
+  },
+  "equivalent": {
+    "teamSeeds": [
+      "c2-equivalent-team-0",
+      "c2-equivalent-team-1",
+      "c2-equivalent-team-2"
+    ],
+    "matrix": {
+      "NEUTRAL": {
+        "NEUTRAL": {
+          "wins": 410,
+          "draws": 715,
+          "losses": 375,
+          "goalsFor": 659,
+          "goalsAgainst": 608,
+          "matches": 1500
+        },
+        "MIDFIELD_CONTROL": {
+          "wins": 412,
+          "draws": 736,
+          "losses": 352,
+          "goalsFor": 649,
+          "goalsAgainst": 569,
+          "matches": 1500
+        },
+        "WIDE_PLAY": {
+          "wins": 416,
+          "draws": 686,
+          "losses": 398,
+          "goalsFor": 687,
+          "goalsAgainst": 665,
+          "matches": 1500
+        },
+        "COUNTER_ATTACK": {
+          "wins": 392,
+          "draws": 720,
+          "losses": 388,
+          "goalsFor": 635,
+          "goalsAgainst": 625,
+          "matches": 1500
+        },
+        "HIGH_PRESS": {
+          "wins": 425,
+          "draws": 685,
+          "losses": 390,
+          "goalsFor": 702,
+          "goalsAgainst": 652,
+          "matches": 1500
+        },
+        "LOW_BLOCK": {
+          "wins": 350,
+          "draws": 803,
+          "losses": 347,
+          "goalsFor": 546,
+          "goalsAgainst": 535,
+          "matches": 1500
+        }
+      },
+      "MIDFIELD_CONTROL": {
+        "NEUTRAL": {
+          "wins": 400,
+          "draws": 727,
+          "losses": 373,
+          "goalsFor": 640,
+          "goalsAgainst": 597,
+          "matches": 1500
+        },
+        "MIDFIELD_CONTROL": {
+          "wins": 406,
+          "draws": 745,
+          "losses": 349,
+          "goalsFor": 637,
+          "goalsAgainst": 559,
+          "matches": 1500
+        },
+        "WIDE_PLAY": {
+          "wins": 402,
+          "draws": 707,
+          "losses": 391,
+          "goalsFor": 662,
+          "goalsAgainst": 647,
+          "matches": 1500
+        },
+        "COUNTER_ATTACK": {
+          "wins": 359,
+          "draws": 731,
+          "losses": 410,
+          "goalsFor": 596,
+          "goalsAgainst": 664,
+          "matches": 1500
+        },
+        "HIGH_PRESS": {
+          "wins": 403,
+          "draws": 707,
+          "losses": 390,
+          "goalsFor": 668,
+          "goalsAgainst": 650,
+          "matches": 1500
+        },
+        "LOW_BLOCK": {
+          "wins": 327,
+          "draws": 817,
+          "losses": 356,
+          "goalsFor": 508,
+          "goalsAgainst": 536,
+          "matches": 1500
+        }
+      },
+      "WIDE_PLAY": {
+        "NEUTRAL": {
+          "wins": 424,
+          "draws": 690,
+          "losses": 386,
+          "goalsFor": 705,
+          "goalsAgainst": 646,
+          "matches": 1500
+        },
+        "MIDFIELD_CONTROL": {
+          "wins": 419,
+          "draws": 705,
+          "losses": 376,
+          "goalsFor": 690,
+          "goalsAgainst": 620,
+          "matches": 1500
+        },
+        "WIDE_PLAY": {
+          "wins": 432,
+          "draws": 662,
+          "losses": 406,
+          "goalsFor": 738,
+          "goalsAgainst": 705,
+          "matches": 1500
+        },
+        "COUNTER_ATTACK": {
+          "wins": 382,
+          "draws": 682,
+          "losses": 436,
+          "goalsFor": 653,
+          "goalsAgainst": 732,
+          "matches": 1500
+        },
+        "HIGH_PRESS": {
+          "wins": 447,
+          "draws": 655,
+          "losses": 398,
+          "goalsFor": 757,
+          "goalsAgainst": 700,
+          "matches": 1500
+        },
+        "LOW_BLOCK": {
+          "wins": 410,
+          "draws": 745,
+          "losses": 345,
+          "goalsFor": 652,
+          "goalsAgainst": 557,
+          "matches": 1500
+        }
+      },
+      "COUNTER_ATTACK": {
+        "NEUTRAL": {
+          "wins": 431,
+          "draws": 725,
+          "losses": 344,
+          "goalsFor": 690,
+          "goalsAgainst": 566,
+          "matches": 1500
+        },
+        "MIDFIELD_CONTROL": {
+          "wins": 442,
+          "draws": 732,
+          "losses": 326,
+          "goalsFor": 706,
+          "goalsAgainst": 539,
+          "matches": 1500
+        },
+        "WIDE_PLAY": {
+          "wins": 458,
+          "draws": 690,
+          "losses": 352,
+          "goalsFor": 769,
+          "goalsAgainst": 616,
+          "matches": 1500
+        },
+        "COUNTER_ATTACK": {
+          "wins": 409,
+          "draws": 734,
+          "losses": 357,
+          "goalsFor": 654,
+          "goalsAgainst": 582,
+          "matches": 1500
+        },
+        "HIGH_PRESS": {
+          "wins": 487,
+          "draws": 682,
+          "losses": 331,
+          "goalsFor": 829,
+          "goalsAgainst": 589,
+          "matches": 1500
+        },
+        "LOW_BLOCK": {
+          "wins": 346,
+          "draws": 809,
+          "losses": 345,
+          "goalsFor": 533,
+          "goalsAgainst": 518,
+          "matches": 1500
+        }
+      },
+      "HIGH_PRESS": {
+        "NEUTRAL": {
+          "wins": 415,
+          "draws": 688,
+          "losses": 397,
+          "goalsFor": 694,
+          "goalsAgainst": 670,
+          "matches": 1500
+        },
+        "MIDFIELD_CONTROL": {
+          "wins": 419,
+          "draws": 704,
+          "losses": 377,
+          "goalsFor": 689,
+          "goalsAgainst": 624,
+          "matches": 1500
+        },
+        "WIDE_PLAY": {
+          "wins": 423,
+          "draws": 667,
+          "losses": 410,
+          "goalsFor": 731,
+          "goalsAgainst": 714,
+          "matches": 1500
+        },
+        "COUNTER_ATTACK": {
+          "wins": 353,
+          "draws": 681,
+          "losses": 466,
+          "goalsFor": 629,
+          "goalsAgainst": 806,
+          "matches": 1500
+        },
+        "HIGH_PRESS": {
+          "wins": 437,
+          "draws": 649,
+          "losses": 414,
+          "goalsFor": 751,
+          "goalsAgainst": 722,
+          "matches": 1500
+        },
+        "LOW_BLOCK": {
+          "wins": 370,
+          "draws": 763,
+          "losses": 367,
+          "goalsFor": 592,
+          "goalsAgainst": 578,
+          "matches": 1500
+        }
+      },
+      "LOW_BLOCK": {
+        "NEUTRAL": {
+          "wins": 398,
+          "draws": 792,
+          "losses": 310,
+          "goalsFor": 598,
+          "goalsAgainst": 481,
+          "matches": 1500
+        },
+        "MIDFIELD_CONTROL": {
+          "wins": 407,
+          "draws": 808,
+          "losses": 285,
+          "goalsFor": 600,
+          "goalsAgainst": 439,
+          "matches": 1500
+        },
+        "WIDE_PLAY": {
+          "wins": 391,
+          "draws": 761,
+          "losses": 348,
+          "goalsFor": 628,
+          "goalsAgainst": 563,
+          "matches": 1500
+        },
+        "COUNTER_ATTACK": {
+          "wins": 378,
+          "draws": 807,
+          "losses": 315,
+          "goalsFor": 566,
+          "goalsAgainst": 481,
+          "matches": 1500
+        },
+        "HIGH_PRESS": {
+          "wins": 413,
+          "draws": 763,
+          "losses": 324,
+          "goalsFor": 633,
+          "goalsAgainst": 515,
+          "matches": 1500
+        },
+        "LOW_BLOCK": {
+          "wins": 331,
+          "draws": 860,
+          "losses": 309,
+          "goalsFor": 470,
+          "goalsAgainst": 434,
+          "matches": 1500
+        }
+      }
+    },
+    "scores": {
+      "NEUTRAL": 0.5086111111111111,
+      "MIDFIELD_CONTROL": 0.5015555555555555,
+      "WIDE_PLAY": 0.5092777777777778,
+      "COUNTER_ATTACK": 0.5287777777777778,
+      "HIGH_PRESS": 0.49922222222222223,
+      "LOW_BLOCK": 0.5237222222222222
+    },
+    "minShare": 0.4623333333333333,
+    "maxShare": 0.552,
+    "maxSymmetryGap": 0.038000000000000034,
+    "neutralMirror": {
+      "wins": 410,
+      "draws": 715,
+      "losses": 375,
+      "goalsFor": 659,
+      "goalsAgainst": 608,
+      "matches": 1500
+    }
+  },
+  "strength": {
+    "strong": {
+      "averageRating": 86,
+      "spent": 95
+    },
+    "weak": {
+      "averageRating": 84,
+      "spent": 100
+    },
+    "strongLocal": {
+      "matrix": {
+        "NEUTRAL": {
+          "NEUTRAL": {
+            "wins": 328,
+            "draws": 446,
+            "losses": 226,
+            "goalsFor": 555,
+            "goalsAgainst": 413,
+            "matches": 1000
+          },
+          "MIDFIELD_CONTROL": {
+            "wins": 333,
+            "draws": 453,
+            "losses": 214,
+            "goalsFor": 551,
+            "goalsAgainst": 392,
+            "matches": 1000
+          },
+          "WIDE_PLAY": {
+            "wins": 329,
+            "draws": 422,
+            "losses": 249,
+            "goalsFor": 594,
+            "goalsAgainst": 468,
+            "matches": 1000
+          },
+          "COUNTER_ATTACK": {
+            "wins": 315,
+            "draws": 437,
+            "losses": 248,
+            "goalsFor": 549,
+            "goalsAgainst": 451,
+            "matches": 1000
+          },
+          "HIGH_PRESS": {
+            "wins": 346,
+            "draws": 418,
+            "losses": 236,
+            "goalsFor": 603,
+            "goalsAgainst": 445,
+            "matches": 1000
+          },
+          "LOW_BLOCK": {
+            "wins": 327,
+            "draws": 477,
+            "losses": 196,
+            "goalsFor": 522,
+            "goalsAgainst": 350,
+            "matches": 1000
+          }
+        },
+        "MIDFIELD_CONTROL": {
+          "NEUTRAL": {
+            "wins": 313,
+            "draws": 459,
+            "losses": 228,
+            "goalsFor": 523,
+            "goalsAgainst": 408,
+            "matches": 1000
+          },
+          "MIDFIELD_CONTROL": {
+            "wins": 318,
+            "draws": 467,
+            "losses": 215,
+            "goalsFor": 520,
+            "goalsAgainst": 385,
+            "matches": 1000
+          },
+          "WIDE_PLAY": {
+            "wins": 307,
+            "draws": 437,
+            "losses": 256,
+            "goalsFor": 554,
+            "goalsAgainst": 470,
+            "matches": 1000
+          },
+          "COUNTER_ATTACK": {
+            "wins": 286,
+            "draws": 448,
+            "losses": 266,
+            "goalsFor": 515,
+            "goalsAgainst": 479,
+            "matches": 1000
+          },
+          "HIGH_PRESS": {
+            "wins": 329,
+            "draws": 431,
+            "losses": 240,
+            "goalsFor": 570,
+            "goalsAgainst": 442,
+            "matches": 1000
+          },
+          "LOW_BLOCK": {
+            "wins": 304,
+            "draws": 491,
+            "losses": 205,
+            "goalsFor": 482,
+            "goalsAgainst": 351,
+            "matches": 1000
+          }
+        },
+        "WIDE_PLAY": {
+          "NEUTRAL": {
+            "wins": 336,
+            "draws": 424,
+            "losses": 240,
+            "goalsFor": 584,
+            "goalsAgainst": 445,
+            "matches": 1000
+          },
+          "MIDFIELD_CONTROL": {
+            "wins": 345,
+            "draws": 435,
+            "losses": 220,
+            "goalsFor": 587,
+            "goalsAgainst": 413,
+            "matches": 1000
+          },
+          "WIDE_PLAY": {
+            "wins": 335,
+            "draws": 411,
+            "losses": 254,
+            "goalsFor": 621,
+            "goalsAgainst": 493,
+            "matches": 1000
+          },
+          "COUNTER_ATTACK": {
+            "wins": 310,
+            "draws": 419,
+            "losses": 271,
+            "goalsFor": 578,
+            "goalsAgainst": 508,
+            "matches": 1000
+          },
+          "HIGH_PRESS": {
+            "wins": 340,
+            "draws": 420,
+            "losses": 240,
+            "goalsFor": 633,
+            "goalsAgainst": 474,
+            "matches": 1000
+          },
+          "LOW_BLOCK": {
+            "wins": 345,
+            "draws": 447,
+            "losses": 208,
+            "goalsFor": 568,
+            "goalsAgainst": 384,
+            "matches": 1000
+          }
+        },
+        "COUNTER_ATTACK": {
+          "NEUTRAL": {
+            "wins": 338,
+            "draws": 445,
+            "losses": 217,
+            "goalsFor": 559,
+            "goalsAgainst": 396,
+            "matches": 1000
+          },
+          "MIDFIELD_CONTROL": {
+            "wins": 347,
+            "draws": 452,
+            "losses": 201,
+            "goalsFor": 566,
+            "goalsAgainst": 367,
+            "matches": 1000
+          },
+          "WIDE_PLAY": {
+            "wins": 346,
+            "draws": 417,
+            "losses": 237,
+            "goalsFor": 608,
+            "goalsAgainst": 448,
+            "matches": 1000
+          },
+          "COUNTER_ATTACK": {
+            "wins": 326,
+            "draws": 452,
+            "losses": 222,
+            "goalsFor": 552,
+            "goalsAgainst": 409,
+            "matches": 1000
+          },
+          "HIGH_PRESS": {
+            "wins": 372,
+            "draws": 422,
+            "losses": 206,
+            "goalsFor": 646,
+            "goalsAgainst": 415,
+            "matches": 1000
+          },
+          "LOW_BLOCK": {
+            "wins": 325,
+            "draws": 491,
+            "losses": 184,
+            "goalsFor": 513,
+            "goalsAgainst": 326,
+            "matches": 1000
+          }
+        },
+        "HIGH_PRESS": {
+          "NEUTRAL": {
+            "wins": 331,
+            "draws": 426,
+            "losses": 243,
+            "goalsFor": 586,
+            "goalsAgainst": 457,
+            "matches": 1000
+          },
+          "MIDFIELD_CONTROL": {
+            "wins": 335,
+            "draws": 435,
+            "losses": 230,
+            "goalsFor": 575,
+            "goalsAgainst": 427,
+            "matches": 1000
+          },
+          "WIDE_PLAY": {
+            "wins": 331,
+            "draws": 415,
+            "losses": 254,
+            "goalsFor": 614,
+            "goalsAgainst": 493,
+            "matches": 1000
+          },
+          "COUNTER_ATTACK": {
+            "wins": 281,
+            "draws": 396,
+            "losses": 323,
+            "goalsFor": 564,
+            "goalsAgainst": 608,
+            "matches": 1000
+          },
+          "HIGH_PRESS": {
+            "wins": 337,
+            "draws": 415,
+            "losses": 248,
+            "goalsFor": 628,
+            "goalsAgainst": 486,
+            "matches": 1000
+          },
+          "LOW_BLOCK": {
+            "wins": 329,
+            "draws": 458,
+            "losses": 213,
+            "goalsFor": 549,
+            "goalsAgainst": 396,
+            "matches": 1000
+          }
+        },
+        "LOW_BLOCK": {
+          "NEUTRAL": {
+            "wins": 321,
+            "draws": 492,
+            "losses": 187,
+            "goalsFor": 491,
+            "goalsAgainst": 316,
+            "matches": 1000
+          },
+          "MIDFIELD_CONTROL": {
+            "wins": 330,
+            "draws": 501,
+            "losses": 169,
+            "goalsFor": 498,
+            "goalsAgainst": 288,
+            "matches": 1000
+          },
+          "WIDE_PLAY": {
+            "wins": 307,
+            "draws": 467,
+            "losses": 226,
+            "goalsFor": 513,
+            "goalsAgainst": 405,
+            "matches": 1000
+          },
+          "COUNTER_ATTACK": {
+            "wins": 322,
+            "draws": 495,
+            "losses": 183,
+            "goalsFor": 491,
+            "goalsAgainst": 308,
+            "matches": 1000
+          },
+          "HIGH_PRESS": {
+            "wins": 335,
+            "draws": 474,
+            "losses": 191,
+            "goalsFor": 538,
+            "goalsAgainst": 343,
+            "matches": 1000
+          },
+          "LOW_BLOCK": {
+            "wins": 330,
+            "draws": 503,
+            "losses": 167,
+            "goalsFor": 479,
+            "goalsAgainst": 274,
+            "matches": 1000
+          }
+        }
+      },
+      "scores": {
+        "NEUTRAL": 0.55075,
+        "MIDFIELD_CONTROL": 0.53725,
+        "WIDE_PLAY": 0.5481666666666667,
+        "COUNTER_ATTACK": 0.5655833333333333,
+        "HIGH_PRESS": 0.5360833333333334,
+        "LOW_BLOCK": 0.5685
+      },
+      "minShare": 0.479,
+      "maxShare": 0.583
+    },
+    "weakLocal": {
+      "matrix": {
+        "NEUTRAL": {
+          "NEUTRAL": {
+            "wins": 232,
+            "draws": 457,
+            "losses": 311,
+            "goalsFor": 436,
+            "goalsAgainst": 539,
+            "matches": 1000
+          },
+          "MIDFIELD_CONTROL": {
+            "wins": 239,
+            "draws": 462,
+            "losses": 299,
+            "goalsFor": 430,
+            "goalsAgainst": 506,
+            "matches": 1000
+          },
+          "WIDE_PLAY": {
+            "wins": 241,
+            "draws": 447,
+            "losses": 312,
+            "goalsFor": 461,
+            "goalsAgainst": 560,
+            "matches": 1000
+          },
+          "COUNTER_ATTACK": {
+            "wins": 221,
+            "draws": 463,
+            "losses": 316,
+            "goalsFor": 410,
+            "goalsAgainst": 539,
+            "matches": 1000
+          },
+          "HIGH_PRESS": {
+            "wins": 251,
+            "draws": 442,
+            "losses": 307,
+            "goalsFor": 472,
+            "goalsAgainst": 552,
+            "matches": 1000
+          },
+          "LOW_BLOCK": {
+            "wins": 208,
+            "draws": 493,
+            "losses": 299,
+            "goalsFor": 347,
+            "goalsAgainst": 475,
+            "matches": 1000
+          }
+        },
+        "MIDFIELD_CONTROL": {
+          "NEUTRAL": {
+            "wins": 222,
+            "draws": 470,
+            "losses": 308,
+            "goalsFor": 410,
+            "goalsAgainst": 526,
+            "matches": 1000
+          },
+          "MIDFIELD_CONTROL": {
+            "wins": 232,
+            "draws": 468,
+            "losses": 300,
+            "goalsFor": 409,
+            "goalsAgainst": 499,
+            "matches": 1000
+          },
+          "WIDE_PLAY": {
+            "wins": 229,
+            "draws": 449,
+            "losses": 322,
+            "goalsFor": 436,
+            "goalsAgainst": 564,
+            "matches": 1000
+          },
+          "COUNTER_ATTACK": {
+            "wins": 208,
+            "draws": 470,
+            "losses": 322,
+            "goalsFor": 385,
+            "goalsAgainst": 544,
+            "matches": 1000
+          },
+          "HIGH_PRESS": {
+            "wins": 229,
+            "draws": 454,
+            "losses": 317,
+            "goalsFor": 440,
+            "goalsAgainst": 559,
+            "matches": 1000
+          },
+          "LOW_BLOCK": {
+            "wins": 190,
+            "draws": 505,
+            "losses": 305,
+            "goalsFor": 313,
+            "goalsAgainst": 476,
+            "matches": 1000
+          }
+        },
+        "WIDE_PLAY": {
+          "NEUTRAL": {
+            "wins": 257,
+            "draws": 445,
+            "losses": 298,
+            "goalsFor": 488,
+            "goalsAgainst": 543,
+            "matches": 1000
+          },
+          "MIDFIELD_CONTROL": {
+            "wins": 261,
+            "draws": 452,
+            "losses": 287,
+            "goalsFor": 485,
+            "goalsAgainst": 519,
+            "matches": 1000
+          },
+          "WIDE_PLAY": {
+            "wins": 265,
+            "draws": 435,
+            "losses": 300,
+            "goalsFor": 515,
+            "goalsAgainst": 575,
+            "matches": 1000
+          },
+          "COUNTER_ATTACK": {
+            "wins": 236,
+            "draws": 436,
+            "losses": 328,
+            "goalsFor": 454,
+            "goalsAgainst": 591,
+            "matches": 1000
+          },
+          "HIGH_PRESS": {
+            "wins": 274,
+            "draws": 429,
+            "losses": 297,
+            "goalsFor": 529,
+            "goalsAgainst": 566,
+            "matches": 1000
+          },
+          "LOW_BLOCK": {
+            "wins": 238,
+            "draws": 465,
+            "losses": 297,
+            "goalsFor": 421,
+            "goalsAgainst": 498,
+            "matches": 1000
+          }
+        },
+        "COUNTER_ATTACK": {
+          "NEUTRAL": {
+            "wins": 254,
+            "draws": 451,
+            "losses": 295,
+            "goalsFor": 466,
+            "goalsAgainst": 525,
+            "matches": 1000
+          },
+          "MIDFIELD_CONTROL": {
+            "wins": 280,
+            "draws": 457,
+            "losses": 263,
+            "goalsFor": 501,
+            "goalsAgainst": 474,
+            "matches": 1000
+          },
+          "WIDE_PLAY": {
+            "wins": 297,
+            "draws": 432,
+            "losses": 271,
+            "goalsFor": 558,
+            "goalsAgainst": 524,
+            "matches": 1000
+          },
+          "COUNTER_ATTACK": {
+            "wins": 231,
+            "draws": 459,
+            "losses": 310,
+            "goalsFor": 429,
+            "goalsAgainst": 535,
+            "matches": 1000
+          },
+          "HIGH_PRESS": {
+            "wins": 349,
+            "draws": 402,
+            "losses": 249,
+            "goalsFor": 652,
+            "goalsAgainst": 496,
+            "matches": 1000
+          },
+          "LOW_BLOCK": {
+            "wins": 203,
+            "draws": 492,
+            "losses": 305,
+            "goalsFor": 336,
+            "goalsAgainst": 480,
+            "matches": 1000
+          }
+        },
+        "HIGH_PRESS": {
+          "NEUTRAL": {
+            "wins": 231,
+            "draws": 442,
+            "losses": 327,
+            "goalsFor": 451,
+            "goalsAgainst": 589,
+            "matches": 1000
+          },
+          "MIDFIELD_CONTROL": {
+            "wins": 241,
+            "draws": 453,
+            "losses": 306,
+            "goalsFor": 458,
+            "goalsAgainst": 547,
+            "matches": 1000
+          },
+          "WIDE_PLAY": {
+            "wins": 247,
+            "draws": 430,
+            "losses": 323,
+            "goalsFor": 486,
+            "goalsAgainst": 597,
+            "matches": 1000
+          },
+          "COUNTER_ATTACK": {
+            "wins": 214,
+            "draws": 426,
+            "losses": 360,
+            "goalsFor": 430,
+            "goalsAgainst": 635,
+            "matches": 1000
+          },
+          "HIGH_PRESS": {
+            "wins": 256,
+            "draws": 426,
+            "losses": 318,
+            "goalsFor": 500,
+            "goalsAgainst": 589,
+            "matches": 1000
+          },
+          "LOW_BLOCK": {
+            "wins": 205,
+            "draws": 474,
+            "losses": 321,
+            "goalsFor": 363,
+            "goalsAgainst": 522,
+            "matches": 1000
+          }
+        },
+        "LOW_BLOCK": {
+          "NEUTRAL": {
+            "wins": 217,
+            "draws": 477,
+            "losses": 306,
+            "goalsFor": 379,
+            "goalsAgainst": 501,
+            "matches": 1000
+          },
+          "MIDFIELD_CONTROL": {
+            "wins": 231,
+            "draws": 479,
+            "losses": 290,
+            "goalsFor": 385,
+            "goalsAgainst": 469,
+            "matches": 1000
+          },
+          "WIDE_PLAY": {
+            "wins": 218,
+            "draws": 463,
+            "losses": 319,
+            "goalsFor": 408,
+            "goalsAgainst": 549,
+            "matches": 1000
+          },
+          "COUNTER_ATTACK": {
+            "wins": 206,
+            "draws": 485,
+            "losses": 309,
+            "goalsFor": 353,
+            "goalsAgainst": 497,
+            "matches": 1000
+          },
+          "HIGH_PRESS": {
+            "wins": 229,
+            "draws": 453,
+            "losses": 318,
+            "goalsFor": 413,
+            "goalsAgainst": 530,
+            "matches": 1000
+          },
+          "LOW_BLOCK": {
+            "wins": 182,
+            "draws": 524,
+            "losses": 294,
+            "goalsFor": 287,
+            "goalsAgainst": 442,
+            "matches": 1000
+          }
+        }
+      },
+      "scores": {
+        "NEUTRAL": 0.4623333333333333,
+        "MIDFIELD_CONTROL": 0.453,
+        "WIDE_PLAY": 0.477,
+        "COUNTER_ATTACK": 0.49341666666666667,
+        "HIGH_PRESS": 0.45325,
+        "LOW_BLOCK": 0.4539166666666667
+      },
+      "minShare": 0.427,
+      "maxShare": 0.55
+    }
+  }
+}

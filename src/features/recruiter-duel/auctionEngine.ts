@@ -4,9 +4,10 @@ import { createEmptyLineup, summarizeDraft } from '../draft/draftModel'
 import { DRAFT_SLOTS, type DraftSlotId } from '../draft/draftTypes'
 import { MATCH_RULES_VERSION } from '../local-match/matchTypes'
 import { createSeededRandom, shuffleSeeded } from '../local-match/seededRandom'
-import { simulateMatch } from '../local-match/simulator'
+import { isValidOrganizedLineup, simulateMatch } from '../local-match/simulator'
 import { swapWithinLine, type LineupSwapError } from '../tactics/lineupOrdering'
 import type { FormationRole } from '../tactics/roles'
+import { TACTICS_VERSION, isStrategyId, type StrategyId } from '../tactics/strategies'
 import { validContext, type DrawContext } from './drawHistory'
 import type { AuctionCreation, AuctionRound, AuctionTransition, AwardReason, CoinSide, RecruiterDuelGame, RecruiterId, RecruiterTeam, RoundAward } from './auctionTypes'
 
@@ -249,10 +250,18 @@ export function nextAuctionRound(game: RecruiterDuelGame, catalog: readonly Play
 
 export const revealNextAuctionRound = (game: RecruiterDuelGame): AuctionTransition => game.phase === 'NEXT_ROUND' ? transition(game, { phase: 'REVEAL_PLAYER' }) : { ok: false, error: 'invalid_transition' }
 
-export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player[]): AuctionTransition {
+/**
+ * Starts the match from the organised elevens. `strategies` are optional (NEUTRAL when omitted) and are validated here,
+ * together with both lineups, instead of letting the simulator throw. Secret simultaneous choice belongs to C3.
+ */
+export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player[], strategies?: Readonly<Record<RecruiterId, unknown>>): AuctionTransition {
   if (game.phase !== 'TEAMS_COMPLETED') return { ok: false, error: 'invalid_transition' }
-  const matchResult = simulateMatch({ localLineup: game.teams[FIRST].lineup, cpuLineup: game.teams[SECOND].lineup, catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match` })
-  return transition(game, { phase: 'SIMULATING', matchResult })
+  if (![FIRST, SECOND].every((participant) => isValidOrganizedLineup(game.teams[participant].lineup, catalog))) return { ok: false, error: 'teams_invalid' }
+  const chosen = strategies ?? { recruiter_one: 'NEUTRAL', recruiter_two: 'NEUTRAL' }
+  if (!isStrategyId(chosen.recruiter_one) || !isStrategyId(chosen.recruiter_two)) return { ok: false, error: 'invalid_strategy' }
+  const stored: Record<RecruiterId, StrategyId> = { recruiter_one: chosen.recruiter_one, recruiter_two: chosen.recruiter_two }
+  const matchResult = simulateMatch({ localLineup: game.teams[FIRST].lineup, cpuLineup: game.teams[SECOND].lineup, catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match`, tactics: { version: TACTICS_VERSION, local: stored.recruiter_one, cpu: stored.recruiter_two } })
+  return transition(game, { phase: 'SIMULATING', matchResult, strategies: stored })
 }
 
 export const completeDuelMatch = (game: RecruiterDuelGame): AuctionTransition => game.phase === 'SIMULATING' ? transition(game, { phase: 'MATCH_RESULT' }) : { ok: false, error: 'invalid_transition' }

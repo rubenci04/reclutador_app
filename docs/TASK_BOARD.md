@@ -46,6 +46,7 @@ Nomenclatura: DL-FXX-CAT-NNN; FXX indica fase y CAT responsabilidad. No existía
 | DL-F04-BAL-002 | Auditar semillas, simetría y poder global (CODEX-005G-B) | Completa: semilla fresca también en Draft Libre; iniciativa simétrica v2, poder sectorial y calibración 6.000 partidos antes + 6.000 después; 498 pruebas aprobadas, tres baterías ajenas omitidas |
 | DL-F04-UI-008 | Animaciones de revelación, descarte, oferta, fichaje y gol (CODEX-005G-B) | Completa técnicamente en tres idiomas y con movimiento reducido; QA visual NO EJECUTADA por navegador deshabilitado |
 | DL-F04-TACTICS-002 | Roles futbolísticos y organización del once (CODEX-005G-C1) | Completa técnicamente: once roles (CM→CDM con migración), intercambio dentro de la línea, fase de confirmación en tres idiomas; 512 pruebas aprobadas; QA visual manual pendiente |
+| DL-F04-TACTICS-003 | Motor táctico: seis estrategias, ajustes por bloque y CPU (CODEX-005G-C2) | Completa técnicamente: tactics-v1, NEUTRAL idéntico a v2 (300 resultados grabados), validación en el límite del motor, calibración de 126.000 partidos; 524 pruebas aprobadas; efecto táctico pequeño (1–4 pp) a evaluar en playtest; interfaz secreta pendiente en C3 |
 | DL-F03-I18N-001 | Traducir draft, presupuesto y confirmaciones | Completa en CODEX-004A |
 | DL-F04-I18N-001 | Traducir simulación y resultados | Completa en CODEX-004B |
 | DL-F05-I18N-001 | Traducir salas, espera y errores online | Pendiente |

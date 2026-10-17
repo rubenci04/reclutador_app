@@ -1,6 +1,7 @@
 import type { Player } from '../../types/player'
 import type { DraftLineup } from '../draft/draftTypes'
 import type { MatchResult } from '../local-match/matchTypes'
+import type { StrategyId } from '../tactics/strategies'
 import type { DrawContext } from './drawHistory'
 
 export const RECRUITERS = ['recruiter_one', 'recruiter_two'] as const
@@ -58,6 +59,8 @@ export interface RecruiterDuelGame {
   readonly lastAward: RoundAward | null
   readonly record: readonly AuctionRecord[]
   readonly matchResult: MatchResult | null
+  /** Strategies used for the match, stored with the game. Absent in games created before tactics (NEUTRAL). */
+  readonly strategies?: Readonly<Record<RecruiterId, StrategyId>>
 }
 
 export type AuctionCreation =
@@ -65,7 +68,7 @@ export type AuctionCreation =
   | { readonly ok: false; readonly error: 'auction_pool_unavailable' }
 
 export type AuctionActionError =
-  | 'invalid_transition' | 'not_your_turn' | 'invalid_bid' | 'unsafe_bid' | 'invalid_award' | 'teams_invalid' | 'no_legal_assignment'
+  | 'invalid_transition' | 'not_your_turn' | 'invalid_bid' | 'unsafe_bid' | 'invalid_award' | 'teams_invalid' | 'no_legal_assignment' | 'invalid_strategy'
 
 export type AuctionTransition =
   | { readonly ok: true; readonly game: RecruiterDuelGame }
