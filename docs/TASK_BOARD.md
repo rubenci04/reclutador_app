@@ -27,7 +27,8 @@ Nomenclatura: DL-FXX-CAT-NNN; FXX indica fase y CAT responsabilidad. No existía
 | DL-F02-QA-001 | Auditoría final global de 500 y viabilidad económica | Pendiente; no ejecutada sobre un catálogo completo real |
 | DL-F02-I18N-002 | Traducir categorías contemporary/legend en tres idiomas | Completa |
 | DL-F02-I18N-001 | Traducir interfaz y validaciones del catálogo | Pendiente |
-| DL-F03-I18N-001 | Traducir draft, presupuesto y confirmaciones | Pendiente |
+| DL-F04-PLAY-001 | Primer prototipo jugable PLAYTEST_150 (CODEX-004A) | Completa; draft local, catálogo real, persistencia, i18n y QA visual |
+| DL-F03-I18N-001 | Traducir draft, presupuesto y confirmaciones | Completa en CODEX-004A |
 | DL-F04-I18N-001 | Traducir simulación y resultados | Pendiente |
 | DL-F05-I18N-001 | Traducir salas, espera y errores online | Pendiente |
 | DL-F06-I18N-001 | Traducir resultados compartibles | Pendiente |

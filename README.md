@@ -1,6 +1,8 @@
 # Draft Legends
 
-Videojuego web de draft de fútbol. CODEX-001 entrega una pantalla inicial ilustrativa y arquitectura multilingüe. Jugar está deshabilitado; la selección de jugadores, simulación y conexión online siguen pendientes.
+Videojuego web de draft de fútbol. CODEX-004A entrega **PLAYTEST_150**: un draft local jugable en 4-3-3 con presupuesto de 100M, selección desde los 150 futbolistas reales disponibles, validación de viabilidad, persistencia local e interfaz en español argentino, inglés y portugués brasileño. La simulación CPU y la conexión online siguen pendientes.
+
+La progresión de producto es PLAYTEST_150, EARLY_ACCESS_250 y FULL_CATALOG_500; los 100 históricos del acceso temprano pueden llegar por B07 y B08 sin llenar artificialmente B04–B06. La decisión queda documentada en [ADR-0005](docs/decisions/ADR-0005.md).
 
 CODEX-002 agrega el contrato de futbolista y economía. CODEX-003A amplía explícitamente catalog_v1 a **500 futbolistas** (300 contemporáneos y 200 leyendas). CODEX-003C incorpora B03: **B01 + B02 + B03 suman 150 contemporáneos**, con presupuesto y fórmula intactos. B04–B10 y la aprobación global de 500 siguen pendientes. Referencias: [contrato vigente](docs/CATALOG_DATA.md), [ADR-0004](docs/decisions/ADR-0004.md), [avance](docs/CATALOG_PROGRESS.md) y [QA CODEX-003C](docs/qa/CODEX-003C.md). Las ADR e informes anteriores se conservan como antecedentes históricos.
 
@@ -39,7 +41,8 @@ El último comando sirve dist/ para revisar el build, normalmente en http://127.
 
 - src/app: arranque y proveedores.
 - src/components: interfaz compartida (selector de idioma).
-- src/features/home: pantalla inicial y cancha ilustrativa.
+- src/features/draft: estado Zustand, dominio, cancha interactiva y selector de jugadores.
+- src/features/home: punto de entrada compatible de la pantalla de juego.
 - src/features/player-catalog: funciones puras y validadores; fixtures exclusivamente sintéticos para pruebas.
 - src/data: configuración inicial y coordenadas visuales.
 - src/data/catalog_v1: manifest de diez lotes, B01/B02/B03 implementados y registro explícito de alias; carga validada y determinista.

@@ -72,3 +72,11 @@ Auditoría reproducible actual: npm run catalog:audit. Artefacto [CODEX-003C-cat
 TypeScript, ESLint, Vitest (**403 pruebas en 5 archivos: 320 anteriores y 83 nuevas**) y build aprobados. Se conservan escenarios históricos de 50 y 100 mediante manifests aislados; la carga actual prueba 150. Los validadores completos siguen exigiendo 500. Revisión visual NO EJECUTADA, sin cambios de UI ni idiomas. Detalle: [CODEX-003C.md](qa/CODEX-003C.md).
 
 Permanece pendiente la revisión editorial global de balance y alias desconocidos. Presupuesto y fórmula intactos. B04 no iniciado automáticamente.
+
+## Uso del catálogo en PLAYTEST_150
+
+CODEX-004A consume exactamente los 150 registros reales cargados por B01+B02+B03 como fuente del draft local. No crea jugadores de relleno, no corrige datos de lotes existentes y no declara completado catalog_v1: la carga sigue siendo parcial y la validación global de 500 permanece pendiente.
+
+La planificación posterior separa el producto de la secuencia editorial: **EARLY_ACCESS_250** combinará estos 150 contemporáneos con 100 leyendas que pueden incorporarse directamente en B07 y B08. B04–B06 no se rellenan para alcanzar ese hito y los IDs/rangos reservados se conservan. **FULL_CATALOG_500** mantiene como condición los diez lotes y la auditoría global vigente.
+
+La futura propuesta de íconos históricos dentro de S contempla Messi, Maradona, Pelé y dos lugares por decidir. Es una etiqueta visual posterior; los ratings, precios y distribución de tiers actuales no cambian.

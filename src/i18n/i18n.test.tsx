@@ -4,9 +4,11 @@ import userEvent from '@testing-library/user-event'
 import { I18nextProvider } from 'react-i18next'
 import { createI18n, LANGUAGE_KEY, languages, persistLanguage, readLanguage, resources } from './index'
 import { HomePage } from '../features/home/HomePage'
+import { useDraftStore } from '../features/draft/draftState'
+import { DRAFT_CATALOG } from '../features/draft/catalog'
 import { POSITIONS } from '../types/football'
 
-beforeEach(() => { localStorage.clear(); vi.restoreAllMocks() })
+beforeEach(() => { vi.restoreAllMocks(); localStorage.clear(); useDraftStore.getState().reset() })
 
 function keys(value: object, prefix = ''): string[] {
   return Object.entries(value).flatMap(([key, child]) => typeof child === 'object' ? keys(child as object, `${prefix}${key}.`) : [`${prefix}${key}`]).sort()
@@ -60,18 +62,22 @@ describe('language configuration', () => {
 describe('initial interface', () => {
   it('switches all languages immediately, persists selection and updates document language', async () => {
     const instance = await createI18n()
+    const forward = DRAFT_CATALOG.find((player) => player.position === 'DEL')!
+    useDraftStore.getState().selectPlayer('LW', forward.id)
     render(<I18nextProvider i18n={instance}><HomePage /></I18nextProvider>)
-    expect(screen.getByRole('button', { name: 'Jugar' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /Abrir catálogo/ })).toBeEnabled()
+    expect(screen.getByText(forward.name)).toBeInTheDocument()
     const selector = screen.getByRole('combobox', { name: 'Idioma' })
     await userEvent.selectOptions(selector, 'en')
-    expect(screen.getByRole('button', { name: 'Play' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /Open catalogue/ })).toBeEnabled()
+    expect(screen.getByText(forward.name)).toBeInTheDocument()
     expect(document.documentElement.lang).toBe('en')
     await userEvent.selectOptions(selector, 'pt-BR')
-    expect(screen.getByRole('button', { name: 'Jogar' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /Abrir catálogo/ })).toBeEnabled()
     expect(localStorage.getItem(LANGUAGE_KEY)).toBe('pt-BR')
     expect((await createI18n()).language).toBe('pt-BR')
     await userEvent.selectOptions(selector, 'es-AR')
-    expect(screen.getByRole('button', { name: 'Jugar' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /Abrir catálogo/ })).toBeEnabled()
   })
   it('shows translated storage failure without preventing a language change', async () => {
     const instance = await createI18n()
@@ -79,6 +85,6 @@ describe('initial interface', () => {
     vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('blocked') })
     await userEvent.selectOptions(screen.getByRole('combobox'), 'en')
     expect(screen.getByRole('alert')).toHaveTextContent(instance.t('common.storageError'))
-    expect(screen.getByRole('button', { name: 'Play' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /Open catalogue/ })).toBeEnabled()
   })
 })
