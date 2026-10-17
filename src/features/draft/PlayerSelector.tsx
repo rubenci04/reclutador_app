@@ -4,6 +4,7 @@ import { DRAFT_CATALOG } from './catalog'
 import { summarizeDraft } from './draftModel'
 import { DRAFT_SLOTS, type DraftLineup, type DraftSlot } from './draftTypes'
 import type { Position } from '../../types/football'
+import { ClubBadge } from '../../components/ClubBadge'
 
 interface PlayerSelectorProps {
   readonly slot: DraftSlot
@@ -45,7 +46,7 @@ export function PlayerSelector({ slot, lineup, onClose, onSign }: PlayerSelector
           const validPosition = player.position === slot.position
           const available = !selected && validPosition && summary.spent <= 100 && summary.canCompleteWithinBudget
           return <article className="catalog-player" key={player.id}>
-            <div className="player-card-main"><span className="rating">{player.overall_rating}</span><div><strong>{player.name}</strong><p>{t(`positions.${player.position}`)} · {player.nationality} · {player.club_tag} · {t('draft.rating')} {player.overall_rating}</p></div></div>
+            <div className="player-card-main"><span className="rating">{player.overall_rating}</span><div><strong>{player.name}</strong><p>{t(`positions.${player.position}`)} · {player.nationality} · {t('draft.rating')} {player.overall_rating}</p><ClubBadge clubId={player.club_tag} /></div></div>
             <div className="player-card-meta"><span className={`tier tier-${player.overall_rating >= 90 ? 's' : player.overall_rating >= 84 ? 'a' : 'b'}`}>{t('draft.tier')} {player.overall_rating >= 90 ? 'S' : player.overall_rating >= 84 ? 'A' : 'B'}</span><b>{player.price}M</b><button disabled={!available} onClick={() => onSign(player.id)}>{available ? t('draft.sign') : selected ? t('draft.selectedPlayer') : t('draft.unavailable')}</button></div>
           </article>
         })}

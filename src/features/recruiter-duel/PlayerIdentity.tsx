@@ -2,20 +2,19 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
 import { getPlayerTier } from '../player-catalog/getPlayerTier'
-import { approvedPhoto, CLUB_ASSETS, flagUrl, PHOTO_MANIFEST } from './visualAssets'
+import { approvedPhoto, flagUrl, PHOTO_MANIFEST } from './visualAssets'
+import { ClubBadge } from '../../components/ClubBadge'
 
 export function PlayerIdentity({ player }: { readonly player:Player }) {
   const { t } = useTranslation()
   const [failed,setFailed] = useState(false)
   const [flagFailed,setFlagFailed] = useState(false)
   const photo = approvedPhoto(player.id); const flag = flagUrl(player.nationality)
-  const club = player.club_tag.split('_').map((word) => word[0].toUpperCase()+word.slice(1)).join(' ')
-  const badge = CLUB_ASSETS[player.club_tag]
   return <div className="single-player-card"><div className="player-avatar">
     {photo && !failed ? <img src={photo.path} alt={t('cpu.photoAlt',{player:player.name})} onError={() => setFailed(true)} /> : <span className="avatar-silhouette" role="img" aria-label={t('duel.placeholderAvatar',{player:player.name})}>●<br />▰</span>}
     <b>{player.overall_rating}</b></div><article><small>{t('duel.playerDrawn')}</small><h2>{player.name}</h2>
     <p>{flag && !flagFailed ? <img className="nationality-flag" src={flag} alt={t('cpu.flagAlt',{code:player.nationality})} onError={() => setFlagFailed(true)} /> : <span aria-label={t('cpu.flagMissing')}>◇</span>} {player.nationality} · {t(`positions.${player.position}`)} · {t('duel.tier',{tier:getPlayerTier(player.overall_rating)})}</p>
-    <p>{badge?.approved ? <img className="nationality-flag" src={badge.path} alt={club} /> : <span className="club-monogram" aria-hidden="true">{club.split(' ').map((word) => word[0]).join('').slice(0,3)}</span>} {club}</p><b>{t('duel.basePrice',{amount:player.price})}</b></article></div>
+    <p><ClubBadge clubId={player.club_tag} /></p><b>{t('duel.basePrice',{amount:player.price})}</b></article></div>
 }
 
 export function VisualCredits() {
