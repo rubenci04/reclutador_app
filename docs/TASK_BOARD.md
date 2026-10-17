@@ -37,6 +37,9 @@ Nomenclatura: DL-FXX-CAT-NNN; FXX indica fase y CAT responsabilidad. No existía
 | DL-F04-CPU-002 | CPU pujadora en Duelo de Reclutadores | Completa en CODEX-005C; tres perfiles reproducibles, opción Contra CPU |
 | DL-F04-UI-005 | Identidad cromática original de clubes (CODEX-005D) | Completa; 67 paletas del catálogo, ClubBadge compartido, fallback neutral y etiquetas en tres idiomas; QA visual manual pendiente |
 | DL-F04-DATA-002 | Club actual, referencia e historial (CODEX-005E) | Estructura y primera auditoría completas: 25/150 revisados, 19 confirmados y seis pendientes; otros 125 sin revisar. Capturas fechadas, registro central e interfaz en tres idiomas; QA visual manual pendiente |
+| DL-F04-DRAW-001 | Variedad y reproducción del sorteo (CODEX-005F) | Completa: entropía por inicio, contexto transportable, historial versionado de cinco y comparación de 1.000 sorteos por política; sin cambios económicos |
+| DL-F04-UI-006 | Ambos onces en vivo y cupos posicionales (CODEX-005F) | Completa técnicamente en tres idiomas; 482 pruebas aprobadas, dos baterías masivas de partidos omitidas; QA visual manual pendiente por navegador deshabilitado |
+| DL-F04-TACTICS-001 | Estrategias futbolísticas (CODEX-005G) | Propuesta en ROADMAP: control del mediocampo, bandas, contraataque, presión alta y bloque bajo; no iniciada |
 | DL-F03-I18N-001 | Traducir draft, presupuesto y confirmaciones | Completa en CODEX-004A |
 | DL-F04-I18N-001 | Traducir simulación y resultados | Completa en CODEX-004B |
 | DL-F05-I18N-001 | Traducir salas, espera y errores online | Pendiente |

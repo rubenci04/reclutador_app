@@ -5,6 +5,7 @@ import { DRAFT_SLOTS, type DraftSlotId } from '../draft/draftTypes'
 import { MATCH_RULES_VERSION } from '../local-match/matchTypes'
 import { createSeededRandom, shuffleSeeded } from '../local-match/seededRandom'
 import { simulateMatch } from '../local-match/simulator'
+import { validContext, type DrawContext } from './drawHistory'
 import type { AuctionCreation, AuctionRound, AuctionTransition, AwardReason, CoinSide, RecruiterDuelGame, RecruiterId, RecruiterTeam, RoundAward } from './auctionTypes'
 
 const FIRST: RecruiterId = 'recruiter_one'
@@ -14,6 +15,11 @@ const opponent = (participant: RecruiterId): RecruiterId => participant === FIRS
 const emptyTeam = (): RecruiterTeam => ({ lineup: createEmptyLineup(), spent: 0 })
 const playerMap = (catalog: readonly Player[]) => new Map(catalog.map((player) => [player.id, player] as const))
 const teamCount = (team: RecruiterTeam, position: Player['position']) => DRAFT_SLOTS.filter((slot) => slot.position === position && team.lineup[slot.id]).length
+export const positionProgress = (team: RecruiterTeam, position: Player['position']) => {
+  const capacity = DRAFT_SLOTS.filter((slot) => slot.position === position).length
+  const filled = teamCount(team, position)
+  return { filled, capacity, remaining: capacity - filled }
+}
 const teamHasSpace = (team: RecruiterTeam, position: Player['position']) => teamCount(team, position) < DRAFT_SLOTS.filter((slot) => slot.position === position).length
 const firstOpenSlot = (team: RecruiterTeam, position: Player['position']) => DRAFT_SLOTS.find((slot) => slot.position === position && !team.lineup[slot.id])?.id
 
@@ -42,12 +48,19 @@ export function canFinishRounds(rounds: readonly AuctionRound[], fromIndex: numb
   return [...costs].some((cost) => total - cost <= rightBudget)
 }
 
-function createRounds(catalog: readonly Player[], seed: string): AuctionRound[] | null {
+function createRounds(catalog: readonly Player[], seed: string, context?: DrawContext, relaxation = 1): AuctionRound[] | null {
   const random = createSeededRandom(`${seed}:pool`)
   const required = { ARQ: 2, DEF: 8, MED: 6, DEL: 6 } as const
   const selected: AuctionRound[] = []
   for (const position of POSITIONS) {
-    const options = shuffleSeeded(catalog.filter((candidate) => candidate.position === position), random).slice(0, required[position])
+    const eligible = catalog.filter((candidate) => candidate.position === position)
+    const strength = relaxation * Math.min(1, Math.max(0, (eligible.length - required[position]) / required[position]))
+    const options = context ? eligible.sort((a, b) => a.id.localeCompare(b.id)).map((player) => {
+      const appearances = context.recent.filter((draw) => draw.includes(player.id)).length
+      const weight = 1 / (1 + 2 * strength * appearances)
+      return { player, key: -Math.log(Math.max(Number.MIN_VALUE, random())) / weight }
+    }).sort((a, b) => a.key - b.key || a.player.id.localeCompare(b.player.id)).slice(0, required[position]).map(({ player }) => player)
+      : shuffleSeeded(eligible, random).slice(0, required[position])
     if (options.length !== required[position]) return null
     selected.push(...options.map((candidate) => ({ position, playerId: candidate.id })))
   }
@@ -56,12 +69,14 @@ function createRounds(catalog: readonly Player[], seed: string): AuctionRound[] 
 }
 
 /** Builds exactly 22 unique players: 2 ARQ, 8 DEF, 6 MED and 6 DEL. */
-export function createRecruiterDuel(catalog: readonly Player[], seed: string): AuctionCreation {
+export function createRecruiterDuel(catalog: readonly Player[], seed: string, context?: DrawContext): AuctionCreation {
+  if (new Set(catalog.map((player) => player.id)).size !== catalog.length || (context && !validContext(context, catalog))) return { ok: false, error: 'auction_pool_unavailable' }
   for (let attempt = 0; attempt < 48; attempt++) {
-    const rounds = createRounds(catalog, `${seed}:attempt:${attempt}`)
+    const relaxation = attempt < 16 ? 1 : attempt < 32 ? .5 : 0
+    const rounds = createRounds(catalog, `${seed}:attempt:${attempt}`, context, relaxation)
     if (!rounds) continue
     const coinResult: CoinSide = createSeededRandom(`${seed}:coin`)() < .5 ? 'heads' : 'tails'
-    return { ok: true, game: { seed, phase: 'LOBBY', rounds, roundIndex: 0, coinCall: null, coinResult, coinTossWinner: null, openingOrder: [], teams: { recruiter_one: emptyTeam(), recruiter_two: emptyTeam() }, activeParticipant: null, currentBid: null, passedParticipants: [], lastAward: null, record: [], matchResult: null } }
+    return { ok: true, game: { seed, ...(context ? { drawContext: structuredClone(context) } : {}), drawDiagnostics: { attempts: attempt + 1, relaxation, smallPoolPositions: POSITIONS.filter((position) => catalog.filter((player) => player.position === position).length < 2 * ({ ARQ: 2, DEF: 8, MED: 6, DEL: 6 }[position])) }, phase: 'LOBBY', rounds, roundIndex: 0, coinCall: null, coinResult, coinTossWinner: null, openingOrder: [], teams: { recruiter_one: emptyTeam(), recruiter_two: emptyTeam() }, activeParticipant: null, currentBid: null, passedParticipants: [], lastAward: null, record: [], matchResult: null } }
   }
   return { ok: false, error: 'auction_pool_unavailable' }
 }

@@ -1,6 +1,7 @@
 import type { Player } from '../../types/player'
 import type { DraftLineup } from '../draft/draftTypes'
 import type { MatchResult } from '../local-match/matchTypes'
+import type { DrawContext } from './drawHistory'
 
 export const RECRUITERS = ['recruiter_one', 'recruiter_two'] as const
 export type RecruiterId = (typeof RECRUITERS)[number]
@@ -37,6 +38,8 @@ export interface RoundAward {
 
 export interface RecruiterDuelGame {
   readonly seed: string
+  readonly drawContext?: DrawContext
+  readonly drawDiagnostics?: { readonly attempts: number; readonly relaxation: number; readonly smallPoolPositions: readonly Player['position'][] }
   readonly phase: AuctionPhase
   readonly rounds: readonly AuctionRound[]
   readonly roundIndex: number

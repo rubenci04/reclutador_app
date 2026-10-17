@@ -41,3 +41,21 @@ CODEX-005A estableció Duelo de Reclutadores como modo local principal. CODEX-00
 ## CODEX-005C
 
 CPU estratégica local implementada como opción junto a hot-seat. Perfiles CONSERVATIVE/BALANCED/AGGRESSIVE, valoraciones privadas fijas por ronda, registro de decisiones y asignaciones obligatorias diferenciadas. Banderas locales MIT y piloto de una foto verificada con créditos. Preparación de 200 nuevas identidades argentinas: 0/200 creadas; cuatro lotes ARG-B01..04, namespace independiente. Ver [ADR-0009](decisions/ADR-0009.md), ARGENTINA_COLLECTION.md y qa/CODEX-005C.md.
+
+## CODEX-005F — Variedad y equipos en vivo
+
+Implementado: nueva semilla por inicio/revancha, contexto exportable para reproducir el sorteo, historial probabilístico de cinco partidas y TeamProgressBoard con ambos onces. Comparación de 1.000 sorteos por política en [QA](qa/CODEX-005F.md). Desde este hito, revancha y nueva partida vuelven a sortear; reproducir partido conserva el relato/resultado. Esto actualiza la descripción histórica de revancha en CODEX-005B. QA visual manual pendiente por navegador deshabilitado.
+
+## CODEX-005G — Estrategias futbolísticas (propuesta, pendiente)
+
+Sin implementación ni bonificaciones asignadas. Las futuras estrategias deberán definir ventajas, riesgos y enfrentamientos tácticos mediante atributos disponibles y roles posicionales verificables, con pruebas de balance antes de alterar el simulador:
+
+| Estrategia | Ventaja propuesta | Riesgo y enfrentamiento por evaluar |
+|---|---|---|
+| Control del mediocampo | Retención y progresión mediante mediocampistas con atributos mentales/técnicos documentados | Pérdidas ante presión alta; menor profundidad frente a bloque bajo |
+| Juego por bandas | Amplitud mediante extremos y laterales verificados, capacidad de ataque y físico | Espacios a la espalda y necesidad de cobertura; posible respuesta al bloque bajo |
+| Contraataque | Transición rápida con roles y atributos adecuados en defensa/ataque | Menos posesión y ocasiones ante bloque bajo; puede aprovechar espacios de presión alta |
+| Presión alta | Recuperaciones adelantadas con intensidad física y coordinación | Desgaste y defensa expuesta; riesgo frente a contraataques |
+| Bloque bajo | Protección del área con defensores y arquero sólidos | Cede territorio y puede sufrir amplitud; menor salida si no tiene transición |
+
+Estas relaciones son hipótesis de diseño, no reglas vigentes. No inferir velocidad, habilidad por bandas o rol de lateral únicamente del código genérico DEF/DEL: exigir metadatos verificables o limitar la estrategia a los atributos realmente disponibles. Los ratings actuales ATT/DEF/PHY/MEN no justifican inventar atributos nuevos. Propuesta pendiente de autorización; no iniciar automáticamente ni ampliar catálogo.

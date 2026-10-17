@@ -41,3 +41,22 @@
 .catalog-player .club-career-status{font-size:10px}
 .catalog-player .club-identity{margin-top:0}
 @media(max-width:500px){.club-detail-row{align-items:flex-start;flex-direction:column;gap:3px}.catalog-player{gap:9px}.catalog-player .player-card-main{align-items:flex-start;flex:1}.catalog-player .player-card-main>.rating{flex-shrink:0}.catalog-player .player-card-main>div{min-width:0}.catalog-player .player-card-meta{max-width:100px;flex-shrink:0}}
+
+/* Live auction teams stay in normal document flow, including on mobile. */
+.team-progress { margin-block: 2rem; min-width: 0; }
+.team-progress-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.team-progress-grid[hidden] { display: none; }
+.team-progress article { background: var(--surface, #12231e); color: #f5faf7; border: 1px solid #69887b; border-radius: 1rem; padding: 1rem; min-width: 0; }
+.team-slots, .team-missing { padding: 0; list-style: none; }
+.team-slots li { display: grid; grid-template-columns: minmax(5rem, .7fr) minmax(0, 1.4fr) auto; gap: .35rem; padding: .6rem 0; border-bottom: 1px solid #69887b; font-size: .85rem; }
+.team-slots strong { overflow-wrap: anywhere; }
+.team-slots li > :last-child:not(:nth-child(2)) { grid-column: 2 / -1; }
+.team-slot-position, .team-missing { color: #d5e4db; }
+.draw-replay { margin-block: 1rem; }
+.draw-replay summary { cursor: pointer; padding: .7rem 0; }
+.draw-replay textarea { display: block; width: 100%; min-height: 6rem; resize: vertical; color: #12231e; background: #fff; }
+@media (max-width: 640px) {
+  .team-progress-grid { grid-template-columns: minmax(0, 1fr); margin-top: 1rem; }
+  .team-progress > button { width: 100%; }
+  .team-slots li { grid-template-columns: minmax(4rem, .7fr) minmax(0, 1.4fr) auto; }
+}
