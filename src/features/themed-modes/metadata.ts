@@ -14,6 +14,7 @@ export interface SourceReference {
 }
 
 export interface CareerSpell {
+  readonly competitionIds?: readonly string[]
   readonly clubId: string
   readonly leagueId?: string
   readonly countryCode?: string

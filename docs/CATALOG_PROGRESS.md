@@ -80,3 +80,8 @@ CODEX-004A consume exactamente los 150 registros reales cargados por B01+B02+B03
 La planificación posterior separa el producto de la secuencia editorial: **EARLY_ACCESS_250** combinará estos 150 contemporáneos con 100 leyendas que pueden incorporarse directamente en B07 y B08. B04–B06 no se rellenan para alcanzar ese hito y los IDs/rangos reservados se conservan. **FULL_CATALOG_500** mantiene como condición los diez lotes y la auditoría global vigente.
 
 La futura propuesta de íconos históricos S+ dentro de S contempla Messi, Maradona, Pelé, Cruyff, Zidane, Cristiano Ronaldo, Ronaldo Nazário, Beckenbauer, Ronaldinho y Di Stéfano. Messi, Maradona y Pelé son las referencias centrales propuestas; el orden y los otros puestos siguen abiertos. Es una etiqueta visual posterior; los ratings, precios y distribución de tiers actuales no cambian.
+
+
+## CODEX-005C
+
+CPU estratégica local implementada como opción junto a hot-seat. Perfiles CONSERVATIVE/BALANCED/AGGRESSIVE, valoraciones privadas fijas por ronda, registro de decisiones y asignaciones obligatorias diferenciadas. Banderas locales MIT y piloto de una foto verificada con créditos. Preparación de 200 nuevas identidades argentinas: 0/200 creadas; cuatro lotes ARG-B01..04, namespace independiente. Ver [ADR-0009](decisions/ADR-0009.md), ARGENTINA_COLLECTION.md y qa/CODEX-005C.md.

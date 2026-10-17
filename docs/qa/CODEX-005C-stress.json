@@ -1,0 +1,49 @@
+{
+  "games": 3000,
+  "humanPolicies": [
+    "always_pass",
+    "base_plus_1",
+    "base_plus_4"
+  ],
+  "report": [
+    {
+      "strategy": "CONSERVATIVE",
+      "games": 1000,
+      "bids": 5648,
+      "passes": 17752,
+      "forcedAwards": 7296,
+      "priorityAwards": 3130,
+      "cpuSpent": 89576,
+      "humanSpent": 90438,
+      "wins": 296,
+      "draws": 438,
+      "losses": 266
+    },
+    {
+      "strategy": "BALANCED",
+      "games": 1000,
+      "bids": 11456,
+      "passes": 13359,
+      "forcedAwards": 4721,
+      "priorityAwards": 1312,
+      "cpuSpent": 93482,
+      "humanSpent": 93109,
+      "wins": 280,
+      "draws": 457,
+      "losses": 263
+    },
+    {
+      "strategy": "AGGRESSIVE",
+      "games": 1000,
+      "bids": 13467,
+      "passes": 11524,
+      "forcedAwards": 3863,
+      "priorityAwards": 335,
+      "cpuSpent": 97069,
+      "humanSpent": 95062,
+      "wins": 295,
+      "draws": 417,
+      "losses": 288
+    }
+  ]
+}

@@ -95,3 +95,14 @@ Las pruebas DOM usan Vitest + Testing Library + jsdom. Las verificaciones visual
 - Ejecutar diagnóstico reproducible de al menos 1.000 partidos y registrar victorias, empates, derrotas, goles y extremos como observación de balance, sin inferir justicia estadística.
 - Integración: confirmar once, iniciar CPU una vez, esperar 15 segundos, reproducir sin recalcular, pedir revancha y volver al draft. Cambiar idioma durante la reproducción y comprobar que conserva resultado/eventos.
 - QA manual: escritorio, 390 px y 360 px; revisar cancha, modal, marcador, narración, barra de progreso, resumen, teclado, movimiento reducido y ausencia de scroll horizontal. Si el navegador no accede al host local, documentar la falla de acceso y entregar la lista al usuario.
+
+
+## CODEX-005C
+
+- Ejecutar 3.000 partidas CPU con humanos simulados que pasan siempre, ofertan hasta base+1 y hasta base+4; guardar ofertas, pases, gastos, adjudicaciones y resultados por perfil.
+- Comprobar valoración independiente de oferta, reproducción por semilla, cupo completo, máximo técnico, 22 IDs exclusivos y dos onces con gasto hasta 100M.
+- UI: pausa CPU, controles humanos después de su acción, etiqueta separada de doble pase, fallback de fotografía fallida y regresión hot-seat/Draft Libre.
+- Recursos: mapeo FIFA de banderas, campos de procedencia de fotografía y contratos argentinos vacíos sin duplicados de identidad.
+- Intentar escritorio, 390 y 360 px; si el navegador está deshabilitado, registrar NO EJECUTADA.
+
+CPU estratégica local implementada como opción junto a hot-seat. Perfiles CONSERVATIVE/BALANCED/AGGRESSIVE, valoraciones privadas fijas por ronda, registro de decisiones y asignaciones obligatorias diferenciadas. Banderas locales MIT y piloto de una foto verificada con créditos. Preparación de 200 nuevas identidades argentinas: 0/200 creadas; cuatro lotes ARG-B01..04, namespace independiente. Ver [ADR-0009](decisions/ADR-0009.md), ARGENTINA_COLLECTION.md y qa/CODEX-005C.md.

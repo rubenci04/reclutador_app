@@ -1,6 +1,6 @@
 # Estrategia de miniaturas de jugadores
 
-Las tarjetas actuales no descargan imágenes ni contienen miniaturas: usan una presentación CSS local. El contrato `PlayerCardVisual.thumbnail` admite una URL solo cuando se conserve su procedencia verificable: URL fuente, licencia y atribución.
+CODEX-005C incorpora un piloto de una miniatura local verificada de Messi. `PHOTO_MANIFEST` sustituye el contrato vacío anterior y registra ID, ruta, fuente, autor, licencia y enlace, atribución, fecha, aprobación y observaciones. Las tarjetas sólo muestran archivos aprobados y usan silueta ante ausencia o error. No hay descargas durante la partida.
 
 Para una futura carga editorial, Wikimedia Commons es la primera opción por sus fichas de archivo y licencias explícitas. Wikidata puede servir para localizar el ítem y las referencias de una imagen, pero no autoriza por sí solo el uso de un archivo: se debe comprobar la licencia concreta en Commons, conservar la atribución indicada y revisar que represente la versión editorial correcta del futbolista.
 

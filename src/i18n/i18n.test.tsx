@@ -79,7 +79,7 @@ describe('initial interface', () => {
     const instance = await createI18n()
     render(<I18nextProvider i18n={instance}><HomePage /></I18nextProvider>)
     vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('blocked') })
-    await userEvent.selectOptions(screen.getByRole('combobox'), 'en')
+    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Idioma' }), 'en')
     expect(screen.getByRole('alert')).toHaveTextContent(instance.t('common.storageError'))
     expect(screen.getByRole('button', { name: /Start duel/ })).toBeEnabled()
   })

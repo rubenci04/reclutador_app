@@ -1,10 +1,10 @@
 # Reclutador
 
-Videojuego web de draft de fútbol. El modo principal es **Duelo de Reclutadores**: dos personas comparten una computadora, sortean 22 futbolistas reales de a uno, compiten por cada subasta y luego enfrentan sus equipos con el simulador existente. Draft Libre conserva la construcción individual y Contra CPU podrá reutilizar las reglas de oferta en una entrega futura.
+Videojuego web de draft de fútbol. El modo principal es **Duelo de Reclutadores**: dos personas comparten una computadora, sortean 22 futbolistas reales de a uno, compiten por cada subasta y luego enfrentan sus equipos con el simulador existente. Draft Libre conserva la construcción individual y Contra CPU incorpora tres perfiles de puja estratégica reproducible.
 
 El nombre comercial pasó de Draft Legends a **Reclutador** en CODEX-005B. La clave persistida `draft-legends.draft-v1`, la versión `catalog_v1`, los IDs `plr_*`, rutas y carpetas históricas se mantienen deliberadamente: los borradores locales compatibles no requieren migración y continúan restaurándose con el mismo esquema.
 
-La progresión de producto es PLAYTEST_150, EARLY_ACCESS_250 y FULL_CATALOG_500; los 100 históricos del acceso temprano pueden llegar por B07 y B08 sin llenar artificialmente B04–B06. La decisión queda documentada en [ADR-0005](docs/decisions/ADR-0005.md).
+La progresión de producto es PLAYTEST_150, EARLY_ACCESS_250 y FULL_CATALOG_500; CODEX-005C prioriza comercialmente los primeros 100 de una futura colección argentina independiente para EARLY_ACCESS_250. La decisión vigente queda documentada en [ADR-0009](docs/decisions/ADR-0009.md); ADR-0005 se conserva como antecedente.
 
 CODEX-002 agrega el contrato de futbolista y economía. CODEX-003A amplía explícitamente catalog_v1 a **500 futbolistas** (300 contemporáneos y 200 leyendas). CODEX-003C incorpora B03: **B01 + B02 + B03 suman 150 contemporáneos**, con presupuesto y fórmula intactos. B04–B10 y la aprobación global de 500 siguen pendientes. Referencias: [contrato vigente](docs/CATALOG_DATA.md), [ADR-0004](docs/decisions/ADR-0004.md), [avance](docs/CATALOG_PROGRESS.md) y [QA CODEX-003C](docs/qa/CODEX-003C.md). Las ADR e informes anteriores se conservan como antecedentes históricos.
 
@@ -60,3 +60,8 @@ El último comando sirve dist/ para revisar el build, normalmente en http://127.
 Zustand persiste exclusivamente el draft. El partido se calcula en un módulo puro con semilla explícita y conserva su resultado durante la reproducción. Las cantidades del presupuesto se expresan en millones; el encargo no define moneda.
 
 Consultar [ROADMAP](docs/ROADMAP.md), [tablero](docs/TASK_BOARD.md), [pruebas](docs/TEST_PLAN.md), las [reglas de subasta](docs/decisions/ADR-0008.md), la [política de modalidades y fuentes](docs/decisions/ADR-0006.md), la [estrategia de miniaturas](docs/research/PLAYER_THUMBNAIL_SOURCES.md) y la [evaluación de fuentes](docs/research/FOOTBALL_DATA_SOURCES.md). Resultados reales de CODEX-001 en docs/qa/CODEX-001.md.
+
+
+## CODEX-005C
+
+CPU estratégica local implementada como opción junto a hot-seat. Perfiles CONSERVATIVE/BALANCED/AGGRESSIVE, valoraciones privadas fijas por ronda, registro de decisiones y asignaciones obligatorias diferenciadas. Banderas locales MIT y piloto de una foto verificada con créditos. Preparación de 200 nuevas identidades argentinas: 0/200 creadas; cuatro lotes ARG-B01..04, namespace independiente. Ver [ADR-0009](docs/decisions/ADR-0009.md), docs/ARGENTINA_COLLECTION.md y docs/qa/CODEX-005C.md.

@@ -9,7 +9,7 @@ Plan inicial creado en CODEX-001: no había documentos anteriores. Las fases pos
 | F03 | Draft local con presupuesto y validación de once | Implementada por PLAYTEST_150 / CODEX-004A |
 | F04 | Simulación táctica y equipo CPU | Primer partido local implementado por CODEX-004B |
 | F04.1 | Identidad El Reclutador, diagnóstico de balance y base de modalidades | Implementada como fundación técnica por CODEX-004C; no incorpora datos históricos ni torneos |
-| F04.2 | Duelo de Reclutadores local: subastas hot-seat y partido entre dos equipos | Implementada por CODEX-005B: carta individual, cara o cruz interactivo y partido compartido; online y CPU pujador pendientes |
+| F04.2 | Duelo de Reclutadores local: subastas hot-seat y partido entre dos equipos | Implementada por CODEX-005B: carta individual, cara o cruz interactivo y partido compartido; CPU estratégica incorporada en CODEX-005C; online pendiente |
 | F05 | Versus online y salas entre amigos | Pendiente |
 | F06 | Resultados compartibles | Pendiente |
 
@@ -18,7 +18,7 @@ Plan inicial creado en CODEX-001: no había documentos anteriores. Las fases pos
 | Hito | Alcance | Estado |
 |---|---|---|
 | PLAYTEST_150 | Draft local jugable con los 150 contemporáneos reales existentes, 4-3-3, presupuesto, persistencia e idiomas | Implementado en CODEX-004A |
-| EARLY_ACCESS_250 | Los 150 contemporáneos actuales más 100 leyendas | Pendiente; los 100 pueden llegar en B07 y B08 sin rellenar artificialmente B04–B06 |
+| EARLY_ACCESS_250 | Los 150 actuales más los primeros 100 nuevos de la colección argentina | Pendiente; prioridad comercial ARG-B01 y ARG-B02, ver ADR-0009 |
 | FULL_CATALOG_500 | Diez lotes, distribución global 300/200 y auditoría final | Pendiente |
 
 La numeración, los rangos de IDs y la validación global de 500 se mantienen. PLAYTEST_150 no presenta el catálogo parcial como aprobación final. La futura distinción editorial y visual S+ propone diez candidatos dentro del tier S, encabezados por Messi, Maradona y Pelé; no modifica rating, precio ni cartas.
@@ -36,3 +36,8 @@ CODEX-003C completa B03 y audita 150 contemporáneos, preservando B01/B02. Tres 
 CODEX-004C presenta comercialmente el producto como **El Reclutador** sin alterar claves de persistencia, IDs de catálogo ni rutas históricas. Entrega el motor puro de modalidades, contratos de procedencia verificable y un selector cuyo único modo ejecutable es Global. Las modalidades futuras quedan pendientes hasta incorporar datos revisados y una integración de partida explícita. El simulador conserva sus probabilidades; el diagnóstico de 2.400 encuentros queda registrado en qa/CODEX-004C.md antes de cualquier decisión subjetiva de balance.
 
 CODEX-005A estableció Duelo de Reclutadores como modo local principal. CODEX-005B lo refina como Reclutador: 22 rondas de un único futbolista (2 ARQ, 8 DEF, 6 MED y 6 DEL), 100M por persona, reserva de viabilidad y cara o cruz persistente. Los dos onces resultantes se entregan al simulador existente sin recalcular una revancha. Draft Libre queda como alternativa. La autoridad de las reglas vive en un motor puro preparado para servidor, pero no se incluye red, autenticación, salas ni CPU pujador.
+
+
+## CODEX-005C
+
+CPU estratégica local implementada como opción junto a hot-seat. Perfiles CONSERVATIVE/BALANCED/AGGRESSIVE, valoraciones privadas fijas por ronda, registro de decisiones y asignaciones obligatorias diferenciadas. Banderas locales MIT y piloto de una foto verificada con créditos. Preparación de 200 nuevas identidades argentinas: 0/200 creadas; cuatro lotes ARG-B01..04, namespace independiente. Ver [ADR-0009](decisions/ADR-0009.md), ARGENTINA_COLLECTION.md y qa/CODEX-005C.md.

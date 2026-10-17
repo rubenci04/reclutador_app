@@ -5,6 +5,7 @@ import type { MatchResult } from '../local-match/matchTypes'
 export const RECRUITERS = ['recruiter_one', 'recruiter_two'] as const
 export type RecruiterId = (typeof RECRUITERS)[number]
 export type CoinSide = 'heads' | 'tails'
+export type AwardReason = 'voluntary_bid' | 'double_pass_priority' | 'forced_viability'
 export type AuctionPhase = 'LOBBY' | 'COIN_TOSS' | 'REVEAL_PLAYER' | 'BIDDING' | 'ROUND_RESULT' | 'NEXT_ROUND' | 'TEAMS_COMPLETED' | 'SIMULATING' | 'MATCH_RESULT'
 
 /** A single card offered during one auction round. */
@@ -24,9 +25,11 @@ export type AuctionRecord =
   | { readonly type: 'coin_toss'; readonly calledSide: CoinSide; readonly result: CoinSide; readonly winner: RecruiterId }
   | { readonly type: 'bid'; readonly round: number; readonly participant: RecruiterId; readonly amount: number }
   | { readonly type: 'pass'; readonly round: number; readonly participant: RecruiterId }
-  | { readonly type: 'award'; readonly round: number; readonly winner: RecruiterId; readonly playerId: string; readonly price: number }
+  | { readonly type: 'award'; readonly round: number; readonly winner: RecruiterId; readonly playerId: string; readonly price: number; readonly reason: AwardReason }
+  | { readonly type: 'cpu_decision'; readonly round: number; readonly action: 'bid' | 'pass'; readonly amount?: number; readonly reason: string; readonly strategy: 'CONSERVATIVE' | 'BALANCED' | 'AGGRESSIVE'; readonly privateMaximum: number }
 
 export interface RoundAward {
+  readonly reason: AwardReason
   readonly winner: RecruiterId
   readonly playerId: string
   readonly price: number

@@ -5,7 +5,7 @@ import { DRAFT_SLOTS, type DraftSlotId } from '../draft/draftTypes'
 import { MATCH_RULES_VERSION } from '../local-match/matchTypes'
 import { createSeededRandom, shuffleSeeded } from '../local-match/seededRandom'
 import { simulateMatch } from '../local-match/simulator'
-import type { AuctionCreation, AuctionRound, AuctionTransition, CoinSide, RecruiterDuelGame, RecruiterId, RecruiterTeam, RoundAward } from './auctionTypes'
+import type { AuctionCreation, AuctionRound, AuctionTransition, AwardReason, CoinSide, RecruiterDuelGame, RecruiterId, RecruiterTeam, RoundAward } from './auctionTypes'
 
 const FIRST: RecruiterId = 'recruiter_one'
 const SECOND: RecruiterId = 'recruiter_two'
@@ -17,39 +17,29 @@ const teamCount = (team: RecruiterTeam, position: Player['position']) => DRAFT_S
 const teamHasSpace = (team: RecruiterTeam, position: Player['position']) => teamCount(team, position) < DRAFT_SLOTS.filter((slot) => slot.position === position).length
 const firstOpenSlot = (team: RecruiterTeam, position: Player['position']) => DRAFT_SLOTS.find((slot) => slot.position === position && !team.lineup[slot.id])?.id
 
-interface FinishState { readonly oneSpent: number; readonly twoSpent: number; readonly oneCounts: readonly number[]; readonly twoCounts: readonly number[] }
-const stateKey = (state: FinishState) => `${state.oneSpent}:${state.twoSpent}:${state.oneCounts.join(',')}:${state.twoCounts.join(',')}`
-const posIndex = (position: Player['position']) => POSITIONS.indexOf(position)
-
 /** Pure feasibility search: every remaining individual card must still fit a legal 4-3-3 and budget. */
 export function canFinishRounds(rounds: readonly AuctionRound[], fromIndex: number, teams: Readonly<Record<RecruiterId, RecruiterTeam>>, catalog: Map<string, Player>) {
-  const initial: FinishState = {
-    oneSpent: teams[FIRST].spent, twoSpent: teams[SECOND].spent,
-    oneCounts: POSITIONS.map((position) => teamCount(teams[FIRST], position)),
-    twoCounts: POSITIONS.map((position) => teamCount(teams[SECOND], position)),
-  }
-  let states = new Map([[stateKey(initial), initial]])
-  for (let index = fromIndex; index < rounds.length; index++) {
-    const round = rounds[index]; const candidate = catalog.get(round.playerId)
-    if (!candidate) return false
-    const positionIndex = posIndex(round.position); const capacity = DRAFT_SLOTS.filter((slot) => slot.position === round.position).length
-    const next = new Map<string, FinishState>()
-    for (const state of states.values()) {
-      if (state.oneCounts[positionIndex] < capacity && state.oneSpent + candidate.price <= DRAFT_BUDGET_MILLIONS) {
-        const oneCounts = [...state.oneCounts]; oneCounts[positionIndex]++
-        const value = { ...state, oneSpent: state.oneSpent + candidate.price, oneCounts }
-        next.set(stateKey(value), value)
-      }
-      if (state.twoCounts[positionIndex] < capacity && state.twoSpent + candidate.price <= DRAFT_BUDGET_MILLIONS) {
-        const twoCounts = [...state.twoCounts]; twoCounts[positionIndex]++
-        const value = { ...state, twoSpent: state.twoSpent + candidate.price, twoCounts }
-        next.set(stateKey(value), value)
-      }
+  const leftBudget = DRAFT_BUDGET_MILLIONS - teams[FIRST].spent
+  const rightBudget = DRAFT_BUDGET_MILLIONS - teams[SECOND].spent
+  if (leftBudget < 0 || rightBudget < 0) return false
+  let costs = new Set([0]); let total = 0
+  for (const position of POSITIONS) {
+    const capacity = DRAFT_SLOTS.filter((slot) => slot.position === position).length
+    const needed = capacity - teamCount(teams[FIRST], position)
+    const otherNeeded = capacity - teamCount(teams[SECOND], position)
+    const candidates = rounds.slice(fromIndex).filter((round) => round.position === position).map((round) => catalog.get(round.playerId))
+    if (needed < 0 || otherNeeded < 0 || candidates.length !== needed + otherNeeded || candidates.some((candidate) => !candidate || candidate.position !== position)) return false
+    const sums = Array.from({ length: needed + 1 }, () => new Set<number>())
+    sums[0].add(0)
+    for (const candidate of candidates) {
+      total += candidate!.price
+      for (let count = needed; count > 0; count--) for (const sum of sums[count - 1]) sums[count].add(sum + candidate!.price)
     }
-    states = next
-    if (!states.size) return false
+    const combined = new Set<number>()
+    for (const cost of costs) for (const sum of sums[needed]) if (cost + sum <= leftBudget) combined.add(cost + sum)
+    costs = combined
   }
-  return states.size > 0
+  return [...costs].some((cost) => total - cost <= rightBudget)
 }
 
 function createRounds(catalog: readonly Player[], seed: string): AuctionRound[] | null {
@@ -117,9 +107,15 @@ export function maximumSafeBid(game: RecruiterDuelGame, participant: RecruiterId
   const catalog = playerMap(catalogInput); const round = currentRound(game); const candidate = round && catalog.get(round.playerId)
   if (!candidate) return 0
   const minimum = game.currentBid ? game.currentBid.amount + 1 : candidate.price
-  let maximum = 0
-  for (let amount = minimum; amount <= DRAFT_BUDGET_MILLIONS; amount++) if (canAward(game, participant, amount, catalog)) maximum = amount
-  return maximum
+  // Feasibility is monotone in the winning price; binary search avoids repeated full scans.
+  if (!canAward(game, participant, minimum, catalog)) return 0
+  let low = minimum; let high = DRAFT_BUDGET_MILLIONS - game.teams[participant].spent
+  while (low < high) {
+    const middle = Math.ceil((low + high) / 2)
+    if (canAward(game, participant, middle, catalog)) low = middle
+    else high = middle - 1
+  }
+  return low
 }
 
 export function placeBid(game: RecruiterDuelGame, participant: RecruiterId, amount: number, catalogInput: readonly Player[]): AuctionTransition {
@@ -134,13 +130,13 @@ export function placeBid(game: RecruiterDuelGame, participant: RecruiterId, amou
   return game.passedParticipants.includes(opponent(participant)) ? award(bidGame, participant, amount, catalog) : transition(bidGame, { activeParticipant: opponent(participant) })
 }
 
-function award(game: RecruiterDuelGame, winner: RecruiterId, price: number, catalog: Map<string, Player>): AuctionTransition {
+function award(game: RecruiterDuelGame, winner: RecruiterId, price: number, catalog: Map<string, Player>, reason: AwardReason = 'voluntary_bid'): AuctionTransition {
   if (!canAward(game, winner, price, catalog)) return { ok: false, error: 'invalid_award' }
   const round = currentRound(game)!; const team = game.teams[winner]; const slotId = firstOpenSlot(team, round.position)
   if (!slotId) return { ok: false, error: 'invalid_award' }
   const teams = { ...game.teams, [winner]: teamWithAward(team, slotId, round.playerId, price) }
-  const lastAward: RoundAward = { winner, playerId: round.playerId, price }
-  return transition(game, { phase: 'ROUND_RESULT', teams, activeParticipant: null, currentBid: null, passedParticipants: [], lastAward, record: [...game.record, { type: 'award', round: game.roundIndex, winner, playerId: round.playerId, price }] })
+  const lastAward: RoundAward = { winner, playerId: round.playerId, price, reason }
+  return transition(game, { phase: 'ROUND_RESULT', teams, activeParticipant: null, currentBid: null, passedParticipants: [], lastAward, record: [...game.record, { type: 'award', round: game.roundIndex, winner, playerId: round.playerId, price, reason }] })
 }
 
 export function passAuction(game: RecruiterDuelGame, participant: RecruiterId, catalogInput: readonly Player[]): AuctionTransition {
@@ -152,8 +148,9 @@ export function passAuction(game: RecruiterDuelGame, participant: RecruiterId, c
   if (game.passedParticipants.length === 0) return transition(passed, { activeParticipant: opponent(participant) })
   const round = currentRound(game); const candidate = round && catalog.get(round.playerId); const priority = openingPriority(game)
   if (!candidate || !priority) return { ok: false, error: 'invalid_award' }
-  const direct = award(passed, priority, candidate.price, catalog)
-  return direct.ok ? direct : award(passed, opponent(priority), candidate.price, catalog)
+  const otherViable = canAward(passed, opponent(priority), candidate.price, catalog)
+  const direct = award(passed, priority, candidate.price, catalog, otherViable ? 'double_pass_priority' : 'forced_viability')
+  return direct.ok ? direct : award(passed, opponent(priority), candidate.price, catalog, 'forced_viability')
 }
 
 export function nextAuctionRound(game: RecruiterDuelGame, catalog: readonly Player[]): AuctionTransition {
@@ -161,7 +158,10 @@ export function nextAuctionRound(game: RecruiterDuelGame, catalog: readonly Play
   if (game.roundIndex < game.rounds.length - 1) return transition(game, { phase: 'NEXT_ROUND', roundIndex: game.roundIndex + 1, lastAward: null })
   const valid = [FIRST, SECOND].every((participant) => {
     const summary = summarizeDraft(game.teams[participant].lineup, catalog)
-    return summary.canConfirm && summary.spent === game.teams[participant].spent
+    const team = game.teams[participant]
+    return summary.canConfirm && summary.spent <= team.spent && team.spent <= DRAFT_BUDGET_MILLIONS
+      && new Set(Object.values(team.lineup)).size === 11
+      && DRAFT_SLOTS.every((slot) => catalog.find((player) => player.id === team.lineup[slot.id])?.position === slot.position)
   })
   return valid ? transition(game, { phase: 'TEAMS_COMPLETED', lastAward: null }) : { ok: false, error: 'teams_invalid' }
 }
