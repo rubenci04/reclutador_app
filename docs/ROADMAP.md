@@ -9,7 +9,7 @@ Plan inicial creado en CODEX-001: no había documentos anteriores. Las fases pos
 | F03 | Draft local con presupuesto y validación de once | Implementada por PLAYTEST_150 / CODEX-004A |
 | F04 | Simulación táctica y equipo CPU | Primer partido local implementado por CODEX-004B |
 | F04.1 | Identidad El Reclutador, diagnóstico de balance y base de modalidades | Implementada como fundación técnica por CODEX-004C; no incorpora datos históricos ni torneos |
-| F04.2 | Duelo de Reclutadores local: subastas hot-seat y partido entre dos equipos | Implementada por CODEX-005A; online y CPU pujador quedan pendientes |
+| F04.2 | Duelo de Reclutadores local: subastas hot-seat y partido entre dos equipos | Implementada por CODEX-005B: carta individual, cara o cruz interactivo y partido compartido; online y CPU pujador pendientes |
 | F05 | Versus online y salas entre amigos | Pendiente |
 | F06 | Resultados compartibles | Pendiente |
 
@@ -35,4 +35,4 @@ CODEX-003C completa B03 y audita 150 contemporáneos, preservando B01/B02. Tres 
 
 CODEX-004C presenta comercialmente el producto como **El Reclutador** sin alterar claves de persistencia, IDs de catálogo ni rutas históricas. Entrega el motor puro de modalidades, contratos de procedencia verificable y un selector cuyo único modo ejecutable es Global. Las modalidades futuras quedan pendientes hasta incorporar datos revisados y una integración de partida explícita. El simulador conserva sus probabilidades; el diagnóstico de 2.400 encuentros queda registrado en qa/CODEX-004C.md antes de cualquier decisión subjetiva de balance.
 
-CODEX-005A establece Duelo de Reclutadores como modo local principal: once rondas de subasta por pares de la posición correspondiente, 100M por persona y partido posterior con el simulador existente. Draft Libre queda como alternativa. La autoridad de las reglas vive en un motor puro preparado para servidor, pero no se incluye red, autenticación, salas ni CPU pujador.
+CODEX-005A estableció Duelo de Reclutadores como modo local principal. CODEX-005B lo refina como Reclutador: 22 rondas de un único futbolista (2 ARQ, 8 DEF, 6 MED y 6 DEL), 100M por persona, reserva de viabilidad y cara o cruz persistente. Los dos onces resultantes se entregan al simulador existente sin recalcular una revancha. Draft Libre queda como alternativa. La autoridad de las reglas vive en un motor puro preparado para servidor, pero no se incluye red, autenticación, salas ni CPU pujador.

@@ -32,7 +32,7 @@ describe('draft domain and state', () => {
     expect(summarizeDraft(createEmptyLineup(), DRAFT_CATALOG).canCompleteWithinBudget).toBe(true)
   })
   it('changes only the commercial name while preserving the legacy saved-draft key', () => {
-    expect(PRODUCT.name).toBe('El Reclutador')
+    expect(PRODUCT.name).toBe('Reclutador')
     expect(DRAFT_STORAGE_KEY).toBe('draft-legends.draft-v1')
   })
   it('adds a valid player into the matching slot', () => {

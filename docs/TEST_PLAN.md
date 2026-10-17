@@ -19,7 +19,7 @@ Las pruebas DOM usan Vitest + Testing Library + jsdom. Las verificaciones visual
 ## CODEX-004C
 
 - Ejecutar `npm run typecheck`, `npm run lint`, `npm test`, `npm run build` y `npm run catalog:audit`. No considerar el catálogo parcial como aprobado globalmente.
-- Verificar que `PRODUCT.name` sea El Reclutador y que la clave técnica `draft-legends.draft-v1` permanezca inalterada; un borrador existente con esquema 1 debe seguir validando.
+- Verificar que `PRODUCT.name` sea Reclutador y que la clave técnica `draft-legends.draft-v1` permanezca inalterada; un borrador existente con esquema 1 debe seguir validando.
 - Verificar en los tres idiomas las claves de modalidades y que el selector mantenga Global disponible; los demás botones deben informar su estado y no alterar el draft.
 - Cubrir filtros puros por nacionalidad, carrera de liga verificada, rango temporal, edición exacta de competición y datos ausentes. Un año de referencia no sustituye una participación de competición.
 - Comprobar ARQ/DEF/MED/DEL, once de hasta 100M y una llamada determinista al generador CPU antes de habilitar una modalidad.
@@ -34,6 +34,15 @@ Las pruebas DOM usan Vitest + Testing Library + jsdom. Las verificaciones visual
 - Probar adjudicación doble de cada pareja, resolución de doble pase, máximo seguro y rechazo de una oferta que consume el presupuesto necesario para los pares restantes.
 - Validar el registro estructurado y que la simulación de los dos onces se inicia una sola vez tras los equipos completos.
 - Comprobar textos es-AR, en y pt-BR, selector de idioma en el duelo y retorno a Draft Libre. Ejecutar typecheck, lint, Vitest, build y catalog:audit.
+
+## CODEX-005B
+
+- Generar 22 cartas individuales únicas por semilla (2 ARQ, 8 DEF, 6 MED y 6 DEL), verificar el orden reproducible y que cada ronda ofrece un solo ID.
+- Elegir cara o cruz, confirmar que resultado y ganador se almacenan, y verificar prioridad alternada en 22 rondas.
+- Cubrir oferta base, incremento de 1M, retiro, doble pase, cupos por posición, oferta máxima segura y reserva de viabilidad para ambos onces.
+- Ejecutar 1.000 semillas completando por pases: dos onces 4-3-3, presupuesto 0–100M y cero IDs compartidos.
+- Comprobar integración explícita con el simulador, que Draft Libre sigue accesible y que es-AR/en/pt-BR incluyen los nuevos textos y etiquetas accesibles.
+- Intentar inspección visual en escritorio y móvil; si Vite no puede abrirse desde el navegador integrado, registrar NO EJECUTADA con una guía manual.
 
 ## CODEX-002
 

@@ -32,7 +32,7 @@ Nomenclatura: DL-FXX-CAT-NNN; FXX indica fase y CAT responsabilidad. No existía
 | DL-F04-PLAY-003 | El Reclutador: identidad, diagnóstico y fundación de modalidades (CODEX-004C) | Completa; selector Global, filtros puros y contratos sin importar datos externos |
 | DL-F04-DATA-001 | Cargar y revisar metadatos temáticos por procedencia | Pendiente; requiere revisión editorial, sin rellenos ni consultas de API en runtime |
 | DL-F04-BAL-001 | Decidir un cambio de balance si producto lo solicita | Pendiente; alternativas documentadas sin modificar probabilidades |
-| DL-F04-PLAY-004 | Duelo de Reclutadores hot-seat y subastas (CODEX-005A) | Completa; once parejas, presupuesto protegido, registro y simulador compartido |
+| DL-F04-PLAY-004 | Duelo de Reclutadores hot-seat y subastas (CODEX-005B) | Completa; 22 cartas individuales, cupos y presupuesto protegidos, moneda persistente, registro y simulador compartido |
 | DL-F05-ONLINE-001 | Servidor autoritativo para pujas y cara o cruz | Pendiente; reutilizar el motor puro de DL-F04-PLAY-004 |
 | DL-F04-CPU-002 | CPU pujadora en Duelo de Reclutadores | Pendiente; no implementada en hot-seat |
 | DL-F03-I18N-001 | Traducir draft, presupuesto y confirmaciones | Completa en CODEX-004A |
