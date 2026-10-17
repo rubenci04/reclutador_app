@@ -1,6 +1,8 @@
-# Draft Legends
+# El Reclutador
 
 Videojuego web de draft de fútbol. CODEX-004B entrega el primer ciclo local completo: armá un once en 4-3-3, enfrentá un rival CPU generado desde los mismos 150 futbolistas reales y reproducí una simulación deportiva de 15 segundos. La conexión online sigue pendiente.
+
+El nombre comercial pasó de Draft Legends a **El Reclutador** en CODEX-004C. La clave persistida `draft-legends.draft-v1`, la versión `catalog_v1`, los IDs `plr_*`, rutas y carpetas históricas se mantienen deliberadamente: los borradores locales compatibles no requieren migración y continúan restaurándose con el mismo esquema.
 
 La progresión de producto es PLAYTEST_150, EARLY_ACCESS_250 y FULL_CATALOG_500; los 100 históricos del acceso temprano pueden llegar por B07 y B08 sin llenar artificialmente B04–B06. La decisión queda documentada en [ADR-0005](docs/decisions/ADR-0005.md).
 
@@ -44,6 +46,8 @@ El último comando sirve dist/ para revisar el build, normalmente en http://127.
 - src/features/draft: estado Zustand, dominio, cancha interactiva y selector de jugadores.
 - src/features/home: punto de entrada compatible de la pantalla de juego.
 - src/features/player-catalog: funciones puras y validadores; fixtures exclusivamente sintéticos para pruebas.
+- src/features/themed-modes: contratos de metadatos, reglas puras y diagnóstico de modalidades; no contiene datos históricos inventados.
+- src/features/local-match: generador CPU, simulador y diagnóstico estadístico reproducible.
 - src/data: configuración inicial y coordenadas visuales.
 - src/data/catalog_v1: manifest de diez lotes, B01/B02/B03 implementados y registro explícito de alias; carga validada y determinista.
 - src/types: códigos de posiciones estables.
@@ -54,4 +58,4 @@ El último comando sirve dist/ para revisar el build, normalmente en http://127.
 
 Zustand persiste exclusivamente el draft. El partido se calcula en un módulo puro con semilla explícita y conserva su resultado durante la reproducción. Las cantidades del presupuesto se expresan en millones; el encargo no define moneda.
 
-Consultar [ROADMAP](docs/ROADMAP.md), [tablero](docs/TASK_BOARD.md), [pruebas](docs/TEST_PLAN.md) y [decisión de internacionalización](docs/decisions/ADR-0002.md). Resultados reales de CODEX-001 en docs/qa/CODEX-001.md.
+Consultar [ROADMAP](docs/ROADMAP.md), [tablero](docs/TASK_BOARD.md), [pruebas](docs/TEST_PLAN.md), la [política de modalidades y fuentes](docs/decisions/ADR-0006.md) y la [evaluación de fuentes](docs/research/FOOTBALL_DATA_SOURCES.md). Resultados reales de CODEX-001 en docs/qa/CODEX-001.md.

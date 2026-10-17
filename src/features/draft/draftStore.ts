@@ -4,8 +4,10 @@ import type { Player } from '../../types/player'
 import { DRAFT_BUDGET_MILLIONS } from '../../data/catalogRules'
 import { DRAFT_SLOTS, type DraftLineup, type DraftMessageCode, type DraftSlotId } from './draftTypes'
 import { DRAFT_STORAGE_VERSION, createEmptyLineup, playerById, summarizeDraft, validatePersistedDraft } from './draftModel'
+import { PRODUCT } from '../../config/product'
 
-export const DRAFT_STORAGE_KEY = 'draft-legends.draft-v1'
+/** Stable legacy key: renaming the product must not discard saved local drafts. */
+export const DRAFT_STORAGE_KEY = PRODUCT.technicalDraftStorageKey
 
 export interface DraftStore {
   readonly lineup: DraftLineup

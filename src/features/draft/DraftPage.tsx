@@ -13,6 +13,9 @@ import { generateCpuTeam } from '../local-match/cpuTeam'
 import { MatchScreen } from '../local-match/MatchScreen'
 import { MATCH_RULES_VERSION, type MatchResult } from '../local-match/matchTypes'
 import { simulateMatch } from '../local-match/simulator'
+import { PRODUCT } from '../../config/product'
+import { ModeSelector } from '../themed-modes/ModeSelector'
+import type { ThemedModeId } from '../themed-modes/modeTypes'
 
 function money(value: number) { return `${value}M` }
 
@@ -32,6 +35,7 @@ export function DraftPage() {
   const [selectedSlot, setSelectedSlot] = useState<DraftSlotId | null>(null)
   const [matchResult, setMatchResult] = useState<MatchResult | null>(null)
   const [matchRun, setMatchRun] = useState(0)
+  const [mode, setMode] = useState<ThemedModeId>('GLOBAL_CLASSIC')
   const summary = summarizeDraft(lineup, DRAFT_CATALOG)
   const slot = DRAFT_SLOTS.find((item) => item.id === selectedSlot)
   const firstOpenSlot = DRAFT_SLOTS.find((item) => !lineup[item.id])?.id ?? 'GK'
@@ -44,12 +48,13 @@ export function DraftPage() {
     setMatchRun(nextRun)
     setMatchResult(simulateMatch({ localLineup: lineup, cpuLineup: cpu.team.lineup, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed }))
   }
-  if (matchResult) return <div className="draft-app"><header className="draft-header"><a className="brand" href="#draft-main" aria-label="Draft Legends"><span className="brand-emblem">DL</span><span>Draft<span className="brand-light">Legends</span><span className="brand-dot">.</span></span></a><LanguageSelector /></header><MatchScreen key={matchResult.seed} result={matchResult} onRematch={startCpuMatch} onReturn={() => setMatchResult(null)} /></div>
+  if (matchResult) return <div className="draft-app"><header className="draft-header"><a className="brand" href="#draft-main" aria-label={PRODUCT.name}><span className="brand-emblem">ER</span><span>{PRODUCT.name}</span></a><LanguageSelector /></header><MatchScreen key={matchResult.seed} result={matchResult} onRematch={startCpuMatch} onReturn={() => setMatchResult(null)} /></div>
   return <div className="draft-app">
     <a href="#draft-main" className="skip-link">{t('home.skip')}</a>
-    <header className="draft-header"><a className="brand" href="#draft-main" aria-label="Draft Legends"><span className="brand-emblem">DL</span><span>Draft<span className="brand-light">Legends</span><span className="brand-dot">.</span></span></a><LanguageSelector /></header>
+    <header className="draft-header"><a className="brand" href="#draft-main" aria-label={PRODUCT.name}><span className="brand-emblem">ER</span><span>{PRODUCT.name}</span></a><LanguageSelector /></header>
     <main id="draft-main">
       <section className="draft-hero"><div><p className="eyebrow"><span />{t('draft.edition')}</p><h1>{t('draft.title')}</h1><p>{t('draft.subtitle')}</p></div><button className="catalog-open" onClick={() => setSelectedSlot(firstOpenSlot)}>{t('draft.catalog')} <span>↗</span></button></section>
+      <ModeSelector selected={mode} onChange={setMode} />
       {restoreIssue && <div className="draft-alert" role="alert">{t('draft.messages.invalidDraft')}<button onClick={clearRestoreIssue}>×</button></div>}
       {message && <div className="draft-alert" role="alert">{t(`draft.messages.${message}`)}<button onClick={clearMessage}>×</button></div>}
       <section className="draft-workspace" aria-label={t('game.myTeam')}>

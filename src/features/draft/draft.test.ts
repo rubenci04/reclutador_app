@@ -3,7 +3,9 @@ import type { Player } from '../../types/player'
 import { DRAFT_CATALOG } from './catalog'
 import { createEmptyLineup, summarizeDraft, validatePersistedDraft } from './draftModel'
 import { createDraftStore } from './draftStore'
+import { DRAFT_STORAGE_KEY } from './draftStore'
 import { DRAFT_SLOT_IDS, DRAFT_SLOTS } from './draftTypes'
+import { PRODUCT } from '../../config/product'
 
 function players(prices: readonly number[] = Array(11).fill(5)): Player[] {
   return DRAFT_SLOTS.map((slot, index) => ({
@@ -28,6 +30,10 @@ describe('draft domain and state', () => {
   it('uses the 150 real-player catalog as the playable source', () => {
     expect(DRAFT_CATALOG).toHaveLength(150)
     expect(summarizeDraft(createEmptyLineup(), DRAFT_CATALOG).canCompleteWithinBudget).toBe(true)
+  })
+  it('changes only the commercial name while preserving the legacy saved-draft key', () => {
+    expect(PRODUCT.name).toBe('El Reclutador')
+    expect(DRAFT_STORAGE_KEY).toBe('draft-legends.draft-v1')
   })
   it('adds a valid player into the matching slot', () => {
     const catalog = players(); const store = createDraftStore(catalog)

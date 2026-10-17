@@ -8,6 +8,22 @@
   "draft": {
     "edition": "PLAYTEST 150", "title": "Build your eleven", "subtitle": "Choose 11 real footballers and stay within budget.", "catalog": "Open catalogue", "closeCatalog": "Close catalogue", "selected": "Selected", "spent": "Spent", "remaining": "Available", "minimumToFinish": "Minimum to finish", "formation": "4-3-3", "emptySlot": "Choose {{position}}", "replace": "Replace", "remove": "Remove", "search": "Search by name", "position": "Position", "allPositions": "All positions", "price": "Price", "allPrices": "All prices", "priceLow": "Up to 5M", "priceMedium": "Up to 10M", "priceHigh": "Over 10M", "sort": "Sort", "ratingHigh": "Highest rating", "priceLowFirst": "Lowest price", "rating": "OVR", "tier": "Tier", "selectedPlayer": "In your eleven", "unavailable": "Unavailable", "sign": "Sign", "confirm": "Confirm my eleven", "reset": "Reset draft", "confirmTitle": "Your eleven is confirmed", "edit": "Edit team", "average": "Average rating", "tiers": "Tier distribution", "cpuNext": "CPU simulation arrives in the next vertical slice.", "emptyCatalog": "No players match those filters.", "filterPrice": "Filter price", "confirmDisabled": "Complete a valid eleven to confirm.", "viability": "Your selection can still complete the team.", "messages": { "duplicate": "That footballer is already in your eleven.", "wrongPosition": "That player does not match this position.", "overBudget": "This choice exceeds the 100M budget.", "impossibleBudget": "This choice would make it impossible to complete the eleven within budget.", "invalidPlayer": "The selected player does not exist in the current catalogue.", "incomplete": "There are still positions to complete.", "invalidDraft": "The saved draft is incompatible with the current catalogue and was not restored." }
   },
+  "modes": {
+    "label": "MODES", "title": "Themed challenges", "available": "Available", "status": { "positions": "Not enough players", "budget": "No viable eleven", "metadata": "Data pending", "cpu": "CPU incompatible", "foundation": "Coming soon", "ready": "Available" },
+    "items": {
+      "globalClassic": { "name": "Global classic", "description": "All 150 audited footballers currently available." },
+      "argentinaNationality": { "name": "Argentine nationality", "description": "Only footballers with ARG nationality." },
+      "argentinaLeague": { "name": "Argentine league", "description": "Requires verified Primera División careers." },
+      "brazilNationality": { "name": "Brazilian nationality", "description": "Only footballers with BRA nationality." },
+      "brazilLeague": { "name": "Brazilian league", "description": "Requires verified Série A careers." },
+      "southAmerica": { "name": "South America", "description": "CONMEBOL nationalities." },
+      "europeanLeague": { "name": "European league", "description": "Requires verified UEFA-league careers." },
+      "decadeChallenge": { "name": "Decade challenge", "description": "Representative versions from the selected decade." },
+      "worldCupEdition": { "name": "World Cup edition", "description": "Requires verified appearances in an edition." },
+      "copaAmericaEdition": { "name": "Copa América edition", "description": "Requires verified appearances in an edition." },
+      "legendsOnly": { "name": "Legends only", "description": "Historic versions in the catalogue." }
+    }
+  },
   "match": {
     "playCpu": "Play against CPU", "versus": "MY ELEVEN vs CPU", "cpuTeam": "CPU", "playing": "Match in progress", "final": "Full time", "victory": "Victory", "draw": "Draw", "defeat": "Defeat", "minute": "Minute {{minute}}'", "progress": "Match progress", "replay": "Replay match", "rematch": "Rematch", "newMatch": "New match", "returnDraft": "Back to draft", "score": "Score", "statistics": "Statistics", "shots": "Shots", "onTarget": "On target", "saves": "Saves", "recoveries": "Recoveries", "possession": "Possession", "attackPower": "Attacking power", "defensePower": "Defensive power", "midfieldControl": "Midfield control", "budget": "Budget used", "seed": "Seed", "featured": "Key events", "events": { "attack": "{{team}} attacks through {{player}}.", "shot": "{{player}} shoots wide.", "save": "A fine save by {{team}}.", "recovery": "{{team}} win the ball back.", "goal": "Goal! {{player}} scores for {{team}}!", "final": "The match is over." }
   }

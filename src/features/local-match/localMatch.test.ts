@@ -4,6 +4,7 @@ import { DRAFT_CATALOG } from '../draft/catalog'
 import { createEmptyLineup } from '../draft/draftModel'
 import { DRAFT_SLOTS, type DraftLineup } from '../draft/draftTypes'
 import { generateCpuTeam } from './cpuTeam'
+import { runBalanceDiagnostic } from './balanceDiagnostics'
 import { MATCH_RULES_VERSION } from './matchTypes'
 import { calculateTeamStrength, simulateMatch } from './simulator'
 
@@ -57,6 +58,10 @@ describe('local CPU match', () => {
     expect(result.strengths.local.attack).toBeGreaterThan(0)
     const reinforced = { ...result.local, players: result.local.players.map((player) => player.position === 'ARQ' || player.position === 'DEF' ? { ...player, def_rating: 99 } : player) }
     expect(calculateTeamStrength(reinforced).defense).toBeGreaterThan(result.strengths.local.defense)
+    const sharper = { ...result.local, players: result.local.players.map((player) => ({ ...player, att_rating: 99 })) }
+    const tougher = { ...result.local, players: result.local.players.map((player) => ({ ...player, phy_rating: 99, men_rating: 99 })) }
+    expect(calculateTeamStrength(sharper).attack).toBeGreaterThan(result.strengths.local.attack)
+    expect(calculateTeamStrength(tougher).midfield).toBeGreaterThan(result.strengths.local.midfield)
   })
   it('keeps score, goals and derived statistics coherent across the six blocks', () => {
     const result = simulate('events')
@@ -74,18 +79,16 @@ describe('local CPU match', () => {
     expect(events.filter((event) => event.type === 'final')).toHaveLength(1)
     expect(result.stats.local.possession + result.stats.cpu.possession).toBe(100)
   })
-  it('runs a reproducible 1,000-match balance diagnostic without forcing outcomes', () => {
-    const totals = { local: 0, cpu: 0, draw: 0, goals: 0, extreme: 0 }
-    for (let index = 0; index < 1000; index++) {
-      const local = generateCpuTeam(DRAFT_CATALOG, `local-diagnostic-${index}`)
-      const cpu = generateCpuTeam(DRAFT_CATALOG, `cpu-diagnostic-${index}`)
-      const result = simulateMatch({ localLineup: local.team.lineup, cpuLineup: cpu.team.lineup, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `diagnostic-${index}` })
-      totals[result.winner]++; totals.goals += result.score.local + result.score.cpu
-      if (Math.max(result.score.local, result.score.cpu) >= 5) totals.extreme++
+  it('runs a deterministic 2,400-match diagnostic by matchup and relative strength', () => {
+    const diagnostic = runBalanceDiagnostic(DRAFT_CATALOG)
+    expect(diagnostic.totalMatches).toBe(2400)
+    expect(diagnostic.scenarios).toHaveLength(3)
+    for (const scenario of diagnostic.scenarios) {
+      expect(scenario.outcomes.local + scenario.outcomes.cpu + scenario.outcomes.draw).toBe(800)
+      expect(scenario.goals).toBeGreaterThan(0)
+      expect(Object.values(scenario.scorelines).reduce((sum, count) => sum + count, 0)).toBe(800)
+      expect(Object.values(scenario.relativeStrength).reduce((sum, count) => sum + count, 0)).toBe(800)
     }
-    expect(totals.local + totals.cpu + totals.draw).toBe(1000)
-    expect(totals.goals).toBeGreaterThan(0)
-    expect(totals.extreme).toBeLessThan(1000)
-    console.info('CODEX-004B diagnostic', totals)
-  }, 20_000)
+    expect(runBalanceDiagnostic(DRAFT_CATALOG, 8)).toEqual(runBalanceDiagnostic(DRAFT_CATALOG, 8))
+  }, 30_000)
 })

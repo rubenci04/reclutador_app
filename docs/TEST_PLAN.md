@@ -16,6 +16,16 @@ Ejecutar npm run typecheck, npm run lint, npm test y npm run build. Registrar re
 
 Las pruebas DOM usan Vitest + Testing Library + jsdom. Las verificaciones visuales reales se documentan separadamente: jsdom no confirma layout, contraste ni renderizado del navegador.
 
+## CODEX-004C
+
+- Ejecutar `npm run typecheck`, `npm run lint`, `npm test`, `npm run build` y `npm run catalog:audit`. No considerar el catálogo parcial como aprobado globalmente.
+- Verificar que `PRODUCT.name` sea El Reclutador y que la clave técnica `draft-legends.draft-v1` permanezca inalterada; un borrador existente con esquema 1 debe seguir validando.
+- Verificar en los tres idiomas las claves de modalidades y que el selector mantenga Global disponible; los demás botones deben informar su estado y no alterar el draft.
+- Cubrir filtros puros por nacionalidad, carrera de liga verificada, rango temporal, edición exacta de competición y datos ausentes. Un año de referencia no sustituye una participación de competición.
+- Comprobar ARQ/DEF/MED/DEL, once de hasta 100M y una llamada determinista al generador CPU antes de habilitar una modalidad.
+- Ejecutar el diagnóstico de 2.400 partidos: 800 equilibrados, 800 con diferencia de presupuesto y 800 con ataque concentrado. Registrar marcadores, 0-0, extremos, resultados y fortaleza relativa sin cambiar las probabilidades.
+- Intentar renderizado real en escritorio, 390 px y 360 px. Si el navegador integrado no puede abrir Vite, dejar el resultado como no ejecutado y seguir la checklist manual del informe QA.
+
 ## CODEX-002
 
 - Ejecutar npm run build, npm run lint, npm run test y npx tsc --noEmit.

@@ -8,6 +8,7 @@ Plan inicial creado en CODEX-001: no había documentos anteriores. Las fases pos
 | F02 | Contrato y catálogo de 500 futbolistas: 300 contemporáneos y 200 leyendas | B01 + B02 + B03 implementados (150/500); CODEX-003 sigue en curso |
 | F03 | Draft local con presupuesto y validación de once | Implementada por PLAYTEST_150 / CODEX-004A |
 | F04 | Simulación táctica y equipo CPU | Primer partido local implementado por CODEX-004B |
+| F04.1 | Identidad El Reclutador, diagnóstico de balance y base de modalidades | Implementada como fundación técnica por CODEX-004C; no incorpora datos históricos ni torneos |
 | F05 | Versus online y salas entre amigos | Pendiente |
 | F06 | Resultados compartibles | Pendiente |
 
@@ -30,3 +31,5 @@ CODEX-003A amplía explícitamente el objetivo de 100 a 500 registros, sin reini
 CODEX-003B incorpora B02 sin modificar B01 y agrega revisión acumulativa de alias e identidades. Progreso: B01/B02 completos técnicamente, 100 contemporáneos; B03–B10 pendientes. Aprobación global y auditoría editorial final PENDIENTES. Próxima tarea recomendada: B03, 50 contemporáneos con IDs plr_101..plr_150, mismos cupos parciales y revisión de colisiones contra los 100 ya cargados. No iniciado automáticamente.
 
 CODEX-003C completa B03 y audita 150 contemporáneos, preservando B01/B02. Tres lotes completos; B04–B10 y auditoría global pendientes. Próxima tarea recomendada: B04, plr_151–plr_200, con contraste contra los 150 existentes. No iniciado automáticamente.
+
+CODEX-004C presenta comercialmente el producto como **El Reclutador** sin alterar claves de persistencia, IDs de catálogo ni rutas históricas. Entrega el motor puro de modalidades, contratos de procedencia verificable y un selector cuyo único modo ejecutable es Global. Las modalidades futuras quedan pendientes hasta incorporar datos revisados y una integración de partida explícita. El simulador conserva sus probabilidades; el diagnóstico de 2.400 encuentros queda registrado en qa/CODEX-004C.md antes de cualquier decisión subjetiva de balance.
