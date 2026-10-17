@@ -2,17 +2,14 @@ import { ATTRIBUTE_RANGE, CONTEMPORARY_PERIOD, EXPECTED_PLAYER_IDS, NATIONALITY_
 import { POSITIONS } from '../../types/football'
 import { ERAS, PLAYER_CATEGORIES, type Player, type PlayerValidation, type ValidationIssue } from '../../types/player'
 import { calculatePlayerPrice } from './calculatePlayerPrice'
+import { normalizePlayerName, resolvePlayerIdentity } from './playerIdentity'
+export { normalizePlayerName } from './playerIdentity'
 
 const REQUIRED_FIELDS = [
   'id', 'name', 'position', 'era', 'category', 'reference_year', 'nationality', 'club_tag',
   'overall_rating', 'att_rating', 'def_rating', 'phy_rating', 'men_rating', 'price',
 ] as const satisfies readonly (keyof Player)[]
 const NUMERIC_FIELDS = ['overall_rating', 'att_rating', 'def_rating', 'phy_rating', 'men_rating', 'price'] as const
-
-/** Conservative identity check; aliases and homonyms require editorial review. */
-export function normalizePlayerName(name: string): string {
-  return name.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '')
-}
 
 export function validatePlayer(input: unknown): PlayerValidation {
   if (typeof input !== 'object' || input === null || Array.isArray(input)) {
@@ -56,6 +53,12 @@ export function validatePlayer(input: unknown): PlayerValidation {
   }
   if (present('name') && !normalizePlayerName(record.name as string)) {
     issues.push({ code: 'empty_text', field: 'name', actual: record.name })
+  }
+  if (present('name') && present('id')) {
+    const registeredId = resolvePlayerIdentity(record.name as string)
+    if (registeredId && registeredId !== record.id) {
+      issues.push({ code: 'identity_mismatch', field: 'name', expected: registeredId, actual: record.id })
+    }
   }
   if (present('club_tag') && !/^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$/.test(record.club_tag as string)) {
     issues.push({ code: 'invalid_club_tag', field: 'club_tag', actual: record.club_tag })

@@ -13,6 +13,7 @@ const result = loadCatalogV1()
 const summary = {
   version: manifest.version, referenceDate: manifest.referenceDate, expectedTotal: manifest.expectedTotal,
   implementedTotal: result.players.length, assemblyStatus: result.status,
+  partialValid: result.status !== 'invalid',
   batches: Object.fromEntries(Object.entries(result.batchReports).map(([id, report]) => [id, {
     mode: report.mode, status: report.status, count: report.validPlayerCount,
     positions: report.positionCounts, tiers: report.tierCounts, issues: report.issues,
@@ -27,7 +28,7 @@ const summary = {
   cpuSelection: 'pending',
   issues: result.issues,
 }
-const destination = path.resolve(__dirname, '../docs/qa/CODEX-003A-catalog-audit.json')
+const destination = path.resolve(__dirname, '../docs/qa/CODEX-003B-catalog-audit.json')
 fs.writeFileSync(destination, JSON.stringify(summary, null, 2) + '\n')
 console.log(JSON.stringify(summary, null, 2))
 // Zero means the available batches are consistent, never that an incomplete catalog passed.

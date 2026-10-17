@@ -1,0 +1,455 @@
+{
+  "plr_001": [
+    "Manuel Neuer",
+    "M. Neuer"
+  ],
+  "plr_002": [
+    "Thibaut Courtois",
+    "T. Courtois"
+  ],
+  "plr_003": [
+    "Emiliano Martínez",
+    "E. Martínez",
+    "Dibu Martínez",
+    "Emi Martínez",
+    "Emiliano Dibu Martínez",
+    "Damián Emiliano Martínez",
+    "Emiliano Damián Martínez",
+    "Dibu"
+  ],
+  "plr_004": [
+    "Keylor Navas",
+    "K. Navas"
+  ],
+  "plr_005": [
+    "Franco Armani",
+    "F. Armani"
+  ],
+  "plr_006": [
+    "Jonas Lössl",
+    "J. Lössl"
+  ],
+  "plr_007": [
+    "Sergio Ramos",
+    "S. Ramos"
+  ],
+  "plr_008": [
+    "Virgil van Dijk",
+    "V. van Dijk"
+  ],
+  "plr_009": [
+    "Marcelo",
+    "Marcelo Vieira",
+    "Marcelo Vieira da Silva Júnior"
+  ],
+  "plr_010": [
+    "Nicolás Otamendi",
+    "N. Otamendi"
+  ],
+  "plr_011": [
+    "Diego Godín",
+    "D. Godín"
+  ],
+  "plr_012": [
+    "Thiago Silva",
+    "T. Silva"
+  ],
+  "plr_013": [
+    "Dani Alves",
+    "D. Alves",
+    "Daniel Alves",
+    "Daniel Alves da Silva"
+  ],
+  "plr_014": [
+    "José María Giménez",
+    "J. María Giménez",
+    "J. M. Giménez"
+  ],
+  "plr_015": [
+    "Marcos Acuña",
+    "M. Acuña"
+  ],
+  "plr_016": [
+    "Cristian Romero",
+    "C. Romero",
+    "Cuti Romero",
+    "Cristian Gabriel Romero"
+  ],
+  "plr_017": [
+    "Kieran Trippier",
+    "K. Trippier"
+  ],
+  "plr_018": [
+    "Yuto Nagatomo",
+    "Y. Nagatomo"
+  ],
+  "plr_019": [
+    "Luis Advíncula",
+    "L. Advíncula"
+  ],
+  "plr_020": [
+    "Gabriel Mercado",
+    "G. Mercado"
+  ],
+  "plr_021": [
+    "Cristian Ansaldi",
+    "C. Ansaldi"
+  ],
+  "plr_022": [
+    "Johan Djourou",
+    "J. Djourou"
+  ],
+  "plr_023": [
+    "Luka Modrić",
+    "L. Modrić",
+    "Luka Modric"
+  ],
+  "plr_024": [
+    "Kevin De Bruyne",
+    "K. De Bruyne"
+  ],
+  "plr_025": [
+    "Sergio Busquets",
+    "S. Busquets"
+  ],
+  "plr_026": [
+    "Ivan Rakitić",
+    "I. Rakitić"
+  ],
+  "plr_027": [
+    "Casemiro",
+    "Carlos Henrique Casimiro",
+    "Casimiro"
+  ],
+  "plr_028": [
+    "Ángel Di María",
+    "Á. Di María",
+    "Fideo Di María",
+    "Angel Fabian Di Maria"
+  ],
+  "plr_029": [
+    "Rodrigo De Paul",
+    "R. De Paul"
+  ],
+  "plr_030": [
+    "Granit Xhaka",
+    "G. Xhaka"
+  ],
+  "plr_031": [
+    "Éver Banega",
+    "É. Banega"
+  ],
+  "plr_032": [
+    "Giovani Lo Celso",
+    "G. Lo Celso"
+  ],
+  "plr_033": [
+    "Renato Augusto",
+    "R. Augusto"
+  ],
+  "plr_034": [
+    "Keisuke Honda",
+    "K. Honda"
+  ],
+  "plr_035": [
+    "Carlos Sánchez",
+    "C. Sánchez",
+    "Carlos Alberto Sánchez Moreno",
+    "Carlos Sánchez Moreno"
+  ],
+  "plr_036": [
+    "Birkir Bjarnason",
+    "B. Bjarnason"
+  ],
+  "plr_037": [
+    "Celso Borges",
+    "C. Borges"
+  ],
+  "plr_038": [
+    "Lionel Messi",
+    "L. Messi",
+    "Leo Messi",
+    "Lionel Andrés Messi",
+    "Messi"
+  ],
+  "plr_039": [
+    "Cristiano Ronaldo",
+    "C. Ronaldo",
+    "CR7",
+    "Cristiano Ronaldo dos Santos Aveiro",
+    "Cristiano"
+  ],
+  "plr_040": [
+    "Neymar",
+    "Neymar Jr",
+    "Neymar Junior",
+    "Neymar da Silva Santos Júnior"
+  ],
+  "plr_041": [
+    "Robert Lewandowski",
+    "R. Lewandowski"
+  ],
+  "plr_042": [
+    "Luis Suárez",
+    "L. Suárez",
+    "Luis Alberto Suárez Díaz"
+  ],
+  "plr_043": [
+    "Son Heung-min",
+    "S. Heung-min",
+    "Heung-min Son"
+  ],
+  "plr_044": [
+    "Roberto Firmino",
+    "R. Firmino",
+    "Bobby Firmino",
+    "Roberto Firmino Barbosa de Oliveira",
+    "Bobby"
+  ],
+  "plr_045": [
+    "Raúl Jiménez",
+    "R. Jiménez"
+  ],
+  "plr_046": [
+    "Jefferson Farfán",
+    "J. Farfán"
+  ],
+  "plr_047": [
+    "Marcus Berg",
+    "M. Berg"
+  ],
+  "plr_048": [
+    "Paolo Guerrero",
+    "P. Guerrero"
+  ],
+  "plr_049": [
+    "Ricardo Quaresma",
+    "R. Quaresma"
+  ],
+  "plr_050": [
+    "Ahmed Musa",
+    "A. Musa"
+  ],
+  "plr_051": [
+    "Alisson",
+    "Alisson Becker",
+    "Alisson Ramses Becker"
+  ],
+  "plr_052": [
+    "Jan Oblak",
+    "J. Oblak"
+  ],
+  "plr_053": [
+    "Ederson",
+    "Ederson Moraes",
+    "Ederson Santana de Moraes"
+  ],
+  "plr_054": [
+    "Claudio Bravo",
+    "C. Bravo"
+  ],
+  "plr_055": [
+    "Guillermo Ochoa",
+    "G. Ochoa",
+    "Memo Ochoa",
+    "Francisco Guillermo Ochoa"
+  ],
+  "plr_056": [
+    "Khadim N'Diaye",
+    "K. N'Diaye",
+    "Khadim Ndiaye"
+  ],
+  "plr_057": [
+    "Philipp Lahm",
+    "P. Lahm"
+  ],
+  "plr_058": [
+    "Leonardo Bonucci",
+    "L. Bonucci"
+  ],
+  "plr_059": [
+    "Gerard Piqué",
+    "G. Piqué"
+  ],
+  "plr_060": [
+    "David Alaba",
+    "D. Alaba"
+  ],
+  "plr_061": [
+    "Raphaël Varane",
+    "R. Varane"
+  ],
+  "plr_062": [
+    "Pepe",
+    "Képler Laveran Lima Ferreira",
+    "Kepler Laveran de Lima Ferreira"
+  ],
+  "plr_063": [
+    "Kalidou Koulibaly",
+    "K. Koulibaly"
+  ],
+  "plr_064": [
+    "Medhi Benatia",
+    "M. Benatia"
+  ],
+  "plr_065": [
+    "Andreas Christensen",
+    "A. Christensen"
+  ],
+  "plr_066": [
+    "Héctor Moreno",
+    "H. Moreno"
+  ],
+  "plr_067": [
+    "Miguel Layún",
+    "M. Layún"
+  ],
+  "plr_068": [
+    "Santiago Arias",
+    "S. Arias"
+  ],
+  "plr_069": [
+    "Fagner",
+    "Fagner Conserva Lemos"
+  ],
+  "plr_070": [
+    "Kendall Waston",
+    "K. Waston"
+  ],
+  "plr_071": [
+    "Fidel Escobar",
+    "F. Escobar"
+  ],
+  "plr_072": [
+    "Dylan Bronn",
+    "D. Bronn"
+  ],
+  "plr_073": [
+    "Andrés Iniesta",
+    "A. Iniesta"
+  ],
+  "plr_074": [
+    "N'Golo Kanté",
+    "N. Kanté",
+    "N Golo Kante",
+    "Ngolo Kante"
+  ],
+  "plr_075": [
+    "Toni Kroos",
+    "T. Kroos"
+  ],
+  "plr_076": [
+    "David Silva",
+    "D. Silva"
+  ],
+  "plr_077": [
+    "Arturo Vidal",
+    "A. Vidal"
+  ],
+  "plr_078": [
+    "Miralem Pjanić",
+    "M. Pjanić"
+  ],
+  "plr_079": [
+    "Christian Eriksen",
+    "C. Eriksen"
+  ],
+  "plr_080": [
+    "Shinji Kagawa",
+    "S. Kagawa"
+  ],
+  "plr_081": [
+    "Héctor Herrera",
+    "H. Herrera"
+  ],
+  "plr_082": [
+    "Christian Noboa",
+    "C. Noboa"
+  ],
+  "plr_083": [
+    "Younès Belhanda",
+    "Y. Belhanda"
+  ],
+  "plr_084": [
+    "Saeid Ezatolahi",
+    "S. Ezatolahi"
+  ],
+  "plr_085": [
+    "Gabriel Gómez",
+    "G. Gómez"
+  ],
+  "plr_086": [
+    "Yoshimar Yotún",
+    "Y. Yotún"
+  ],
+  "plr_087": [
+    "Édgar Bárcenas",
+    "É. Bárcenas",
+    "Yoel Bárcenas",
+    "Édgar Yoel Bárcenas"
+  ],
+  "plr_088": [
+    "Kylian Mbappé",
+    "K. Mbappé",
+    "Kylian Mbappé Lottin"
+  ],
+  "plr_089": [
+    "Karim Benzema",
+    "K. Benzema",
+    "Karim Mostafa Benzema"
+  ],
+  "plr_090": [
+    "Mohamed Salah",
+    "M. Salah",
+    "Mo Salah",
+    "Mohamed Salah Hamed Mahrous Ghaly"
+  ],
+  "plr_091": [
+    "Erling Haaland",
+    "E. Haaland",
+    "Erling Braut Haaland"
+  ],
+  "plr_092": [
+    "Harry Kane",
+    "H. Kane"
+  ],
+  "plr_093": [
+    "Sergio Agüero",
+    "S. Agüero",
+    "Kun Agüero",
+    "Sergio Kun Agüero",
+    "Sergio Leonel Agüero",
+    "Kun",
+    "El Kun"
+  ],
+  "plr_094": [
+    "Alexis Sánchez",
+    "A. Sánchez",
+    "Alexis Alejandro Sánchez"
+  ],
+  "plr_095": [
+    "Mauro Icardi",
+    "M. Icardi",
+    "Mauro Emanuel Icardi"
+  ],
+  "plr_096": [
+    "Duván Zapata",
+    "D. Zapata"
+  ],
+  "plr_097": [
+    "Christian Pulisic",
+    "C. Pulisic"
+  ],
+  "plr_098": [
+    "Joel Campbell",
+    "J. Campbell"
+  ],
+  "plr_099": [
+    "Alireza Jahanbakhsh",
+    "A. Jahanbakhsh"
+  ],
+  "plr_100": [
+    "Mathew Leckie",
+    "M. Leckie"
+  ]
+}

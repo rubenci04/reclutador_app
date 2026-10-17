@@ -1,6 +1,6 @@
 # Contrato del catálogo y economía
 
-Vigente desde CODEX-003A · DL-F02-DATA-002. `catalog_v1` amplía explícitamente el alcance anterior de 100 a 500 futbolistas: 300 contemporary y 200 legend. Solo B01 (50 contemporáneos) está implementado. Los fixtures de pruebas siguen siendo exclusivamente sintéticos. ADR-0004 sustituye los límites de tamaño de ADR-0003; los informes históricos no se reescriben.
+Vigente desde CODEX-003A, actualizado en CODEX-003B · DL-F02-DATA-002. `catalog_v1` amplía explícitamente el alcance anterior de 100 a 500 futbolistas: 300 contemporary y 200 legend. B01 y B02 implementan 100 contemporáneos; los 400 restantes están pendientes. Los fixtures de pruebas siguen siendo exclusivamente sintéticos. ADR-0004 sustituye los límites de tamaño de ADR-0003; los informes históricos no se reescriben.
 
 ## Diccionario de datos
 
@@ -62,7 +62,7 @@ Usar la misma escala entre posiciones; un 95 debe ser excepcional dentro de su r
 
 reference_year ancla la versión deportiva seleccionada y era es la década de ese año. El período concreto (temporada o torneo) se documenta editorialmente por ID. No se usa nacimiento ni temporada actual. La ventana contemporary 2016–2026 y la fecha 2026-10-16 son constantes editoriales; nunca dependen del reloj. Leyendas con referencia posterior a 2015 requieren otra decisión explícita antes de incluirlas. Se incluye expresamente 1950s para figuras anteriores a 1960. No había una lista anterior que modificar; décadas anteriores a 1950 o posteriores a 2020 requieren una extensión explícita del esquema.
 
-Nacionalidad usa códigos futbolísticos de asociación FIFA, con ejemplos ARG, ENG, NED y GER. No usar ISO como DEU, NLD o GBR. El registro inicial es un subconjunto explícito de 41 asociaciones (incluye SUI, ISL y CRC, requeridas por B01), en `src/data/catalogRules.ts`; no pretende cubrir todas las asociaciones del mundo. Agregar asociaciones faltantes con revisión documental antes de usar sus códigos. La sintaxis de tres letras por sí sola no acredita validez.
+Nacionalidad usa códigos futbolísticos de asociación FIFA, con ejemplos ARG, ENG, NED y GER. No usar ISO como DEU, NLD o GBR. El registro es un subconjunto explícito de 47 asociaciones: B01 agregó SUI, ISL y CRC; B02 agrega SVN, AUT, BIH, PAN, TUN e IRN. Vive en `src/data/catalogRules.ts` y no pretende cubrir todas las asociaciones del mundo. Agregar asociaciones faltantes con revisión documental antes de usar sus códigos. La sintaxis de tres letras por sí sola no acredita validez.
 
 Para jugadores con varias nacionalidades, usar una sola asociación de selección absoluta representativa del período. Cuando el caso histórico no tenga equivalencia clara o haya representado varias selecciones, resolverlo editorialmente antes de incluir el registro; no convertir países históricos silenciosamente. No se agrega historial de nacionalidades en esta fase.
 
@@ -93,7 +93,9 @@ La regresión histórica de CODEX-002 conserva un subconjunto sintético de 100 
 
 CatalogValidation contiene mode (partial/complete), status (approved/invalid/pending), valid, issues, validPlayerCount, positionCounts, tierCounts, categoryCounts, categoryPositionCounts y economy. En modo completo valid nunca es true con menos de 500 registros. Cada incidencia tiene code estable, index de base cero si corresponde, field, expected y actual cuando ayudan. No son mensajes de interfaz. Los conteos incluyen únicamente registros individualmente válidos; los errores derivados de cupos son deliberados y se deben interpretar junto a los errores de registros. La economía de un fixture pequeño se verifica únicamente mediante checkEconomicViability; validar un lote o catálogo incompleto deja economy en not_evaluated. La auditoría global real y CPU 95–100M permanecen pendientes hasta disponer de los diez lotes.
 
-Duplicados: IDs exactos y nombre normalizado (Unicode NFD, sin diacríticos, puntuación o espacios; minúsculas), incluso entre clubes/épocas diferentes. Esta regla detecta variantes tipográficas, no identidades humanas con certeza: alias distintos y homónimos requieren revisión editorial. El esquema no añade otro campo de identidad fuera de los solicitados.
+Duplicados: IDs exactos y nombre normalizado (Unicode NFD, sin diacríticos, puntuación o espacios; minúsculas), incluso entre clubes/épocas diferentes. Desde CODEX-003B, identityAliases.json relaciona también nombres deportivos, abreviaturas y variantes completas revisadas de los 100 futbolistas con su ID permanente. playerIdentityKey usa esa identidad común para detectar colisiones; validatePlayer emite identity_mismatch si un alias conocido se intenta asignar a otro ID.
+
+El registro es explícito y finito: no se infieren personas por apellido, club, parecido textual ni nacionalidad. Se rechaza una definición de alias vacía o asignada a dos IDs para exigir desambiguación editorial. Nombres desconocidos mantienen el control de normalización y requieren revisión humana antes de entrar al catálogo. No se agregan campos al contrato Player ni se cambian los nombres de exhibición. Los alias de cada lote se incorporan junto con sus fuentes/revisión, manteniendo los IDs existentes.
 
 ## Identificadores, migración y versionado
 

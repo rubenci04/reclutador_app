@@ -38,3 +38,13 @@ Las pruebas DOM usan Vitest + Testing Library + jsdom. Las verificaciones visual
 - Probar manifest íntegro, estados contra datos suministrados, intervalos por lote, archivos realmente creados, consolidación ordenada sin mutación, duplicados internos y entre lotes normalizados.
 - Probar ruta de aprobación de diez lotes con fixtures sintéticos, claramente separada de la auditoría real. Nunca usar ese resultado para marcar completo catalog_v1.
 - Auditoría real global de 500, prueba económica global y selección CPU 95–100M: PENDIENTES hasta disponer de los diez lotes. UI inicial sin cambios visuales; no se exige nueva revisión de navegador en esta entrega.
+
+## CODEX-003B
+
+- Ejecutar typecheck, lint, test, build, catalog:audit y catalog:audit -- --complete; el último debe devolver 1 y mantener pending con 400 IDs faltantes.
+- Validar individualmente los 50 registros B02 y sus precios mediante la fórmula existente; comprobar intervalo plr_051..plr_100, categoría, atributos diferenciados y cuotas 6/16/15/13 y 6/10/15/12/7.
+- Validar acumulado de 100, posiciones 12/32/30/26, tiers 12/20/30/24/14, contemporary 100 y legend 0. Nunca aprobar por ello los 500 globales.
+- Fijar hash de los registros parseados de B01 desde CODEX-003A para detectar cambios accidentales de cualquier campo o precio, sin fallar por conversión de saltos de línea del checkout.
+- Comprobar alias de todos los nombres canónicos y abreviaturas registrados, nombres deportivos y variantes completas representativas. Inyectar colisiones entre lotes con distintos IDs, clubes y décadas: detectar duplicate_player e identity_mismatch. Distinguir homónimos y rechazar registros ambiguos de alias.
+- Mantener la regresión de 50/500 usando un manifest aislado de B01; adaptar solo las expectativas de integración real a B01+B02. Mantener los casos previos de 500 sintéticos, fórmula, idiomas y persistencia.
+- Verificar manifest y carga determinista al invertir lotes/jugadores; ausencia de B03–B10 reales. No modificar la interfaz inicial. Inspección visual nueva: NO EJECUTADA si no hay cambios visuales.

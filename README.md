@@ -2,7 +2,7 @@
 
 Videojuego web de draft de fútbol. CODEX-001 entrega una pantalla inicial ilustrativa y arquitectura multilingüe. Jugar está deshabilitado; la selección de jugadores, simulación y conexión online siguen pendientes.
 
-CODEX-002 agrega el contrato de futbolista y economía. CODEX-003A amplía explícitamente catalog_v1 a **500 futbolistas** (300 contemporáneos y 200 leyendas), conserva precios/presupuesto e implementa **B01: 50 contemporáneos**. B02–B10 y la aprobación global de 500 siguen pendientes. Referencias: [contrato vigente](docs/CATALOG_DATA.md), [ADR-0004](docs/decisions/ADR-0004.md), [avance](docs/CATALOG_PROGRESS.md) y [QA CODEX-003A](docs/qa/CODEX-003A.md). ADR-0003 y CODEX-002 se conservan como antecedentes históricos.
+CODEX-002 agrega el contrato de futbolista y economía. CODEX-003A amplía explícitamente catalog_v1 a **500 futbolistas** (300 contemporáneos y 200 leyendas). CODEX-003B incorpora B02: **B01 + B02 suman 100 contemporáneos**, con presupuesto y fórmula intactos. B03–B10 y la aprobación global de 500 siguen pendientes. Referencias: [contrato vigente](docs/CATALOG_DATA.md), [ADR-0004](docs/decisions/ADR-0004.md), [avance](docs/CATALOG_PROGRESS.md) y [QA CODEX-003B](docs/qa/CODEX-003B.md). Las ADR e informes anteriores se conservan como antecedentes históricos.
 
 ## Ejecución local
 
@@ -31,7 +31,7 @@ npm run catalog:audit
 npm run catalog:audit -- --complete
 ```
 
-El primer comando verifica lo disponible y guarda docs/qa/CODEX-003A-catalog-audit.json. Su salida 0 solo acredita consistencia parcial. El segundo exige completitud y **actualmente devuelve 1**, con globalStatus=pending y 450 IDs faltantes. No es un fallo inesperado ni una aprobación global. La economía global y la futura selección CPU 95–100M se difieren hasta completar los diez lotes.
+El primer comando verifica lo disponible y guarda docs/qa/CODEX-003B-catalog-audit.json, sin sobrescribir la auditoría histórica de CODEX-003A. Su salida 0 solo acredita consistencia parcial. El segundo exige completitud y **actualmente devuelve 1**, con globalStatus=pending y 400 IDs faltantes. No es un fallo inesperado ni una aprobación global. La economía global y la futura selección CPU 95–100M se difieren hasta completar los diez lotes.
 
 El último comando sirve dist/ para revisar el build, normalmente en http://127.0.0.1:4173.
 
@@ -42,7 +42,7 @@ El último comando sirve dist/ para revisar el build, normalmente en http://127.
 - src/features/home: pantalla inicial y cancha ilustrativa.
 - src/features/player-catalog: funciones puras y validadores; fixtures exclusivamente sintéticos para pruebas.
 - src/data: configuración inicial y coordenadas visuales.
-- src/data/catalog_v1: manifest de diez lotes y únicamente B01.json implementado; carga validada y determinista.
+- src/data/catalog_v1: manifest de diez lotes, B01/B02 implementados y registro explícito de alias; carga validada y determinista.
 - src/types: códigos de posiciones estables.
 - src/i18n/locales: diccionarios independientes y configuración centralizada.
 - src/styles: Tailwind y estilos propios sin recursos remotos.

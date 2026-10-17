@@ -44,6 +44,7 @@ export type ValidationCode =
   | 'invalid_category' | 'invalid_reference_year' | 'era_mismatch' | 'category_year_mismatch'
   | 'category_distribution' | 'category_position_distribution' | 'batch_category'
   | 'invalid_manifest' | 'batch_state_mismatch' | 'unexpected_batch'
+  | 'identity_mismatch'
 
 /** Machine-readable diagnostics. UI consumers must translate codes before display. */
 export interface ValidationIssue {

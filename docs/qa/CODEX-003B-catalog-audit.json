@@ -1,0 +1,75 @@
+{
+  "version": "catalog_v1",
+  "referenceDate": "2026-10-16",
+  "expectedTotal": 500,
+  "implementedTotal": 100,
+  "assemblyStatus": "partial",
+  "partialValid": true,
+  "batches": {
+    "B01": {
+      "mode": "partial",
+      "status": "approved",
+      "count": 50,
+      "positions": {
+        "ARQ": 6,
+        "DEF": 16,
+        "MED": 15,
+        "DEL": 13
+      },
+      "tiers": {
+        "S": 6,
+        "A": 10,
+        "B": 15,
+        "C": 12,
+        "D": 7
+      },
+      "issues": []
+    },
+    "B02": {
+      "mode": "partial",
+      "status": "approved",
+      "count": 50,
+      "positions": {
+        "ARQ": 6,
+        "DEF": 16,
+        "MED": 15,
+        "DEL": 13
+      },
+      "tiers": {
+        "S": 6,
+        "A": 10,
+        "B": 15,
+        "C": 12,
+        "D": 7
+      },
+      "issues": []
+    }
+  },
+  "categories": {
+    "contemporary": 100,
+    "legend": 0
+  },
+  "positions": {
+    "ARQ": 12,
+    "DEF": 32,
+    "MED": 30,
+    "DEL": 26
+  },
+  "tiers": {
+    "S": 12,
+    "A": 20,
+    "B": 30,
+    "C": 24,
+    "D": 14
+  },
+  "globalStatus": "pending",
+  "globalValid": false,
+  "missingIds": 400,
+  "globalEconomy": {
+    "status": "not_evaluated",
+    "minimumCost": null,
+    "playerIds": []
+  },
+  "cpuSelection": "pending",
+  "issues": []
+}

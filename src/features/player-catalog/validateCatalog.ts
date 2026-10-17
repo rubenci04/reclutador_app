@@ -7,6 +7,7 @@ import { POSITIONS } from '../../types/football'
 import { PLAYER_CATEGORIES, PLAYER_TIERS, type BatchId, type CatalogValidation, type EconomicViability, type Player, type ValidationIssue } from '../../types/player'
 import { getPlayerTier } from './getPlayerTier'
 import { normalizePlayerName, validatePlayer } from './validatePlayer'
+import { playerIdentityKey } from './playerIdentity'
 
 const notEvaluated = (): EconomicViability => ({ status: 'not_evaluated', minimumCost: null, playerIds: [] })
 
@@ -36,7 +37,7 @@ function inspectRecords(input: unknown) {
         ids.add(fields.id)
       }
       if (typeof fields.name === 'string' && normalizePlayerName(fields.name)) {
-        const name = normalizePlayerName(fields.name)
+        const name = playerIdentityKey(fields.name)
         if (names.has(name)) issues.push({ code: 'duplicate_player', index, field: 'name', actual: fields.name })
         names.add(name)
       }
