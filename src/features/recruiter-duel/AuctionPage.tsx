@@ -8,11 +8,13 @@ import { MatchScreen } from '../local-match/MatchScreen'
 import { CPU_STRATEGIES, takeCpuTurn, type CpuStrategy } from './cpuPolicy'
 import { ModeSelector } from '../themed-modes/ModeSelector'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
-import { beginBidding, completeDuelMatch, createRecruiterDuel, currentRound, positionProgress, auctionAvailability, nextAuctionRound, passAuction, placeBid, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss, startDuelMatch } from './auctionEngine'
-import type { AuctionTransition, CoinSide, RecruiterDuelGame } from './auctionTypes'
+import { beginBidding, completeDuelMatch, createRecruiterDuel, currentRound, positionProgress, auctionAvailability, nextAuctionRound, passAuction, placeBid, reorderTeamLineup, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss, startDuelMatch } from './auctionEngine'
+import type { AuctionTransition, CoinSide, RecruiterDuelGame, RecruiterId } from './auctionTypes'
 import { PlayerIdentity, VisualCredits } from './PlayerIdentity'
 import { FootballCoin } from './FootballCoin'
+import { LineupOrganizer } from './LineupOrganizer'
 import { TeamProgressBoard } from './TeamProgressBoard'
+import type { FormationRole } from '../tactics/roles'
 import { createDrawContext, DRAW_HISTORY_KEY, newDrawSeed, parseReplay, readDrawHistory } from './drawHistory'
 
 interface AuctionPageProps { readonly onDraftFree: () => void }
@@ -28,6 +30,7 @@ export function AuctionPage({ onDraftFree }: AuctionPageProps) {
   const [mode, setMode] = useState<ThemedModeId>('GLOBAL_CLASSIC')
   const [game, setGame] = useState<RecruiterDuelGame | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [lineupConfirmed, setLineupConfirmed] = useState<{ seed: string; recruiter_one: boolean; recruiter_two: boolean }>({ seed: '', recruiter_one: false, recruiter_two: false })
   const [offerInput, setOfferInput] = useState<{ key: string; value: number } | null>(null)
   const apply = (result: AuctionTransition) => {
     if (!result.ok) return setError(t(`duel.errors.${result.error}`))
@@ -107,6 +110,14 @@ export function AuctionPage({ onDraftFree }: AuctionPageProps) {
   const offer = offerInput?.key === offerKey ? offerInput.value : minimum
   const availability = game && game.activeParticipant ? auctionAvailability(game, game.activeParticipant, DRAFT_CATALOG, offer, cpuTurn) : null
   const progress = game?.activeParticipant && round ? positionProgress(game.teams[game.activeParticipant], round.position) : null
+  const orderingDone = (participant: RecruiterId) => (opponentMode === 'cpu' && participant === 'recruiter_two') || (lineupConfirmed.seed === game?.seed && lineupConfirmed[participant])
+  const setOrderingDone = (participant: RecruiterId, value: boolean) => game && setLineupConfirmed((current) => ({ ...(current.seed === game.seed ? current : { seed: game.seed, recruiter_one: false, recruiter_two: false }), [participant]: value }))
+  const swapLineup = (participant: RecruiterId, first: FormationRole, second: FormationRole) => {
+    if (!game) return null
+    const result = reorderTeamLineup(game, participant, first, second)
+    if (result.ok) setGame(result.game)
+    return result.ok ? null : result.error
+  }
   const recordBid = () => !cpuTurn && game && game.activeParticipant && apply(placeBid(game, game.activeParticipant, offer, DRAFT_CATALOG))
   const recordPass = () => !cpuTurn && game && game.activeParticipant && apply(passAuction(game, game.activeParticipant, DRAFT_CATALOG))
   const names = { recruiter_one: t('duel.recruiters.recruiter_one'), recruiter_two: opponentMode === 'cpu' ? 'CPU' : t('duel.recruiters.recruiter_two') }
@@ -133,7 +144,17 @@ export function AuctionPage({ onDraftFree }: AuctionPageProps) {
           {lastCpuDecision?.type === 'cpu_decision' && <p className="cpu-status" role="status">{t(lastCpuDecision.action === 'bid' ? 'cpu.bids' : 'cpu.passes', {amount:lastCpuDecision.amount})}</p>}
           {game.phase === 'ROUND_RESULT' && game.lastAward && <section className="award-result"><h2>{t(game.lastAward.reason === 'voluntary_bid' ? 'duel.roundResult' : 'cpu.mandatory')}</h2>{opponentMode === 'cpu' && game.lastAward.winner === 'recruiter_two' && game.lastAward.reason === 'voluntary_bid' && <p>{t('cpu.wins')}</p>}<p>{t('duel.awardPlayer', { participant: names[game.lastAward.winner], player: footballer.name, amount: game.lastAward.price })}</p><button className="primary-action" onClick={() => apply(nextAuctionRound(game, DRAFT_CATALOG))}>{t('duel.nextRound')}</button></section>}
         </section>}
-        {game.phase === 'TEAMS_COMPLETED' && <section className="teams-completed"><p className="eyebrow"><span />{t('duel.teamsCompleted')}</p><h1>{t('duel.readyMatch')}</h1><div className="team-comparison">{(['recruiter_one', 'recruiter_two'] as const).map((participant) => <article key={participant}><h2>{names[participant]}</h2><strong>{t('duel.spent', { amount: game.teams[participant].spent })}</strong><p>{DRAFT_SLOTS.map((slot) => playerById(game.teams[participant].lineup[slot.id]!).name).join(' · ')}</p></article>)}</div><button className="primary-action" onClick={() => apply(startDuelMatch(game, DRAFT_CATALOG))}>{t('duel.startMatch')}</button></section>}
+        {game.phase === 'TEAMS_COMPLETED' && <section className="teams-completed"><p className="eyebrow"><span />{t('duel.teamsCompleted')}</p><h1>{t('duel.readyMatch')}</h1><div className="team-comparison">{(['recruiter_one', 'recruiter_two'] as const).map((participant) => <article key={participant}><h2>{names[participant]}</h2><strong>{t('duel.spent', { amount: game.teams[participant].spent })}</strong><p>{DRAFT_SLOTS.map((slot) => playerById(game.teams[participant].lineup[slot.id]!).name).join(' · ')}</p></article>)}</div>{(() => {
+          const humans = (['recruiter_one', 'recruiter_two'] as const).filter((participant) => !(opponentMode === 'cpu' && participant === 'recruiter_two'))
+          const pending = humans.find((participant) => !orderingDone(participant))
+          const bothReady = !pending
+          return <>
+            {(pending ? [pending] : humans).map((participant) => <LineupOrganizer key={participant} game={game} participant={participant} name={names[participant]} catalog={DRAFT_CATALOG} confirmed={orderingDone(participant)} onSwap={(first, second) => swapLineup(participant, first, second)} onConfirm={() => setOrderingDone(participant, true)} onEdit={() => setOrderingDone(participant, false)} />)}
+            {opponentMode === 'cpu' && <p>{t('lineup.cpuKeeps')}</p>}
+            {!bothReady && <p role="status">{t('lineup.waiting')}</p>}
+            <button className="primary-action" disabled={!bothReady} onClick={() => apply(startDuelMatch(game, DRAFT_CATALOG))}>{t('duel.startMatch')}</button>
+          </>
+        })()}</section>}
       </>}
       {game && <><TeamProgressBoard game={game} catalog={DRAFT_CATALOG} names={names} /><details className="draw-replay"><summary>{t('draw.export')}</summary><p>{t('draw.explanation')}</p><label>{t('draw.context')}<textarea readOnly value={JSON.stringify({ seed: game.seed, context: game.drawContext })} /></label></details></>}
       {storageWarning && <p role="status">{t('draw.storageWarning')}</p>}

@@ -1,6 +1,7 @@
 import { DRAFT_BUDGET_MILLIONS } from '../../data/catalogRules'
 import { getPlayerTier } from '../player-catalog/getPlayerTier'
 import type { Player, PlayerTier } from '../../types/player'
+import { migrateLegacyLineupKeys } from '../tactics/roles'
 import { DRAFT_SLOT_IDS, DRAFT_SLOTS, type DraftLineup, type DraftSlotId, type DraftSummary } from './draftTypes'
 
 export const DRAFT_STORAGE_VERSION = 1
@@ -57,7 +58,7 @@ export function validatePersistedDraft(input: unknown, players: readonly Player[
   if (record.schema !== DRAFT_STORAGE_VERSION || typeof record.confirmed !== 'boolean' || typeof record.lineup !== 'object' || record.lineup === null) {
     return { valid: false as const, lineup: createEmptyLineup(), confirmed: false }
   }
-  const raw = record.lineup as Record<string, unknown>
+  const raw = migrateLegacyLineupKeys(record.lineup as Record<string, unknown>)
   if (Object.keys(raw).length !== DRAFT_SLOT_IDS.length || Object.keys(raw).some((key) => !DRAFT_SLOT_IDS.includes(key as DraftSlotId))) {
     return { valid: false as const, lineup: createEmptyLineup(), confirmed: false }
   }

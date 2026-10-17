@@ -72,6 +72,10 @@
 .pitch-place { position: absolute; transform: translate(-50%,-50%); width: 23%; min-width: 44px; }
 .pitch-shirt { width: 100%; min-height: 82px; display: flex; align-items: center; flex-direction: column; gap: 2px; border: 0; border-radius: 5px; color: #fff; background: #122a20ed; font-size: 11px; cursor: pointer; padding: 4px 2px; }
 .pitch-shirt svg { width: 34px; height: 30px; fill: #d5fb76; stroke: #11251b; stroke-width: 2; }
+.pitch-shirt.selected { outline: 3px solid #d5fb76; outline-offset: 2px; background: #1f4a34; }
+.pitch-role { font-weight: 800; letter-spacing: .06em; color: #d5fb76; }
+.lineup-organizer { display: grid; gap: .75rem; }
+.lineup-organizer .discard-counter { margin: 0; }
 .pitch-shirt .shirt-stripe { fill: #315843; stroke: none; }
 .pitch-shirt.vacant { color: #e6f0e7; background: #152b20c9; border: 1px dashed #c3d7c4; cursor: default; }
 .pitch-shirt.vacant svg { fill: #56705e; stroke: #e6f0e7; }

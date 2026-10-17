@@ -100,6 +100,11 @@ describe('single-player auction interface', () => {
     }
     expect(checkedFull).toBe(true); expect(checkedOneDefender).toBe(true)
     expect(screen.getAllByText('11/11')).toHaveLength(2)
+    expect(screen.getByRole('button', { name: 'Start match' })).toBeDisabled()
+    fireEvent.click(screen.getByRole('button', { name: 'Confirm eleven' }))
+    expect(screen.getByRole('button', { name: 'Start match' })).toBeDisabled()
+    fireEvent.click(screen.getByRole('button', { name: 'Confirm eleven' }))
+    expect(screen.getByRole('button', { name: 'Start match' })).toBeEnabled()
     fireEvent.click(screen.getByRole('button', { name: 'Start match' }))
     act(() => vi.advanceTimersByTime(15000))
     fireEvent.click(screen.getByRole('button', { name: 'Replay match' }))

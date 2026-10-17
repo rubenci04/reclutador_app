@@ -5,6 +5,8 @@ import { DRAFT_SLOTS, type DraftSlotId } from '../draft/draftTypes'
 import { MATCH_RULES_VERSION } from '../local-match/matchTypes'
 import { createSeededRandom, shuffleSeeded } from '../local-match/seededRandom'
 import { simulateMatch } from '../local-match/simulator'
+import { swapWithinLine, type LineupSwapError } from '../tactics/lineupOrdering'
+import type { FormationRole } from '../tactics/roles'
 import { validContext, type DrawContext } from './drawHistory'
 import type { AuctionCreation, AuctionRound, AuctionTransition, AwardReason, CoinSide, RecruiterDuelGame, RecruiterId, RecruiterTeam, RoundAward } from './auctionTypes'
 
@@ -254,3 +256,15 @@ export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player
 }
 
 export const completeDuelMatch = (game: RecruiterDuelGame): AuctionTransition => game.phase === 'SIMULATING' ? transition(game, { phase: 'MATCH_RESULT' }) : { ok: false, error: 'invalid_transition' }
+
+export type LineupReorder =
+  | { readonly ok: true; readonly game: RecruiterDuelGame }
+  | { readonly ok: false; readonly error: LineupSwapError | 'invalid_transition' }
+
+/** Reorders one team within a line after the auctions. Ownership and `spent` never change. */
+export function reorderTeamLineup(game: RecruiterDuelGame, participant: RecruiterId, slotA: FormationRole, slotB: FormationRole): LineupReorder {
+  if (game.phase !== 'TEAMS_COMPLETED') return { ok: false, error: 'invalid_transition' }
+  const swapped = swapWithinLine(game.teams[participant].lineup, slotA, slotB)
+  if (!swapped.ok) return swapped
+  return { ok: true, game: { ...game, teams: { ...game.teams, [participant]: { ...game.teams[participant], lineup: swapped.lineup } } } }
+}
