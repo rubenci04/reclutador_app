@@ -28,3 +28,16 @@
 .catalog-player .club-identity{margin-top:4px}.catalog-player .club-name{font-size:10px}
 @media(max-width:500px){.catalog-player .club-badge{width:28px;height:22px;flex-basis:28px;padding:3px}.catalog-player .club-badge>span{width:8px;height:12px}.catalog-player .club-name{font-size:9px}.player-card-main>div{min-width:0}}
 @media(forced-colors:active){.club-badge{border-color:CanvasText;background:Canvas}.club-badge>span{border:1px solid CanvasText}}
+
+/* Keep the sports reference separate from the audited current affiliation. */
+.player-club-details{display:grid;gap:7px;margin:10px 0 14px;min-width:0;max-width:100%}
+.club-detail-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;min-width:0}
+.club-detail-label{font-size:10px;color:#c4d3be;line-height:1.4}
+.club-career-status{font-size:12px;color:#edf4e8}
+.club-audit-date{font-size:10px;color:#b9c9b3;line-height:1.5;overflow-wrap:anywhere}
+.club-audit-date a{color:#d5fb76;text-decoration:underline}
+.catalog-player .player-club-details{margin:5px 0 0;gap:4px}
+.catalog-player .club-detail-label,.catalog-player .club-audit-date{font-size:9px}
+.catalog-player .club-career-status{font-size:10px}
+.catalog-player .club-identity{margin-top:0}
+@media(max-width:500px){.club-detail-row{align-items:flex-start;flex-direction:column;gap:3px}.catalog-player{gap:9px}.catalog-player .player-card-main{align-items:flex-start;flex:1}.catalog-player .player-card-main>.rating{flex-shrink:0}.catalog-player .player-card-main>div{min-width:0}.catalog-player .player-card-meta{max-width:100px;flex-shrink:0}}

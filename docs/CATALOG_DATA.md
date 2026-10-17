@@ -110,3 +110,8 @@ En una futura base PostgreSQL/Supabase conservar un identificador de jugador `te
 ChemistryIdentity toma id, nationality, club_tag y era; ChemistryDimension distingue esos tres criterios. CHEMISTRY_BONUS_CAP fija 0.15. No se calcula ninguna bonificación todavía.
 
 La futura agregación debe formar pares no ordenados de IDs distintos (i<j o clave canónica con IDs ordenados); procesar cada par una sola vez por dimensión. Un par con coincidencia de club, época y nacionalidad puede reunir tres evidencias, pero no debe recibir tres bonificaciones independientes por accidente. La decisión de si se combinan y con qué pesos está pendiente. Aplicar el límite del 15% una sola vez al resultado agregado, no a cada dimensión para luego sumarlas. Faltan decisión de balance, definición de adyacencia y tratamiento de coincidencias entre jugadores no vecinos; no anticipar esas reglas en la simulación.
+
+
+## Club actual, referencia e historial — CODEX-005E
+
+Player.club_tag conserva el club de la versión deportiva evaluada. La auditoría separada PlayerClubSnapshot agrega referenceClubId, currentClubId, careerStatus, clubHistory, asOfDate, sourceUrl, verificationStatus y revision. No cambia Player ni su economía. El registro clubRegistry centraliza identidades; clubVisuals aporta paletas. Véanse CURRENT_CLUB_AUDIT.md y qa/CODEX-005E.md para fuentes, validaciones, corte 2026-10-17 y actualización sin sobrescribir revisiones anteriores.

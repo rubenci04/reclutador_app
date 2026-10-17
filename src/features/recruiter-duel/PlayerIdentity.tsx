@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
 import { getPlayerTier } from '../player-catalog/getPlayerTier'
 import { approvedPhoto, flagUrl, PHOTO_MANIFEST } from './visualAssets'
-import { ClubBadge } from '../../components/ClubBadge'
+import { PlayerClubDetails } from '../../components/PlayerClubDetails'
 
 export function PlayerIdentity({ player }: { readonly player:Player }) {
   const { t } = useTranslation()
@@ -14,7 +14,7 @@ export function PlayerIdentity({ player }: { readonly player:Player }) {
     {photo && !failed ? <img src={photo.path} alt={t('cpu.photoAlt',{player:player.name})} onError={() => setFailed(true)} /> : <span className="avatar-silhouette" role="img" aria-label={t('duel.placeholderAvatar',{player:player.name})}>●<br />▰</span>}
     <b>{player.overall_rating}</b></div><article><small>{t('duel.playerDrawn')}</small><h2>{player.name}</h2>
     <p>{flag && !flagFailed ? <img className="nationality-flag" src={flag} alt={t('cpu.flagAlt',{code:player.nationality})} onError={() => setFlagFailed(true)} /> : <span aria-label={t('cpu.flagMissing')}>◇</span>} {player.nationality} · {t(`positions.${player.position}`)} · {t('duel.tier',{tier:getPlayerTier(player.overall_rating)})}</p>
-    <p><ClubBadge clubId={player.club_tag} /></p><b>{t('duel.basePrice',{amount:player.price})}</b></article></div>
+    <PlayerClubDetails player={player} /><b>{t('duel.basePrice',{amount:player.price})}</b></article></div>
 }
 
 export function VisualCredits() {
