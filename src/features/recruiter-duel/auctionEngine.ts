@@ -7,6 +7,7 @@ import { createSeededRandom, shuffleSeeded } from '../local-match/seededRandom'
 import { isValidOrganizedLineup, simulateMatch } from '../local-match/simulator'
 import { swapWithinLine, type LineupSwapError } from '../tactics/lineupOrdering'
 import type { FormationRole } from '../tactics/roles'
+import { suggestLineup } from '../tactics/roleProfiles'
 import { TACTICS_VERSION, isStrategyId, type StrategyId } from '../tactics/strategies'
 import { validContext, type DrawContext } from './drawHistory'
 import type { AuctionActionError, AuctionCreation, AuctionRound, AuctionTransition, AwardReason, CoinSide, RecruiterDuelGame, RecruiterId, RecruiterTeam, RoundAward } from './auctionTypes'
@@ -245,7 +246,9 @@ export function nextAuctionRound(game: RecruiterDuelGame, catalog: readonly Play
       && new Set(Object.values(team.lineup)).size === 11
       && DRAFT_SLOTS.every((slot) => catalog.find((player) => player.id === team.lineup[slot.id])?.position === slot.position)
   })
-  return valid ? transition(game, { phase: 'TEAMS_COMPLETED', lastAward: null }) : { ok: false, error: 'teams_invalid' }
+  // Initial placement uses verified role documentation only (none yet: the lineup stays as awarded).
+  const teams = { recruiter_one: { ...game.teams.recruiter_one, lineup: suggestLineup(game.teams.recruiter_one.lineup) }, recruiter_two: { ...game.teams.recruiter_two, lineup: suggestLineup(game.teams.recruiter_two.lineup) } }
+  return valid ? transition(game, { phase: 'TEAMS_COMPLETED', lastAward: null, teams }) : { ok: false, error: 'teams_invalid' }
 }
 
 export const revealNextAuctionRound = (game: RecruiterDuelGame): AuctionTransition => game.phase === 'NEXT_ROUND' ? transition(game, { phase: 'REVEAL_PLAYER' }) : { ok: false, error: 'invalid_transition' }

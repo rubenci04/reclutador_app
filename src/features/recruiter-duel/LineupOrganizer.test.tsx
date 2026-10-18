@@ -65,9 +65,16 @@ describe('LineupOrganizer', () => {
     const start = completedGame().teams.recruiter_one.lineup
     const view = render(<I18nextProvider i18n={i18n}><Harness /></I18nextProvider>)
     const slotButton = (slot: string) => view.container.querySelector(`[data-slot="${slot}"] button`) as HTMLButtonElement
+    // Review mode: shirts open details, nothing can be swapped until the editing mode is turned on.
+    expect(screen.getByText(/turn on EDIT FORMATION/)).toBeInTheDocument()
+    expect(slotButton('LCB')).not.toHaveAttribute('aria-pressed')
+    fireEvent.click(screen.getByRole('button', { name: 'EDIT FORMATION' }))
+    expect(screen.getByRole('button', { name: 'DONE: LEAVE EDITING' })).toHaveAttribute('aria-pressed', 'true')
     expect(slotButton('LCB')).toHaveAccessibleName(`${nameOf(start.LCB)}, Left centre-back, tap to choose`)
     fireEvent.click(slotButton('LCB'))
     expect(slotButton('LCB')).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByText(/Selected: .* \(Left centre-back\)\. Highlighted shirts/)).toBeInTheDocument()
+    expect(slotButton('RB')).toHaveClass('swap-target'); expect(slotButton('ST')).toHaveClass('swap-dim')
     fireEvent.click(slotButton('ST'))
     expect(screen.getByRole('alert')).toHaveTextContent('Only footballers in the same line can be swapped')
     fireEvent.click(slotButton('RB'))
@@ -78,5 +85,23 @@ describe('LineupOrganizer', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Confirm eleven' }))
     expect(screen.getByTestId('start')).toHaveAttribute('data-enabled', 'true')
     expect(screen.getByText('Eleven confirmed')).toBeInTheDocument()
+  })
+
+  it('swaps by dragging within a line, rejects dragging across lines and the goalkeeper, and shows the aptitude legend', async () => {
+    const i18n = await createI18n('en')
+    const start = completedGame().teams.recruiter_one.lineup
+    const view = render(<I18nextProvider i18n={i18n}><Harness /></I18nextProvider>)
+    const slotButton = (slot: string) => view.container.querySelector(`[data-slot="${slot}"] button`) as HTMLButtonElement
+    fireEvent.click(screen.getByRole('button', { name: 'EDIT FORMATION' }))
+    expect(screen.getByText('Role not documented')).toBeInTheDocument(); expect(screen.getByText('Verified role')).toBeInTheDocument()
+    expect(slotButton('LW')).toHaveAttribute('data-aptitude', 'UNKNOWN')
+    const data = new Map<string, string>()
+    const transfer = { setData: (k: string, v: string) => data.set(k, v), getData: (k: string) => data.get(k) ?? '' }
+    fireEvent.dragStart(slotButton('LW'), { dataTransfer: transfer }); fireEvent.drop(slotButton('RW'), { dataTransfer: transfer })
+    expect(slotButton('LW')).toHaveAccessibleName(`${nameOf(start.RW)}, Left winger, tap to choose`)
+    expect(slotButton('RW')).toHaveAccessibleName(`${nameOf(start.LW)}, Right winger, tap to choose`)
+    fireEvent.dragStart(slotButton('GK'), { dataTransfer: transfer }); fireEvent.drop(slotButton('LB'), { dataTransfer: transfer })
+    expect(screen.getByRole('alert')).toHaveTextContent('goalkeeper always stays in goal')
+    expect(slotButton('GK')).toHaveAccessibleName(`${nameOf(start.GK)}, Goalkeeper, tap to choose`)
   })
 })

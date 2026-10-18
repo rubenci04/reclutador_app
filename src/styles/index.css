@@ -201,3 +201,14 @@
 .quick-complete ul { padding-left: 1.1rem; max-height: 14rem; overflow: auto; }
 .cpu-signing { animation: strategy-in var(--motion-base) var(--motion-ease); color: #d5fb76; font-weight: 750; }
 @media (prefers-reduced-motion: reduce) { .cpu-signing { animation: none; } }
+.pitch-shirt.swap-target { outline: 2px dashed #d5fb76; outline-offset: 2px; }
+.pitch-shirt.swap-dim { opacity: .45; }
+.pitch-shirt[draggable="true"] { cursor: grab; }
+.lineup-selected { margin: 0; padding: .4rem .6rem; border-radius: 6px; background: #1f4a34; color: #d5fb76; font-weight: 750; }
+.lineup-legend { margin: 0; display: flex; flex-wrap: wrap; gap: .3rem .8rem; font-size: .78rem; color: #c8d7c3; }
+.lineup-legend span { display: inline-flex; align-items: center; gap: 4px; }
+.apt { display: inline-block; width: 8px; height: 8px; margin-left: 4px; border-radius: 50%; border: 1.5px solid #c8d7c3; vertical-align: middle; }
+.apt-NATURAL { background: #d5fb76; border-color: #d5fb76; }
+.apt-ADAPTED { background: linear-gradient(90deg, #d5fb76 50%, transparent 50%); border-color: #d5fb76; }
+.apt-UNKNOWN { background: transparent; border-style: dashed; }
+@media (prefers-reduced-motion: reduce) { .pitch-shirt { transition: none; } }
