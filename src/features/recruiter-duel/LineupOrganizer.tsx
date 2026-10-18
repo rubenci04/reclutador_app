@@ -12,13 +12,15 @@ interface Props {
   readonly name: string
   readonly catalog: readonly Player[]
   readonly confirmed: boolean
+  /** True once a strategy was confirmed: the eleven can no longer be reopened. */
+  readonly locked?: boolean
   readonly onSwap: (first: FormationRole, second: FormationRole) => LineupSwapError | 'invalid_transition' | null
   readonly onConfirm: () => void
   readonly onEdit: () => void
 }
 
 /** One participant's post-auction ordering step: pick two shirts of the same line to swap them, then confirm. */
-export function LineupOrganizer({ game, participant, name, catalog, confirmed, onSwap, onConfirm, onEdit }: Props) {
+export function LineupOrganizer({ game, participant, name, catalog, confirmed, locked = false, onSwap, onConfirm, onEdit }: Props) {
   const { t } = useTranslation()
   const [selected, setSelected] = useState<FormationRole | null>(null)
   const [message, setMessage] = useState<{ kind: 'info' | 'error'; text: string } | null>(null)
@@ -41,7 +43,7 @@ export function LineupOrganizer({ game, participant, name, catalog, confirmed, o
     <TeamPitchBoard game={game} participant={participant} catalog={catalog} organize={{ selectedSlot: selected, onPick: pick }} />
     <p role={message?.kind === 'error' ? 'alert' : 'status'} className={message?.kind === 'error' ? 'draft-alert' : undefined}>{message?.text}</p>
     {confirmed
-      ? <div className="duel-actions"><strong role="status">{t('lineup.confirmed')}</strong><button className="secondary-action" onClick={() => { setSelected(null); setMessage(null); onEdit() }}>{t('lineup.edit')}</button></div>
+      ? <div className="duel-actions"><strong role="status">{t('lineup.confirmed')}</strong>{!locked && <button className="secondary-action" onClick={() => { setSelected(null); setMessage(null); onEdit() }}>{t('lineup.edit')}</button>}</div>
       : <div className="duel-actions"><button className="primary-action" onClick={() => { setSelected(null); setMessage(null); onConfirm() }}>{t('lineup.confirm')}</button></div>}
   </section>
 }

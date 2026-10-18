@@ -1,0 +1,53 @@
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { STRATEGY_IDS, type StrategyId } from '../tactics/strategies'
+import { revealedStrategies, type StrategyChoice } from '../tactics/strategyChoice'
+
+interface Props {
+  readonly choice: StrategyChoice
+  /** Display name of whoever picks in the current step; never the rival's pick. */
+  readonly chooser: string
+  readonly nextChooser: string
+  readonly names: { readonly first: string; readonly second: string }
+  readonly onConfirm: (strategy: StrategyId) => void
+  readonly onHandover: () => void
+  readonly onStart: () => void
+}
+
+/** Secret simultaneous choice screen. Nothing the first recruiter picked is rendered until the reveal. */
+export function StrategyChoicePanel({ choice, chooser, nextChooser, names, onConfirm, onHandover, onStart }: Props) {
+  const { t } = useTranslation()
+  const [selected, setSelected] = useState<StrategyId | null>(null)
+  const revealed = revealedStrategies(choice)
+  if (revealed) {
+    return <section className="strategy-panel strategy-reveal" aria-live="polite">
+      <h2>{t('strategyChoice.revealTitle')}</h2>
+      <div className="strategy-reveal-grid">{(['first', 'second'] as const).map((side) => <article key={side} className="strategy-card strategy-revealed">
+        <h3>{names[side]}</h3><strong>{t(`tactics.strategies.${revealed[side]}.name`)}</strong>
+        <p>{t(`tactics.strategies.${revealed[side]}.objective`)}</p>
+      </article>)}</div>
+      <p className="strategy-note">{t('strategyChoice.noGuarantee')}</p>
+      <button className="primary-action" onClick={onStart}>{t('duel.startMatch')}</button>
+    </section>
+  }
+  if (choice.step === 'HANDOVER') {
+    return <section className="strategy-panel strategy-handover" aria-live="polite">
+      <h2>{t('strategyChoice.handoverTitle', { participant: nextChooser })}</h2>
+      <p>{t('strategyChoice.handoverBody', { previous: chooser, participant: nextChooser })}</p>
+      <button className="primary-action" onClick={onHandover}>{t('strategyChoice.handoverReady', { participant: nextChooser })}</button>
+    </section>
+  }
+  return <section className="strategy-panel" key={choice.step} aria-labelledby="strategy-title">
+    <h2 id="strategy-title">{t('strategyChoice.title', { participant: chooser })}</h2>
+    <p>{t('strategyChoice.instructions')}</p>
+    <div className="strategy-grid" role="radiogroup" aria-labelledby="strategy-title">{STRATEGY_IDS.map((id) => <label key={id} className={`strategy-card${selected === id ? ' chosen' : ''}`}>
+      <input type="radio" name="strategy" value={id} checked={selected === id} onChange={() => setSelected(id)} />
+      <strong>{t(`tactics.strategies.${id}.name`)}</strong>
+      <span><b>{t('strategyChoice.seeks')}</b> {t(`tactics.strategies.${id}.objective`)}</span>
+      <span><b>{t('strategyChoice.advantage')}</b> {t(`tactics.strategies.${id}.advantages`)}</span>
+      <span><b>{t('strategyChoice.risk')}</b> {t(`tactics.strategies.${id}.risks`)}</span>
+    </label>)}</div>
+    <p className="strategy-note">{t('strategyChoice.noGuarantee')}</p>
+    <button className="primary-action" disabled={!selected} onClick={() => { if (selected) { const picked = selected; setSelected(null); onConfirm(picked) } }}>{t('strategyChoice.confirm')}</button>
+  </section>
+}

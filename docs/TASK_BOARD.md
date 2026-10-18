@@ -47,6 +47,9 @@ Nomenclatura: DL-FXX-CAT-NNN; FXX indica fase y CAT responsabilidad. No existía
 | DL-F04-UI-008 | Animaciones de revelación, descarte, oferta, fichaje y gol (CODEX-005G-B) | Completa técnicamente en tres idiomas y con movimiento reducido; QA visual NO EJECUTADA por navegador deshabilitado |
 | DL-F04-TACTICS-002 | Roles futbolísticos y organización del once (CODEX-005G-C1) | Completa técnicamente: once roles (CM→CDM con migración), intercambio dentro de la línea, fase de confirmación en tres idiomas; 512 pruebas aprobadas; QA visual manual pendiente |
 | DL-F04-TACTICS-003 | Motor táctico: seis estrategias, ajustes por bloque y CPU (CODEX-005G-C2) | Completa técnicamente: tactics-v1, NEUTRAL idéntico a v2 (300 resultados grabados), validación en el límite del motor, calibración de 126.000 partidos; 524 pruebas aprobadas; efecto táctico pequeño (1–4 pp) a evaluar en playtest; interfaz secreta pendiente en C3 |
+| DL-F04-TACTICS-004 | Selección secreta de estrategias y HUD deportivo (CODEX-005G-C3A) | Completa técnicamente: elección por turnos con traspaso y revelación simultánea, CPU fijada de antemano, HUD derivado del motor, tres idiomas; 536 pruebas aprobadas; QA visual/móvil NO ejecutada; temporizadores solo documentados (ADR-0010) |
+| DL-F04-UI-009 | Marcador/HUD durante las subastas (CODEX-005G-C3A) | Completa técnicamente; revisión visual manual a 360/390 px pendiente |
+| DL-F04-TACTICS-005 | Narración y explicación táctica del partido, y playtest de impacto táctico (C3B) | Pendiente; el efecto táctico actual es de 1–4 pp |
 | DL-F03-I18N-001 | Traducir draft, presupuesto y confirmaciones | Completa en CODEX-004A |
 | DL-F04-I18N-001 | Traducir simulación y resultados | Completa en CODEX-004B |
 | DL-F05-I18N-001 | Traducir salas, espera y errores online | Pendiente |

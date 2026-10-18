@@ -112,3 +112,47 @@
 @keyframes shirt-arrival { from { opacity: .25; transform: scale(.88); } to { opacity: 1; transform: scale(1); } }
 @keyframes goal-celebrate { 0% { opacity: 0; transform: scale(.9); } 30%,75% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1); } }
 @media(prefers-reduced-motion:reduce) { .auction-candidate, .card-discard, .bid-highlight, .pitch-shirt.occupied, .goal-flash { animation: none; transform: none; opacity: 1; } }
+
+/* CODEX-005G-C3A: scoreboard HUD and strategy choice */
+.auction-hud { position: sticky; top: 0; z-index: 5; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 6px; border-radius: 8px; background: #0b1a13f2; border: 1px solid #ffffff2e; box-shadow: 0 6px 18px #0008; }
+.hud-centre { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; font-size: .78rem; color: #d5fb76; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.hud-centre p { margin: 0; }
+.hud-discards { display: inline-flex; align-items: center; gap: 4px; }
+.hud-discards i { width: 10px; height: 10px; border-radius: 50%; border: 2px solid #d5fb76; }
+.hud-discards i.on { background: #d5fb76; }
+.hud-discards span { margin-left: 4px; }
+.hud-exhausted { flex-basis: 100%; font-size: .72rem; color: #ffb347; text-transform: none; letter-spacing: 0; }
+.hud-pitches { min-height: 32px; padding: 2px 10px; font-size: .75rem; }
+.hud-panel { display: grid; gap: 3px; padding: 6px 8px; border-radius: 6px; background: #14281e; border-left: 4px solid var(--hud-colour, #7aa); min-width: 0; font-size: .78rem; color: #e6f0e7; }
+.hud-recruiter_one { --hud-colour: #d5fb76; }
+.hud-recruiter_two { --hud-colour: #ffb347; }
+.hud-panel.hud-active { outline: 2px solid var(--hud-colour); background: #1b3828; }
+.hud-panel header { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.hud-panel header strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hud-shirt { width: 12px; height: 12px; border-radius: 3px; background: var(--hud-colour); flex: none; }
+.hud-turn { margin-left: auto; padding: 0 6px; border-radius: 4px; background: var(--hud-colour); color: #11251b; font-size: .68rem; font-weight: 900; text-transform: uppercase; }
+.hud-budget { height: 8px; border-radius: 4px; background: #ffffff1f; overflow: hidden; }
+.hud-budget i { display: block; height: 100%; background: var(--hud-colour); transition: width 280ms ease-out; }
+.hud-money { display: flex; justify-content: space-between; gap: 6px; margin: 0; flex-wrap: wrap; }
+.hud-money span, .hud-signed { color: #c8d7c3; margin: 0; }
+.hud-positions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; margin: 0; padding: 0; list-style: none; }
+.hud-positions li { display: grid; text-align: center; padding: 2px 0; border-radius: 4px; background: #ffffff14; font-size: .7rem; }
+.hud-positions li.hud-full { background: #2f6b46; }
+.hud-positions li.hud-forced { background: #7a5a16; }
+.hud-positions li small { grid-column: 1 / -1; font-size: .62rem; line-height: 1.1; padding: 0 2px; }
+.hud-ceiling { margin: 0; display: grid; gap: 1px; color: var(--hud-colour); }
+.hud-ceiling small { color: #c8d7c3; font-size: .68rem; }
+.strategy-panel { display: grid; gap: .75rem; padding: 1rem 0; animation: strategy-in 260ms ease-out; }
+.strategy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
+.strategy-card { position: relative; display: grid; gap: 4px; padding: .7rem; border-radius: 8px; border: 2px solid #ffffff2e; background: #14281e; color: #e6f0e7; font-size: .85rem; cursor: pointer; }
+.strategy-card input { position: absolute; opacity: 0; pointer-events: none; }
+.strategy-card:has(input:focus-visible) { outline: 3px solid #fff; outline-offset: 2px; }
+.strategy-card.chosen { border-color: #d5fb76; background: #1f4a34; }
+.strategy-card strong { color: #d5fb76; font-size: 1rem; }
+.strategy-note { font-size: .82rem; color: #c8d7c3; margin: 0; }
+.strategy-reveal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.strategy-revealed { cursor: default; animation: strategy-in 360ms ease-out; }
+.strategy-handover { text-align: center; justify-items: center; padding: 2rem 0; }
+@keyframes strategy-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (max-width: 420px) { .hud-panel { padding: 5px 6px; } .hud-positions li { font-size: .66rem; } .strategy-reveal-grid { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .strategy-panel, .strategy-revealed { animation: none; } .hud-budget i { transition: none; } }
