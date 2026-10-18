@@ -23,15 +23,15 @@ describe('Argentine football mode', () => {
     expect(result.players).toHaveLength(200)
     expect(catalogForMode('GLOBAL_CLASSIC')).toBe(DRAFT_CATALOG)
     expect(catalogForMode('ARGENTINA_CLUBS')).toHaveLength(200)
-    expect([...PLAYABLE_MODES].sort()).toEqual(['ARGENTINA_CLUBS', 'GLOBAL_CLASSIC'])
+    expect([...PLAYABLE_MODES].sort()).toEqual(['ARGENTINA_CLUBS', 'ARGENTINA_LEGENDS', 'GLOBAL_CLASSIC'])
   })
   it('selects by career in Argentina, never by nationality', () => {
     const foreigner = ARGENTINA_PLAYERS.find((player) => player.nationality !== 'ARG')!
     expect(catalogForMode('ARGENTINA_CLUBS')).toContain(foreigner)
     expect(evaluateMode(ARGENTINA_PLAYERS, mode, {}).diagnostic.availability).toBe('metadata_pending')
   })
-  it('plays 60 full duels on the Argentine pool without an illegal team', () => {
-    const catalog = catalogForMode('ARGENTINA_CLUBS')
+  it.each(['ARGENTINA_CLUBS', 'ARGENTINA_LEGENDS'] as const)('plays 60 full duels on %s without an illegal team', (modeId) => {
+    const catalog = catalogForMode(modeId)
     for (let index = 0; index < 60; index++) {
       const created = createRecruiterDuel(catalog, `arg-mode-${index}`)
       if (!created.ok) throw new Error(`${index}:${created.error}`)
@@ -46,6 +46,11 @@ describe('Argentine football mode', () => {
         game = a.pass.enabled && (step % 3 !== 0 || !a.bid.enabled) ? must(passAuction(game, who, catalog)) : must(placeBid(game, who, a.minimum, catalog))
       }
       expect(game.phase).toBe('TEAMS_COMPLETED')
+      const ids = Object.values(game.teams.recruiter_one.lineup).concat(Object.values(game.teams.recruiter_two.lineup))
+      expect(new Set(ids).size).toBe(22)
+      expect(game.teams.recruiter_one.spent).toBeLessThanOrEqual(100)
+      expect(game.teams.recruiter_two.spent).toBeLessThanOrEqual(100)
+      if (modeId === 'ARGENTINA_LEGENDS') expect(ids.every((id) => catalog.find((player) => player.id === id)?.category === 'legend')).toBe(true)
       for (const id of ['recruiter_one', 'recruiter_two'] as const) expect(Object.values(game.teams[id].lineup).every((player) => player?.startsWith('arg_'))).toBe(true)
       const played = must(startDuelMatch(game, catalog))
       expect(played.matchResult).not.toBeNull()
@@ -56,21 +61,24 @@ describe('Argentine football mode', () => {
 describe('mode selection in the page', () => {
   beforeEach(() => { localStorage.clear(); vi.spyOn(drawHistory, 'newDrawSeed').mockReturnValue('arg-seed-1') })
   afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); localStorage.clear() })
-  it('starts an Argentine game whose first footballer comes from the collection, with its own draw history', async () => {
+  it.each([
+    ['ARGENTINA_CLUBS', /Argentine football/, 'argentina_clubs'],
+    ['ARGENTINA_LEGENDS', /Argentina · legends/, 'argentina_legends'],
+  ] as const)('starts %s with the selected collection and its own draw history', async (modeId, label, historySuffix) => {
     vi.useFakeTimers()
     const i18n = await createI18n('en')
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
     expect(screen.getByRole('button', { name: /Global classic/ })).not.toBeDisabled()
-    fireEvent.click(screen.getByRole('button', { name: /Argentine football/ }))
+    fireEvent.click(screen.getByRole('button', { name: label }))
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
     act(() => vi.advanceTimersByTime(COIN_TOSS_MS))
-    const catalog = catalogForMode('ARGENTINA_CLUBS')
+    const catalog = catalogForMode(modeId)
     const expected = must(createRecruiterDuel(catalog, 'arg-seed-1', createDrawContext(catalog, []))
       ? (createRecruiterDuel(catalog, 'arg-seed-1', createDrawContext(catalog, [])) as AuctionTransition) : { ok: false, error: 'invalid_transition' })
     const first = catalog.find((player) => player.id === expected.rounds[0].playerId)!
     expect(screen.getAllByText(first.name).length).toBeGreaterThan(0)
-    expect(localStorage.getItem('reclutador.duel-draws.v1.argentina_clubs')).not.toBeNull()
+    expect(localStorage.getItem(`reclutador.duel-draws.v1.${historySuffix}`)).not.toBeNull()
     expect(localStorage.getItem('reclutador.duel-draws.v1')).toBeNull()
   })
 })

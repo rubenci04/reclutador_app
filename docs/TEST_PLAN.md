@@ -113,3 +113,12 @@ Las pruebas DOM usan Vitest + Testing Library + jsdom. Las verificaciones visual
 - Intentar escritorio, 390 y 360 px; si el navegador está deshabilitado, registrar NO EJECUTADA.
 
 CPU estratégica local implementada como opción junto a hot-seat. Perfiles CONSERVATIVE/BALANCED/AGGRESSIVE, valoraciones privadas fijas por ronda, registro de decisiones y asignaciones obligatorias diferenciadas. Banderas locales MIT y piloto de una foto verificada con créditos. Preparación de 200 nuevas identidades argentinas: 0/200 creadas; cuatro lotes ARG-B01..04, namespace independiente. Ver [ADR-0009](decisions/ADR-0009.md), ARGENTINA_COLLECTION.md y qa/CODEX-005C.md.
+
+## Categorías y leyendas — 18/10/2026
+
+- Conservar el objeto del catálogo Global y los 200 argentinos originales. Verificar el subconjunto de 188 leyendas argentinas y el bloqueo de los 12 contemporáneos sin ARQ.
+- Probar carreras verificadas, liga incorrecta, metadatos ausentes, separación contemporary/legend y nacionalidad independiente de la liga en Argentina, Brasil, España e Inglaterra.
+- Probar filtros CONMEBOL/UEFA por asociación y versión, independientemente del club.
+- Ejecutar 60 duelos completos de cada modo argentino, verificando 22 jugadores exclusivos, presupuesto y partido simulable.
+- Iniciar ambos modos desde AuctionPage con historial independiente. Comprobar nombres/descripciones y bloqueo de futuras colecciones en es-AR/en/pt-BR.
+- Ejecutar los cuatro controles obligatorios. Revisión visual de escritorio/móvil separada de pruebas DOM.

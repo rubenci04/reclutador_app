@@ -13,6 +13,18 @@ export const THEMED_MODES: readonly ThemedModeDefinition[] = [
   { id: 'WORLD_CUP_EDITION', translationKey: 'worldCupEdition', rule: { competitionId: 'fifa_world_cup', editionYear: 1986 } },
   { id: 'COPA_AMERICA_EDITION', translationKey: 'copaAmericaEdition', rule: { competitionId: 'copa_america', editionYear: 2024 } },
   { id: 'LEGENDS_ONLY', translationKey: 'legendsOnly', rule: { category: 'legend' } },
+  { id: 'ARGENTINA_CURRENT', translationKey: 'argentinaCurrent', rule: { leagueCountryCode: 'ARG', category: 'contemporary' } },
+  { id: 'ARGENTINA_LEGENDS', translationKey: 'argentinaLegends', rule: { leagueCountryCode: 'ARG', category: 'legend' } },
+  { id: 'BRAZIL_CURRENT', translationKey: 'brazilCurrent', rule: { leagueId: 'bra_serie_a', category: 'contemporary' } },
+  { id: 'BRAZIL_LEGENDS', translationKey: 'brazilLegends', rule: { leagueId: 'bra_serie_a', category: 'legend' } },
+  { id: 'SPAIN_LEAGUE', translationKey: 'spainLeague', rule: { leagueId: 'esp_la_liga', category: 'contemporary' } },
+  { id: 'SPAIN_LEGENDS', translationKey: 'spainLegends', rule: { leagueId: 'esp_la_liga', category: 'legend' } },
+  { id: 'ENGLAND_LEAGUE', translationKey: 'englandLeague', rule: { leagueId: 'eng_premier_league', category: 'contemporary' } },
+  { id: 'ENGLAND_LEGENDS', translationKey: 'englandLegends', rule: { leagueId: 'eng_premier_league', category: 'legend' } },
+  { id: 'SOUTH_AMERICA_CURRENT', translationKey: 'southAmericaCurrent', rule: { confederation: 'CONMEBOL', category: 'contemporary' } },
+  { id: 'SOUTH_AMERICA_LEGENDS', translationKey: 'southAmericaLegends', rule: { confederation: 'CONMEBOL', category: 'legend' } },
+  { id: 'EUROPE_CURRENT', translationKey: 'europeCurrent', rule: { confederation: 'UEFA', category: 'contemporary' } },
+  { id: 'EUROPE_LEGENDS', translationKey: 'europeLegends', rule: { confederation: 'UEFA', category: 'legend' } },
 ] as const
 
 export const CONMEBOL_ASSOCIATIONS = new Set(['ARG', 'BOL', 'BRA', 'CHI', 'COL', 'ECU', 'PAR', 'PER', 'URU', 'VEN'])

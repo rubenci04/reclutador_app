@@ -65,3 +65,7 @@ Estas relaciones son hipótesis de diseño, no reglas vigentes. No inferir veloc
 ## CODEX-005G-C2 y C3A — Estrategias en juego
 
 C2 incorporó la capa táctica pura (`tactics-v1`) sobre `local-match-v2` con seis estrategias, sin tabla fija de ganadores. C3A conecta ese motor con una elección secreta por turnos (traspaso del dispositivo y revelación simultánea; la CPU fija la suya antes de conocer la humana) y añade un HUD con presupuesto, cupos, descartes y oferta máxima segura derivados del estado y del motor. Los temporizadores (15/25/75/30 s) quedan documentados en ADR-0010 y no están activos. Pendiente: narración táctica del partido, evaluación en playtest del tamaño del efecto y QA visual móvil. Sin sonidos, nuevas formaciones, catálogo ampliado ni Supabase todavía.
+
+## Categorías por ámbito — 18/10/2026
+
+Definidas las parejas actuales/leyendas para Global, Argentina, Brasil, España, Inglaterra, Sudamérica y Europa. Argentina · leyendas habilitada con 188 registros existentes; los dos modos originales se conservan. Las restantes nuevas colecciones siguen pendientes de datos y/o validación de partida. Versus entre categorías distintas no implementado. Detalle y criterios: ADR-0012 y qa/CATEGORIES-LEGENDS.md.

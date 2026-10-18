@@ -39,7 +39,19 @@
       "decadeChallenge": { "name": "Desafio por década", "description": "Versões representativas da década escolhida." },
       "worldCupEdition": { "name": "Edição da Copa do Mundo", "description": "Exige participações verificadas em uma edição." },
       "copaAmericaEdition": { "name": "Edição da Copa América", "description": "Exige participações verificadas em uma edição." },
-      "legendsOnly": { "name": "Apenas lendas", "description": "Versões históricas do catálogo." }
+      "legendsOnly": { "name": "Apenas lendas", "description": "Versões históricas do catálogo." },
+      "argentinaCurrent": {"name":"Argentina · atuais","description":"Versões atuais de jogadores com carreira verificada em clubes argentinos."},
+      "argentinaLegends": {"name":"Argentina · lendas","description":"Somente lendas com carreira verificada em clubes argentinos, independentemente da nacionalidade."},
+      "brazilLegends": {"name":"Brasil · lendas","description":"Lendas com carreira verificada na liga brasileira."},
+      "spainLeague": {"name":"Espanha · atuais","description":"Versões atuais com carreira verificada na liga espanhola."},
+      "spainLegends": {"name":"Espanha · lendas","description":"Lendas com carreira verificada na liga espanhola."},
+      "englandLeague": {"name":"Inglaterra · atuais","description":"Versões atuais com carreira verificada na liga inglesa."},
+      "englandLegends": {"name":"Inglaterra · lendas","description":"Lendas com carreira verificada na liga inglesa."},
+      "southAmericaCurrent": {"name":"América do Sul · atuais","description":"Versões atuais de jogadores de associações CONMEBOL."},
+      "southAmericaLegends": {"name":"América do Sul · lendas","description":"Lendas de associações CONMEBOL."},
+      "europeCurrent": {"name":"Europa · atuais","description":"Versões atuais de jogadores de associações UEFA."},
+      "europeLegends": {"name":"Europa · lendas","description":"Lendas de associações UEFA."},
+      "brazilCurrent": {"name":"Brasil · atuais","description":"Versões atuais com carreira verificada na liga brasileira."}
     }
   },
   "duel": {

@@ -39,7 +39,19 @@
       "decadeChallenge": { "name": "Desafío por década", "description": "Ediciones representativas de la década elegida." },
       "worldCupEdition": { "name": "Edición Mundial", "description": "Requiere participaciones verificadas en una edición." },
       "copaAmericaEdition": { "name": "Edición Copa América", "description": "Requiere participaciones verificadas en una edición." },
-      "legendsOnly": { "name": "Solo leyendas", "description": "Versiones históricas del catálogo." }
+      "legendsOnly": { "name": "Solo leyendas", "description": "Versiones históricas del catálogo." },
+      "argentinaCurrent": {"name":"Argentina · actuales","description":"Versiones actuales de jugadores con trayectoria verificada en clubes argentinos."},
+      "argentinaLegends": {"name":"Argentina · leyendas","description":"Solo leyendas con trayectoria verificada en clubes argentinos, sin importar su nacionalidad."},
+      "brazilLegends": {"name":"Brasil · leyendas","description":"Leyendas con trayectoria verificada en la liga brasileña."},
+      "spainLeague": {"name":"España · actuales","description":"Versiones actuales con trayectoria verificada en la liga española."},
+      "spainLegends": {"name":"España · leyendas","description":"Leyendas con trayectoria verificada en la liga española."},
+      "englandLeague": {"name":"Inglaterra · actuales","description":"Versiones actuales con trayectoria verificada en la liga inglesa."},
+      "englandLegends": {"name":"Inglaterra · leyendas","description":"Leyendas con trayectoria verificada en la liga inglesa."},
+      "southAmericaCurrent": {"name":"Sudamérica · actuales","description":"Versiones actuales de jugadores de asociaciones CONMEBOL."},
+      "southAmericaLegends": {"name":"Sudamérica · leyendas","description":"Leyendas de asociaciones CONMEBOL."},
+      "europeCurrent": {"name":"Europa · actuales","description":"Versiones actuales de jugadores de asociaciones UEFA."},
+      "europeLegends": {"name":"Europa · leyendas","description":"Leyendas de asociaciones UEFA."},
+      "brazilCurrent": {"name":"Brasil · actuales","description":"Versiones actuales con trayectoria verificada en la liga brasileña."}
     }
   },
   "duel": {

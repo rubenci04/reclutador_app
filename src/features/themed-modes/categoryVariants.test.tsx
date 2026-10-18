@@ -1,0 +1,78 @@
+import { describe, expect, it, vi } from 'vitest'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { I18nextProvider } from 'react-i18next'
+import { createI18n } from '../../i18n'
+import type { Player } from '../../types/player'
+import { DRAFT_CATALOG } from '../draft/catalog'
+import { eligiblePlayers, evaluateMode } from './filterEngine'
+import { ARGENTINA_PLAYERS, catalogForMode, modeSource, PLAYABLE_MODES } from './modeCatalog'
+import type { MetadataIndex } from './metadata'
+import { THEMED_MODES } from './modes'
+import { THEMED_MODE_IDS, type ThemedModeId } from './modeTypes'
+import { ModeSelector } from './ModeSelector'
+
+const definition = (id: ThemedModeId) => THEMED_MODES.find((mode) => mode.id === id)!
+const player = (id: string, category: Player['category'], nationality = 'ARG'): Player => ({
+  ...DRAFT_CATALOG[0], id, category, nationality,
+})
+
+describe('current and legend category variants', () => {
+  it('keeps the two original catalogs intact and enables only the validated Argentine legend subset', () => {
+    expect(catalogForMode('GLOBAL_CLASSIC')).toBe(DRAFT_CATALOG)
+    expect(catalogForMode('ARGENTINA_CLUBS')).toEqual(ARGENTINA_PLAYERS)
+    const legends = catalogForMode('ARGENTINA_LEGENDS')
+    expect(legends).toHaveLength(188)
+    expect(legends.every((record) => record.category === 'legend')).toBe(true)
+    const source = modeSource('ARGENTINA_LEGENDS')
+    expect(evaluateMode(source.players, definition('ARGENTINA_LEGENDS'), source.metadata, source.allowedIds).diagnostic.availability).toBe('available')
+    const current = modeSource('ARGENTINA_CURRENT')
+    expect(evaluateMode(current.players, definition('ARGENTINA_CURRENT'), current.metadata, current.allowedIds).diagnostic.availability).toBe('insufficient_players')
+    expect(PLAYABLE_MODES.has('ARGENTINA_CURRENT')).toBe(false)
+    expect(PLAYABLE_MODES.has('LEGENDS_ONLY')).toBe(false)
+  })
+
+  it.each([
+    ['ARGENTINA_CURRENT', 'ARGENTINA_LEGENDS', { countryCode: 'ARG' }],
+    ['BRAZIL_CURRENT', 'BRAZIL_LEGENDS', { leagueId: 'bra_serie_a' }],
+    ['SPAIN_LEAGUE', 'SPAIN_LEGENDS', { leagueId: 'esp_la_liga' }],
+    ['ENGLAND_LEAGUE', 'ENGLAND_LEGENDS', { leagueId: 'eng_premier_league' }],
+  ] as const)('%s / %s require verified league careers and separate versions, regardless of nationality', (current, legends, career) => {
+    const players = [player('plr_001', 'contemporary', 'JPN'), player('plr_002', 'legend', 'JPN'), player('plr_003', 'legend')]
+    const metadata: MetadataIndex = Object.fromEntries(players.map((record, index) => [record.id, {
+      playerId: record.id,
+      careers: [{ clubId: 'test_club', ...career, source: { provider: 'editorial', verification: index === 2 ? 'unverified' : 'verified' } }],
+    }]))
+    expect(eligiblePlayers(players, definition(current), metadata)).toEqual([players[0]])
+    expect(eligiblePlayers(players, definition(legends), metadata)).toEqual([players[1]])
+    expect(eligiblePlayers(players, definition(legends), {})).toEqual([])
+    const otherLeague: MetadataIndex = { [players[1].id]: { playerId: players[1].id, careers: [{ clubId: 'other', countryCode: 'USA', leagueId: 'usa_mls', source: { provider: 'editorial', verification: 'verified' } }] } }
+    expect(eligiblePlayers(players, definition(legends), otherLeague)).toEqual([])
+  })
+
+  it('separates South America and Europe by association and version, independently of club location', () => {
+    const players = [player('plr_001', 'contemporary', 'BRA'), player('plr_002', 'legend', 'ARG'), player('plr_003', 'contemporary', 'ESP'), player('plr_004', 'legend', 'ENG'), player('plr_005', 'legend', 'JPN')]
+    const metadata: MetadataIndex = { plr_002: { playerId: 'plr_002', careers: [{ clubId: 'european_club', leagueConfederation: 'UEFA', source: { provider: 'editorial', verification: 'verified' } }] } }
+    expect(eligiblePlayers(players, definition('SOUTH_AMERICA_CURRENT'), metadata)).toEqual([players[0]])
+    expect(eligiblePlayers(players, definition('SOUTH_AMERICA_LEGENDS'), metadata)).toEqual([players[1]])
+    expect(eligiblePlayers(players, definition('EUROPE_CURRENT'), metadata)).toEqual([players[2]])
+    expect(eligiblePlayers(players, definition('EUROPE_LEGENDS'), metadata)).toEqual([players[3]])
+  })
+
+  it.each(['es-AR', 'en', 'pt-BR'] as const)('translates every category in %s and keeps upcoming collections disabled', async (language) => {
+    const i18n = await createI18n(language)
+    expect(THEMED_MODES.map((mode) => mode.id).sort()).toEqual([...THEMED_MODE_IDS].sort())
+    expect(new Set(THEMED_MODES.map((mode) => mode.id)).size).toBe(THEMED_MODE_IDS.length)
+    for (const mode of THEMED_MODES) {
+      for (const field of ['name', 'description']) expect(i18n.getResource(language, 'common', `modes.items.${mode.translationKey}.${field}`)).toEqual(expect.any(String))
+    }
+    const onChange = vi.fn()
+    render(<I18nextProvider i18n={i18n}><ModeSelector selected="GLOBAL_CLASSIC" onChange={onChange} /></I18nextProvider>)
+    fireEvent.click(screen.getByText(new RegExp(i18n.t('modes.upcoming'))))
+    for (const mode of THEMED_MODES) {
+      const button = screen.getByRole('button', { name: (_name, element) => element.querySelector('strong')?.textContent === i18n.t(`modes.items.${mode.translationKey}.name`) })
+      if (!PLAYABLE_MODES.has(mode.id)) expect(button).toBeDisabled()
+    }
+    fireEvent.click(screen.getByRole('button', { name: new RegExp(i18n.t('modes.items.argentinaLegends.name')) }))
+    expect(onChange).toHaveBeenCalledExactlyOnceWith('ARGENTINA_LEGENDS')
+  })
+})
