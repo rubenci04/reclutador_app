@@ -14,3 +14,10 @@ Revisión de claridad del botón de revisión, HUD, contador de descartes, posic
 
 ## Pruebas
 `coinAndSounds.test.tsx`: la secuencia de sonidos ahora termina en `signing` para una subasta ganada; el banner aparece con el texto esperado; no hay sonidos extra tras 5 s; `soundForRecord` mantiene `award` para asignaciones obligatorias o de autocompletado. `audioEngine.test` actualizado con el id `signing`. Suite completa: 613 de 613; typecheck, lint y build correctos.
+
+## Revisión de la lista restante (18/10/2026, segunda pasada)
+Se revisó en código cada punto que había quedado «no incluido». Resultado:
+- **Ya cubiertos por trabajo previo (C3/H1–H3), sin cambios nuevos:** contador de descartes con puntos y aviso de agotados y posiciones urgentes («forzado») en el HUD (`AuctionHud`); confirmación explícita de asignaciones obligatorias y de descarte («Confirmar asignación» / «Confirmar descarte»); organización del equipo con confirmar/editar; revelación de estrategia en tres etapas con indicador de paso; resultado final con victoria/empate/derrota y silbato.
+- **Sin cambio por decisión:** confirmar antes de «Volver» en el partido (el resultado ya está calculado y guardado, no se pierde nada); botón de revisión y claridad del inicio de partido: no hay evidencia de confusión fuera de la ya corregida en C3E, y cambiarlos sin prueba con jugadores sería especulativo.
+- **Pendiente real:** prueba manual de usuario en Firefox para decidir si algo de lo anterior necesita ajuste.
+H6 queda como **COMPLETA en lo comprobable por código**; el juicio de claridad depende de tu prueba.
