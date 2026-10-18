@@ -1,0 +1,40 @@
+import { useTranslation } from 'react-i18next'
+import { coachAge, coachEffect } from '../coaches/coachRules'
+import type { Coach } from '../coaches/coachTypes'
+import { budgetOf } from './auctionEngine'
+import type { RecruiterDuelGame, RecruiterId } from './auctionTypes'
+import { coachMarket, coachOf, coachOffers } from './coachHiring'
+
+interface Props {
+  readonly game: RecruiterDuelGame
+  readonly participant: RecruiterId
+  readonly name: string
+  /** True once the strategy step started: the squads are closed. */
+  readonly locked: boolean
+  readonly onHire: (coachId: string) => void
+}
+
+/** Optional step after the squads: spend what is left on one coach from a seeded offer. */
+export function CoachMarket({ game, participant, name, locked, onHire }: Props) {
+  const { t } = useTranslation()
+  const hired = coachOf(game, participant)
+  const left = budgetOf(game) - game.teams[participant].spent
+  const market = coachMarket(game, participant)
+  const label = (coach: Coach) => `${coach.name} ${coach.surname}`
+  const effectText = (coach: Coach) => { const e = coachEffect(coach); return { attack: e.attack.toFixed(1), defense: e.defense.toFixed(1), midfield: e.midfield.toFixed(1) } }
+  if (hired) return <section className="coach-market" aria-label={t('coach.title', { name })}>
+    <h3>{t('coach.title', { name })}</h3>
+    <p>{t('coach.hired', { coach: label(hired), team: hired.team, price: hired.price, ...effectText(hired) })}</p>
+  </section>
+  if (!market.length) return null
+  return <section className="coach-market" aria-label={t('coach.title', { name })}>
+    <h3>{t('coach.title', { name })}</h3>
+    <p className="market-left">{t('coach.left', { amount: left, count: coachOffers(game.seed)[participant].length })}</p>
+    {locked ? <p>{t('coach.closed')}</p> : <>
+      <div className="market-options">{market.map((coach) => <button key={coach.id} className="secondary-action" onClick={() => onHire(coach.id)}>
+        {t('coach.option', { coach: label(coach), age: coach.deathYear ? `${coach.birthYear}–${coach.deathYear}` : t('coach.age', { age: coachAge(coach) }), team: coach.team, tier: coach.tier, focus: t(`coach.focus.${coach.focus}`), price: coach.price })}
+      </button>)}</div>
+      <p className="market-hint">{t('coach.hint')}</p>
+    </>}
+  </section>
+}

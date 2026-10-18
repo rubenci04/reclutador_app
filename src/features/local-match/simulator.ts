@@ -1,4 +1,5 @@
 import type { Player } from '../../types/player'
+import type { CoachEffect } from '../coaches/coachTypes'
 import { summarizeDraft } from '../draft/draftModel'
 import { DRAFT_SLOT_IDS, DRAFT_SLOTS, type DraftLineup, type DraftSlotId } from '../draft/draftTypes'
 import { eventInfluence } from '../tactics/eventInfluence'
@@ -22,6 +23,8 @@ export interface SimulationInput {
   readonly budget?: number
   /** Optional substitutes (player ids) per side. Without them the match is exactly the classic one. */
   readonly benches?: Readonly<Record<MatchSide, readonly string[]>>
+  /** Optional coaches: a bounded extra per sector for the side that hired one. Without them the match is exactly the classic one. */
+  readonly coaches?: Readonly<Record<MatchSide, (CoachEffect & { readonly id: string }) | null>>
 }
 
 /**
@@ -123,6 +126,7 @@ export function simulateMatch(input: SimulationInput): MatchResult {
   const strengths = { local: sides.local.strength, cpu: sides.cpu.strength }
   const advantage = input.rosterBonus ? rosterAdvantage(strengths.local.global, strengths.cpu.global) : null
   const extra = (key: MatchSide) => (advantage?.side === key ? advantage.bonus : 0)
+  const coachExtra = (key: MatchSide, sector: 'attack' | 'defense' | 'midfield') => input.coaches?.[key]?.[sector] ?? 0
   type MutableStats = { -readonly [Key in keyof MatchStats]: MatchStats[Key] }
   const stats: Record<MatchSide, MutableStats> = { local: emptyStats(), cpu: emptyStats() }
   const score = { local: 0, cpu: 0 }
@@ -156,8 +160,8 @@ export function simulateMatch(input: SimulationInput): MatchResult {
     }
     for (const key of ['local', 'cpu'] as const) for (const sector of ['attack', 'defense', 'midfield'] as const) adjustmentTotals[key][sector] += adjustment[key][sector]
     const effective = {
-      local: { ...sides.local.strength, attack: sides.local.strength.attack + adjustment.local.attack + extra('local'), defense: sides.local.strength.defense + adjustment.local.defense + extra('local'), midfield: sides.local.strength.midfield + adjustment.local.midfield + extra('local') },
-      cpu: { ...sides.cpu.strength, attack: sides.cpu.strength.attack + adjustment.cpu.attack + extra('cpu'), defense: sides.cpu.strength.defense + adjustment.cpu.defense + extra('cpu'), midfield: sides.cpu.strength.midfield + adjustment.cpu.midfield + extra('cpu') },
+      local: { ...sides.local.strength, attack: sides.local.strength.attack + adjustment.local.attack + extra('local') + coachExtra('local', 'attack'), defense: sides.local.strength.defense + adjustment.local.defense + extra('local') + coachExtra('local', 'defense'), midfield: sides.local.strength.midfield + adjustment.local.midfield + extra('local') + coachExtra('local', 'midfield') },
+      cpu: { ...sides.cpu.strength, attack: sides.cpu.strength.attack + adjustment.cpu.attack + extra('cpu') + coachExtra('cpu', 'attack'), defense: sides.cpu.strength.defense + adjustment.cpu.defense + extra('cpu') + coachExtra('cpu', 'defense'), midfield: sides.cpu.strength.midfield + adjustment.cpu.midfield + extra('cpu') + coachExtra('cpu', 'midfield') },
     }
     const localAttackChance = initiativeChance(effective.local, effective.cpu)
     const side: MatchSide = random() < localAttackChance ? 'local' : 'cpu'
@@ -197,6 +201,7 @@ export function simulateMatch(input: SimulationInput): MatchResult {
     score, winner: score.local === score.cpu ? 'draw' : score.local > score.cpu ? 'local' : 'cpu',
     ...(benches ? { benches: { local: benches.local.map((id) => input.catalog.find((player) => player.id === id)!), cpu: benches.cpu.map((id) => input.catalog.find((player) => player.id === id)!) }, substitutions: { version: SUBSTITUTION_RULES_VERSION, events: substitutionLog } } : {}),
     ...(advantage ? { rosterAdvantage: advantage } : {}),
+    ...(input.coaches && (input.coaches.local || input.coaches.cpu) ? { coaches: input.coaches } : {}),
     tactics: { version: TACTICS_VERSION, selection: { local: selection.local, cpu: selection.cpu }, adjustments: { local: meanAdjustment(adjustmentTotals.local), cpu: meanAdjustment(adjustmentTotals.cpu) } },
   }
 }

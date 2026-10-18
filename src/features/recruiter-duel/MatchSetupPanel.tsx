@@ -24,6 +24,7 @@ export function MatchSetupPanel({ draft, onChange, versusCpu, preflight }: Props
         <strong>{t(`setup.${mode}`)}</strong><small>{t(`setup.${mode}Detail`)}</small>
       </label>)}
     </div>
+    <label className="setup-check"><input type="checkbox" checked={draft.coaches} onChange={(event) => set({ coaches: event.target.checked })} />{t('setup.coaches')}</label>
     {draft.mode === 'custom' && <>
       {(['one', 'two'] as const).map((side) => {
         const key = side === 'one' ? 'recruiter_one' : 'recruiter_two'; const value = side === 'one' ? draft.nameOne : draft.nameTwo; const issue = issues[key]
@@ -55,6 +56,7 @@ export function MatchSetupPanel({ draft, onChange, versusCpu, preflight }: Props
         <li>{t('setup.rules.formation')}</li>
         <li>{t(draft.mode === 'custom' && draft.substitutes ? 'setup.rules.startersBench' : 'setup.rules.starters')}</li>
         <li>{t('setup.rules.discards')}</li>
+        {draft.coaches && <li>{t('setup.rules.coaches')}</li>}
       </ul>
     </section>
   </fieldset>

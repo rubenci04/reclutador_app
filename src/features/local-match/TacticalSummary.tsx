@@ -1,3 +1,4 @@
+import { coachById } from '../coaches/coachCatalog'
 import { useTranslation } from 'react-i18next'
 import type { MatchResult, MatchSide } from './matchTypes'
 
@@ -11,8 +12,10 @@ export function TacticalSummary({ result, teamName }: Props) {
   const tactics = result.tactics
   if (!tactics) return null
   const advantage = result.rosterAdvantage
+  const coachLine = (side: 'local' | 'cpu') => { const hired = result.coaches?.[side]; const coach = coachById(hired?.id); return `${teamName(side)}: ${hired && coach ? t('coach.effect', { coach: `${coach.name} ${coach.surname}`, attack: hired.attack.toFixed(1), defense: hired.defense.toFixed(1), midfield: hired.midfield.toFixed(1) }) : t('coach.none')}` }
   return <section className="tactical-summary" aria-label={t('match.tacticsTitle')}>
     <h3>{t('match.tacticsTitle')}</h3>
+    {result.coaches && <p className="roster-advantage">{t('coach.result', { local: coachLine('local'), cpu: coachLine('cpu') })}</p>}
     {advantage && <p className="roster-advantage">{advantage.side ? t('match.rosterAdvantage', { team: teamName(advantage.side), bonus: advantage.bonus.toFixed(1), difference: advantage.difference.toFixed(1) }) : t('match.rosterAdvantageNone')}</p>}
     <ul>{(['local', 'cpu'] as const).map((side) => {
       const strategy = tactics.selection[side]; const adjustment = tactics.adjustments[side]

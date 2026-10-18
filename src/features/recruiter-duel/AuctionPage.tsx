@@ -10,6 +10,9 @@ import { DRAFT_SLOTS } from '../draft/draftTypes'
 import { MatchScreen } from '../local-match/MatchScreen'
 import { isValidOrganizedLineup } from '../local-match/simulator'
 import { CPU_STRATEGIES, takeCpuTurn, type CpuStrategy } from './cpuPolicy'
+import { CoachMarket } from './CoachMarket'
+import { autoChooseCoach, chooseCoach } from './coachHiring'
+import { coachById } from '../coaches/coachCatalog'
 import { ModeSelector } from '../themed-modes/ModeSelector'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
 import { autoBuySubstitutes, buySubstitute, budgetOf, autoCompleteAll, autoCompleteStep, canAutoComplete, previewAutoComplete, beginBidding, completeDuelMatch, createRecruiterDuel, currentRound, positionProgress, auctionAvailability, nextAuctionRound, passAuction, placeBid, reorderTeamLineup, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss, startDuelMatch } from './auctionEngine'
@@ -87,9 +90,9 @@ export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps)
     setGame(next); setError(null)
   }
   const customBudget = Number(setup.budgetText)
-  const customConfig: MatchConfig = { version: MATCH_CONFIG_VERSION, budget: customBudget, names: { recruiter_one: sanitizeName(setup.nameOne), recruiter_two: sanitizeName(setup.nameTwo) }, substitutes: setup.substitutes }
+  const customConfig: MatchConfig = { version: MATCH_CONFIG_VERSION, budget: customBudget, names: { recruiter_one: sanitizeName(setup.nameOne), recruiter_two: sanitizeName(setup.nameTwo) }, substitutes: setup.substitutes, ...(setup.coaches ? { coaches: true } : {}) }
   const setupPreflight = isValidBudget(customBudget) ? preflightMatchConfig(catalog, customConfig) : { ok: false as const, reason: 'budget_range' as const }
-  const config = setup.mode === 'custom' ? customConfig : CLASSIC_CONFIG
+  const config = setup.mode === 'custom' ? customConfig : setup.coaches ? { ...CLASSIC_CONFIG, coaches: true } : CLASSIC_CONFIG
   const canStart = setup.mode === 'classic' || (setupPreflight.ok && Object.keys(nameIssues(customConfig.names)).length === 0)
   const start = () => {
     if (!canStart) return
@@ -148,7 +151,7 @@ export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps)
 
   useEffect(() => {
     if (opponentMode !== 'cpu' || game?.phase !== 'TEAMS_COMPLETED') return
-    const next = autoBuySubstitutes(game, 'recruiter_two', catalog)
+    const next = autoChooseCoach(autoBuySubstitutes(game, 'recruiter_two', catalog), 'recruiter_two')
     if (next === game) return
     // Deferred like the other automatic steps, so the screen never changes inside the render pass.
     const timer = window.setTimeout(() => setGame((current) => (current === game ? next : current)), 0)
@@ -292,7 +295,7 @@ export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps)
             <details className="lineup-recap" open={!bothReady}>
               <summary>{t('stages.showTeams')}</summary>
               <div className="team-comparison">{RECRUITER_IDS.map((participant) => <article key={participant}><h2>{names[participant]}</h2><strong>{t('duel.spent', { amount: game.teams[participant].spent })}</strong><p>{DRAFT_SLOTS.map((slot) => playerById(game.teams[participant].lineup[slot.id]!).name).join(' · ')}</p></article>)}</div>
-              {(pending ? [pending] : humans).map((participant) => <div key={participant}><LineupOrganizer locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} game={game} participant={participant} name={names[participant]} catalog={catalog} confirmed={orderingDone(participant)} onSwap={(first, second) => swapLineup(participant, first, second)} onConfirm={() => setOrderingDone(participant, true)} onEdit={() => setOrderingDone(participant, false)} /><SubstituteMarket game={game} participant={participant} name={names[participant]} catalog={catalog} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} onBuy={(playerId) => { const signed = catalog.find((player) => player.id === playerId); const result = buySubstitute(game, participant, playerId, catalog); apply(result); if (result.ok && signed) push('success', t('notices.substituteBought', { participant: names[participant], player: signed.name, price: signed.price })) }} /></div>)}
+              {(pending ? [pending] : humans).map((participant) => <div key={participant}><LineupOrganizer locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} game={game} participant={participant} name={names[participant]} catalog={catalog} confirmed={orderingDone(participant)} onSwap={(first, second) => swapLineup(participant, first, second)} onConfirm={() => setOrderingDone(participant, true)} onEdit={() => setOrderingDone(participant, false)} /><SubstituteMarket game={game} participant={participant} name={names[participant]} catalog={catalog} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} onBuy={(playerId) => { const signed = catalog.find((player) => player.id === playerId); const result = buySubstitute(game, participant, playerId, catalog); apply(result); if (result.ok && signed) push('success', t('notices.substituteBought', { participant: names[participant], player: signed.name, price: signed.price })) }} />{game.config?.coaches && <CoachMarket game={game} participant={participant} name={names[participant]} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} onHire={(coachId) => { const hired = coachById(coachId); apply(chooseCoach(game, participant, coachId)); if (hired) push('success', t('coach.hired2', { coach: `${hired.name} ${hired.surname}`, price: hired.price })) }} />}</div>)}
               {opponentMode === 'cpu' && <p>{t('lineup.cpuKeeps')}</p>}
               {!bothReady && <p role="status">{t('lineup.waiting')}</p>}
             </details>

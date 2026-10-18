@@ -1,3 +1,4 @@
+import type { CoachEffect } from '../coaches/coachTypes'
 import type { Player } from '../../types/player'
 import type { DraftLineup } from '../draft/draftTypes'
 import type { StrategyId, TACTICS_VERSION } from '../tactics/strategies'
@@ -86,5 +87,7 @@ export interface MatchResult {
   /** Duels only: the side with the better global power gets a small extra in every block. Absent in classic matches. */
   readonly rosterAdvantage?: RosterAdvantage
   readonly benches?: Readonly<Record<MatchSide, readonly Player[]>>
+  /** Duels with coaches: what each side's coach added to attack, defence and midfield in every block. */
+  readonly coaches?: Readonly<Record<MatchSide, (CoachEffect & { readonly id: string }) | null>>
   readonly substitutions?: SubstitutionSummary
 }

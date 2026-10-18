@@ -24,6 +24,8 @@ export interface RecruiterTeam {
   readonly lineup: DraftLineup
   readonly spent: number
   readonly bench?: readonly BenchSlot[]
+  /** Coach hired after the auctions with the money left. Absent when the match has no coaches or none was hired. */
+  readonly coachId?: string
 }
 
 export interface AuctionBid { readonly participant: RecruiterId; readonly amount: number }
@@ -75,7 +77,7 @@ export type AuctionCreation =
   | { readonly ok: false; readonly error: 'auction_pool_unavailable' | 'budget_too_low' | 'budget_range' }
 
 export type AuctionActionError =
-  | 'invalid_transition' | 'not_your_turn' | 'invalid_bid' | 'unsafe_bid' | 'invalid_award' | 'teams_invalid' | 'no_legal_assignment' | 'invalid_strategy' | 'rival_incomplete' | 'invalid_substitute'
+  | 'invalid_transition' | 'not_your_turn' | 'invalid_bid' | 'unsafe_bid' | 'invalid_award' | 'teams_invalid' | 'no_legal_assignment' | 'invalid_strategy' | 'rival_incomplete' | 'invalid_substitute' | 'invalid_coach'
 
 export type AuctionTransition =
   | { readonly ok: true; readonly game: RecruiterDuelGame }

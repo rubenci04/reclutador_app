@@ -1,4 +1,6 @@
 import { DRAFT_BUDGET_MILLIONS } from '../../data/catalogRules'
+import { COACH_RESERVE, coachEffect } from '../coaches/coachRules'
+import { coachById } from '../coaches/coachCatalog'
 import type { Player } from '../../types/player'
 import { createEmptyLineup, summarizeDraft } from '../draft/draftModel'
 import { DRAFT_SLOTS } from '../draft/draftTypes'
@@ -15,6 +17,8 @@ import type { AuctionActionError, AuctionCreation, AuctionRound, AuctionTransiti
 
 /** The one source of the budget of a game: its configuration, or the classic value for games without one. */
 export const budgetOf = (game: Pick<RecruiterDuelGame, 'config'>) => game.config?.budget ?? DRAFT_BUDGET_MILLIONS
+/** Budget the auctions may use: what is left after the money kept aside for the coach. */
+export const auctionBudgetOf = (game: Pick<RecruiterDuelGame, 'config'>) => budgetOf(game) - (game.config?.coaches ? COACH_RESERVE : 0)
 const FIRST: RecruiterId = 'recruiter_one'
 const SECOND: RecruiterId = 'recruiter_two'
 const POSITIONS = ['ARQ', 'DEF', 'MED', 'DEL'] as const
@@ -110,7 +114,7 @@ function createRounds(catalog: readonly Player[], seed: string, context: DrawCon
   }
   shaveToShare(selected, catalog, Math.floor(baseShare * 2 * config.budget), random)
   const ordered = shuffleSeeded(selected, random)
-  return canFinishRounds(ordered, 0, { recruiter_one: emptyTeam(config), recruiter_two: emptyTeam(config) }, playerMap(catalog), config.budget) ? ordered : null
+  return canFinishRounds(ordered, 0, { recruiter_one: emptyTeam(config), recruiter_two: emptyTeam(config) }, playerMap(catalog), config.budget - (config.coaches ? COACH_RESERVE : 0)) ? ordered : null
 }
 
 /** Builds the unique cards of the duel: 22 in the classic mode (2 ARQ, 8 DEF, 6 MED, 6 DEL), 28 with substitutes. */
@@ -144,7 +148,7 @@ export function discardReplacement(game: RecruiterDuelGame, catalog: readonly Pl
   for (const { player } of candidates) {
     const replacement = { position: round.position, playerId: player.id }
     const rounds = game.rounds.map((entry, index) => index === game.roundIndex ? replacement : entry)
-    if (canFinishRounds(rounds, game.roundIndex, game.teams, map, budgetOf(game))) return replacement
+    if (canFinishRounds(rounds, game.roundIndex, game.teams, map, auctionBudgetOf(game))) return replacement
   }
   return null
 }
@@ -173,11 +177,11 @@ function canAward(game: RecruiterDuelGame, winner: RecruiterId, price: number, c
   const round = currentRound(game); const candidate = round && catalog.get(round.playerId)
   if (!round || !candidate || !Number.isInteger(price) || price < candidate.price) return false
   const team = game.teams[winner]
-  if (!teamHasSpace(team, round.position) || team.spent + price > budgetOf(game)) return false
+  if (!teamHasSpace(team, round.position) || team.spent + price > auctionBudgetOf(game)) return false
   const placed = placeInTeam(team, round.position, candidate.id, price)
   if (!placed) return false
   const teams = { ...game.teams, [winner]: placed }
-  return canFinishRounds(game.rounds, game.roundIndex + 1, teams, catalog, budgetOf(game))
+  return canFinishRounds(game.rounds, game.roundIndex + 1, teams, catalog, auctionBudgetOf(game))
 }
 
 /** Highest legal price while reserving all missing positions and budget for both recruiters. */
@@ -187,7 +191,7 @@ export function maximumSafeBid(game: RecruiterDuelGame, participant: RecruiterId
   const minimum = game.currentBid ? game.currentBid.amount + 1 : candidate.price
   // Feasibility is monotone in the winning price; binary search avoids repeated full scans.
   if (!canAward(game, participant, minimum, catalog)) return 0
-  let low = minimum; let high = budgetOf(game) - game.teams[participant].spent
+  let low = minimum; let high = auctionBudgetOf(game) - game.teams[participant].spent
   while (low < high) {
     const middle = Math.ceil((low + high) / 2)
     if (canAward(game, participant, middle, catalog)) low = middle
@@ -210,10 +214,10 @@ export function auctionAvailability(game: RecruiterDuelGame, participant: Recrui
   const amount = offer ?? minimum
   const reason: AuctionBlockCode | null = pending
     ?? (candidate && !teamHasSpace(game.teams[participant], candidate.position) ? 'POSITION_FULL' : null)
-    ?? (minimum > budgetOf(game) - game.teams[participant].spent ? 'INSUFFICIENT_BUDGET' : null)
+    ?? (minimum > auctionBudgetOf(game) - game.teams[participant].spent ? 'INSUFFICIENT_BUDGET' : null)
     ?? (maximum < minimum ? 'FUTURE_BUDGET_RESERVED' : null)
     ?? (!Number.isInteger(amount) || amount < minimum ? 'INVALID_OFFER' : null)
-    ?? (amount > budgetOf(game) - game.teams[participant].spent ? 'INSUFFICIENT_BUDGET' : null)
+    ?? (amount > auctionBudgetOf(game) - game.teams[participant].spent ? 'INSUFFICIENT_BUDGET' : null)
     ?? (amount > maximum ? 'FUTURE_BUDGET_RESERVED' : null)
   let fallback: RoundAward | null = null
   const priority = openingPriority(game)
@@ -306,7 +310,9 @@ export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player
   const stored: Record<RecruiterId, StrategyId> = { recruiter_one: chosen.recruiter_one, recruiter_two: chosen.recruiter_two }
   const benchIds = (participant: RecruiterId) => benchSlots(game.teams[participant]).flatMap((slot) => slot.playerId ? [slot.playerId] : [])
   const benches = { local: benchIds(FIRST), cpu: benchIds(SECOND) }
-  const matchResult = simulateMatch({ localLineup: game.teams[FIRST].lineup, cpuLineup: game.teams[SECOND].lineup, catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match`, rosterBonus: true, ...(game.config ? { budget: game.config.budget } : {}), ...(benches.local.length || benches.cpu.length ? { benches } : {}), tactics: { version: TACTICS_VERSION, local: stored.recruiter_one, cpu: stored.recruiter_two } })
+  const coachFor = (participant: RecruiterId) => { const coach = coachById(game.teams[participant].coachId); return coach ? { id: coach.id, ...coachEffect(coach) } : null }
+  const coaches = { local: coachFor(FIRST), cpu: coachFor(SECOND) }
+  const matchResult = simulateMatch({ localLineup: game.teams[FIRST].lineup, cpuLineup: game.teams[SECOND].lineup, catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match`, rosterBonus: true, ...(game.config ? { budget: game.config.budget } : {}), ...(benches.local.length || benches.cpu.length ? { benches } : {}), ...(coaches.local || coaches.cpu ? { coaches } : {}), tactics: { version: TACTICS_VERSION, local: stored.recruiter_one, cpu: stored.recruiter_two } })
   return transition(game, { phase: 'SIMULATING', matchResult, strategies: stored })
 }
 

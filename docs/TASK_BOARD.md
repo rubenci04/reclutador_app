@@ -76,6 +76,11 @@ Nomenclatura: DL-FXX-CAT-NNN; FXX indica fase y CAT responsabilidad. No existía
 | DL-F05-ONLINE-005 | Revancha en la misma sala, modo/presupuesto elegibles en el lobby y cierre FINISHED al terminar el partido | Pendiente (futuro 1): nueva migración, relaja CHECK de room_settings, RPC online_rematch |
 | DL-F05-ONLINE-006 | Reloj de turno online con deadline_at (ADR-0010) | Pendiente (futuro 2): pase automático o victoria por inactividad; requiere decidir tiempos |
 | DL-F04-TACTICS-008 | Roles posicionales específicos y peso táctico | Pendiente (futuro 3): etiquetar 350 jugadores con fuente verificable (hoy ROLE_PROFILES vacío) y revisar TACTICAL_GAINS tras playtest de DL-F04-TACTICS-007 |
+| DL-F04-COACH-001 | Directores técnicos: 100 técnicos, reserva de 1M, mercado y efecto en el partido | Completa técnicamente (hot-seat y CPU) en es-AR/en/pt-BR; datos de equipos pendientes de auditoría; online sin técnicos; ver docs/COACHES.md |
+| DL-F04-MODE-002 | Categorías: Brasil (~150), España, Italia, Inglaterra, Sudamérica, Europa, Global actuales, Leyendas y Leyendas+actuales | Pendiente (pedido del usuario): ver ADR-0012 |
+| DL-F04-MODE-003 | Versus entre categorías distintas con nivel equiparado | Pendiente (pedido del usuario): cada reclutador elige su categoría y el sorteo equilibra el nivel; ver ADR-0012 |
+| DL-F04-DATA-006 | Más leyendas sin foto y borrado de pendientes | Pendiente (pedido del usuario): ampliar leyendas con ficha base; quitar registros pendientes y reponerlos luego |
+| DL-F04-DATA-007 | Segunda fuente de datos además de Wikipedia | Pendiente: evaluar Wikidata (CC0, estructurado) y fuentes con licencia; registrar procedencia por campo |
 | DL-F03-I18N-001 | Traducir draft, presupuesto y confirmaciones | Completa en CODEX-004A |
 | DL-F04-I18N-001 | Traducir simulación y resultados | Completa en CODEX-004B |
 | DL-F05-I18N-001 | Traducir salas, espera y errores online | Pendiente |

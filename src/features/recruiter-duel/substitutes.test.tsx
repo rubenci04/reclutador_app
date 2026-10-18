@@ -255,7 +255,7 @@ describe('setup with substitutes', () => {
     const { AuctionPage } = await import('./AuctionPage')
     const i18n = await createI18n('en')
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
-    expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
+    expect(screen.queryByRole('checkbox', { name: /Three substitutes per team/ })).not.toBeInTheDocument()
     fireEvent.click(screen.getByRole('radio', { name: /Custom/ }))
     const toggle = screen.getByRole('checkbox', { name: /Three substitutes per team/ })
     expect(toggle).not.toBeChecked(); expect(screen.getByText('Eleven starters, no substitutes')).toBeInTheDocument()
