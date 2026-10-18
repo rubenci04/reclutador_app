@@ -31,13 +31,27 @@
   "revision": 1,
   "referenceClubId": "real_madrid",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
-  "verificationStatus": "PENDING",
-  "auditNote": "Real Madrid reported as his club with a deal running through 2026/27 and a verbal extension to 2028, but the only recent source is undated (foot-africa); no official or dated 2026 confirmation retrieved."
+  "currentClubId": "real_madrid",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "real_madrid",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.eldiario.ec/deportes/thibaut-courtois-extiende-su-contrato-con-el-real-madrid-por-dos-anos-21072025/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.eldiario.ec/deportes/thibaut-courtois-extiende-su-contrato-con-el-real-madrid-por-dos-anos-21072025/",
+    "startedYear": 2018
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.eldiario.ec/deportes/thibaut-courtois-extiende-su-contrato-con-el-real-madrid-por-dos-anos-21072025/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Extended with Real Madrid for two years (to 2027, Jul 2025); Sep 2026 press reports talk of a further renewal to 2028 that is not yet announced. The contract covers the cut-off. (Second review: earlier row was PENDING.)"
  },
  {
   "playerId": "plr_003",
@@ -107,6 +121,19 @@
   "auditNote": "Retirement in 2026 reported by Flashscore and Wikipedia; he moves to a role in FC Midtjylland administration. Some statistics sites still list him as active (stale)."
  },
  {
+  "playerId": "plr_007",
+  "revision": 1,
+  "referenceClubId": "real_madrid",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Second review: he left Monterrey and was seeking a club (Paris FC reported as a rumour, a Sevilla ownership item is not a signing). No official new club or FREE_AGENT evidence at the cut-off."
+ },
+ {
   "playerId": "plr_008",
   "revision": 1,
   "referenceClubId": "liverpool",
@@ -161,6 +188,33 @@
   "auditNote": "Free transfer from Benfica announced 29 May 2026; contract from 1 Jul 2026 to Dec 2027, joining after the World Cup (club statement quoted by several outlets)."
  },
  {
+  "playerId": "plr_012",
+  "revision": 1,
+  "referenceClubId": "paris_saint_germain",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "fluminense",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "fluminense",
+    "source": {
+     "provider": "editorial",
+     "url": "https://espndeportes.espn.com/futbol/brasil/nota/_/id/13623335/fluminense-hace-oficial-la-vuelta-de-thiago-silva",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://espndeportes.espn.com/futbol/brasil/nota/_/id/13623335/fluminense-hace-oficial-la-vuelta-de-thiago-silva",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://espndeportes.espn.com/futbol/brasil/nota/_/id/13623335/fluminense-hace-oficial-la-vuelta-de-thiago-silva",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Second review: Fluminense announced his third return on 22 Jun 2026 after leaving Porto; contract to Dec 2026 per press reports (no club text retrieved for the end date)."
+ },
+ {
   "playerId": "plr_013",
   "revision": 1,
   "referenceClubId": "juventus",
@@ -212,6 +266,72 @@
   "sourceUrl": "https://lapaginamillonaria.com/seleccion-argentina/marcos-acuna-no-jugara-el-mundial-2026-la-reaccion-de-river-y-que-dijo-stefano-di-carlo",
   "verificationStatus": "VERIFIED",
   "auditNote": "At River Plate since Aug 2024 (from Sevilla); May 2026 coverage of his omission from the World Cup list and the River president's reaction, plus 2026 league statistics. Secondary sources."
+ },
+ {
+  "playerId": "plr_016",
+  "revision": 1,
+  "referenceClubId": "tottenham_hotspur",
+  "currentClubId": "atletico_madrid",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "belgrano",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.atleticodemadrid.com/noticias/cristian-cuti-romero-ficha-por-el-atletico-de-madrid",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.atleticodemadrid.com/noticias/cristian-cuti-romero-ficha-por-el-atletico-de-madrid",
+    "startedYear": 2016,
+    "endedYear": 2018,
+    "countryCode": "ARG",
+    "leagueId": "argentina_primera",
+    "leagueConfederation": "CONMEBOL"
+   },
+   {
+    "clubId": "tottenham_hotspur",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.atleticodemadrid.com/noticias/cristian-cuti-romero-ficha-por-el-atletico-de-madrid",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.atleticodemadrid.com/noticias/cristian-cuti-romero-ficha-por-el-atletico-de-madrid",
+    "startedYear": 2021,
+    "endedYear": 2026,
+    "countryCode": "ENG",
+    "leagueId": "premier_league",
+    "leagueConfederation": "UEFA"
+   },
+   {
+    "clubId": "atletico_madrid",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.atleticodemadrid.com/noticias/cristian-cuti-romero-ficha-por-el-atletico-de-madrid",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.atleticodemadrid.com/noticias/cristian-cuti-romero-ficha-por-el-atletico-de-madrid",
+    "startedYear": 2026,
+    "countryCode": "ESP",
+    "leagueId": "la_liga",
+    "leagueConfederation": "UEFA"
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "asOfDate": "2026-10-18",
+  "sourceUrl": "https://www.atleticodemadrid.com/noticias/cristian-cuti-romero-ficha-por-el-atletico-de-madrid",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Re-checked 2026-10-18: Atlético de Madrid announced the signing on 15 Aug 2026 (contract to 30 Jun 2031); the date is now corroborated by several dated reports (Emisoras Unidas, Metro, Futbol Fantasy), no longer only user-supplied. Tottenham stays as the sporting reference (2021).",
+  "announcedAt": "2026-08-15",
+  "announcementDateVerification": "VERIFIED"
  },
  {
   "playerId": "plr_017",
@@ -334,17 +454,71 @@
   "auditNote": "Retired in 2021 (last club Nordsjælland) at 34; later coaching and sports-coordinator roles. Wikipedia agrees."
  },
  {
+  "playerId": "plr_025",
+  "revision": 1,
+  "referenceClubId": "barcelona",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "RETIRED",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://www.intermiamicf.com/news/sergio-busquets-to-retire-at-the-end-of-the-season",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Second review: Inter Miami's own page (Sep 2025) announces his retirement at the end of the 2025 MLS season; the date of his last match was not retrieved but that season has ended."
+ },
+ {
   "playerId": "plr_027",
   "revision": 1,
   "referenceClubId": "real_madrid",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
-  "verificationStatus": "PENDING",
-  "auditNote": "Only low-quality, templated pages (conflicting Manchester United / Inter Miami claims); no official or major-outlet confirmation retrieved."
+  "currentClubId": "inter_miami",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "inter_miami",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.eluniversal.com.co/deportes/2026/07/22/casemiro-se-junta-a-lionel-messi-en-el-inter-miami-fichaje-es-oficial/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.eluniversal.com.co/deportes/2026/07/22/casemiro-se-junta-a-lionel-messi-en-el-inter-miami-fichaje-es-oficial/",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.eluniversal.com.co/deportes/2026/07/22/casemiro-se-junta-a-lionel-messi-en-el-inter-miami-fichaje-es-oficial/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Inter Miami announced his signing on 22 Jul 2026 (free agent after Manchester United; contract to the 2027 Sprint Season with an option to June 2029); all outlets agree. Debut depended on a P-1 visa. (Second review.)"
+ },
+ {
+  "playerId": "plr_030",
+  "revision": 1,
+  "referenceClubId": "arsenal",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "sunderland",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "sunderland",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.beinsports.com/en-au/football/premier-league/articles/xhaka-staying-put-and-wants-to-make-history-with-sunderland-2026-07-08",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.beinsports.com/en-au/football/premier-league/articles/xhaka-staying-put-and-wants-to-make-history-with-sunderland-2026-07-08",
+    "startedYear": 2025
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.beinsports.com/en-au/football/premier-league/articles/xhaka-staying-put-and-wants-to-make-history-with-sunderland-2026-07-08",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Second review: joined Sunderland in July 2025 (three years); 8 Jul 2026 report: staying at Sunderland after rejecting Chelsea's approach."
  },
  {
   "playerId": "plr_031",
@@ -437,6 +611,62 @@
   "sourceUrl": null,
   "verificationStatus": "PENDING",
   "auditNote": "Wikipedia, FotMob and ESPN place him at Alajuelense in 2025-26 (match of 11 Mar 2026), but no source confirms his status after the mid-year window."
+ },
+ {
+  "playerId": "plr_038",
+  "revision": 1,
+  "referenceClubId": "barcelona",
+  "currentClubId": "inter_miami",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "inter_miami",
+    "source": {
+     "provider": "editorial",
+     "url": "https://es.intermiamicf.com/noticias/inter-miami-cf-renueva-el-contrato-de-leo-messi",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://es.intermiamicf.com/noticias/inter-miami-cf-renueva-el-contrato-de-leo-messi",
+    "startedYear": 2023,
+    "leagueId": "mls",
+    "countryCode": "USA"
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "asOfDate": "2026-10-18",
+  "sourceUrl": "https://es.intermiamicf.com/noticias/inter-miami-cf-renueva-el-contrato-de-leo-messi",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Re-checked 2026-10-18: Inter Miami announced the renewal on 23 Oct 2025 (to the 2028 MLS season; club statement, widely reported). No departure reported. Barcelona stays as the sporting reference (2019)."
+ },
+ {
+  "playerId": "plr_041",
+  "revision": 1,
+  "referenceClubId": "bayern_munich",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "chicago_fire",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "chicago_fire",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.primicias.ec/deportes/futbol/robert-lewandowski-nuevo-jugador-chicago-fire-mls-126692/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.primicias.ec/deportes/futbol/robert-lewandowski-nuevo-jugador-chicago-fire-mls-126692/",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.primicias.ec/deportes/futbol/robert-lewandowski-nuevo-jugador-chicago-fire-mls-126692/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Second review: Chicago Fire made the signing official on 29 Jun 2026 (two seasons to 2027-28) after his Barcelona contract expired; debut scheduled 22 Jul. Romano and beIN Sports agree."
  },
  {
   "playerId": "plr_045",
@@ -626,6 +856,19 @@
   "auditNote": "Manchester City announced his departure; he signed with Fenerbahçe (Sep 2025) and played Süper Lig matches in Sep 2026 (profile data). City contract news is outdated."
  },
  {
+  "playerId": "plr_054",
+  "revision": 1,
+  "referenceClubId": "barcelona",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "RETIRED",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://es.soccerway.com/noticias/futbol-copa-america-claudio-bravo-anuncia-su-retiro-del-futbol-a-sus-41-anos/trHIMwZ7",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Second review: officially announced his retirement from football at 41 on social media; last club Real Betis. Several outlets agree."
+ },
+ {
   "playerId": "plr_055",
   "revision": 1,
   "referenceClubId": "standard_liege",
@@ -669,13 +912,27 @@
   "revision": 1,
   "referenceClubId": "bayern_munich",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
-  "verificationStatus": "PENDING",
-  "auditNote": "Real Madrid and Alaba agreed to end his stay when his contract expired in June 2026 (reports of May 2026). No official report of a new club or of a free-agent status at the cut-off."
+  "currentClubId": "udinese",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "udinese",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.topmercato.com/2143007-mercato-apres-le-real-madrid-david-alaba-tient-enfin-son-nouveau-club/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.topmercato.com/2143007-mercato-apres-le-real-madrid-david-alaba-tient-enfin-son-nouveau-club/",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.topmercato.com/2143007-mercato-apres-le-real-madrid-david-alaba-tient-enfin-son-nouveau-club/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "After leaving Real Madrid (announced 22 May 2026) he joined Udinese in late September 2026 (one-season contract to June 2027 per foot-africa and Les Nouvelles du Foot; Romano's verbal agreement on 23 Sep). No Udinese press release retrieved. (Second review.)"
  },
  {
   "playerId": "plr_061",
@@ -1212,13 +1469,27 @@
   "revision": 1,
   "referenceClubId": "liverpool",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
-  "verificationStatus": "PENDING",
-  "auditNote": "Liverpool announced his exit at the end of 2025-26; his next club was unannounced in the reliable sources found. Low-quality pages claiming otherwise were discarded."
+  "currentClubId": "trabzonspor",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "trabzonspor",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.lanacion.com.ar/deportes/futbol/mohamed-salah-llego-a-turquia-para-comenzar-un-nuevo-desafio-en-su-carrera-en-el-club-trabzonspor-nid05082026/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.lanacion.com.ar/deportes/futbol/mohamed-salah-llego-a-turquia-para-comenzar-un-nuevo-desafio-en-su-carrera-en-el-club-trabzonspor-nid05082026/",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.lanacion.com.ar/deportes/futbol/mohamed-salah-llego-a-turquia-para-comenzar-un-nuevo-desafio-en-su-carrera-en-el-club-trabzonspor-nid05082026/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Trabzonspor announced his two-year signing (4-5 Aug 2026), free transfer after nine seasons at Liverpool; several outlets agree. (Second review.)"
  },
  {
   "playerId": "plr_091",
@@ -1466,13 +1737,27 @@
   "revision": 1,
   "referenceClubId": "ac_milan",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
-  "verificationStatus": "PENDING",
-  "auditNote": "Only September 2025 reports (agreement with Manchester City, medical on deadline day); no official club announcement or 2026 source retrieved."
+  "currentClubId": "manchester_city",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "manchester_city",
+    "source": {
+     "provider": "editorial",
+     "url": "https://hayters.com/manchester-city-confirm-signing-of-gianluigi-donnarumma/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://hayters.com/manchester-city-confirm-signing-of-gianluigi-donnarumma/",
+    "startedYear": 2025
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://hayters.com/manchester-city-confirm-signing-of-gianluigi-donnarumma/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Manchester City confirmed the signing from PSG on deadline day (Sep 2025), five-year contract, number 99. (Second review.)"
  },
  {
   "playerId": "plr_103",
@@ -1600,13 +1885,27 @@
   "revision": 1,
   "referenceClubId": "real_madrid",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": "https://arynews.tv/carvajal-joins-getafe-until-end-of-season",
-  "verificationStatus": "PENDING",
-  "auditNote": "Real Madrid announced in May 2026 that he would not continue. An AFP wire of 13 Oct 2026 reports a free signing by Getafe to 30 Jun 2027; a single wire source and no club statement retrieved."
+  "currentClubId": "getafe",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "getafe",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.comuniate.com/noticias/38406/oficial-dani-carvajal-nuevo-fichaje-del-getafe-hasta-2027",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.comuniate.com/noticias/38406/oficial-dani-carvajal-nuevo-fichaje-del-getafe-hasta-2027",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.comuniate.com/noticias/38406/oficial-dani-carvajal-nuevo-fichaje-del-getafe-hasta-2027",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Getafe announced his signing on 13 Oct 2026 (free agent after Real Madrid, contract to 30 Jun 2027 per several outlets). (Second review.)"
  },
  {
   "playerId": "plr_109",
@@ -1949,13 +2248,27 @@
   "revision": 1,
   "referenceClubId": "manchester_city",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
-  "verificationStatus": "PENDING",
-  "auditNote": "A single 17 Aug 2026 article (Vistazo) reports a Barcelona signing to 2030, while another says the deal was not yet closed on 13 Aug; no club announcement retrieved."
+  "currentClubId": "barcelona",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "barcelona",
+    "source": {
+     "provider": "editorial",
+     "url": "https://observador.cr/barcelona-asesta-gran-golpe-en-el-mercado-con-el-capitan-campeon-mundial-rodri/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://observador.cr/barcelona-asesta-gran-golpe-en-el-mercado-con-el-capitan-campeon-mundial-rodri/",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://observador.cr/barcelona-asesta-gran-golpe-en-el-mercado-con-el-capitan-campeon-mundial-rodri/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "FC Barcelona made his signing official (contract to 30 Jun 2030); the fee differs by outlet. No club statement text retrieved. (Second review.)"
  },
  {
   "playerId": "plr_124",
@@ -2043,26 +2356,54 @@
   "revision": 1,
   "referenceClubId": "barcelona",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
-  "verificationStatus": "PENDING",
-  "auditNote": "Barcelona contract ran to 30 Jun 2026 and only 2025 renewal talk was found; no source on a new deal or a departure."
+  "currentClubId": "barcelona",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "barcelona",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.record.com.mx/historia/oficial-frenkie-de-jong-renueva-con-barcelona-hasta-2029-2026012023241928304",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.record.com.mx/historia/oficial-frenkie-de-jong-renueva-con-barcelona-hasta-2029-2026012023241928304",
+    "startedYear": 2019
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.record.com.mx/historia/oficial-frenkie-de-jong-renueva-con-barcelona-hasta-2029-2026012023241928304",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Barcelona announced his renewal to 30 Jun 2029 (Jan 2026; ESPN, Soccerway, El Mundo agree). (Second review.)"
  },
  {
   "playerId": "plr_128",
   "revision": 1,
   "referenceClubId": "barcelona",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
-  "verificationStatus": "PENDING",
-  "auditNote": "Only 2021 reports (extension to 30 Jun 2026); nothing on a renewal or a move."
+  "currentClubId": "barcelona",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "barcelona",
+    "source": {
+     "provider": "editorial",
+     "url": "https://es.soccerway.com/noticias/futbol-laliga-ea-sports-oficial-la-renovacion-de-pedri-con-el-barcelona-ya-es-una-realidad/hEalWcyf",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://es.soccerway.com/noticias/futbol-laliga-ea-sports-oficial-la-renovacion-de-pedri-con-el-barcelona-ya-es-una-realidad/hEalWcyf",
+    "startedYear": 2019
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://es.soccerway.com/noticias/futbol-laliga-ea-sports-oficial-la-renovacion-de-pedri-con-el-barcelona-ya-es-una-realidad/hEalWcyf",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Barcelona's announcement (30 Jan 2025): renewal to 30 Jun 2030. (Second review.)"
  },
  {
   "playerId": "plr_129",
@@ -2123,13 +2464,27 @@
   "revision": 1,
   "referenceClubId": "benfica",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": "https://en.wikipedia.org/wiki/Enzo_Fern%C3%A1ndez",
-  "verificationStatus": "PENDING",
-  "auditNote": "Wikipedia lists Manchester City from 2026 while a cluster of low-quality pages still say Chelsea; no club announcement retrieved."
+  "currentClubId": "manchester_city",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "manchester_city",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.noticiasnqn.com.ar/noticias/2026/09/02/350768-enzo-fernandez-fue-presentado-como-nuevo-jugador-del-manchester-city",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.noticiasnqn.com.ar/noticias/2026/09/02/350768-enzo-fernandez-fue-presentado-como-nuevo-jugador-del-manchester-city",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.noticiasnqn.com.ar/noticias/2026/09/02/350768-enzo-fernandez-fue-presentado-como-nuevo-jugador-del-manchester-city",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Manchester City announced the signing on the last day of the window (1 Sep 2026) and presented him on 2 Sep; fee and contract end (2031/2032) vary by outlet. Low-quality pages that still say Chelsea were discarded. (Second review.)"
  },
  {
   "playerId": "plr_132",
@@ -2283,13 +2638,27 @@
   "revision": 1,
   "referenceClubId": "atletico_madrid",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
-  "verificationStatus": "PENDING",
-  "auditNote": "Reports from March 2026 say he agreed to join Orlando City (two years) after the Atlético season; no club statement or post-July appearance was found."
+  "currentClubId": "orlando_city",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "orlando_city",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.beinsports.com/en-asia/football/mls/articles/griezmann-officially-joins-orlando-after-atletico-madrid-exit-2026-06-24",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.beinsports.com/en-asia/football/mls/articles/griezmann-officially-joins-orlando-after-atletico-madrid-exit-2026-06-24",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.beinsports.com/en-asia/football/mls/articles/griezmann-officially-joins-orlando-after-atletico-madrid-exit-2026-06-24",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Orlando City announced the deal in March 2026 (two years plus option) and beIN Sports of 24 Jun 2026 reports him officially an Orlando player after leaving Atlético; first match scheduled 22 Jul. (Second review.)"
  },
  {
   "playerId": "plr_140",
@@ -2309,13 +2678,27 @@
   "revision": 1,
   "referenceClubId": "inter_milan",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
-  "verificationStatus": "PENDING",
-  "auditNote": "Inter in 2025/26 statistics, but the sources found cite a contract to 30 Jun 2026 without a later renewal or dated 2026-27 confirmation."
+  "currentClubId": "inter_milan",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "inter_milan",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.montevideo.com.uy/Deportes/Italia-Lautaro-Martinez-renovo-contrato-en-Inter-hasta-el-30-de-junio-de-2029-uc896907",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.montevideo.com.uy/Deportes/Italia-Lautaro-Martinez-renovo-contrato-en-Inter-hasta-el-30-de-junio-de-2029-uc896907",
+    "startedYear": 2018
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.montevideo.com.uy/Deportes/Italia-Lautaro-Martinez-renovo-contrato-en-Inter-hasta-el-30-de-junio-de-2029-uc896907",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Inter's statement (12 Aug 2024): contract to 30 Jun 2029, which covers the cut-off; 2025/26 statistics with Inter. (Second review.)"
  },
  {
   "playerId": "plr_142",
@@ -2483,13 +2866,27 @@
   "revision": 1,
   "referenceClubId": "wolverhampton_wanderers",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
-  "verificationStatus": "PENDING",
-  "auditNote": "Wikipedia lists a 2026 loan to Schalke 04 from Wolves while Maxifoot and Footmercato still show Wolves; a single unconfirmed loan."
+  "currentClubId": "schalke_04",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "schalke_04",
+    "source": {
+     "provider": "editorial",
+     "url": "https://schalke04.de/en/team/hwang-loan-2627/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://schalke04.de/en/team/hwang-loan-2627/",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://schalke04.de/en/team/hwang-loan-2627/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Schalke 04's own site: loan from Wolves until 30 Jun 2027 (deadline day, 1 Sep 2026), with a purchase option. Current club is the loan club; Wolves remain the parent club. (Second review.)"
  },
  {
   "playerId": "plr_150",

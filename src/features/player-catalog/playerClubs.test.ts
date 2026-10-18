@@ -16,11 +16,12 @@ describe('dated current club audit', () => {
     expect(PLAYER_CLUB_AUDIT.filter((row) => row.careerStatus === 'UNKNOWN')).toHaveLength(6)
   })
   it('separates Messi and Romero current clubs from untouched reference clubs', () => {
-    expect(capturePlayerClubs(messi)).toMatchObject({referenceClubId:'barcelona',currentClubId:'inter_miami',careerStatus:'ACTIVE',asOfDate:'2026-10-17'})
+    expect(capturePlayerClubs(messi,'2026-10-17')).toMatchObject({referenceClubId:'barcelona',currentClubId:'inter_miami',careerStatus:'ACTIVE',asOfDate:'2026-10-17'})
     const romero = DRAFT_CATALOG.find((player) => player.id === 'plr_016')!
-    expect(capturePlayerClubs(romero)).toMatchObject({referenceClubId:'tottenham_hotspur',currentClubId:'atletico_madrid',announcedAt:'2026-08-15',announcementDateVerification:'USER_SUPPLIED'})
+    expect(capturePlayerClubs(romero,'2026-10-17')).toMatchObject({referenceClubId:'tottenham_hotspur',currentClubId:'atletico_madrid',announcedAt:'2026-08-15',announcementDateVerification:'USER_SUPPLIED'})
+    expect(capturePlayerClubs(romero)).toMatchObject({currentClubId:'atletico_madrid',announcedAt:'2026-08-15',announcementDateVerification:'VERIFIED',asOfDate:'2026-10-18'})
     expect(romero.club_tag).toBe('tottenham_hotspur')
-    const belgrano = capturePlayerClubs(romero).clubHistory.find((spell) => spell.clubId === 'belgrano')!
+    const belgrano = capturePlayerClubs(romero,'2026-10-17').clubHistory.find((spell) => spell.clubId === 'belgrano')!
     expect(belgrano).toMatchObject({countryCode:'ARG',verificationStatus:'VERIFIED',startedYear:2016,endedYear:2018})
     expect(belgrano.source.url).toBe(belgrano.sourceUrl)
   })
@@ -58,8 +59,8 @@ describe('dated current club audit', () => {
     for(const player of DRAFT_CATALOG) expect(getClubIdentity(player.club_tag)).toBeDefined()
   })
   it('captures independent revisions and never replaces a prior dated view with a future update', () => {
-    const before=capturePlayerClubs(messi)
-    const retained=capturePlayerClubs(messi)
+    const before=capturePlayerClubs(messi,'2026-10-17')
+    const retained=capturePlayerClubs(messi,'2026-10-17')
     const future:PlayerClubSnapshot={...before,asOfDate:'2027-01-01',revision:2,careerStatus:'FREE_AGENT',currentClubId:null}
     const revisions=[before,future]
     expect(capturePlayerClubs(messi,'2026-10-17',revisions)).toEqual(retained)
