@@ -35,6 +35,8 @@ export interface MatchEvent {
   readonly side: MatchSide | null
   readonly type: MatchEventType
   readonly playerId?: string
+  /** Narration only: strategy whose adjustment shaped the event. Absent for NEUTRAL and for events without one. */
+  readonly tactic?: StrategyId
 }
 
 export interface MatchBlock {

@@ -191,3 +191,4 @@
   .football-coin.tossing .coin3d, .football-coin.tossing[data-side="tails"] .coin3d, .coin-face-choice { animation: none; transition: none; }
   .auction-candidate, .card-discard, .bid-highlight, .pitch-shirt.occupied, .goal-flash, .strategy-panel, .strategy-revealed { animation: none; transform: none; opacity: 1; }
 }
+.event-tactic { display: block; color: #d5fb76; font-size: .75rem; }

@@ -1,6 +1,7 @@
 import type { Player } from '../../types/player'
 import { summarizeDraft } from '../draft/draftModel'
 import { DRAFT_SLOTS, type DraftLineup } from '../draft/draftTypes'
+import { eventInfluence } from '../tactics/eventInfluence'
 import { NEUTRAL_SELECTION, TACTICS_VERSION, parseStrategySelection, type StrategySelection } from '../tactics/strategies'
 import { ZERO_ADJUSTMENT, tacticalAdjustment, tacticalFeatures, type TacticalAdjustment } from '../tactics/tacticalModel'
 import { createSeededRandom } from './seededRandom'
@@ -121,7 +122,8 @@ export function simulateMatch(input: SimulationInput): MatchResult {
       events.push(event(minute, opponent, 'recovery'))
     }
     if (minute === 90) events.push(event(minute, null, 'final'))
-    blocks.push({ minute, events, score: { ...score } })
+    const narrated = events.map((item) => { const tactic = eventInfluence(item.type, item.side, selection, adjustment); return tactic ? { ...item, tactic } : item })
+    blocks.push({ minute, events: narrated, score: { ...score } })
   }
   const meanMidfield = (side: MatchSide) => strengths[side].midfield + adjustmentTotals[side].midfield / MATCH_MINUTES.length
   const possessionLocal = Math.round(clamp(50 + (meanMidfield('local') - meanMidfield('cpu')) * .6 + (random() - .5) * 4, 36, 64))
