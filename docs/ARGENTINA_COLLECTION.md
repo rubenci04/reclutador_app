@@ -4,7 +4,7 @@ Estado: diseño, 0/200 registros. Contrato: `argentina_collection_v1`, independi
 
 | Lote | IDs nuevos | Cupos ARQ/DEF/MED/DEL | Estado |
 |---|---|---|---|
-| ARG-B01 | arg_001–arg_050 | 6/16/15/13 | Pendiente |
+| ARG-B01 | arg_001–arg_050 | 6/16/15/13 | Creado (50/50, revisión editorial pendiente); ver docs/qa/CODEX-005H-H5.md |
 | ARG-B02 | arg_051–arg_100 | 6/16/15/13 | Pendiente |
 | ARG-B03 | arg_101–arg_150 | 6/16/15/13 | Pendiente |
 | ARG-B04 | arg_151–arg_200 | 6/16/15/13 | Pendiente |

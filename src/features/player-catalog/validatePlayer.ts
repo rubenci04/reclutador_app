@@ -11,7 +11,7 @@ const REQUIRED_FIELDS = [
 ] as const satisfies readonly (keyof Player)[]
 const NUMERIC_FIELDS = ['overall_rating', 'att_rating', 'def_rating', 'phy_rating', 'men_rating', 'price'] as const
 
-export function validatePlayer(input: unknown): PlayerValidation {
+export function validatePlayer(input: unknown, allowedIds: readonly string[] = EXPECTED_PLAYER_IDS): PlayerValidation {
   if (typeof input !== 'object' || input === null || Array.isArray(input)) {
     return { valid: false, issues: [{ code: 'invalid_record' }] }
   }
@@ -33,7 +33,7 @@ export function validatePlayer(input: unknown): PlayerValidation {
       issues.push({ code, field, actual: record[field] })
     }
   }
-  member(EXPECTED_PLAYER_IDS, 'id', 'invalid_id')
+  member(allowedIds, 'id', 'invalid_id')
   member(POSITIONS, 'position', 'invalid_position')
   member(ERAS, 'era', 'invalid_era')
   member(PLAYER_CATEGORIES, 'category', 'invalid_category')

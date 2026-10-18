@@ -16,6 +16,12 @@ export const clubRegistry: Readonly<Record<string, ClubIdentity | undefined>> = 
     ['ajax', 'Ajax'], ['boca_juniors', 'Boca Juniors'], ['al_wasl', 'Al Wasl'],
     ['udinese', 'Udinese'], ['getafe', 'Getafe'], ['schalke_04', 'Schalke 04'],
     ['sunderland', 'Sunderland'], ['chicago_fire', 'Chicago Fire FC'],
+    ['atlanta', 'Club Atlético Atlanta'], ['gimnasia_la_plata', 'Gimnasia y Esgrima La Plata'], ['union_santa_fe', 'Unión de Santa Fe'], ['quilmes', 'Quilmes'],
+    ['racing_club', 'Racing Club'], ['argentinos_juniors', 'Argentinos Juniors'], ['velez_sarsfield', 'Vélez Sarsfield'], ['san_lorenzo', 'San Lorenzo'],
+    ['huracan', 'Huracán'], ['estudiantes_la_plata', 'Estudiantes de La Plata'], ['chacarita_juniors', 'Chacarita Juniors'], ['nueva_chicago', 'Nueva Chicago'],
+    ['olimpo', 'Olimpo'], ['sarmiento_junin', 'Sarmiento de Junín'], ['lanus', 'Lanús'], ['newells_old_boys', "Newell's Old Boys"], ['colon', 'Colón'],
+    ['talleres_cordoba', 'Talleres de Córdoba'], ['aldosivi', 'Aldosivi'], ['barracas_central', 'Barracas Central'], ['deportivo_merlo', 'Deportivo Merlo'],
+    ['arsenal_sarandi', 'Arsenal de Sarandí'], ['platense', 'Platense'], ['instituto', 'Instituto'], ['banfield', 'Banfield'], ['tigre', 'Tigre'],
   ].map(([id, name]) => [id, { id, name }]),
 ]))
 

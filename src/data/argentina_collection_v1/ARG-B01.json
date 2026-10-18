@@ -1,0 +1,3657 @@
+[
+ {
+  "id": "arg_001",
+  "name": "Hugo Gatti",
+  "position": "ARQ",
+  "era": "1980s",
+  "category": "legend",
+  "reference_year": 1981,
+  "nationality": "ARG",
+  "club_tag": "boca_juniors",
+  "overall_rating": 87,
+  "att_rating": 50,
+  "def_rating": 86,
+  "phy_rating": 80,
+  "men_rating": 88,
+  "price": 8,
+  "identityKey": "wikipedia:Hugo_Gatti",
+  "inclusionReasons": [
+   "championship",
+   "club_icon"
+  ],
+  "careers": [
+   {
+    "clubId": "atlanta",
+    "countryCode": "ARG",
+    "startedYear": 1962,
+    "endedYear": 1964,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Hugo_Gatti",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1964,
+    "endedYear": 1968,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Hugo_Gatti",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "gimnasia_la_plata",
+    "countryCode": "ARG",
+    "startedYear": 1969,
+    "endedYear": 1974,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Hugo_Gatti",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "union_santa_fe",
+    "countryCode": "ARG",
+    "startedYear": 1974,
+    "endedYear": 1975,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Hugo_Gatti",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 1976,
+    "endedYear": 1988,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Hugo_Gatti",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Boca Juniors: Primera División (Metropolitano) 1976 and 1981; Copa Libertadores 1976 and 1977; Intercontinental Cup 1977; Argentine Footballer of the Year 1982.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Hugo_Gatti",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_002",
+  "name": "Ubaldo Fillol",
+  "position": "ARQ",
+  "era": "1970s",
+  "category": "legend",
+  "reference_year": 1978,
+  "nationality": "ARG",
+  "club_tag": "river_plate",
+  "overall_rating": 90,
+  "att_rating": 52,
+  "def_rating": 90,
+  "phy_rating": 84,
+  "men_rating": 90,
+  "price": 11,
+  "identityKey": "wikipedia:Ubaldo_Fillol",
+  "inclusionReasons": [
+   "championship",
+   "club_icon"
+  ],
+  "careers": [
+   {
+    "clubId": "quilmes",
+    "countryCode": "ARG",
+    "startedYear": 1968,
+    "endedYear": 1971,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Ubaldo_Fillol",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "racing_club",
+    "countryCode": "ARG",
+    "startedYear": 1971,
+    "endedYear": 1973,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Ubaldo_Fillol",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1973,
+    "endedYear": 1983,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Ubaldo_Fillol",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "argentinos_juniors",
+    "countryCode": "ARG",
+    "startedYear": 1983,
+    "endedYear": 1984,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Ubaldo_Fillol",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "racing_club",
+    "countryCode": "ARG",
+    "startedYear": 1986,
+    "endedYear": 1989,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Ubaldo_Fillol",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "velez_sarsfield",
+    "countryCode": "ARG",
+    "startedYear": 1989,
+    "endedYear": 1991,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Ubaldo_Fillol",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "River Plate: seven Primera División titles 1975-1981 (360 league apps); Copa Libertadores runner-up 1976. Racing Club: Supercopa 1988.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Ubaldo_Fillol",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_003",
+  "name": "José Luis Chilavert",
+  "position": "ARQ",
+  "era": "1990s",
+  "category": "legend",
+  "reference_year": 1994,
+  "nationality": "PAR",
+  "club_tag": "velez_sarsfield",
+  "overall_rating": 91,
+  "att_rating": 62,
+  "def_rating": 90,
+  "phy_rating": 85,
+  "men_rating": 92,
+  "price": 12,
+  "identityKey": "wikipedia:Jos%C3%A9_Luis_Chilavert",
+  "inclusionReasons": [
+   "championship",
+   "club_icon"
+  ],
+  "careers": [
+   {
+    "clubId": "san_lorenzo",
+    "countryCode": "ARG",
+    "startedYear": 1985,
+    "endedYear": 1988,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jos%C3%A9_Luis_Chilavert",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "velez_sarsfield",
+    "countryCode": "ARG",
+    "startedYear": 1991,
+    "endedYear": 2000,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jos%C3%A9_Luis_Chilavert",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "velez_sarsfield",
+    "countryCode": "ARG",
+    "startedYear": 2003,
+    "endedYear": 2004,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jos%C3%A9_Luis_Chilavert",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Vélez Sarsfield: Primera División 1993 Clausura, 1995 Apertura, 1996 Clausura, 1998 Clausura; Copa Libertadores and Intercontinental Cup 1994; Supercopa 1996; Recopa 1997.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Jos%C3%A9_Luis_Chilavert",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_004",
+  "name": "Óscar Córdoba",
+  "position": "ARQ",
+  "era": "2000s",
+  "category": "legend",
+  "reference_year": 2001,
+  "nationality": "COL",
+  "club_tag": "boca_juniors",
+  "overall_rating": 86,
+  "att_rating": 48,
+  "def_rating": 86,
+  "phy_rating": 84,
+  "men_rating": 86,
+  "price": 7,
+  "identityKey": "wikipedia:%C3%93scar_C%C3%B3rdoba",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 1997,
+    "endedYear": 2001,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/%C3%93scar_C%C3%B3rdoba",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Boca Juniors: Primera División 1998 Apertura, 1999 Clausura, 2000 Apertura; Copa Libertadores 2000 and 2001; Intercontinental Cup 2000.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/%C3%93scar_C%C3%B3rdoba",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_005",
+  "name": "Mariano Andújar",
+  "position": "ARQ",
+  "era": "2000s",
+  "category": "legend",
+  "reference_year": 2009,
+  "nationality": "ARG",
+  "club_tag": "estudiantes_la_plata",
+  "overall_rating": 80,
+  "att_rating": 45,
+  "def_rating": 80,
+  "phy_rating": 78,
+  "men_rating": 82,
+  "price": 4,
+  "identityKey": "wikipedia:Mariano_And%C3%BAjar",
+  "inclusionReasons": [
+   "championship",
+   "club_icon"
+  ],
+  "careers": [
+   {
+    "clubId": "huracan",
+    "countryCode": "ARG",
+    "startedYear": 2001,
+    "endedYear": 2006,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Mariano_And%C3%BAjar",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "estudiantes_la_plata",
+    "countryCode": "ARG",
+    "startedYear": 2006,
+    "endedYear": 2009,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Mariano_And%C3%BAjar",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "estudiantes_la_plata",
+    "countryCode": "ARG",
+    "startedYear": 2012,
+    "endedYear": 2012,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Mariano_And%C3%BAjar",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "estudiantes_la_plata",
+    "countryCode": "ARG",
+    "startedYear": 2016,
+    "endedYear": 2023,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Mariano_And%C3%BAjar",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Estudiantes de La Plata: Primera División 2006 Apertura; Copa Libertadores 2009; Copa Argentina 2023.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Mariano_And%C3%BAjar",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_006",
+  "name": "Carlos Navarro Montoya",
+  "position": "ARQ",
+  "era": "1990s",
+  "category": "legend",
+  "reference_year": 1992,
+  "nationality": "ARG",
+  "club_tag": "boca_juniors",
+  "overall_rating": 84,
+  "att_rating": 48,
+  "def_rating": 83,
+  "phy_rating": 80,
+  "men_rating": 85,
+  "price": 6,
+  "identityKey": "wikipedia:Carlos_Navarro_Montoya",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "velez_sarsfield",
+    "countryCode": "ARG",
+    "startedYear": 1984,
+    "endedYear": 1986,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Carlos_Navarro_Montoya",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "velez_sarsfield",
+    "countryCode": "ARG",
+    "startedYear": 1987,
+    "endedYear": 1988,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Carlos_Navarro_Montoya",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 1988,
+    "endedYear": 1996,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Carlos_Navarro_Montoya",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "chacarita_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2001,
+    "endedYear": 2003,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Carlos_Navarro_Montoya",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "independiente",
+    "countryCode": "ARG",
+    "startedYear": 2004,
+    "endedYear": 2005,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Carlos_Navarro_Montoya",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "gimnasia_la_plata",
+    "countryCode": "ARG",
+    "startedYear": 2005,
+    "endedYear": 2006,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Carlos_Navarro_Montoya",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "nueva_chicago",
+    "countryCode": "ARG",
+    "startedYear": 2007,
+    "endedYear": 2007,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Carlos_Navarro_Montoya",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "olimpo",
+    "countryCode": "ARG",
+    "startedYear": 2007,
+    "endedYear": 2008,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Carlos_Navarro_Montoya",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Boca Juniors: Primera División 1992 Apertura; Supercopa 1989; Recopa 1990; Copa de Oro 1993 (323 league apps).",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Carlos_Navarro_Montoya",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_007",
+  "name": "Roberto Perfumo",
+  "position": "DEF",
+  "era": "1960s",
+  "category": "legend",
+  "reference_year": 1967,
+  "nationality": "ARG",
+  "club_tag": "racing_club",
+  "overall_rating": 90,
+  "att_rating": 62,
+  "def_rating": 92,
+  "phy_rating": 88,
+  "men_rating": 92,
+  "price": 11,
+  "identityKey": "wikipedia:Roberto_Perfumo",
+  "inclusionReasons": [
+   "championship",
+   "club_icon"
+  ],
+  "careers": [
+   {
+    "clubId": "racing_club",
+    "countryCode": "ARG",
+    "startedYear": 1962,
+    "endedYear": 1970,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Roberto_Perfumo",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1975,
+    "endedYear": 1978,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Roberto_Perfumo",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Racing Club: Primera División 1961 and 1966; Copa Libertadores and Intercontinental Cup 1967. River Plate: Primera División 1975 (two) and 1977 Metropolitano.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Roberto_Perfumo",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_008",
+  "name": "Daniel Passarella",
+  "position": "DEF",
+  "era": "1970s",
+  "category": "legend",
+  "reference_year": 1978,
+  "nationality": "ARG",
+  "club_tag": "river_plate",
+  "overall_rating": 93,
+  "att_rating": 78,
+  "def_rating": 93,
+  "phy_rating": 90,
+  "men_rating": 95,
+  "price": 15,
+  "identityKey": "wikipedia:Daniel_Passarella",
+  "inclusionReasons": [
+   "championship",
+   "club_icon"
+  ],
+  "careers": [
+   {
+    "clubId": "sarmiento_junin",
+    "countryCode": "ARG",
+    "startedYear": 1971,
+    "endedYear": 1973,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Daniel_Passarella",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1973,
+    "endedYear": 1982,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Daniel_Passarella",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1988,
+    "endedYear": 1989,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Daniel_Passarella",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "River Plate: seven Primera División titles 1975-1981 (266 league apps, 90 goals); Copa Libertadores runner-up 1976.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Daniel_Passarella",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_009",
+  "name": "Oscar Ruggeri",
+  "position": "DEF",
+  "era": "1980s",
+  "category": "legend",
+  "reference_year": 1986,
+  "nationality": "ARG",
+  "club_tag": "river_plate",
+  "overall_rating": 88,
+  "att_rating": 66,
+  "def_rating": 89,
+  "phy_rating": 90,
+  "men_rating": 90,
+  "price": 9,
+  "identityKey": "wikipedia:Oscar_Ruggeri",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 1980,
+    "endedYear": 1985,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Oscar_Ruggeri",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1985,
+    "endedYear": 1988,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Oscar_Ruggeri",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "velez_sarsfield",
+    "countryCode": "ARG",
+    "startedYear": 1990,
+    "endedYear": 1992,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Oscar_Ruggeri",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "san_lorenzo",
+    "countryCode": "ARG",
+    "startedYear": 1993,
+    "endedYear": 1997,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Oscar_Ruggeri",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "lanus",
+    "countryCode": "ARG",
+    "startedYear": 1997,
+    "endedYear": 1997,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Oscar_Ruggeri",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Boca Juniors: Primera División 1981 Metropolitano. River Plate: Primera División 1985-86, Copa Libertadores, Intercontinental Cup and Interamericana 1986. San Lorenzo: Primera División 1995 Clausura.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Oscar_Ruggeri",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_010",
+  "name": "Jorge Bermúdez",
+  "position": "DEF",
+  "era": "2000s",
+  "category": "legend",
+  "reference_year": 2000,
+  "nationality": "COL",
+  "club_tag": "boca_juniors",
+  "overall_rating": 85,
+  "att_rating": 60,
+  "def_rating": 87,
+  "phy_rating": 88,
+  "men_rating": 84,
+  "price": 6,
+  "identityKey": "wikipedia:Jorge_Berm%C3%BAdez",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 1997,
+    "endedYear": 2001,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jorge_Berm%C3%BAdez",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "newells_old_boys",
+    "countryCode": "ARG",
+    "startedYear": 2003,
+    "endedYear": 2004,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jorge_Berm%C3%BAdez",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Boca Juniors: Primera División 1998 Apertura, 1999 Clausura, 2000 Apertura; Copa Libertadores 2000 and 2001; Intercontinental Cup 2000.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Jorge_Berm%C3%BAdez",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_011",
+  "name": "Walter Samuel",
+  "position": "DEF",
+  "era": "2000s",
+  "category": "legend",
+  "reference_year": 2000,
+  "nationality": "ARG",
+  "club_tag": "boca_juniors",
+  "overall_rating": 90,
+  "att_rating": 62,
+  "def_rating": 92,
+  "phy_rating": 92,
+  "men_rating": 88,
+  "price": 11,
+  "identityKey": "wikipedia:Walter_Samuel",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "newells_old_boys",
+    "countryCode": "ARG",
+    "startedYear": 1996,
+    "endedYear": 1997,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Walter_Samuel",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 1997,
+    "endedYear": 2000,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Walter_Samuel",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Boca Juniors: Primera División 1998 Apertura and 1999 Clausura; Copa Libertadores 2000.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Walter_Samuel",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_012",
+  "name": "Nicolás Burdisso",
+  "position": "DEF",
+  "era": "2000s",
+  "category": "legend",
+  "reference_year": 2003,
+  "nationality": "ARG",
+  "club_tag": "boca_juniors",
+  "overall_rating": 83,
+  "att_rating": 60,
+  "def_rating": 85,
+  "phy_rating": 86,
+  "men_rating": 82,
+  "price": 5,
+  "identityKey": "wikipedia:Nicol%C3%A1s_Burdisso",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 1999,
+    "endedYear": 2004,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Nicol%C3%A1s_Burdisso",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Boca Juniors: Primera División 2000 Apertura and 2003 Apertura; Copa Libertadores 2000, 2001, 2003; Intercontinental Cup 2000 and 2003.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Nicol%C3%A1s_Burdisso",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_013",
+  "name": "Hugo Ibarra",
+  "position": "DEF",
+  "era": "2000s",
+  "category": "legend",
+  "reference_year": 2001,
+  "nationality": "ARG",
+  "club_tag": "boca_juniors",
+  "overall_rating": 81,
+  "att_rating": 68,
+  "def_rating": 82,
+  "phy_rating": 86,
+  "men_rating": 80,
+  "price": 4,
+  "identityKey": "wikipedia:Hugo_Ibarra",
+  "inclusionReasons": [
+   "championship",
+   "club_icon"
+  ],
+  "careers": [
+   {
+    "clubId": "colon",
+    "countryCode": "ARG",
+    "startedYear": 1995,
+    "endedYear": 1998,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Hugo_Ibarra",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 1998,
+    "endedYear": 2001,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Hugo_Ibarra",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2002,
+    "endedYear": 2003,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Hugo_Ibarra",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2005,
+    "endedYear": 2010,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Hugo_Ibarra",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Boca Juniors: Primera División 1998 Apertura, 1999 Clausura, 2005 Apertura, 2006 Clausura, 2008 Apertura; Copa Libertadores 2000, 2001, 2003, 2007; Copa Sudamericana 2005.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Hugo_Ibarra",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_014",
+  "name": "Luis Galván",
+  "position": "DEF",
+  "era": "1970s",
+  "category": "legend",
+  "reference_year": 1978,
+  "nationality": "ARG",
+  "club_tag": "talleres_cordoba",
+  "overall_rating": 84,
+  "att_rating": 62,
+  "def_rating": 85,
+  "phy_rating": 84,
+  "men_rating": 84,
+  "price": 6,
+  "identityKey": "wikipedia:Luis_Galv%C3%A1n",
+  "inclusionReasons": [
+   "club_icon",
+   "outstanding_career"
+  ],
+  "careers": [
+   {
+    "clubId": "talleres_cordoba",
+    "countryCode": "ARG",
+    "startedYear": 1970,
+    "endedYear": 1982,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Luis_Galv%C3%A1n",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "belgrano",
+    "countryCode": "ARG",
+    "startedYear": 1983,
+    "endedYear": 1984,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Luis_Galv%C3%A1n",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "talleres_cordoba",
+    "countryCode": "ARG",
+    "startedYear": 1986,
+    "endedYear": 1987,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Luis_Galv%C3%A1n",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Talleres de Córdoba: Copa Hermandad 1977, Liga Cordobesa titles 1974-1979, Primera División (Nacional 1977) runner-up; Argentina World Cup winner 1978.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Luis_Galv%C3%A1n",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_015",
+  "name": "Roberto Sensini",
+  "position": "DEF",
+  "era": "1980s",
+  "category": "legend",
+  "reference_year": 1988,
+  "nationality": "ARG",
+  "club_tag": "newells_old_boys",
+  "overall_rating": 86,
+  "att_rating": 66,
+  "def_rating": 88,
+  "phy_rating": 84,
+  "men_rating": 88,
+  "price": 7,
+  "identityKey": "wikipedia:Roberto_Sensini",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "newells_old_boys",
+    "countryCode": "ARG",
+    "startedYear": 1986,
+    "endedYear": 1989,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Roberto_Sensini",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Newell's Old Boys: Primera División 1987-88; Copa Libertadores runner-up 1988.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Roberto_Sensini",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_016",
+  "name": "Gabriel Heinze",
+  "position": "DEF",
+  "era": "2010s",
+  "category": "legend",
+  "reference_year": 2013,
+  "nationality": "ARG",
+  "club_tag": "newells_old_boys",
+  "overall_rating": 84,
+  "att_rating": 66,
+  "def_rating": 86,
+  "phy_rating": 88,
+  "men_rating": 86,
+  "price": 6,
+  "identityKey": "wikipedia:Gabriel_Heinze",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "newells_old_boys",
+    "countryCode": "ARG",
+    "startedYear": 1996,
+    "endedYear": 1997,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Gabriel_Heinze",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "newells_old_boys",
+    "countryCode": "ARG",
+    "startedYear": 2012,
+    "endedYear": 2014,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Gabriel_Heinze",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Newell's Old Boys: Primera División 2013 Final.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Gabriel_Heinze",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_017",
+  "name": "Fabricio Coloccini",
+  "position": "DEF",
+  "era": "1990s",
+  "category": "legend",
+  "reference_year": 1999,
+  "nationality": "ARG",
+  "club_tag": "boca_juniors",
+  "overall_rating": 80,
+  "att_rating": 58,
+  "def_rating": 82,
+  "phy_rating": 82,
+  "men_rating": 80,
+  "price": 4,
+  "identityKey": "wikipedia:Fabricio_Coloccini",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 1998,
+    "endedYear": 1999,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Fabricio_Coloccini",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "san_lorenzo",
+    "countryCode": "ARG",
+    "startedYear": 2000,
+    "endedYear": 2001,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Fabricio_Coloccini",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "san_lorenzo",
+    "countryCode": "ARG",
+    "startedYear": 2016,
+    "endedYear": 2021,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Fabricio_Coloccini",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "aldosivi",
+    "countryCode": "ARG",
+    "startedYear": 2021,
+    "endedYear": 2021,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Fabricio_Coloccini",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Boca Juniors: Primera División 1998 Apertura and 1999 Clausura. San Lorenzo: Primera División 2001 Clausura.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Fabricio_Coloccini",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_018",
+  "name": "Paolo Goltz",
+  "position": "DEF",
+  "era": "2010s",
+  "category": "legend",
+  "reference_year": 2013,
+  "nationality": "ARG",
+  "club_tag": "lanus",
+  "overall_rating": 78,
+  "att_rating": 60,
+  "def_rating": 80,
+  "phy_rating": 80,
+  "men_rating": 78,
+  "price": 3,
+  "identityKey": "wikipedia:Paolo_Goltz",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "huracan",
+    "countryCode": "ARG",
+    "startedYear": 2002,
+    "endedYear": 2010,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Paolo_Goltz",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "lanus",
+    "countryCode": "ARG",
+    "startedYear": 2010,
+    "endedYear": 2014,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Paolo_Goltz",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2017,
+    "endedYear": 2019,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Paolo_Goltz",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "gimnasia_la_plata",
+    "countryCode": "ARG",
+    "startedYear": 2020,
+    "endedYear": 2021,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Paolo_Goltz",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "colon",
+    "countryCode": "ARG",
+    "startedYear": 2021,
+    "endedYear": 2025,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Paolo_Goltz",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Lanús: Copa Sudamericana 2013. Boca Juniors: Primera División 2017-18 and Supercopa Argentina 2018.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Paolo_Goltz",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_019",
+  "name": "Leandro Desábato",
+  "position": "DEF",
+  "era": "2000s",
+  "category": "legend",
+  "reference_year": 2009,
+  "nationality": "ARG",
+  "club_tag": "estudiantes_la_plata",
+  "overall_rating": 77,
+  "att_rating": 55,
+  "def_rating": 79,
+  "phy_rating": 78,
+  "men_rating": 78,
+  "price": 3,
+  "identityKey": "wikipedia:Leandro_Des%C3%A1bato",
+  "inclusionReasons": [
+   "championship",
+   "club_icon"
+  ],
+  "careers": [
+   {
+    "clubId": "estudiantes_la_plata",
+    "countryCode": "ARG",
+    "startedYear": 1997,
+    "endedYear": 2018,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Leandro_Des%C3%A1bato",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Estudiantes de La Plata: Copa Libertadores 2009; Primera División 2010 Apertura (407 league apps; loans to other clubs omitted).",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Leandro_Des%C3%A1bato",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_020",
+  "name": "Clemente Rodríguez",
+  "position": "DEF",
+  "era": "2000s",
+  "category": "legend",
+  "reference_year": 2003,
+  "nationality": "ARG",
+  "club_tag": "boca_juniors",
+  "overall_rating": 79,
+  "att_rating": 70,
+  "def_rating": 78,
+  "phy_rating": 80,
+  "men_rating": 76,
+  "price": 3,
+  "identityKey": "wikipedia:Clemente_Rodr%C3%ADguez",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2000,
+    "endedYear": 2004,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Clemente_Rodr%C3%ADguez",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2007,
+    "endedYear": 2007,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Clemente_Rodr%C3%ADguez",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "estudiantes_la_plata",
+    "countryCode": "ARG",
+    "startedYear": 2009,
+    "endedYear": 2010,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Clemente_Rodr%C3%ADguez",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2010,
+    "endedYear": 2013,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Clemente_Rodr%C3%ADguez",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "colon",
+    "countryCode": "ARG",
+    "startedYear": 2015,
+    "endedYear": 2019,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Clemente_Rodr%C3%ADguez",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "barracas_central",
+    "countryCode": "ARG",
+    "startedYear": 2019,
+    "endedYear": 2020,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Clemente_Rodr%C3%ADguez",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "deportivo_merlo",
+    "countryCode": "ARG",
+    "startedYear": 2020,
+    "endedYear": 2020,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Clemente_Rodr%C3%ADguez",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Boca Juniors: Primera División 2000 Apertura, 2003 Apertura, 2011 Apertura; Copa Libertadores 2001, 2003, 2007; Copa Argentina 2011-12.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Clemente_Rodr%C3%ADguez",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_021",
+  "name": "José Chamot",
+  "position": "DEF",
+  "era": "1980s",
+  "category": "legend",
+  "reference_year": 1989,
+  "nationality": "ARG",
+  "club_tag": "rosario_central",
+  "overall_rating": 79,
+  "att_rating": 60,
+  "def_rating": 80,
+  "phy_rating": 82,
+  "men_rating": 80,
+  "price": 3,
+  "identityKey": "wikipedia:Jos%C3%A9_Chamot",
+  "inclusionReasons": [
+   "outstanding_career"
+  ],
+  "careers": [
+   {
+    "clubId": "rosario_central",
+    "countryCode": "ARG",
+    "startedYear": 1988,
+    "endedYear": 1990,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jos%C3%A9_Chamot",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "rosario_central",
+    "countryCode": "ARG",
+    "startedYear": 2004,
+    "endedYear": 2006,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jos%C3%A9_Chamot",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Rosario Central (two spells, 52 league apps); AC Milan Champions League 2002-03 (not an Argentine honour).",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Jos%C3%A9_Chamot",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_022",
+  "name": "Juan Pablo Sorín",
+  "position": "DEF",
+  "era": "1990s",
+  "category": "legend",
+  "reference_year": 1997,
+  "nationality": "ARG",
+  "club_tag": "river_plate",
+  "overall_rating": 85,
+  "att_rating": 78,
+  "def_rating": 82,
+  "phy_rating": 84,
+  "men_rating": 82,
+  "price": 6,
+  "identityKey": "wikipedia:Juan_Pablo_Sor%C3%ADn",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "argentinos_juniors",
+    "countryCode": "ARG",
+    "startedYear": 1994,
+    "endedYear": 1995,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Juan_Pablo_Sor%C3%ADn",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1996,
+    "endedYear": 1999,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Juan_Pablo_Sor%C3%ADn",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "River Plate: Primera División 1996 Apertura, 1997 Clausura, 1997 Apertura, 1999 Apertura; Copa Libertadores 1996; Supercopa 1997.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Juan_Pablo_Sor%C3%ADn",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_023",
+  "name": "Ricardo Bochini",
+  "position": "MED",
+  "era": "1980s",
+  "category": "legend",
+  "reference_year": 1984,
+  "nationality": "ARG",
+  "club_tag": "independiente",
+  "overall_rating": 93,
+  "att_rating": 90,
+  "def_rating": 70,
+  "phy_rating": 72,
+  "men_rating": 96,
+  "price": 15,
+  "identityKey": "wikipedia:Ricardo_Bochini",
+  "inclusionReasons": [
+   "championship",
+   "club_icon"
+  ],
+  "careers": [
+   {
+    "clubId": "independiente",
+    "countryCode": "ARG",
+    "startedYear": 1972,
+    "endedYear": 1991,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Ricardo_Bochini",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Independiente (634 league apps): Primera División Nacional 1977 and 1978, Metropolitano 1983, 1988-89; Copa Libertadores 1973-1975 and 1984; Intercontinental Cup 1973 and 1984.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Ricardo_Bochini",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_024",
+  "name": "Juan Román Riquelme",
+  "position": "MED",
+  "era": "2000s",
+  "category": "legend",
+  "reference_year": 2000,
+  "nationality": "ARG",
+  "club_tag": "boca_juniors",
+  "overall_rating": 92,
+  "att_rating": 90,
+  "def_rating": 62,
+  "phy_rating": 72,
+  "men_rating": 96,
+  "price": 13,
+  "identityKey": "wikipedia:Juan_Rom%C3%A1n_Riquelme",
+  "inclusionReasons": [
+   "championship",
+   "club_icon"
+  ],
+  "careers": [
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 1996,
+    "endedYear": 2002,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Juan_Rom%C3%A1n_Riquelme",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2007,
+    "endedYear": 2007,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Juan_Rom%C3%A1n_Riquelme",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2007,
+    "endedYear": 2014,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Juan_Rom%C3%A1n_Riquelme",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "argentinos_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2014,
+    "endedYear": 2015,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Juan_Rom%C3%A1n_Riquelme",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Boca Juniors: Primera División 1998 Apertura, 1999 Clausura, 2000 Apertura and later titles; Copa Libertadores 2000, 2001, 2007; Intercontinental Cup 2000.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Juan_Rom%C3%A1n_Riquelme",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_025",
+  "name": "Fernando Redondo",
+  "position": "MED",
+  "era": "1980s",
+  "category": "legend",
+  "reference_year": 1989,
+  "nationality": "ARG",
+  "club_tag": "argentinos_juniors",
+  "overall_rating": 91,
+  "att_rating": 78,
+  "def_rating": 88,
+  "phy_rating": 82,
+  "men_rating": 94,
+  "price": 12,
+  "identityKey": "wikipedia:Fernando_Redondo",
+  "inclusionReasons": [
+   "outstanding_career"
+  ],
+  "careers": [
+   {
+    "clubId": "argentinos_juniors",
+    "countryCode": "ARG",
+    "startedYear": 1985,
+    "endedYear": 1990,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Fernando_Redondo",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Argentinos Juniors 1985-1990 (65 league apps); later Real Madrid and Milan honours are outside Argentina.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Fernando_Redondo",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_026",
+  "name": "Juan Sebastián Verón",
+  "position": "MED",
+  "era": "2000s",
+  "category": "legend",
+  "reference_year": 2009,
+  "nationality": "ARG",
+  "club_tag": "estudiantes_la_plata",
+  "overall_rating": 90,
+  "att_rating": 88,
+  "def_rating": 80,
+  "phy_rating": 84,
+  "men_rating": 92,
+  "price": 11,
+  "identityKey": "wikipedia:Juan_Sebasti%C3%A1n_Ver%C3%B3n",
+  "inclusionReasons": [
+   "championship",
+   "club_icon"
+  ],
+  "careers": [
+   {
+    "clubId": "estudiantes_la_plata",
+    "countryCode": "ARG",
+    "startedYear": 1994,
+    "endedYear": 1996,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Juan_Sebasti%C3%A1n_Ver%C3%B3n",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 1996,
+    "endedYear": 1996,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Juan_Sebasti%C3%A1n_Ver%C3%B3n",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "estudiantes_la_plata",
+    "countryCode": "ARG",
+    "startedYear": 2006,
+    "endedYear": 2007,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Juan_Sebasti%C3%A1n_Ver%C3%B3n",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "estudiantes_la_plata",
+    "countryCode": "ARG",
+    "startedYear": 2007,
+    "endedYear": 2012,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Juan_Sebasti%C3%A1n_Ver%C3%B3n",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "estudiantes_la_plata",
+    "countryCode": "ARG",
+    "startedYear": 2013,
+    "endedYear": 2014,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Juan_Sebasti%C3%A1n_Ver%C3%B3n",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Estudiantes de La Plata: Primera B Nacional 1994-95, Primera División 2006 Apertura and 2010 Apertura, Copa Libertadores 2009.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Juan_Sebasti%C3%A1n_Ver%C3%B3n",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_027",
+  "name": "Diego Simeone",
+  "position": "MED",
+  "era": "1980s",
+  "category": "legend",
+  "reference_year": 1989,
+  "nationality": "ARG",
+  "club_tag": "velez_sarsfield",
+  "overall_rating": 88,
+  "att_rating": 76,
+  "def_rating": 88,
+  "phy_rating": 90,
+  "men_rating": 90,
+  "price": 9,
+  "identityKey": "wikipedia:Diego_Simeone",
+  "inclusionReasons": [
+   "outstanding_career"
+  ],
+  "careers": [
+   {
+    "clubId": "velez_sarsfield",
+    "countryCode": "ARG",
+    "startedYear": 1987,
+    "endedYear": 1990,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Diego_Simeone",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "racing_club",
+    "countryCode": "ARG",
+    "startedYear": 2005,
+    "endedYear": 2006,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Diego_Simeone",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Vélez Sarsfield 1987-1990 (76 league apps) and Racing Club 2005-06; main honours came with Atlético Madrid, Inter and Lazio.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Diego_Simeone",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_028",
+  "name": "Fernando Gago",
+  "position": "MED",
+  "era": "2010s",
+  "category": "legend",
+  "reference_year": 2015,
+  "nationality": "ARG",
+  "club_tag": "boca_juniors",
+  "overall_rating": 84,
+  "att_rating": 74,
+  "def_rating": 82,
+  "phy_rating": 78,
+  "men_rating": 88,
+  "price": 6,
+  "identityKey": "wikipedia:Fernando_Gago",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2004,
+    "endedYear": 2006,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Fernando_Gago",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "velez_sarsfield",
+    "countryCode": "ARG",
+    "startedYear": 2013,
+    "endedYear": 2013,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Fernando_Gago",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2013,
+    "endedYear": 2019,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Fernando_Gago",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "velez_sarsfield",
+    "countryCode": "ARG",
+    "startedYear": 2019,
+    "endedYear": 2020,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Fernando_Gago",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Boca Juniors: Primera División 2005 Apertura, 2006 Clausura, 2015, 2016-17, 2017-18; Copa Sudamericana 2005; Copa Argentina 2015. Vélez: Primera División 2012-13.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Fernando_Gago",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_029",
+  "name": "Esteban Cambiasso",
+  "position": "MED",
+  "era": "2000s",
+  "category": "legend",
+  "reference_year": 2000,
+  "nationality": "ARG",
+  "club_tag": "independiente",
+  "overall_rating": 89,
+  "att_rating": 80,
+  "def_rating": 86,
+  "phy_rating": 88,
+  "men_rating": 88,
+  "price": 10,
+  "identityKey": "wikipedia:Esteban_Cambiasso",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "independiente",
+    "countryCode": "ARG",
+    "startedYear": 1998,
+    "endedYear": 2001,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Esteban_Cambiasso",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 2001,
+    "endedYear": 2002,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Esteban_Cambiasso",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "River Plate: Primera División Clausura 2002. Independiente 1998-2001 (98 league apps). Later honours with Real Madrid and Inter.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Esteban_Cambiasso",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_030",
+  "name": "Javier Mascherano",
+  "position": "MED",
+  "era": "2000s",
+  "category": "legend",
+  "reference_year": 2004,
+  "nationality": "ARG",
+  "club_tag": "river_plate",
+  "overall_rating": 90,
+  "att_rating": 66,
+  "def_rating": 92,
+  "phy_rating": 90,
+  "men_rating": 90,
+  "price": 11,
+  "identityKey": "wikipedia:Javier_Mascherano",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 2003,
+    "endedYear": 2005,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Javier_Mascherano",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "estudiantes_la_plata",
+    "countryCode": "ARG",
+    "startedYear": 2019,
+    "endedYear": 2020,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Javier_Mascherano",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "River Plate: Primera División 2003-04 Clausura. Later honours with Corinthians, Barcelona (not Argentine).",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Javier_Mascherano",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_031",
+  "name": "Pablo Aimar",
+  "position": "MED",
+  "era": "1990s",
+  "category": "legend",
+  "reference_year": 1999,
+  "nationality": "ARG",
+  "club_tag": "river_plate",
+  "overall_rating": 88,
+  "att_rating": 88,
+  "def_rating": 62,
+  "phy_rating": 70,
+  "men_rating": 92,
+  "price": 9,
+  "identityKey": "wikipedia:Pablo_Aimar",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1996,
+    "endedYear": 2000,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Pablo_Aimar",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 2015,
+    "endedYear": 2015,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Pablo_Aimar",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "River Plate: Primera División 1996 Apertura, 1997 Clausura, 1997 Apertura, 1999 Apertura, 2000 Clausura; Supercopa Sudamericana 1997.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Pablo_Aimar",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_032",
+  "name": "Ariel Ortega",
+  "position": "MED",
+  "era": "1990s",
+  "category": "legend",
+  "reference_year": 1996,
+  "nationality": "ARG",
+  "club_tag": "river_plate",
+  "overall_rating": 86,
+  "att_rating": 90,
+  "def_rating": 60,
+  "phy_rating": 78,
+  "men_rating": 88,
+  "price": 7,
+  "identityKey": "wikipedia:Ariel_Ortega",
+  "inclusionReasons": [
+   "championship",
+   "club_icon"
+  ],
+  "careers": [
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1991,
+    "endedYear": 1996,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Ariel_Ortega",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 2000,
+    "endedYear": 2002,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Ariel_Ortega",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "newells_old_boys",
+    "countryCode": "ARG",
+    "startedYear": 2004,
+    "endedYear": 2006,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Ariel_Ortega",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 2006,
+    "endedYear": 2012,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Ariel_Ortega",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "River Plate: Primera División 1991, 1993, 1994, 1996 Apertura, 2002 Clausura, 2008 Clausura; Copa Libertadores 1996. Newell's: Primera División 2004 Apertura.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Ariel_Ortega",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_033",
+  "name": "Matías Almeyda",
+  "position": "MED",
+  "era": "1990s",
+  "category": "legend",
+  "reference_year": 1996,
+  "nationality": "ARG",
+  "club_tag": "river_plate",
+  "overall_rating": 83,
+  "att_rating": 70,
+  "def_rating": 84,
+  "phy_rating": 88,
+  "men_rating": 82,
+  "price": 5,
+  "identityKey": "wikipedia:Mat%C3%ADas_Almeyda",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1991,
+    "endedYear": 1996,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Mat%C3%ADas_Almeyda",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "quilmes",
+    "countryCode": "ARG",
+    "startedYear": 2005,
+    "endedYear": 2005,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Mat%C3%ADas_Almeyda",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 2009,
+    "endedYear": 2011,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Mat%C3%ADas_Almeyda",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "River Plate: Primera División 1991, 1993, 1994, 1996 Apertura; Copa Libertadores 1996.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Mat%C3%ADas_Almeyda",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_034",
+  "name": "Jorge Burruchaga",
+  "position": "MED",
+  "era": "1980s",
+  "category": "legend",
+  "reference_year": 1984,
+  "nationality": "ARG",
+  "club_tag": "independiente",
+  "overall_rating": 87,
+  "att_rating": 86,
+  "def_rating": 70,
+  "phy_rating": 78,
+  "men_rating": 88,
+  "price": 8,
+  "identityKey": "wikipedia:Jorge_Burruchaga",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "arsenal_sarandi",
+    "countryCode": "ARG",
+    "startedYear": 1979,
+    "endedYear": 1981,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jorge_Burruchaga",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "independiente",
+    "countryCode": "ARG",
+    "startedYear": 1981,
+    "endedYear": 1985,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jorge_Burruchaga",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "independiente",
+    "countryCode": "ARG",
+    "startedYear": 1995,
+    "endedYear": 1998,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jorge_Burruchaga",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Independiente: Primera División 1983 Metropolitano; Copa Libertadores and Intercontinental Cup 1984; Supercopa and Recopa 1995.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Jorge_Burruchaga",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_035",
+  "name": "Norberto Alonso",
+  "position": "MED",
+  "era": "1970s",
+  "category": "legend",
+  "reference_year": 1979,
+  "nationality": "ARG",
+  "club_tag": "river_plate",
+  "overall_rating": 86,
+  "att_rating": 86,
+  "def_rating": 66,
+  "phy_rating": 72,
+  "men_rating": 90,
+  "price": 7,
+  "identityKey": "wikipedia:Norberto_Alonso",
+  "inclusionReasons": [
+   "championship",
+   "club_icon"
+  ],
+  "careers": [
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1970,
+    "endedYear": 1976,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Norberto_Alonso",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1977,
+    "endedYear": 1981,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Norberto_Alonso",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "velez_sarsfield",
+    "countryCode": "ARG",
+    "startedYear": 1981,
+    "endedYear": 1983,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Norberto_Alonso",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1983,
+    "endedYear": 1987,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Norberto_Alonso",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "River Plate: Primera División 1975 (two), 1979 (two), 1980 Metropolitano, 1981 Nacional, 1985-86; Copa Libertadores and Intercontinental Cup 1986; Argentina World Cup winner 1978.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Norberto_Alonso",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_036",
+  "name": "Claudio Borghi",
+  "position": "MED",
+  "era": "1980s",
+  "category": "legend",
+  "reference_year": 1985,
+  "nationality": "ARG",
+  "club_tag": "argentinos_juniors",
+  "overall_rating": 82,
+  "att_rating": 84,
+  "def_rating": 58,
+  "phy_rating": 70,
+  "men_rating": 86,
+  "price": 4,
+  "identityKey": "wikipedia:Claudio_Borghi_(footballer)",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "argentinos_juniors",
+    "countryCode": "ARG",
+    "startedYear": 1981,
+    "endedYear": 1987,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Claudio_Borghi_(footballer)",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1988,
+    "endedYear": 1989,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Claudio_Borghi_(footballer)",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "independiente",
+    "countryCode": "ARG",
+    "startedYear": 1990,
+    "endedYear": 1990,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Claudio_Borghi_(footballer)",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "union_santa_fe",
+    "countryCode": "ARG",
+    "startedYear": 1990,
+    "endedYear": 1991,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Claudio_Borghi_(footballer)",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "huracan",
+    "countryCode": "ARG",
+    "startedYear": 1991,
+    "endedYear": 1991,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Claudio_Borghi_(footballer)",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "platense",
+    "countryCode": "ARG",
+    "startedYear": 1992,
+    "endedYear": 1993,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Claudio_Borghi_(footballer)",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Argentinos Juniors: Primera División 1984 and 1985; Copa Libertadores and Interamericana 1985; Intercontinental Cup runner-up 1985.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Claudio_Borghi_(footballer)",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_037",
+  "name": "Leonardo Astrada",
+  "position": "MED",
+  "era": "1990s",
+  "category": "legend",
+  "reference_year": 1996,
+  "nationality": "ARG",
+  "club_tag": "river_plate",
+  "overall_rating": 78,
+  "att_rating": 62,
+  "def_rating": 80,
+  "phy_rating": 82,
+  "men_rating": 80,
+  "price": 3,
+  "identityKey": "wikipedia:Leonardo_Astrada",
+  "inclusionReasons": [
+   "championship",
+   "club_icon"
+  ],
+  "careers": [
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1988,
+    "endedYear": 2000,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Leonardo_Astrada",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 2001,
+    "endedYear": 2003,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Leonardo_Astrada",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "River Plate: ten Primera División titles 1989-90 to 2003 Clausura; Copa Libertadores 1996; Supercopa 1997; Copa América 1991 with Argentina.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Leonardo_Astrada",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_038",
+  "name": "Gabriel Batistuta",
+  "position": "DEL",
+  "era": "1990s",
+  "category": "legend",
+  "reference_year": 1997,
+  "nationality": "ARG",
+  "club_tag": "fiorentina",
+  "overall_rating": 95,
+  "att_rating": 97,
+  "def_rating": 50,
+  "phy_rating": 92,
+  "men_rating": 88,
+  "price": 18,
+  "identityKey": "wikipedia:Gabriel_Batistuta",
+  "inclusionReasons": [
+   "championship",
+   "outstanding_career"
+  ],
+  "careers": [
+   {
+    "clubId": "newells_old_boys",
+    "countryCode": "ARG",
+    "startedYear": 1988,
+    "endedYear": 1989,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Gabriel_Batistuta",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1989,
+    "endedYear": 1990,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Gabriel_Batistuta",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 1990,
+    "endedYear": 1991,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Gabriel_Batistuta",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Newell's Copa Libertadores runner-up 1988; River Plate Primera División 1989-90; Boca Juniors Primera División 1990-91 (club text). Peak career with Fiorentina and Roma (not Argentine).",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Gabriel_Batistuta",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_039",
+  "name": "Martín Palermo",
+  "position": "DEL",
+  "era": "2000s",
+  "category": "legend",
+  "reference_year": 2000,
+  "nationality": "ARG",
+  "club_tag": "boca_juniors",
+  "overall_rating": 85,
+  "att_rating": 88,
+  "def_rating": 46,
+  "phy_rating": 86,
+  "men_rating": 82,
+  "price": 6,
+  "identityKey": "wikipedia:Mart%C3%ADn_Palermo",
+  "inclusionReasons": [
+   "championship",
+   "club_icon"
+  ],
+  "careers": [
+   {
+    "clubId": "estudiantes_la_plata",
+    "countryCode": "ARG",
+    "startedYear": 1992,
+    "endedYear": 1997,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Mart%C3%ADn_Palermo",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 1997,
+    "endedYear": 2001,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Mart%C3%ADn_Palermo",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2004,
+    "endedYear": 2011,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Mart%C3%ADn_Palermo",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Boca Juniors: Primera División 1998 Apertura, 1999 Clausura, 2000 Apertura, 2005 Apertura, 2006 Clausura, 2008 Apertura; Copa Libertadores 2000 and 2007; Copa Sudamericana 2004 and 2005.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Mart%C3%ADn_Palermo",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_040",
+  "name": "Carlos Tevez",
+  "position": "DEL",
+  "era": "2000s",
+  "category": "legend",
+  "reference_year": 2003,
+  "nationality": "ARG",
+  "club_tag": "boca_juniors",
+  "overall_rating": 92,
+  "att_rating": 92,
+  "def_rating": 56,
+  "phy_rating": 92,
+  "men_rating": 90,
+  "price": 13,
+  "identityKey": "wikipedia:Carlos_Tevez",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2001,
+    "endedYear": 2004,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Carlos_Tevez",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2015,
+    "endedYear": 2016,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Carlos_Tevez",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2018,
+    "endedYear": 2021,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Carlos_Tevez",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Boca Juniors: Copa Libertadores and Intercontinental Cup 2003; Primera División 2003 Apertura, 2015, 2017-18, 2019-20; Copa Argentina 2015.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Carlos_Tevez",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_041",
+  "name": "Hernán Crespo",
+  "position": "DEL",
+  "era": "1990s",
+  "category": "legend",
+  "reference_year": 1995,
+  "nationality": "ARG",
+  "club_tag": "river_plate",
+  "overall_rating": 90,
+  "att_rating": 92,
+  "def_rating": 50,
+  "phy_rating": 86,
+  "men_rating": 84,
+  "price": 11,
+  "identityKey": "wikipedia:Hern%C3%A1n_Crespo",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1993,
+    "endedYear": 1996,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Hern%C3%A1n_Crespo",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "River Plate: Primera División 1993 Apertura and 1994 Apertura; Copa Libertadores 1996.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Hern%C3%A1n_Crespo",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_042",
+  "name": "Mario Kempes",
+  "position": "DEL",
+  "era": "1970s",
+  "category": "legend",
+  "reference_year": 1975,
+  "nationality": "ARG",
+  "club_tag": "rosario_central",
+  "overall_rating": 94,
+  "att_rating": 96,
+  "def_rating": 52,
+  "phy_rating": 90,
+  "men_rating": 92,
+  "price": 16,
+  "identityKey": "wikipedia:Mario_Kempes",
+  "inclusionReasons": [
+   "club_icon",
+   "outstanding_career"
+  ],
+  "careers": [
+   {
+    "clubId": "instituto",
+    "countryCode": "ARG",
+    "startedYear": 1973,
+    "endedYear": 1974,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Mario_Kempes",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "rosario_central",
+    "countryCode": "ARG",
+    "startedYear": 1974,
+    "endedYear": 1976,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Mario_Kempes",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1981,
+    "endedYear": 1982,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Mario_Kempes",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Rosario Central 1974-76 (107 league apps, 89 goals), Primera División runner-up 1974 Metropolitano and 1976 Nacional; River Plate: Primera División 1981 Nacional; Argentina World Cup winner 1978.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Mario_Kempes",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_043",
+  "name": "Enzo Francescoli",
+  "position": "DEL",
+  "era": "1990s",
+  "category": "legend",
+  "reference_year": 1996,
+  "nationality": "URU",
+  "club_tag": "river_plate",
+  "overall_rating": 91,
+  "att_rating": 92,
+  "def_rating": 54,
+  "phy_rating": 78,
+  "men_rating": 92,
+  "price": 12,
+  "identityKey": "wikipedia:Enzo_Francescoli",
+  "inclusionReasons": [
+   "championship",
+   "club_icon"
+  ],
+  "careers": [
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1983,
+    "endedYear": 1986,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Enzo_Francescoli",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1994,
+    "endedYear": 1997,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Enzo_Francescoli",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "River Plate: Primera División 1985-86, 1994 Apertura, 1996 Apertura, 1997 Clausura, 1997 Apertura; Copa Libertadores 1996; Supercopa 1997.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Enzo_Francescoli",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_044",
+  "name": "Diego Milito",
+  "position": "DEL",
+  "era": "2010s",
+  "category": "legend",
+  "reference_year": 2010,
+  "nationality": "ARG",
+  "club_tag": "inter_milan",
+  "overall_rating": 89,
+  "att_rating": 90,
+  "def_rating": 52,
+  "phy_rating": 84,
+  "men_rating": 88,
+  "price": 10,
+  "identityKey": "wikipedia:Diego_Milito",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "racing_club",
+    "countryCode": "ARG",
+    "startedYear": 1999,
+    "endedYear": 2003,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Diego_Milito",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "racing_club",
+    "countryCode": "ARG",
+    "startedYear": 2014,
+    "endedYear": 2016,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Diego_Milito",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Racing Club: Primera División Apertura 2001 and 2014 Transición. Treble with Inter in 2009-10 (not Argentine).",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Diego_Milito",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_045",
+  "name": "José Sand",
+  "position": "DEL",
+  "era": "2010s",
+  "category": "contemporary",
+  "reference_year": 2016,
+  "nationality": "ARG",
+  "club_tag": "lanus",
+  "overall_rating": 78,
+  "att_rating": 80,
+  "def_rating": 45,
+  "phy_rating": 80,
+  "men_rating": 74,
+  "price": 3,
+  "identityKey": "wikipedia:Jos%C3%A9_Sand",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "colon",
+    "countryCode": "ARG",
+    "startedYear": 1999,
+    "endedYear": 2000,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jos%C3%A9_Sand",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 2004,
+    "endedYear": 2005,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jos%C3%A9_Sand",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "banfield",
+    "countryCode": "ARG",
+    "startedYear": 2005,
+    "endedYear": 2006,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jos%C3%A9_Sand",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "colon",
+    "countryCode": "ARG",
+    "startedYear": 2006,
+    "endedYear": 2007,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jos%C3%A9_Sand",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "lanus",
+    "countryCode": "ARG",
+    "startedYear": 2007,
+    "endedYear": 2009,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jos%C3%A9_Sand",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "racing_club",
+    "countryCode": "ARG",
+    "startedYear": 2012,
+    "endedYear": 2013,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jos%C3%A9_Sand",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "tigre",
+    "countryCode": "ARG",
+    "startedYear": 2013,
+    "endedYear": 2014,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jos%C3%A9_Sand",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "aldosivi",
+    "countryCode": "ARG",
+    "startedYear": 2015,
+    "endedYear": 2015,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jos%C3%A9_Sand",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "lanus",
+    "countryCode": "ARG",
+    "startedYear": 2016,
+    "endedYear": 2018,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jos%C3%A9_Sand",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "lanus",
+    "countryCode": "ARG",
+    "startedYear": 2019,
+    "endedYear": 2023,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Jos%C3%A9_Sand",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Lanús: Primera División 2007 Apertura and 2016; Copa del Bicentenario and Supercopa Argentina 2016.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Jos%C3%A9_Sand",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_046",
+  "name": "Teófilo Gutiérrez",
+  "position": "DEL",
+  "era": "2010s",
+  "category": "legend",
+  "reference_year": 2015,
+  "nationality": "COL",
+  "club_tag": "river_plate",
+  "overall_rating": 79,
+  "att_rating": 82,
+  "def_rating": 46,
+  "phy_rating": 82,
+  "men_rating": 76,
+  "price": 3,
+  "identityKey": "wikipedia:Teofilo_Guti%C3%A9rrez",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "racing_club",
+    "countryCode": "ARG",
+    "startedYear": 2011,
+    "endedYear": 2012,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Teofilo_Guti%C3%A9rrez",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 2013,
+    "endedYear": 2015,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Teofilo_Guti%C3%A9rrez",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "rosario_central",
+    "countryCode": "ARG",
+    "startedYear": 2016,
+    "endedYear": 2017,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Teofilo_Guti%C3%A9rrez",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "River Plate: Primera División Torneo Final 2014; Copa Sudamericana 2014; Recopa Sudamericana 2015; Copa Libertadores 2015.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Teofilo_Guti%C3%A9rrez",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_047",
+  "name": "Ramón Díaz",
+  "position": "DEL",
+  "era": "1980s",
+  "category": "legend",
+  "reference_year": 1981,
+  "nationality": "ARG",
+  "club_tag": "river_plate",
+  "overall_rating": 87,
+  "att_rating": 88,
+  "def_rating": 50,
+  "phy_rating": 78,
+  "men_rating": 86,
+  "price": 8,
+  "identityKey": "wikipedia:Ram%C3%B3n_D%C3%ADaz",
+  "inclusionReasons": [
+   "championship",
+   "club_icon"
+  ],
+  "careers": [
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1978,
+    "endedYear": 1982,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Ram%C3%B3n_D%C3%ADaz",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 1991,
+    "endedYear": 1993,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Ram%C3%B3n_D%C3%ADaz",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "River Plate: Primera División 1979 (two), 1980 Metropolitano, 1981 Nacional, 1991 Apertura (123 + 52 league apps).",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Ram%C3%B3n_D%C3%ADaz",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_048",
+  "name": "Darío Benedetto",
+  "position": "DEL",
+  "era": "2010s",
+  "category": "contemporary",
+  "reference_year": 2017,
+  "nationality": "ARG",
+  "club_tag": "boca_juniors",
+  "overall_rating": 80,
+  "att_rating": 82,
+  "def_rating": 46,
+  "phy_rating": 84,
+  "men_rating": 76,
+  "price": 4,
+  "identityKey": "wikipedia:Dar%C3%ADo_Benedetto",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "arsenal_sarandi",
+    "countryCode": "ARG",
+    "startedYear": 2008,
+    "endedYear": 2013,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Dar%C3%ADo_Benedetto",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2016,
+    "endedYear": 2019,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Dar%C3%ADo_Benedetto",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "boca_juniors",
+    "countryCode": "ARG",
+    "startedYear": 2022,
+    "endedYear": 2024,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Dar%C3%ADo_Benedetto",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "newells_old_boys",
+    "countryCode": "ARG",
+    "startedYear": 2025,
+    "endedYear": 2025,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Dar%C3%ADo_Benedetto",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Arsenal de Sarandí: Primera División 2012 Clausura. Boca Juniors: Primera División 2016-17, 2017-18, 2022; Supercopa Argentina 2018 and 2022.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Dar%C3%ADo_Benedetto",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_049",
+  "name": "Lisandro López",
+  "position": "DEL",
+  "era": "2010s",
+  "category": "contemporary",
+  "reference_year": 2018,
+  "nationality": "ARG",
+  "club_tag": "racing_club",
+  "overall_rating": 82,
+  "att_rating": 84,
+  "def_rating": 48,
+  "phy_rating": 82,
+  "men_rating": 80,
+  "price": 4,
+  "identityKey": "wikipedia:Lisandro_L%C3%B3pez_(footballer,_born_1983)",
+  "inclusionReasons": [
+   "championship"
+  ],
+  "careers": [
+   {
+    "clubId": "racing_club",
+    "countryCode": "ARG",
+    "startedYear": 2003,
+    "endedYear": 2005,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Lisandro_L%C3%B3pez_(footballer,_born_1983)",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "racing_club",
+    "countryCode": "ARG",
+    "startedYear": 2016,
+    "endedYear": 2021,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Lisandro_L%C3%B3pez_(footballer,_born_1983)",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "racing_club",
+    "countryCode": "ARG",
+    "startedYear": 2021,
+    "endedYear": 2021,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Lisandro_L%C3%B3pez_(footballer,_born_1983)",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   },
+   {
+    "clubId": "sarmiento_junin",
+    "countryCode": "ARG",
+    "startedYear": 2022,
+    "endedYear": 2024,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Lisandro_L%C3%B3pez_(footballer,_born_1983)",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "Racing Club: Primera División 2018-19; Trofeo de Campeones 2019.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Lisandro_L%C3%B3pez_(footballer,_born_1983)",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ },
+ {
+  "id": "arg_050",
+  "name": "Gonzalo Higuaín",
+  "position": "DEL",
+  "era": "2000s",
+  "category": "legend",
+  "reference_year": 2006,
+  "nationality": "ARG",
+  "club_tag": "river_plate",
+  "overall_rating": 90,
+  "att_rating": 92,
+  "def_rating": 52,
+  "phy_rating": 86,
+  "men_rating": 86,
+  "price": 11,
+  "identityKey": "wikipedia:Gonzalo_Higua%C3%ADn",
+  "inclusionReasons": [
+   "outstanding_career"
+  ],
+  "careers": [
+   {
+    "clubId": "river_plate",
+    "countryCode": "ARG",
+    "startedYear": 2005,
+    "endedYear": 2007,
+    "competitionIds": [
+     "argentina_domestic_league"
+    ],
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Gonzalo_Higua%C3%ADn",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    }
+   }
+  ],
+  "evidence": "River Plate 2005-2007 (35 league apps, 13 goals); main honours with Real Madrid, Napoli and Juventus.",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Gonzalo_Higua%C3%ADn",
+  "editorialStatus": "SECONDARY_SOURCE_VERIFIED"
+ }
+]
