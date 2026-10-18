@@ -62,6 +62,15 @@ export interface SubstitutionSummary {
   readonly events: readonly { readonly minute: (typeof MATCH_MINUTES)[number]; readonly side: MatchSide; readonly outPlayerId: string; readonly inPlayerId: string }[]
 }
 
+export interface RosterAdvantage {
+  /** Side with the higher global power; null when the difference is too small to count. */
+  readonly side: MatchSide | null
+  /** Strength points added to attack, defence and midfield of that side. */
+  readonly bonus: number
+  /** Global power difference (always positive). */
+  readonly difference: number
+}
+
 export interface MatchResult {
   readonly catalogVersion: 'catalog_v1'
   readonly rulesVersion: typeof MATCH_RULES_VERSION
@@ -74,6 +83,8 @@ export interface MatchResult {
   readonly score: Readonly<Record<MatchSide, number>>
   readonly winner: MatchSide | 'draw'
   readonly tactics?: TacticalSummary
+  /** Duels only: the side with the better global power gets a small extra in every block. Absent in classic matches. */
+  readonly rosterAdvantage?: RosterAdvantage
   readonly benches?: Readonly<Record<MatchSide, readonly Player[]>>
   readonly substitutions?: SubstitutionSummary
 }

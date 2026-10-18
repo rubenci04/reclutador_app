@@ -5,7 +5,7 @@ import { eventInfluence } from '../tactics/eventInfluence'
 import { NEUTRAL_SELECTION, TACTICS_VERSION, parseStrategySelection, type StrategySelection } from '../tactics/strategies'
 import { ZERO_ADJUSTMENT, tacticalAdjustment, tacticalFeatures, type TacticalAdjustment } from '../tactics/tacticalModel'
 import { createSeededRandom } from './seededRandom'
-import { MATCH_MINUTES, MATCH_RULES_VERSION, type MatchBlock, type MatchEvent, type MatchResult, type MatchSide, type MatchStats, type MatchTeam, type TeamStrength } from './matchTypes'
+import { MATCH_MINUTES, MATCH_RULES_VERSION, type MatchBlock, type MatchEvent, type MatchResult, type MatchSide, type MatchStats, type MatchTeam, type RosterAdvantage, type TeamStrength } from './matchTypes'
 
 export interface SimulationInput {
   readonly localLineup: DraftLineup
@@ -16,6 +16,8 @@ export interface SimulationInput {
   readonly seed: string
   /** Optional. Missing means NEUTRAL for both sides (compatibility with stored matches and earlier tests). */
   readonly tactics?: StrategySelection
+  /** Duels: gives the side with the better global power a bounded extra. Omitted keeps the classic simulation untouched. */
+  readonly rosterBonus?: boolean
   /** Budget the elevens were built under; omitted means the classic budget. */
   readonly budget?: number
   /** Optional substitutes (player ids) per side. Without them the match is exactly the classic one. */
@@ -40,6 +42,16 @@ export function isValidBench(bench: readonly string[], lineup: DraftLineup, cata
 }
 
 const clamp = (value: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, value))
+
+export const ROSTER_BONUS_PER_POINT = 0.8
+export const ROSTER_BONUS_CAP = 3
+export const ROSTER_BONUS_MIN_DIFFERENCE = 0.5
+/** Reward for the better-built roster: 0.8 strength points per global point of difference, at most 3, nothing under 0.5. */
+export function rosterAdvantage(localGlobal: number, cpuGlobal: number): RosterAdvantage {
+  const difference = Math.round(Math.abs(localGlobal - cpuGlobal) * 10) / 10
+  if (difference < ROSTER_BONUS_MIN_DIFFERENCE) return { side: null, bonus: 0, difference }
+  return { side: localGlobal > cpuGlobal ? 'local' : 'cpu', bonus: Math.min(ROSTER_BONUS_CAP, Math.round(difference * ROSTER_BONUS_PER_POINT * 10) / 10), difference }
+}
 
 /**
  * Engine-boundary check of an organised eleven: exactly the 11 slots, exclusive catalog players, each in a slot of its own line, budget respected.
@@ -109,6 +121,8 @@ export function simulateMatch(input: SimulationInput): MatchResult {
   const substitutionLog: { minute: (typeof MATCH_MINUTES)[number]; side: MatchSide; outPlayerId: string; inPlayerId: string }[] = []
   const adjustmentTotals: Record<MatchSide, { attack: number; defense: number; midfield: number }> = { local: { ...ZERO_ADJUSTMENT }, cpu: { ...ZERO_ADJUSTMENT } }
   const strengths = { local: sides.local.strength, cpu: sides.cpu.strength }
+  const advantage = input.rosterBonus ? rosterAdvantage(strengths.local.global, strengths.cpu.global) : null
+  const extra = (key: MatchSide) => (advantage?.side === key ? advantage.bonus : 0)
   type MutableStats = { -readonly [Key in keyof MatchStats]: MatchStats[Key] }
   const stats: Record<MatchSide, MutableStats> = { local: emptyStats(), cpu: emptyStats() }
   const score = { local: 0, cpu: 0 }
@@ -142,8 +156,8 @@ export function simulateMatch(input: SimulationInput): MatchResult {
     }
     for (const key of ['local', 'cpu'] as const) for (const sector of ['attack', 'defense', 'midfield'] as const) adjustmentTotals[key][sector] += adjustment[key][sector]
     const effective = {
-      local: { ...sides.local.strength, attack: sides.local.strength.attack + adjustment.local.attack, defense: sides.local.strength.defense + adjustment.local.defense, midfield: sides.local.strength.midfield + adjustment.local.midfield },
-      cpu: { ...sides.cpu.strength, attack: sides.cpu.strength.attack + adjustment.cpu.attack, defense: sides.cpu.strength.defense + adjustment.cpu.defense, midfield: sides.cpu.strength.midfield + adjustment.cpu.midfield },
+      local: { ...sides.local.strength, attack: sides.local.strength.attack + adjustment.local.attack + extra('local'), defense: sides.local.strength.defense + adjustment.local.defense + extra('local'), midfield: sides.local.strength.midfield + adjustment.local.midfield + extra('local') },
+      cpu: { ...sides.cpu.strength, attack: sides.cpu.strength.attack + adjustment.cpu.attack + extra('cpu'), defense: sides.cpu.strength.defense + adjustment.cpu.defense + extra('cpu'), midfield: sides.cpu.strength.midfield + adjustment.cpu.midfield + extra('cpu') },
     }
     const localAttackChance = initiativeChance(effective.local, effective.cpu)
     const side: MatchSide = random() < localAttackChance ? 'local' : 'cpu'
@@ -182,6 +196,7 @@ export function simulateMatch(input: SimulationInput): MatchResult {
     catalogVersion: input.catalogVersion, rulesVersion: input.rulesVersion, seed: input.seed, local, cpu, strengths, stats, blocks,
     score, winner: score.local === score.cpu ? 'draw' : score.local > score.cpu ? 'local' : 'cpu',
     ...(benches ? { benches: { local: benches.local.map((id) => input.catalog.find((player) => player.id === id)!), cpu: benches.cpu.map((id) => input.catalog.find((player) => player.id === id)!) }, substitutions: { version: SUBSTITUTION_RULES_VERSION, events: substitutionLog } } : {}),
+    ...(advantage ? { rosterAdvantage: advantage } : {}),
     tactics: { version: TACTICS_VERSION, selection: { local: selection.local, cpu: selection.cpu }, adjustments: { local: meanAdjustment(adjustmentTotals.local), cpu: meanAdjustment(adjustmentTotals.cpu) } },
   }
 }

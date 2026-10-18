@@ -262,3 +262,39 @@
 
 /* Photos are anchored to the top so the face and torso stay visible; full-body shots lose the legs, not the head. */
 .player-avatar img { object-position: 50% 8%; }
+
+.auction-banner { margin: 0 0 12px; padding: 12px 14px; border-radius: 8px; background: #17301f; border: 2px solid #d5fb76; color: #f0f8e8; }
+.auction-banner strong { display: block; font-size: 1.02rem; margin-bottom: 4px; }
+.auction-banner ul { margin: 6px 0 0; padding-left: 18px; font-size: .85rem; color: #d2e1cb; }
+.auction-banner-won { border-color: #f4dc63; background: #2c2a10; font-size: 1.05rem; }
+.substitute-market { margin: 12px 0; padding: 12px 14px; border: 1px solid #d5fb7650; border-radius: 8px; background: #102519; }
+.substitute-market h3 { margin: 0 0 4px; font-size: 1rem; }
+.market-left { margin: 0 0 8px; font-size: .85rem; color: #f4dc63; }
+.market-line { margin: 8px 0; }
+.market-options { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.market-options button { font-size: .78rem; min-height: 34px; }
+.market-hint { font-size: .78rem; color: #c4d4c0; margin: 6px 0 0; }
+.roster-advantage { font-weight: 800; color: #f4dc63; font-size: .9rem; }
+
+.auction-banner-blocked { border-color: #ffb347; background: #2a1c10; }
+
+/* Phones (e.g. 360-430 px wide): keep the decision area (card + offer) near the top and the sticky bar short. */
+@media (max-width: 600px) {
+  .duel-page { padding-top: 10px; }
+  .single-player-card { grid-template-columns: 104px 1fr; gap: 12px; padding: 12px; align-items: start; }
+  .single-player-card .player-avatar { width: 104px; padding: 6px; }
+  .single-player-card .player-avatar b { font-size: 22px; }
+  .single-player-card h2 { font-size: clamp(20px, 6vw, 28px); margin: 4px 0; }
+  .single-player-card p { margin: 4px 0; }
+  .auction-hud .hud-positions, .auction-hud .hud-ceiling small, .auction-hud .hud-signed { display: none; }
+  .auction-hud { gap: 4px; padding: 4px; }
+  .hud-panel { padding: 4px 6px; gap: 2px; }
+  .hud-centre { font-size: .7rem; }
+  .abandon-open { min-height: 32px; padding: 4px 10px; margin-bottom: 8px; }
+  .bid-panel, .award-result { margin: 0 8px 10px; padding: 12px; }
+  .auction-heading { padding: 12px 14px; }
+  .duel-actions .primary-action, .duel-actions .secondary-action { flex: 1 1 140px; }
+  .help-launcher { bottom: 10px; right: 10px; width: 36px; height: 36px; opacity: .85; }
+  .draft-header { flex-wrap: wrap; gap: 6px; }
+}
+@media (max-width: 420px) { .draft-app { padding: 0 10px; } .audio-control input[type="range"] { width: 56px; } .language-control select { max-width: 150px; } }

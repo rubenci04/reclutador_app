@@ -2040,18 +2040,6 @@
   "notes": "Commons thumbnail 250 px wide (35951 bytes) fetched through the Wikimedia API; licence read from the file metadata. No claim of catalogue reference year or endorsement."
  },
  {
-  "playerId": "plr_010",
-  "path": "/assets/players/plr_010.jpg",
-  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Arg_vs_mex_otamendi_chilena.jpg",
-  "author": "Hossein Zohrevand",
-  "license": "CC BY 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
-  "attribution": "Arg vs mex otamendi chilena.jpg — Hossein Zohrevand — CC BY 4.0",
-  "verifiedAt": "2026-10-19",
-  "approval": "approved",
-  "notes": "Commons thumbnail 250 px wide (41899 bytes) fetched through the Wikimedia API; licence read from the file metadata. No claim of catalogue reference year or endorsement."
- },
- {
   "playerId": "plr_011",
   "path": "/assets/players/plr_011.jpg",
   "sourceUrl": "https://commons.wikimedia.org/wiki/File:Diego_God%C3%ADn_2018_(cropped).jpg",
@@ -3214,18 +3202,6 @@
   "verifiedAt": "2026-10-19",
   "approval": "approved",
   "notes": "Commons thumbnail 250 px wide (26516 bytes) fetched through the Wikimedia API; licence read from the file metadata. No claim of catalogue reference year or endorsement."
- },
- {
-  "playerId": "plr_142",
-  "path": "/assets/players/plr_142.jpg",
-  "sourceUrl": "https://commons.wikimedia.org/wiki/File:Arg_vs_mex_julianalvarez_ochoa_y_messi_(cropped).jpg",
-  "author": "Hossein Zohrevand",
-  "license": "CC BY 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
-  "attribution": "Arg vs mex julianalvarez ochoa y messi (cropped).jpg — Hossein Zohrevand — CC BY 4.0",
-  "verifiedAt": "2026-10-19",
-  "approval": "approved",
-  "notes": "Commons thumbnail 250 px wide (37073 bytes) fetched through the Wikimedia API; licence read from the file metadata. No claim of catalogue reference year or endorsement."
  },
  {
   "playerId": "plr_143",

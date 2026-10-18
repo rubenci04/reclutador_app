@@ -75,7 +75,7 @@ export type AuctionCreation =
   | { readonly ok: false; readonly error: 'auction_pool_unavailable' | 'budget_too_low' | 'budget_range' }
 
 export type AuctionActionError =
-  | 'invalid_transition' | 'not_your_turn' | 'invalid_bid' | 'unsafe_bid' | 'invalid_award' | 'teams_invalid' | 'no_legal_assignment' | 'invalid_strategy' | 'rival_incomplete'
+  | 'invalid_transition' | 'not_your_turn' | 'invalid_bid' | 'unsafe_bid' | 'invalid_award' | 'teams_invalid' | 'no_legal_assignment' | 'invalid_strategy' | 'rival_incomplete' | 'invalid_substitute'
 
 export type AuctionTransition =
   | { readonly ok: true; readonly game: RecruiterDuelGame }

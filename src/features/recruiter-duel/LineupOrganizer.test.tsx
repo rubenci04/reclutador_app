@@ -43,7 +43,7 @@ describe('reorderTeamLineup', () => {
     const first = startDuelMatch(game, DRAFT_CATALOG); const second = startDuelMatch(game, DRAFT_CATALOG)
     if (!first.ok || !second.ok) throw new Error('match')
     expect(first.game.matchResult).toEqual(second.game.matchResult)
-    const direct = simulateMatch({ localLineup: game.teams.recruiter_one.lineup, cpuLineup: game.teams.recruiter_two.lineup, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match` })
+    const direct = simulateMatch({ localLineup: game.teams.recruiter_one.lineup, cpuLineup: game.teams.recruiter_two.lineup, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match`, rosterBonus: true })
     expect(first.game.matchResult).toEqual(direct)
   })
 })

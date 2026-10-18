@@ -94,7 +94,7 @@ describe('single-player auction interface', () => {
         expected = get(revealDiscardReplacement(expected))
         continue
       }
-      fireEvent.click(screen.getByRole('button', { name: 'Next round' }))
+      fireEvent.click(screen.getByRole('button', { name: /^(Next round|Confirm signing and continue)$/ }))
       expected = get(nextAuctionRound(expected, DRAFT_CATALOG))
       if (expected.phase === 'NEXT_ROUND') expected = get(revealNextAuctionRound(expected))
     }

@@ -10,8 +10,10 @@ export function TacticalSummary({ result, teamName }: Props) {
   const { t } = useTranslation()
   const tactics = result.tactics
   if (!tactics) return null
+  const advantage = result.rosterAdvantage
   return <section className="tactical-summary" aria-label={t('match.tacticsTitle')}>
     <h3>{t('match.tacticsTitle')}</h3>
+    {advantage && <p className="roster-advantage">{advantage.side ? t('match.rosterAdvantage', { team: teamName(advantage.side), bonus: advantage.bonus.toFixed(1), difference: advantage.difference.toFixed(1) }) : t('match.rosterAdvantageNone')}</p>}
     <ul>{(['local', 'cpu'] as const).map((side) => {
       const strategy = tactics.selection[side]; const adjustment = tactics.adjustments[side]
       return <li key={side}>

@@ -51,7 +51,7 @@ function drive(stop: () => boolean, limit = 900) {
   for (let step = 0; step < limit; step++) {
     if (stop()) return
     if (button('Start auction')) { click('Start auction'); continue }
-    if (button('Next round')) { click('Next round'); continue }
+    const next = button(/^(Next round|Confirm signing and continue)$/); if (next) { click(next.textContent!); continue }
     const panel = document.querySelector('.bid-panel h2')?.textContent ?? ''
     const bid = button('Bid'); const pass = button(/^(Pass|Confirm shared discard|Confirm mandatory assignment)$/)
     if (bid && !bid.disabled && panel.includes('Recruiter one')) { click('Bid'); continue }

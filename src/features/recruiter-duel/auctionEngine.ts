@@ -278,8 +278,45 @@ export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player
   const chosen = strategies ?? { recruiter_one: 'NEUTRAL', recruiter_two: 'NEUTRAL' }
   if (!isStrategyId(chosen.recruiter_one) || !isStrategyId(chosen.recruiter_two)) return { ok: false, error: 'invalid_strategy' }
   const stored: Record<RecruiterId, StrategyId> = { recruiter_one: chosen.recruiter_one, recruiter_two: chosen.recruiter_two }
-  const matchResult = simulateMatch({ localLineup: game.teams[FIRST].lineup, cpuLineup: game.teams[SECOND].lineup, catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match`, ...(game.config ? { budget: game.config.budget } : {}), ...(game.teams[FIRST].bench && game.teams[SECOND].bench ? { benches: { local: game.teams[FIRST].bench.map((slot) => slot.playerId!), cpu: game.teams[SECOND].bench.map((slot) => slot.playerId!) } } : {}), tactics: { version: TACTICS_VERSION, local: stored.recruiter_one, cpu: stored.recruiter_two } })
+  const benchIds = (participant: RecruiterId) => benchSlots(game.teams[participant]).flatMap((slot) => slot.playerId ? [slot.playerId] : [])
+  const benches = { local: benchIds(FIRST), cpu: benchIds(SECOND) }
+  const matchResult = simulateMatch({ localLineup: game.teams[FIRST].lineup, cpuLineup: game.teams[SECOND].lineup, catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match`, rosterBonus: true, ...(game.config ? { budget: game.config.budget } : {}), ...(benches.local.length || benches.cpu.length ? { benches } : {}), tactics: { version: TACTICS_VERSION, local: stored.recruiter_one, cpu: stored.recruiter_two } })
   return transition(game, { phase: 'SIMULATING', matchResult, strategies: stored })
+}
+
+/**
+ * Substitutes bought with the money left after the auctions: one per line (DEF, MED, DEL), only players nobody owns and
+ * only what the recruiter can still pay. Best rated first. Empty outside TEAMS_COMPLETED.
+ */
+export function substituteMarket(game: RecruiterDuelGame, participant: RecruiterId, catalog: readonly Player[]): Player[] {
+  if (game.phase !== 'TEAMS_COMPLETED') return []
+  const team = game.teams[participant]
+  const owned = new Set([...rosterIds(game.teams[FIRST]), ...rosterIds(game.teams[SECOND])])
+  const left = budgetOf(game) - team.spent
+  const taken = new Set(benchSlots(team).map((slot) => slot.position))
+  return catalog.filter((player) => (SUBSTITUTE_POSITIONS as readonly string[]).includes(player.position) && !taken.has(player.position) && !owned.has(player.id) && player.price <= left)
+    .sort((a, b) => b.overall_rating - a.overall_rating || a.price - b.price || a.id.localeCompare(b.id))
+}
+
+export function buySubstitute(game: RecruiterDuelGame, participant: RecruiterId, playerId: string, catalog: readonly Player[]): AuctionTransition {
+  if (game.phase !== 'TEAMS_COMPLETED') return { ok: false, error: 'invalid_transition' }
+  const player = substituteMarket(game, participant, catalog).find((candidate) => candidate.id === playerId)
+  if (!player) return { ok: false, error: 'invalid_substitute' }
+  const team = game.teams[participant]
+  const bought: RecruiterTeam = { ...team, bench: [...benchSlots(team), { position: player.position, playerId: player.id }], spent: team.spent + player.price }
+  return transition(game, { teams: { ...game.teams, [participant]: bought } })
+}
+
+/** The CPU spends what is left on its best affordable substitute of each line. Deterministic. */
+export function autoBuySubstitutes(game: RecruiterDuelGame, participant: RecruiterId, catalog: readonly Player[]): RecruiterDuelGame {
+  let current = game
+  for (const position of SUBSTITUTE_POSITIONS) {
+    const pick = substituteMarket(current, participant, catalog).find((player) => player.position === position)
+    if (!pick) continue
+    const result = buySubstitute(current, participant, pick.id, catalog)
+    if (result.ok) current = result.game
+  }
+  return current
 }
 
 export const completeDuelMatch = (game: RecruiterDuelGame): AuctionTransition => game.phase === 'SIMULATING' ? transition(game, { phase: 'MATCH_RESULT' }) : { ok: false, error: 'invalid_transition' }
