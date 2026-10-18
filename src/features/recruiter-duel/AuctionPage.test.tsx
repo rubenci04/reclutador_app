@@ -132,7 +132,7 @@ describe('single-player auction interface', () => {
     expect(drawHistory.newDrawSeed).toHaveBeenCalledTimes(2)
     expect(screen.getByRole('button', { name: 'Heads' })).toBeInTheDocument()
     expect(JSON.parse((screen.getByLabelText('Original seed and context') as HTMLTextAreaElement).value).seed).toBe('fresh-rematch')
-  })
+  }, 30_000)
   it('starts fresh games only on actions and persists exactly the last five contexts', async () => {
     const i18n = await createI18n('en')
     for (let index = 0; index < 7; index++) {

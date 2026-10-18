@@ -156,3 +156,9 @@
 @keyframes strategy-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (max-width: 420px) { .hud-panel { padding: 5px 6px; } .hud-positions li { font-size: .66rem; } .strategy-reveal-grid { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .strategy-panel, .strategy-revealed { animation: none; } .hud-budget i { transition: none; } }
+
+.tactical-summary { display: grid; gap: .4rem; padding: .7rem; border-radius: 8px; background: #14281e; font-size: .85rem; }
+.tactical-summary h3, .tactical-summary p { margin: 0; }
+.tactical-summary ul { margin: 0; padding: 0; list-style: none; display: grid; gap: .4rem; }
+.tactical-summary li { display: grid; gap: 2px; }
+.tactical-summary li span, .tactical-summary p { color: #c8d7c3; }

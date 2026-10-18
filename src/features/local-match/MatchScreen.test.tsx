@@ -37,3 +37,34 @@ describe('match playback', () => {
     expect(rematch).toHaveBeenCalledTimes(1)
   })
 })
+
+describe('tactical summary', () => {
+  const build = (tactics?: { local: 'NEUTRAL' | 'HIGH_PRESS'; cpu: 'NEUTRAL' | 'LOW_BLOCK' }) => {
+    const local = generateCpuTeam(DRAFT_CATALOG, 'summary-local').team.lineup; const cpu = generateCpuTeam(DRAFT_CATALOG, 'summary-cpu').team.lineup
+    return simulateMatch({ localLineup: local, cpuLineup: cpu, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: 'summary', ...(tactics ? { tactics: { version: 'tactics-v1' as const, ...tactics } } : {}) })
+  }
+  const finish = async (result: ReturnType<typeof build>) => {
+    vi.useFakeTimers()
+    const i18n = await createI18n('en')
+    render(<I18nextProvider i18n={i18n}><MatchScreen result={result} onRematch={vi.fn()} onReturn={vi.fn()} /></I18nextProvider>)
+    act(() => vi.advanceTimersByTime(15_000))
+  }
+  it('names both strategies and shows the stored average adjustments after full time', async () => {
+    const result = build({ local: 'HIGH_PRESS', cpu: 'LOW_BLOCK' })
+    await finish(result)
+    const region = screen.getByRole('region', { name: 'Match tactics' })
+    expect(region).toHaveTextContent('High press'); expect(region).toHaveTextContent('Low block')
+    expect(region).toHaveTextContent(`Defensive power ${result.tactics!.adjustments.cpu.defense > 0 ? '+' : '−'}${Math.abs(result.tactics!.adjustments.cpu.defense).toFixed(1)}`)
+    expect(region).toHaveTextContent(/does not guarantee a win/)
+  })
+  it('says no adjustments for NEUTRAL', async () => {
+    await finish(build({ local: 'NEUTRAL', cpu: 'NEUTRAL' }))
+    expect(screen.getAllByText('No tactical adjustments.')).toHaveLength(2)
+  })
+  it('renders nothing for results stored before tactics existed', async () => {
+    const { tactics: _omit, ...legacy } = build()
+    void _omit
+    await finish(legacy as ReturnType<typeof build>)
+    expect(screen.queryByRole('region', { name: 'Match tactics' })).not.toBeInTheDocument()
+  })
+})
