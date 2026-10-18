@@ -955,5 +955,497 @@
   "sourceUrl": "https://www.africanews.com/amp/2026/02/05/ngolo-kante-completes-move-to-turkeys-fenerbahce/",
   "verificationStatus": "VERIFIED",
   "auditNote": "Joined Fenerbahçe from Al-Ittihad in Feb 2026 (contract to 2028 per reports)."
+ },
+ {
+  "playerId": "plr_076",
+  "revision": 1,
+  "referenceClubId": "manchester_city",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://www.scmp.com/sport/football/article/3370063/manchester-city-legend-david-silva-comes-out-retirement-hong-kong-stint",
+  "verificationStatus": "PENDING",
+  "auditNote": "Retired in July 2023 (several outlets), but one 2026 South China Morning Post report says he came out of retirement for Supreme Sha Tin (Hong Kong). Single source for the comeback; status unresolved."
+ },
+ {
+  "playerId": "plr_077",
+  "revision": 1,
+  "referenceClubId": "bayern_munich",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Colo-Colo said to run through Dec 2026 (late-2025 reports) but with reported friction and an undated item calling him clubless. No dated 2026 confirmation."
+ },
+ {
+  "playerId": "plr_078",
+  "revision": 1,
+  "referenceClubId": "juventus",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Last reliable move found: Barcelona contract terminated and Sharjah (2023-24). The current club could not be established from reliable sources."
+ },
+ {
+  "playerId": "plr_079",
+  "revision": 1,
+  "referenceClubId": "tottenham_hotspur",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "vfl_wolfsburg",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "vfl_wolfsburg",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.newsofbahrain.com/sports/118810.html",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.newsofbahrain.com/sports/118810.html",
+    "startedYear": 2025
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.newsofbahrain.com/sports/118810.html",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "AFP, 12 Sep 2025: free transfer to Wolfsburg until 2027 (contract covers the cut-off); a June 2026 article still lists Wolfsburg. Blog posts claiming otherwise were discarded."
+ },
+ {
+  "playerId": "plr_080",
+  "revision": 1,
+  "referenceClubId": "borussia_dortmund",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Last club found is Cerezo Osaka (profile corrected to Feb 2024). A retirement rumour was labelled false; no 2026 source."
+ },
+ {
+  "playerId": "plr_081",
+  "revision": 1,
+  "referenceClubId": "porto",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "houston_dynamo",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "houston_dynamo",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.mlssoccer.com/news/hector-herrera-rejoins-houston-dynamo",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.mlssoccer.com/news/hector-herrera-rejoins-houston-dynamo",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.mlssoccer.com/news/hector-herrera-rejoins-houston-dynamo",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "MLS transfer tracker / Houston Dynamo: returned for 2026 with an option to June 2027; no later change reported."
+ },
+ {
+  "playerId": "plr_082",
+  "revision": 1,
+  "referenceClubId": "rostov",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Emelec return in 2024, later Sochi reports (2025); no dated 2026 source."
+ },
+ {
+  "playerId": "plr_083",
+  "revision": 1,
+  "referenceClubId": "galatasaray",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Al Shamal contract ran to June 2026; no later source."
+ },
+ {
+  "playerId": "plr_084",
+  "revision": 1,
+  "referenceClubId": "amkar_perm",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Shabab Al Ahli in 2025/26 statistics (FotMob, The Analyst) but no dated confirmation for the 2026-27 season."
+ },
+ {
+  "playerId": "plr_085",
+  "revision": 1,
+  "referenceClubId": "atletico_bucaramanga",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Wikipedia calls him a former player (last club San Miguelito 2020-21); no announcement retrieved."
+ },
+ {
+  "playerId": "plr_086",
+  "revision": 1,
+  "referenceClubId": "orlando_city",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "sporting_cristal",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "sporting_cristal",
+    "source": {
+     "provider": "editorial",
+     "url": "https://canaln.pe/deportes/yoshimar-yotun-continuara-sporting-cristal-2026-n468558",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://canaln.pe/deportes/yoshimar-yotun-continuara-sporting-cristal-2026-n468558"
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://canaln.pe/deportes/yoshimar-yotun-continuara-sporting-cristal-2026-n468558",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Sporting Cristal renewed him to the end of 2026; FotMob shows 2026 Apertura minutes with Cristal. The contract covers the cut-off."
+ },
+ {
+  "playerId": "plr_087",
+  "revision": 1,
+  "referenceClubId": "cafetaleros_de_tapachula",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "iraklis",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "iraklis",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.laestrella.com.pa/deportes/barcenas-brilla-en-grecia-el-panameno-marca-gol-en-su-debut-oficial-GK25495560",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.laestrella.com.pa/deportes/barcenas-brilla-en-grecia-el-panameno-marca-gol-en-su-debut-oficial-GK25495560",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.laestrella.com.pa/deportes/barcenas-brilla-en-grecia-el-panameno-marca-gol-en-su-debut-oficial-GK25495560",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Signed by Iraklis (Greece) for 2026-27 (one season, to June 2027) and scored on his September 2026 debut (La Estrella de Panamá)."
+ },
+ {
+  "playerId": "plr_088",
+  "revision": 1,
+  "referenceClubId": "paris_saint_germain",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "real_madrid",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "real_madrid",
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Kylian_Mbapp%C3%A9",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Kylian_Mbapp%C3%A9",
+    "startedYear": 2024
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Kylian_Mbapp%C3%A9",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "At Real Madrid since 1 Jul 2024 (free agent from PSG); all reliable sources agree."
+ },
+ {
+  "playerId": "plr_089",
+  "revision": 1,
+  "referenceClubId": "real_madrid",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://africasoccer.com/?p=602252",
+  "verificationStatus": "PENDING",
+  "auditNote": "Left Al-Hilal by mutual agreement on 31 Aug 2026 (AP); unattached then, with unconfirmed Leverkusen links. Not recorded as FREE_AGENT because no evidence at the cut-off."
+ },
+ {
+  "playerId": "plr_090",
+  "revision": 1,
+  "referenceClubId": "liverpool",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Liverpool announced his exit at the end of 2025-26; his next club was unannounced in the reliable sources found. Low-quality pages claiming otherwise were discarded."
+ },
+ {
+  "playerId": "plr_091",
+  "revision": 1,
+  "referenceClubId": "manchester_city",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "manchester_city",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "manchester_city",
+    "source": {
+     "provider": "editorial",
+     "url": "https://prod.beinsports.com/en-mena/football/premier-league/articles-video/erling-haaland-signs-new-10-year-manchester-city-contract-2025-01-17",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://prod.beinsports.com/en-mena/football/premier-league/articles-video/erling-haaland-signs-new-10-year-manchester-city-contract-2025-01-17",
+    "startedYear": 2022
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://prod.beinsports.com/en-mena/football/premier-league/articles-video/erling-haaland-signs-new-10-year-manchester-city-contract-2025-01-17",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "10-year contract announced in Jan 2025 (to 2033/34); still at City for 2026-27 with no transfer reported."
+ },
+ {
+  "playerId": "plr_092",
+  "revision": 1,
+  "referenceClubId": "tottenham_hotspur",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "bayern_munich",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "bayern_munich",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.nmas.com.mx/deportes/harry-kane-se-queda-bayern-munich-como-seria-nuevo-contrato-delantero-club-aleman/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.nmas.com.mx/deportes/harry-kane-se-queda-bayern-munich-como-seria-nuevo-contrato-delantero-club-aleman/",
+    "startedYear": 2023
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.nmas.com.mx/deportes/harry-kane-se-queda-bayern-munich-como-seria-nuevo-contrato-delantero-club-aleman/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Remains at Bayern (contract to mid-2027 per reports); Premier League links are speculation."
+ },
+ {
+  "playerId": "plr_093",
+  "revision": 1,
+  "referenceClubId": "manchester_city",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "RETIRED",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://www.tudn.com/futbol/la-liga-2/sergio-aguero-en-su-retiro-del-futbol-no-voy-a-decir-que-soy-un-crack",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Announced his retirement at Camp Nou on 15 Dec 2021 (heart arrhythmia). 2026-dated pages are reprints."
+ },
+ {
+  "playerId": "plr_094",
+  "revision": 1,
+  "referenceClubId": "arsenal",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "cf_montreal",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "cf_montreal",
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.cfmontreal.com/news/cf-montreal-signs-alexis-sanchez-as-a-designated-player",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://en.cfmontreal.com/news/cf-montreal-signs-alexis-sanchez-as-a-designated-player",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://en.cfmontreal.com/news/cf-montreal-signs-alexis-sanchez-as-a-designated-player",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "CF Montréal's own site: signed as a Designated Player on 11 Aug 2026 (through the 2027 MLS Sprint Season) after leaving Sevilla."
+ },
+ {
+  "playerId": "plr_095",
+  "revision": 1,
+  "referenceClubId": "inter_milan",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Left Galatasaray at contract end and was without a club in Aug 2026 (reports); no signing confirmed. Not recorded as FREE_AGENT."
+ },
+ {
+  "playerId": "plr_096",
+  "revision": 1,
+  "referenceClubId": "atalanta",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "torino",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "torino",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.eluniversal.com.co/deportes/2026/07/08/la-decision-que-tomo-duvan-zapata-en-el-torino-de-italia/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.eluniversal.com.co/deportes/2026/07/08/la-decision-que-tomo-duvan-zapata-en-el-torino-de-italia/",
+    "startedYear": 2023
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.eluniversal.com.co/deportes/2026/07/08/la-decision-que-tomo-duvan-zapata-en-el-torino-de-italia/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Torino renewed him to June 2028 (8 Jul 2026, captain). One earlier note says 2027; the later date was used."
+ },
+ {
+  "playerId": "plr_097",
+  "revision": 1,
+  "referenceClubId": "chelsea",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "ac_milan",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "ac_milan",
+    "source": {
+     "provider": "editorial",
+     "url": "https://bleacherreport.com/articles/25445111-new-christian-pulisic-rumors-reveal-mls-interest-ac-milans-stance-potential-transfer",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://bleacherreport.com/articles/25445111-new-christian-pulisic-rumors-reveal-mls-interest-ac-milans-stance-potential-transfer",
+    "startedYear": 2023
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://bleacherreport.com/articles/25445111-new-christian-pulisic-rumors-reveal-mls-interest-ac-milans-stance-potential-transfer",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Contract with AC Milan through 2026-27 with a club option (Bleacher Report; NBC reports of the original deal). Transfer talk is rumour only."
+ },
+ {
+  "playerId": "plr_098",
+  "revision": 1,
+  "referenceClubId": "real_betis",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "inter_san_carlos",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "inter_san_carlos",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.clarosports.com/centroamerica/futbol-cenam/joel-campbell-tiene-nuevo-destino-en-costa-rica-el-desafio-que-sorprendio-a-todos/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.clarosports.com/centroamerica/futbol-cenam/joel-campbell-tiene-nuevo-destino-en-costa-rica-el-desafio-que-sorprendio-a-todos/",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.clarosports.com/centroamerica/futbol-cenam/joel-campbell-tiene-nuevo-destino-en-costa-rica-el-desafio-que-sorprendio-a-todos/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Left Alajuelense in May 2026 and was presented by Inter San Carlos on 29 Jun 2026 (ClaroSports, Diario Extra)."
+ },
+ {
+  "playerId": "plr_099",
+  "revision": 1,
+  "referenceClubId": "az_alkmaar",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "A Tehran Times item of 10 Aug 2026 reports a move to Excelsior; earlier 2026 items had him clubless. Single source, no club confirmation."
+ },
+ {
+  "playerId": "plr_100",
+  "revision": 1,
+  "referenceClubId": "hertha_berlin",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "melbourne_city",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "melbourne_city",
+    "source": {
+     "provider": "editorial",
+     "url": "https://melbournecityfc.com.au/?p=337581",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://melbournecityfc.com.au/?p=337581",
+    "startedYear": 2024
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://melbournecityfc.com.au/?p=337581",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Melbourne City announced a one-year extension with a further-season trigger for 2026-27 (club site and AAP)."
  }
 ]
