@@ -53,7 +53,7 @@ function drive(stop: () => boolean, limit = 900) {
     if (button('Start auction')) { click('Start auction'); continue }
     const next = button(/^(Next round|Confirm signing and continue)$/); if (next) { click(next.textContent!); continue }
     const panel = document.querySelector('.bid-panel h2')?.textContent ?? ''
-    const bid = button('Bid'); const pass = button(/^(Pass|Confirm shared discard|Confirm mandatory assignment)$/)
+    const bid = button('Bid'); const pass = button(/^(Pass|Confirm shared discard|Confirm mandatory assignment|Claim)$/)
     if (bid && !bid.disabled && panel.includes('Recruiter one')) { click('Bid'); continue }
     if (pass && !pass.disabled) { click(pass.textContent!); continue }
     if (bid && !bid.disabled) { click('Bid'); continue }

@@ -77,14 +77,18 @@ describe('single-player auction interface', () => {
         const position = expected.rounds[expected.roundIndex].position
         const progress = positionProgress(expected.teams[participant], position)
         if (progress.remaining === 0) {
-          expect(screen.getByRole('button', { name: 'Bid' })).toBeDisabled()
-          expect(document.getElementById('position-capacity')).toHaveTextContent('position full')
+          expect(screen.queryByRole('button', { name: 'Bid' })).not.toBeInTheDocument()
+          expect(screen.queryByRole('button', { name: 'Pass' })).not.toBeInTheDocument()
+          expect(screen.getByText(/already filled the .* position/)).toBeVisible()
           checkedFull = true
+          act(() => vi.advanceTimersByTime(900))
+          expected = get(passAuction(expected, participant, DRAFT_CATALOG))
+          continue
         }
         if (position === 'DEF' && progress.filled === 1 && maximumSafeBid(expected, participant, DRAFT_CATALOG) > 0) {
           expect(screen.getByRole('button', { name: 'Bid' })).toBeEnabled(); checkedOneDefender = true
         }
-        const passAction = screen.getByRole('button', { name: turn ? (engine.auctionAvailability(expected, participant, DRAFT_CATALOG).replacement ? 'Confirm shared discard' : 'Confirm mandatory assignment') : 'Pass' })
+        const passAction = screen.getByRole('button', { name: turn ? (engine.auctionAvailability(expected, participant, DRAFT_CATALOG).replacement ? 'Confirm shared discard' : (expected.currentBid ? 'Confirm mandatory assignment' : (engine.auctionAvailability(expected, participant, DRAFT_CATALOG).passAward?.winner === participant ? 'Claim' : 'Confirm mandatory assignment'))) : 'Pass' })
         expect(passAction).toBeEnabled()
         fireEvent.click(passAction)
         expected = get(passAuction(expected, participant, DRAFT_CATALOG))

@@ -35,12 +35,18 @@ export function chooseCoach(game: RecruiterDuelGame, participant: RecruiterId, c
   return { ok: true, game: { ...game, teams: { ...game.teams, [participant]: { ...team, coachId: coach.id, spent: team.spent + coach.price } } } }
 }
 
+/** Chooses to go without a coach; opens the substitute step. Only while a coach could still be hired. */
+export function declineCoach(game: RecruiterDuelGame, participant: RecruiterId): AuctionTransition {
+  if (game.phase !== 'TEAMS_COMPLETED' || !game.config?.coaches || game.teams[participant].coachId) return { ok: false, error: 'invalid_transition' }
+  return { ok: true, game: { ...game, teams: { ...game.teams, [participant]: { ...game.teams[participant], coachDeclined: true } } } }
+}
+
 const power = (coach: Coach) => { const effect = coachEffect(coach); return effect.attack + effect.defense + effect.midfield }
 
 /** The CPU hires the strongest coach it can afford (cheaper on a tie). Deterministic; does nothing when it already has one. */
 export function autoChooseCoach(game: RecruiterDuelGame, participant: RecruiterId): RecruiterDuelGame {
   const best = [...coachMarket(game, participant)].sort((a, b) => power(b) - power(a) || a.price - b.price || a.id.localeCompare(b.id))[0]
-  if (!best) return game
+  if (!best) return declineCoach(game, participant).ok ? { ...game, teams: { ...game.teams, [participant]: { ...game.teams[participant], coachDeclined: true } } } : game
   const result = chooseCoach(game, participant, best.id)
   return result.ok ? result.game : game
 }

@@ -19,3 +19,6 @@
 - Solo hot-seat y contra CPU. El duelo online usa la configuración clásica sin técnicos; llevarlo requiere interfaz en `OnlineTeamsStage` y es parte de la siguiente tarea online.
 - Sin descartes de técnicos (el ADR proponía 2).
 - QA visual manual NO ejecutada.
+
+## Orden al terminar las subastas
+1. Once titulares. 2. Técnico (contratar o «Sin técnico»). 3. Suplentes con el saldo que queda: hasta 3, uno por línea (DEF, MED, DEL), del grupo de descartados de la partida y, si faltan, extras sorteados del mismo catálogo (3 por línea como máximo en el grupo); solo mientras ambos reclutadores conserven dinero.

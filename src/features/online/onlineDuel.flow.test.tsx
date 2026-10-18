@@ -130,7 +130,7 @@ describe('online duel, two browsers against the real database', () => {
       for (const view of [host, guest]) {
         if (press(view, 'Start auction') || press(view, 'Confirm signing and continue') || press(view, 'Next round')) continue
         if (view.queryByRole('button', { name: 'Bid' }) && step % 3 !== 0 && press(view, 'Bid')) { turns++; continue }
-        if (press(view, /^(Pass|Confirm shared discard|Confirm mandatory assignment)$/)) { turns++; continue }
+        if (press(view, /^(Pass|Confirm shared discard|Confirm mandatory assignment|Claim)$/)) { turns++; continue }
         press(view, 'Bid')
       }
       // Only the person who won the auction is congratulated; the one who passed is told so.

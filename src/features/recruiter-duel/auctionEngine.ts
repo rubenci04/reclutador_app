@@ -316,17 +316,40 @@ export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player
   return transition(game, { phase: 'SIMULATING', matchResult, strategies: stored })
 }
 
+/** Candidates per line (DEF, MED, DEL) in the substitute pool. */
+export const SUBSTITUTE_POOL_PER_LINE = 3
+
 /**
- * Substitutes bought with the money left after the auctions: one per line (DEF, MED, DEL), only players nobody owns and
- * only what the recruiter can still pay. Best rated first. Empty outside TEAMS_COMPLETED.
+ * Where substitutes come from: first the players that came out as cards and were discarded (nobody owns them), then, for
+ * every line short of ${SUBSTITUTE_POOL_PER_LINE}, seeded extras of the same catalog nobody owns. Same pool for both recruiters, derived from the seed.
+ */
+export function substitutePool(game: RecruiterDuelGame, catalog: readonly Player[]): Player[] {
+  const lines = SUBSTITUTE_POSITIONS as readonly string[]
+  const owned = new Set([...rosterIds(game.teams[FIRST]), ...rosterIds(game.teams[SECOND])])
+  const byId = playerMap(catalog)
+  const discarded = game.discardedPlayerIds.flatMap((id) => { const player = byId.get(id); return player && lines.includes(player.position) && !owned.has(id) ? [player] : [] })
+  const random = createSeededRandom(`${game.seed}:bench`)
+  const used = new Set(discarded.map((player) => player.id))
+  const extras = SUBSTITUTE_POSITIONS.flatMap((position) => {
+    const missing = SUBSTITUTE_POOL_PER_LINE - discarded.filter((player) => player.position === position).length
+    const eligible = catalog.filter((player) => player.position === position && !owned.has(player.id) && !used.has(player.id)).sort((a, b) => a.id.localeCompare(b.id))
+    return missing > 0 ? shuffleSeeded(eligible, random).slice(0, missing) : []
+  })
+  return [...discarded, ...extras]
+}
+
+/**
+ * Substitutes bought with the money left, after the eleven and the coach: one per line (DEF, MED, DEL), from the pool above,
+ * only what the recruiter can still pay and only while both recruiters still have money. Best rated first. Empty outside TEAMS_COMPLETED.
  */
 export function substituteMarket(game: RecruiterDuelGame, participant: RecruiterId, catalog: readonly Player[]): Player[] {
   if (game.phase !== 'TEAMS_COMPLETED') return []
   const team = game.teams[participant]
-  const owned = new Set([...rosterIds(game.teams[FIRST]), ...rosterIds(game.teams[SECOND])])
+  if (game.config?.coaches && !team.coachId && !team.coachDeclined) return []
   const left = budgetOf(game) - team.spent
+  if (budgetOf(game) - game.teams[opponent(participant)].spent <= 0) return []
   const taken = new Set(benchSlots(team).map((slot) => slot.position))
-  return catalog.filter((player) => (SUBSTITUTE_POSITIONS as readonly string[]).includes(player.position) && !taken.has(player.position) && !owned.has(player.id) && player.price <= left)
+  return substitutePool(game, catalog).filter((player) => !taken.has(player.position) && player.price <= left)
     .sort((a, b) => b.overall_rating - a.overall_rating || a.price - b.price || a.id.localeCompare(b.id))
 }
 

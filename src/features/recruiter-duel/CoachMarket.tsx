@@ -12,10 +12,11 @@ interface Props {
   /** True once the strategy step started: the squads are closed. */
   readonly locked: boolean
   readonly onHire: (coachId: string) => void
+  readonly onDecline: () => void
 }
 
 /** Optional step after the squads: spend what is left on one coach from a seeded offer. */
-export function CoachMarket({ game, participant, name, locked, onHire }: Props) {
+export function CoachMarket({ game, participant, name, locked, onHire, onDecline }: Props) {
   const { t } = useTranslation()
   const hired = coachOf(game, participant)
   const left = budgetOf(game) - game.teams[participant].spent
@@ -34,6 +35,7 @@ export function CoachMarket({ game, participant, name, locked, onHire }: Props) 
       <div className="market-options">{market.map((coach) => <button key={coach.id} className="secondary-action" onClick={() => onHire(coach.id)}>
         {t('coach.option', { coach: label(coach), age: coach.deathYear ? `${coach.birthYear}–${coach.deathYear}` : t('coach.age', { age: coachAge(coach) }), team: coach.team, tier: coach.tier, focus: t(`coach.focus.${coach.focus}`), price: coach.price })}
       </button>)}</div>
+      <button className="secondary-action" onClick={onDecline}>{t('coach.decline')}</button>
       <p className="market-hint">{t('coach.hint')}</p>
     </>}
   </section>
