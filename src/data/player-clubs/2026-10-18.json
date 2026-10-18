@@ -2010,5 +2010,512 @@
   "sourceUrl": "https://amp.bundesliga.com/en/bundesliga/news/joshua-kimmich-signs-new-bayern-munich-contract-2025-17012",
   "verificationStatus": "VERIFIED",
   "auditNote": "Bundesliga.com: new contract to 2029; Wikipedia and a 2026 statistics page still list Bayern."
+ },
+ {
+  "playerId": "plr_126",
+  "revision": 1,
+  "referenceClubId": "manchester_united",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "manchester_united",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "manchester_united",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.kildarenow.com/news/premier-league/780260/bruno-fernandes-signs-new-deal-with-manchester-united.html",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.kildarenow.com/news/premier-league/780260/bruno-fernandes-signs-new-deal-with-manchester-united.html",
+    "startedYear": 2020
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.kildarenow.com/news/premier-league/780260/bruno-fernandes-signs-new-deal-with-manchester-united.html",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Captain; new contract to June 2027 with a one-year option (the 2022 deal to 2026 is superseded). No transfer reported."
+ },
+ {
+  "playerId": "plr_127",
+  "revision": 1,
+  "referenceClubId": "barcelona",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Barcelona contract ran to 30 Jun 2026 and only 2025 renewal talk was found; no source on a new deal or a departure."
+ },
+ {
+  "playerId": "plr_128",
+  "revision": 1,
+  "referenceClubId": "barcelona",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Only 2021 reports (extension to 30 Jun 2026); nothing on a renewal or a move."
+ },
+ {
+  "playerId": "plr_129",
+  "revision": 1,
+  "referenceClubId": "real_madrid",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "real_madrid",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "real_madrid",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.elobservador.com.uy/futbol-internacional/el-saludo-federico-valverde-y-jose-mourinho-un-dia-muy-especial-el-uruguayo-volvio-los-entrenamientos-real-madrid-el-mundial-2026-n6051602",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.elobservador.com.uy/futbol-internacional/el-saludo-federico-valverde-y-jose-mourinho-un-dia-muy-especial-el-uruguayo-volvio-los-entrenamientos-real-madrid-el-mundial-2026-n6051602",
+    "startedYear": 2018
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.elobservador.com.uy/futbol-internacional/el-saludo-federico-valverde-y-jose-mourinho-un-dia-muy-especial-el-uruguayo-volvio-los-entrenamientos-real-madrid-el-mundial-2026-n6051602",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "El Observador, 22 Jul 2026: back in Real Madrid pre-season after the World Cup, starting his ninth season; a contract database lists a deal to 2029."
+ },
+ {
+  "playerId": "plr_130",
+  "revision": 1,
+  "referenceClubId": "brighton_hove_albion",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "liverpool",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "liverpool",
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Alexis_Mac_Allister",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Alexis_Mac_Allister",
+    "startedYear": 2023
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Alexis_Mac_Allister",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Wikipedia: Liverpool since June 2023, contract to 2028; his father confirmed in Sep 2026 that he stays after the summer window."
+ },
+ {
+  "playerId": "plr_131",
+  "revision": 1,
+  "referenceClubId": "benfica",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Enzo_Fern%C3%A1ndez",
+  "verificationStatus": "PENDING",
+  "auditNote": "Wikipedia lists Manchester City from 2026 while a cluster of low-quality pages still say Chelsea; no club announcement retrieved."
+ },
+ {
+  "playerId": "plr_132",
+  "revision": 1,
+  "referenceClubId": "fiorentina",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "ajax",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "ajax",
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.le360.ma/sports/sofyan-amrabat-returns-to-ajax-on-contract-through-2028_3CTBN4HKSREWZKIW5RLX4IDQIY/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://en.le360.ma/sports/sofyan-amrabat-returns-to-ajax-on-contract-through-2028_3CTBN4HKSREWZKIW5RLX4IDQIY/",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://en.le360.ma/sports/sofyan-amrabat-returns-to-ajax-on-contract-through-2028_3CTBN4HKSREWZKIW5RLX4IDQIY/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Ajax announced his signing on 30 Aug 2026 as a free agent from Fenerbahçe, contract to 30 Jun 2028 (Le360, Hespress, Wikipedia)."
+ },
+ {
+  "playerId": "plr_133",
+  "revision": 1,
+  "referenceClubId": "lens",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Nice signed him in 2025 (three years) but an undated report says he was left out of the professional group; the current status was not established."
+ },
+ {
+  "playerId": "plr_134",
+  "revision": 1,
+  "referenceClubId": "napoli",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "napoli",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "napoli",
+    "source": {
+     "provider": "editorial",
+     "url": "https://widgets.datasportsgroup.com/sports-news/news/en/174725/napoli-set-€20m-price-tag-for-anguissa/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://widgets.datasportsgroup.com/sports-news/news/en/174725/napoli-set-€20m-price-tag-for-anguissa/",
+    "startedYear": 2022
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://widgets.datasportsgroup.com/sports-news/news/en/174725/napoli-set-€20m-price-tag-for-anguissa/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Contract to 30 Jun 2027; a 17 Jun 2026 report says Napoli set a EUR 20m price, with interest from other clubs. No departure reported."
+ },
+ {
+  "playerId": "plr_135",
+  "revision": 1,
+  "referenceClubId": "mainz_05",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "mainz_05",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "mainz_05",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.mainz05.de/en/news-en/lee-contract-extension-120226",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.mainz05.de/en/news-en/lee-contract-extension-120226",
+    "startedYear": 2021
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.mainz05.de/en/news-en/lee-contract-extension-120226",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Mainz 05's own site (12 Feb 2026): contract extension beyond the 2025/26 season."
+ },
+ {
+  "playerId": "plr_136",
+  "revision": 1,
+  "referenceClubId": "celtic",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "RETIRED",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://footballaustralia.com/news/aaron-mooy-calls-time-professional-playing-career",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Football Australia reports that he ended his professional career for club and country; last club Celtic."
+ },
+ {
+  "playerId": "plr_137",
+  "revision": 1,
+  "referenceClubId": "rayo_vallecano",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "rayo_vallecano",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "rayo_vallecano",
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Path%C3%A9_Ciss",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Path%C3%A9_Ciss",
+    "startedYear": 2022
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Path%C3%A9_Ciss",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Wikipedia and a 2026 profile: Rayo Vallecano, contract to 30 Jun 2027. A Saudi interest report is undated and not completed."
+ },
+ {
+  "playerId": "plr_138",
+  "revision": 1,
+  "referenceClubId": "chelsea",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "RETIRED",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://www.tntsports.co.uk/football/premier-league/2023-2024/eden-hazard-former-chelsea-and-real-madrid-forward-announces-retirement-from-professional-football_sto9831407/story.shtml",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Announced his retirement from professional football on 10 Oct 2023 after leaving Real Madrid; international retirement in Dec 2022."
+ },
+ {
+  "playerId": "plr_139",
+  "revision": 1,
+  "referenceClubId": "atletico_madrid",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Reports from March 2026 say he agreed to join Orlando City (two years) after the Atlético season; no club statement or post-July appearance was found."
+ },
+ {
+  "playerId": "plr_140",
+  "revision": 1,
+  "referenceClubId": "bayern_munich",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Al-Nassr is his club of record but his contract ran to 30 Jun 2026 and only an expected renewal (Feb 2026) was found."
+ },
+ {
+  "playerId": "plr_141",
+  "revision": 1,
+  "referenceClubId": "inter_milan",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Inter in 2025/26 statistics, but the sources found cite a contract to 30 Jun 2026 without a later renewal or dated 2026-27 confirmation."
+ },
+ {
+  "playerId": "plr_142",
+  "revision": 1,
+  "referenceClubId": "manchester_city",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "atletico_madrid",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "atletico_madrid",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.flashscore.fi/news/julian-alvarez-wants-to-leave-atletico-madrid-to-fulfil-his-dream/SxHjzzjn/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.flashscore.fi/news/julian-alvarez-wants-to-leave-atletico-madrid-to-fulfil-his-dream/SxHjzzjn/",
+    "startedYear": 2024
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.flashscore.fi/news/julian-alvarez-wants-to-leave-atletico-madrid-to-fulfil-his-dream/SxHjzzjn/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Still an Atlético de Madrid player (contract reported to 2030); on 27 Aug 2026 Atlético ruled out talks with Barcelona. Transfer interest only."
+ },
+ {
+  "playerId": "plr_143",
+  "revision": 1,
+  "referenceClubId": "tottenham_hotspur",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Tottenham left him out of the 2026-27 squad list and a move (Trabzonspor reported agreed on an undated page) was not confirmed."
+ },
+ {
+  "playerId": "plr_144",
+  "revision": 1,
+  "referenceClubId": "barcelona",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "barcelona",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "barcelona",
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Raphinha",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Raphinha",
+    "startedYear": 2022
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Raphinha",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Wikipedia and 2026 reports (Laporta: he stays; renewal reported to 2028-2030). Saudi interest is only reported."
+ },
+ {
+  "playerId": "plr_145",
+  "revision": 1,
+  "referenceClubId": "fenerbahce",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "boca_juniors",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "boca_juniors",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.primicias.ec/deportes/futbol/enner-valencia-fichaje-nuevo-jugador-boca-juniors-129872/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.primicias.ec/deportes/futbol/enner-valencia-fichaje-nuevo-jugador-boca-juniors-129872/",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.primicias.ec/deportes/futbol/enner-valencia-fichaje-nuevo-jugador-boca-juniors-129872/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Pachuca confirmed he would not continue for the Apertura 2026 (Excélsior); Boca Juniors announced his signing on 9 Aug 2026 (Primicias)."
+ },
+ {
+  "playerId": "plr_146",
+  "revision": 1,
+  "referenceClubId": "porto",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "al_wasl",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "al_wasl",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.thestar.com.my/sport/football/2026/08/23/socccer-iran-striker-taremi-joins-uae-pro-league-leaders-al-wasl",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.thestar.com.my/sport/football/2026/08/23/socccer-iran-striker-taremi-joins-uae-pro-league-leaders-al-wasl",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.thestar.com.my/sport/football/2026/08/23/socccer-iran-striker-taremi-joins-uae-pro-league-leaders-al-wasl",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Reuters, 22 Aug 2026: joined Al Wasl (UAE Pro League) from Olympiacos; contract to 30 Jun 2027 per Transfermarkt."
+ },
+ {
+  "playerId": "plr_147",
+  "revision": 1,
+  "referenceClubId": "al_nassr",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Left Neftchi in May 2026; a 15 Aug 2026 report still had him without a club (Iraq, Turkey or Cameroon mentioned)."
+ },
+ {
+  "playerId": "plr_148",
+  "revision": 1,
+  "referenceClubId": "al_sadd",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "al_sadd",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "al_sadd",
+    "source": {
+     "provider": "editorial",
+     "url": "https://qna.org.qa/en/News-Area/News/2025-5/25/al-sadd-announces-contract-renewal-for-akram-afif",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://qna.org.qa/en/News-Area/News/2025-5/25/al-sadd-announces-contract-renewal-for-akram-afif",
+    "startedYear": 2020
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://qna.org.qa/en/News-Area/News/2025-5/25/al-sadd-announces-contract-renewal-for-akram-afif",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Al Sadd announced his contract renewal (May 2025); May 2026 QFA awards still describe him as an Al Sadd player."
+ },
+ {
+  "playerId": "plr_149",
+  "revision": 1,
+  "referenceClubId": "wolverhampton_wanderers",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Wikipedia lists a 2026 loan to Schalke 04 from Wolves while Maxifoot and Footmercato still show Wolves; a single unconfirmed loan."
+ },
+ {
+  "playerId": "plr_150",
+  "revision": 1,
+  "referenceClubId": "al_hilal",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "al_hilal",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "al_hilal",
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Salem_Al-Dawsari",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Salem_Al-Dawsari",
+    "startedYear": 2012
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Salem_Al-Dawsari",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Al-Hilal renewed him in May 2025 to the summer of 2027 (Wikipedia, transfer databases); no departure found."
  }
 ]

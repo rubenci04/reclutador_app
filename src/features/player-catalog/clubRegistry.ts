@@ -13,6 +13,7 @@ export const clubRegistry: Readonly<Record<string, ClubIdentity | undefined>> = 
     ['independiente', 'Independiente'], ['cruzeiro', 'Cruzeiro'], ['deportivo_saprissa', 'Deportivo Saprissa'], ['servette', 'Servette FC'],
     ['vfl_wolfsburg', 'VfL Wolfsburg'], ['houston_dynamo', 'Houston Dynamo FC'], ['sporting_cristal', 'Sporting Cristal'], ['iraklis', 'Iraklis FC'], ['cf_montreal', 'CF Montréal'], ['inter_san_carlos', 'Inter San Carlos'], ['melbourne_city', 'Melbourne City'],
     ['trabzonspor', 'Trabzonspor'], ['crystal_palace', 'Crystal Palace'], ['al_qadsiah', 'Al-Qadsiah'],
+    ['ajax', 'Ajax'], ['boca_juniors', 'Boca Juniors'], ['al_wasl', 'Al Wasl'],
   ].map(([id, name]) => [id, { id, name }]),
 ]))
 
