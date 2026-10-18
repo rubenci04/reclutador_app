@@ -192,3 +192,12 @@
   .auction-candidate, .card-discard, .bid-highlight, .pitch-shirt.occupied, .goal-flash, .strategy-panel, .strategy-revealed { animation: none; transform: none; opacity: 1; }
 }
 .event-tactic { display: block; color: #d5fb76; font-size: .75rem; }
+.strategy-stage:focus { outline: none; }
+.stage-indicator { margin: 0; color: #d5fb76; font-weight: 800; }
+.lineup-recap { border: 1px solid #ffffff2e; border-radius: 8px; padding: .5rem .75rem; }
+.lineup-recap > summary { cursor: pointer; font-weight: 750; }
+.quick-complete { display: grid; gap: .5rem; padding: .8rem; border-radius: 8px; border: 2px solid #d5fb76; background: #14281e; }
+.quick-complete h2, .quick-complete p, .quick-complete ul { margin: 0; }
+.quick-complete ul { padding-left: 1.1rem; max-height: 14rem; overflow: auto; }
+.cpu-signing { animation: strategy-in var(--motion-base) var(--motion-ease); color: #d5fb76; font-weight: 750; }
+@media (prefers-reduced-motion: reduce) { .cpu-signing { animation: none; } }

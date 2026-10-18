@@ -55,6 +55,8 @@ Nomenclatura: DL-FXX-CAT-NNN; FXX indica fase y CAT responsabilidad. No existía
 | DL-F04-UI-010 | Moneda pelota/estadio con lanzamiento 3D y animación omisible (CODEX-005G-C3C) | Completa técnicamente: resultado guardado, cara final idéntica, movimiento reducido, tres idiomas; QA visual NO ejecutada |
 | DL-F04-AUDIO-001 | Efectos sonoros sintetizados y controles de audio (CODEX-005G-C3C) | Completa técnicamente: siete efectos Web Audio sin archivos externos, volumen y activación persistentes, sin duplicados; 554 pruebas aprobadas; escucha real pendiente |
 | DL-F04-UI-011 | Unificación de movimiento y causa del timeout de AuctionPage (CODEX-005G-C3C) | Completa: tokens de duración/curva; el timeout es carga de CPU síncrona (≈1,7 s aislada), no asincronía |
+| DL-F04-FIX-001 | Pantalla posterior a las estrategias con pasos, foco y errores recuperables (CODEX-005G-C3E) | Completa: no se reprodujo un bloqueo lógico (jsdom, navegador real, 300 partidas); causa probable de interfaz (panel fuera de vista); botón «Jugar partido»; pendiente confirmar con el usuario |
+| DL-F04-AUCTION-003 | Completado automático de la CPU y «Completar mi equipo» (CODEX-005G-C3E) | Completa: primitivas de dominio atómicas con historial, vista previa, secuencia omitible; 572 pruebas aprobadas; QA visual a 360/390 px pendiente |
 | DL-F03-I18N-001 | Traducir draft, presupuesto y confirmaciones | Completa en CODEX-004A |
 | DL-F04-I18N-001 | Traducir simulación y resultados | Completa en CODEX-004B |
 | DL-F05-I18N-001 | Traducir salas, espera y errores online | Pendiente |

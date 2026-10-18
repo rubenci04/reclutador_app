@@ -9,7 +9,7 @@ import { swapWithinLine, type LineupSwapError } from '../tactics/lineupOrdering'
 import type { FormationRole } from '../tactics/roles'
 import { TACTICS_VERSION, isStrategyId, type StrategyId } from '../tactics/strategies'
 import { validContext, type DrawContext } from './drawHistory'
-import type { AuctionCreation, AuctionRound, AuctionTransition, AwardReason, CoinSide, RecruiterDuelGame, RecruiterId, RecruiterTeam, RoundAward } from './auctionTypes'
+import type { AuctionActionError, AuctionCreation, AuctionRound, AuctionTransition, AwardReason, CoinSide, RecruiterDuelGame, RecruiterId, RecruiterTeam, RoundAward } from './auctionTypes'
 
 const FIRST: RecruiterId = 'recruiter_one'
 const SECOND: RecruiterId = 'recruiter_two'
@@ -276,4 +276,50 @@ export function reorderTeamLineup(game: RecruiterDuelGame, participant: Recruite
   const swapped = swapWithinLine(game.teams[participant].lineup, slotA, slotB)
   if (!swapped.ok) return swapped
   return { ok: true, game: { ...game, teams: { ...game.teams, [participant]: { ...game.teams[participant], lineup: swapped.lineup } } } }
+}
+
+const isComplete = (team: RecruiterTeam) => Object.values(team.lineup).every(Boolean)
+
+/**
+ * Early completion is only possible when the rival already has all eleven, so every remaining card can only go to
+ * `participant`; and only before any offer or pass on the card in play. Nothing is decided without a caller.
+ */
+export function canAutoComplete(game: RecruiterDuelGame, participant: RecruiterId) {
+  const waiting = game.phase === 'REVEAL_PLAYER' || (game.phase === 'BIDDING' && !game.currentBid && game.passedParticipants.length === 0)
+  return waiting && currentRound(game) !== undefined && isComplete(game.teams[opponent(participant)]) && !isComplete(game.teams[participant])
+}
+
+/** Awards the card in play to `participant` at its base price through the normal award ledger, then moves to the next card. */
+export function autoCompleteStep(game: RecruiterDuelGame, participant: RecruiterId, catalogInput: readonly Player[]): AuctionTransition {
+  if (!canAutoComplete(game, participant)) return { ok: false, error: isComplete(game.teams[opponent(participant)]) ? 'invalid_transition' : 'rival_incomplete' }
+  const catalog = playerMap(catalogInput); const candidate = catalog.get(currentRound(game).playerId)
+  if (!candidate) return { ok: false, error: 'no_legal_assignment' }
+  const awarded = award({ ...game, phase: 'BIDDING' }, participant, candidate.price, catalog, 'auto_complete')
+  if (!awarded.ok) return { ok: false, error: 'no_legal_assignment' }
+  const next = nextAuctionRound(awarded.game, catalogInput)
+  return next.ok && next.game.phase === 'NEXT_ROUND' ? revealNextAuctionRound(next.game) : next
+}
+
+/** All remaining cards at once. Atomic: any failure returns an error and the received game stays untouched. */
+export function autoCompleteAll(game: RecruiterDuelGame, participant: RecruiterId, catalog: readonly Player[]): AuctionTransition {
+  let current = game
+  while (current.phase !== 'TEAMS_COMPLETED') {
+    const step = autoCompleteStep(current, participant, catalog)
+    if (!step.ok) return step
+    current = step.game
+  }
+  return { ok: true, game: current }
+}
+
+export type AutoCompletePreview =
+  | { readonly ok: true; readonly items: readonly { readonly playerId: string; readonly price: number }[]; readonly totalCost: number; readonly finalBudget: number }
+  | { readonly ok: false; readonly error: AuctionActionError }
+
+/** What «complete my team» would do, computed with the same steps that confirming executes. */
+export function previewAutoComplete(game: RecruiterDuelGame, participant: RecruiterId, catalog: readonly Player[]): AutoCompletePreview {
+  const result = autoCompleteAll(game, participant, catalog)
+  if (!result.ok) return result
+  const items = result.game.record.slice(game.record.length).flatMap((entry) => entry.type === 'award' ? [{ playerId: entry.playerId, price: entry.price }] : [])
+  const totalCost = items.reduce((total, item) => total + item.price, 0)
+  return { ok: true, items, totalCost, finalBudget: DRAFT_BUDGET_MILLIONS - result.game.teams[participant].spent }
 }

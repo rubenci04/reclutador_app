@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { STRATEGY_IDS, type StrategyId } from '../tactics/strategies'
 import { revealedStrategies, type StrategyChoice } from '../tactics/strategyChoice'
@@ -19,6 +19,14 @@ export function StrategyChoicePanel({ choice, chooser, nextChooser, names, onCon
   const { t } = useTranslation()
   const [selected, setSelected] = useState<StrategyId | null>(null)
   const revealed = revealedStrategies(choice)
+  const root = useRef<HTMLDivElement>(null)
+  // Each stage change brings the new stage into view and to the screen reader; the long recap above must not hide it.
+  useEffect(() => {
+    root.current?.scrollIntoView?.({ block: 'start' })
+    root.current?.focus({ preventScroll: true })
+  }, [choice.step])
+  return <div className="strategy-stage" ref={root} tabIndex={-1}>{content()}</div>
+  function content() {
   if (revealed) {
     return <section className="strategy-panel strategy-reveal" aria-live="polite">
       <h2>{t('strategyChoice.revealTitle')}</h2>
@@ -50,4 +58,5 @@ export function StrategyChoicePanel({ choice, chooser, nextChooser, names, onCon
     <p className="strategy-note">{t('strategyChoice.noGuarantee')}</p>
     <button className="primary-action" disabled={!selected} onClick={() => { if (selected) { const picked = selected; setSelected(null); onConfirm(picked) } }}>{t('strategyChoice.confirm')}</button>
   </section>
+  }
 }

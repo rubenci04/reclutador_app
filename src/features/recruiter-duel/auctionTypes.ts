@@ -7,7 +7,7 @@ import type { DrawContext } from './drawHistory'
 export const RECRUITERS = ['recruiter_one', 'recruiter_two'] as const
 export type RecruiterId = (typeof RECRUITERS)[number]
 export type CoinSide = 'heads' | 'tails'
-export type AwardReason = 'voluntary_bid' | 'double_pass_priority' | 'forced_viability'
+export type AwardReason = 'voluntary_bid' | 'double_pass_priority' | 'forced_viability' | 'auto_complete'
 export type AuctionPhase = 'LOBBY' | 'COIN_TOSS' | 'REVEAL_PLAYER' | 'BIDDING' | 'DISCARD_RESULT' | 'ROUND_RESULT' | 'NEXT_ROUND' | 'TEAMS_COMPLETED' | 'SIMULATING' | 'MATCH_RESULT'
 
 /** A single card offered during one auction round. */
@@ -68,7 +68,7 @@ export type AuctionCreation =
   | { readonly ok: false; readonly error: 'auction_pool_unavailable' }
 
 export type AuctionActionError =
-  | 'invalid_transition' | 'not_your_turn' | 'invalid_bid' | 'unsafe_bid' | 'invalid_award' | 'teams_invalid' | 'no_legal_assignment' | 'invalid_strategy'
+  | 'invalid_transition' | 'not_your_turn' | 'invalid_bid' | 'unsafe_bid' | 'invalid_award' | 'teams_invalid' | 'no_legal_assignment' | 'invalid_strategy' | 'rival_incomplete'
 
 export type AuctionTransition =
   | { readonly ok: true; readonly game: RecruiterDuelGame }

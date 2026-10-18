@@ -16,10 +16,13 @@ export function useAuctionSounds(game: RecruiterDuelGame | null) {
     const previous = seen.current
     if (previous && previous.seed === game.seed) {
       if (game.phase === 'COIN_TOSS' && previous.phase !== 'COIN_TOSS') audio.play('coinToss')
+      // One sound per kind per update, so a batch of records (early completion) is a single cue.
+      const cues = new Set<SoundId>()
       for (const entry of game.record.slice(previous.records)) {
         const sound = SOUND_FOR_RECORD[entry.type]
-        if (sound) audio.play(sound)
+        if (sound) cues.add(sound)
       }
+      cues.forEach((sound) => audio.play(sound))
     }
     seen.current = { seed: game.seed, records: game.record.length, phase: game.phase }
   }, [game])
