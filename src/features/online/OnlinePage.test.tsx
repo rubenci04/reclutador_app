@@ -1,7 +1,7 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { I18nextProvider } from 'react-i18next'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createI18n, type Language } from '../../i18n'
 import { CLASSIC_ONLINE, OnlineError, type RoomCommand, type RoomSnapshot } from './contracts'
 import { OnlinePage } from './OnlinePage'
@@ -36,8 +36,11 @@ async function show(gateway?: OnlineGateway, language: Language = 'es-AR') {
   return {...view,i18n}
 }
 beforeEach(() => {localStorage.clear(); window.history.replaceState(null,'','/'); vi.restoreAllMocks()})
+afterEach(() => { vi.unstubAllEnvs() })
 describe('online lobby presentation using an explicit test adapter', () => {
   it('shows configuration absence safely and allows returning to the local menu', async () => {
+    // A developer's .env.local must not change this case.
+    vi.stubEnv('VITE_SUPABASE_URL', ''); vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', '')
     await show()
     expect(screen.getByRole('alert')).toHaveTextContent('VITE_SUPABASE_URL')
     expect(screen.getByRole('button',{name:'Crear sala'})).toBeDisabled()

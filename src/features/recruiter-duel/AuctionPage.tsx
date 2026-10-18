@@ -31,6 +31,9 @@ import type { StrategyId } from '../tactics/strategies'
 import { createDrawContext, drawHistoryKey, newDrawSeed, parseReplay, readDrawHistory } from './drawHistory'
 import { HelpTip } from '../onboarding/HelpTip'
 import { helpTopicForPhase } from '../onboarding/helpTopics'
+import { AbandonGame } from '../history/AbandonGame'
+import { HistoryPanel } from '../history/HistoryPanel'
+import { matchHistory, type HistoryOutcome } from '../history/matchHistory'
 import { WinCelebration } from './WinCelebration'
 
 interface AuctionPageProps { readonly onDraftFree: () => void; readonly onOnline?: () => void }
@@ -145,10 +148,23 @@ export function AuctionPage({ onDraftFree, onOnline }: AuctionPageProps) {
   const hud = useMemo(() => game && auctionHudPhase ? buildHudModel(game, catalog) : null, [game, auctionHudPhase, catalog])
   const cpuLineup = game?.teams.recruiter_two.lineup
   const cpuStrategy = useMemo(() => opponentMode === 'cpu' && game?.phase === 'TEAMS_COMPLETED' && cpuLineup ? selectCpuStrategy(cpuLineup, catalog, game.seed) : undefined, [opponentMode, game, cpuLineup, catalog])
+  const recordDuel = (id: string, outcome: HistoryOutcome, score: { recruiter_one: number; recruiter_two: number } | null, abandonedBy: 'recruiter_one' | 'recruiter_two' | null) => {
+    matchHistory.record({ id, at: new Date().toISOString(), mode: gameMode, opponent: opponentMode, names: { recruiter_one: names.recruiter_one, recruiter_two: names.recruiter_two }, outcome, score, abandonedBy })
+  }
+  const abandon = (participant: 'recruiter_one' | 'recruiter_two') => {
+    if (!game) return
+    recordDuel(game.seed, participant === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one', null, participant)
+    setStrategyChoice(null); setError(null); setGame(null)
+  }
   /** Starts the match. Returns false when the engine refuses, so the start button can be used again. */
   const playMatch = (current: RecruiterDuelGame, first: StrategyId, second: StrategyId) => {
     const result = startDuelMatch(current, catalog, { recruiter_one: first, recruiter_two: second })
     apply(result)
+    // The result is decided here, so it counts even if the screen is left before the last whistle.
+    if (result.ok && result.game.matchResult) {
+      const played = result.game.matchResult
+      recordDuel(result.game.seed, played.winner === 'draw' ? 'draw' : played.winner === 'local' ? 'recruiter_one' : 'recruiter_two', { recruiter_one: played.score.local, recruiter_two: played.score.cpu }, null)
+    }
     return result.ok
   }
   const quickTaker = game ? RECRUITER_IDS.find((participant) => canAutoComplete(game, participant)) : undefined
@@ -190,8 +206,9 @@ export function AuctionPage({ onDraftFree, onOnline }: AuctionPageProps) {
   return <div className="draft-app duel-shell">
     <header className="draft-header"><a className="brand" href="#duel-main" aria-label={PRODUCT.name}><span className="brand-emblem">R</span><span>{PRODUCT.name}</span></a><AudioControls /><LanguageSelector /></header>
     <main id="duel-main" className="duel-page">
-      {!game && <section className="duel-intro"><p className="eyebrow"><span />{t('duel.eyebrow')}</p><h1>{t('duel.title')}</h1><p>{t('duel.subtitle')}</p><label>{t('cpu.opponent')}<select value={opponentMode} onChange={(event) => setOpponentMode(event.target.value as 'hotseat' | 'cpu')}><option value="hotseat">{t('cpu.hotseat')}</option><option value="cpu">{t('cpu.versus')}</option></select></label>{opponentMode === 'cpu' && <><label>{t('cpu.strategy')}<select value={strategy} onChange={(event) => setStrategy(event.target.value as CpuStrategy)}>{CPU_STRATEGIES.map((item) => <option key={item} value={item}>{t('cpu.profiles.' + item)}</option>)}</select></label><label>{t('cpu.pause')}<input type="number" min={0} max={3000} step={50} value={pauseMs} onChange={(event) => setPauseMs(Math.max(0, Math.min(3000, Number(event.target.value))))} /></label></>}<MatchSetupPanel draft={setup} onChange={setSetup} versusCpu={opponentMode === 'cpu'} preflight={setupPreflight} /><ModeSelector selected={mode} onChange={setMode} /><details className="draw-replay"><summary>{t('draw.reproduce')}</summary><p>{t('draw.explanation')}</p><label>{t('draw.context')}<textarea value={replayText} onChange={(event) => setReplayText(event.target.value)} /></label><button className="secondary-action" onClick={reproduce}>{t('draw.reproduce')}</button></details><div className="duel-actions">{onOnline && <button className="secondary-action" onClick={onOnline}>{t('online.menu')}</button>}<button className="primary-action" disabled={!canStart} onClick={start}>{t('duel.start')}</button><button className="secondary-action" onClick={onDraftFree}>{t('duel.freeDraft')}</button></div></section>}
+      {!game && <section className="duel-intro"><p className="eyebrow"><span />{t('duel.eyebrow')}</p><h1>{t('duel.title')}</h1><p>{t('duel.subtitle')}</p><label>{t('cpu.opponent')}<select value={opponentMode} onChange={(event) => setOpponentMode(event.target.value as 'hotseat' | 'cpu')}><option value="hotseat">{t('cpu.hotseat')}</option><option value="cpu">{t('cpu.versus')}</option></select></label>{opponentMode === 'cpu' && <><label>{t('cpu.strategy')}<select value={strategy} onChange={(event) => setStrategy(event.target.value as CpuStrategy)}>{CPU_STRATEGIES.map((item) => <option key={item} value={item}>{t('cpu.profiles.' + item)}</option>)}</select></label><label>{t('cpu.pause')}<input type="number" min={0} max={3000} step={50} value={pauseMs} onChange={(event) => setPauseMs(Math.max(0, Math.min(3000, Number(event.target.value))))} /></label></>}<MatchSetupPanel draft={setup} onChange={setSetup} versusCpu={opponentMode === 'cpu'} preflight={setupPreflight} /><ModeSelector selected={mode} onChange={setMode} /><HistoryPanel /><details className="draw-replay"><summary>{t('draw.reproduce')}</summary><p>{t('draw.explanation')}</p><label>{t('draw.context')}<textarea value={replayText} onChange={(event) => setReplayText(event.target.value)} /></label><button className="secondary-action" onClick={reproduce}>{t('draw.reproduce')}</button></details><div className="duel-actions">{onOnline && <button className="secondary-action" onClick={onOnline}>{t('online.menu')}</button>}<button className="primary-action" disabled={!canStart} onClick={start}>{t('duel.start')}</button><button className="secondary-action" onClick={onDraftFree}>{t('duel.freeDraft')}</button></div></section>}
       {(() => { const topic = helpTopicForPhase(game?.phase); return topic && !(game && ['SIMULATING', 'MATCH_RESULT', 'DISCARD_RESULT', 'COIN_TOSS', 'NEXT_ROUND'].includes(game.phase)) ? <HelpTip topic={topic} /> : null })()}
+      {game && <AbandonGame versusCpu={opponentMode === 'cpu'} names={names} onAbandon={abandon} />}
       {game && !hud && <p className="discard-counter" role="status">{t('discards.available', { count: game.discardsRemaining })}{game.discardsRemaining === 0 && <span> · {t('discards.exhausted')}</span>}</p>}
       {game?.phase === 'DISCARD_RESULT' && game.lastDiscard && <section className="discard-scene" aria-live="polite"><h2>{t('discards.newDraw')}</h2><div className="card-discard"><PlayerIdentity player={playerById(game.lastDiscard.playerId)} /></div></section>}
       {hud && game && <AuctionHud hud={hud} names={names} onShowPitches={() => document.getElementById('team-progress')?.scrollIntoView({ behavior: 'smooth' })} />}
