@@ -58,6 +58,7 @@ Nomenclatura: DL-FXX-CAT-NNN; FXX indica fase y CAT responsabilidad. No existía
 | DL-F04-FIX-001 | Pantalla posterior a las estrategias con pasos, foco y errores recuperables (CODEX-005G-C3E) | Completa: no era un bloqueo lógico; el usuario no había elegido la estrategia del segundo jugador y el paso era poco visible; ahora hay aviso explícito, pasos, foco y botón «Jugar partido» |
 | DL-F04-AUCTION-003 | Completado automático de la CPU y «Completar mi equipo» (CODEX-005G-C3E) | Completa: primitivas de dominio atómicas con historial, vista previa, secuencia omitible; 572 pruebas aprobadas; QA visual a 360/390 px pendiente |
 | DL-F04-UI-012 | Modo EDITAR FORMACIÓN, arrastre y aptitudes documentadas (CODEX-005H-H1) | Completa técnicamente: dos toques + arrastre, resaltado de línea, ROLE_PROFILES vacío (UNKNOWN), 576 pruebas; QA visual pendiente |
+| DL-F04-CONFIG-001 | Partidas personalizadas: MatchConfig, nombres, presupuesto y preflight (CODEX-005H-H2) | Completa técnicamente: clásico intacto, presupuesto único en el motor, nombres propagados, 589 pruebas; QA visual pendiente |
 | DL-F03-I18N-001 | Traducir draft, presupuesto y confirmaciones | Completa en CODEX-004A |
 | DL-F04-I18N-001 | Traducir simulación y resultados | Completa en CODEX-004B |
 | DL-F05-I18N-001 | Traducir salas, espera y errores online | Pendiente |

@@ -1,9 +1,8 @@
 import { useId, useState, useSyncExternalStore } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
-import { DRAFT_BUDGET_MILLIONS } from '../../data/catalogRules'
 import { TeamPitchBoard } from './TeamPitchBoard'
-import { positionProgress } from './auctionEngine'
+import { budgetOf, positionProgress } from './auctionEngine'
 import { RECRUITERS, type RecruiterDuelGame, type RecruiterId } from './auctionTypes'
 
 const query = '(max-width: 640px)'
@@ -30,7 +29,7 @@ export function TeamProgressBoard({ game, catalog, names }: Props) {
         const team = game.teams[participant]
         return <article key={participant} aria-label={names[participant]} hidden={mobile && visibleTeam !== participant}>
           <h3>{names[participant]}</h3>
-          <p><span>{t('teamProgress.selected', { count: Object.values(team.lineup).filter(Boolean).length })}</span> · <span>{t('duel.balance', { amount: DRAFT_BUDGET_MILLIONS - team.spent })}</span></p>
+          <p><span>{t('teamProgress.selected', { count: Object.values(team.lineup).filter(Boolean).length })}</span> · <span>{t('duel.balance', { amount: budgetOf(game) - team.spent })}</span></p>
           <TeamPitchBoard game={game} participant={participant} catalog={catalog} />
           <ul className="team-missing">{(['ARQ', 'DEF', 'MED', 'DEL'] as const).map((position) => {
             const progress = positionProgress(team, position)

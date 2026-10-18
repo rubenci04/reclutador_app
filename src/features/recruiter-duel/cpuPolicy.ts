@@ -2,7 +2,7 @@ import { FORMATION_QUOTAS } from '../../data/catalogRules'
 import type { Player } from '../../types/player'
 import { DRAFT_SLOTS } from '../draft/draftTypes'
 import { createSeededRandom } from '../local-match/seededRandom'
-import { currentRound, maximumSafeBid, passAuction, placeBid } from './auctionEngine'
+import { budgetOf, currentRound, maximumSafeBid, passAuction, placeBid } from './auctionEngine'
 import type { AuctionTransition, RecruiterDuelGame, RecruiterTeam } from './auctionTypes'
 
 export const CPU_STRATEGIES = ['CONSERVATIVE', 'BALANCED', 'AGGRESSIVE'] as const
@@ -18,6 +18,8 @@ export interface CpuPublicContext {
   readonly team: RecruiterTeam
   readonly publicCatalog: readonly Player[]
   readonly acquiredIds: readonly string[]
+  /** Budget of the game; omitted means the classic budget. */
+  readonly budget?: number
 }
 
 const profiles = {
@@ -46,9 +48,10 @@ export function privateValuation(context: CpuPublicContext, strategy: CpuStrateg
     if (cheapest.length !== missing) return 0
     reserve += cheapest.reduce((sum, candidate) => sum + candidate.price, 0)
   }
-  const budgetCap = 100 - team.spent - reserve
+  const budget = context.budget ?? 100
+  const budgetCap = budget - team.spent - reserve
   const slotsLeft = Object.values(team.lineup).filter((id) => !id).length
-  const opportunityCap = (100 - team.spent) / Math.max(1, slotsLeft) * profile.risk + Math.max(0, quality) + 2
+  const opportunityCap = (budget - team.spent) / Math.max(1, slotsLeft) * profile.risk + Math.max(0, quality) + 2
   return Math.max(0, Math.floor(Math.min(budgetCap, opportunityCap, player.price + quality + profile.premium + preference + need)))
 }
 
@@ -69,7 +72,7 @@ export function takeCpuTurn(game: RecruiterDuelGame, catalog: readonly Player[],
   if (game.phase !== 'BIDDING' || game.activeParticipant !== 'recruiter_two') return { ok: false, error: 'invalid_transition' }
   const player = catalog.find((candidate) => candidate.id === currentRound(game)?.playerId)
   if (!player) return { ok: false, error: 'invalid_bid' }
-  const context: CpuPublicContext = { seed: game.seed, roundIndex: game.roundIndex, player, team: game.teams.recruiter_two, publicCatalog: catalog, acquiredIds: Object.values(game.teams).flatMap((team) => Object.values(team.lineup).filter((id): id is string => id !== null)) }
+  const context: CpuPublicContext = { budget: budgetOf(game), seed: game.seed, roundIndex: game.roundIndex, player, team: game.teams.recruiter_two, publicCatalog: catalog, acquiredIds: Object.values(game.teams).flatMap((team) => Object.values(team.lineup).filter((id): id is string => id !== null)) }
   const decision = decideCpu(context, strategy, game.currentBid?.amount ?? null, maximumSafeBid(game, 'recruiter_two', catalog))
   const audited: RecruiterDuelGame = { ...game, record: [...game.record, { type: 'cpu_decision', round: game.roundIndex, playerId: player.id, strategy, ...decision }] }
   return decision.action === 'bid' ? placeBid(audited, 'recruiter_two', decision.amount!, catalog) : passAuction(audited, 'recruiter_two', catalog)

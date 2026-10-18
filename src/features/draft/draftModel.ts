@@ -31,7 +31,7 @@ export function remainingMinimumCost(lineup: DraftLineup, players: readonly Play
   return total
 }
 
-export function summarizeDraft(lineup: DraftLineup, players: readonly Player[]): DraftSummary {
+export function summarizeDraft(lineup: DraftLineup, players: readonly Player[], budget: number = DRAFT_BUDGET_MILLIONS): DraftSummary {
   const byId = playerById(players)
   const selectedPlayers = DRAFT_SLOT_IDS.flatMap((slot) => {
     const id = lineup[slot]
@@ -41,14 +41,14 @@ export function summarizeDraft(lineup: DraftLineup, players: readonly Player[]):
   const spent = selectedPlayers.reduce((total, player) => total + player.price, 0)
   const selectedCount = selectedPlayers.length
   const minimumCompletionCost = remainingMinimumCost(lineup, players)
-  const canCompleteWithinBudget = minimumCompletionCost !== null && spent + minimumCompletionCost <= DRAFT_BUDGET_MILLIONS
+  const canCompleteWithinBudget = minimumCompletionCost !== null && spent + minimumCompletionCost <= budget
   const tiers = { S: 0, A: 0, B: 0, C: 0, D: 0 } satisfies Record<PlayerTier, number>
   selectedPlayers.forEach((player) => { tiers[getPlayerTier(player.overall_rating)]++ })
   return {
-    selectedPlayers, selectedCount, spent, remaining: DRAFT_BUDGET_MILLIONS - spent,
+    selectedPlayers, selectedCount, spent, remaining: budget - spent,
     averageRating: selectedCount ? Math.round(selectedPlayers.reduce((sum, player) => sum + player.overall_rating, 0) / selectedCount) : null,
     tierCounts: tiers, minimumCompletionCost, canCompleteWithinBudget,
-    canConfirm: selectedCount === DRAFT_SLOT_IDS.length && spent <= DRAFT_BUDGET_MILLIONS,
+    canConfirm: selectedCount === DRAFT_SLOT_IDS.length && spent <= budget,
   }
 }
 

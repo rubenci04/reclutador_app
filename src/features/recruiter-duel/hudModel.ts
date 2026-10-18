@@ -1,6 +1,5 @@
-import { DRAFT_BUDGET_MILLIONS } from '../../data/catalogRules'
 import type { Player } from '../../types/player'
-import { currentRound, maximumSafeBid, openingPriority, positionProgress } from './auctionEngine'
+import { budgetOf, currentRound, maximumSafeBid, openingPriority, positionProgress } from './auctionEngine'
 import type { RecruiterDuelGame, RecruiterId } from './auctionTypes'
 
 export const HUD_POSITIONS = ['ARQ', 'DEF', 'MED', 'DEL'] as const
@@ -46,7 +45,7 @@ export function buildHudModel(game: RecruiterDuelGame, catalog: readonly Player[
   const bidding = game.phase === 'BIDDING' && currentRound(game) !== undefined
   const participant = (id: RecruiterId): HudParticipant => {
     const team = game.teams[id]; const rival = game.teams[id === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one']
-    const remaining = DRAFT_BUDGET_MILLIONS - team.spent
+    const remaining = budgetOf(game) - team.spent
     const minimum = game.currentBid ? game.currentBid.amount + 1 : catalog.find((player) => player.id === currentRound(game)?.playerId)?.price ?? 0
     const ceiling = bidding ? maximumSafeBid(game, id, catalog) : 0
     const hasCeiling = bidding && ceiling >= minimum
@@ -61,7 +60,7 @@ export function buildHudModel(game: RecruiterDuelGame, catalog: readonly Player[
     }
   }
   return {
-    budget: DRAFT_BUDGET_MILLIONS, awards: game.record.filter((entry) => entry.type === 'award').length, totalAwards: game.rounds.length, teamSize: TEAM_SIZE,
+    budget: budgetOf(game), awards: game.record.filter((entry) => entry.type === 'award').length, totalAwards: game.rounds.length, teamSize: TEAM_SIZE,
     discardsRemaining: game.discardsRemaining, discardsTotal: SHARED_DISCARDS,
     turn: game.activeParticipant ?? openingPriority(game) ?? null,
     participants: { recruiter_one: participant('recruiter_one'), recruiter_two: participant('recruiter_two') },

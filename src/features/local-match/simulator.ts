@@ -16,6 +16,8 @@ export interface SimulationInput {
   readonly seed: string
   /** Optional. Missing means NEUTRAL for both sides (compatibility with stored matches and earlier tests). */
   readonly tactics?: StrategySelection
+  /** Budget the elevens were built under; omitted means the classic budget. */
+  readonly budget?: number
 }
 
 const clamp = (value: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, value))
@@ -24,17 +26,17 @@ const clamp = (value: number, lower: number, upper: number) => Math.max(lower, M
  * Engine-boundary check of an organised eleven: exactly the 11 slots, exclusive catalog players, each in a slot of its own line, budget respected.
  * Screen confirmation is a UI step; in the future online mode the server must run this same validation authoritatively.
  */
-export function isValidOrganizedLineup(lineup: DraftLineup, catalog: readonly Player[]) {
+export function isValidOrganizedLineup(lineup: DraftLineup, catalog: readonly Player[], budget?: number) {
   const keys = Object.keys(lineup)
   if (keys.length !== DRAFT_SLOTS.length || !DRAFT_SLOTS.every((slot) => keys.includes(slot.id))) return false
   if (new Set(DRAFT_SLOTS.map((slot) => lineup[slot.id])).size !== DRAFT_SLOTS.length) return false
   if (!DRAFT_SLOTS.every((slot) => catalog.find((player) => player.id === lineup[slot.id])?.position === slot.position)) return false
-  return summarizeDraft(lineup, catalog).canConfirm
+  return summarizeDraft(lineup, catalog, budget).canConfirm
 }
 
-function teamFrom(lineup: DraftLineup, catalog: readonly Player[]): MatchTeam {
-  if (!isValidOrganizedLineup(lineup, catalog)) throw new Error('invalid_match_lineup')
-  const summary = summarizeDraft(lineup, catalog)
+function teamFrom(lineup: DraftLineup, catalog: readonly Player[], budget?: number): MatchTeam {
+  if (!isValidOrganizedLineup(lineup, catalog, budget)) throw new Error('invalid_match_lineup')
+  const summary = summarizeDraft(lineup, catalog, budget)
   return { lineup, players: summary.selectedPlayers, spent: summary.spent, averageRating: summary.averageRating ?? 0 }
 }
 
@@ -73,8 +75,8 @@ const meanAdjustment = (total: TacticalAdjustment): TacticalAdjustment => ({ att
 /** Pure deterministic simulator. Events and statistics are emitted from the same block decisions. */
 export function simulateMatch(input: SimulationInput): MatchResult {
   if (input.rulesVersion !== MATCH_RULES_VERSION || input.catalogVersion !== 'catalog_v1') throw new Error('unsupported_match_rules')
-  const local = teamFrom(input.localLineup, input.catalog)
-  const cpu = teamFrom(input.cpuLineup, input.catalog)
+  const local = teamFrom(input.localLineup, input.catalog, input.budget)
+  const cpu = teamFrom(input.cpuLineup, input.catalog, input.budget)
   const selection = input.tactics === undefined ? NEUTRAL_SELECTION : parseStrategySelection(input.tactics)
   if (!selection) throw new Error('invalid_strategy')
   const teams = { local, cpu } as const

@@ -212,3 +212,16 @@
 .apt-ADAPTED { background: linear-gradient(90deg, #d5fb76 50%, transparent 50%); border-color: #d5fb76; }
 .apt-UNKNOWN { background: transparent; border-style: dashed; }
 @media (prefers-reduced-motion: reduce) { .pitch-shirt { transition: none; } }
+.match-setup { display: grid; gap: .6rem; border: 1px solid #ffffff2e; border-radius: 8px; padding: .8rem; margin: 0; text-align: left; }
+.match-setup legend { padding: 0 .4rem; color: #d5fb76; font-weight: 800; }
+.setup-modes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.setup-modes label { position: relative; display: grid; gap: 2px; padding: .6rem; border: 2px solid #ffffff2e; border-radius: 8px; cursor: pointer; }
+.setup-modes label.chosen { border-color: #d5fb76; background: #1f4a34; }
+.setup-modes input { position: absolute; opacity: 0; pointer-events: none; }
+.setup-modes label:has(input:focus-visible) { outline: 3px solid #fff; }
+.match-setup label { display: grid; gap: 3px; }
+.match-setup input[type="text"], .match-setup input[type="number"] { min-height: 40px; padding: 0 .6rem; border-radius: 6px; border: 1px solid #ffffff59; background: #0b1a13; color: #fff; }
+.setup-presets { display: flex; flex-wrap: wrap; gap: 6px; margin: .3rem 0; }
+.setup-error { color: #ffb3a7; }
+.setup-summary h3, .setup-summary ul { margin: 0; } .setup-summary ul { padding-left: 1.1rem; font-size: .88rem; color: #c8d7c3; }
+@media (max-width: 420px) { .setup-modes { grid-template-columns: 1fr; } }
