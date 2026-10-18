@@ -259,3 +259,6 @@
 .history-panel { margin: 14px 0; padding: 10px 14px; border: 1px solid #d5fb7640; border-radius: 8px; }
 .history-panel summary { cursor: pointer; font-weight: 800; }
 .history-list { margin: 8px 0; padding-left: 18px; font-size: .8rem; color: #d2e1cb; line-height: 1.6; }
+
+/* Photos are anchored to the top so the face and torso stay visible; full-body shots lose the legs, not the head. */
+.player-avatar img { object-position: 50% 8%; }
