@@ -11,12 +11,15 @@
 
 **Causa más probable de lo que viste (diagnóstico de interfaz, no de dominio):** al completarse los dos onces, la pantalla apilaba el resumen, dos canchas de ordenamiento completas y recién debajo el panel de estrategias (más otras dos canchas «Equipos en vivo» al final). Al confirmar un paso, lo que cambiaba quedaba fuera de pantalla, abajo, y arriba no se movía nada; la revelación y el botón para empezar el partido también aparecían lejos de la vista. Además los errores de transición se mostraban en un aviso al inicio de la página, también fuera de vista. Si lo que viste no coincide con esto (por ejemplo, un botón desactivado o un mensaje concreto), decímelo con los pasos exactos: sería otra causa y conviene reproducirla.
 
+## Causa confirmada por el usuario
+El usuario aclaró después: jugaba en modo de a dos, eligió la estrategia del Jugador uno y se quedó esperando sin darse cuenta de que **todavía faltaba** pasar el dispositivo y elegir la estrategia del Jugador dos antes de poder jugar. No era un defecto de lógica: era un paso pendiente poco visible, agravado por la distribución descrita arriba (la pantalla de traspaso quedaba lejos de la vista). Corrección adicional: durante el traspaso y la segunda elección se muestra el aviso «Estrategias: Reclutador uno ya eligió. Falta la estrategia de Reclutador dos y recién después se puede jugar el partido.» (es-AR, en, pt-BR), con prueba.
+
 ## Cómo se corrigió
 - La pantalla posterior a las subastas ahora tiene **pasos** con indicador («Paso 2 de 3: Elegí tu estrategia») y el resumen/ordenamiento de equipos queda en un bloque plegado («Ver y editar equipos») cuando ambos onces están confirmados.
 - Cada cambio de etapa (elegir, pasar el dispositivo, revelación) **lleva el panel al borde superior de la ventana y le da el foco** (accesible por lector de pantalla).
 - El botón final se llama **«Jugar partido»** (es-AR; «Jogar partida» en pt-BR; en inglés se mantiene «Start match»).
 - Errores recuperables: si los equipos fueran inválidos se muestra un mensaje con «Volver al inicio»; si el inicio del partido o la elección falla, el error aparece dentro de la misma pantalla con «Elegir estrategias de nuevo». Los errores de esta etapa ya no van al aviso lejano del inicio.
-- Protección contra doble clic: el inicio de la simulación se bloquea por estado de partida (una sola simulación por inicio, comprobada llamando dos veces al clic en una misma acción).
+- Protección contra doble clic: el botón «Jugar partido» ignora un segundo clic hasta que el motor rechace el inicio (una sola simulación por inicio, comprobada con dos clics en una misma acción).
 - Sin esperas artificiales para disimular transiciones.
 
 ## Completado automático de la CPU

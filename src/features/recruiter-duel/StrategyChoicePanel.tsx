@@ -11,7 +11,8 @@ interface Props {
   readonly names: { readonly first: string; readonly second: string }
   readonly onConfirm: (strategy: StrategyId) => void
   readonly onHandover: () => void
-  readonly onStart: () => void
+  /** Returns false when the match could not start, which releases the button. */
+  readonly onStart: () => boolean
 }
 
 /** Secret simultaneous choice screen. Nothing the first recruiter picked is rendered until the reveal. */
@@ -20,6 +21,7 @@ export function StrategyChoicePanel({ choice, chooser, nextChooser, names, onCon
   const [selected, setSelected] = useState<StrategyId | null>(null)
   const revealed = revealedStrategies(choice)
   const root = useRef<HTMLDivElement>(null)
+  const starting = useRef(false)
   // Each stage change brings the new stage into view and to the screen reader; the long recap above must not hide it.
   useEffect(() => {
     root.current?.scrollIntoView?.({ block: 'start' })
@@ -35,7 +37,7 @@ export function StrategyChoicePanel({ choice, chooser, nextChooser, names, onCon
         <p>{t(`tactics.strategies.${revealed[side]}.objective`)}</p>
       </article>)}</div>
       <p className="strategy-note">{t('strategyChoice.noGuarantee')}</p>
-      <button className="primary-action" onClick={onStart}>{t('duel.startMatch')}</button>
+      <button className="primary-action" onClick={() => { if (starting.current) return; starting.current = true; if (!onStart()) starting.current = false }}>{t('duel.startMatch')}</button>
     </section>
   }
   if (choice.step === 'HANDOVER') {

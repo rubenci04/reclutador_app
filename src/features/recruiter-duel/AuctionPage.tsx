@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LanguageSelector } from '../../components/LanguageSelector'
 import { AudioControls } from '../audio/AudioControls'
@@ -25,6 +25,7 @@ import { selectCpuStrategy } from '../tactics/cpuStrategy'
 import { acknowledgeHandover, confirmStrategy, revealedStrategies, startStrategyChoice, type StrategyChoice, type ChoiceTransition } from '../tactics/strategyChoice'
 import { TeamProgressBoard } from './TeamProgressBoard'
 import type { FormationRole } from '../tactics/roles'
+import type { StrategyId } from '../tactics/strategies'
 import { createDrawContext, DRAW_HISTORY_KEY, newDrawSeed, parseReplay, readDrawHistory } from './drawHistory'
 
 interface AuctionPageProps { readonly onDraftFree: () => void }
@@ -43,7 +44,6 @@ export function AuctionPage({ onDraftFree }: AuctionPageProps) {
   const [mode, setMode] = useState<ThemedModeId>('GLOBAL_CLASSIC')
   const [game, setGame] = useState<RecruiterDuelGame | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const startedFor = useRef<RecruiterDuelGame | null>(null)
   const [autoFailedSeed, setAutoFailedSeed] = useState<string | null>(null)
   const [strategyChoice, setStrategyChoice] = useState<{ seed: string; choice: StrategyChoice } | null>(null)
   const [lineupConfirmed, setLineupConfirmed] = useState<{ seed: string; recruiter_one: boolean; recruiter_two: boolean }>({ seed: '', recruiter_one: false, recruiter_two: false })
@@ -124,6 +124,12 @@ export function AuctionPage({ onDraftFree }: AuctionPageProps) {
   const hud = useMemo(() => game && auctionHudPhase ? buildHudModel(game, DRAFT_CATALOG) : null, [game, auctionHudPhase])
   const cpuLineup = game?.teams.recruiter_two.lineup
   const cpuStrategy = useMemo(() => opponentMode === 'cpu' && game?.phase === 'TEAMS_COMPLETED' && cpuLineup ? selectCpuStrategy(cpuLineup, DRAFT_CATALOG, game.seed) : undefined, [opponentMode, game, cpuLineup])
+  /** Starts the match. Returns false when the engine refuses, so the start button can be used again. */
+  const playMatch = (current: RecruiterDuelGame, first: StrategyId, second: StrategyId) => {
+    const result = startDuelMatch(current, DRAFT_CATALOG, { recruiter_one: first, recruiter_two: second })
+    apply(result)
+    return result.ok
+  }
   const quickTaker = game ? RECRUITER_IDS.find((participant) => canAutoComplete(game, participant)) : undefined
   const cpuAuto = quickTaker === 'recruiter_two' && opponentMode === 'cpu' && autoFailedSeed !== game?.seed
   const humanQuick = quickTaker && !cpuAuto ? quickTaker : undefined
@@ -198,16 +204,10 @@ export function AuctionPage({ onDraftFree }: AuctionPageProps) {
           const revealed = choice ? revealedStrategies(choice) : null
           const stage = !bothReady ? 1 : revealed ? 3 : 2
           const keep = (result: ChoiceTransition) => result.ok && setStrategyChoice({ seed: game.seed, choice: result.choice })
-          const start = () => {
-            if (!revealed || startedFor.current === game) return
-            startedFor.current = game
-            const result = startDuelMatch(game, DRAFT_CATALOG, { recruiter_one: revealed.first, recruiter_two: revealed.second })
-            apply(result)
-            if (!result.ok) startedFor.current = null
-          }
           return <section className="teams-completed">
             <p className="eyebrow"><span />{t('duel.teamsCompleted')}</p><h1>{t('duel.readyMatch')}</h1>
             <p className="stage-indicator" role="status">{t('stages.step', { current: stage, total: 3, label: t(['stages.order', 'stages.strategy', 'stages.reveal'][stage - 1]) })}</p>
+            {choice && !choice.secondIsCpu && (choice.step === 'HANDOVER' || choice.step === 'SECOND') && <p className="stage-indicator" role="status">{t('stages.waitingSecond', { first: names.recruiter_one, second: names.recruiter_two })}</p>}
             <details className="lineup-recap" open={!bothReady}>
               <summary>{t('stages.showTeams')}</summary>
               <div className="team-comparison">{RECRUITER_IDS.map((participant) => <article key={participant}><h2>{names[participant]}</h2><strong>{t('duel.spent', { amount: game.teams[participant].spent })}</strong><p>{DRAFT_SLOTS.map((slot) => playerById(game.teams[participant].lineup[slot.id]!).name).join(' · ')}</p></article>)}</div>
@@ -218,9 +218,9 @@ export function AuctionPage({ onDraftFree }: AuctionPageProps) {
             {choice && <>
               {opponentMode === 'cpu' && !revealed && <p role="status">{t('strategyChoice.cpuFixed')}</p>}
               <StrategyChoicePanel choice={choice} chooser={choice.step === 'SECOND' ? names.recruiter_two : names.recruiter_one} nextChooser={names.recruiter_two} names={{ first: names.recruiter_one, second: names.recruiter_two }}
-                onConfirm={(strategy) => keep(confirmStrategy(choice, strategy))} onHandover={() => keep(acknowledgeHandover(choice))} onStart={start} />
+                onConfirm={(strategy) => keep(confirmStrategy(choice, strategy))} onHandover={() => keep(acknowledgeHandover(choice))} onStart={() => revealed !== null && playMatch(game, revealed.first, revealed.second)} />
             </>}
-            {error && <div className="draft-alert" role="alert"><p>{error}</p><button className="secondary-action" onClick={() => { setStrategyChoice(null); startedFor.current = null; setError(null) }}>{t('recovery.retry')}</button></div>}
+            {error && <div className="draft-alert" role="alert"><p>{error}</p><button className="secondary-action" onClick={() => { setStrategyChoice(null); setError(null) }}>{t('recovery.retry')}</button></div>}
           </section>
         })()}
       </>}
