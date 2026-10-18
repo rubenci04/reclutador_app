@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { DRAFT_CATALOG } from '../draft/catalog'
 import { calculatePlayerPrice } from './calculatePlayerPrice'
-import { ARG_B01, ARG_B02, ARG_B03, ARG_RECORDS, batchIds, playedInArgentina, validateArgentinaBatch } from './argentinaBatches'
+import { ARG_B01, ARG_B02, ARG_B03, ARG_B04, ARG_RECORDS, batchIds, playedInArgentina, validateArgentinaBatch } from './argentinaBatches'
 import { normalizePlayerName } from './playerIdentity'
 
-const BATCHES = [{ number: 1, records: ARG_B01 }, { number: 2, records: ARG_B02 }, { number: 3, records: ARG_B03 }] as const
+const BATCHES = [{ number: 1, records: ARG_B01 }, { number: 2, records: ARG_B02 }, { number: 3, records: ARG_B03 }, { number: 4, records: ARG_B04 }] as const
 
 describe.each(BATCHES)('Argentine batch $number', ({ number, records }) => {
   const previous = ARG_RECORDS.filter((record) => !records.includes(record) && record.id < records[0].id)

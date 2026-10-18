@@ -1,6 +1,7 @@
 import batch01 from '../../data/argentina_collection_v1/ARG-B01.json'
 import batch02 from '../../data/argentina_collection_v1/ARG-B02.json'
 import batch03 from '../../data/argentina_collection_v1/ARG-B03.json'
+import batch04 from '../../data/argentina_collection_v1/ARG-B04.json'
 import type { Position } from '../../types/football'
 import type { Player } from '../../types/player'
 import { ARGENTINA_EXPANSION, validateArgentinaCandidates, type ArgentinaCandidate, type ArgentinaCareer } from './argentinaExpansion'
@@ -26,7 +27,8 @@ export const ARG_B01: readonly ArgentinaRecord[] = batch01 as unknown as readonl
 export const ARG_B02: readonly ArgentinaRecord[] = batch02 as unknown as readonly ArgentinaRecord[]
 /** Every Argentine record created so far, in id order. */
 export const ARG_B03: readonly ArgentinaRecord[] = batch03 as unknown as readonly ArgentinaRecord[]
-export const ARG_RECORDS: readonly ArgentinaRecord[] = [...ARG_B01, ...ARG_B02, ...ARG_B03]
+export const ARG_B04: readonly ArgentinaRecord[] = batch04 as unknown as readonly ArgentinaRecord[]
+export const ARG_RECORDS: readonly ArgentinaRecord[] = [...ARG_B01, ...ARG_B02, ...ARG_B03, ...ARG_B04]
 
 /** Candidate view used by the shared Argentine contract validator. */
 export function toCandidate(record: ArgentinaRecord): ArgentinaCandidate {

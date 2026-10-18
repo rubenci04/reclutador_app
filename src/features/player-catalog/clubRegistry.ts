@@ -26,7 +26,7 @@ export const clubRegistry: Readonly<Record<string, ClubIdentity | undefined>> = 
     ['ferro_carril_oeste', 'Ferro Carril Oeste'], ['defensores_unidos', 'Defensores Unidos'], ['mandiyu', 'Mandiyú'], ['independiente_rivadavia', 'Independiente Rivadavia'], ['talleres_remedios_de_escalada', 'Talleres de Remedios de Escalada'],
     ['deportivo_espanol', 'Deportivo Español'], ['argentino_de_rosario', 'Argentino de Rosario'], ['club_rivadavia', 'Club Rivadavia'], ['godoy_cruz', 'Godoy Cruz'], ['san_martin_tucuman', 'San Martín de Tucumán'],
     ['atletico_tucuman', 'Atlético Tucumán'], ['all_boys', 'All Boys'], ['gimnasia_jujuy', 'Gimnasia y Esgrima de Jujuy'], ['central_norte', 'Central Norte'], ['boca_unidos', 'Boca Unidos'],
-    ['huracan_tres_arroyos', 'Huracán de Tres Arroyos'], ['atletico_rafaela', 'Atlético de Rafaela'], ['estudiantes_rio_cuarto', 'Estudiantes de Río Cuarto'], ['defensores_de_belgrano', 'Defensores de Belgrano'], ['excursionistas', 'Excursionistas'], ['estudiantes_buenos_aires', 'Estudiantes de Buenos Aires'],
+    ['huracan_tres_arroyos', 'Huracán de Tres Arroyos'], ['atletico_rafaela', 'Atlético de Rafaela'], ['estudiantes_rio_cuarto', 'Estudiantes de Río Cuarto'], ['defensores_de_belgrano', 'Defensores de Belgrano'], ['excursionistas', 'Excursionistas'], ['los_andes', 'Los Andes'], ['alvarado', 'Alvarado'], ['central_cordoba_sde', 'Central Córdoba (SdE)'], ['almagro', 'Almagro'], ['deportivo_moron', 'Deportivo Morón'], ['estudiantes_buenos_aires', 'Estudiantes de Buenos Aires'],
   ].map(([id, name]) => [id, { id, name }]),
 ]))
 

@@ -1,13 +1,13 @@
 # Colección Fútbol Argentino — planificación
 
-Estado: diseño, 0/200 registros. Contrato: `argentina_collection_v1`, independiente de catalog_v1. Ver ADR-0009.
+Estado: 200/200 registros creados (ARG-B01..B04), revisión editorial pendiente; modo no habilitado. Contrato: `argentina_collection_v1`, independiente de catalog_v1. Ver ADR-0009.
 
 | Lote | IDs nuevos | Cupos ARQ/DEF/MED/DEL | Estado |
 |---|---|---|---|
 | ARG-B01 | arg_001–arg_050 | 6/16/15/13 | Creado (50/50, revisión editorial pendiente); ver docs/qa/CODEX-005H-H5.md |
-| ARG-B02 | arg_051–arg_100 | 6/16/15/13 | Pendiente |
-| ARG-B03 | arg_101–arg_150 | 6/16/15/13 | Pendiente |
-| ARG-B04 | arg_151–arg_200 | 6/16/15/13 | Pendiente |
+| ARG-B02 | arg_051–arg_100 | 6/16/15/13 | Creado (50/50, revisión editorial pendiente); ver docs/qa/CODEX-005H-ARG-B02.md |
+| ARG-B03 | arg_101–arg_150 | 6/16/15/13 | Creado (50/50, revisión editorial pendiente); ver docs/qa/CODEX-005H-ARG-B03.md |
+| ARG-B04 | arg_151–arg_200 | 6/16/15/13 | Creado (50/50, revisión editorial pendiente); ver docs/qa/CODEX-005H-ARG-B04.md |
 
 Inclusión: carrera verificable en institución argentina y evidencia de relevancia (campeonatos, goleadores, ídolos o trayectoria destacada). La nacionalidad argentina sola no alcanza; los extranjeros son elegibles. Cada candidato conserva múltiples períodos por club, años, competición y fuente verificada. club_tag sigue representando la carta, no toda la carrera.
 
