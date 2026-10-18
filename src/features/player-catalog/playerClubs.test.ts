@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
 import { DRAFT_CATALOG } from '../draft/catalog'
 import { canonicalClubId, clubRegistry, getClubIdentity } from './clubRegistry'
-import { capturePlayerClubs, PLAYER_CLUB_AUDIT, validatePlayerClubSnapshots } from './playerClubs'
+import { capturePlayerClubs, PLAYER_CLUB_AUDIT_2026_10_17 as PLAYER_CLUB_AUDIT, validatePlayerClubSnapshots } from './playerClubs'
 import type { PlayerClubSnapshot } from './playerClubTypes'
 
 const messi = DRAFT_CATALOG.find((player) => player.id === 'plr_038')!
@@ -26,7 +26,7 @@ describe('dated current club audit', () => {
   })
   it('keeps unreviewed players unknown rather than using the reference as current', () => {
     const player=DRAFT_CATALOG.find((candidate) => candidate.id === 'plr_001')!
-    expect(capturePlayerClubs(player)).toMatchObject({referenceClubId:'bayern_munich',currentClubId:null,careerStatus:'UNKNOWN',sourceUrl:null,historyCoverage:'NOT_REVIEWED'})
+    expect(capturePlayerClubs(player, '2026-10-16')).toMatchObject({referenceClubId:'bayern_munich',currentClubId:null,careerStatus:'UNKNOWN',sourceUrl:null,historyCoverage:'NOT_REVIEWED'})
   })
   it('supports ACTIVE, RETIRED, FREE_AGENT and UNKNOWN with consistent nullability', () => {
     const base=capturePlayerClubs(messi)

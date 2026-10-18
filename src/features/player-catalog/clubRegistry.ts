@@ -9,6 +9,7 @@ export const clubRegistry: Readonly<Record<string, ClubIdentity | undefined>> = 
     ['inter_miami', 'Inter Miami CF'], ['pumas_unam', 'Pumas UNAM'], ['rosario_central', 'Rosario Central'],
     ['los_angeles_fc', 'Los Angeles FC'], ['belgrano', 'Belgrano'], ['genoa', 'Genoa'],
     ['santos', 'Santos FC'], ['monterrey', 'Monterrey'], ['fluminense', 'Fluminense'], ['hajduk_split', 'Hajduk Split'],
+    ['atletico_nacional', 'Atlético Nacional'], ['fc_tokyo', 'FC Tokyo'], ['alianza_lima', 'Alianza Lima'], ['fc_jurong', 'FC Jurong'],
   ].map(([id, name]) => [id, { id, name }]),
 ]))
 

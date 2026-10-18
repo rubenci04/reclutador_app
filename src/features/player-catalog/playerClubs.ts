@@ -2,9 +2,26 @@ import type { Player } from '../../types/player'
 import { getClubIdentity } from './clubRegistry'
 import { CAREER_STATUSES, type PlayerClubSnapshot } from './playerClubTypes'
 import auditData from '../../data/player-clubs/2026-10-17.json'
+import auditData20261018 from '../../data/player-clubs/2026-10-18.json'
 
-export const CLUB_AUDIT_AS_OF = '2026-10-17'
-export const PLAYER_CLUB_AUDIT = auditData as readonly PlayerClubSnapshot[]
+/** Cut-off of the current review (H4). Earlier files are kept and still selectable by date. */
+export const CLUB_AUDIT_AS_OF = '2026-10-18'
+export const PLAYER_CLUB_AUDIT_2026_10_17 = auditData as readonly PlayerClubSnapshot[]
+export const PLAYER_CLUB_AUDIT_2026_10_18 = auditData20261018 as readonly PlayerClubSnapshot[]
+export const PLAYER_CLUB_AUDIT: readonly PlayerClubSnapshot[] = [...PLAYER_CLUB_AUDIT_2026_10_17, ...PLAYER_CLUB_AUDIT_2026_10_18]
+
+/** Exact coverage over a catalogue, using each player's latest snapshot not after `asOfDate`. */
+export function auditCoverage(catalog: readonly Player[], asOfDate = CLUB_AUDIT_AS_OF, snapshots: readonly PlayerClubSnapshot[] = PLAYER_CLUB_AUDIT) {
+  const latest = (player: Player) => snapshots.filter((row) => row.playerId === player.id && row.asOfDate <= asOfDate).sort((a, b) => b.asOfDate.localeCompare(a.asOfDate) || b.revision - a.revision)[0]
+  const rows = catalog.map(latest)
+  const reviewed = rows.filter((row) => row !== undefined)
+  const verified = reviewed.filter((row) => row.verificationStatus === 'VERIFIED')
+  return {
+    total: catalog.length, reviewed: reviewed.length, unreviewed: catalog.length - reviewed.length,
+    verified: verified.length, active: verified.filter((row) => row.careerStatus === 'ACTIVE').length, retired: verified.filter((row) => row.careerStatus === 'RETIRED').length, freeAgent: verified.filter((row) => row.careerStatus === 'FREE_AGENT').length,
+    pending: reviewed.length - verified.length,
+  }
+}
 
 function validDate(value: unknown): value is string {
   return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value

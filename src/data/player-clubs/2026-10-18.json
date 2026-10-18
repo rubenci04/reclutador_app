@@ -1,0 +1,481 @@
+[
+ {
+  "playerId": "plr_001",
+  "revision": 1,
+  "referenceClubId": "bayern_munich",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "bayern_munich",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "bayern_munich",
+    "source": {
+     "provider": "editorial",
+     "url": "https://widgets.datasportsgroup.com/sports-news/news/en/173652/neuer-extends-bayern-stay-through-2027/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://widgets.datasportsgroup.com/sports-news/news/en/173652/neuer-extends-bayern-stay-through-2027/",
+    "startedYear": 2011
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://widgets.datasportsgroup.com/sports-news/news/en/173652/neuer-extends-bayern-stay-through-2027/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Report of 18 May 2026: one-year extension to 2027 (also reported by Sky Germany via getfootballnewsgermany). Secondary sources agree; no club statement retrieved."
+ },
+ {
+  "playerId": "plr_002",
+  "revision": 1,
+  "referenceClubId": "real_madrid",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Real Madrid reported as his club with a deal running through 2026/27 and a verbal extension to 2028, but the only recent source is undated (foot-africa); no official or dated 2026 confirmation retrieved."
+ },
+ {
+  "playerId": "plr_003",
+  "revision": 1,
+  "referenceClubId": "aston_villa",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "chelsea",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "chelsea",
+    "source": {
+     "provider": "editorial",
+     "url": "https://qna.org.qa/en/News-Area/News/2026-8/30/chelsea-signs-argentine-goalkeeper-emiliano-martinez-to-three-year-deal",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://qna.org.qa/en/News-Area/News/2026-8/30/chelsea-signs-argentine-goalkeeper-emiliano-martinez-to-three-year-deal",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://qna.org.qa/en/News-Area/News/2026-8/30/chelsea-signs-argentine-goalkeeper-emiliano-martinez-to-three-year-deal",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Chelsea signed him from Aston Villa on a three-year deal (30 Aug 2026 report; AP and several outlets agree). Aston Villa remains the sporting reference (2022)."
+ },
+ {
+  "playerId": "plr_005",
+  "revision": 1,
+  "referenceClubId": "river_plate",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "atletico_nacional",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "atletico_nacional",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.elpais.com.co/deportes/franco-armani-regresa-a-atletico-nacional-el-idolo-cumplio-su-promesa-diez-anos-despues-1649.html",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.elpais.com.co/deportes/franco-armani-regresa-a-atletico-nacional-el-idolo-cumplio-su-promesa-diez-anos-despues-1649.html",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.elpais.com.co/deportes/franco-armani-regresa-a-atletico-nacional-el-idolo-cumplio-su-promesa-diez-anos-despues-1649.html",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "River contract rescinded by mutual agreement; Atlético Nacional confirmed his return on 14-16 Jul 2026 (one year, option to June 2027). River Plate stays as sporting reference (2018)."
+ },
+ {
+  "playerId": "plr_006",
+  "revision": 1,
+  "referenceClubId": "huddersfield_town",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "RETIRED",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://www.flashscore.nl/news/soccer-premier-league-experienced-danish-international-goalkeeper-brings-down-curtain-on-impressive-career/r9FAo7Ab/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Retirement in 2026 reported by Flashscore and Wikipedia; he moves to a role in FC Midtjylland administration. Some statistics sites still list him as active (stale)."
+ },
+ {
+  "playerId": "plr_008",
+  "revision": 1,
+  "referenceClubId": "liverpool",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "liverpool",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "liverpool",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.flashscore.dk/news/soccer-premier-league-virgil-van-dijk-signs-new-contract-to-remain-at-liverpool-until-2027/WnN5FaxA",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.flashscore.dk/news/soccer-premier-league-virgil-van-dijk-signs-new-contract-to-remain-at-liverpool-until-2027/WnN5FaxA",
+    "startedYear": 2018
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.flashscore.dk/news/soccer-premier-league-virgil-van-dijk-signs-new-contract-to-remain-at-liverpool-until-2027/WnN5FaxA",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Contract to 2027 (April 2025); a late-September 2026 report still has him at Liverpool, captain, with no confirmed transfer."
+ },
+ {
+  "playerId": "plr_010",
+  "revision": 1,
+  "referenceClubId": "benfica",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "river_plate",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "river_plate",
+    "source": {
+     "provider": "editorial",
+     "url": "https://batimes.com.ar/news/amp/sports/nicolas-otamendi-becomes-latest-world-champion-to-sign-for-argentinas-river-plate.phtml",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://batimes.com.ar/news/amp/sports/nicolas-otamendi-becomes-latest-world-champion-to-sign-for-argentinas-river-plate.phtml",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://batimes.com.ar/news/amp/sports/nicolas-otamendi-becomes-latest-world-champion-to-sign-for-argentinas-river-plate.phtml",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Free transfer from Benfica announced 29 May 2026; contract from 1 Jul 2026 to Dec 2027, joining after the World Cup (club statement quoted by several outlets)."
+ },
+ {
+  "playerId": "plr_013",
+  "revision": 1,
+  "referenceClubId": "juventus",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "No formal retirement found. Reports from Dec 2025-Jan 2026 describe a planned comeback with Portuguese third-tier São João de Ver, not confirmed as signed. Career status unclear."
+ },
+ {
+  "playerId": "plr_014",
+  "revision": 1,
+  "referenceClubId": "atletico_madrid",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Conflicting: ESPN/Gradient still show Atlético de Madrid (ankle sprain May 2026), one page indicates a loan to Deportivo de La Coruña in Sep 2026. Single source; needs official LaLiga/club confirmation."
+ },
+ {
+  "playerId": "plr_015",
+  "revision": 1,
+  "referenceClubId": "sevilla",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "river_plate",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "river_plate",
+    "source": {
+     "provider": "editorial",
+     "url": "https://lapaginamillonaria.com/seleccion-argentina/marcos-acuna-no-jugara-el-mundial-2026-la-reaccion-de-river-y-que-dijo-stefano-di-carlo",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://lapaginamillonaria.com/seleccion-argentina/marcos-acuna-no-jugara-el-mundial-2026-la-reaccion-de-river-y-que-dijo-stefano-di-carlo",
+    "startedYear": 2024
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://lapaginamillonaria.com/seleccion-argentina/marcos-acuna-no-jugara-el-mundial-2026-la-reaccion-de-river-y-que-dijo-stefano-di-carlo",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "At River Plate since Aug 2024 (from Sevilla); May 2026 coverage of his omission from the World Cup list and the River president's reaction, plus 2026 league statistics. Secondary sources."
+ },
+ {
+  "playerId": "plr_017",
+  "revision": 1,
+  "referenceClubId": "tottenham_hotspur",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "wolverhampton_wanderers",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "wolverhampton_wanderers",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.newcastleunited.com/en/news/trippier-joins-wolves-after-magpies-exit",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.newcastleunited.com/en/news/trippier-joins-wolves-after-magpies-exit",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.newcastleunited.com/en/news/trippier-joins-wolves-after-magpies-exit",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Newcastle United's own site reports he joined Wolves after his contract expired (departure announced April 2026). Two-year deal."
+ },
+ {
+  "playerId": "plr_018",
+  "revision": 1,
+  "referenceClubId": "galatasaray",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "fc_tokyo",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "fc_tokyo",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.fctokyo.co.jp/en/news/details/335281/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.fctokyo.co.jp/en/news/details/335281/",
+    "startedYear": 2024
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.fctokyo.co.jp/en/news/details/335281/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "FC Tokyo's official site lists him as a club member selected for Japan's 2026 World Cup squad; 2025/26 J1 statistics with FC Tokyo."
+ },
+ {
+  "playerId": "plr_019",
+  "revision": 1,
+  "referenceClubId": "lobos_buap",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "alianza_lima",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "alianza_lima",
+    "source": {
+     "provider": "editorial",
+     "url": "https://rpp.pe/futbol/descentralizado/luis-advincula-a-alianza-lima-ofcial-club-blanquiazul-anuncio-el-fichaje-del-rayo-para-la-liga1-2026-noticia-1671027",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://rpp.pe/futbol/descentralizado/luis-advincula-a-alianza-lima-ofcial-club-blanquiazul-anuncio-el-fichaje-del-rayo-para-la-liga1-2026-noticia-1671027",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://rpp.pe/futbol/descentralizado/luis-advincula-a-alianza-lima-ofcial-club-blanquiazul-anuncio-el-fichaje-del-rayo-para-la-liga1-2026-noticia-1671027",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Alianza Lima announced his signing in January 2026 (two seasons plus a one-year option; ESPN agrees). Left Boca Juniors."
+ },
+ {
+  "playerId": "plr_020",
+  "revision": 1,
+  "referenceClubId": "sevilla",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://espndeportes.espn.com/futbol/jugador/_/id/76818/gabriel-mercado",
+  "verificationStatus": "PENDING",
+  "auditNote": "Sources list Internacional with 2026 statistics, but no dated 2026 confirmation of contract or transfer status was retrieved."
+ },
+ {
+  "playerId": "plr_021",
+  "revision": 1,
+  "referenceClubId": "torino",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Last club found is Parma (2022-24); Wikipedia calls him a former player but no retirement statement or newer club was found."
+ },
+ {
+  "playerId": "plr_022",
+  "revision": 1,
+  "referenceClubId": "antalyaspor",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "RETIRED",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://dailycannon.com/2021/06/johan-djourou-retires/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Retired in 2021 (last club Nordsjælland) at 34; later coaching and sports-coordinator roles. Wikipedia agrees."
+ },
+ {
+  "playerId": "plr_027",
+  "revision": 1,
+  "referenceClubId": "real_madrid",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Only low-quality, templated pages (conflicting Manchester United / Inter Miami claims); no official or major-outlet confirmation retrieved."
+ },
+ {
+  "playerId": "plr_031",
+  "revision": 1,
+  "referenceClubId": "sevilla",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Left Newell's (not renewed) in Jan 2026; reports mention Defensa y Justicia but no confirmed signing or retirement was found."
+ },
+ {
+  "playerId": "plr_033",
+  "revision": 1,
+  "referenceClubId": "beijing_guoan",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "RETIRED",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://portaldeprefeitura.com.br/esportes/renato-augusto-anuncia-a-aposentadoria-do-futebol/603838/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Announced retirement from professional football (Sep 2025) after leaving Fluminense by mutual agreement; Brazilian outlets agree."
+ },
+ {
+  "playerId": "plr_034",
+  "revision": 1,
+  "referenceClubId": "pachuca",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "fc_jurong",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "fc_jurong",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.malaymail.com/news/singapore/2026/04/10/former-japan-international-keisuke-honda-to-make-singapore-premier-league-switch-with-fc-jurong-move/215774",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.malaymail.com/news/singapore/2026/04/10/former-japan-international-keisuke-honda-to-make-singapore-premier-league-switch-with-fc-jurong-move/215774",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.malaymail.com/news/singapore/2026/04/10/former-japan-international-keisuke-honda-to-make-singapore-premier-league-switch-with-fc-jurong-move/215774",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "April 2026 report: signs with FC Jurong (Singapore Premier League, ex Albirex Niigata Singapore), arrival scheduled for August 2026; Wikipedia lists Jurong as current. Arrival date is a plan in the source."
+ },
+ {
+  "playerId": "plr_035",
+  "revision": 1,
+  "referenceClubId": "espanyol",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Latest confirmed club is Barracas Central (2024-25); December 2024 retirement/front-office reports without official confirmation."
+ },
+ {
+  "playerId": "plr_036",
+  "revision": 1,
+  "referenceClubId": "aston_villa",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "One statistics site lists end of career on 30 Jun 2025 (Brescia); no dated announcement retrieved."
+ },
+ {
+  "playerId": "plr_037",
+  "revision": 1,
+  "referenceClubId": "deportivo_la_coruna",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Wikipedia, FotMob and ESPN place him at Alajuelense in 2025-26 (match of 11 Mar 2026), but no source confirms his status after the mid-year window."
+ },
+ {
+  "playerId": "plr_045",
+  "revision": 1,
+  "referenceClubId": "wolverhampton_wanderers",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "wolverhampton_wanderers",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "wolverhampton_wanderers",
+    "source": {
+     "provider": "editorial",
+     "url": "https://jamaica-gleaner.com/article/sports/20260610/ahead-world-cup-mexico-striker-raul-jimenez-fixes-club-future-signing",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://jamaica-gleaner.com/article/sports/20260610/ahead-world-cup-mexico-striker-raul-jimenez-fixes-club-future-signing",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://jamaica-gleaner.com/article/sports/20260610/ahead-world-cup-mexico-striker-raul-jimenez-fixes-club-future-signing",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "AP, 10 Jun 2026: left Fulham and signed a second spell with Wolves (two-year deal, Championship)."
+ },
+ {
+  "playerId": "plr_046",
+  "revision": 1,
+  "referenceClubId": "lokomotiv_moscow",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "RETIRED",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://eltiempo.pe/detail/jefferson-farfan-anuncia-su-retiro-oficial-del-futbol-profesional-ml",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Retirement announced in December 2022 (knee injury); remains linked to Alianza Lima as an ambassador. Multiple outlets agree."
+ }
+]

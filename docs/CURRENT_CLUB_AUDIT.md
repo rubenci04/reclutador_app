@@ -4,11 +4,14 @@ Fecha de corte: **17/10/2026**. Evidencia: `src/data/player-clubs/2026-10-17.jso
 
 ## Cobertura acumulada
 
-- 25/150 revisados (16,67%): Messi y Romero más 23 identidades con referencias antiguas, movimientos o posibles retiros.
-- 19/150 con situación confirmada (12,67%): 13 ACTIVE con club actual identificado y seis RETIRED sin club actual.
-- Seis revisados UNKNOWN/PENDING; otros 125 todavía sin revisar. No se deduce club actual de club_tag ni se interpreta una salida como FREE_AGENT.
+Fecha de corte vigente: **18/10/2026** (revisión H4). Capturas anteriores conservadas: `src/data/player-clubs/2026-10-17.json` (25 identidades) y `src/data/player-clubs/2026-10-18.json`. Catálogo deportivo: 150 jugadores de catalog_v1, ratings, precios e IDs intactos.
+
+- Cobertura exacta al 2026-10-18: 50/150 revisados (33,33 %).
+- 34 verificados (22,67 %): 24 ACTIVE con club actual identificado y 10 RETIRED sin club actual.
+- 16 pendientes (UNKNOWN/PENDING, sin club actual deducido) y 100 sin revisar. No se deduce club actual de club_tag ni se interpreta una salida como FREE_AGENT.
 - FREE_AGENT está soportado y probado con fixtures; ningún jugador real recibe ese estado sin evidencia vigente.
-- Historial parcial verificado: tres jugadores y seis períodos. No se presenta como carrera completa.
+- Criterio de VERIFIED en H4: fuente oficial del club/liga/federación, o al menos una fuente fechada entre mayo y octubre de 2026 (o un contrato que cubra esa fecha) que afirme la situación, coincidente con otras. Contradicciones, fuentes sin fecha o de baja calidad quedan PENDING.
+- Historial: solo el club actual como período verificado; la trayectoria completa no se presenta como verificada.
 
 ## Contrato y registro de clubes
 
@@ -87,3 +90,37 @@ Todas las filas tienen corte 2026-10-17. VERIFIED se refiere a la situación act
 | plr_057 | Philipp Lahm | bayern_munich | — | RETIRED / VERIFIED | [Fuente revisada](https://fcbayern.com/en/club/hall-of-fame/philipp-lahm) |
 | plr_059 | Gerard Piqué | barcelona | — | RETIRED / VERIFIED | [Fuente revisada](https://www.fcbarcelona.com/en/news/2909976/gerard-pique/amp) |
 | plr_075 | Toni Kroos | real_madrid | — | RETIRED / VERIFIED | [Fuente revisada](https://www.realmadrid.com/en-US/news/club/announcements/comunicado-oficial-toni-kroos-21-05-2024) |
+
+<!-- H4-REGISTER-START -->
+## Registro de la revisión 2026-10-18 (H4)
+
+Cada fila conserva la referencia deportiva (`club_tag`) sin cambios. «Fuente» es el material que respalda el estado; en PENDING es lo consultado.
+
+| ID | Jugador | Referencia | Estado | Club actual | Fuente | Nota |
+|---|---|---|---|---|---|---|
+| plr_001 | Manuel Neuer | bayern_munich | ACTIVE | bayern_munich | [fuente](https://widgets.datasportsgroup.com/sports-news/news/en/173652/neuer-extends-bayern-stay-through-2027/) | Report of 18 May 2026: one-year extension to 2027 (also reported by Sky Germany via getfootballnewsgermany). Secondary sources agree; no club statement retrieved. |
+| plr_002 | Thibaut Courtois | real_madrid | PENDING | — | — | Real Madrid reported as his club with a deal running through 2026/27 and a verbal extension to 2028, but the only recent source is undated (foot-africa); no official or dated 2026 confirmation retrieved. |
+| plr_003 | Emiliano Martínez | aston_villa | ACTIVE | chelsea | [fuente](https://qna.org.qa/en/News-Area/News/2026-8/30/chelsea-signs-argentine-goalkeeper-emiliano-martinez-to-three-year-deal) | Chelsea signed him from Aston Villa on a three-year deal (30 Aug 2026 report; AP and several outlets agree). Aston Villa remains the sporting reference (2022). |
+| plr_005 | Franco Armani | river_plate | ACTIVE | atletico_nacional | [fuente](https://www.elpais.com.co/deportes/franco-armani-regresa-a-atletico-nacional-el-idolo-cumplio-su-promesa-diez-anos-despues-1649.html) | River contract rescinded by mutual agreement; Atlético Nacional confirmed his return on 14-16 Jul 2026 (one year, option to June 2027). River Plate stays as sporting reference (2018). |
+| plr_006 | Jonas Lössl | huddersfield_town | RETIRED | — | [fuente](https://www.flashscore.nl/news/soccer-premier-league-experienced-danish-international-goalkeeper-brings-down-curtain-on-impressive-career/r9FAo7Ab/) | Retirement in 2026 reported by Flashscore and Wikipedia; he moves to a role in FC Midtjylland administration. Some statistics sites still list him as active (stale). |
+| plr_008 | Virgil van Dijk | liverpool | ACTIVE | liverpool | [fuente](https://www.flashscore.dk/news/soccer-premier-league-virgil-van-dijk-signs-new-contract-to-remain-at-liverpool-until-2027/WnN5FaxA) | Contract to 2027 (April 2025); a late-September 2026 report still has him at Liverpool, captain, with no confirmed transfer. |
+| plr_010 | Nicolás Otamendi | benfica | ACTIVE | river_plate | [fuente](https://batimes.com.ar/news/amp/sports/nicolas-otamendi-becomes-latest-world-champion-to-sign-for-argentinas-river-plate.phtml) | Free transfer from Benfica announced 29 May 2026; contract from 1 Jul 2026 to Dec 2027, joining after the World Cup (club statement quoted by several outlets). |
+| plr_013 | Dani Alves | juventus | PENDING | — | — | No formal retirement found. Reports from Dec 2025-Jan 2026 describe a planned comeback with Portuguese third-tier São João de Ver, not confirmed as signed. Career status unclear. |
+| plr_014 | José María Giménez | atletico_madrid | PENDING | — | — | Conflicting: ESPN/Gradient still show Atlético de Madrid (ankle sprain May 2026), one page indicates a loan to Deportivo de La Coruña in Sep 2026. Single source; needs official LaLiga/club confirmation. |
+| plr_015 | Marcos Acuña | sevilla | ACTIVE | river_plate | [fuente](https://lapaginamillonaria.com/seleccion-argentina/marcos-acuna-no-jugara-el-mundial-2026-la-reaccion-de-river-y-que-dijo-stefano-di-carlo) | At River Plate since Aug 2024 (from Sevilla); May 2026 coverage of his omission from the World Cup list and the River president's reaction, plus 2026 league statistics. Secondary sources. |
+| plr_017 | Kieran Trippier | tottenham_hotspur | ACTIVE | wolverhampton_wanderers | [fuente](https://www.newcastleunited.com/en/news/trippier-joins-wolves-after-magpies-exit) | Newcastle United's own site reports he joined Wolves after his contract expired (departure announced April 2026). Two-year deal. |
+| plr_018 | Yuto Nagatomo | galatasaray | ACTIVE | fc_tokyo | [fuente](https://www.fctokyo.co.jp/en/news/details/335281/) | FC Tokyo's official site lists him as a club member selected for Japan's 2026 World Cup squad; 2025/26 J1 statistics with FC Tokyo. |
+| plr_019 | Luis Advíncula | lobos_buap | ACTIVE | alianza_lima | [fuente](https://rpp.pe/futbol/descentralizado/luis-advincula-a-alianza-lima-ofcial-club-blanquiazul-anuncio-el-fichaje-del-rayo-para-la-liga1-2026-noticia-1671027) | Alianza Lima announced his signing in January 2026 (two seasons plus a one-year option; ESPN agrees). Left Boca Juniors. |
+| plr_020 | Gabriel Mercado | sevilla | PENDING | — | [fuente](https://espndeportes.espn.com/futbol/jugador/_/id/76818/gabriel-mercado) | Sources list Internacional with 2026 statistics, but no dated 2026 confirmation of contract or transfer status was retrieved. |
+| plr_021 | Cristian Ansaldi | torino | PENDING | — | — | Last club found is Parma (2022-24); Wikipedia calls him a former player but no retirement statement or newer club was found. |
+| plr_022 | Johan Djourou | antalyaspor | RETIRED | — | [fuente](https://dailycannon.com/2021/06/johan-djourou-retires/) | Retired in 2021 (last club Nordsjælland) at 34; later coaching and sports-coordinator roles. Wikipedia agrees. |
+| plr_027 | Casemiro | real_madrid | PENDING | — | — | Only low-quality, templated pages (conflicting Manchester United / Inter Miami claims); no official or major-outlet confirmation retrieved. |
+| plr_031 | Éver Banega | sevilla | PENDING | — | — | Left Newell's (not renewed) in Jan 2026; reports mention Defensa y Justicia but no confirmed signing or retirement was found. |
+| plr_033 | Renato Augusto | beijing_guoan | RETIRED | — | [fuente](https://portaldeprefeitura.com.br/esportes/renato-augusto-anuncia-a-aposentadoria-do-futebol/603838/) | Announced retirement from professional football (Sep 2025) after leaving Fluminense by mutual agreement; Brazilian outlets agree. |
+| plr_034 | Keisuke Honda | pachuca | ACTIVE | fc_jurong | [fuente](https://www.malaymail.com/news/singapore/2026/04/10/former-japan-international-keisuke-honda-to-make-singapore-premier-league-switch-with-fc-jurong-move/215774) | April 2026 report: signs with FC Jurong (Singapore Premier League, ex Albirex Niigata Singapore), arrival scheduled for August 2026; Wikipedia lists Jurong as current. Arrival date is a plan in the source. |
+| plr_035 | Carlos Sánchez | espanyol | PENDING | — | — | Latest confirmed club is Barracas Central (2024-25); December 2024 retirement/front-office reports without official confirmation. |
+| plr_036 | Birkir Bjarnason | aston_villa | PENDING | — | — | One statistics site lists end of career on 30 Jun 2025 (Brescia); no dated announcement retrieved. |
+| plr_037 | Celso Borges | deportivo_la_coruna | PENDING | — | — | Wikipedia, FotMob and ESPN place him at Alajuelense in 2025-26 (match of 11 Mar 2026), but no source confirms his status after the mid-year window. |
+| plr_045 | Raúl Jiménez | wolverhampton_wanderers | ACTIVE | wolverhampton_wanderers | [fuente](https://jamaica-gleaner.com/article/sports/20260610/ahead-world-cup-mexico-striker-raul-jimenez-fixes-club-future-signing) | AP, 10 Jun 2026: left Fulham and signed a second spell with Wolves (two-year deal, Championship). |
+| plr_046 | Jefferson Farfán | lokomotiv_moscow | RETIRED | — | [fuente](https://eltiempo.pe/detail/jefferson-farfan-anuncia-su-retiro-oficial-del-futbol-profesional-ml) | Retirement announced in December 2022 (knee injury); remains linked to Alianza Lima as an ambassador. Multiple outlets agree. |
+<!-- H4-REGISTER-END -->
