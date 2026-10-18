@@ -477,5 +477,483 @@
   "sourceUrl": "https://eltiempo.pe/detail/jefferson-farfan-anuncia-su-retiro-oficial-del-futbol-profesional-ml",
   "verificationStatus": "VERIFIED",
   "auditNote": "Retirement announced in December 2022 (knee injury); remains linked to Alianza Lima as an ambassador. Multiple outlets agree."
+ },
+ {
+  "playerId": "plr_047",
+  "revision": 1,
+  "referenceClubId": "al_ain",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Wikipedia calls him a former professional footballer (left IFK Göteborg Sep 2023, coaching-staff role from 2024) but no explicit retirement announcement was retrieved."
+ },
+ {
+  "playerId": "plr_048",
+  "revision": 1,
+  "referenceClubId": "flamengo",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "alianza_lima",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "alianza_lima",
+    "source": {
+     "provider": "editorial",
+     "url": "https://andina.pe/ingles/noticia-paolo-guerrero-turns-42-and-alianza-lima-renews-his-contract-through-2026-1057796.aspx",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://andina.pe/ingles/noticia-paolo-guerrero-turns-42-and-alianza-lima-renews-his-contract-through-2026-1057796.aspx",
+    "startedYear": 2024
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://andina.pe/ingles/noticia-paolo-guerrero-turns-42-and-alianza-lima-renews-his-contract-through-2026-1057796.aspx",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Alianza Lima renewed his contract through 2026 (Jan 2026, announced by the club); he has said 2026 is his last season. The contract covers the cut-off date."
+ },
+ {
+  "playerId": "plr_049",
+  "revision": 1,
+  "referenceClubId": "besiktas",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "RETIRED",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://www.fcbarcelona.com/en/football/barca-legends/players/4231983/quaresma",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "FC Barcelona's legends profile and Wikipedia: retired in 2022 after Vitória de Guimarães. Undated comeback remarks (Besiktas) were not followed by a signing."
+ },
+ {
+  "playerId": "plr_050",
+  "revision": 1,
+  "referenceClubId": "cska_moscow",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Without a club since ending his Sivasspor contract in Feb 2024; Sep 2024 hint of an NPFL return. No dated 2026 source."
+ },
+ {
+  "playerId": "plr_051",
+  "revision": 1,
+  "referenceClubId": "liverpool",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "liverpool",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "liverpool",
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Alisson_Becker",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Alisson_Becker",
+    "startedYear": 2018
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Alisson_Becker",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "One-year contract extension triggered in March 2026 (through 2026-27); Liverpool is his current club in all sources. Possible 2027 exit is only speculation."
+ },
+ {
+  "playerId": "plr_052",
+  "revision": 1,
+  "referenceClubId": "atletico_madrid",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "atletico_madrid",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "atletico_madrid",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.beinsports.com/en-asia/football/primera-division/articles/oblak-wants-to-achieve-more-with-atletico-despite-uncertain-future-2026-06-03",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.beinsports.com/en-asia/football/primera-division/articles/oblak-wants-to-achieve-more-with-atletico-despite-uncertain-future-2026-06-03",
+    "startedYear": 2014
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.beinsports.com/en-asia/football/primera-division/articles/oblak-wants-to-achieve-more-with-atletico-despite-uncertain-future-2026-06-03",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "June 2026 report: contract to 30 Jun 2028; a later profile has him starting the 2026-27 season as first choice."
+ },
+ {
+  "playerId": "plr_053",
+  "revision": 1,
+  "referenceClubId": "manchester_city",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "fenerbahce",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "fenerbahce",
+    "source": {
+     "provider": "editorial",
+     "url": "https://foot-africa.com/en/news/official-ederson-signs-with-fenerbahce-862113/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://foot-africa.com/en/news/official-ederson-signs-with-fenerbahce-862113/",
+    "startedYear": 2025
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://foot-africa.com/en/news/official-ederson-signs-with-fenerbahce-862113/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Manchester City announced his departure; he signed with Fenerbahçe (Sep 2025) and played Süper Lig matches in Sep 2026 (profile data). City contract news is outdated."
+ },
+ {
+  "playerId": "plr_055",
+  "revision": 1,
+  "referenceClubId": "standard_liege",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "RETIRED",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://www.moroccoworldnews.com/2026/07/330738/guillermo-ochoa-retires-at-41-after-22-year-career-with-mexico/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Retired in July 2026 at 41 (several outlets); last club AEL Limassol. A future management role at América is only a report."
+ },
+ {
+  "playerId": "plr_056",
+  "revision": 1,
+  "referenceClubId": "horoya",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Last club mentioned is Horoya (undated); a 2026 World Cup profile leaves the current club empty."
+ },
+ {
+  "playerId": "plr_058",
+  "revision": 1,
+  "referenceClubId": "juventus",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "RETIRED",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://www.juventus.com/en/news/articles/leonardo-bonucci-hangs-up-his-boots",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Juventus's own article and ESPN report his retirement; last club Fenerbahçe (2024)."
+ },
+ {
+  "playerId": "plr_060",
+  "revision": 1,
+  "referenceClubId": "bayern_munich",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Real Madrid and Alaba agreed to end his stay when his contract expired in June 2026 (reports of May 2026). No official report of a new club or of a free-agent status at the cut-off."
+ },
+ {
+  "playerId": "plr_061",
+  "revision": 1,
+  "referenceClubId": "real_madrid",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "RETIRED",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://www.laprensa.hn/deportes/varane-retiro-como-real-madrid-retiro-edad-anuncio-comunicado-francia-OB21756855",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Retired in September 2024 after a knee injury at Como; several outlets agree (page dates of 2026 are display dates)."
+ },
+ {
+  "playerId": "plr_062",
+  "revision": 1,
+  "referenceClubId": "real_madrid",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "RETIRED",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://gulfnews.com/sport/football/portugal-defender-pepe-announces-retirement-at-41-1.1723145241210",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Announced his retirement on 8 Aug 2024 at 41 after Euro 2024; no comeback found."
+ },
+ {
+  "playerId": "plr_063",
+  "revision": 1,
+  "referenceClubId": "napoli",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "al_hilal",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "al_hilal",
+    "source": {
+     "provider": "editorial",
+     "url": "https://africasoccer.com/?p=491894",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://africasoccer.com/?p=491894",
+    "startedYear": 2023
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://africasoccer.com/?p=491894",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Extended his Al-Hilal contract in Feb 2026 to June 2027; reported injured for much of the season. The contract covers the cut-off."
+ },
+ {
+  "playerId": "plr_064",
+  "revision": 1,
+  "referenceClubId": "juventus",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Only his international retirement (2019) and later sporting-director work were found; the date of his retirement as a club player was not retrieved."
+ },
+ {
+  "playerId": "plr_065",
+  "revision": 1,
+  "referenceClubId": "chelsea",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Barcelona is his club of record but sources conflict on a 2026 renewal (a Besoccer entry dated 1 Jul 2026) and one result is low-quality; no club announcement retrieved."
+ },
+ {
+  "playerId": "plr_066",
+  "revision": 1,
+  "referenceClubId": "real_sociedad",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "RETIRED",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://www.razon.com.mx/deportes/2025/10/17/ya-es-oficial-hector-moreno-anuncia-su-retiro-del-futbol-profesional-y-ya-tiene-fecha-para-colgar-los-botines/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Announced his retirement on 17 Oct 2025 (last club Monterrey); several Mexican outlets agree."
+ },
+ {
+  "playerId": "plr_067",
+  "revision": 1,
+  "referenceClubId": "sevilla",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "UNKNOWN",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": null,
+  "verificationStatus": "PENDING",
+  "auditNote": "Retired at the end of 2023 but a March 2025 TUDN video reports a return to play for América; the current status was not clarified."
+ },
+ {
+  "playerId": "plr_068",
+  "revision": 1,
+  "referenceClubId": "psv_eindhoven",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "independiente",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "independiente",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.noticiascaracol.com/golcaracol/colombianos-en-el-exterior/santiago-arias-aseguro-nuevo-equipo-internacional-pensando-en-seleccion-colombia-y-mundial-2026-rg10",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.noticiascaracol.com/golcaracol/colombianos-en-el-exterior/santiago-arias-aseguro-nuevo-equipo-internacional-pensando-en-seleccion-colombia-y-mundial-2026-rg10",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.noticiascaracol.com/golcaracol/colombianos-en-el-exterior/santiago-arias-aseguro-nuevo-equipo-internacional-pensando-en-seleccion-colombia-y-mundial-2026-rg10",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Left Bahia as a free agent and signed with Independiente (Argentina) to Dec 2027; 2026 league appearances up to July. (Atlético Nacional reports did not materialise.)"
+ },
+ {
+  "playerId": "plr_069",
+  "revision": 1,
+  "referenceClubId": "corinthians",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "cruzeiro",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "cruzeiro",
+    "source": {
+     "provider": "editorial",
+     "url": "https://jovempan.com.br/esportes/futebol/corinthians/fagner-rescinde-com-corinthians-e-acerta-transferencia-definitiva-para-o-cruzeiro/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://jovempan.com.br/esportes/futebol/corinthians/fagner-rescinde-com-corinthians-e-acerta-transferencia-definitiva-para-o-cruzeiro/",
+    "startedYear": 2025
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://jovempan.com.br/esportes/futebol/corinthians/fagner-rescinde-com-corinthians-e-acerta-transferencia-definitiva-para-o-cruzeiro/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Rescinded with Corinthians and moved permanently to Cruzeiro on a one-season contract (on loan the previous season). The article is undated; consistent with 2026 coverage."
+ },
+ {
+  "playerId": "plr_070",
+  "revision": 1,
+  "referenceClubId": "vancouver_whitecaps",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "deportivo_saprissa",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "deportivo_saprissa",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.espn.com/soccer/player/_/id/132937",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.espn.com/soccer/player/_/id/132937",
+    "startedYear": 2025
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.espn.com/soccer/player/_/id/132937",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "ESPN and FotMob show him at Deportivo Saprissa for the 2026-27 Apertura; a data site lists a contract to June 2027."
+ },
+ {
+  "playerId": "plr_071",
+  "revision": 1,
+  "referenceClubId": "new_york_red_bulls",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "deportivo_saprissa",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "deportivo_saprissa",
+    "source": {
+     "provider": "editorial",
+     "url": "https://en.wikipedia.org/wiki/Fidel_Escobar",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fidel_Escobar"
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Fidel_Escobar",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Wikipedia and FotMob: Deportivo Saprissa; a statistics site lists a contract to 31 Dec 2026, which covers the cut-off."
+ },
+ {
+  "playerId": "plr_072",
+  "revision": 1,
+  "referenceClubId": "gent",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "servette",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "servette",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.bluewin.ch/en/dylan-bronn-back-at-servette-li.2767328",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.bluewin.ch/en/dylan-bronn-back-at-servette-li.2767328",
+    "startedYear": 2025
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.bluewin.ch/en/dylan-bronn-back-at-servette-li.2767328",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Keystone-SDA (Jul 2025): contract to 2027 at Servette; 2025-26 appearances and no transfer reported."
+ },
+ {
+  "playerId": "plr_073",
+  "revision": 1,
+  "referenceClubId": "barcelona",
+  "asOfDate": "2026-10-18",
+  "currentClubId": null,
+  "careerStatus": "RETIRED",
+  "clubHistory": [],
+  "historyCoverage": "NOT_REVIEWED",
+  "sourceUrl": "https://www.clarosports.com/futbol/adios-leyenda-andres-iniesta-confirma-su-retiro-del-futbol-con-un-emotivo-video/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Confirmed his retirement on 8 Oct 2024 after Emirates Club; reported to be taking coaching courses."
+ },
+ {
+  "playerId": "plr_074",
+  "revision": 1,
+  "referenceClubId": "chelsea",
+  "asOfDate": "2026-10-18",
+  "currentClubId": "fenerbahce",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "fenerbahce",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.africanews.com/amp/2026/02/05/ngolo-kante-completes-move-to-turkeys-fenerbahce/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.africanews.com/amp/2026/02/05/ngolo-kante-completes-move-to-turkeys-fenerbahce/",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.africanews.com/amp/2026/02/05/ngolo-kante-completes-move-to-turkeys-fenerbahce/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Joined Fenerbahçe from Al-Ittihad in Feb 2026 (contract to 2028 per reports)."
  }
 ]
