@@ -1,3 +1,4 @@
+import { HelpTip } from '../onboarding/HelpTip'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LanguageSelector } from '../../components/LanguageSelector'
@@ -58,6 +59,7 @@ export function DraftPage({ onDuel }: DraftPageProps) {
     <a href="#draft-main" className="skip-link">{t('home.skip')}</a>
     <header className="draft-header"><a className="brand" href="#draft-main" aria-label={PRODUCT.name}><span className="brand-emblem">ER</span><span>{PRODUCT.name}</span></a><div className="header-actions">{onDuel && <button className="header-mode" onClick={onDuel}>{t('duel.backToDuel')}</button>}<AudioControls /><LanguageSelector /></div></header>
     <main id="draft-main">
+      <HelpTip topic="freeDraft" />
       <section className="draft-hero"><div><p className="eyebrow"><span />{t('draft.edition')}</p><h1>{t('draft.title')}</h1><p>{t('draft.subtitle')}</p></div><button className="catalog-open" onClick={() => setSelectedSlot(firstOpenSlot)}>{t('draft.catalog')} <span>↗</span></button></section>
       <ModeSelector selected={mode} onChange={setMode} />
       {restoreIssue && <div className="draft-alert" role="alert">{t('draft.messages.invalidDraft')}<button onClick={clearRestoreIssue}>×</button></div>}

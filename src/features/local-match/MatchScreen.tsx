@@ -1,3 +1,4 @@
+import { HelpTip } from '../onboarding/HelpTip'
 import { TacticalSummary } from './TacticalSummary'
 import { audio } from '../audio/audioEngine'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -50,6 +51,7 @@ export function MatchScreen({ result, onRematch, onReturn, localName, cpuName, o
   const eventText = (item: MatchEvent) => t(`match.events.${item.type}`, { team: teamName(item.side), player: playerName(item, DRAFT_CATALOG) ?? '', out: DRAFT_CATALOG.find((candidate) => candidate.id === item.outPlayerId)?.name ?? '' })
   return <main className="match-screen" aria-live="polite">
     <section className="match-card" aria-label={t('match.versus')}>
+      <HelpTip topic="match" />
       <header className="match-heading"><p className="eyebrow"><span />{finished ? t('match.final') : t('match.playing')}</p><button className="secondary-action" onClick={onReturn}>{t('match.returnDraft')}</button></header>
       <div className="match-scoreboard"><div><strong>{teamName('local')}</strong><small>{money(result.local.spent)} · {result.local.averageRating} GRL</small><small>{t('match.globalPower', { value: result.strengths.local.global })}</small></div><div className="match-score"><span>{score.local}</span><small>{finished ? t(`match.${outcome}`) : t('match.minute', { minute: result.blocks[Math.min(blockIndex, 5)].minute })}</small><span>{score.cpu}</span></div><div><strong>{teamName('cpu')}</strong><small>{money(result.cpu.spent)} · {result.cpu.averageRating} GRL</small><small>{t('match.globalPower', { value: result.strengths.cpu.global })}</small></div></div>
       <p className="power-explanation">{t('match.powerExplanation')}</p>

@@ -1,4 +1,4 @@
-export const HELP_TOPICS = ['setup', 'coin', 'reveal', 'bidding', 'result', 'teams'] as const
+export const HELP_TOPICS = ['setup', 'coin', 'reveal', 'bidding', 'result', 'teams', 'freeDraft', 'match'] as const
 export type HelpTopic = (typeof HELP_TOPICS)[number]
 
 const TOPIC_FOR_PHASE: Readonly<Record<string, HelpTopic | undefined>> = {

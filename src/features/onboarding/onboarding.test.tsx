@@ -87,3 +87,19 @@ describe('contextual tips', () => {
     expect(screen.queryByRole('note')).toBeNull()
   })
 })
+
+describe('tip coverage', () => {
+  it('has a non-empty text for every topic in every language', async () => {
+    const { HELP_TOPICS } = await import('./helpTopics')
+    for (const language of ['es-AR', 'en', 'pt-BR'] as const) {
+      const i18n = await createI18n(language)
+      for (const topic of HELP_TOPICS) expect(i18n.t(`tips.${topic}`).length).toBeGreaterThan(10)
+    }
+  })
+  it('shows the free draft tip on the free draft page', async () => {
+    localStorage.setItem(HELP_KEY, JSON.stringify({ tutorialSeen: true, hints: true, dismissed: [] }))
+    await view(<HomePage />)
+    fireEvent.click(screen.getByRole('button', { name: 'Go to Free Draft' }))
+    expect(screen.getByRole('note')).toHaveTextContent('Free Draft')
+  })
+})
