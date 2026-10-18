@@ -1,0 +1,162 @@
+import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { LanguageSelector } from '../../components/LanguageSelector'
+import { OnlineError, type LobbyAction, type OnlineErrorCode, type RoomSnapshot } from './contracts'
+import { createOnlineGateway, invitationFromUrl, invitationUrl, readRememberedRoom, rememberRoom, type ConnectionStatus, type OnlineGateway } from './onlineGateway'
+import './online.css'
+
+const errorCode = (error: unknown): OnlineErrorCode => error instanceof OnlineError ? error.code : 'NETWORK_ERROR'
+export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () => void; readonly gateway?: OnlineGateway }) {
+  const { t, i18n } = useTranslation()
+  const [gateway] = useState(() => { try { return provided ?? createOnlineGateway() } catch { return null } })
+  const [userId, setUserId] = useState<string | null>(null)
+  const [room, setRoom] = useState<RoomSnapshot | null>(null)
+  const [name, setName] = useState('')
+  const [code, setCode] = useState(invitationFromUrl)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<OnlineErrorCode | null>(gateway ? null : 'NOT_CONFIGURED')
+  const [connection, setConnection] = useState<ConnectionStatus>('connecting')
+  const [copied, setCopied] = useState(false)
+  const [copyFailed, setCopyFailed] = useState(false)
+  const [retry, setRetry] = useState<(() => Promise<RoomSnapshot | null>) | null>(null)
+  const mounted = useRef(true)
+  const operation = useRef(false)
+  const roomId = room?.roomId
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false } }, [])
+  useEffect(() => {
+    if (!gateway) return
+    let cancelled = false
+    void (async () => {
+      try {
+        const id = await gateway.authenticate()
+        if (cancelled) return
+        const remembered = readRememberedRoom(id)
+        // An explicit invitation wins over a remembered room; joining still verifies identity.
+        if (remembered && !invitationFromUrl()) {
+          try {
+            const snapshot = await gateway.snapshot(remembered)
+            if (!cancelled) setRoom(snapshot)
+          } catch (e) {
+            if (!cancelled) {
+              setError(errorCode(e))
+              if (['NOT_ROOM_MEMBER','ROOM_EXPIRED','ROOM_NOT_FOUND'].includes(errorCode(e))) rememberRoom(id,null)
+            }
+          }
+        }
+        if (!cancelled) setUserId(id)
+      } catch (e) { if (!cancelled) setError(errorCode(e)) }
+    })()
+    return () => { cancelled = true }
+  }, [gateway])
+  useEffect(() => {
+    if (!gateway || !roomId) return
+    let cancelled = false
+    let syncing = false
+    let again = false
+    const sync = async () => {
+      if (syncing) { again = true; return }
+      syncing = true
+      do {
+        again = false
+        try {
+          const next = await gateway.snapshot(roomId)
+          if (!cancelled) {
+            setRoom(current => current?.roomId === next.roomId && current.version <= next.version ? next : current)
+            setError(current => current === 'NETWORK_ERROR' || current === 'STALE_STATE' ? null : current)
+          }
+        } catch (e) {
+          if (!cancelled) { setError(errorCode(e)); setConnection('offline') }
+        }
+      } while (again && !cancelled)
+      syncing = false
+    }
+    const resync = () => { if (!cancelled) void sync() }
+    const stop = gateway.watch(roomId, resync, status => { if (!cancelled) setConnection(status) })
+    resync()
+    const poll = window.setInterval(resync, 10000)
+    window.addEventListener('online', resync)
+    window.addEventListener('focus', resync)
+    document.addEventListener('visibilitychange', resync)
+    return () => {
+      cancelled = true; stop(); window.clearInterval(poll)
+      window.removeEventListener('online', resync); window.removeEventListener('focus', resync)
+      document.removeEventListener('visibilitychange', resync)
+    }
+  }, [gateway, roomId])
+
+  async function run(action: () => Promise<RoomSnapshot | null>) {
+    if (operation.current || !gateway || !userId) return
+    operation.current = true; setBusy(true); setError(null); setRetry(null)
+    try {
+      const next = await action()
+      if (!mounted.current) return
+      setRoom(current => next && current?.roomId === next.roomId && current.version > next.version ? current : next)
+      rememberRoom(userId,next?.roomId ?? null)
+      if (!next) {
+        const url = new URL(window.location.href); url.searchParams.delete('online'); window.history.replaceState(null,'',url)
+        setCode('')
+      }
+    } catch (e) {
+      if (!mounted.current) return
+      const issue = errorCode(e); setError(issue)
+      // Preserve the exact actionId, payload and expectedVersion on uncertain transport results.
+      if (issue === 'NETWORK_ERROR') setRetry(() => action)
+      if (issue === 'STALE_STATE' && room) {
+        try {
+          const latest = await gateway.snapshot(room.roomId)
+          if (mounted.current) setRoom(current => current?.roomId === latest.roomId && current.version <= latest.version ? latest : current)
+        } catch { /* Keep the visible error; background recovery also retries. */ }
+      }
+    } finally { operation.current = false; if (mounted.current) setBusy(false) }
+  }
+  function send(action: LobbyAction) {
+    if (!room || !gateway) return
+    const command = { ...action, roomId: room.roomId, expectedVersion: room.version, actionId: crypto.randomUUID() }
+    void run(() => gateway.command(command))
+  }
+  async function copy() {
+    if (!room) return
+    try { await navigator.clipboard.writeText(invitationUrl(room.inviteCode)); setCopied(true); setCopyFailed(false) }
+    catch { setCopied(false); setCopyFailed(true) }
+  }
+  const own = room?.members.find(member => member.userId === userId)
+  const lobbyOpen = room?.status === 'WAITING' || room?.status === 'READY'
+  return <div className="draft-app online-shell">
+    <header className="draft-header"><span className="brand">Reclutador</span><LanguageSelector /></header>
+    <main className="online-main">
+      <button className="secondary-action" onClick={onBack} disabled={busy}>{t('online.back')}</button>
+      <p className="eyebrow">{t('online.eyebrow')}</p><h1>{t('online.title')}</h1>
+      <p>{t('online.sessionNotice')}</p>
+      {error && <p role="alert">{t('online.errors.' + error)}{error === 'NOT_CONFIGURED' && import.meta.env.DEV && <><br />{t('online.configHelp')}</>}</p>}
+      {retry && <button className="primary-action" disabled={busy} onClick={() => { void run(retry) }}>{t('online.retry')}</button>}
+      {!room ? <section className="online-card" aria-label={t('online.setup')}>
+        <label htmlFor="online-name">{t('online.name')}</label>
+        <input id="online-name" autoComplete="nickname" value={name} onChange={e => setName(e.target.value)} />
+        <p>{t('online.classic')}</p><p>{t('online.scope')}</p>
+        <button className="primary-action" disabled={!gateway || !userId || busy || !!retry} onClick={() => { const id = crypto.randomUUID(); void run(() => gateway!.create(name,id)) }}>{t('online.create')}</button>
+        <label htmlFor="online-code">{t('online.code')}</label>
+        <input id="online-code" autoComplete="off" value={code} onChange={e => setCode(e.target.value.trim())} />
+        <button className="secondary-action" disabled={!gateway || !userId || busy || !!retry} onClick={() => { const id = crypto.randomUUID(); void run(() => gateway!.join(code,name,id)) }}>{t('online.join')}</button>
+      </section> : <section className="online-card" aria-label={t('online.lobby')}>
+        <p role="status">{t('online.connection.' + connection)}</p><p>{t('online.peerNotice')}</p>
+        <h2>{t('online.lobby')}</h2><p>{t('online.classic')}</p>
+        <p>{t('online.expires', { date: new Date(room.expiresAt).toLocaleString(i18n.language) })}</p>
+        <ul className="online-members">{([1,2] as const).map(seat => {
+          const member = room.members.find(m => m.seat === seat)
+          return <li key={seat}><span>{t(seat === 1 ? 'online.host' : 'online.guest')}</span><strong>{member?.name ?? t('online.emptySeat')}</strong><span>{t(member?.ready ? 'online.ready' : 'online.waiting')}</span></li>
+        })}</ul>
+        <label htmlFor="online-share">{t('online.shareLink')}</label><input id="online-share" value={invitationUrl(room.inviteCode)} readOnly onFocus={e => e.target.select()} />
+        <button className="secondary-action" onClick={() => { void copy() }}>{t('online.copy')}</button>
+        {copied && <p role="status">{t('online.copied')}</p>}{copyFailed && <p role="alert">{t('online.copyFailed')}</p>}
+        {lobbyOpen && <div className="duel-actions">
+          <button className="primary-action" disabled={busy || !!retry || !own} onClick={() => send({actionType:'SET_READY',payload:{ready:!own?.ready}})}>{t(own?.ready ? 'online.unready' : 'online.markReady')}</button>
+          {room.hostId === userId && <button className="primary-action" disabled={busy || !!retry || room.status !== 'READY'} onClick={() => send({actionType:'START',payload:{}})}>{t('online.start')}</button>}
+          <button className="secondary-action" disabled={busy || !!retry} onClick={() => send({actionType:'LEAVE',payload:{}})}>{t('online.leave')}</button>
+        </div>}
+        {room.status === 'IN_PROGRESS' && <p role="status">{t('online.started')}</p>}
+        {room.status === 'CANCELLED' && <><p role="status">{t('online.cancelled')}</p><button className="secondary-action" onClick={() => { setRoom(null); rememberRoom(userId!,null) }}>{t('online.dismiss')}</button></>}
+      </section>}
+      {busy && <p role="status">{t('online.saving')}</p>}
+    </main>
+  </div>
+}

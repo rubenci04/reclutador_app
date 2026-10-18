@@ -61,6 +61,12 @@ Zustand persiste exclusivamente el draft. El partido se calcula en un módulo pu
 
 Consultar [ROADMAP](docs/ROADMAP.md), [tablero](docs/TASK_BOARD.md), [pruebas](docs/TEST_PLAN.md), las [reglas de subasta](docs/decisions/ADR-0008.md), la [política de modalidades y fuentes](docs/decisions/ADR-0006.md), la [estrategia de miniaturas](docs/research/PLAYER_THUMBNAIL_SOURCES.md) y la [evaluación de fuentes](docs/research/FOOTBALL_DATA_SOURCES.md). Resultados reales de CODEX-001 en docs/qa/CODEX-001.md.
 
+## Versus Online — CODEX-006
+
+Fundación Supabase y lobby preparados, con pruebas SQL ejecutadas localmente. **Integración real pendiente**: no hay proyecto configurado ni E2E con dos identidades. El menú conserva todos los modos locales y agrega Versus Online; sin configuración muestra un aviso. Con backend configurado permite crear/unirse por invitación, marcar listo y pasar al estado inicial de sala, pero todavía no resuelve moneda, subastas ni partido online.
+
+Copiar `.env.example` a `.env.local` y completar URL y clave pública publishable moderna; habilitar Auth anónima, aplicar en orden las dos migraciones de `supabase/migrations` y configurar canales Realtime privados. Nunca agregar claves secret/service-role. Configuración, comprobaciones y limitaciones detalladas en [QA de lobby](docs/qa/CODEX-006B.md) y [ADR-0011](docs/decisions/ADR-0011.md). Perder los datos del navegador puede perder la identidad anónima. Dos pestañas del mismo perfil no representan dos participantes.
+
 
 ## CODEX-005C
 

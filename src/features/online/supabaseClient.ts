@@ -19,16 +19,18 @@ export function getOnlineClient(): SupabaseClient {
   return client
 }
 // Deduplicate anonymous sign-in even when React StrictMode mounts twice.
-let identity: Promise<string> | undefined
+const identities = new WeakMap<SupabaseClient, Promise<string>>()
 export function ensureIdentity(supabase: SupabaseClient): Promise<string> {
-  if (identity) return identity
-  identity = (async () => {
+  const pending = identities.get(supabase)
+  if (pending) return pending
+  const identity = (async () => {
     const existing = await supabase.auth.getSession()
     if (existing.error) throw new OnlineError('AUTH_REQUIRED')
     if (existing.data.session) return existing.data.session.user.id
     const result = await supabase.auth.signInAnonymously()
     if (result.error || !result.data.user) throw new OnlineError('AUTH_REQUIRED')
     return result.data.user.id
-  })().finally(() => { identity = undefined })
+  })().finally(() => { identities.delete(supabase) })
+  identities.set(supabase, identity)
   return identity
 }

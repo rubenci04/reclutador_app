@@ -1,0 +1,10 @@
+.online-main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+.online-main h1 { font-size: clamp(2rem, 7vw, 3.4rem); font-weight: 900; }
+.online-main p { margin: 16px 0; line-height: 1.6; overflow-wrap: anywhere; }
+.online-card { display: grid; gap: 14px; padding: clamp(16px, 4vw, 32px); margin-top: 24px; border: 1px solid #3b5963; border-radius: 22px; background: #10242b; }
+.online-card input { width: 100%; min-width: 0; border: 1px solid #68838b; border-radius: 8px; padding: 12px; background: #08191f; color: #fff; }
+.online-members { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; padding: 0; list-style: none; }
+.online-members li { display: grid; gap: 12px; padding: 18px; border: 1px solid #4b717b; border-radius: 14px; overflow-wrap: anywhere; }
+.online-main [role=alert] { padding: 12px; background: #50251d; border-radius: 8px; }
+.online-main button { white-space: normal; }
+@media (max-width: 480px) { .online-members { grid-template-columns: 1fr; } }
