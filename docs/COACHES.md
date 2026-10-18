@@ -16,7 +16,7 @@
 - Se «sortea y se elige» (sin subasta); se puede terminar sin técnico; tabla de niveles arriba.
 
 ## Límites actuales
-- Solo hot-seat y contra CPU. El duelo online usa la configuración clásica sin técnicos; llevarlo requiere interfaz en `OnlineTeamsStage` y es parte de la siguiente tarea online.
+- Online: la sala nueva crea la partida con técnicos y cada persona contrata el suyo en la etapa de equipos (sin cambios de servidor: la configuración viaja en el estado). Las salas ya creadas conservan su configuración anterior, sin técnicos.
 - Sin descartes de técnicos (el ADR proponía 2).
 - QA visual manual NO ejecutada.
 

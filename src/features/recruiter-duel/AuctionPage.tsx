@@ -11,11 +11,12 @@ import { MatchScreen } from '../local-match/MatchScreen'
 import { isValidOrganizedLineup } from '../local-match/simulator'
 import { CPU_STRATEGIES, takeCpuTurn, type CpuStrategy } from './cpuPolicy'
 import { CoachMarket } from './CoachMarket'
+import { TeamPowerPanel } from './TeamPowerPanel'
 import { autoChooseCoach, chooseCoach, declineCoach } from './coachHiring'
 import { coachById } from '../coaches/coachCatalog'
 import { ModeSelector } from '../themed-modes/ModeSelector'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
-import { autoBuySubstitutes, buySubstitute, budgetOf, autoCompleteAll, autoCompleteStep, canAutoComplete, previewAutoComplete, beginBidding, completeDuelMatch, createRecruiterDuel, currentRound, positionProgress, auctionAvailability, nextAuctionRound, passAuction, placeBid, reorderTeamLineup, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss, startDuelMatch } from './auctionEngine'
+import { autoBuySubstitutes, buySubstitute, swapBenchWithStarter, budgetOf, autoCompleteAll, autoCompleteStep, canAutoComplete, previewAutoComplete, beginBidding, completeDuelMatch, createRecruiterDuel, currentRound, positionProgress, auctionAvailability, nextAuctionRound, passAuction, placeBid, reorderTeamLineup, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss, startDuelMatch } from './auctionEngine'
 import type { AuctionTransition, CoinSide, RecruiterDuelGame, RecruiterId } from './auctionTypes'
 import { PlayerIdentity, VisualCredits } from './PlayerIdentity'
 import { FootballCoin } from './FootballCoin'
@@ -223,6 +224,12 @@ export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps)
     if (result.ok) setGame(result.game)
     return result.ok ? null : result.error
   }
+  const benchSwap = (participant: RecruiterId, benchIndex: number, slot: FormationRole) => {
+    if (!game) return false
+    const result = swapBenchWithStarter(game, participant, benchIndex, slot)
+    if (result.ok) setGame(result.game)
+    return result.ok
+  }
   const recordBid = () => !cpuTurn && game && game.activeParticipant && apply(placeBid(game, game.activeParticipant, offer, catalog))
   const recordPass = () => !cpuTurn && game && game.activeParticipant && apply(passAuction(game, game.activeParticipant, catalog))
   const blockedMessage = (() => {
@@ -305,10 +312,11 @@ export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps)
             <p className="eyebrow"><span />{t('duel.teamsCompleted')}</p><h1>{t('duel.readyMatch')}</h1>
             <p className="stage-indicator" role="status">{t('stages.step', { current: stage, total: 3, label: t(['stages.order', 'stages.strategy', 'stages.reveal'][stage - 1]) })}</p>
             {choice && !choice.secondIsCpu && (choice.step === 'HANDOVER' || choice.step === 'SECOND') && <p className="stage-indicator" role="status">{t('stages.waitingSecond', { first: names.recruiter_one, second: names.recruiter_two })}</p>}
+            <TeamPowerPanel game={game} catalog={catalog} sides={RECRUITER_IDS} names={names} />
             <details className="lineup-recap" open={!bothReady}>
               <summary>{t('stages.showTeams')}</summary>
               <div className="team-comparison">{RECRUITER_IDS.map((participant) => <article key={participant}><h2>{names[participant]}</h2><strong>{t('duel.spent', { amount: game.teams[participant].spent })}</strong><p>{DRAFT_SLOTS.map((slot) => playerById(game.teams[participant].lineup[slot.id]!).name).join(' · ')}</p></article>)}</div>
-              {(pending ? [pending] : humans).map((participant) => <div key={participant}><LineupOrganizer locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} game={game} participant={participant} name={names[participant]} catalog={catalog} confirmed={orderingDone(participant)} onSwap={(first, second) => swapLineup(participant, first, second)} onConfirm={() => setOrderingDone(participant, true)} onEdit={() => setOrderingDone(participant, false)} /><SubstituteMarket game={game} participant={participant} name={names[participant]} catalog={catalog} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} onBuy={(playerId) => { const signed = catalog.find((player) => player.id === playerId); const result = buySubstitute(game, participant, playerId, catalog); apply(result); if (result.ok && signed) push('success', t('notices.substituteBought', { participant: names[participant], player: signed.name, price: signed.price })) }} />{game.config?.coaches && <CoachMarket game={game} participant={participant} name={names[participant]} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} onDecline={() => apply(declineCoach(game, participant))} onHire={(coachId) => { const hired = coachById(coachId); apply(chooseCoach(game, participant, coachId)); if (hired) push('success', t('coach.hired2', { coach: `${hired.name} ${hired.surname}`, price: hired.price })) }} />}</div>)}
+              {(pending ? [pending] : humans).map((participant) => <div key={participant}><LineupOrganizer locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} game={game} participant={participant} name={names[participant]} catalog={catalog} confirmed={orderingDone(participant)} onSwap={(first, second) => swapLineup(participant, first, second)} onBenchSwap={(benchIndex, slot) => benchSwap(participant, benchIndex, slot)} onConfirm={() => setOrderingDone(participant, true)} onEdit={() => setOrderingDone(participant, false)} /><SubstituteMarket game={game} participant={participant} name={names[participant]} catalog={catalog} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} onBuy={(playerId) => { const signed = catalog.find((player) => player.id === playerId); const result = buySubstitute(game, participant, playerId, catalog); apply(result); if (result.ok && signed) push('success', t('notices.substituteBought', { participant: names[participant], player: signed.name, price: signed.price })) }} />{game.config?.coaches && <CoachMarket game={game} participant={participant} name={names[participant]} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} onDecline={() => apply(declineCoach(game, participant))} onHire={(coachId) => { const hired = coachById(coachId); apply(chooseCoach(game, participant, coachId)); if (hired) push('success', t('coach.hired2', { coach: `${hired.name} ${hired.surname}`, price: hired.price })) }} />}</div>)}
               {opponentMode === 'cpu' && <p>{t('lineup.cpuKeeps')}</p>}
               {!bothReady && <p role="status">{t('lineup.waiting')}</p>}
             </details>

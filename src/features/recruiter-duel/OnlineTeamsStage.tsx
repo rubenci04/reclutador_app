@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
 import { DRAFT_SLOTS } from '../draft/draftTypes'
 import { startStrategyChoice } from '../tactics/strategyChoice'
-import { buySubstitute, reorderTeamLineup, startDuelMatch } from './auctionEngine'
+import { buySubstitute, reorderTeamLineup, startDuelMatch, swapBenchWithStarter } from './auctionEngine'
+import { chooseCoach, declineCoach } from './coachHiring'
+import { CoachMarket } from './CoachMarket'
+import { TeamPowerPanel } from './TeamPowerPanel'
 import type { RecruiterDuelGame, RecruiterId } from './auctionTypes'
 import { LineupOrganizer } from './LineupOrganizer'
 import type { OnlineDuelBinding } from './onlineBinding'
@@ -58,6 +61,13 @@ export function OnlineTeamsStage({ game, online, names, catalog }: Props) {
     online.submit((current) => { const result = reorderTeamLineup(current, mine, first, second); return result.ok ? result.game : current })
     return null
   }
+  const benchSwap = (benchIndex: number, slot: string) => {
+    const result = swapBenchWithStarter(game, mine, benchIndex, slot)
+    if (result.ok) online.submit((current) => { const next = swapBenchWithStarter(current, mine, benchIndex, slot); return next.ok ? next.game : current })
+    return result.ok
+  }
+  const hire = (coachId: string) => online.submit((current) => { const result = chooseCoach(current, mine, coachId); return result.ok ? result.game : current })
+  const decline = () => online.submit((current) => { const result = declineCoach(current, mine); return result.ok ? result.game : current })
   const buy = (playerId: string) => online.submit((current) => { const result = buySubstitute(current, mine, playerId, catalog); return result.ok ? result.game : current })
   const names11 = (side: RecruiterId) => DRAFT_SLOTS.map((slot) => catalog.find((player) => player.id === game.teams[side].lineup[slot.id])?.name ?? '—').join(' · ')
 
@@ -68,9 +78,11 @@ export function OnlineTeamsStage({ game, online, names, catalog }: Props) {
       <strong>{t('duel.spent', { amount: game.teams[side].spent })}</strong>
       {side === mine ? <p>{names11(side)}</p> : <p>{t('online.duel.rivalArranging')}</p>}
     </article>)}</div>
+    {!iChose && <TeamPowerPanel game={game} catalog={catalog} sides={[mine]} names={names} />}
     {!iChose && <>
       <LineupOrganizer game={game} participant={mine} name={names[mine]} catalog={catalog} confirmed={confirmed} locked={false}
-        onSwap={swap} onConfirm={() => setConfirmed(true)} onEdit={() => setConfirmed(false)} />
+        onSwap={swap} onBenchSwap={benchSwap} onConfirm={() => setConfirmed(true)} onEdit={() => setConfirmed(false)} />
+      {game.config?.coaches && <CoachMarket game={game} participant={mine} name={names[mine]} locked={false} onHire={hire} onDecline={decline} />}
       <SubstituteMarket game={game} participant={mine} name={names[mine]} catalog={catalog} locked={false} onBuy={buy} />
       {confirmed
         ? <StrategyChoicePanel choice={choice} chooser={names[mine]} nextChooser={names[theirs]} names={{ first: names[mine], second: names[theirs] }}

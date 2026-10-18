@@ -323,3 +323,10 @@
 @media (max-width: 600px) { .single-player-card .player-avatar { width: 104px; aspect-ratio: 3 / 4; } .player-ratings b { font-size: 1.1rem; } }
 
 .mode-upcoming{margin-top:12px}.mode-upcoming summary{cursor:pointer;font-weight:700;padding:6px 0}.mode-upcoming .mode-list{margin-top:10px}
+
+.team-power{margin:18px 0;padding:18px;border:2px solid #d5fb76;border-radius:14px;background:#16251a}.team-power h2{margin:0 0 12px;letter-spacing:.08em}
+.team-power-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.team-power-card{padding:14px;border:1px solid #ffffff2e;border-radius:12px}.team-power-card.is-best{border-color:#d5fb76;box-shadow:0 0 0 2px #d5fb7655}
+.power-global{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:6px 0 12px}.power-global span{font-size:12px;letter-spacing:.12em}.power-global strong{font-size:clamp(40px,9vw,56px);line-height:1;color:#d5fb76}
+.power-sectors{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:8px}.power-sectors li{display:grid;grid-template-columns:90px 1fr auto;align-items:center;gap:8px}.power-bar{height:8px;border-radius:6px;background:#ffffff22;overflow:hidden}.power-bar i{display:block;height:100%;background:#d5fb76}
+.bench-swap{margin:12px 0;padding:12px;border:1px dashed #ffffff44;border-radius:10px}.bench-swap-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:8px}
+@media(forced-colors:active){.team-power{border-color:CanvasText}.power-bar i{background:Highlight}}

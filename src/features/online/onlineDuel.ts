@@ -13,7 +13,7 @@ export const slimDuel = (game: RecruiterDuelGame): RecruiterDuelGame => ({ ...ga
 
 /** The host builds the deal once; the seed is random per room and stored with the state. */
 export function buildInitialDuel(names: { readonly host: string; readonly guest: string }): RecruiterDuelGame {
-  const config = { ...CLASSIC_CONFIG, names: { recruiter_one: names.host, recruiter_two: names.guest } }
+  const config = { ...CLASSIC_CONFIG, coaches: true, names: { recruiter_one: names.host, recruiter_two: names.guest } }
   const created = createRecruiterDuel(DRAFT_CATALOG, newDrawSeed(), createDrawContext(DRAFT_CATALOG, []), config)
   if (!created.ok) throw new Error(created.error)
   return slimDuel(created.game)

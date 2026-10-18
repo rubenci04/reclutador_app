@@ -353,6 +353,21 @@ export function substituteMarket(game: RecruiterDuelGame, participant: Recruiter
     .sort((a, b) => b.overall_rating - a.overall_rating || a.price - b.price || a.id.localeCompare(b.id))
 }
 
+/**
+ * Puts a substitute in the eleven in place of a starter of the same line; the starter takes his place on the bench.
+ * Money and ownership do not change. Only the eleven plays the match, so this is how a signing becomes a starter.
+ */
+export function swapBenchWithStarter(game: RecruiterDuelGame, participant: RecruiterId, benchIndex: number, slotId: string): AuctionTransition {
+  if (game.phase !== 'TEAMS_COMPLETED') return { ok: false, error: 'invalid_transition' }
+  const team = game.teams[participant]
+  const bench = benchSlots(team)[benchIndex]
+  const slot = DRAFT_SLOTS.find((candidate) => candidate.id === slotId)
+  const starterId = slot ? team.lineup[slot.id] : null
+  if (!bench?.playerId || !slot || !starterId || slot.position !== bench.position) return { ok: false, error: 'invalid_substitute' }
+  const swapped: RecruiterTeam = { ...team, lineup: { ...team.lineup, [slot.id]: bench.playerId }, bench: benchSlots(team).map((candidate, index) => index === benchIndex ? { ...candidate, playerId: starterId } : candidate) }
+  return transition(game, { teams: { ...game.teams, [participant]: swapped } })
+}
+
 export function buySubstitute(game: RecruiterDuelGame, participant: RecruiterId, playerId: string, catalog: readonly Player[]): AuctionTransition {
   if (game.phase !== 'TEAMS_COMPLETED') return { ok: false, error: 'invalid_transition' }
   const player = substituteMarket(game, participant, catalog).find((candidate) => candidate.id === playerId)

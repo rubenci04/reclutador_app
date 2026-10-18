@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import { DRAFT_CATALOG } from '../draft/catalog'
-import { auctionAvailability, beginBidding, buySubstitute, createRecruiterDuel, nextAuctionRound, passAuction, placeBid, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, rosterIds, startCoinToss, substituteMarket, substitutePool } from './auctionEngine'
+import { auctionAvailability, beginBidding, buySubstitute, createRecruiterDuel, nextAuctionRound, passAuction, placeBid, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, rosterIds, startCoinToss, substituteMarket, substitutePool, swapBenchWithStarter } from './auctionEngine'
 import type { AuctionTransition, RecruiterDuelGame } from './auctionTypes'
 import { chooseCoach, coachMarket, declineCoach } from './coachHiring'
 import { takeCpuTurn } from './cpuPolicy'
 import { CLASSIC_CONFIG } from './matchConfig'
+import { teamPower } from './teamPower'
 
 const must = (result: AuctionTransition): RecruiterDuelGame => { if (!result.ok) throw new Error(result.error); return result.game }
 
@@ -67,5 +68,34 @@ describe('substitute pool and order', () => {
     const game = play('bench-1', false)
     const broke = { ...game, teams: { ...game.teams, recruiter_two: { ...game.teams.recruiter_two, spent: 100 } } }
     expect(substituteMarket(broke, 'recruiter_one', DRAFT_CATALOG)).toEqual([])
+  })
+})
+
+describe('substitute in the eleven and team power', () => {
+  it('swaps a substitute with a starter of the same line, keeping money and ownership', () => {
+    let game = play('bench-1', false)
+    const pick = substituteMarket(game, 'recruiter_one', DRAFT_CATALOG)[0]
+    game = must(buySubstitute(game, 'recruiter_one', pick.id, DRAFT_CATALOG))
+    const team = game.teams.recruiter_one
+    const slot = Object.entries(team.lineup).find(([id]) => DRAFT_CATALOG.find((player) => player.id === team.lineup[id as keyof typeof team.lineup])?.position === pick.position)!
+    const swapped = must(swapBenchWithStarter(game, 'recruiter_one', 0, slot[0]))
+    expect(swapped.teams.recruiter_one.lineup[slot[0] as keyof typeof team.lineup]).toBe(pick.id)
+    expect(swapped.teams.recruiter_one.bench?.[0].playerId).toBe(slot[1])
+    expect(swapped.teams.recruiter_one.spent).toBe(team.spent)
+    expect(new Set(rosterIds(swapped.teams.recruiter_one)).size).toBe(rosterIds(team).length)
+    const goalkeeper = swapBenchWithStarter(game, 'recruiter_one', 0, 'GK')
+    expect(goalkeeper).toEqual({ ok: false, error: 'invalid_substitute' })
+    expect(swapBenchWithStarter(game, 'recruiter_one', 2, slot[0])).toEqual({ ok: false, error: 'invalid_substitute' })
+  })
+  it('reports the global power the match uses, including the coach', () => {
+    const game = play('bench-2', true)
+    const bare = teamPower(game, 'recruiter_one', DRAFT_CATALOG)!
+    expect(bare.coach).toBeNull(); expect(bare.total.global).toBe(bare.base.global)
+    const pick = coachMarket(game, 'recruiter_one').at(-1)!
+    const hired = teamPower(must(chooseCoach(game, 'recruiter_one', pick.id)), 'recruiter_one', DRAFT_CATALOG)!
+    expect(hired.coach?.id).toBe(pick.id)
+    expect(hired.total.attack).toBeCloseTo(hired.base.attack + hired.coachBonus.attack, 5)
+    expect(hired.total.global).toBeGreaterThan(bare.total.global)
+    expect(['S', 'A', 'B', 'C', 'D']).toContain(hired.tier)
   })
 })
