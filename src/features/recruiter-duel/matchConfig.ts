@@ -1,7 +1,7 @@
 import { DRAFT_BUDGET_MILLIONS } from '../../data/catalogRules'
 import type { Player } from '../../types/player'
 import type { Position } from '../../types/football'
-import { COACH_RESERVE } from '../coaches/coachRules'
+import { COACH_MAX_PRICE, coachReserveFor } from '../coaches/coachRules'
 
 /** Versioned configuration of one duel. The classic mode is exactly CLASSIC_CONFIG; nothing else holds a budget. */
 export const MATCH_CONFIG_VERSION = 1 as const
@@ -17,8 +17,9 @@ export interface MatchConfig {
   readonly names: Readonly<Record<ConfigRecruiter, string | null>>
   /** Three optional substitutes per team (1 DEF, 1 MED, 1 DEL): 14-player rosters and 28 cards in the auction. */
   readonly substitutes: boolean
-  /** Each team hires one coach with the money left; the auctions keep COACH_RESERVE aside for it. Absent means no coaches. */
+  /** Optional coach hiring with the remaining budget; coachReserve specifies 1–8M kept aside (legacy default 1M). */
   readonly coaches?: boolean
+  readonly coachReserve?: number
 }
 
 export const CLASSIC_CONFIG: MatchConfig = { version: MATCH_CONFIG_VERSION, budget: DRAFT_BUDGET_MILLIONS, names: { recruiter_one: null, recruiter_two: null }, substitutes: false }
@@ -51,12 +52,13 @@ export function parseMatchConfig(value: unknown): MatchConfig | null {
   const record = value as Record<string, unknown>
   const names = record.names as Record<string, unknown> | undefined
   if (record.version !== MATCH_CONFIG_VERSION || !isValidBudget(record.budget) || typeof record.substitutes !== 'boolean' || (record.coaches !== undefined && typeof record.coaches !== 'boolean') || typeof names !== 'object' || names === null) return null
+  if (record.coachReserve !== undefined && (record.coaches !== true || typeof record.coachReserve !== 'number' || !Number.isInteger(record.coachReserve) || record.coachReserve < 1 || record.coachReserve > COACH_MAX_PRICE)) return null
   const read = (key: string) => names[key] === null ? null : typeof names[key] === 'string' ? sanitizeName(names[key] as string) : undefined
   const one = read('recruiter_one'); const two = read('recruiter_two')
   if (one === undefined || two === undefined) return null
   const parsed = { recruiter_one: one, recruiter_two: two }
   if (Object.keys(nameIssues(parsed)).length) return null
-  return { version: MATCH_CONFIG_VERSION, budget: record.budget, names: parsed, substitutes: record.substitutes, ...(record.coaches ? { coaches: true } : {}) }
+  return { version: MATCH_CONFIG_VERSION, budget: record.budget, names: parsed, substitutes: record.substitutes, ...(record.coaches ? { coaches: true, ...(record.coachReserve !== undefined ? { coachReserve: record.coachReserve as number } : {}) } : {}) }
 }
 
 export const POSITIONS_ORDER: readonly Position[] = ['ARQ', 'DEF', 'MED', 'DEL']
@@ -86,7 +88,7 @@ export type Preflight =
 export function preflightMatchConfig(catalog: readonly Player[], config: MatchConfig): Preflight {
   if (!isValidBudget(config.budget)) return { ok: false, reason: 'budget_range' }
   const composition = rosterComposition(config)
-  const reserve = config.coaches ? COACH_RESERVE : 0
+  const reserve = coachReserveFor(config)
   let minimumPerTeam = 0; let minimumBoth = 0
   for (const position of POSITIONS_ORDER) {
     const prices = catalog.filter((player) => player.position === position).map((player) => player.price).sort((a, b) => a - b)
@@ -98,5 +100,5 @@ export function preflightMatchConfig(catalog: readonly Player[], config: MatchCo
 }
 
 /** Raw form state of the pre-toss screen (text as typed); `MatchConfig` is derived from it. */
-export interface SetupDraft { readonly mode: 'classic' | 'custom'; readonly nameOne: string; readonly nameTwo: string; readonly budgetText: string; readonly substitutes: boolean; readonly coaches: boolean }
-export const DEFAULT_SETUP_DRAFT: SetupDraft = { mode: 'classic', nameOne: '', nameTwo: '', budgetText: String(CLASSIC_CONFIG.budget), substitutes: false, coaches: true }
+export interface SetupDraft { readonly mode: 'classic' | 'custom'; readonly nameOne: string; readonly nameTwo: string; readonly budgetText: string; readonly substitutes: boolean; readonly coaches: boolean; readonly coachReserve?: number }
+export const DEFAULT_SETUP_DRAFT: SetupDraft = { mode: 'classic', nameOne: '', nameTwo: '', budgetText: String(CLASSIC_CONFIG.budget), substitutes: false, coaches: true, coachReserve: COACH_MAX_PRICE }

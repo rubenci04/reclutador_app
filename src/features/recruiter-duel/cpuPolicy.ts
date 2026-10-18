@@ -1,10 +1,13 @@
 import type { Player } from '../../types/player'
 import { createSeededRandom } from '../local-match/seededRandom'
-import { budgetOf, currentRound, maximumSafeBid, passAuction, placeBid, positionProgress } from './auctionEngine'
+import { auctionBudgetOf, currentRound, maximumSafeBid, passAuction, placeBid, positionProgress } from './auctionEngine'
+import { squadTier } from '../local-match/squadQuality'
 import type { AuctionTransition, RecruiterDuelGame, RecruiterTeam } from './auctionTypes'
 
 export const CPU_STRATEGIES = ['CONSERVATIVE', 'BALANCED', 'AGGRESSIVE'] as const
 export type CpuStrategy = (typeof CPU_STRATEGIES)[number]
+export const CPU_DIFFICULTIES = ['EASY', 'NORMAL', 'HARD'] as const
+export type CpuDifficulty = (typeof CPU_DIFFICULTIES)[number]
 export type CpuReason = 'position_full' | 'private_limit' | 'opportunity_cost' | 'technical_limit' | 'opening_value' | 'competitive_value'
 export interface CpuDecision { readonly action: 'bid' | 'pass'; readonly amount?: number; readonly reason: CpuReason; readonly privateMaximum: number }
 
@@ -16,8 +19,9 @@ export interface CpuPublicContext {
   readonly team: RecruiterTeam
   readonly publicCatalog: readonly Player[]
   readonly acquiredIds: readonly string[]
-  /** Budget of the game; omitted means the classic budget. */
+  /** Usable auction budget after the coach reserve; omitted means the classic 100M budget. */
   readonly budget?: number
+  readonly difficulty?: CpuDifficulty
 }
 
 const profiles = {
@@ -34,8 +38,9 @@ export function privateValuation(context: CpuPublicContext, strategy: CpuStrateg
   const profile = profiles[strategy]
   const roleAttribute = player.position === 'ARQ' || player.position === 'DEF' ? player.def_rating : player.position === 'DEL' ? player.att_rating : (player.men_rating + player.att_rating) / 2
   const quality = ((player.overall_rating - 83) * .13 + (roleAttribute - 80) * .06 + (player.phy_rating + player.men_rating - 160) * .025)
+  const difficulty = context.difficulty ?? 'NORMAL'
   const random = createSeededRandom(`${context.seed}:cpu:${strategy}:${context.roundIndex}:${player.id}`)
-  const preference = (random() - .5) * 5
+  const preference = (random() - .5) * (difficulty === 'HARD' ? 1 : difficulty === 'EASY' ? 8 : 5)
   const need = open(player.position) / positionProgress(team, player.position).capacity
   // Reserve using the published catalogue, never the unrevealed 22-player order.
   const unavailable = new Set([...context.acquiredIds, player.id])
@@ -50,7 +55,10 @@ export function privateValuation(context: CpuPublicContext, strategy: CpuStrateg
   const budgetCap = budget - team.spent - reserve
   const slotsLeft = (['ARQ', 'DEF', 'MED', 'DEL'] as const).reduce((total, position) => total + open(position), 0)
   const opportunityCap = (budget - team.spent) / Math.max(1, slotsLeft) * profile.risk + Math.max(0, quality) + 2
-  return Math.max(0, Math.floor(Math.min(budgetCap, opportunityCap, player.price + quality + profile.premium + preference + need)))
+  const availablePeers = context.publicCatalog.filter((candidate) => candidate.position === player.position && !unavailable.has(candidate.id))
+  const strongerPeers = availablePeers.filter((candidate) => candidate.overall_rating >= player.overall_rating).length
+  const scouting = difficulty === 'HARD' ? Math.max(0, quality) * .4 + (squadTier(player) === 'S+' ? 1.5 : 0) + (strongerPeers < open(player.position) ? 1 : 0) : difficulty === 'EASY' ? -1.5 : 0
+  return Math.max(0, Math.floor(Math.min(budgetCap, opportunityCap + scouting, player.price + quality + profile.premium + preference + need + scouting)))
 }
 
 export function decideCpu(context: CpuPublicContext, strategy: CpuStrategy, currentBid: number | null, technicalMaximum: number): CpuDecision {
@@ -66,12 +74,12 @@ export function decideCpu(context: CpuPublicContext, strategy: CpuStrategy, curr
 }
 
 /** No timer here. UI owns the configurable thinking pause. */
-export function takeCpuTurn(game: RecruiterDuelGame, catalog: readonly Player[], strategy: CpuStrategy): AuctionTransition {
+export function takeCpuTurn(game: RecruiterDuelGame, catalog: readonly Player[], strategy: CpuStrategy, difficulty: CpuDifficulty = 'NORMAL'): AuctionTransition {
   if (game.phase !== 'BIDDING' || game.activeParticipant !== 'recruiter_two') return { ok: false, error: 'invalid_transition' }
   const player = catalog.find((candidate) => candidate.id === currentRound(game)?.playerId)
   if (!player) return { ok: false, error: 'invalid_bid' }
-  const context: CpuPublicContext = { budget: budgetOf(game), seed: game.seed, roundIndex: game.roundIndex, player, team: game.teams.recruiter_two, publicCatalog: catalog, acquiredIds: Object.values(game.teams).flatMap((team) => Object.values(team.lineup).filter((id): id is string => id !== null)) }
+  const context: CpuPublicContext = { budget: auctionBudgetOf(game), difficulty, seed: game.seed, roundIndex: game.roundIndex, player, team: game.teams.recruiter_two, publicCatalog: catalog, acquiredIds: Object.values(game.teams).flatMap((team) => Object.values(team.lineup).filter((id): id is string => id !== null)) }
   const decision = decideCpu(context, strategy, game.currentBid?.amount ?? null, maximumSafeBid(game, 'recruiter_two', catalog))
-  const audited: RecruiterDuelGame = { ...game, record: [...game.record, { type: 'cpu_decision', round: game.roundIndex, playerId: player.id, strategy, ...decision }] }
+  const audited: RecruiterDuelGame = { ...game, record: [...game.record, { type: 'cpu_decision', round: game.roundIndex, playerId: player.id, strategy, difficulty, ...decision }] }
   return decision.action === 'bid' ? placeBid(audited, 'recruiter_two', decision.amount!, catalog) : passAuction(audited, 'recruiter_two', catalog)
 }

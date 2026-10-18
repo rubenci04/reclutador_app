@@ -1,0 +1,33 @@
+{
+  "version": "squad-quality-v1",
+  "synthetic": true,
+  "results": [
+    {
+      "name": "equal",
+      "games": 2000,
+      "wins": 576,
+      "draws": 848,
+      "losses": 576,
+      "goalsFor": 1111,
+      "goalsAgainst": 1125
+    },
+    {
+      "name": "tier_only",
+      "games": 2000,
+      "wins": 692,
+      "draws": 814,
+      "losses": 494,
+      "goalsFor": 1275,
+      "goalsAgainst": 984
+    },
+    {
+      "name": "stronger_roster_coach_tactic",
+      "games": 2000,
+      "wins": 1403,
+      "draws": 493,
+      "losses": 104,
+      "goalsFor": 2633,
+      "goalsAgainst": 326
+    }
+  ]
+}

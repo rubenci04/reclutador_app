@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { COACH_MAX_PRICE } from '../coaches/coachRules'
 import { BUDGET_LIMITS, BUDGET_PRESETS, NAME_MAX_LENGTH, isValidBudget, nameIssues, nameLength, sanitizeName, type Preflight, type SetupDraft } from './matchConfig'
 
 interface Props {
@@ -25,6 +26,7 @@ export function MatchSetupPanel({ draft, onChange, versusCpu, preflight }: Props
       </label>)}
     </div>
     <label className="setup-check"><input type="checkbox" checked={draft.coaches} onChange={(event) => set({ coaches: event.target.checked })} />{t('setup.coaches')}</label>
+    {draft.coaches && <label>{t('coach.reserveLabel')}<select value={draft.coachReserve ?? COACH_MAX_PRICE} onChange={(event) => set({ coachReserve: Number(event.target.value) })}>{Array.from({ length: COACH_MAX_PRICE }, (_, index) => index + 1).map((amount) => <option key={amount} value={amount}>{amount}M</option>)}</select><small>{t('coach.reserveHint', { amount: draft.coachReserve ?? COACH_MAX_PRICE })}</small></label>}
     {draft.mode === 'custom' && <>
       {(['one', 'two'] as const).map((side) => {
         const key = side === 'one' ? 'recruiter_one' : 'recruiter_two'; const value = side === 'one' ? draft.nameOne : draft.nameTwo; const issue = issues[key]
@@ -56,7 +58,7 @@ export function MatchSetupPanel({ draft, onChange, versusCpu, preflight }: Props
         <li>{t('setup.rules.formation')}</li>
         <li>{t(draft.mode === 'custom' && draft.substitutes ? 'setup.rules.startersBench' : 'setup.rules.starters')}</li>
         <li>{t('setup.rules.discards')}</li>
-        {draft.coaches && <li>{t('setup.rules.coaches')}</li>}
+        {draft.coaches && <li>{t('coach.reserveSummary', { amount: draft.coachReserve ?? COACH_MAX_PRICE })}</li>}
       </ul>
     </section>
   </fieldset>

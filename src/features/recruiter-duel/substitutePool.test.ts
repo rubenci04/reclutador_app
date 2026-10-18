@@ -90,11 +90,11 @@ describe('substitute in the eleven and team power', () => {
   it('reports the global power the match uses, including the coach', () => {
     const game = play('bench-2', true)
     const bare = teamPower(game, 'recruiter_one', DRAFT_CATALOG)!
-    expect(bare.coach).toBeNull(); expect(bare.total.global).toBe(bare.base.global)
+    expect(bare.coach).toBeNull(); expect(bare.total.attack).toBeCloseTo(bare.base.attack + bare.quality.bonus + bare.rosterBonus, 5)
     const pick = coachMarket(game, 'recruiter_one').at(-1)!
     const hired = teamPower(must(chooseCoach(game, 'recruiter_one', pick.id)), 'recruiter_one', DRAFT_CATALOG)!
     expect(hired.coach?.id).toBe(pick.id)
-    expect(hired.total.attack).toBeCloseTo(hired.base.attack + hired.coachBonus.attack, 5)
+    expect(hired.total.attack).toBeCloseTo(hired.base.attack + hired.quality.bonus + hired.rosterBonus + hired.coachBonus.attack, 5)
     expect(hired.total.global).toBeGreaterThan(bare.total.global)
     expect(['S', 'A', 'B', 'C', 'D']).toContain(hired.tier)
   })

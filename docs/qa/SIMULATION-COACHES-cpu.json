@@ -1,0 +1,115 @@
+{
+  "games": 270,
+  "coachReserve": 8,
+  "humanPolicy": "base_plus_2",
+  "report": [
+    {
+      "difficulty": "EASY",
+      "strategy": "CONSERVATIVE",
+      "games": 30,
+      "bids": 104,
+      "passes": 678,
+      "cpuPlayerSpent": 71.93333333333334,
+      "cpuMeanRating": 84,
+      "wins": 10,
+      "draws": 12,
+      "losses": 8
+    },
+    {
+      "difficulty": "EASY",
+      "strategy": "BALANCED",
+      "games": 30,
+      "bids": 302,
+      "passes": 554,
+      "cpuPlayerSpent": 75.23333333333333,
+      "cpuMeanRating": 84.03333333333333,
+      "wins": 11,
+      "draws": 11,
+      "losses": 8
+    },
+    {
+      "difficulty": "EASY",
+      "strategy": "AGGRESSIVE",
+      "games": 30,
+      "bids": 482,
+      "passes": 402,
+      "cpuPlayerSpent": 84.73333333333333,
+      "cpuMeanRating": 83.83333333333333,
+      "wins": 10,
+      "draws": 13,
+      "losses": 7
+    },
+    {
+      "difficulty": "NORMAL",
+      "strategy": "CONSERVATIVE",
+      "games": 30,
+      "bids": 202,
+      "passes": 620,
+      "cpuPlayerSpent": 72.66666666666667,
+      "cpuMeanRating": 84.06666666666666,
+      "wins": 10,
+      "draws": 13,
+      "losses": 7
+    },
+    {
+      "difficulty": "NORMAL",
+      "strategy": "BALANCED",
+      "games": 30,
+      "bids": 519,
+      "passes": 427,
+      "cpuPlayerSpent": 80.46666666666667,
+      "cpuMeanRating": 84.23333333333333,
+      "wins": 11,
+      "draws": 12,
+      "losses": 7
+    },
+    {
+      "difficulty": "NORMAL",
+      "strategy": "AGGRESSIVE",
+      "games": 30,
+      "bids": 551,
+      "passes": 336,
+      "cpuPlayerSpent": 88.16666666666667,
+      "cpuMeanRating": 83.7,
+      "wins": 10,
+      "draws": 13,
+      "losses": 7
+    },
+    {
+      "difficulty": "HARD",
+      "strategy": "CONSERVATIVE",
+      "games": 30,
+      "bids": 225,
+      "passes": 606,
+      "cpuPlayerSpent": 74.73333333333333,
+      "cpuMeanRating": 84.33333333333333,
+      "wins": 10,
+      "draws": 12,
+      "losses": 8
+    },
+    {
+      "difficulty": "HARD",
+      "strategy": "BALANCED",
+      "games": 30,
+      "bids": 555,
+      "passes": 400,
+      "cpuPlayerSpent": 85.16666666666667,
+      "cpuMeanRating": 85.13333333333334,
+      "wins": 11,
+      "draws": 13,
+      "losses": 6
+    },
+    {
+      "difficulty": "HARD",
+      "strategy": "AGGRESSIVE",
+      "games": 30,
+      "bids": 547,
+      "passes": 331,
+      "cpuPlayerSpent": 90.5,
+      "cpuMeanRating": 84,
+      "wins": 11,
+      "draws": 12,
+      "losses": 7
+    }
+  ]
+}

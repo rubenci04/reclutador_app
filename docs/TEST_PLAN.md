@@ -122,3 +122,12 @@ CPU estratégica local implementada como opción junto a hot-seat. Perfiles CONS
 - Ejecutar 60 duelos completos de cada modo argentino, verificando 22 jugadores exclusivos, presupuesto y partido simulable.
 - Iniciar ambos modos desde AuctionPage con historial independiente. Comprobar nombres/descripciones y bloqueo de futuras colecciones en es-AR/en/pt-BR.
 - Ejecutar los cuatro controles obligatorios. Revisión visual de escritorio/móvil separada de pruebas DOM.
+
+## Simulación, técnicos y CPU — 18/10/2026
+
+- Calidad por niveles: monotonía y tope de 3 puntos, S+ desde 98, sin ventajas por nacionalidad, época o precio. Sustituciones solo cuentan desde el bloque de entrada.
+- Preservar simulación clásica y resultados grabados sin la nueva capa; comprobar determinismo de nuevos resultados y fallback de datos guardados.
+- Calibrar 6.000 partidos sintéticos (igualdad, solo calidad, atributos+calidad+técnico+táctica). No interpretar la prueba sintética como balance final.
+- Completar 270 duelos reales, nueve combinaciones dificultad/perfil, 22 IDs exclusivos, gasto de jugadores hasta 92M y técnico hasta 100M total. Verificar poder del panel contra el simulador.
+- Reserva 1–8M, parser estricto, fallback antiguo 1M, nueva oferta con técnico S y otro de 1M, ofertas exclusivas y exportación de configuración.
+- Comprobar fichas de técnicos, reserva, accesibilidad y traducciones es-AR/en/pt-BR mediante DOM. La QA visual real queda registrada aparte.

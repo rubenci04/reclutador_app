@@ -4,7 +4,8 @@ import { coachEffect } from '../coaches/coachRules'
 import type { Coach } from '../coaches/coachTypes'
 import { summarizeDraft } from '../draft/draftModel'
 import type { MatchTeam } from '../local-match/matchTypes'
-import { calculateTeamStrength } from '../local-match/simulator'
+import { calculateTeamStrength, rosterAdvantage } from '../local-match/simulator'
+import { composeStrength, squadQuality, type SquadQuality } from '../local-match/squadQuality'
 import { getPlayerTier } from '../player-catalog/getPlayerTier'
 import { budgetOf } from './auctionEngine'
 import type { RecruiterDuelGame, RecruiterId } from './auctionTypes'
@@ -14,16 +15,16 @@ export interface TeamPower {
   readonly base: { readonly global: number; readonly attack: number; readonly defense: number; readonly midfield: number }
   /** What the coach adds to each sector (zeros without coach). */
   readonly coachBonus: { readonly attack: number; readonly defense: number; readonly midfield: number }
-  /** Sectors and global power the match will use: eleven + coach. */
+  /** Initial sectors: eleven + quality + comparative roster bonus + coach; tactics vary by block. */
   readonly total: { readonly global: number; readonly attack: number; readonly defense: number; readonly midfield: number }
   readonly averageRating: number
   readonly tier: string
   readonly coach: Coach | null
+  readonly quality: SquadQuality
+  readonly rosterBonus: number
 }
 
-const round1 = (value: number) => Math.round(value * 10) / 10
-
-/** Power of the current eleven of a recruiter, the same numbers the simulator uses, plus the coach. Null while the eleven is incomplete. */
+/** Initial power of the current eleven using the simulator composition. Null while the eleven is incomplete. */
 export function teamPower(game: RecruiterDuelGame, participant: RecruiterId, catalog: readonly Player[]): TeamPower | null {
   const team = game.teams[participant]
   const summary = summarizeDraft(team.lineup, catalog, budgetOf(game))
@@ -31,7 +32,11 @@ export function teamPower(game: RecruiterDuelGame, participant: RecruiterId, cat
   const match: MatchTeam = { lineup: team.lineup, players: summary.selectedPlayers, spent: summary.spent, averageRating: summary.averageRating }
   const base = calculateTeamStrength(match)
   const coach = coachById(team.coachId) ?? null
-  const bonus = coach ? coachEffect(coach) : { attack: 0, defense: 0, midfield: 0 }
-  const sectors = { attack: base.attack + bonus.attack, defense: base.defense + bonus.defense, midfield: base.midfield + bonus.midfield }
-  return { base, coachBonus: bonus, total: { ...sectors, global: round1((sectors.attack + sectors.defense + sectors.midfield) / 3) }, averageRating: summary.averageRating, tier: getPlayerTier(summary.averageRating), coach }
+  const bonus = coach ? coachEffect(coach, game.strategies?.[participant] ?? 'NEUTRAL') : { attack: 0, defense: 0, midfield: 0 }
+  const quality = squadQuality(match.players)
+  const rival = summarizeDraft(game.teams[participant === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one'].lineup, catalog, budgetOf(game))
+  const rivalStrength = rival.selectedCount === 11 && rival.averageRating !== null ? calculateTeamStrength({ lineup: game.teams[participant === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one'].lineup, players: rival.selectedPlayers, spent: rival.spent, averageRating: rival.averageRating }) : null
+  const advantage = rivalStrength ? rosterAdvantage(base.global, rivalStrength.global) : null
+  const rosterBonus = advantage?.side === 'local' ? advantage.bonus : 0
+  return { base, coachBonus: bonus, total: composeStrength(base, quality.bonus + rosterBonus, bonus), averageRating: summary.averageRating, tier: getPlayerTier(summary.averageRating), coach, quality, rosterBonus }
 }

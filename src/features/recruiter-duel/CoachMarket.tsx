@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { coachAge, coachEffect } from '../coaches/coachRules'
+import { coachAge, coachEffect, coachReserveFor, COACH_AS_OF_YEAR } from '../coaches/coachRules'
 import type { Coach } from '../coaches/coachTypes'
 import { budgetOf } from './auctionEngine'
 import type { RecruiterDuelGame, RecruiterId } from './auctionTypes'
@@ -30,11 +30,16 @@ export function CoachMarket({ game, participant, name, locked, onHire, onDecline
   if (!market.length) return null
   return <section className="coach-market" aria-label={t('coach.title', { name })}>
     <h3>{t('coach.title', { name })}</h3>
-    <p className="market-left">{t('coach.left', { amount: left, count: coachOffers(game.seed)[participant].length })}</p>
+    <p className="market-left">{t('coach.left', { amount: left, count: coachOffers(game.seed, coachReserveFor(game.config))[participant].length })}</p>
     {locked ? <p>{t('coach.closed')}</p> : <>
-      <div className="market-options">{market.map((coach) => <button key={coach.id} className="secondary-action" onClick={() => onHire(coach.id)}>
-        {t('coach.option', { coach: label(coach), age: coach.deathYear ? `${coach.birthYear}–${coach.deathYear}` : t('coach.age', { age: coachAge(coach) }), team: coach.team, tier: coach.tier, focus: t(`coach.focus.${coach.focus}`), price: coach.price })}
+      <div className="market-options">{market.map((coach) => <button key={coach.id} className="secondary-action coach-card" onClick={() => onHire(coach.id)}>
+        <strong>{label(coach)}</strong>
+        <span>{t(`coach.status.${coach.status}`)} · {coach.deathYear ? t('coach.lifespan', { birth: coach.birthYear, death: coach.deathYear, age: coachAge(coach) }) : t('coach.referenceAge', { year: COACH_AS_OF_YEAR, age: coachAge(coach) })}</span>
+        <span>{t(coach.teamKind === 'NATIONAL' ? 'coach.referenceNational' : 'coach.referenceClub', { team: coach.team })}</span>
+        <span>{t('coach.cardLevel', { tier: coach.tier, focus: t(`coach.focus.${coach.focus}`), price: coach.price })}</span>
+        <small>{t('coach.cardEffect', effectText(coach))}</small>
       </button>)}</div>
+      <p className="market-hint">{t('coach.affinityHint')}</p>
       <button className="secondary-action" onClick={onDecline}>{t('coach.decline')}</button>
       <p className="market-hint">{t('coach.hint')}</p>
     </>}

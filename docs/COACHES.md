@@ -22,3 +22,13 @@
 
 ## Orden al terminar las subastas
 1. Once titulares. 2. Técnico (contratar o «Sin técnico»). 3. Suplentes con el saldo que queda: hasta 3, uno por línea (DEF, MED, DEL), del grupo de descartados de la partida y, si faltan, extras sorteados del mismo catálogo (3 por línea como máximo en el grupo); solo mientras ambos reclutadores conserven dinero.
+
+## Revisión de simulación y mercado — 18/10/2026
+
+Actualiza las reglas anteriores sin borrar su historia:
+- Continúan 100 técnicos: 70 actuales y 30 leyendas, con 54 argentinos. El catálogo ya estaba implementado; se corrigieron once fichas parcialmente con fuentes (research/COACH_REVIEW.md). La verificación completa de equipos y biografías sigue pendiente.
+- Nuevas partidas: reserva elegible de 1 a 8M, por defecto 8M, que forma parte de MatchConfig y del contexto exportado. Configuraciones antiguas sin coachReserve conservan 1M; sin técnicos, 0M. Online nuevo usa 8M; las salas existentes conservan su configuración.
+- Precios intactos: D 1M, C 2M, B 3M, A 5M, S 8M. Al reservar 8M cada oferta de seis incluye un técnico S y otro de 1M; doce IDs distintos entre ambos participantes. Con menos reserva se conserva el sorteo anterior, sin prometer un S.
+- La contratación usa el saldo real tras el once, antes de los suplentes. El sobrante sigue disponible; se puede rechazar el técnico.
+- Afinidad: foco ATTACK con WIDE_PLAY/COUNTER_ATTACK, DEFENSE con LOW_BLOCK, MIDFIELD con MIDFIELD_CONTROL/HIGH_PRESS: bonus base ×1,15; BALANCED con cualquier táctica no neutral: ×1,05. Máximo 3 puntos por sector. NEUTRAL conserva el bonus previo. La afinidad se calcula al revelar la táctica y se guarda en el resultado.
+- Cartas con nombre/apellido, actual/leyenda, edad aproximada o años de vida, club/selección de referencia, nivel, foco, precio y bonus base. Todos los textos en es-AR/en/pt-BR.

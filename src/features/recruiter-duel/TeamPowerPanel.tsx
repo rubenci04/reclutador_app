@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
 import type { RecruiterDuelGame, RecruiterId } from './auctionTypes'
 import { teamPower } from './teamPower'
+import { SQUAD_TIERS } from '../local-match/squadQuality'
 
 interface Props {
   readonly game: RecruiterDuelGame
@@ -25,7 +26,9 @@ export function TeamPowerPanel({ game, catalog, sides, names }: Props) {
       <p className="power-global" aria-label={t('power.globalLabel', { value: power.total.global.toFixed(1) })}><span>{t('power.global')}</span><strong>{power.total.global.toFixed(1)}</strong></p>
       <ul className="power-sectors">{SECTORS.map((sector) => <li key={sector}><span>{t(`power.${sector}`)}</span><div className="power-bar" aria-hidden="true"><i style={{ width: `${Math.min(100, power.total[sector])}%` }} /></div><b>{Math.round(power.total[sector])}{power.coachBonus[sector] > 0 && <small> (+{power.coachBonus[sector].toFixed(1)})</small>}</b></li>)}</ul>
       <p>{t('power.level', { tier: power.tier, rating: power.averageRating.toFixed(1) })}</p>
+      <p>{t('power.composition', { counts: SQUAD_TIERS.map((tier) => `${tier}: ${power.quality.counts[tier]}`).join(' · '), bonus: power.quality.bonus.toFixed(2) })}</p>
+      <p>{t('power.rosterBonus', { bonus: power.rosterBonus.toFixed(1) })}</p>
       <p>{power.coach ? t('power.coach', { coach: `${power.coach.name} ${power.coach.surname}`, tier: power.coach.tier }) : t('power.noCoach')}</p>
-    </article>)}</div>
+    </article>)}</div><p>{t('power.contextNote')}</p>
   </section>
 }

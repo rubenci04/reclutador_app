@@ -71,3 +71,7 @@ Copiar `.env.example` a `.env.local` y completar URL y clave pública publishabl
 ## CODEX-005C
 
 CPU estratégica local implementada como opción junto a hot-seat. Perfiles CONSERVATIVE/BALANCED/AGGRESSIVE, valoraciones privadas fijas por ronda, registro de decisiones y asignaciones obligatorias diferenciadas. Banderas locales MIT y piloto de una foto verificada con créditos. Preparación de 200 nuevas identidades argentinas: 0/200 creadas; cuatro lotes ARG-B01..04, namespace independiente. Ver [ADR-0009](docs/decisions/ADR-0009.md), docs/ARGENTINA_COLLECTION.md y docs/qa/CODEX-005C.md.
+
+## Simulación y técnicos — revisión 18/10/2026
+
+Los duelos incorporan calidad del once por niveles S+/S/A/B/C/D, bonus de plantel, táctica y técnico. El poder efectivo mostrado incluye los aportes aplicados por bloque. Los 100 técnicos existentes (70 actuales, 30 leyendas, 54 argentinos) tienen cartas de referencia, precios 1–8M y afinidad táctica. Las nuevas partidas reservan 8M por defecto, elegibles entre 1 y 8M; la CPU de subastas permite dificultad fácil/normal/difícil además de su perfil de agresividad. Detalle, compatibilidad y límites de datos: docs/decisions/ADR-0013.md y docs/COACHES.md.

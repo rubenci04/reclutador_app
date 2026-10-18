@@ -1,5 +1,5 @@
 import { DRAFT_BUDGET_MILLIONS } from '../../data/catalogRules'
-import { COACH_RESERVE, coachEffect } from '../coaches/coachRules'
+import { coachReserveFor, coachEffect } from '../coaches/coachRules'
 import { coachById } from '../coaches/coachCatalog'
 import type { Player } from '../../types/player'
 import { createEmptyLineup, summarizeDraft } from '../draft/draftModel'
@@ -18,7 +18,7 @@ import type { AuctionActionError, AuctionCreation, AuctionRound, AuctionTransiti
 /** The one source of the budget of a game: its configuration, or the classic value for games without one. */
 export const budgetOf = (game: Pick<RecruiterDuelGame, 'config'>) => game.config?.budget ?? DRAFT_BUDGET_MILLIONS
 /** Budget the auctions may use: what is left after the money kept aside for the coach. */
-export const auctionBudgetOf = (game: Pick<RecruiterDuelGame, 'config'>) => budgetOf(game) - (game.config?.coaches ? COACH_RESERVE : 0)
+export const auctionBudgetOf = (game: Pick<RecruiterDuelGame, 'config'>) => budgetOf(game) - coachReserveFor(game.config)
 const FIRST: RecruiterId = 'recruiter_one'
 const SECOND: RecruiterId = 'recruiter_two'
 const POSITIONS = ['ARQ', 'DEF', 'MED', 'DEL'] as const
@@ -114,7 +114,7 @@ function createRounds(catalog: readonly Player[], seed: string, context: DrawCon
   }
   shaveToShare(selected, catalog, Math.floor(baseShare * 2 * config.budget), random)
   const ordered = shuffleSeeded(selected, random)
-  return canFinishRounds(ordered, 0, { recruiter_one: emptyTeam(config), recruiter_two: emptyTeam(config) }, playerMap(catalog), config.budget - (config.coaches ? COACH_RESERVE : 0)) ? ordered : null
+  return canFinishRounds(ordered, 0, { recruiter_one: emptyTeam(config), recruiter_two: emptyTeam(config) }, playerMap(catalog), config.budget - coachReserveFor(config)) ? ordered : null
 }
 
 /** Builds the unique cards of the duel: 22 in the classic mode (2 ARQ, 8 DEF, 6 MED, 6 DEL), 28 with substitutes. */
@@ -310,7 +310,7 @@ export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player
   const stored: Record<RecruiterId, StrategyId> = { recruiter_one: chosen.recruiter_one, recruiter_two: chosen.recruiter_two }
   const benchIds = (participant: RecruiterId) => benchSlots(game.teams[participant]).flatMap((slot) => slot.playerId ? [slot.playerId] : [])
   const benches = { local: benchIds(FIRST), cpu: benchIds(SECOND) }
-  const coachFor = (participant: RecruiterId) => { const coach = coachById(game.teams[participant].coachId); return coach ? { id: coach.id, ...coachEffect(coach) } : null }
+  const coachFor = (participant: RecruiterId) => { const coach = coachById(game.teams[participant].coachId); return coach ? { id: coach.id, ...coachEffect(coach, stored[participant]) } : null }
   const coaches = { local: coachFor(FIRST), cpu: coachFor(SECOND) }
   const matchResult = simulateMatch({ localLineup: game.teams[FIRST].lineup, cpuLineup: game.teams[SECOND].lineup, catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match`, rosterBonus: true, ...(game.config ? { budget: game.config.budget } : {}), ...(benches.local.length || benches.cpu.length ? { benches } : {}), ...(coaches.local || coaches.cpu ? { coaches } : {}), tactics: { version: TACTICS_VERSION, local: stored.recruiter_one, cpu: stored.recruiter_two } })
   return transition(game, { phase: 'SIMULATING', matchResult, strategies: stored })

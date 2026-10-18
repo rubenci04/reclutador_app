@@ -38,7 +38,7 @@ export type AuctionRecord =
   | { readonly type: 'bid'; readonly round: number; readonly participant: RecruiterId; readonly amount: number }
   | { readonly type: 'pass'; readonly round: number; readonly participant: RecruiterId }
   | { readonly type: 'award'; readonly round: number; readonly winner: RecruiterId; readonly playerId: string; readonly price: number; readonly reason: AwardReason }
-  | { readonly type: 'cpu_decision'; readonly round: number; readonly playerId: string; readonly action: 'bid' | 'pass'; readonly amount?: number; readonly reason: string; readonly strategy: 'CONSERVATIVE' | 'BALANCED' | 'AGGRESSIVE'; readonly privateMaximum: number }
+  | { readonly type: 'cpu_decision'; readonly difficulty?: 'EASY' | 'NORMAL' | 'HARD'; readonly round: number; readonly playerId: string; readonly action: 'bid' | 'pass'; readonly amount?: number; readonly reason: string; readonly strategy: 'CONSERVATIVE' | 'BALANCED' | 'AGGRESSIVE'; readonly privateMaximum: number }
 
 export interface RoundAward {
   readonly reason: AwardReason

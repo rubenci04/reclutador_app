@@ -69,3 +69,7 @@ C2 incorporó la capa táctica pura (`tactics-v1`) sobre `local-match-v2` con se
 ## Categorías por ámbito — 18/10/2026
 
 Definidas las parejas actuales/leyendas para Global, Argentina, Brasil, España, Inglaterra, Sudamérica y Europa. Argentina · leyendas habilitada con 188 registros existentes; los dos modos originales se conservan. Las restantes nuevas colecciones siguen pendientes de datos y/o validación de partida. Versus entre categorías distintas no implementado. Detalle y criterios: ADR-0012 y qa/CATEGORIES-LEGENDS.md.
+
+## Simulación, técnicos y dificultad CPU — 18/10/2026
+
+Implementación del pedido del usuario: capa squad-quality-v1 para duelos, poder efectivo por bloque, afinidad técnico/táctica, reserva elegible 1–8M (8M inicial) y dificultad CPU independiente de agresividad. Se conservan los 100 técnicos existentes; auditoría completa de sus biografías y playtest de balance pendientes. ADR-0013 y QA SIMULATION-COACHES.

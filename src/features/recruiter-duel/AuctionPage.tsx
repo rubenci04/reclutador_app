@@ -9,10 +9,11 @@ import { catalogForMode, PLAYABLE_MODES } from '../themed-modes/modeCatalog'
 import { DRAFT_SLOTS } from '../draft/draftTypes'
 import { MatchScreen } from '../local-match/MatchScreen'
 import { isValidOrganizedLineup } from '../local-match/simulator'
-import { CPU_STRATEGIES, takeCpuTurn, type CpuStrategy } from './cpuPolicy'
+import { CPU_STRATEGIES, CPU_DIFFICULTIES, takeCpuTurn, type CpuStrategy, type CpuDifficulty } from './cpuPolicy'
 import { CoachMarket } from './CoachMarket'
 import { TeamPowerPanel } from './TeamPowerPanel'
 import { autoChooseCoach, chooseCoach, declineCoach } from './coachHiring'
+import { COACH_MAX_PRICE } from '../coaches/coachRules'
 import { coachById } from '../coaches/coachCatalog'
 import { ModeSelector } from '../themed-modes/ModeSelector'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
@@ -58,6 +59,7 @@ export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps)
   const { t } = useTranslation()
   const [opponentMode, setOpponentMode] = useState<'hotseat' | 'cpu'>('hotseat')
   const [strategy, setStrategy] = useState<CpuStrategy>('BALANCED')
+  const [difficulty, setDifficulty] = useState<CpuDifficulty>('NORMAL')
   const [pauseMs, setPauseMs] = useState(650)
   const [replayText, setReplayText] = useState('')
   const [storageWarning, setStorageWarning] = useState(false)
@@ -91,9 +93,9 @@ export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps)
     setGame(next); setError(null)
   }
   const customBudget = Number(setup.budgetText)
-  const customConfig: MatchConfig = { version: MATCH_CONFIG_VERSION, budget: customBudget, names: { recruiter_one: sanitizeName(setup.nameOne), recruiter_two: sanitizeName(setup.nameTwo) }, substitutes: setup.substitutes, ...(setup.coaches ? { coaches: true } : {}) }
+  const customConfig: MatchConfig = { version: MATCH_CONFIG_VERSION, budget: customBudget, names: { recruiter_one: sanitizeName(setup.nameOne), recruiter_two: sanitizeName(setup.nameTwo) }, substitutes: setup.substitutes, ...(setup.coaches ? { coaches: true, coachReserve: setup.coachReserve ?? COACH_MAX_PRICE } : {}) }
   const setupPreflight = isValidBudget(customBudget) ? preflightMatchConfig(catalog, customConfig) : { ok: false as const, reason: 'budget_range' as const }
-  const config = setup.mode === 'custom' ? customConfig : setup.coaches ? { ...CLASSIC_CONFIG, coaches: true } : CLASSIC_CONFIG
+  const config = setup.mode === 'custom' ? customConfig : setup.coaches ? { ...CLASSIC_CONFIG, coaches: true, coachReserve: setup.coachReserve ?? COACH_MAX_PRICE } : CLASSIC_CONFIG
   const canStart = setup.mode === 'classic' || (setupPreflight.ok && Object.keys(nameIssues(customConfig.names)).length === 0)
   const start = () => {
     if (!canStart) return
@@ -166,11 +168,11 @@ export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps)
     const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
     const timer = window.setTimeout(() => setGame((current) => {
       if (!current || current.phase !== 'BIDDING' || current.activeParticipant !== 'recruiter_two') return current
-      const result = takeCpuTurn(current, catalog, strategy)
+      const result = takeCpuTurn(current, catalog, strategy, difficulty)
       return result.ok ? result.game : current
     }), reduced ? Math.min(pauseMs, 150) : pauseMs)
     return () => window.clearTimeout(timer)
-  }, [cpuTurn, game, strategy, pauseMs, catalog, setGame])
+  }, [cpuTurn, game, strategy, difficulty, pauseMs, catalog, setGame])
   const auctionHudPhase = game !== null && ['REVEAL_PLAYER', 'BIDDING', 'DISCARD_RESULT', 'ROUND_RESULT', 'NEXT_ROUND'].includes(game.phase)
   const hud = useMemo(() => game && auctionHudPhase ? buildHudModel(game, catalog) : null, [game, auctionHudPhase, catalog])
   const cpuLineup = game?.teams.recruiter_two.lineup
@@ -264,7 +266,7 @@ export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps)
   return <div className="draft-app duel-shell">
     <header className="draft-header"><a className="brand" href="#duel-main" aria-label={PRODUCT.name}><span className="brand-emblem">R</span><span>{PRODUCT.name}</span></a><AudioControls /><LanguageSelector /></header>
     <main id="duel-main" className="duel-page">
-      {!game && <section className="duel-intro"><p className="eyebrow"><span />{t('duel.eyebrow')}</p><h1>{t('duel.title')}</h1><p>{t('duel.subtitle')}</p><label>{t('cpu.opponent')}<select value={opponentMode} onChange={(event) => setOpponentMode(event.target.value as 'hotseat' | 'cpu')}><option value="hotseat">{t('cpu.hotseat')}</option><option value="cpu">{t('cpu.versus')}</option></select></label>{opponentMode === 'cpu' && <><label>{t('cpu.strategy')}<select value={strategy} onChange={(event) => setStrategy(event.target.value as CpuStrategy)}>{CPU_STRATEGIES.map((item) => <option key={item} value={item}>{t('cpu.profiles.' + item)}</option>)}</select></label><label>{t('cpu.pause')}<input type="number" min={0} max={3000} step={50} value={pauseMs} onChange={(event) => setPauseMs(Math.max(0, Math.min(3000, Number(event.target.value))))} /></label></>}<MatchSetupPanel draft={setup} onChange={setSetup} versusCpu={opponentMode === 'cpu'} preflight={setupPreflight} /><ModeSelector selected={mode} onChange={setMode} /><HistoryPanel /><details className="draw-replay"><summary>{t('draw.reproduce')}</summary><p>{t('draw.explanation')}</p><label>{t('draw.context')}<textarea value={replayText} onChange={(event) => setReplayText(event.target.value)} /></label><button className="secondary-action" onClick={reproduce}>{t('draw.reproduce')}</button></details><div className="duel-actions">{onOnline && <button className="secondary-action" onClick={onOnline}>{t('online.menu')}</button>}<button className="primary-action" disabled={!canStart} onClick={start}>{t('duel.start')}</button><button className="secondary-action" onClick={onDraftFree}>{t('duel.freeDraft')}</button></div></section>}
+      {!game && <section className="duel-intro"><p className="eyebrow"><span />{t('duel.eyebrow')}</p><h1>{t('duel.title')}</h1><p>{t('duel.subtitle')}</p><label>{t('cpu.opponent')}<select value={opponentMode} onChange={(event) => setOpponentMode(event.target.value as 'hotseat' | 'cpu')}><option value="hotseat">{t('cpu.hotseat')}</option><option value="cpu">{t('cpu.versus')}</option></select></label>{opponentMode === 'cpu' && <><label>{t('cpu.strategy')}<select value={strategy} onChange={(event) => setStrategy(event.target.value as CpuStrategy)}>{CPU_STRATEGIES.map((item) => <option key={item} value={item}>{t('cpu.profiles.' + item)}</option>)}</select></label><label>{t('cpu.difficulty')}<select value={difficulty} onChange={(event) => setDifficulty(event.target.value as CpuDifficulty)}>{CPU_DIFFICULTIES.map((item) => <option key={item} value={item}>{t('cpu.difficulties.' + item)}</option>)}</select></label><p>{t('cpu.difficultyHint')}</p><label>{t('cpu.pause')}<input type="number" min={0} max={3000} step={50} value={pauseMs} onChange={(event) => setPauseMs(Math.max(0, Math.min(3000, Number(event.target.value))))} /></label></>}<MatchSetupPanel draft={setup} onChange={setSetup} versusCpu={opponentMode === 'cpu'} preflight={setupPreflight} /><ModeSelector selected={mode} onChange={setMode} /><HistoryPanel /><details className="draw-replay"><summary>{t('draw.reproduce')}</summary><p>{t('draw.explanation')}</p><label>{t('draw.context')}<textarea value={replayText} onChange={(event) => setReplayText(event.target.value)} /></label><button className="secondary-action" onClick={reproduce}>{t('draw.reproduce')}</button></details><div className="duel-actions">{onOnline && <button className="secondary-action" onClick={onOnline}>{t('online.menu')}</button>}<button className="primary-action" disabled={!canStart} onClick={start}>{t('duel.start')}</button><button className="secondary-action" onClick={onDraftFree}>{t('duel.freeDraft')}</button></div></section>}
       {(() => { const topic = helpTopicForPhase(game?.phase); return topic && !(game && ['SIMULATING', 'MATCH_RESULT', 'DISCARD_RESULT', 'COIN_TOSS', 'NEXT_ROUND'].includes(game.phase)) ? <HelpTip topic={topic} /> : null })()}
       {online && online.connection !== 'connected' && <p className="auction-banner auction-banner-blocked" role="status">{t('online.connection.' + online.connection)}</p>}
       {game && <AbandonGame versusCpu={opponentMode === 'cpu'} names={names} onAbandon={abandon} onlySide={online?.mySide} />}

@@ -3,6 +3,7 @@ import type { Player } from '../../types/player'
 import type { DraftLineup } from '../draft/draftTypes'
 import type { StrategyId, TACTICS_VERSION } from '../tactics/strategies'
 import type { TacticalAdjustment } from '../tactics/tacticalModel'
+import type { SquadQuality, SQUAD_QUALITY_VERSION } from './squadQuality'
 
 export const MATCH_RULES_VERSION = 'local-match-v2' as const
 export const MATCH_MINUTES = [15, 30, 45, 60, 75, 90] as const
@@ -79,6 +80,8 @@ export interface MatchResult {
   readonly local: MatchTeam
   readonly cpu: MatchTeam
   readonly strengths: Readonly<Record<MatchSide, TeamStrength>>
+  /** Mean strength actually used across match blocks, including bonuses, tactics and substitutions. */
+  readonly effectiveStrengths?: Readonly<Record<MatchSide, TeamStrength>>
   readonly stats: Readonly<Record<MatchSide, MatchStats>>
   readonly blocks: readonly MatchBlock[]
   readonly score: Readonly<Record<MatchSide, number>>
@@ -86,6 +89,8 @@ export interface MatchResult {
   readonly tactics?: TacticalSummary
   /** Duels only: the side with the better global power gets a small extra in every block. Absent in classic matches. */
   readonly rosterAdvantage?: RosterAdvantage
+  /** Starting eleven counts and the mean bonus actually applied, including substitutions. */
+  readonly quality?: { readonly version: typeof SQUAD_QUALITY_VERSION; readonly initial: Readonly<Record<MatchSide, SquadQuality>>; readonly meanBonus: Readonly<Record<MatchSide, number>> }
   readonly benches?: Readonly<Record<MatchSide, readonly Player[]>>
   /** Duels with coaches: what each side's coach added to attack, defence and midfield in every block. */
   readonly coaches?: Readonly<Record<MatchSide, (CoachEffect & { readonly id: string }) | null>>

@@ -83,6 +83,7 @@ Nomenclatura: DL-FXX-CAT-NNN; FXX indica fase y CAT responsabilidad. No existía
 | DL-F04-MODE-003 | Versus entre categorías distintas con nivel equiparado | Pendiente (pedido del usuario): cada reclutador elige su categoría y el sorteo equilibra el nivel; ver ADR-0012 |
 | DL-F04-DATA-006 | Más leyendas sin foto y borrado de pendientes | Pendiente (pedido del usuario): ampliar leyendas con ficha base; quitar registros pendientes y reponerlos luego |
 | DL-F04-DATA-007 | Segunda fuente de datos además de Wikipedia | Pendiente: evaluar Wikidata (CC0, estructurado) y fuentes con licencia; registrar procedencia por campo |
+| DL-F04-BAL-003 | Simulación por niveles, técnicos y dificultad de CPU (pedido 18/10/2026) | Implementada: squad-quality-v1, poder efectivo, afinidad técnico/táctica, reserva 1–8M (8M por defecto), EASY/NORMAL/HARD; se conservan 100 técnicos (70/30, 54 ARG), correcciones biográficas parciales; playtest y auditoría completa pendientes; ver ADR-0013 y qa/SIMULATION-COACHES.md |
 | DL-F03-I18N-001 | Traducir draft, presupuesto y confirmaciones | Completa en CODEX-004A |
 | DL-F04-I18N-001 | Traducir simulación y resultados | Completa en CODEX-004B |
 | DL-F05-I18N-001 | Traducir salas, espera y errores online | Pendiente |

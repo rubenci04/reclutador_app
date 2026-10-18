@@ -1,3 +1,4 @@
+import { COACH_MAX_PRICE } from '../coaches/coachRules'
 import { DRAFT_CATALOG } from '../draft/catalog'
 import { createRecruiterDuel } from '../recruiter-duel/auctionEngine'
 import type { RecruiterDuelGame, RecruiterId } from '../recruiter-duel/auctionTypes'
@@ -13,7 +14,7 @@ export const slimDuel = (game: RecruiterDuelGame): RecruiterDuelGame => ({ ...ga
 
 /** The host builds the deal once; the seed is random per room and stored with the state. */
 export function buildInitialDuel(names: { readonly host: string; readonly guest: string }): RecruiterDuelGame {
-  const config = { ...CLASSIC_CONFIG, coaches: true, names: { recruiter_one: names.host, recruiter_two: names.guest } }
+  const config = { ...CLASSIC_CONFIG, coaches: true, coachReserve: COACH_MAX_PRICE, names: { recruiter_one: names.host, recruiter_two: names.guest } }
   const created = createRecruiterDuel(DRAFT_CATALOG, newDrawSeed(), createDrawContext(DRAFT_CATALOG, []), config)
   if (!created.ok) throw new Error(created.error)
   return slimDuel(created.game)

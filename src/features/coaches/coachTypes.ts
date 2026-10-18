@@ -10,7 +10,7 @@ export interface Coach {
   readonly birthYear: number
   /** Legends only. */
   readonly deathYear?: number
-  /** Club or national team the coach represents (reference team for legends). Proper noun: never translated. */
+  /** Reference club or national team the coach has represented; not a verified current employment claim. Proper noun: never translated. */
   readonly team: string
   readonly teamKind: 'CLUB' | 'NATIONAL'
   readonly nationality: string

@@ -6,6 +6,7 @@ import { eventInfluence } from '../tactics/eventInfluence'
 import { NEUTRAL_SELECTION, TACTICS_VERSION, parseStrategySelection, type StrategySelection } from '../tactics/strategies'
 import { ZERO_ADJUSTMENT, tacticalAdjustment, tacticalFeatures, type TacticalAdjustment } from '../tactics/tacticalModel'
 import { createSeededRandom } from './seededRandom'
+import { composeStrength, squadQuality, SQUAD_QUALITY_VERSION } from './squadQuality'
 import { MATCH_MINUTES, MATCH_RULES_VERSION, type MatchBlock, type MatchEvent, type MatchResult, type MatchSide, type MatchStats, type MatchTeam, type RosterAdvantage, type TeamStrength } from './matchTypes'
 
 export interface SimulationInput {
@@ -17,7 +18,7 @@ export interface SimulationInput {
   readonly seed: string
   /** Optional. Missing means NEUTRAL for both sides (compatibility with stored matches and earlier tests). */
   readonly tactics?: StrategySelection
-  /** Duels: gives the side with the better global power a bounded extra. Omitted keeps the classic simulation untouched. */
+  /** Duels: bounded comparative roster extra and versioned tier-quality bonus. Omitted keeps the classic simulation untouched. */
   readonly rosterBonus?: boolean
   /** Budget the elevens were built under; omitted means the classic budget. */
   readonly budget?: number
@@ -125,6 +126,9 @@ export function simulateMatch(input: SimulationInput): MatchResult {
   const adjustmentTotals: Record<MatchSide, { attack: number; defense: number; midfield: number }> = { local: { ...ZERO_ADJUSTMENT }, cpu: { ...ZERO_ADJUSTMENT } }
   const strengths = { local: sides.local.strength, cpu: sides.cpu.strength }
   const advantage = input.rosterBonus ? rosterAdvantage(strengths.local.global, strengths.cpu.global) : null
+  const quality = { local: squadQuality(local.players), cpu: squadQuality(cpu.players) }
+  const qualityTotals = { local: 0, cpu: 0 }
+  const effectiveTotals = { local: { attack: 0, defense: 0, midfield: 0 }, cpu: { attack: 0, defense: 0, midfield: 0 } }
   const extra = (key: MatchSide) => (advantage?.side === key ? advantage.bonus : 0)
   const coachExtra = (key: MatchSide, sector: 'attack' | 'defense' | 'midfield') => input.coaches?.[key]?.[sector] ?? 0
   type MutableStats = { -readonly [Key in keyof MatchStats]: MatchStats[Key] }
@@ -159,10 +163,13 @@ export function simulateMatch(input: SimulationInput): MatchResult {
       cpu: tacticalAdjustment(selection.cpu, sides.cpu.features, sides.local.features, selection.local, blockIndex),
     }
     for (const key of ['local', 'cpu'] as const) for (const sector of ['attack', 'defense', 'midfield'] as const) adjustmentTotals[key][sector] += adjustment[key][sector]
-    const effective = {
-      local: { ...sides.local.strength, attack: sides.local.strength.attack + adjustment.local.attack + extra('local') + coachExtra('local', 'attack'), defense: sides.local.strength.defense + adjustment.local.defense + extra('local') + coachExtra('local', 'defense'), midfield: sides.local.strength.midfield + adjustment.local.midfield + extra('local') + coachExtra('local', 'midfield') },
-      cpu: { ...sides.cpu.strength, attack: sides.cpu.strength.attack + adjustment.cpu.attack + extra('cpu') + coachExtra('cpu', 'attack'), defense: sides.cpu.strength.defense + adjustment.cpu.defense + extra('cpu') + coachExtra('cpu', 'defense'), midfield: sides.cpu.strength.midfield + adjustment.cpu.midfield + extra('cpu') + coachExtra('cpu', 'midfield') },
+    const strengthFor = (key: MatchSide) => {
+      const qualityBonus = input.rosterBonus ? squadQuality(sides[key].team.players).bonus : 0
+      qualityTotals[key] += qualityBonus
+      return composeStrength(sides[key].strength, extra(key) + qualityBonus, { attack: coachExtra(key, 'attack'), defense: coachExtra(key, 'defense'), midfield: coachExtra(key, 'midfield') }, adjustment[key])
     }
+    const effective = { local: strengthFor('local'), cpu: strengthFor('cpu') }
+    for (const key of ['local', 'cpu'] as const) for (const sector of ['attack', 'defense', 'midfield'] as const) effectiveTotals[key][sector] += effective[key][sector]
     const localAttackChance = initiativeChance(effective.local, effective.cpu)
     const side: MatchSide = random() < localAttackChance ? 'local' : 'cpu'
     const opponent: MatchSide = side === 'local' ? 'cpu' : 'local'
@@ -193,15 +200,21 @@ export function simulateMatch(input: SimulationInput): MatchResult {
     blocks.push({ minute, events: narrated, score: { ...score } })
   }
   // Without a change the base midfield is constant; with one it is the block average of the elevens actually on the pitch.
-  const meanMidfield = (side: MatchSide) => (sides[side].subbed ? sides[side].baseMidfield / MATCH_MINUTES.length : strengths[side].midfield) + adjustmentTotals[side].midfield / MATCH_MINUTES.length
+  const meanMidfield = (side: MatchSide) => (sides[side].subbed ? sides[side].baseMidfield / MATCH_MINUTES.length : strengths[side].midfield) + adjustmentTotals[side].midfield / MATCH_MINUTES.length + extra(side) + coachExtra(side, 'midfield') + qualityTotals[side] / MATCH_MINUTES.length
   const possessionLocal = Math.round(clamp(50 + (meanMidfield('local') - meanMidfield('cpu')) * .6 + (random() - .5) * 4, 36, 64))
   stats.local.possession = possessionLocal; stats.cpu.possession = 100 - possessionLocal
+  const meanStrength = (side: MatchSide): TeamStrength => {
+    const sectors = meanAdjustment(effectiveTotals[side])
+    return { ...sectors, global: Math.round((sectors.attack + sectors.defense + sectors.midfield) / 3 * 10) / 10 }
+  }
   return {
     catalogVersion: input.catalogVersion, rulesVersion: input.rulesVersion, seed: input.seed, local, cpu, strengths, stats, blocks,
     score, winner: score.local === score.cpu ? 'draw' : score.local > score.cpu ? 'local' : 'cpu',
+    ...(input.rosterBonus || input.coaches ? { effectiveStrengths: { local: meanStrength('local'), cpu: meanStrength('cpu') } } : {}),
     ...(benches ? { benches: { local: benches.local.map((id) => input.catalog.find((player) => player.id === id)!), cpu: benches.cpu.map((id) => input.catalog.find((player) => player.id === id)!) }, substitutions: { version: SUBSTITUTION_RULES_VERSION, events: substitutionLog } } : {}),
     ...(advantage ? { rosterAdvantage: advantage } : {}),
     ...(input.coaches && (input.coaches.local || input.coaches.cpu) ? { coaches: input.coaches } : {}),
+    ...(input.rosterBonus ? { quality: { version: SQUAD_QUALITY_VERSION, initial: quality, meanBonus: { local: Math.round(qualityTotals.local / MATCH_MINUTES.length * 100) / 100, cpu: Math.round(qualityTotals.cpu / MATCH_MINUTES.length * 100) / 100 } } } : {}),
     tactics: { version: TACTICS_VERSION, selection: { local: selection.local, cpu: selection.cpu }, adjustments: { local: meanAdjustment(adjustmentTotals.local), cpu: meanAdjustment(adjustmentTotals.cpu) } },
   }
 }

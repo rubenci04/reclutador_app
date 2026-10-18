@@ -330,3 +330,5 @@
 .power-sectors{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:8px}.power-sectors li{display:grid;grid-template-columns:90px 1fr auto;align-items:center;gap:8px}.power-bar{height:8px;border-radius:6px;background:#ffffff22;overflow:hidden}.power-bar i{display:block;height:100%;background:#d5fb76}
 .bench-swap{margin:12px 0;padding:12px;border:1px dashed #ffffff44;border-radius:10px}.bench-swap-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:8px}
 @media(forced-colors:active){.team-power{border-color:CanvasText}.power-bar i{background:Highlight}}
+
+.coach-card { display: flex; flex-direction: column; align-items: flex-start; gap: .4rem; text-align: left; min-width: 0; overflow-wrap: anywhere; }
