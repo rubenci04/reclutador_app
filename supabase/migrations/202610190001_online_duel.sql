@@ -3,6 +3,13 @@
 -- (no lost updates), the fixed seed and configuration, turn order during bidding, that nobody edits the rival's
 -- team, and that strategies stay secret until both are chosen. It does not re-run the auction rules, so this is
 -- meant for friendly games, not for ranked play.
+-- This file can be run more than once: every object is created or replaced, never duplicated.
+
+-- Room name (shown to both people) and a short code that can be typed instead of the long invitation.
+alter table public.rooms add column if not exists name text check (name is null or char_length(name) between 1 and 24);
+alter table private.room_secrets add column if not exists short_code text;
+update private.room_secrets set short_code = upper(substr(md5(random()::text || room_id::text), 1, 6)) where short_code is null;
+create unique index if not exists room_secrets_short_code_key on private.room_secrets (short_code);
 
 create or replace function public.online_snapshot(p_room_id uuid) returns jsonb
 language plpgsql security definer set search_path = '' as $$
@@ -18,7 +25,7 @@ begin
     'roomId',r.id,'hostId',r.host_id,'status',r.status,'version',r.version,
     'createdAt',r.created_at,'expiresAt',r.expires_at,'inviteCode',secret.invite_code,
     'phase',g.phase,'deadlineAt',g.deadline_at,
-    'state',g.state,
+    'state',g.state,'roomName',r.name,'shortCode',secret.short_code,
     -- Only whether each seat has chosen, never what.
     'strategyReady',jsonb_build_object(
       '1',exists(select 1 from public.participant_private p join public.room_members m using(room_id,user_id) where p.room_id=r.id and m.seat=1 and p.strategy is not null),
@@ -33,7 +40,7 @@ end;
 $$;
 
 -- Maps the engine phase to the room phase column.
-create function private.online_phase(duel_phase text) returns text language sql immutable set search_path = '' as $$
+create or replace function private.online_phase(duel_phase text) returns text language sql immutable set search_path = '' as $$
   select case duel_phase
     when 'LOBBY' then 'COIN_TOSS' when 'COIN_TOSS' then 'COIN_TOSS'
     when 'REVEAL_PLAYER' then 'AUCTION' when 'BIDDING' then 'AUCTION' when 'DISCARD_RESULT' then 'AUCTION'
@@ -43,7 +50,7 @@ create function private.online_phase(duel_phase text) returns text language sql 
     else null end
 $$;
 
-create function public.online_start_duel(p_room_id uuid, p_action_id uuid, p_expected_version integer, p_state jsonb) returns jsonb
+create or replace function public.online_start_duel(p_room_id uuid, p_action_id uuid, p_expected_version integer, p_state jsonb) returns jsonb
 language plpgsql security definer set search_path = '' as $$
 declare actor uuid := auth.uid(); r public.rooms; prior public.game_actions;
 begin
@@ -76,7 +83,7 @@ begin
 end;
 $$;
 
-create function public.online_submit_state(p_room_id uuid, p_action_id uuid, p_expected_version integer, p_state jsonb) returns jsonb
+create or replace function public.online_submit_state(p_room_id uuid, p_action_id uuid, p_expected_version integer, p_state jsonb) returns jsonb
 language plpgsql security definer set search_path = '' as $$
 declare actor uuid := auth.uid(); r public.rooms; prior public.game_actions; old jsonb; seat smallint; mine text; theirs text; next_phase text; one text; two text;
 begin
@@ -123,7 +130,7 @@ begin
 end;
 $$;
 
-create function public.online_set_strategy(p_room_id uuid, p_strategy text) returns jsonb
+create or replace function public.online_set_strategy(p_room_id uuid, p_strategy text) returns jsonb
 language plpgsql security definer set search_path = '' as $$
 declare actor uuid := auth.uid(); r public.rooms; st jsonb;
 begin
@@ -149,7 +156,7 @@ end;
 $$;
 
 -- Returns both choices only once both exist, so nobody sees the rival's pick before committing their own.
-create function public.online_reveal_strategies(p_room_id uuid) returns jsonb
+create or replace function public.online_reveal_strategies(p_room_id uuid) returns jsonb
 language plpgsql security definer set search_path = '' as $$
 declare actor uuid := auth.uid(); one text; two text;
 begin
@@ -163,7 +170,7 @@ end;
 $$;
 
 -- Giving up: the room is finished and the state records who left. The other person wins.
-create function public.online_forfeit(p_room_id uuid, p_action_id uuid) returns jsonb
+create or replace function public.online_forfeit(p_room_id uuid, p_action_id uuid) returns jsonb
 language plpgsql security definer set search_path = '' as $$
 declare actor uuid := auth.uid(); r public.rooms; prior public.game_actions; seat smallint;
 begin
@@ -196,7 +203,7 @@ grant execute on function public.online_snapshot(uuid), public.online_start_duel
   public.online_set_strategy(uuid,text), public.online_reveal_strategies(uuid), public.online_forfeit(uuid,uuid) to authenticated;
 
 -- Closing a room. The host deletes it (everything about it goes with it); a guest just leaves while nothing is being played.
-create function public.online_close_room(p_room_id uuid, p_action_id uuid) returns jsonb
+create or replace function public.online_close_room(p_room_id uuid, p_action_id uuid) returns jsonb
 language plpgsql security definer set search_path = '' as $$
 declare actor uuid := auth.uid(); r public.rooms;
 begin
@@ -218,14 +225,82 @@ end;
 $$;
 
 -- Tells whoever is still connected that the room is gone (the host deleted it).
-create function private.notify_room_closed() returns trigger
+create or replace function private.notify_room_closed() returns trigger
 language plpgsql security definer set search_path = '' as $$
 begin
   perform realtime.send(jsonb_build_object('roomId',old.id,'closed',true),'room_changed','room:' || old.id::text,true);
   return old;
 end;
 $$;
+drop trigger if exists room_closed on public.rooms;
 create trigger room_closed after delete on public.rooms for each row execute function private.notify_room_closed();
 revoke all on function private.notify_room_closed() from public, anon, authenticated;
 revoke all on function public.online_close_room(uuid,uuid) from public, anon;
 grant execute on function public.online_close_room(uuid,uuid) to authenticated;
+
+-- Creating a room: the old two-argument version is replaced by one that also takes the room name.
+drop function if exists public.online_create_room(text, uuid);
+create or replace function public.online_create_room(p_name text, p_action_id uuid, p_room_name text default null) returns jsonb
+language plpgsql security definer set search_path = '' as $$
+declare actor uuid := auth.uid(); room uuid; prior public.game_actions; code text; label text;
+begin
+  if actor is null then raise exception 'AUTH_REQUIRED'; end if;
+  if p_action_id is null then raise exception 'INVALID_ACTION'; end if;
+  perform private.checked_name(p_name);
+  label := coalesce(nullif(btrim(p_room_name), ''), null);
+  if label is not null then perform private.checked_name(label); end if;
+  perform pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(actor::text || p_action_id::text,0));
+  select * into prior from public.game_actions where actor_id=actor and action_id=p_action_id;
+  if found then
+    if prior.action_type <> 'CREATE' or prior.payload->>'name' is distinct from p_name then raise exception 'ACTION_ALREADY_PROCESSED'; end if;
+    return public.online_snapshot(prior.room_id);
+  end if;
+  insert into public.rooms(host_id, name) values(actor, label) returning id into room;
+  insert into public.room_members(room_id,user_id,seat,name) values(room,actor,1,p_name);
+  insert into public.room_settings(room_id) values(room);
+  insert into public.game_state(room_id) values(room);
+  loop
+    code := upper(substr(md5(random()::text || clock_timestamp()::text), 1, 6));
+    exit when not exists (select 1 from private.room_secrets where short_code = code);
+  end loop;
+  insert into private.room_secrets(room_id, short_code) values(room, code);
+  insert into public.game_actions(room_id,actor_id,action_id,action_type,payload,resulting_version)
+    values(room,actor,p_action_id,'CREATE',jsonb_build_object('name',p_name),0);
+  return public.online_snapshot(room);
+end;
+$$;
+
+-- Joining accepts the long invitation or the six-character room code.
+create or replace function public.online_join_room(p_code text, p_name text, p_action_id uuid) returns jsonb
+language plpgsql security definer set search_path = '' as $$
+declare actor uuid := auth.uid(); r public.rooms; prior public.game_actions; wanted text;
+begin
+  if actor is null then raise exception 'AUTH_REQUIRED'; end if;
+  if p_action_id is null or p_code is null or (p_code !~ '^[0-9a-f]{64}$' and p_code !~ '^[0-9a-fA-F]{6}$') then raise exception 'INVALID_ACTION'; end if;
+  wanted := case when length(p_code) = 6 then upper(p_code) else p_code end;
+  perform private.checked_name(p_name);
+  perform pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtextextended(actor::text || p_action_id::text,0));
+  select rooms.* into r from public.rooms rooms join private.room_secrets s on s.room_id=rooms.id
+    where s.invite_code = wanted or s.short_code = wanted for update of rooms;
+  if not found then raise exception 'ROOM_NOT_FOUND'; end if;
+  if r.expires_at <= now() then raise exception 'ROOM_EXPIRED'; end if;
+  select * into prior from public.game_actions where actor_id=actor and action_id=p_action_id;
+  if found then
+    if prior.room_id <> r.id or prior.action_type <> 'JOIN' or prior.payload <> jsonb_build_object('name',p_name) then raise exception 'ACTION_ALREADY_PROCESSED'; end if;
+    return public.online_snapshot(r.id);
+  end if;
+  if r.status in ('CANCELLED','FINISHED') then raise exception 'INVALID_PHASE'; end if;
+  if not public.is_room_member(r.id) then
+    if r.status not in ('WAITING','READY') then raise exception 'INVALID_PHASE'; end if;
+    if (select count(*) from public.room_members where room_id=r.id) >= 2 then raise exception 'ROOM_FULL'; end if;
+    insert into public.room_members(room_id,user_id,seat,name) values(r.id,actor,2,p_name);
+    update public.room_members set ready=false where room_id=r.id;
+    update public.rooms set version=version+1,status='WAITING' where id=r.id returning * into r;
+  end if;
+  insert into public.game_actions(room_id,actor_id,action_id,action_type,payload,resulting_version)
+    values(r.id,actor,p_action_id,'JOIN',jsonb_build_object('name',p_name),r.version);
+  return public.online_snapshot(r.id);
+end;
+$$;
+revoke all on function public.online_create_room(text,uuid,text), public.online_join_room(text,text,uuid) from public, anon;
+grant execute on function public.online_create_room(text,uuid,text), public.online_join_room(text,text,uuid) to authenticated;

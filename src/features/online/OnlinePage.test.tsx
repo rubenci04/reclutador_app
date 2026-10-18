@@ -61,7 +61,7 @@ describe('online lobby presentation using an explicit test adapter', () => {
     expect(await screen.findByText('Boca')).toBeInTheDocument()
     expect(screen.getByRole('button',{name:i18n.t('online.start')})).toBeDisabled()
     expect((screen.getByLabelText(i18n.t('online.shareLink')) as HTMLInputElement).value).toContain('online=')
-    expect(gateway.create).toHaveBeenCalledWith('Boca',expect.any(String))
+    expect(gateway.create).toHaveBeenCalledWith('Boca',expect.any(String),'')
   })
   it('updates the rival without reloading, tolerates skipped versions and cleans its subscription', async () => {
     const fake = fakeGateway()
@@ -99,7 +99,7 @@ describe('online lobby presentation using an explicit test adapter', () => {
     window.history.replaceState(null,'','/?online='+'b'.repeat(64))
     const fake = fakeGateway()
     await show(fake.gateway)
-    expect(screen.getByLabelText('Código de invitación')).toHaveValue('b'.repeat(64))
+    expect(screen.getByLabelText('Código o enlace de la sala')).toHaveValue('b'.repeat(64))
     await waitFor(() => expect(screen.getByRole('button',{name:'Ingresar a la sala'})).toBeEnabled())
     await userEvent.type(screen.getByLabelText('Nombre del equipo o reclutador'),'Boca')
     await userEvent.click(screen.getByRole('button',{name:'Ingresar a la sala'}))

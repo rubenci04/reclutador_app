@@ -11,3 +11,4 @@
 
 .online-steps { margin: 8px 0 12px; padding-left: 18px; line-height: 1.6; font-size: .9rem; }
 .online-hint { font-size: .8rem; color: #c4d4c0; margin: 4px 0 12px; }
+.online-code { font-size: 1.05rem; margin: 4px 0 10px; } .online-code strong { letter-spacing: .18em; font-size: 1.4rem; color: #f4dc63; }

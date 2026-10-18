@@ -176,7 +176,7 @@ describe('transitions are protected and recoverable', () => {
     click('Skip sequence')
     vi.spyOn(simulator, 'isValidOrganizedLineup').mockReturnValue(false)
     click('Confirm eleven')
-    expect(screen.getByRole('alert')).toHaveTextContent('The teams are not valid')
+    expect(screen.getAllByRole('alert').map((item) => item.textContent).join(' ')).toContain('The teams are not valid')
     click('Back to start')
     expect(button('Start duel')).not.toBeNull()
   }, 120_000)

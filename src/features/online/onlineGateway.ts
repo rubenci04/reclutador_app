@@ -5,7 +5,7 @@ import { isInviteCode, isUuid, ONLINE_ERRORS, OnlineError, parseOnlineName, pars
 export type ConnectionStatus = 'connecting' | 'connected' | 'offline'
 export interface OnlineGateway {
   authenticate(): Promise<string>
-  create(name: string, actionId: string): Promise<RoomSnapshot>
+  create(name: string, actionId: string, roomName?: string): Promise<RoomSnapshot>
   join(code: string, name: string, actionId: string): Promise<RoomSnapshot>
   snapshot(roomId: string): Promise<RoomSnapshot>
   command(command: RoomCommand): Promise<RoomSnapshot | null>
@@ -32,13 +32,14 @@ export function createOnlineGateway(client: SupabaseClient = getOnlineClient()):
   }
   return {
     authenticate: () => ensureIdentity(client),
-    async create(name, actionId) {
+    async create(name, actionId, roomName) {
       if (!isUuid(actionId)) throw new OnlineError('INVALID_ACTION')
-      return parseSnapshot(await rpc('online_create_room', { p_name: parseOnlineName(name), p_action_id: actionId }))
+      const label = roomName?.trim() ? parseOnlineName(roomName) : null
+      return parseSnapshot(await rpc('online_create_room', { p_name: parseOnlineName(name), p_action_id: actionId, p_room_name: label }))
     },
     async join(code, name, actionId) {
       if (!isInviteCode(code) || !isUuid(actionId)) throw new OnlineError('INVALID_ACTION')
-      return parseSnapshot(await rpc('online_join_room', { p_code: code, p_name: parseOnlineName(name), p_action_id: actionId }))
+      return parseSnapshot(await rpc('online_join_room', { p_code: code.length === 6 ? code.toUpperCase() : code, p_name: parseOnlineName(name), p_action_id: actionId }))
     },
     async snapshot(roomId) {
       if (!isUuid(roomId)) throw new OnlineError('INVALID_ACTION')
@@ -102,7 +103,9 @@ export function invitationUrl(code: string): string {
 /** Accepts the bare code or the whole invitation link pasted by the user. */
 export function inviteFromText(text: string): string {
   const trimmed = text.trim()
-  try { return new URL(trimmed).searchParams.get('online')?.trim() ?? trimmed } catch { return trimmed }
+  let code = trimmed
+  try { code = new URL(trimmed).searchParams.get('online')?.trim() ?? trimmed } catch { /* not a link */ }
+  return /^[0-9a-f]{6}$/i.test(code) ? code.toUpperCase() : code
 }
 export function invitationFromUrl(): string {
   return new URL(window.location.href).searchParams.get('online') ?? ''

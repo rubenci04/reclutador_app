@@ -1,13 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
 import type { AuctionRecord, RecruiterDuelGame, RecruiterId } from './auctionTypes'
+import { useToasts, type NoticeTone } from './useToasts'
 
-export type NoticeTone = 'info' | 'success' | 'warning'
-export interface Notice { readonly id: number; readonly tone: NoticeTone; readonly text: string }
-
-const VISIBLE = 3
-const LIFETIME_MS: Readonly<Record<NoticeTone, number>> = { info: 6000, success: 7000, warning: 12000 }
+export type { Notice, NoticeTone } from './useToasts'
 
 /**
  * Plain-language messages for what just happened (bids, passes, awards, discards) and for what a person cannot do and why.
@@ -18,22 +15,9 @@ export function useAuctionNotices(game: RecruiterDuelGame | null, catalog: reado
   // The caller builds the names object on every render; only the two strings matter, so keep the callbacks stable.
   const { recruiter_one: one, recruiter_two: two } = namesInput
   const names = useMemo(() => ({ recruiter_one: one, recruiter_two: two }), [one, two])
-  const [notices, setNotices] = useState<readonly Notice[]>([])
-  const counter = useRef(0)
+  const { notices, push, dismiss } = useToasts()
   const seen = useRef<{ seed: string; records: number } | null>(null)
   const warned = useRef(new Set<string>())
-  const timers = useRef(new Map<number, number>())
-
-  const dismiss = useCallback((id: number) => {
-    window.clearTimeout(timers.current.get(id)); timers.current.delete(id)
-    setNotices((current) => current.filter((notice) => notice.id !== id))
-  }, [])
-  const push = useCallback((tone: NoticeTone, text: string) => {
-    const id = ++counter.current
-    setNotices((current) => [...current.filter((notice) => notice.text !== text), { id, tone, text }].slice(-VISIBLE))
-    timers.current.set(id, window.setTimeout(() => dismiss(id), LIFETIME_MS[tone]))
-  }, [dismiss])
-  useEffect(() => { const pending = timers.current; return () => { pending.forEach((timer) => window.clearTimeout(timer)); pending.clear() } }, [])
 
   const playerName = useCallback((id: string) => catalog.find((player) => player.id === id)?.name ?? '', [catalog])
   const describe = useCallback((entry: AuctionRecord, current: RecruiterDuelGame): { tone: NoticeTone; text: string } | null => {

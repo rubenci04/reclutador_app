@@ -23,6 +23,10 @@ export interface RoomSnapshot {
   readonly members: readonly RoomMember[]
   /** The shared duel (a RecruiterDuelGame) once it started; an empty object before that. Validated by parseDuel. */
   readonly state?: unknown
+  /** Name the host gave the room, shown to both people. */
+  readonly roomName?: string | null
+  /** Six characters that can be typed instead of the long invitation. */
+  readonly shortCode?: string
   /** Which seats already picked a strategy; never what they picked. */
   readonly strategyReady?: { readonly '1': boolean; readonly '2': boolean }
 }
@@ -30,7 +34,9 @@ export type LobbyAction = { readonly actionType: 'SET_READY'; readonly payload: 
 // actorId is deliberately absent from the wire command: PostgreSQL derives it from auth.uid().
 export type RoomCommand = LobbyAction & { readonly roomId: string; readonly actionId: string; readonly expectedVersion: number }
 export const isUuid = (value: unknown): value is string => typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value)
-export const isInviteCode = (value: unknown): value is string => typeof value === 'string' && /^[0-9a-f]{64}$/.test(value)
+/** The long invitation (64 hex digits) or the six-character room code. */
+export const isInviteCode = (value: unknown): value is string => typeof value === 'string' && (/^[0-9a-f]{64}$/.test(value) || /^[0-9a-f]{6}$/i.test(value))
+const isLongInvite = (value: unknown): value is string => typeof value === 'string' && /^[0-9a-f]{64}$/.test(value)
 export function parseOnlineName(value: unknown): string {
   if (typeof value !== 'string') throw new OnlineError('INVALID_ACTION')
   const name = sanitizeName(value)
@@ -46,7 +52,7 @@ export function validateCommand(command: RoomCommand): void {
 export function parseSnapshot(value: unknown): RoomSnapshot {
   if (!value || typeof value !== 'object') throw new OnlineError('INVALID_ACTION')
   const s = value as RoomSnapshot
-  if (!isUuid(s.roomId) || !isUuid(s.hostId) || !isInviteCode(s.inviteCode) || !ROOM_STATUSES.includes(s.status) || !ONLINE_PHASES.includes(s.phase) || !Number.isSafeInteger(s.version) || s.version < 0 || !Number.isFinite(Date.parse(s.createdAt)) || !Number.isFinite(Date.parse(s.expiresAt)) || (s.deadlineAt !== null && !Number.isFinite(Date.parse(s.deadlineAt)))) throw new OnlineError('INVALID_ACTION')
+  if (!isUuid(s.roomId) || !isUuid(s.hostId) || !isLongInvite(s.inviteCode) || !ROOM_STATUSES.includes(s.status) || !ONLINE_PHASES.includes(s.phase) || !Number.isSafeInteger(s.version) || s.version < 0 || !Number.isFinite(Date.parse(s.createdAt)) || !Number.isFinite(Date.parse(s.expiresAt)) || (s.deadlineAt !== null && !Number.isFinite(Date.parse(s.deadlineAt)))) throw new OnlineError('INVALID_ACTION')
   if (!s.settings || Object.entries(CLASSIC_ONLINE).some(([key, v]) => s.settings[key as keyof typeof CLASSIC_ONLINE] !== v)) throw new OnlineError('INVALID_ACTION')
   if (!Array.isArray(s.members) || s.members.length < 1 || s.members.length > 2 || new Set(s.members.map(m => m.userId)).size !== s.members.length || new Set(s.members.map(m => m.seat)).size !== s.members.length || !s.members.some(m => m.userId === s.hostId && m.seat === 1)) throw new OnlineError('INVALID_ACTION')
   for (const member of s.members) if (!isUuid(member.userId) || ![1, 2].includes(member.seat) || typeof member.ready !== 'boolean' || parseOnlineName(member.name) !== member.name) throw new OnlineError('INVALID_ACTION')

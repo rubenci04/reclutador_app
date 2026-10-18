@@ -66,7 +66,32 @@ export function canFinishRounds(rounds: readonly AuctionRound[], fromIndex: numb
   return [...costs].some((cost) => total - cost <= rightBudget)
 }
 
-function createRounds(catalog: readonly Player[], seed: string, context: DrawContext | undefined, relaxation: number, config: MatchConfig): AuctionRound[] | null {
+/**
+ * Share of the two budgets that the base prices of the drawn cards may add up to. The rest is room to bid above the base
+ * price, so offers are not capped from the first round. Later attempts relax it; the last one only asks for feasibility.
+ */
+export const DRAW_BASE_SHARE = [0.75, 0.85, 1] as const
+
+/** Swaps expensive cards (more likely the dearer they are) for cheaper unused players of the same position until the share is met. */
+function shaveToShare(selected: AuctionRound[], catalog: readonly Player[], cap: number, random: () => number) {
+  const price = new Map(catalog.map((player) => [player.id, player.price] as const))
+  const chosen = new Set(selected.map((round) => round.playerId))
+  let total = selected.reduce((sum, round) => sum + price.get(round.playerId)!, 0)
+  for (let guard = 0; total > cap && guard < 300; guard++) {
+    const weights = selected.map((round) => price.get(round.playerId)! ** 2)
+    let ticket = random() * weights.reduce((sum, weight) => sum + weight, 0); let index = 0
+    while (index < weights.length - 1 && ticket >= weights[index]) { ticket -= weights[index]; index++ }
+    const round = selected[index]; const cost = price.get(round.playerId)!
+    const cheaper = catalog.filter((player) => player.position === round.position && !chosen.has(player.id) && player.price < cost).sort((a, b) => a.id.localeCompare(b.id))
+    if (!cheaper.length) continue
+    const pick = cheaper[Math.floor(random() * cheaper.length)]
+    chosen.delete(round.playerId); chosen.add(pick.id)
+    selected[index] = { position: round.position, playerId: pick.id }
+    total += pick.price - cost
+  }
+}
+
+function createRounds(catalog: readonly Player[], seed: string, context: DrawContext | undefined, relaxation: number, config: MatchConfig, baseShare: number): AuctionRound[] | null {
   const random = createSeededRandom(`${seed}:pool`)
   const composition = rosterComposition(config)
   const required = { ARQ: composition.ARQ * 2, DEF: composition.DEF * 2, MED: composition.MED * 2, DEL: composition.DEL * 2 } as const
@@ -83,6 +108,7 @@ function createRounds(catalog: readonly Player[], seed: string, context: DrawCon
     if (options.length !== required[position]) return null
     selected.push(...options.map((candidate) => ({ position, playerId: candidate.id })))
   }
+  shaveToShare(selected, catalog, Math.floor(baseShare * 2 * config.budget), random)
   const ordered = shuffleSeeded(selected, random)
   return canFinishRounds(ordered, 0, { recruiter_one: emptyTeam(config), recruiter_two: emptyTeam(config) }, playerMap(catalog), config.budget) ? ordered : null
 }
@@ -94,7 +120,7 @@ export function createRecruiterDuel(catalog: readonly Player[], seed: string, co
   if (new Set(catalog.map((player) => player.id)).size !== catalog.length || (context && !validContext(context, catalog))) return { ok: false, error: 'auction_pool_unavailable' }
   for (let attempt = 0; attempt < 48; attempt++) {
     const relaxation = attempt < 16 ? 1 : attempt < 32 ? .5 : 0
-    const rounds = createRounds(catalog, `${seed}:attempt:${attempt}`, context, relaxation, config)
+    const rounds = createRounds(catalog, `${seed}:attempt:${attempt}`, context, relaxation, config, DRAW_BASE_SHARE[Math.min(2, Math.floor(attempt / 16))])
     if (!rounds) continue
     return { ok: true, game: { seed, ...(config === CLASSIC_CONFIG ? {} : { config }), ...(context ? { drawContext: structuredClone(context) } : {}), drawDiagnostics: { attempts: attempt + 1, relaxation, smallPoolPositions: POSITIONS.filter((position) => catalog.filter((player) => player.position === position).length < 4 * rosterComposition(config)[position]) }, phase: 'LOBBY', rounds, roundIndex: 0, discardsRemaining: 3, discardedPlayerIds: [], lastDiscard: null, coinCall: null, coinResult: null, coinTossWinner: null, openingOrder: [], teams: { recruiter_one: emptyTeam(config), recruiter_two: emptyTeam(config) }, activeParticipant: null, currentBid: null, passedParticipants: [], lastAward: null, record: [], matchResult: null } }
   }
@@ -112,7 +138,7 @@ export function discardReplacement(game: RecruiterDuelGame, catalog: readonly Pl
   const random = createSeededRandom(`${game.seed}:discard:${3 - game.discardsRemaining}:${game.roundIndex}`)
   const candidates = catalog.filter((player) => player.position === round.position && !unavailable.has(player.id)).sort((a, b) => a.id.localeCompare(b.id)).map((player) => {
     const appearances = game.drawContext?.recent.filter((draw) => draw.includes(player.id)).length ?? 0
-    return { player, key: -Math.log(Math.max(Number.MIN_VALUE, random())) * (1 + 2 * appearances) }
+    return { player, key: -Math.log(Math.max(Number.MIN_VALUE, random())) * (1 + 2 * appearances) * Math.max(.5, player.price / 8) }
   }).sort((a, b) => a.key - b.key || a.player.id.localeCompare(b.player.id))
   const map = playerMap(catalog)
   for (const { player } of candidates) {

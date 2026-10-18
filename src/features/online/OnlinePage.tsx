@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LanguageSelector } from '../../components/LanguageSelector'
 import { matchHistory } from '../history/matchHistory'
+import { NoticeToasts } from '../recruiter-duel/NoticeToasts'
+import { useToasts } from '../recruiter-duel/useToasts'
 import { AuctionPage } from '../recruiter-duel/AuctionPage'
 import type { OnlineDuelBinding } from '../recruiter-duel/onlineBinding'
 import { buildInitialDuel, forfeitOf, onlineHistoryEntry, otherSide, parseDuel, seatSide, slimDuel } from './onlineDuel'
@@ -17,6 +19,9 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
   const [userId, setUserId] = useState<string | null>(null)
   const [room, setRoom] = useState<RoomSnapshot | null>(null)
   const [name, setName] = useState('')
+  const [roomName, setRoomName] = useState('')
+  const { notices, push, dismiss } = useToasts()
+  const known = useRef<{ roomId: string; members: Map<string, { name: string; ready: boolean }> } | null>(null)
   const [code, setCode] = useState(invitationFromUrl)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<OnlineErrorCode | null>(gateway ? null : 'NOT_CONFIGURED')
@@ -131,6 +136,21 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
     catch { setCopied(false); setCopyFailed(true) }
   }
   const own = room?.members.find(member => member.userId === userId)
+  // Tell the person when the other one enters, gets ready or leaves.
+  useEffect(() => {
+    if (!room) { known.current = null; return }
+    const now = new Map(room.members.map(member => [member.userId, { name: member.name, ready: member.ready }]))
+    const before = known.current
+    known.current = { roomId: room.roomId, members: now }
+    if (!before || before.roomId !== room.roomId) return
+    for (const [id, member] of now) {
+      const earlier = before.members.get(id)
+      if (id === userId) continue
+      if (!earlier) push('success', t('online.notice.joined', { name: member.name }))
+      else if (earlier.ready !== member.ready) push('info', t(member.ready ? 'online.notice.ready' : 'online.notice.unready', { name: member.name }))
+    }
+    for (const [id, member] of before.members) if (!now.has(id)) push('warning', t('online.notice.left', { name: member.name }))
+  }, [room, userId, push, t])
   const lobbyOpen = room?.status === 'WAITING' || room?.status === 'READY'
   const mySide = own ? seatSide(own.seat) : null
   const duel = room && (room.status === 'IN_PROGRESS' || room.status === 'FINISHED') ? parseDuel(room.state) : null
@@ -195,14 +215,18 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
       {!room ? <section className="online-card" aria-label={t('online.setup')}>
         <label htmlFor="online-name">{t('online.name')}</label>
         <input id="online-name" autoComplete="nickname" value={name} onChange={e => setName(e.target.value)} />
+        <label htmlFor="online-room-name">{t('online.roomName')}</label>
+        <input id="online-room-name" autoComplete="off" maxLength={24} value={roomName} onChange={e => setRoomName(e.target.value)} placeholder={t('online.roomNameHint')} />
         <p>{t('online.classic')}</p><p>{t('online.scope')}</p>
-        <button className="primary-action" disabled={!gateway || !userId || busy || !!retry} onClick={() => { const id = crypto.randomUUID(); void run(() => gateway!.create(name,id)) }}>{t('online.create')}</button>
+        <button className="primary-action" disabled={!gateway || !userId || busy || !!retry} onClick={() => { const id = crypto.randomUUID(); void run(() => gateway!.create(name,id,roomName)) }}>{t('online.create')}</button>
         <label htmlFor="online-code">{t('online.code')}</label>
         <input id="online-code" autoComplete="off" value={code} onChange={e => setCode(inviteFromText(e.target.value))} /><p className="online-hint">{t('online.codeHint')}</p>
         <button className="secondary-action" disabled={!gateway || !userId || busy || !!retry} onClick={() => { const id = crypto.randomUUID(); void run(() => gateway!.join(code,name,id)) }}>{t('online.join')}</button>
       </section> : <section className="online-card" aria-label={t('online.lobby')}>
         <p role="status">{t('online.connection.' + connection)}</p><p>{t('online.peerNotice')}</p>
-        <h2>{t('online.lobby')}</h2><p>{t('online.classic')}</p>
+        <h2>{room.roomName ? t('online.roomTitle', { name: room.roomName }) : t('online.lobby')}</h2>
+        {room.shortCode && <p className="online-code"><span>{t('online.roomCode')}</span> <strong>{room.shortCode}</strong></p>}
+        <p>{t('online.classic')}</p>
         <ol className="online-steps"><li>{t('online.step1')}</li><li>{t('online.step2')}</li><li>{t('online.step3')}</li></ol>
         <p>{t('online.expires', { date: new Date(room.expiresAt).toLocaleString(i18n.language) })}</p>
         <ul className="online-members">{([1,2] as const).map(seat => {
@@ -215,13 +239,14 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
         {lobbyOpen && <div className="duel-actions">
           <button className="primary-action" disabled={busy || !!retry || !own} onClick={() => send({actionType:'SET_READY',payload:{ready:!own?.ready}})}>{t(own?.ready ? 'online.unready' : 'online.markReady')}</button>
           {room.hostId === userId && <button className="primary-action" disabled={busy || !!retry || room.status !== 'READY'} onClick={startDuel}>{t('online.start')}</button>}
-          <button className="secondary-action" disabled={busy || !!retry} onClick={() => { if (room.hostId === userId && gateway) { const id = room.roomId; void run(async () => { await gateway.closeRoom(id, crypto.randomUUID()); return null }) } else send({actionType:'LEAVE',payload:{}}) }}>{room.hostId === userId ? t('online.deleteRoom') : t('online.leave')}</button>
+          <button className="secondary-action" disabled={busy || !!retry} onClick={() => { if (room.hostId === userId && gateway) { const id = room.roomId; const version = room.version; void run(async () => { try { await gateway.closeRoom(id, crypto.randomUUID()); return null } catch (e) { if (errorCode(e) !== 'BACKEND_OUTDATED') throw e; return gateway.command({ actionType: 'LEAVE', payload: {}, roomId: id, expectedVersion: version, actionId: crypto.randomUUID() }) } }) } else send({actionType:'LEAVE',payload:{}}) }}>{room.hostId === userId ? t('online.deleteRoom') : t('online.leave')}</button>
         </div>}
         {room.status === 'READY' && room.hostId !== userId && <p className="auction-banner" role="status"><strong>{t('online.waitHost')}</strong></p>}
         {room.status === 'IN_PROGRESS' && !duel && <><p role="status">{t('online.legacyRoom')}</p>{room.hostId === userId && <button className="primary-action" disabled={busy || !!retry} onClick={startDuel}>{t('online.start')}</button>}</>}
         {room.status === 'CANCELLED' && <><p role="status">{t('online.cancelled')}</p><button className="secondary-action" onClick={() => { setRoom(null); rememberRoom(userId!,null) }}>{t('online.dismiss')}</button></>}
       </section>}
       {busy && <p role="status">{t('online.saving')}</p>}
+      <NoticeToasts notices={notices} onDismiss={dismiss} />
     </main>
   </div>
 }

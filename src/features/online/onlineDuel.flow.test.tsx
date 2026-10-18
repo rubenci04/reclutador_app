@@ -42,7 +42,7 @@ function gatewayFor(user: string): OnlineGateway {
   }
   return {
     authenticate: async () => user,
-    create: async (name, actionId) => parseSnapshot(await rpc('online_create_room', [name, actionId])),
+    create: async (name, actionId, roomName) => parseSnapshot(await rpc('online_create_room', [name, actionId, roomName?.trim() ? roomName : null])),
     join: async (code, name, actionId) => parseSnapshot(await rpc('online_join_room', [code, name, actionId])),
     snapshot: async (roomId) => parseSnapshot(await rpc('online_snapshot', [roomId])),
     command: async (command) => {
@@ -107,7 +107,7 @@ describe('online duel, two browsers against the real database', () => {
     const code = new URL(link.value).searchParams.get('online')!
     await waitFor(() => expect(guest.getByRole('button', { name: 'Join room' })).toBeEnabled())
     fireEvent.change(guest.getByLabelText('Team or recruiter name'), { target: { value: 'Beto' } })
-    fireEvent.change(guest.getByLabelText('Invitation code'), { target: { value: code } })
+    fireEvent.change(guest.getByLabelText('Room code or link'), { target: { value: code } })
     fireEvent.click(guest.getByRole('button', { name: 'Join room' }))
     await waitFor(() => expect(host.getAllByText('Beto').length).toBeGreaterThan(0))
     await waitFor(() => expect(guest.getByRole('button', { name: 'I am ready' })).toBeEnabled())
@@ -125,7 +125,7 @@ describe('online duel, two browsers against the real database', () => {
     fireEvent.click(host.getByRole('button', { name: 'Heads' }))
 
     // Auctions: whoever has the turn bids once in a while, otherwise passes; the other browser only waits.
-    let turns = 0
+    let turns = 0; let celebrated = 0; let passedNotices = 0
     for (let step = 0; step < 900 && !(host.queryByText(/Teams complete|TEAMS COMPLETE/i) && guest.queryByText(/Teams complete|TEAMS COMPLETE/i)); step++) {
       for (const view of [host, guest]) {
         if (press(view, 'Start auction') || press(view, 'Confirm signing and continue') || press(view, 'Next round')) continue
@@ -133,8 +133,15 @@ describe('online duel, two browsers against the real database', () => {
         if (press(view, /^(Pass|Confirm shared discard|Confirm mandatory assignment)$/)) { turns++; continue }
         press(view, 'Bid')
       }
+      // Only the person who won the auction is congratulated; the one who passed is told so.
+      const winners = [host, guest].filter((view) => view.queryByText('YOU WON THE AUCTION!'))
+      expect(winners.length).toBeLessThanOrEqual(1)
+      if (winners.length) celebrated++
+      if (host.queryByText(/^You passed on /) || guest.queryByText(/^You passed on /)) passedNotices++
       await pause()
     }
+    expect(celebrated).toBeGreaterThan(0)
+    expect(passedNotices).toBeGreaterThan(0)
     expect(turns).toBeGreaterThan(20)
     await waitFor(() => { expect(host.getByText(/TEAMS COMPLETE/i)).toBeInTheDocument(); expect(guest.getByText(/TEAMS COMPLETE/i)).toBeInTheDocument() }, { timeout: 10000 })
 
@@ -168,7 +175,7 @@ describe('online duel, two browsers against the real database', () => {
     const code = new URL((await waitFor(() => host.getByLabelText('Invitation link') as HTMLInputElement)).value).searchParams.get('online')!
     await waitFor(() => expect(guest.getByRole('button', { name: 'Join room' })).toBeEnabled())
     fireEvent.change(guest.getByLabelText('Team or recruiter name'), { target: { value: 'Beto' } })
-    fireEvent.change(guest.getByLabelText('Invitation code'), { target: { value: code } })
+    fireEvent.change(guest.getByLabelText('Room code or link'), { target: { value: code } })
     fireEvent.click(guest.getByRole('button', { name: 'Join room' }))
     await waitFor(() => expect(guest.getByRole('button', { name: 'I am ready' })).toBeEnabled())
     fireEvent.click(guest.getByRole('button', { name: 'I am ready' }))
@@ -194,9 +201,9 @@ describe('closing rooms from the interface', () => {
     const code = new URL((await waitFor(() => host.getByLabelText('Invitation link') as HTMLInputElement)).value).searchParams.get('online')!
     await waitFor(() => expect(guest.getByRole('button', { name: 'Join room' })).toBeEnabled())
     fireEvent.change(guest.getByLabelText('Team or recruiter name'), { target: { value: 'Beto' } })
-    fireEvent.change(guest.getByLabelText('Invitation code'), { target: { value: `http://localhost/?online=${code}` } })
+    fireEvent.change(guest.getByLabelText('Room code or link'), { target: { value: `http://localhost/?online=${code}` } })
     // A pasted link is reduced to its code.
-    expect((guest.getByLabelText('Invitation code') as HTMLInputElement).value).toBe(code)
+    expect((guest.getByLabelText('Room code or link') as HTMLInputElement).value).toBe(code)
     fireEvent.click(guest.getByRole('button', { name: 'Join room' }))
     await waitFor(() => expect(guest.getByRole('button', { name: 'Leave room' })).toBeInTheDocument())
     await waitFor(() => expect(host.getAllByText('Beto').length).toBeGreaterThan(0))
