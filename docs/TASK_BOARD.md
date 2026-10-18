@@ -72,6 +72,10 @@ Nomenclatura: DL-FXX-CAT-NNN; FXX indica fase y CAT responsabilidad. No existía
 | DL-F05-ONLINE-003 | Duelo online jugable (dos navegadores) y avisos de acciones bloqueadas | Migración 202610190001, estado compartido con versión, estrategias secretas, abandono, prueba de dos navegadores contra PostgreSQL; ver docs/qa/CODEX-006C.md |
 | DL-F04-UX-001 | Celebración de subasta ganada (CODEX-005H-H6, parcial) | Banner «¡GANASTE LA SUBASTA!», sonido propio, camiseta resaltada y reduced-motion; el resto del pulido queda pendiente; ver docs/qa/CODEX-005H-H6.md |
 | DL-F04-UX-002 | Tutorial de primera visita y ayudas contextuales (H7, pedido del usuario) | Guía de seis pasos con teclas, botón «?», notas por fase descartables, es-AR/en/pt-BR, preferencias locales; ver docs/qa/CODEX-005H-H7.md |
+| DL-F04-UX-005 | Pulido inmediato tras informe QA externo | Completa: quitado el selector de modo inerte de Draft Libre, contador de descartes fuera del partido, modos no jugables en desplegable «Próximas colecciones» (es-AR/en/pt-BR); 709 pruebas aprobadas; QA visual NO ejecutada; ver docs/logs/QA-REPORT-TRIAGE.md |
+| DL-F05-ONLINE-005 | Revancha en la misma sala, modo/presupuesto elegibles en el lobby y cierre FINISHED al terminar el partido | Pendiente (futuro 1): nueva migración, relaja CHECK de room_settings, RPC online_rematch |
+| DL-F05-ONLINE-006 | Reloj de turno online con deadline_at (ADR-0010) | Pendiente (futuro 2): pase automático o victoria por inactividad; requiere decidir tiempos |
+| DL-F04-TACTICS-008 | Roles posicionales específicos y peso táctico | Pendiente (futuro 3): etiquetar 350 jugadores con fuente verificable (hoy ROLE_PROFILES vacío) y revisar TACTICAL_GAINS tras playtest de DL-F04-TACTICS-007 |
 | DL-F03-I18N-001 | Traducir draft, presupuesto y confirmaciones | Completa en CODEX-004A |
 | DL-F04-I18N-001 | Traducir simulación y resultados | Completa en CODEX-004B |
 | DL-F05-I18N-001 | Traducir salas, espera y errores online | Pendiente |

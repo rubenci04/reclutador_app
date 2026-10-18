@@ -17,8 +17,6 @@ import { MATCH_RULES_VERSION, type MatchResult } from '../local-match/matchTypes
 import { simulateMatch } from '../local-match/simulator'
 import { createSecureSeed } from '../local-match/seededRandom'
 import { PRODUCT } from '../../config/product'
-import { ModeSelector } from '../themed-modes/ModeSelector'
-import type { ThemedModeId } from '../themed-modes/modeTypes'
 
 function money(value: number) { return `${value}M` }
 
@@ -40,7 +38,6 @@ export function DraftPage({ onDuel }: DraftPageProps) {
   const [selectedSlot, setSelectedSlot] = useState<DraftSlotId | null>(null)
   const [matchResult, setMatchResult] = useState<MatchResult | null>(null)
   const [matchError, setMatchError] = useState(false)
-  const [mode, setMode] = useState<ThemedModeId>('GLOBAL_CLASSIC')
   const summary = summarizeDraft(lineup, DRAFT_CATALOG)
   const slot = DRAFT_SLOTS.find((item) => item.id === selectedSlot)
   const firstOpenSlot = DRAFT_SLOTS.find((item) => !lineup[item.id])?.id ?? 'GK'
@@ -61,7 +58,6 @@ export function DraftPage({ onDuel }: DraftPageProps) {
     <main id="draft-main">
       <HelpTip topic="freeDraft" />
       <section className="draft-hero"><div><p className="eyebrow"><span />{t('draft.edition')}</p><h1>{t('draft.title')}</h1><p>{t('draft.subtitle')}</p></div><button className="catalog-open" onClick={() => setSelectedSlot(firstOpenSlot)}>{t('draft.catalog')} <span>↗</span></button></section>
-      <ModeSelector selected={mode} onChange={setMode} />
       {restoreIssue && <div className="draft-alert" role="alert">{t('draft.messages.invalidDraft')}<button onClick={clearRestoreIssue}>×</button></div>}
       {matchError && <p className="draft-alert" role="alert">{t('draw.randomError')}</p>}
       {message && <div className="draft-alert" role="alert">{t(`draft.messages.${message}`)}<button onClick={clearMessage}>×</button></div>}

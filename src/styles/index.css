@@ -321,3 +321,5 @@
 .player-ratings small { font-size: .68rem; letter-spacing: .06em; color: #c4d4c0; }
 .player-ratings .top-rating b { color: #f4dc63; }
 @media (max-width: 600px) { .single-player-card .player-avatar { width: 104px; aspect-ratio: 3 / 4; } .player-ratings b { font-size: 1.1rem; } }
+
+.mode-upcoming{margin-top:12px}.mode-upcoming summary{cursor:pointer;font-weight:700;padding:6px 0}.mode-upcoming .mode-list{margin-top:10px}
