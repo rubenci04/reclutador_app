@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { getClubVisual } from '../features/player-catalog/clubVisuals'
 import { getClubIdentity } from '../features/player-catalog/clubRegistry'
 
-/** Original game token: identical rounded rectangle and two inset squares for every club. */
+/** Original game token: the same shield for every club, split into the two club colours. */
 export function ClubBadge({ clubId }: { readonly clubId: string }) {
   const { t } = useTranslation()
   const visual = getClubVisual(clubId)

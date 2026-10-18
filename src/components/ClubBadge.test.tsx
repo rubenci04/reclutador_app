@@ -34,7 +34,7 @@ describe('club colours and generic badges', () => {
   it('keeps text readable independently from colours and outlines visible on the badge canvas', () => {
     const css=readFileSync('src/styles/index.css','utf8')
     expect(css).toContain('.club-name{color:#edf4e8')
-    expect(css).toContain('border-radius:6px;background:#102016')
+    expect(css).toContain('clip-path:polygon(0 0,100% 0,100% 58%,50% 100%,0 58%)')
     expect(contrast('#edf4e8','#102016')).toBeGreaterThan(7)
     for(const visual of [...Object.values(clubVisuals),neutralClubVisual]) expect(contrast(visual!.contrast,'#102016')).toBeGreaterThan(3)
   })
