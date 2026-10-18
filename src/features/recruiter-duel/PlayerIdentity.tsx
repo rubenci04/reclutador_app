@@ -13,6 +13,7 @@ export function PlayerIdentity({ player }: { readonly player:Player }) {
   return <div className="single-player-card"><div className="player-avatar">
     {photo && !failed ? <img src={photo.path} alt={t('cpu.photoAlt',{player:player.name})} onError={() => setFailed(true)} /> : <span className="avatar-silhouette" role="img" aria-label={t('duel.placeholderAvatar',{player:player.name})}>●<br />▰</span>}
     <b>{player.overall_rating}</b></div><article><small>{t('duel.playerDrawn')}</small><h2>{player.name}</h2>
+    <ul className="player-ratings" aria-label={t('ratings.label', { rating: player.overall_rating })}>{([['att', player.att_rating], ['def', player.def_rating], ['phy', player.phy_rating], ['men', player.men_rating]] as const).map(([key, value]) => <li key={key} className={value >= 90 ? 'top-rating' : undefined}><b>{value}</b><small>{t(`ratings.${key}`)}</small></li>)}</ul>
     <p>{flag && !flagFailed ? <img className="nationality-flag" src={flag} alt={t('cpu.flagAlt',{code:player.nationality})} onError={() => setFlagFailed(true)} /> : <span aria-label={t('cpu.flagMissing')}>◇</span>} {player.nationality} · {t(`positions.${player.position}`)} · {t('duel.tier',{tier:getPlayerTier(player.overall_rating)})}</p>
     <PlayerClubDetails player={player} /><b>{t('duel.basePrice',{amount:player.price})}</b></article></div>
 }

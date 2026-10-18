@@ -21,3 +21,9 @@ Mensajes emergentes (con botón de cerrar y desaparición automática) para: ofe
 - `onlineDuel.flow.test.tsx` (2): **dos navegadores** (dos `OnlinePage`) contra la base real: crear sala, unirse, listos, moneda, ~23 rondas de subasta alternando turnos, ordenar, estrategias secretas, partido y **mismo resultado final en ambos**; y abandono.
 - `notices.test.tsx` (3) y suite completa: 701 pruebas; typecheck, lint y build correctos.
 - No probado con dos navegadores reales sobre tu Supabase hasta aplicar la migración.
+
+## Segunda tanda (19/10/2026)
+- **Por qué no se veían los cambios en producción:** el despliegue de producción de Cloudflare Pages usa la rama `codex/current-club-audit`; los despliegues hechos con `--branch main` quedaron como vistas previas. Comando correcto: `npx wrangler pages deploy dist --project-name draft-legends --branch codex/current-club-audit`.
+- **Salir y eliminar sala:** el anfitrión tiene «Eliminar sala» (borra todo; el invitado vuelve al menú con «El anfitrión cerró la sala», por aviso en tiempo real o en ≤ 4 s); el invitado sale con «Salir de la sala»; en partida se abandona (derrota); al terminar, el anfitrión limpia la sala al salir. RPC `online_close_room` (en la misma migración, aún no aplicada) con prueba SQL y prueba de dos navegadores.
+- **Sincronización:** el sondeo de respaldo baja de 10 s a 4 s para que ambos jugadores estén en la misma pantalla aunque el canal en tiempo real falle.
+- **Valoraciones en el móvil:** la ficha muestra ahora ATQ/DEF/FÍS/MEN junto a la foto, y la valoración general es una insignia sobre la foto (una regla del móvil la dejaba fuera de la tarjeta). Comprobado a 385 y 412 px.

@@ -22,6 +22,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
   const [error, setError] = useState<OnlineErrorCode | null>(gateway ? null : 'NOT_CONFIGURED')
   const [connection, setConnection] = useState<ConnectionStatus>('connecting')
   const [copied, setCopied] = useState(false)
+  const [closedNotice, setClosedNotice] = useState(false)
   const [copyFailed, setCopyFailed] = useState(false)
   const [retry, setRetry] = useState<(() => Promise<RoomSnapshot | null>) | null>(null)
   const mounted = useRef(true)
@@ -70,7 +71,12 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
             setError(current => current === 'NETWORK_ERROR' || current === 'STALE_STATE' ? null : current)
           }
         } catch (e) {
-          if (!cancelled) { setError(errorCode(e)); setConnection('offline') }
+          if (!cancelled) {
+            const code = errorCode(e)
+            // The host deleted the room while we were looking at it: go back to the menu and say so.
+            if (code === 'ROOM_NOT_FOUND' || code === 'NOT_ROOM_MEMBER') { if (userId) rememberRoom(userId, null); setRoom(null); setClosedNotice(true); return }
+            setError(code); setConnection('offline')
+          }
         }
       } while (again && !cancelled)
       syncing = false
@@ -78,7 +84,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
     const resync = () => { if (!cancelled) void sync() }
     const stop = gateway.watch(roomId, resync, status => { if (!cancelled) setConnection(status) })
     resync()
-    const poll = window.setInterval(resync, 10000)
+    const poll = window.setInterval(resync, 4000)
     window.addEventListener('online', resync)
     window.addEventListener('focus', resync)
     document.addEventListener('visibilitychange', resync)
@@ -87,7 +93,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
       window.removeEventListener('online', resync); window.removeEventListener('focus', resync)
       document.removeEventListener('visibilitychange', resync)
     }
-  }, [gateway, roomId])
+  }, [gateway, roomId, userId])
 
   async function run(action: () => Promise<RoomSnapshot | null>) {
     if (operation.current || !gateway || !userId) return
@@ -141,10 +147,12 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
   const { clear: clearSync } = sync
   const exit = useCallback(() => {
     if (userId) rememberRoom(userId, null)
+    // The host cleans up a room whose game is over; nobody can use it any more.
+    if (gateway && room && room.hostId === userId && (forfeitBy || duel?.matchResult)) void gateway.closeRoom(room.roomId, crypto.randomUUID()).catch(() => undefined)
     clearSync(); setRoom(null)
     const url = new URL(window.location.href); url.searchParams.delete('online'); window.history.replaceState(null, '', url)
     setCode('')
-  }, [userId, clearSync])
+  }, [userId, clearSync, gateway, room, forfeitBy, duel])
   function startDuel() {
     if (!room || !gateway || room.hostId !== userId) return
     const host = room.members.find(m => m.seat === 1)?.name ?? ''
@@ -182,6 +190,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
       <p>{t('online.sessionNotice')}</p>
       {error && <p role="alert">{t('online.errors.' + error)}{error === 'NOT_CONFIGURED' && import.meta.env.DEV && <><br />{t('online.configHelp')}</>}</p>}
       {retry && <button className="primary-action" disabled={busy} onClick={() => { void run(retry) }}>{t('online.retry')}</button>}
+      {closedNotice && !room && <p className="auction-banner auction-banner-blocked" role="status"><strong>{t('online.roomClosed')}</strong></p>}
       {!room && invitationFromUrl() && <p className="auction-banner" role="status"><strong>{t('online.invited')}</strong></p>}
       {!room ? <section className="online-card" aria-label={t('online.setup')}>
         <label htmlFor="online-name">{t('online.name')}</label>
@@ -206,7 +215,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
         {lobbyOpen && <div className="duel-actions">
           <button className="primary-action" disabled={busy || !!retry || !own} onClick={() => send({actionType:'SET_READY',payload:{ready:!own?.ready}})}>{t(own?.ready ? 'online.unready' : 'online.markReady')}</button>
           {room.hostId === userId && <button className="primary-action" disabled={busy || !!retry || room.status !== 'READY'} onClick={startDuel}>{t('online.start')}</button>}
-          <button className="secondary-action" disabled={busy || !!retry} onClick={() => send({actionType:'LEAVE',payload:{}})}>{t('online.leave')}</button>
+          <button className="secondary-action" disabled={busy || !!retry} onClick={() => { if (room.hostId === userId && gateway) { const id = room.roomId; void run(async () => { await gateway.closeRoom(id, crypto.randomUUID()); return null }) } else send({actionType:'LEAVE',payload:{}}) }}>{room.hostId === userId ? t('online.deleteRoom') : t('online.leave')}</button>
         </div>}
         {room.status === 'READY' && room.hostId !== userId && <p className="auction-banner" role="status"><strong>{t('online.waitHost')}</strong></p>}
         {room.status === 'IN_PROGRESS' && !duel && <><p role="status">{t('online.legacyRoom')}</p>{room.hostId === userId && <button className="primary-action" disabled={busy || !!retry} onClick={startDuel}>{t('online.start')}</button>}</>}

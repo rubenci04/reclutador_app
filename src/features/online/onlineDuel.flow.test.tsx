@@ -54,6 +54,7 @@ function gatewayFor(user: string): OnlineGateway {
     setStrategy: async (roomId, strategy) => parseSnapshot(await rpc('online_set_strategy', [roomId, strategy])),
     revealStrategies: async (roomId) => (await rpc('online_reveal_strategies', [roomId])) as Record<'recruiter_one' | 'recruiter_two', string>,
     forfeit: async (roomId, actionId) => parseSnapshot(await rpc('online_forfeit', [roomId, actionId])),
+    closeRoom: async (roomId, actionId) => { await rpc('online_close_room', [roomId, actionId]) },
     watch: (_roomId, changed, status) => { watchers.add(changed); status('connected'); return () => { watchers.delete(changed) } },
   }
 }
@@ -181,5 +182,26 @@ describe('online duel, two browsers against the real database', () => {
     fireEvent.click(guest.getByRole('button', { name: 'Yes, abandon and lose' }))
     await waitFor(() => { expect(host.getByText('You win because your rival abandoned!')).toBeInTheDocument(); expect(guest.getByText('You abandoned the match: it counts as a defeat.')).toBeInTheDocument() }, { timeout: 10000 })
     expect(screen.getAllByText(/abandoned the match/i).length).toBeGreaterThan(0)
+  }, 60000)
+})
+
+describe('closing rooms from the interface', () => {
+  it('sends the guest back to the menu with a notice when the host deletes the room', async () => {
+    const { host, guest } = await twoPlayers()
+    await waitFor(() => expect(host.getByRole('button', { name: 'Create room' })).toBeEnabled())
+    fireEvent.change(host.getByLabelText('Team or recruiter name'), { target: { value: 'Ana' } })
+    fireEvent.click(host.getByRole('button', { name: 'Create room' }))
+    const code = new URL((await waitFor(() => host.getByLabelText('Invitation link') as HTMLInputElement)).value).searchParams.get('online')!
+    await waitFor(() => expect(guest.getByRole('button', { name: 'Join room' })).toBeEnabled())
+    fireEvent.change(guest.getByLabelText('Team or recruiter name'), { target: { value: 'Beto' } })
+    fireEvent.change(guest.getByLabelText('Invitation code'), { target: { value: `http://localhost/?online=${code}` } })
+    // A pasted link is reduced to its code.
+    expect((guest.getByLabelText('Invitation code') as HTMLInputElement).value).toBe(code)
+    fireEvent.click(guest.getByRole('button', { name: 'Join room' }))
+    await waitFor(() => expect(guest.getByRole('button', { name: 'Leave room' })).toBeInTheDocument())
+    await waitFor(() => expect(host.getAllByText('Beto').length).toBeGreaterThan(0))
+    fireEvent.click(host.getByRole('button', { name: 'Delete room' }))
+    await waitFor(() => expect(guest.getByText(/The host closed the room/)).toBeInTheDocument(), { timeout: 10000 })
+    await waitFor(() => expect(host.getByRole('button', { name: 'Create room' })).toBeInTheDocument())
   }, 60000)
 })

@@ -15,6 +15,8 @@ export interface OnlineGateway {
   setStrategy(roomId: string, strategy: string): Promise<RoomSnapshot>
   revealStrategies(roomId: string): Promise<Record<'recruiter_one' | 'recruiter_two', string>>
   forfeit(roomId: string, actionId: string): Promise<RoomSnapshot>
+  /** Host: deletes the room. Guest: leaves it (not while a match is running). */
+  closeRoom(roomId: string, actionId: string): Promise<void>
   watch(roomId: string, changed: () => void, status: (status: ConnectionStatus) => void): () => void
 }
 function backendError(error: { message: string; code?: string }): OnlineError {
@@ -69,6 +71,10 @@ export function createOnlineGateway(client: SupabaseClient = getOnlineClient()):
     async forfeit(roomId, actionId) {
       if (!isUuid(roomId) || !isUuid(actionId)) throw new OnlineError('INVALID_ACTION')
       return parseSnapshot(await rpc('online_forfeit', { p_room_id: roomId, p_action_id: actionId }))
+    },
+    async closeRoom(roomId, actionId) {
+      if (!isUuid(roomId) || !isUuid(actionId)) throw new OnlineError('INVALID_ACTION')
+      await rpc('online_close_room', { p_room_id: roomId, p_action_id: actionId })
     },
     watch(roomId, changed, status) {
       let closed = false

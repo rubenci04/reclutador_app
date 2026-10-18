@@ -194,3 +194,38 @@ revoke all on function public.online_snapshot(uuid), public.online_start_duel(uu
   public.online_set_strategy(uuid,text), public.online_reveal_strategies(uuid), public.online_forfeit(uuid,uuid) from public, anon;
 grant execute on function public.online_snapshot(uuid), public.online_start_duel(uuid,uuid,integer,jsonb), public.online_submit_state(uuid,uuid,integer,jsonb),
   public.online_set_strategy(uuid,text), public.online_reveal_strategies(uuid), public.online_forfeit(uuid,uuid) to authenticated;
+
+-- Closing a room. The host deletes it (everything about it goes with it); a guest just leaves while nothing is being played.
+create function public.online_close_room(p_room_id uuid, p_action_id uuid) returns jsonb
+language plpgsql security definer set search_path = '' as $$
+declare actor uuid := auth.uid(); r public.rooms;
+begin
+  if actor is null then raise exception 'AUTH_REQUIRED'; end if;
+  if p_action_id is null then raise exception 'INVALID_ACTION'; end if;
+  if not public.is_room_member(p_room_id) then raise exception 'NOT_ROOM_MEMBER'; end if;
+  select * into r from public.rooms where id=p_room_id for update;
+  if not found or not public.is_room_member(p_room_id) then raise exception 'NOT_ROOM_MEMBER'; end if;
+  if r.host_id = actor then
+    delete from public.rooms where id = r.id;
+    return null;
+  end if;
+  if r.status = 'IN_PROGRESS' then raise exception 'INVALID_PHASE'; end if;
+  delete from public.room_members where room_id = r.id and user_id = actor;
+  update public.room_members set ready=false where room_id = r.id;
+  update public.rooms set status = case when r.status in ('WAITING','READY') then 'WAITING' else r.status end, version = version + 1 where id = r.id;
+  return null;
+end;
+$$;
+
+-- Tells whoever is still connected that the room is gone (the host deleted it).
+create function private.notify_room_closed() returns trigger
+language plpgsql security definer set search_path = '' as $$
+begin
+  perform realtime.send(jsonb_build_object('roomId',old.id,'closed',true),'room_changed','room:' || old.id::text,true);
+  return old;
+end;
+$$;
+create trigger room_closed after delete on public.rooms for each row execute function private.notify_room_closed();
+revoke all on function private.notify_room_closed() from public, anon, authenticated;
+revoke all on function public.online_close_room(uuid,uuid) from public, anon;
+grant execute on function public.online_close_room(uuid,uuid) to authenticated;

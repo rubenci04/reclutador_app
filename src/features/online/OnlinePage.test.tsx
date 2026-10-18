@@ -31,6 +31,7 @@ function fakeGateway() {
     setStrategy: vi.fn(async () => structuredClone(state)),
     revealStrategies: vi.fn(async () => ({ recruiter_one: 'NEUTRAL', recruiter_two: 'NEUTRAL' })),
     forfeit: vi.fn(async () => structuredClone(state)),
+    closeRoom: vi.fn(async () => undefined),
     watch: vi.fn((_id, changed, status) => {change=changed; status('connected'); return stop}),
   }
   return {gateway,stop,update: (next: RoomSnapshot) => {state=next; change()}}
@@ -120,11 +121,12 @@ describe('online lobby presentation using an explicit test adapter', () => {
     expect(commands).toHaveLength(2); expect(commands[0]).toEqual(commands[1])
     expect(await screen.findByRole('button',{name:'Todavía no estoy listo'})).toBeEnabled()
   })
-  it('leaves through the server and forgets local recovery metadata', async () => {
+  it('lets the host delete the room through the server and forgets local recovery metadata', async () => {
     const fake = fakeGateway(); rememberRoom(host,fixture().roomId)
     await show(fake.gateway); await screen.findByText('Boca')
-    await userEvent.click(screen.getByRole('button',{name:'Salir de la sala'}))
+    await userEvent.click(screen.getByRole('button',{name:'Eliminar sala'}))
     expect(await screen.findByRole('button',{name:'Crear sala'})).toBeEnabled()
+    expect(fake.gateway.closeRoom).toHaveBeenCalledTimes(1)
     expect(readRememberedRoom(host)).toBeNull()
   })
 })
