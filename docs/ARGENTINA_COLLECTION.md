@@ -1,6 +1,6 @@
 # Colección Fútbol Argentino — planificación
 
-Estado: 200/200 registros creados (ARG-B01..B04), revisión editorial pendiente; modo no habilitado. Contrato: `argentina_collection_v1`, independiente de catalog_v1. Ver ADR-0009.
+Estado: 200/200 registros creados (ARG-B01..B04), revisión editorial pendiente; modo «Fútbol Argentino» habilitado como opción (ver docs/qa/CODEX-005H-ARG-MODE.md). Contrato: `argentina_collection_v1`, independiente de catalog_v1. Ver ADR-0009.
 
 | Lote | IDs nuevos | Cupos ARQ/DEF/MED/DEL | Estado |
 |---|---|---|---|

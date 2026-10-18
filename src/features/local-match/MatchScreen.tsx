@@ -4,6 +4,7 @@ import { audio } from '../audio/audioEngine'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DRAFT_CATALOG } from '../draft/catalog'
+import type { Player } from '../../types/player'
 import { playerName } from './simulator'
 import type { MatchEvent, MatchResult, MatchSide } from './matchTypes'
 
@@ -14,13 +15,15 @@ interface MatchScreenProps {
   readonly localName?: string
   readonly cpuName?: string
   readonly onFinished?: () => void
+  /** Players of the mode being played; Global (the 150) when omitted. */
+  readonly catalog?: readonly Player[]
 }
 
 function money(value: number) { return `${value}M` }
 
 function teamPlayers(result: MatchResult, side: MatchSide) { return result[side].players.map((player) => player.name).join(' · ') }
 
-export function MatchScreen({ result, onRematch, onReturn, localName, cpuName, onFinished }: MatchScreenProps) {
+export function MatchScreen({ result, onRematch, onReturn, localName, cpuName, onFinished, catalog = DRAFT_CATALOG }: MatchScreenProps) {
   const { t } = useTranslation()
   const [blockIndex, setBlockIndex] = useState(0)
   const [replayId, setReplayId] = useState(0)
@@ -48,7 +51,7 @@ export function MatchScreen({ result, onRematch, onReturn, localName, cpuName, o
   const recentGoal = visibleBlocks.at(-1)?.events.find((event) => event.type === 'goal')
   const outcome = result.winner === 'draw' ? 'draw' : result.winner === 'local' ? 'victory' : 'defeat'
   const teamName = (side: MatchSide | null) => side === 'local' ? (localName ?? t('game.myTeam')) : (cpuName ?? t('match.cpuTeam'))
-  const eventText = (item: MatchEvent) => t(`match.events.${item.type}`, { team: teamName(item.side), player: playerName(item, DRAFT_CATALOG) ?? '', out: DRAFT_CATALOG.find((candidate) => candidate.id === item.outPlayerId)?.name ?? '' })
+  const eventText = (item: MatchEvent) => t(`match.events.${item.type}`, { team: teamName(item.side), player: playerName(item, catalog) ?? '', out: catalog.find((candidate) => candidate.id === item.outPlayerId)?.name ?? '' })
   return <main className="match-screen" aria-live="polite">
     <section className="match-card" aria-label={t('match.versus')}>
       <HelpTip topic="match" />

@@ -2,6 +2,7 @@ import type { ThemedModeDefinition } from './modeTypes'
 
 export const THEMED_MODES: readonly ThemedModeDefinition[] = [
   { id: 'GLOBAL_CLASSIC', translationKey: 'globalClassic', rule: {} },
+  { id: 'ARGENTINA_CLUBS', translationKey: 'argentinaClubs', rule: { leagueCountryCode: 'ARG' } },
   { id: 'ARGENTINA_NATIONALITY', translationKey: 'argentinaNationality', rule: { nationality: 'ARG' } },
   { id: 'ARGENTINA_LEAGUE', translationKey: 'argentinaLeague', rule: { leagueId: 'arg_primera' } },
   { id: 'BRAZIL_NATIONALITY', translationKey: 'brazilNationality', rule: { nationality: 'BRA' } },

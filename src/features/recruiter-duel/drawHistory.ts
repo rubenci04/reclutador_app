@@ -26,10 +26,12 @@ export function parseReplay(text: string, catalog: readonly Player[]): DrawRepla
     return typeof value?.seed === 'string' && value.seed.length > 0 && value.seed.length <= 256 && validContext(value.context, catalog) ? value : null
   } catch { return null }
 }
-export function readDrawHistory(storage: Pick<Storage, 'getItem'>, catalog: readonly Player[]): { history: DrawHistory; warning: boolean } {
+/** Each mode keeps its own recent draws; Global keeps the original key so existing history survives. */
+export const drawHistoryKey = (modeId: string) => (modeId === 'GLOBAL_CLASSIC' ? DRAW_HISTORY_KEY : `${DRAW_HISTORY_KEY}.${modeId.toLowerCase()}`)
+export function readDrawHistory(storage: Pick<Storage, 'getItem'>, catalog: readonly Player[], key: string = DRAW_HISTORY_KEY): { history: DrawHistory; warning: boolean } {
   const empty: DrawHistory = { version: 1, games: [] }
   try {
-    const raw = storage.getItem(DRAW_HISTORY_KEY)
+    const raw = storage.getItem(key)
     if (!raw) return { history: empty, warning: false }
     if (raw.length > 1_250_000) return { history: empty, warning: true }
     const value = JSON.parse(raw) as DrawHistory

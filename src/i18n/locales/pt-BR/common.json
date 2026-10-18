@@ -27,6 +27,7 @@
     "label": "MODALIDADES", "title": "Desafios temáticos", "available": "Disponível", "status": { "positions": "Elenco insuficiente", "budget": "Sem onze viável", "metadata": "Dados pendentes", "cpu": "CPU incompatível", "foundation": "Em breve", "ready": "Disponível" },
     "items": {
       "globalClassic": { "name": "Clássico global", "description": "Os 150 jogadores auditados disponíveis." },
+      "argentinaClubs": { "name": "Futebol Argentino", "description": "Jogadores com carreira verificada em clubes da Argentina, qualquer que seja a nacionalidade (200 jogadores)." },
       "argentinaNationality": { "name": "Nacionalidade argentina", "description": "Apenas jogadores de nacionalidade ARG." },
       "argentinaLeague": { "name": "Liga argentina", "description": "Exige trajetórias verificadas na Primera División." },
       "brazilNationality": { "name": "Nacionalidade brasileira", "description": "Apenas jogadores de nacionalidade BRA." },

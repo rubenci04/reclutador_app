@@ -52,10 +52,10 @@ export function eligiblePlayers(catalog: readonly Player[], definition: ThemedMo
 }
 
 /** Calculates availability from verified records only; unknown metadata never becomes an implicit yes. */
-export function evaluateMode(catalog: readonly Player[], definition: ThemedModeDefinition, metadata: MetadataIndex): { readonly players: readonly Player[]; readonly diagnostic: ModeDiagnostic } {
+export function evaluateMode(catalog: readonly Player[], definition: ThemedModeDefinition, metadata: MetadataIndex, allowedIds?: readonly string[]): { readonly players: readonly Player[]; readonly diagnostic: ModeDiagnostic } {
   const players = eligiblePlayers(catalog, definition, metadata)
   const metadataNeeded = requiresMetadata(definition)
-  const economy = checkEconomicViability(players)
+  const economy = checkEconomicViability(players, allowedIds)
   const cpuCompatible = economy.status === 'feasible' && isCpuCompatible(players)
   let availability: ModeAvailability = 'available'
   let reason: ModeDiagnostic['reason'] = 'ready'

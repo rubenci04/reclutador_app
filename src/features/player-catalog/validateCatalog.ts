@@ -11,7 +11,7 @@ import { playerIdentityKey } from './playerIdentity'
 
 const notEvaluated = (): EconomicViability => ({ status: 'not_evaluated', minimumCost: null, playerIds: [] })
 
-function inspectRecords(input: unknown) {
+function inspectRecords(input: unknown, allowedIds?: readonly string[]) {
   const issues: ValidationIssue[] = []
   const positionCounts = { ARQ: 0, DEF: 0, MED: 0, DEL: 0 }
   const tierCounts = { S: 0, A: 0, B: 0, C: 0, D: 0 }
@@ -29,7 +29,7 @@ function inspectRecords(input: unknown) {
   // Indexed iteration catches sparse-array holes, unlike map/forEach.
   for (let index = 0; index < records.length; index++) {
     const record = records[index]
-    const result = validatePlayer(record)
+    const result = allowedIds ? validatePlayer(record, allowedIds) : validatePlayer(record)
     if (typeof record === 'object' && record !== null && !Array.isArray(record)) {
       const fields = record as Record<string, unknown>
       if (typeof fields.id === 'string') {
@@ -72,8 +72,9 @@ function minimumEleven(players: readonly Player[]): EconomicViability {
 }
 
 /** Reusable subset proof; never implies full-catalog approval or implements CPU selection. */
-export function checkEconomicViability(input: unknown): EconomicViability {
-  const inspected = inspectRecords(input)
+/** `allowedIds` lets another collection (for example the arg_* records) reuse the check; catalog_v1 passes none. */
+export function checkEconomicViability(input: unknown, allowedIds?: readonly string[]): EconomicViability {
+  const inspected = inspectRecords(input, allowedIds)
   return inspected.issues.length ? notEvaluated() : minimumEleven(inspected.players)
 }
 

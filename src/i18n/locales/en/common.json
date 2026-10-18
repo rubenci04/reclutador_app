@@ -27,6 +27,7 @@
     "label": "MODES", "title": "Themed challenges", "available": "Available", "status": { "positions": "Not enough players", "budget": "No viable eleven", "metadata": "Data pending", "cpu": "CPU incompatible", "foundation": "Coming soon", "ready": "Available" },
     "items": {
       "globalClassic": { "name": "Global classic", "description": "All 150 audited footballers currently available." },
+      "argentinaClubs": { "name": "Argentine football", "description": "Footballers with verified careers at clubs in Argentina, whatever their nationality (200 footballers)." },
       "argentinaNationality": { "name": "Argentine nationality", "description": "Only footballers with ARG nationality." },
       "argentinaLeague": { "name": "Argentine league", "description": "Requires verified Primera División careers." },
       "brazilNationality": { "name": "Brazilian nationality", "description": "Only footballers with BRA nationality." },

@@ -5,7 +5,7 @@ import { AudioControls } from '../audio/AudioControls'
 import { CoinFace } from './FootballCoin'
 import { useAuctionSounds } from './useAuctionSounds'
 import { PRODUCT } from '../../config/product'
-import { DRAFT_CATALOG } from '../draft/catalog'
+import { catalogForMode, PLAYABLE_MODES } from '../themed-modes/modeCatalog'
 import { DRAFT_SLOTS } from '../draft/draftTypes'
 import { MatchScreen } from '../local-match/MatchScreen'
 import { isValidOrganizedLineup } from '../local-match/simulator'
@@ -28,7 +28,7 @@ import { acknowledgeHandover, confirmStrategy, revealedStrategies, startStrategy
 import { TeamProgressBoard } from './TeamProgressBoard'
 import type { FormationRole } from '../tactics/roles'
 import type { StrategyId } from '../tactics/strategies'
-import { createDrawContext, DRAW_HISTORY_KEY, newDrawSeed, parseReplay, readDrawHistory } from './drawHistory'
+import { createDrawContext, drawHistoryKey, newDrawSeed, parseReplay, readDrawHistory } from './drawHistory'
 import { HelpTip } from '../onboarding/HelpTip'
 import { helpTopicForPhase } from '../onboarding/helpTopics'
 import { WinCelebration } from './WinCelebration'
@@ -41,7 +41,6 @@ function replayConfig(text: string): MatchConfig {
   try { return parseMatchConfig((JSON.parse(text) as { config?: unknown }).config) ?? CLASSIC_CONFIG } catch { return CLASSIC_CONFIG }
 }
 const RECRUITER_IDS = ['recruiter_one', 'recruiter_two'] as const
-const playerById = (id: string) => DRAFT_CATALOG.find((player) => player.id === id)!
 
 export function AuctionPage({ onDraftFree }: AuctionPageProps) {
   const { t } = useTranslation()
@@ -51,7 +50,11 @@ export function AuctionPage({ onDraftFree }: AuctionPageProps) {
   const [replayText, setReplayText] = useState('')
   const [storageWarning, setStorageWarning] = useState(false)
   const [mode, setMode] = useState<ThemedModeId>('GLOBAL_CLASSIC')
+  /** Mode of the running game; the setup screen follows `mode`. */
+  const [gameMode, setGameMode] = useState<ThemedModeId>('GLOBAL_CLASSIC')
   const [game, setGame] = useState<RecruiterDuelGame | null>(null)
+  const catalog = useMemo(() => catalogForMode(game ? gameMode : mode), [game, gameMode, mode])
+  const playerById = (id: string) => catalog.find((player) => player.id === id)!
   const [error, setError] = useState<string | null>(null)
   const [autoFailedSeed, setAutoFailedSeed] = useState<string | null>(null)
   const [setup, setSetup] = useState<SetupDraft>(DEFAULT_SETUP_DRAFT)
@@ -69,34 +72,36 @@ export function AuctionPage({ onDraftFree }: AuctionPageProps) {
   }
   const customBudget = Number(setup.budgetText)
   const customConfig: MatchConfig = { version: MATCH_CONFIG_VERSION, budget: customBudget, names: { recruiter_one: sanitizeName(setup.nameOne), recruiter_two: sanitizeName(setup.nameTwo) }, substitutes: setup.substitutes }
-  const setupPreflight = isValidBudget(customBudget) ? preflightMatchConfig(DRAFT_CATALOG, customConfig) : { ok: false as const, reason: 'budget_range' as const }
+  const setupPreflight = isValidBudget(customBudget) ? preflightMatchConfig(catalog, customConfig) : { ok: false as const, reason: 'budget_range' as const }
   const config = setup.mode === 'custom' ? customConfig : CLASSIC_CONFIG
   const canStart = setup.mode === 'classic' || (setupPreflight.ok && Object.keys(nameIssues(customConfig.names)).length === 0)
   const start = () => {
     if (!canStart) return
-    const saved = readDrawHistory({ getItem: (key) => window.localStorage.getItem(key) }, DRAFT_CATALOG)
+    const saved = readDrawHistory({ getItem: (key) => window.localStorage.getItem(key) }, catalog, drawHistoryKey(mode))
     const recent = saved.history.games.flatMap((entry) => {
-      const previous = createRecruiterDuel(DRAFT_CATALOG, entry.seed, entry.context)
+      const previous = createRecruiterDuel(catalog, entry.seed, entry.context)
       return previous.ok ? [previous.game.rounds.map((item) => item.playerId)] : []
     })
-    const context = createDrawContext(DRAFT_CATALOG, recent)
+    const context = createDrawContext(catalog, recent)
     let seed: string
     try { seed = newDrawSeed() }
     catch { return setError(t('draw.randomError')) }
-    const created = createRecruiterDuel(DRAFT_CATALOG, seed, context, config)
+    const created = createRecruiterDuel(catalog, seed, context, config)
     if (!created.ok) return setError(t(`duel.errors.${created.error}`))
-    setGame(created.game); setError(null)
+    setGameMode(mode); setGame(created.game); setError(null)
     let warning = saved.warning
-    try { window.localStorage.setItem(DRAW_HISTORY_KEY, JSON.stringify({ version: 1, games: [...saved.history.games, { seed, context }].slice(-5) })) }
+    try { window.localStorage.setItem(drawHistoryKey(mode), JSON.stringify({ version: 1, games: [...saved.history.games, { seed, context }].slice(-5) })) }
     catch { warning = true }
     setStorageWarning(warning)
   }
   const reproduce = () => {
-    const replay = parseReplay(replayText, DRAFT_CATALOG)
-    if (!replay) return setError(t('draw.invalidReplay'))
-    const created = createRecruiterDuel(DRAFT_CATALOG, replay.seed, replay.context, replayConfig(replayText))
+    const replayMode = [...PLAYABLE_MODES].find((candidate) => parseReplay(replayText, catalogForMode(candidate)))
+    const replayCatalog = replayMode ? catalogForMode(replayMode) : null
+    const replay = replayCatalog ? parseReplay(replayText, replayCatalog) : null
+    if (!replayMode || !replayCatalog || !replay) return setError(t('draw.invalidReplay'))
+    const created = createRecruiterDuel(replayCatalog, replay.seed, replay.context, replayConfig(replayText))
     if (!created.ok) return setError(t(`duel.errors.${created.error}`))
-    setGame(created.game); setError(null); setStorageWarning(false)
+    setMode(replayMode); setGameMode(replayMode); setGame(created.game); setError(null); setStorageWarning(false)
   }
   const chooseCoin = (side: CoinSide) => setGame((current) => {
     if (!current || current.phase !== 'LOBBY') return current
@@ -131,41 +136,41 @@ export function AuctionPage({ onDraftFree }: AuctionPageProps) {
     const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
     const timer = window.setTimeout(() => setGame((current) => {
       if (!current || current.phase !== 'BIDDING' || current.activeParticipant !== 'recruiter_two') return current
-      const result = takeCpuTurn(current, DRAFT_CATALOG, strategy)
+      const result = takeCpuTurn(current, catalog, strategy)
       return result.ok ? result.game : current
     }), reduced ? Math.min(pauseMs, 150) : pauseMs)
     return () => window.clearTimeout(timer)
-  }, [cpuTurn, game, strategy, pauseMs])
+  }, [cpuTurn, game, strategy, pauseMs, catalog])
   const auctionHudPhase = game !== null && ['REVEAL_PLAYER', 'BIDDING', 'DISCARD_RESULT', 'ROUND_RESULT', 'NEXT_ROUND'].includes(game.phase)
-  const hud = useMemo(() => game && auctionHudPhase ? buildHudModel(game, DRAFT_CATALOG) : null, [game, auctionHudPhase])
+  const hud = useMemo(() => game && auctionHudPhase ? buildHudModel(game, catalog) : null, [game, auctionHudPhase, catalog])
   const cpuLineup = game?.teams.recruiter_two.lineup
-  const cpuStrategy = useMemo(() => opponentMode === 'cpu' && game?.phase === 'TEAMS_COMPLETED' && cpuLineup ? selectCpuStrategy(cpuLineup, DRAFT_CATALOG, game.seed) : undefined, [opponentMode, game, cpuLineup])
+  const cpuStrategy = useMemo(() => opponentMode === 'cpu' && game?.phase === 'TEAMS_COMPLETED' && cpuLineup ? selectCpuStrategy(cpuLineup, catalog, game.seed) : undefined, [opponentMode, game, cpuLineup, catalog])
   /** Starts the match. Returns false when the engine refuses, so the start button can be used again. */
   const playMatch = (current: RecruiterDuelGame, first: StrategyId, second: StrategyId) => {
-    const result = startDuelMatch(current, DRAFT_CATALOG, { recruiter_one: first, recruiter_two: second })
+    const result = startDuelMatch(current, catalog, { recruiter_one: first, recruiter_two: second })
     apply(result)
     return result.ok
   }
   const quickTaker = game ? RECRUITER_IDS.find((participant) => canAutoComplete(game, participant)) : undefined
   const cpuAuto = quickTaker === 'recruiter_two' && opponentMode === 'cpu' && autoFailedSeed !== game?.seed
   const humanQuick = quickTaker && !cpuAuto ? quickTaker : undefined
-  const quickPreview = useMemo(() => game && humanQuick ? previewAutoComplete(game, humanQuick, DRAFT_CATALOG) : null, [game, humanQuick])
+  const quickPreview = useMemo(() => game && humanQuick ? previewAutoComplete(game, humanQuick, catalog) : null, [game, humanQuick, catalog])
   useEffect(() => {
     if (!cpuAuto || !game) return
     const timer = window.setTimeout(() => {
-      const step = autoCompleteStep(game, 'recruiter_two', DRAFT_CATALOG)
+      const step = autoCompleteStep(game, 'recruiter_two', catalog)
       if (step.ok) return setGame(step.game)
       setAutoFailedSeed(game.seed); setError(t('autoComplete.cpuFailed'))
     }, window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 0 : 450)
     return () => window.clearTimeout(timer)
-  }, [cpuAuto, game, t])
+  }, [cpuAuto, game, t, catalog])
   const lastCpuDecision = game?.record.filter((entry) => entry.type === 'cpu_decision' && entry.round === game.roundIndex && entry.playerId === currentRound(game)?.playerId).at(-1)
   const round = game ? currentRound(game) : null
   const footballer = round ? playerById(round.playerId) : null
   const minimum = game?.currentBid ? game.currentBid.amount + 1 : footballer?.price ?? 0
   const offerKey = game ? [game.seed, game.roundIndex, currentRound(game)?.playerId, game.activeParticipant, game.currentBid?.amount ?? 0].join(':') : ''
   const offer = offerInput?.key === offerKey ? offerInput.value : minimum
-  const availability = game && game.activeParticipant ? auctionAvailability(game, game.activeParticipant, DRAFT_CATALOG, offer, cpuTurn) : null
+  const availability = game && game.activeParticipant ? auctionAvailability(game, game.activeParticipant, catalog, offer, cpuTurn) : null
   const progress = game?.activeParticipant && round ? positionProgress(game.teams[game.activeParticipant], round.position) : null
   const orderingDone = (participant: RecruiterId) => (opponentMode === 'cpu' && participant === 'recruiter_two') || (lineupConfirmed.seed === game?.seed && lineupConfirmed[participant])
   const setOrderingDone = (participant: RecruiterId, value: boolean) => game && setLineupConfirmed((current) => ({ ...(current.seed === game.seed ? current : { seed: game.seed, recruiter_one: false, recruiter_two: false }), [participant]: value }))
@@ -175,12 +180,12 @@ export function AuctionPage({ onDraftFree }: AuctionPageProps) {
     if (result.ok) setGame(result.game)
     return result.ok ? null : result.error
   }
-  const recordBid = () => !cpuTurn && game && game.activeParticipant && apply(placeBid(game, game.activeParticipant, offer, DRAFT_CATALOG))
-  const recordPass = () => !cpuTurn && game && game.activeParticipant && apply(passAuction(game, game.activeParticipant, DRAFT_CATALOG))
+  const recordBid = () => !cpuTurn && game && game.activeParticipant && apply(placeBid(game, game.activeParticipant, offer, catalog))
+  const recordPass = () => !cpuTurn && game && game.activeParticipant && apply(passAuction(game, game.activeParticipant, catalog))
   const names = { recruiter_one: game?.config?.names.recruiter_one ?? t('duel.recruiters.recruiter_one'), recruiter_two: game?.config?.names.recruiter_two ?? (opponentMode === 'cpu' ? 'CPU' : t('duel.recruiters.recruiter_two')) }
 
   if (game && (game.phase === 'SIMULATING' || game.phase === 'MATCH_RESULT') && game.matchResult) {
-    return <div className="draft-app duel-shell"><header className="draft-header"><a className="brand" href="#duel-main" aria-label={PRODUCT.name}><span className="brand-emblem">R</span><span>{PRODUCT.name}</span></a><AudioControls /><LanguageSelector /></header><p className="discard-counter">{t('discards.available', { count: game.discardsRemaining })}</p><MatchScreen result={game.matchResult} localName={names.recruiter_one} cpuName={names.recruiter_two} onFinished={() => { if (game.phase === 'SIMULATING') apply(completeDuelMatch(game)) }} onRematch={start} onReturn={() => setGame(null)} /></div>
+    return <div className="draft-app duel-shell"><header className="draft-header"><a className="brand" href="#duel-main" aria-label={PRODUCT.name}><span className="brand-emblem">R</span><span>{PRODUCT.name}</span></a><AudioControls /><LanguageSelector /></header><p className="discard-counter">{t('discards.available', { count: game.discardsRemaining })}</p><MatchScreen result={game.matchResult} catalog={catalog} localName={names.recruiter_one} cpuName={names.recruiter_two} onFinished={() => { if (game.phase === 'SIMULATING') apply(completeDuelMatch(game)) }} onRematch={start} onReturn={() => setGame(null)} /></div>
   }
   return <div className="draft-app duel-shell">
     <header className="draft-header"><a className="brand" href="#duel-main" aria-label={PRODUCT.name}><span className="brand-emblem">R</span><span>{PRODUCT.name}</span></a><AudioControls /><LanguageSelector /></header>
@@ -194,12 +199,12 @@ export function AuctionPage({ onDraftFree }: AuctionPageProps) {
       {game?.phase === 'LOBBY' && <section className="coin-toss coin-choice"><h1>{t('duel.chooseCoin')}</h1><p>{t('duel.chooseCoinDetail')}</p><div className="coin-faces">{(['heads', 'tails'] as const).map((side) => <button key={side} className="coin-face-choice" aria-label={t(`duel.${side}`)} onClick={() => chooseCoin(side)}><CoinFace side={side} /><strong aria-hidden="true">{t(`duel.${side}`)}</strong><small aria-hidden="true">{t(`coin.faces.${side}`)}</small></button>)}</div></section>}
       {game?.phase === 'COIN_TOSS' && <section className="coin-toss" aria-live="polite"><FootballCoin side={game.coinResult ?? 'heads'} tossing /><h1>{t('duel.coinToss')}</h1><p>{t('duel.coinTossWaiting')}</p><button className="secondary-action" onClick={revealToss}>{t('coin.skip')}</button></section>}
       {game && ['REVEAL_PLAYER', 'BIDDING', 'ROUND_RESULT', 'TEAMS_COMPLETED'].includes(game.phase) && <>
-        {humanQuick && quickPreview && game.phase !== 'TEAMS_COMPLETED' && <QuickCompletePanel participantName={names[humanQuick]} rivalName={names[humanQuick === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one']} catalog={DRAFT_CATALOG} preview={quickPreview} onConfirm={() => apply(autoCompleteAll(game, humanQuick, DRAFT_CATALOG))} />}
+        {humanQuick && quickPreview && game.phase !== 'TEAMS_COMPLETED' && <QuickCompletePanel participantName={names[humanQuick]} rivalName={names[humanQuick === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one']} catalog={catalog} preview={quickPreview} onConfirm={() => apply(autoCompleteAll(game, humanQuick, catalog))} />}
         {cpuAuto && (() => {
           const signed = game.record.filter((entry) => entry.type === 'award' && entry.reason === 'auto_complete')
           const last = signed.at(-1)
           return <CpuCompletionPanel cpuName={names.recruiter_two} done={signed.length} total={signed.length + game.rounds.length - game.roundIndex} lastPlayer={last?.type === 'award' ? playerById(last.playerId).name : null} lastPrice={last?.type === 'award' ? last.price : null}
-            onSkip={() => { const result = autoCompleteAll(game, 'recruiter_two', DRAFT_CATALOG); if (result.ok) apply(result); else { setAutoFailedSeed(game.seed); setError(t('autoComplete.cpuFailed')) } }} />
+            onSkip={() => { const result = autoCompleteAll(game, 'recruiter_two', catalog); if (result.ok) apply(result); else { setAutoFailedSeed(game.seed); setError(t('autoComplete.cpuFailed')) } }} />
         })()}
         {game.phase !== 'TEAMS_COMPLETED' && !cpuAuto && round && footballer && <section className="auction-board" aria-live="polite"><div className="auction-heading"><p className="eyebrow"><span />{t('duel.round', { current: game.roundIndex + 1, total: game.rounds.length })}</p><p>{t('duel.opening', { participant: names[game.openingOrder[game.roundIndex]] })}</p></div><div className="auction-candidate" key={footballer.id}><PlayerIdentity player={footballer} /></div>
           {game.phase === 'REVEAL_PLAYER' && <div className="duel-actions reveal-actions">{game.roundIndex === 0 && <><FootballCoin side={game.coinResult!} /><p>{t('coin.result', { side: t(`duel.${game.coinResult}`), participant: names[game.coinTossWinner!] })}</p></>}<button className="primary-action" onClick={() => apply(beginBidding(game))}>{t('duel.beginBidding')}</button></div>}
@@ -208,10 +213,10 @@ export function AuctionPage({ onDraftFree }: AuctionPageProps) {
           {game.phase === 'BIDDING' && availability && <p id="auction-assignment" className="assignment-notice" role="status">{availability.replacement ? t('discards.doublePass', { count: game.discardsRemaining, position: t(`positions.${footballer!.position}`) }) : availability.passAward ? t(availability.passAward.reason === 'voluntary_bid' ? 'auctionActions.passAwards' : 'auctionActions.mandatory', { participant: names[availability.passAward.winner], amount: availability.passAward.price }) : availability.fallback ? t('auctionActions.doublePass', { participant: names[availability.fallback.winner], amount: availability.fallback.price }) : availability.pass.reason ? t('auctionActions.blocks.' + availability.pass.reason) : null}</p>}
           {cpuTurn && <section className="bid-panel" role="status">{t('auctionActions.blocks.CPU_THINKING')}</section>}
           {lastCpuDecision?.type === 'cpu_decision' && <p className="cpu-status" role="status">{t(lastCpuDecision.action === 'bid' ? 'cpu.bids' : 'cpu.passes', {amount:lastCpuDecision.amount})}</p>}
-          {game.phase === 'ROUND_RESULT' && game.lastAward && <section className="award-result">{game.lastAward.reason === 'voluntary_bid' && (opponentMode !== 'cpu' || game.lastAward.winner === 'recruiter_one') && <WinCelebration participant={names[game.lastAward.winner]} player={footballer.name} amount={game.lastAward.price} />}<h2>{t(game.lastAward.reason === 'voluntary_bid' ? 'duel.roundResult' : 'cpu.mandatory')}</h2>{opponentMode === 'cpu' && game.lastAward.winner === 'recruiter_two' && game.lastAward.reason === 'voluntary_bid' && <p>{t('cpu.wins')}</p>}<p>{t('duel.awardPlayer', { participant: names[game.lastAward.winner], player: footballer.name, amount: game.lastAward.price })}</p><button className="primary-action" onClick={() => apply(nextAuctionRound(game, DRAFT_CATALOG))}>{t('duel.nextRound')}</button></section>}
+          {game.phase === 'ROUND_RESULT' && game.lastAward && <section className="award-result">{game.lastAward.reason === 'voluntary_bid' && (opponentMode !== 'cpu' || game.lastAward.winner === 'recruiter_one') && <WinCelebration participant={names[game.lastAward.winner]} player={footballer.name} amount={game.lastAward.price} />}<h2>{t(game.lastAward.reason === 'voluntary_bid' ? 'duel.roundResult' : 'cpu.mandatory')}</h2>{opponentMode === 'cpu' && game.lastAward.winner === 'recruiter_two' && game.lastAward.reason === 'voluntary_bid' && <p>{t('cpu.wins')}</p>}<p>{t('duel.awardPlayer', { participant: names[game.lastAward.winner], player: footballer.name, amount: game.lastAward.price })}</p><button className="primary-action" onClick={() => apply(nextAuctionRound(game, catalog))}>{t('duel.nextRound')}</button></section>}
         </section>}
         {game.phase === 'TEAMS_COMPLETED' && (() => {
-          if (!RECRUITER_IDS.every((participant) => isValidOrganizedLineup(game.teams[participant].lineup, DRAFT_CATALOG, budgetOf(game)))) {
+          if (!RECRUITER_IDS.every((participant) => isValidOrganizedLineup(game.teams[participant].lineup, catalog, budgetOf(game)))) {
             return <section className="teams-completed" role="alert"><p>{t('recovery.invalidTeams')}</p><button className="primary-action" onClick={() => setGame(null)}>{t('recovery.restart')}</button></section>
           }
           const humans = RECRUITER_IDS.filter((participant) => !(opponentMode === 'cpu' && participant === 'recruiter_two'))
@@ -228,7 +233,7 @@ export function AuctionPage({ onDraftFree }: AuctionPageProps) {
             <details className="lineup-recap" open={!bothReady}>
               <summary>{t('stages.showTeams')}</summary>
               <div className="team-comparison">{RECRUITER_IDS.map((participant) => <article key={participant}><h2>{names[participant]}</h2><strong>{t('duel.spent', { amount: game.teams[participant].spent })}</strong><p>{DRAFT_SLOTS.map((slot) => playerById(game.teams[participant].lineup[slot.id]!).name).join(' · ')}</p></article>)}</div>
-              {(pending ? [pending] : humans).map((participant) => <LineupOrganizer key={participant} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} game={game} participant={participant} name={names[participant]} catalog={DRAFT_CATALOG} confirmed={orderingDone(participant)} onSwap={(first, second) => swapLineup(participant, first, second)} onConfirm={() => setOrderingDone(participant, true)} onEdit={() => setOrderingDone(participant, false)} />)}
+              {(pending ? [pending] : humans).map((participant) => <LineupOrganizer key={participant} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} game={game} participant={participant} name={names[participant]} catalog={catalog} confirmed={orderingDone(participant)} onSwap={(first, second) => swapLineup(participant, first, second)} onConfirm={() => setOrderingDone(participant, true)} onEdit={() => setOrderingDone(participant, false)} />)}
               {opponentMode === 'cpu' && <p>{t('lineup.cpuKeeps')}</p>}
               {!bothReady && <p role="status">{t('lineup.waiting')}</p>}
             </details>
@@ -241,7 +246,7 @@ export function AuctionPage({ onDraftFree }: AuctionPageProps) {
           </section>
         })()}
       </>}
-      {game && <><TeamProgressBoard game={game} catalog={DRAFT_CATALOG} names={names} /><details className="draw-replay"><summary>{t('draw.export')}</summary><p>{t('draw.explanation')}</p><label>{t('draw.context')}<textarea readOnly value={JSON.stringify({ seed: game.seed, context: game.drawContext, ...(game.config ? { config: game.config } : {}) })} /></label></details></>}
+      {game && <><TeamProgressBoard game={game} catalog={catalog} names={names} /><details className="draw-replay"><summary>{t('draw.export')}</summary><p>{t('draw.explanation')}</p><label>{t('draw.context')}<textarea readOnly value={JSON.stringify({ seed: game.seed, context: game.drawContext, ...(game.config ? { config: game.config } : {}) })} /></label></details></>}
       {storageWarning && <p role="status">{t('draw.storageWarning')}</p>}
       <VisualCredits />
     </main>
