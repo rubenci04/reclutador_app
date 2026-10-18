@@ -26,6 +26,11 @@ function fakeGateway() {
       state = {...state,version:state.version+1,members:state.members.map(m => m.userId === host && command.actionType === 'SET_READY' ? {...m,ready:command.payload.ready} : m)}
       return structuredClone(state)
     }),
+    startDuel: vi.fn(async () => structuredClone(state)),
+    submitState: vi.fn(async () => structuredClone(state)),
+    setStrategy: vi.fn(async () => structuredClone(state)),
+    revealStrategies: vi.fn(async () => ({ recruiter_one: 'NEUTRAL', recruiter_two: 'NEUTRAL' })),
+    forfeit: vi.fn(async () => structuredClone(state)),
     watch: vi.fn((_id, changed, status) => {change=changed; status('connected'); return stop}),
   }
   return {gateway,stop,update: (next: RoomSnapshot) => {state=next; change()}}

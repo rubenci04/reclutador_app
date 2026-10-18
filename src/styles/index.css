@@ -298,3 +298,13 @@
   .draft-header { flex-wrap: wrap; gap: 6px; }
 }
 @media (max-width: 420px) { .draft-app { padding: 0 10px; } .audio-control input[type="range"] { width: 56px; } .language-control select { max-width: 150px; } }
+
+.blockable { display: inline-flex; }
+.blockable button:disabled { pointer-events: none; }
+.notice-stack { position: fixed; left: 10px; right: 58px; bottom: 10px; z-index: 55; display: grid; gap: 8px; max-width: 520px; pointer-events: none; }
+.notice { pointer-events: auto; display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 8px; border-left: 4px solid #d5fb76; background: #102519f5; color: #eaf4e4; font-size: .85rem; line-height: 1.4; box-shadow: 0 8px 22px #000a; animation: panel-enter var(--motion-base) var(--motion-ease); }
+.notice-success { border-left-color: #f4dc63; }
+.notice-warning { border-left-color: #ffb347; background: #2a1c10f5; font-weight: 700; }
+.notice span { flex: 1; }
+.notice-close { background: transparent; border: 0; color: inherit; font-size: 1.2rem; line-height: 1; cursor: pointer; padding: 0 4px; }
+@media (prefers-reduced-motion: reduce) { .notice { animation: none; } }

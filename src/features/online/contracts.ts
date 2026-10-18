@@ -2,7 +2,7 @@ import { nameLength, sanitizeName } from '../recruiter-duel/matchConfig'
 
 export const ROOM_STATUSES = ['WAITING', 'READY', 'IN_PROGRESS', 'FINISHED', 'CANCELLED'] as const
 export const ONLINE_PHASES = ['LOBBY', 'COIN_TOSS', 'AUCTION', 'TEAM_ORGANIZATION', 'STRATEGY_SELECTION', 'STRATEGY_REVEAL', 'SIMULATING', 'MATCH_RESULT'] as const
-export const ONLINE_ERRORS = ['ROOM_NOT_FOUND', 'ROOM_FULL', 'NOT_ROOM_MEMBER', 'NOT_YOUR_TURN', 'INVALID_PHASE', 'STALE_STATE', 'ACTION_ALREADY_PROCESSED', 'INVALID_ACTION', 'ROOM_EXPIRED', 'AUTH_REQUIRED', 'NETWORK_ERROR', 'NOT_CONFIGURED'] as const
+export const ONLINE_ERRORS = ['ROOM_NOT_FOUND', 'ROOM_FULL', 'NOT_ROOM_MEMBER', 'NOT_YOUR_TURN', 'INVALID_PHASE', 'STALE_STATE', 'ACTION_ALREADY_PROCESSED', 'INVALID_ACTION', 'ROOM_EXPIRED', 'AUTH_REQUIRED', 'NETWORK_ERROR', 'NOT_CONFIGURED', 'BACKEND_OUTDATED'] as const
 export type OnlineErrorCode = typeof ONLINE_ERRORS[number]
 export class OnlineError extends Error {
   constructor(readonly code: OnlineErrorCode) { super(code) }
@@ -21,6 +21,10 @@ export interface RoomSnapshot {
   readonly deadlineAt: string | null
   readonly settings: typeof CLASSIC_ONLINE
   readonly members: readonly RoomMember[]
+  /** The shared duel (a RecruiterDuelGame) once it started; an empty object before that. Validated by parseDuel. */
+  readonly state?: unknown
+  /** Which seats already picked a strategy; never what they picked. */
+  readonly strategyReady?: { readonly '1': boolean; readonly '2': boolean }
 }
 export type LobbyAction = { readonly actionType: 'SET_READY'; readonly payload: { readonly ready: boolean } } | { readonly actionType: 'LEAVE' | 'START'; readonly payload: Record<string, never> }
 // actorId is deliberately absent from the wire command: PostgreSQL derives it from auth.uid().

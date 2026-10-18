@@ -8,10 +8,10 @@ export function HistoryPanel() {
   const entries = useMatchHistory()
   const [confirming, setConfirming] = useState(false)
   if (!entries.length) return <details className="history-panel"><summary>{t('history.title')}</summary><p>{t('history.empty')}</p></details>
-  const cpu = summarize(entries, 'cpu'); const people = summarize(entries, 'hotseat')
+  const cpu = summarize(entries, 'cpu'); const people = summarize(entries, 'hotseat'); const online = summarize(entries, 'online')
   const line = (label: string, s: ReturnType<typeof summarize>) => s.played ? <p key={label}><strong>{label}</strong> · {t('history.totals', { played: s.played, wins: s.wins, draws: s.draws, losses: s.losses })}{s.abandoned ? ` · ${t('history.abandonedCount', { count: s.abandoned })}` : ''}</p> : null
   return <details className="history-panel"><summary>{t('history.title')} ({entries.length})</summary>
-    {line(t('history.vsCpu'), cpu)}{line(t('history.vsPerson'), people)}
+    {line(t('history.vsCpu'), cpu)}{line(t('history.vsPerson'), people)}{line(t('history.vsOnline'), online)}
     <ol className="history-list">{entries.slice(0, 10).map((entry) => <li key={entry.id}>
       <time dateTime={entry.at}>{new Date(entry.at).toLocaleDateString()}</time>{' '}
       <span>{entry.names.recruiter_one} {t('history.versus')} {entry.names.recruiter_two}</span>{' · '}

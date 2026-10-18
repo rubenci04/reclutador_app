@@ -7,7 +7,7 @@ export interface HistoryEntry {
   readonly id: string
   readonly at: string
   readonly mode: string
-  readonly opponent: 'cpu' | 'hotseat'
+  readonly opponent: 'cpu' | 'hotseat' | 'online'
   readonly names: { readonly recruiter_one: string; readonly recruiter_two: string }
   readonly outcome: HistoryOutcome
   /** Final score; null when the duel ended by abandonment. */
@@ -26,7 +26,7 @@ function valid(entry: unknown): entry is HistoryEntry {
   const names = e.names as Record<string, unknown> | undefined
   const score = e.score as Record<string, unknown> | null | undefined
   return typeof e.id === 'string' && e.id.length > 0 && e.id.length <= 200 && typeof e.at === 'string' && typeof e.mode === 'string'
-    && (e.opponent === 'cpu' || e.opponent === 'hotseat') && !!names && typeof names.recruiter_one === 'string' && typeof names.recruiter_two === 'string'
+    && (e.opponent === 'cpu' || e.opponent === 'hotseat' || e.opponent === 'online') && !!names && typeof names.recruiter_one === 'string' && typeof names.recruiter_two === 'string'
     && ['recruiter_one', 'recruiter_two', 'draw'].includes(e.outcome as string)
     && (score === null || (!!score && isCount(score.recruiter_one) && isCount(score.recruiter_two)))
     && (e.abandonedBy === null || e.abandonedBy === 'recruiter_one' || e.abandonedBy === 'recruiter_two')
@@ -72,7 +72,7 @@ export const useMatchHistory = () => useSyncExternalStore(subscribe, getSnapshot
 
 export interface HistorySummary { readonly played: number; readonly wins: number; readonly draws: number; readonly losses: number; readonly abandoned: number }
 /** Wins and losses from the point of view of recruiter one, the person at the device. */
-export function summarize(entries: readonly HistoryEntry[], opponent: 'cpu' | 'hotseat'): HistorySummary {
+export function summarize(entries: readonly HistoryEntry[], opponent: HistoryEntry['opponent']): HistorySummary {
   const own = entries.filter((entry) => entry.opponent === opponent)
   return {
     played: own.length,

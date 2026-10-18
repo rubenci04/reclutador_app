@@ -9,9 +9,17 @@ export interface OnlineGateway {
   join(code: string, name: string, actionId: string): Promise<RoomSnapshot>
   snapshot(roomId: string): Promise<RoomSnapshot>
   command(command: RoomCommand): Promise<RoomSnapshot | null>
+  /** Host only: stores the initial duel and moves the room to IN_PROGRESS. */
+  startDuel(roomId: string, expectedVersion: number, state: unknown, actionId: string): Promise<RoomSnapshot>
+  submitState(roomId: string, expectedVersion: number, state: unknown, actionId: string): Promise<RoomSnapshot>
+  setStrategy(roomId: string, strategy: string): Promise<RoomSnapshot>
+  revealStrategies(roomId: string): Promise<Record<'recruiter_one' | 'recruiter_two', string>>
+  forfeit(roomId: string, actionId: string): Promise<RoomSnapshot>
   watch(roomId: string, changed: () => void, status: (status: ConnectionStatus) => void): () => void
 }
-function backendError(error: { message: string }): OnlineError {
+function backendError(error: { message: string; code?: string }): OnlineError {
+  // PostgREST answers PGRST202 when a function does not exist: the database misses a migration.
+  if (error.code === 'PGRST202' || /Could not find the function/i.test(error.message)) return new OnlineError('BACKEND_OUTDATED')
   return new OnlineError(ONLINE_ERRORS.find(code => code === error.message) ?? 'NETWORK_ERROR')
 }
 export function createOnlineGateway(client: SupabaseClient = getOnlineClient()): OnlineGateway {
@@ -40,6 +48,28 @@ export function createOnlineGateway(client: SupabaseClient = getOnlineClient()):
       if (command.actionType === 'LEAVE' && result === null) return null
       return parseSnapshot(result)
     },
+    async startDuel(roomId, expectedVersion, state, actionId) {
+      if (!isUuid(roomId) || !isUuid(actionId) || !Number.isSafeInteger(expectedVersion) || expectedVersion < 0) throw new OnlineError('INVALID_ACTION')
+      return parseSnapshot(await rpc('online_start_duel', { p_room_id: roomId, p_action_id: actionId, p_expected_version: expectedVersion, p_state: state }))
+    },
+    async submitState(roomId, expectedVersion, state, actionId) {
+      if (!isUuid(roomId) || !isUuid(actionId) || !Number.isSafeInteger(expectedVersion) || expectedVersion < 0) throw new OnlineError('INVALID_ACTION')
+      return parseSnapshot(await rpc('online_submit_state', { p_room_id: roomId, p_action_id: actionId, p_expected_version: expectedVersion, p_state: state }))
+    },
+    async setStrategy(roomId, strategy) {
+      if (!isUuid(roomId)) throw new OnlineError('INVALID_ACTION')
+      return parseSnapshot(await rpc('online_set_strategy', { p_room_id: roomId, p_strategy: strategy }))
+    },
+    async revealStrategies(roomId) {
+      if (!isUuid(roomId)) throw new OnlineError('INVALID_ACTION')
+      const value = await rpc('online_reveal_strategies', { p_room_id: roomId }) as Record<string, unknown> | null
+      if (!value || typeof value.recruiter_one !== 'string' || typeof value.recruiter_two !== 'string') throw new OnlineError('INVALID_ACTION')
+      return { recruiter_one: value.recruiter_one, recruiter_two: value.recruiter_two }
+    },
+    async forfeit(roomId, actionId) {
+      if (!isUuid(roomId) || !isUuid(actionId)) throw new OnlineError('INVALID_ACTION')
+      return parseSnapshot(await rpc('online_forfeit', { p_room_id: roomId, p_action_id: actionId }))
+    },
     watch(roomId, changed, status) {
       let closed = false
       const channel = client.channel('room:' + roomId, { config: { private: true } })
@@ -62,6 +92,11 @@ export function invitationUrl(code: string): string {
   const url = new URL(window.location.href)
   url.search = ''; url.hash = ''; url.searchParams.set('online', code)
   return url.toString()
+}
+/** Accepts the bare code or the whole invitation link pasted by the user. */
+export function inviteFromText(text: string): string {
+  const trimmed = text.trim()
+  try { return new URL(trimmed).searchParams.get('online')?.trim() ?? trimmed } catch { return trimmed }
 }
 export function invitationFromUrl(): string {
   return new URL(window.location.href).searchParams.get('online') ?? ''

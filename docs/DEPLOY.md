@@ -42,3 +42,7 @@ Opción 2, conectada a GitHub (despliegue automático en cada push):
 | Configuración local, cabeceras, build, guía, pruebas | Ejecutar el SQL en Supabase |
 | Verificar el proyecto y las variables | Iniciar sesión en Cloudflare (`wrangler login`) |
 | Corregir fallos que aparezcan tras el despliegue | Subir a GitHub si eliges la opción 2 |
+
+## Actualización 19/10/2026 — duelo online
+Para jugar online hay que ejecutar también, en el editor SQL de Supabase, `supabase/migrations/202610190001_online_duel.sql` (después de las dos anteriores). Sin esa migración la app muestra el aviso «El servidor todavía no tiene la última versión del modo online». La migración es nueva (no modifica los datos de salas existentes) y es segura de ejecutar una vez.
+Prueba: abrir la app en dos navegadores, crear la sala en uno, pegar el enlace en el otro, marcar «Estoy listo» en ambos e «Iniciar sala» en el anfitrión.

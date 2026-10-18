@@ -1,8 +1,13 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LanguageSelector } from '../../components/LanguageSelector'
+import { matchHistory } from '../history/matchHistory'
+import { AuctionPage } from '../recruiter-duel/AuctionPage'
+import type { OnlineDuelBinding } from '../recruiter-duel/onlineBinding'
+import { buildInitialDuel, forfeitOf, onlineHistoryEntry, otherSide, parseDuel, seatSide, slimDuel } from './onlineDuel'
+import { useOnlineSync } from './useOnlineSync'
 import { OnlineError, type LobbyAction, type OnlineErrorCode, type RoomSnapshot } from './contracts'
-import { createOnlineGateway, invitationFromUrl, invitationUrl, readRememberedRoom, rememberRoom, type ConnectionStatus, type OnlineGateway } from './onlineGateway'
+import { createOnlineGateway, inviteFromText, invitationFromUrl, invitationUrl, readRememberedRoom, rememberRoom, type ConnectionStatus, type OnlineGateway } from './onlineGateway'
 import './online.css'
 
 const errorCode = (error: unknown): OnlineErrorCode => error instanceof OnlineError ? error.code : 'NETWORK_ERROR'
@@ -121,6 +126,54 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
   }
   const own = room?.members.find(member => member.userId === userId)
   const lobbyOpen = room?.status === 'WAITING' || room?.status === 'READY'
+  const mySide = own ? seatSide(own.seat) : null
+  const duel = room && (room.status === 'IN_PROGRESS' || room.status === 'FINISHED') ? parseDuel(room.state) : null
+  const forfeitBy = room ? forfeitOf(room.state) : null
+  // The result is stored on this browser once it is known (a match result, or the rival giving up).
+  useEffect(() => {
+    if (!duel || !mySide) return
+    if (!forfeitBy && !(duel.matchResult && ['SIMULATING', 'MATCH_RESULT'].includes(duel.phase))) return
+    const entry = onlineHistoryEntry(duel, mySide, forfeitBy)
+    if (entry) matchHistory.record(entry)
+  }, [duel, mySide, forfeitBy])
+
+  const sync = useOnlineSync(gateway, room, setRoom, setError)
+  const { clear: clearSync } = sync
+  const exit = useCallback(() => {
+    if (userId) rememberRoom(userId, null)
+    clearSync(); setRoom(null)
+    const url = new URL(window.location.href); url.searchParams.delete('online'); window.history.replaceState(null, '', url)
+    setCode('')
+  }, [userId, clearSync])
+  function startDuel() {
+    if (!room || !gateway || room.hostId !== userId) return
+    const host = room.members.find(m => m.seat === 1)?.name ?? ''
+    let guest = room.members.find(m => m.seat === 2)?.name ?? ''
+    if (guest === host) guest = (guest + ' (2)').slice(0, 24)
+    let initial
+    try { initial = buildInitialDuel({ host, guest }) } catch { setError('INVALID_ACTION'); return }
+    const id = crypto.randomUUID(); const version = room.version; const roomIdValue = room.roomId
+    void run(() => gateway.startDuel(roomIdValue, version, slimDuel(initial), id))
+  }
+  const binding: OnlineDuelBinding | null = duel && mySide && room && gateway ? {
+    game: duel, mySide, submit: sync.submit,
+    strategyReady: { recruiter_one: !!room.strategyReady?.['1'], recruiter_two: !!room.strategyReady?.['2'] },
+    chooseStrategy: sync.chooseStrategy, revealStrategies: sync.revealStrategies, forfeit: sync.forfeit,
+    exit, connection, busy,
+  } : null
+  if (binding && duel && !forfeitBy) return <AuctionPage online={binding} onDraftFree={exit} />
+  if (binding && duel && forfeitBy) {
+    const names = { recruiter_one: duel.config?.names.recruiter_one ?? '', recruiter_two: duel.config?.names.recruiter_two ?? '' }
+    return <div className="draft-app online-shell">
+      <header className="draft-header"><span className="brand">Reclutador</span><LanguageSelector /></header>
+      <main className="online-main"><section className="online-card" role="status">
+        <h1>{t('online.duel.forfeitTitle')}</h1>
+        <p>{t('online.duel.forfeitBody', { loser: names[forfeitBy], winner: names[otherSide(forfeitBy)] })}</p>
+        <p><strong>{forfeitBy === binding.mySide ? t('online.duel.youLost') : t('online.duel.youWon')}</strong></p>
+        <button className="primary-action" onClick={exit}>{t('online.back')}</button>
+      </section></main>
+    </div>
+  }
   return <div className="draft-app online-shell">
     <header className="draft-header"><span className="brand">Reclutador</span><LanguageSelector /></header>
     <main className="online-main">
@@ -129,17 +182,19 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
       <p>{t('online.sessionNotice')}</p>
       {error && <p role="alert">{t('online.errors.' + error)}{error === 'NOT_CONFIGURED' && import.meta.env.DEV && <><br />{t('online.configHelp')}</>}</p>}
       {retry && <button className="primary-action" disabled={busy} onClick={() => { void run(retry) }}>{t('online.retry')}</button>}
+      {!room && invitationFromUrl() && <p className="auction-banner" role="status"><strong>{t('online.invited')}</strong></p>}
       {!room ? <section className="online-card" aria-label={t('online.setup')}>
         <label htmlFor="online-name">{t('online.name')}</label>
         <input id="online-name" autoComplete="nickname" value={name} onChange={e => setName(e.target.value)} />
         <p>{t('online.classic')}</p><p>{t('online.scope')}</p>
         <button className="primary-action" disabled={!gateway || !userId || busy || !!retry} onClick={() => { const id = crypto.randomUUID(); void run(() => gateway!.create(name,id)) }}>{t('online.create')}</button>
         <label htmlFor="online-code">{t('online.code')}</label>
-        <input id="online-code" autoComplete="off" value={code} onChange={e => setCode(e.target.value.trim())} />
+        <input id="online-code" autoComplete="off" value={code} onChange={e => setCode(inviteFromText(e.target.value))} /><p className="online-hint">{t('online.codeHint')}</p>
         <button className="secondary-action" disabled={!gateway || !userId || busy || !!retry} onClick={() => { const id = crypto.randomUUID(); void run(() => gateway!.join(code,name,id)) }}>{t('online.join')}</button>
       </section> : <section className="online-card" aria-label={t('online.lobby')}>
         <p role="status">{t('online.connection.' + connection)}</p><p>{t('online.peerNotice')}</p>
         <h2>{t('online.lobby')}</h2><p>{t('online.classic')}</p>
+        <ol className="online-steps"><li>{t('online.step1')}</li><li>{t('online.step2')}</li><li>{t('online.step3')}</li></ol>
         <p>{t('online.expires', { date: new Date(room.expiresAt).toLocaleString(i18n.language) })}</p>
         <ul className="online-members">{([1,2] as const).map(seat => {
           const member = room.members.find(m => m.seat === seat)
@@ -150,10 +205,11 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
         {copied && <p role="status">{t('online.copied')}</p>}{copyFailed && <p role="alert">{t('online.copyFailed')}</p>}
         {lobbyOpen && <div className="duel-actions">
           <button className="primary-action" disabled={busy || !!retry || !own} onClick={() => send({actionType:'SET_READY',payload:{ready:!own?.ready}})}>{t(own?.ready ? 'online.unready' : 'online.markReady')}</button>
-          {room.hostId === userId && <button className="primary-action" disabled={busy || !!retry || room.status !== 'READY'} onClick={() => send({actionType:'START',payload:{}})}>{t('online.start')}</button>}
+          {room.hostId === userId && <button className="primary-action" disabled={busy || !!retry || room.status !== 'READY'} onClick={startDuel}>{t('online.start')}</button>}
           <button className="secondary-action" disabled={busy || !!retry} onClick={() => send({actionType:'LEAVE',payload:{}})}>{t('online.leave')}</button>
         </div>}
-        {room.status === 'IN_PROGRESS' && <p role="status">{t('online.started')}</p>}
+        {room.status === 'READY' && room.hostId !== userId && <p className="auction-banner" role="status"><strong>{t('online.waitHost')}</strong></p>}
+        {room.status === 'IN_PROGRESS' && !duel && <><p role="status">{t('online.legacyRoom')}</p>{room.hostId === userId && <button className="primary-action" disabled={busy || !!retry} onClick={startDuel}>{t('online.start')}</button>}</>}
         {room.status === 'CANCELLED' && <><p role="status">{t('online.cancelled')}</p><button className="secondary-action" onClick={() => { setRoom(null); rememberRoom(userId!,null) }}>{t('online.dismiss')}</button></>}
       </section>}
       {busy && <p role="status">{t('online.saving')}</p>}
