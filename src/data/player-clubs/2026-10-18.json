@@ -236,9 +236,9 @@
   "careerStatus": "UNKNOWN",
   "clubHistory": [],
   "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
+  "sourceUrl": "https://www.fichajes.net/en/news/bombshell-gimenez-leaves-for-depor-20260901.html",
   "verificationStatus": "PENDING",
-  "auditNote": "Conflicting: ESPN/Gradient still show Atlético de Madrid (ankle sprain May 2026), one page indicates a loan to Deportivo de La Coruña in Sep 2026. Single source; needs official LaLiga/club confirmation."
+  "auditNote": "Third review: sources of 1 Sep 2026 report a loan to Deportivo de La Coruna from Atletico de Madrid, but no official statement from either club was found; not recorded as his club."
  },
  {
   "playerId": "plr_015",
@@ -525,13 +525,27 @@
   "revision": 1,
   "referenceClubId": "sevilla",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
-  "verificationStatus": "PENDING",
-  "auditNote": "Left Newell's (not renewed) in Jan 2026; reports mention Defensa y Justicia but no confirmed signing or retirement was found."
+  "currentClubId": "defensa_y_justicia",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "defensa_y_justicia",
+    "source": {
+     "provider": "editorial",
+     "url": "https://elintransigente.com/2026/01/ever-banega-eligio-nuevo-destino-tras-irse-libre-y-hay-impacto-en-el-apertura-juega-contra-newells/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://elintransigente.com/2026/01/ever-banega-eligio-nuevo-destino-tras-irse-libre-y-hay-impacto-en-el-apertura-juega-contra-newells/",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://elintransigente.com/2026/01/ever-banega-eligio-nuevo-destino-tras-irse-libre-y-hay-impacto-en-el-apertura-juega-contra-newells/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Third review: Defensa y Justicia announced the signing on 13 Jan 2026 (free from Newell's, one year to 31 Dec 2026), so the contract covers the cut-off. Source is a news report of the club announcement."
  },
  {
   "playerId": "plr_033",
@@ -604,13 +618,27 @@
   "revision": 1,
   "referenceClubId": "deportivo_la_coruna",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
-  "verificationStatus": "PENDING",
-  "auditNote": "Wikipedia, FotMob and ESPN place him at Alajuelense in 2025-26 (match of 11 Mar 2026), but no source confirms his status after the mid-year window."
+  "currentClubId": "alajuelense",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "alajuelense",
+    "source": {
+     "provider": "editorial",
+     "url": "https://elmundo.cr/deportes/celso-borges-vence-contrato-con-alajuelense-en-diciembre-le-informamos-que-pasara/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://elmundo.cr/deportes/celso-borges-vence-contrato-con-alajuelense-en-diciembre-le-informamos-que-pasara/",
+    "startedYear": 2025
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://elmundo.cr/deportes/celso-borges-vence-contrato-con-alajuelense-en-diciembre-le-informamos-que-pasara/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Third review: CRHoy (Nov 2025) reports a one-year renewal and El Mundo says the contract ends in Dec 2026 (Observador gives a longer term); every version covers the cut-off, and he played in March 2026."
  },
  {
   "playerId": "plr_038",
@@ -770,9 +798,9 @@
   "careerStatus": "UNKNOWN",
   "clubHistory": [],
   "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
+  "sourceUrl": "https://businessday.ng/sports/article/npfl-ahmed-musa-named-general-manager-of-kano-pillars/",
   "verificationStatus": "PENDING",
-  "auditNote": "Without a club since ending his Sivasspor contract in Feb 2024; Sep 2024 hint of an NPFL return. No dated 2026 source."
+  "auditNote": "Third review: Kano Pillars named him general manager for 2025/26 (one report says player-cum-GM); whether he still plays is unclear."
  },
  {
   "playerId": "plr_051",
@@ -1005,13 +1033,27 @@
   "revision": 1,
   "referenceClubId": "chelsea",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
-  "verificationStatus": "PENDING",
-  "auditNote": "Barcelona is his club of record but sources conflict on a 2026 renewal (a Besoccer entry dated 1 Jul 2026) and one result is low-quality; no club announcement retrieved."
+  "currentClubId": "barcelona",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "barcelona",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.beinsports.com/en-us/soccer/la-liga/articles/christensen-pens-fresh-barcelona-contract-2026-07-01",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.beinsports.com/en-us/soccer/la-liga/articles/christensen-pens-fresh-barcelona-contract-2026-07-01",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.beinsports.com/en-us/soccer/la-liga/articles/christensen-pens-fresh-barcelona-contract-2026-07-01",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Third review: beIN Sports (1 Jul 2026) and other outlets report a new Barcelona contract to the end of 2027-28; earlier May 2026 reports of an imminent deal agree."
  },
  {
   "playerId": "plr_066",
@@ -1035,9 +1077,9 @@
   "careerStatus": "UNKNOWN",
   "clubHistory": [],
   "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
+  "sourceUrl": "https://www.tudn.com/futbol/liga-mx/sale-del-retiro-l-miguel-layun-regresa-al-america-para-jugar-video",
   "verificationStatus": "PENDING",
-  "auditNote": "Retired at the end of 2023 but a March 2025 TUDN video reports a return to play for América; the current status was not clarified."
+  "auditNote": "Third review: retired in Jan 2024 and returned to play for America in Mar 2025; no 2026 report of playing or a new retirement."
  },
  {
   "playerId": "plr_068",
@@ -1218,26 +1260,54 @@
   "revision": 1,
   "referenceClubId": "manchester_city",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
+  "currentClubId": "supreme_sha_tin",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "supreme_sha_tin",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.scmp.com/sport/football/article/3370063/manchester-city-legend-david-silva-comes-out-retirement-hong-kong-stint",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.scmp.com/sport/football/article/3370063/manchester-city-legend-david-silva-comes-out-retirement-hong-kong-stint",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
   "sourceUrl": "https://www.scmp.com/sport/football/article/3370063/manchester-city-legend-david-silva-comes-out-retirement-hong-kong-stint",
-  "verificationStatus": "PENDING",
-  "auditNote": "Retired in July 2023 (several outlets), but one 2026 South China Morning Post report says he came out of retirement for Supreme Sha Tin (Hong Kong). Single source for the comeback; status unresolved."
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Third review: SCMP and several outlets of 7 Oct 2026 report he came out of retirement for a short-term deal with Hong Kong Premier League club Supreme Sha Tin (length not disclosed; first match expected around 18 Oct)."
  },
  {
   "playerId": "plr_077",
   "revision": 1,
   "referenceClubId": "bayern_munich",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
-  "verificationStatus": "PENDING",
-  "auditNote": "Colo-Colo said to run through Dec 2026 (late-2025 reports) but with reported friction and an undated item calling him clubless. No dated 2026 confirmation."
+  "currentClubId": "colo_colo",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "colo_colo",
+    "source": {
+     "provider": "editorial",
+     "url": "https://espndeportes.espn.com/futbol/chile/nota/_/id/16083256/arturo-vidal-confirmo-que-se-quedara-en-colo-colo-durante-2026",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://espndeportes.espn.com/futbol/chile/nota/_/id/16083256/arturo-vidal-confirmo-que-se-quedara-en-colo-colo-durante-2026",
+    "startedYear": 2025
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://espndeportes.espn.com/futbol/chile/nota/_/id/16083256/arturo-vidal-confirmo-que-se-quedara-en-colo-colo-durante-2026",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Third review: ESPN (Dec 2025) has him confirming he stays at Colo-Colo through 2026 and Chilean media (Redgol) put the contract end in Dec 2026, so it covers the cut-off. Renewal beyond 2026 is not decided."
  },
  {
   "playerId": "plr_078",
@@ -1325,12 +1395,12 @@
   "referenceClubId": "rostov",
   "asOfDate": "2026-10-18",
   "currentClubId": null,
-  "careerStatus": "UNKNOWN",
+  "careerStatus": "RETIRED",
   "clubHistory": [],
   "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
-  "verificationStatus": "PENDING",
-  "auditNote": "Emelec return in 2024, later Sochi reports (2025); no dated 2026 source."
+  "sourceUrl": "https://www.extra.ec/noticia/deportes/cristhian-noboa-carta-lagrimas-adios-jugador-dirigente-emelec-147513.html",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Third review: Extra (21 Feb 2026) reports his official retirement as a player; he now works in Emelec's football leadership. Earlier 2025 reports already described a knee injury ending his career."
  },
  {
   "playerId": "plr_083",
@@ -1460,9 +1530,9 @@
   "careerStatus": "UNKNOWN",
   "clubHistory": [],
   "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": "https://africasoccer.com/?p=602252",
+  "sourceUrl": "https://www.thescore.com/news/3589517/benzema-ends-brief-stint-with-al-hilal-in-saudi-league",
   "verificationStatus": "PENDING",
-  "auditNote": "Left Al-Hilal by mutual agreement on 31 Aug 2026 (AP); unattached then, with unconfirmed Leverkusen links. Not recorded as FREE_AGENT because no evidence at the cut-off."
+  "auditNote": "Third review: joined Al-Hilal on 2 Feb 2026 (official report) and the club's website announced the mutual termination on 31 Aug 2026 (AFP/AP); offers from MLS and Saudi clubs were reported but no signing or retirement. No evidence of a current club, so not FREE_AGENT."
  },
  {
   "playerId": "plr_090",
@@ -1684,13 +1754,27 @@
   "revision": 1,
   "referenceClubId": "az_alkmaar",
   "asOfDate": "2026-10-18",
-  "currentClubId": null,
-  "careerStatus": "UNKNOWN",
-  "clubHistory": [],
-  "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
-  "verificationStatus": "PENDING",
-  "auditNote": "A Tehran Times item of 10 Aug 2026 reports a move to Excelsior; earlier 2026 items had him clubless. Single source, no club confirmation."
+  "currentClubId": "excelsior",
+  "careerStatus": "ACTIVE",
+  "clubHistory": [
+   {
+    "clubId": "excelsior",
+    "source": {
+     "provider": "editorial",
+     "url": "https://www.tehrantimes.com/news/529003/",
+     "retrievedAt": "2026-10-18",
+     "verification": "verified"
+    },
+    "asOfDate": "2026-10-18",
+    "verificationStatus": "VERIFIED",
+    "sourceUrl": "https://www.tehrantimes.com/news/529003/",
+    "startedYear": 2026
+   }
+  ],
+  "historyCoverage": "PARTIAL",
+  "sourceUrl": "https://www.tehrantimes.com/news/529003/",
+  "verificationStatus": "VERIFIED",
+  "auditNote": "Third review: Tehran Times (10 Aug 2026) and Persian Football report the move to Excelsior; Wikipedia and Dutch stats pages list 2026-27 appearances. Contract length not retrieved."
  },
  {
   "playerId": "plr_100",
@@ -2239,9 +2323,9 @@
   "careerStatus": "UNKNOWN",
   "clubHistory": [],
   "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
+  "sourceUrl": "https://roundtable.io/sports/soccer/efl/wrexham/news/wrexham-continue-to-be-linked-with-leicester-city-defender-harry-souttar-1",
   "verificationStatus": "PENDING",
-  "auditNote": "Leicester City signed him long-term (to 2027/28) but he barely played and a June 2026 report urged a transfer; no confirmation of staying or leaving."
+  "auditNote": "Third review: Leicester played him in Aug 2026 but Wrexham, Sheffield United and West Ham were linked up to ~30 Aug (window closed 1 Sep); no source confirms whether he moved."
  },
  {
   "playerId": "plr_123",
@@ -2669,9 +2753,9 @@
   "careerStatus": "UNKNOWN",
   "clubHistory": [],
   "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
+  "sourceUrl": "https://foot-africa.com/en/news/saudi-pro-league-sadio-mane-continues-to-break-records-with-al-nassr-1118348/",
   "verificationStatus": "PENDING",
-  "auditNote": "Al-Nassr is his club of record but his contract ran to 30 Jun 2026 and only an expected renewal (Feb 2026) was found."
+  "auditNote": "Third review: March 2026 reports expect a new Al-Nassr contract, but the deal ran to 30 Jun 2026 and no dated report of the renewal or a new club was found."
  },
  {
   "playerId": "plr_141",
@@ -2736,9 +2820,9 @@
   "careerStatus": "UNKNOWN",
   "clubHistory": [],
   "historyCoverage": "NOT_REVIEWED",
-  "sourceUrl": null,
+  "sourceUrl": "https://www.thenationalnews.com/sport/football/2026/09/04/richarlison-left-out-of-tottenhams-premier-league-squad-as-clock-counts-down-on-proposed-move-to-trabzonspor/",
   "verificationStatus": "PENDING",
-  "auditNote": "Tottenham left him out of the 2026-27 squad list and a move (Trabzonspor reported agreed on an undated page) was not confirmed."
+  "auditNote": "Third review: left out of Tottenham's 2026-27 Premier League squad; personal terms with Trabzonspor reported but the clubs had not agreed a fee at 4 Sep and no completed move was found."
  },
  {
   "playerId": "plr_144",

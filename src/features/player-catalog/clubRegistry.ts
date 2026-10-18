@@ -22,6 +22,7 @@ export const clubRegistry: Readonly<Record<string, ClubIdentity | undefined>> = 
     ['olimpo', 'Olimpo'], ['sarmiento_junin', 'Sarmiento de Junín'], ['lanus', 'Lanús'], ['newells_old_boys', "Newell's Old Boys"], ['colon', 'Colón'],
     ['talleres_cordoba', 'Talleres de Córdoba'], ['aldosivi', 'Aldosivi'], ['barracas_central', 'Barracas Central'], ['deportivo_merlo', 'Deportivo Merlo'],
     ['arsenal_sarandi', 'Arsenal de Sarandí'], ['platense', 'Platense'], ['instituto', 'Instituto'], ['banfield', 'Banfield'], ['tigre', 'Tigre'],
+    ['defensa_y_justicia', 'Defensa y Justicia'], ['excelsior', 'Excelsior'], ['colo_colo', 'Colo-Colo'], ['supreme_sha_tin', 'Supreme Sha Tin'], ['alajuelense', 'Alajuelense'],
   ].map(([id, name]) => [id, { id, name }]),
 ]))
 

@@ -28,3 +28,9 @@
 
 ## Git
 Cinco commits de tanda más el cierre. Sin push.
+
+## Tercera pasada (18/10/2026, tras el cierre)
+Búsquedas dirigidas sobre 29 de los 32 pendientes. **Cobertura actual: 150/150 revisados, 125 verificados (83,33 %: 99 ACTIVE + 26 RETIRED), 25 pendientes.** Siguen sin declararse como 100 % verificados.
+- Resueltos (7): Banega (Defensa y Justicia, 13/01/2026), Christensen (Barcelona, renovación 01/07/2026), Jahanbakhsh (Excelsior, 08/2026), Vidal (Colo-Colo, contrato a 12/2026), Celso Borges (Alajuelense, contrato a 12/2026), Noboa (retiro oficial 02/2026) y David Silva (vuelve con Supreme Sha Tin, 07/10/2026).
+- Siguen pendientes con nota actualizada: Benzema (Al-Hilal rescindió el 31/08/2026, sin nuevo club ni retiro), Richarlison (sin acuerdo de fee con Trabzonspor), Giménez (cesión al Deportivo solo en prensa), Mané, Souttar, Layún, Musa. El resto no arrojó fuentes nuevas.
+- 5 identidades de club nuevas (solo nombre). `npm test` de catálogo: 406 pruebas aprobadas, incluida la coherencia de cifras con el documento.
