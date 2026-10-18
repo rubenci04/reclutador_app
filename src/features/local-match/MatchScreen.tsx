@@ -47,7 +47,7 @@ export function MatchScreen({ result, onRematch, onReturn, localName, cpuName, o
   const recentGoal = visibleBlocks.at(-1)?.events.find((event) => event.type === 'goal')
   const outcome = result.winner === 'draw' ? 'draw' : result.winner === 'local' ? 'victory' : 'defeat'
   const teamName = (side: MatchSide | null) => side === 'local' ? (localName ?? t('game.myTeam')) : (cpuName ?? t('match.cpuTeam'))
-  const eventText = (item: MatchEvent) => t(`match.events.${item.type}`, { team: teamName(item.side), player: playerName(item, DRAFT_CATALOG) ?? '' })
+  const eventText = (item: MatchEvent) => t(`match.events.${item.type}`, { team: teamName(item.side), player: playerName(item, DRAFT_CATALOG) ?? '', out: DRAFT_CATALOG.find((candidate) => candidate.id === item.outPlayerId)?.name ?? '' })
   return <main className="match-screen" aria-live="polite">
     <section className="match-card" aria-label={t('match.versus')}>
       <header className="match-heading"><p className="eyebrow"><span />{finished ? t('match.final') : t('match.playing')}</p><button className="secondary-action" onClick={onReturn}>{t('match.returnDraft')}</button></header>

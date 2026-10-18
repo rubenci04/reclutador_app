@@ -42,6 +42,7 @@ export function MatchSetupPanel({ draft, onChange, versusCpu, preflight }: Props
           <input type="number" inputMode="numeric" min={BUDGET_LIMITS.min} max={BUDGET_LIMITS.max} step={BUDGET_LIMITS.step} value={draft.budgetText} onChange={(event) => set({ budgetText: event.target.value })} aria-invalid={isValidBudget(budget) ? undefined : true} />
         </label>
       </div>
+      <label className="setup-check"><input type="checkbox" checked={draft.substitutes} onChange={(event) => set({ substitutes: event.target.checked })} />{t('setup.substitutes')}</label>
       <p role="status" className={preflight.ok ? undefined : 'setup-error'}>
         {preflight.ok ? t('setup.preflightOk', { minimum: preflight.minimumPerTeam })
           : t(`setup.preflight.${preflight.reason}`, { min: BUDGET_LIMITS.min, max: BUDGET_LIMITS.max, step: BUDGET_LIMITS.step, minimum: preflight.minimumPerTeam ?? 0 })}
@@ -52,7 +53,7 @@ export function MatchSetupPanel({ draft, onChange, versusCpu, preflight }: Props
       <ul>
         <li>{t('setup.rules.budget', { amount: draft.mode === 'custom' && isValidBudget(budget) ? budget : 100 })}</li>
         <li>{t('setup.rules.formation')}</li>
-        <li>{t('setup.rules.starters')}</li>
+        <li>{t(draft.mode === 'custom' && draft.substitutes ? 'setup.rules.startersBench' : 'setup.rules.starters')}</li>
         <li>{t('setup.rules.discards')}</li>
       </ul>
     </section>

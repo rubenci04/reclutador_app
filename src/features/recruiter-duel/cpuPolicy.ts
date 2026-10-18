@@ -1,8 +1,6 @@
-import { FORMATION_QUOTAS } from '../../data/catalogRules'
 import type { Player } from '../../types/player'
-import { DRAFT_SLOTS } from '../draft/draftTypes'
 import { createSeededRandom } from '../local-match/seededRandom'
-import { budgetOf, currentRound, maximumSafeBid, passAuction, placeBid } from './auctionEngine'
+import { budgetOf, currentRound, maximumSafeBid, passAuction, placeBid, positionProgress } from './auctionEngine'
 import type { AuctionTransition, RecruiterDuelGame, RecruiterTeam } from './auctionTypes'
 
 export const CPU_STRATEGIES = ['CONSERVATIVE', 'BALANCED', 'AGGRESSIVE'] as const
@@ -31,14 +29,14 @@ const profiles = {
 /** Fixed for the round: no current bid is an input to the private valuation. */
 export function privateValuation(context: CpuPublicContext, strategy: CpuStrategy): number {
   const { player, team } = context
-  const open = (position: Player['position']) => DRAFT_SLOTS.filter((slot) => slot.position === position && !team.lineup[slot.id]).length
+  const open = (position: Player['position']) => positionProgress(team, position).remaining
   if (!open(player.position)) return 0
   const profile = profiles[strategy]
   const roleAttribute = player.position === 'ARQ' || player.position === 'DEF' ? player.def_rating : player.position === 'DEL' ? player.att_rating : (player.men_rating + player.att_rating) / 2
   const quality = ((player.overall_rating - 83) * .13 + (roleAttribute - 80) * .06 + (player.phy_rating + player.men_rating - 160) * .025)
   const random = createSeededRandom(`${context.seed}:cpu:${strategy}:${context.roundIndex}:${player.id}`)
   const preference = (random() - .5) * 5
-  const need = open(player.position) / FORMATION_QUOTAS[player.position]
+  const need = open(player.position) / positionProgress(team, player.position).capacity
   // Reserve using the published catalogue, never the unrevealed 22-player order.
   const unavailable = new Set([...context.acquiredIds, player.id])
   let reserve = 0
@@ -50,7 +48,7 @@ export function privateValuation(context: CpuPublicContext, strategy: CpuStrateg
   }
   const budget = context.budget ?? 100
   const budgetCap = budget - team.spent - reserve
-  const slotsLeft = Object.values(team.lineup).filter((id) => !id).length
+  const slotsLeft = (['ARQ', 'DEF', 'MED', 'DEL'] as const).reduce((total, position) => total + open(position), 0)
   const opportunityCap = (budget - team.spent) / Math.max(1, slotsLeft) * profile.risk + Math.max(0, quality) + 2
   return Math.max(0, Math.floor(Math.min(budgetCap, opportunityCap, player.price + quality + profile.premium + preference + need)))
 }
@@ -59,7 +57,7 @@ export function decideCpu(context: CpuPublicContext, strategy: CpuStrategy, curr
   const maximum = privateValuation(context, strategy)
   const minimum = currentBid === null ? context.player.price : currentBid + 1
   const pass = (reason: CpuReason): CpuDecision => ({ action: 'pass', reason, privateMaximum: maximum })
-  if (!DRAFT_SLOTS.some((slot) => slot.position === context.player.position && !context.team.lineup[slot.id])) return pass('position_full')
+  if (positionProgress(context.team, context.player.position).remaining === 0) return pass('position_full')
   if (minimum > maximum) return pass(currentBid === null ? 'opportunity_cost' : 'private_limit')
   if (minimum > technicalMaximum) return pass('technical_limit')
   const random = createSeededRandom(`${context.seed}:cpu-offer:${strategy}:${context.roundIndex}:${minimum}`)

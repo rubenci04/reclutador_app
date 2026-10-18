@@ -1,0 +1,41 @@
+{
+  "rulesVersion": "local-match-v2",
+  "substitutionRules": "subs-v1",
+  "chancePerOpportunity": 0.45,
+  "minutes": [
+    45,
+    60,
+    75
+  ],
+  "matches": 4000,
+  "identicalSquadsBothSides": true,
+  "substitutionsPerTeamDistribution": {
+    "local": [
+      676,
+      1665,
+      1297,
+      362
+    ],
+    "cpu": [
+      657,
+      1707,
+      1308,
+      328
+    ]
+  },
+  "meanPerTeam": {
+    "local": 1.33625,
+    "cpu": 1.32675
+  },
+  "byMinute": {
+    "45": 3565,
+    "60": 3491,
+    "75": 3596
+  },
+  "wins": {
+    "local": 1176,
+    "cpu": 1146,
+    "draws": 1678
+  },
+  "meanGoals": 0.5305
+}

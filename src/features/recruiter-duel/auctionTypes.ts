@@ -17,9 +17,13 @@ export interface AuctionRound {
   readonly playerId: string
 }
 
+/** A substitute place, fixed to a general position. Present only when the match has substitutes. */
+export interface BenchSlot { readonly position: Player['position']; readonly playerId: string | null }
+
 export interface RecruiterTeam {
   readonly lineup: DraftLineup
   readonly spent: number
+  readonly bench?: readonly BenchSlot[]
 }
 
 export interface AuctionBid { readonly participant: RecruiterId; readonly amount: number }

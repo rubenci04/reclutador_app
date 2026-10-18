@@ -1,10 +1,9 @@
 import type { Player } from '../../types/player'
-import { budgetOf, currentRound, maximumSafeBid, openingPriority, positionProgress } from './auctionEngine'
+import { budgetOf, currentRound, maximumSafeBid, openingPriority, positionProgress, rosterIds } from './auctionEngine'
 import type { RecruiterDuelGame, RecruiterId } from './auctionTypes'
 
 export const HUD_POSITIONS = ['ARQ', 'DEF', 'MED', 'DEL'] as const
 export const SHARED_DISCARDS = 3
-const TEAM_SIZE = 11
 
 export interface HudPosition {
   readonly position: (typeof HUD_POSITIONS)[number]
@@ -50,7 +49,7 @@ export function buildHudModel(game: RecruiterDuelGame, catalog: readonly Player[
     const ceiling = bidding ? maximumSafeBid(game, id, catalog) : 0
     const hasCeiling = bidding && ceiling >= minimum
     return {
-      id, spent: team.spent, remaining, signed: Object.values(team.lineup).filter(Boolean).length,
+      id, spent: team.spent, remaining, signed: rosterIds(team).filter(Boolean).length,
       positions: HUD_POSITIONS.map((position) => {
         const own = positionProgress(team, position)
         return { position, ...own, forced: own.remaining > 0 && positionProgress(rival, position).remaining === 0 }
@@ -60,7 +59,7 @@ export function buildHudModel(game: RecruiterDuelGame, catalog: readonly Player[
     }
   }
   return {
-    budget: budgetOf(game), awards: game.record.filter((entry) => entry.type === 'award').length, totalAwards: game.rounds.length, teamSize: TEAM_SIZE,
+    budget: budgetOf(game), awards: game.record.filter((entry) => entry.type === 'award').length, totalAwards: game.rounds.length, teamSize: rosterIds(game.teams.recruiter_one).length,
     discardsRemaining: game.discardsRemaining, discardsTotal: SHARED_DISCARDS,
     turn: game.activeParticipant ?? openingPriority(game) ?? null,
     participants: { recruiter_one: participant('recruiter_one'), recruiter_two: participant('recruiter_two') },

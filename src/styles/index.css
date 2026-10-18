@@ -225,3 +225,9 @@
 .setup-error { color: #ffb3a7; }
 .setup-summary h3, .setup-summary ul { margin: 0; } .setup-summary ul { padding-left: 1.1rem; font-size: .88rem; color: #c8d7c3; }
 @media (max-width: 420px) { .setup-modes { grid-template-columns: 1fr; } }
+.starters-title, .team-bench h3 { margin: .4rem 0; color: #d5fb76; font-size: .9rem; letter-spacing: .05em; }
+.bench-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.bench-slot { display: grid; gap: 2px; padding: .5rem; min-height: 64px; border-radius: 6px; border: 1px solid #ffffff3d; background: #14281e; color: #e6f0e7; font-size: .75rem; text-align: left; cursor: pointer; }
+.bench-slot.vacant { border-style: dashed; cursor: default; opacity: .8; }
+.bench-slot b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.setup-check { display: flex !important; grid-template-columns: none; align-items: center; gap: 8px; }

@@ -1,6 +1,6 @@
 import type { Player } from '../../types/player'
 import { summarizeDraft } from '../draft/draftModel'
-import { DRAFT_SLOTS, type DraftLineup } from '../draft/draftTypes'
+import { DRAFT_SLOT_IDS, DRAFT_SLOTS, type DraftLineup, type DraftSlotId } from '../draft/draftTypes'
 import { eventInfluence } from '../tactics/eventInfluence'
 import { NEUTRAL_SELECTION, TACTICS_VERSION, parseStrategySelection, type StrategySelection } from '../tactics/strategies'
 import { ZERO_ADJUSTMENT, tacticalAdjustment, tacticalFeatures, type TacticalAdjustment } from '../tactics/tacticalModel'
@@ -18,6 +18,25 @@ export interface SimulationInput {
   readonly tactics?: StrategySelection
   /** Budget the elevens were built under; omitted means the classic budget. */
   readonly budget?: number
+  /** Optional substitutes (player ids) per side. Without them the match is exactly the classic one. */
+  readonly benches?: Readonly<Record<MatchSide, readonly string[]>>
+}
+
+/**
+ * Substitution policy (subs-v1). At minutes 45, 60 and 75 each side with unused substitutes makes ONE change with
+ * probability SUBSTITUTION_CHANCE: a random unused substitute replaces a random original starter of his own line (never the
+ * goalkeeper). A bench of three therefore caps changes at three, a player who left never returns and the side always has
+ * eleven. It uses its own seeded stream, so the main match stream and every classic result are untouched.
+ */
+export const SUBSTITUTION_RULES_VERSION = 'subs-v1' as const
+export const SUBSTITUTION_MINUTES: readonly (typeof MATCH_MINUTES)[number][] = [45, 60, 75]
+export const SUBSTITUTION_CHANCE = .45
+
+/** Bench of one side: unique catalog players, outside the eleven, with a general position. */
+export function isValidBench(bench: readonly string[], lineup: DraftLineup, catalog: readonly Player[]) {
+  if (new Set(bench).size !== bench.length || bench.length > 3) return false
+  const onPitch = new Set(Object.values(lineup))
+  return bench.every((id) => !onPitch.has(id) && catalog.some((player) => player.id === id))
 }
 
 const clamp = (value: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, value))
@@ -79,29 +98,57 @@ export function simulateMatch(input: SimulationInput): MatchResult {
   const cpu = teamFrom(input.cpuLineup, input.catalog, input.budget)
   const selection = input.tactics === undefined ? NEUTRAL_SELECTION : parseStrategySelection(input.tactics)
   if (!selection) throw new Error('invalid_strategy')
-  const teams = { local, cpu } as const
-  const features = { local: tacticalFeatures(local.lineup, input.catalog), cpu: tacticalFeatures(cpu.lineup, input.catalog) }
+  const benches = input.benches
+  if (benches && (!isValidBench(benches.local, input.localLineup, input.catalog) || !isValidBench(benches.cpu, input.cpuLineup, input.catalog))) throw new Error('invalid_match_bench')
+  type Side = { team: MatchTeam; strength: TeamStrength; features: ReturnType<typeof tacticalFeatures>; unused: string[]; subbed: boolean; baseMidfield: number }
+  const sides: Record<MatchSide, Side> = {
+    local: { team: local, strength: calculateTeamStrength(local), features: tacticalFeatures(local.lineup, input.catalog), unused: [...(benches?.local ?? [])], subbed: false, baseMidfield: 0 },
+    cpu: { team: cpu, strength: calculateTeamStrength(cpu), features: tacticalFeatures(cpu.lineup, input.catalog), unused: [...(benches?.cpu ?? [])], subbed: false, baseMidfield: 0 },
+  }
+  const substitutionRandom = benches ? createSeededRandom(`${input.seed}:subs`) : null
+  const substitutionLog: { minute: (typeof MATCH_MINUTES)[number]; side: MatchSide; outPlayerId: string; inPlayerId: string }[] = []
   const adjustmentTotals: Record<MatchSide, { attack: number; defense: number; midfield: number }> = { local: { ...ZERO_ADJUSTMENT }, cpu: { ...ZERO_ADJUSTMENT } }
-  const strengths = { local: calculateTeamStrength(local), cpu: calculateTeamStrength(cpu) }
+  const strengths = { local: sides.local.strength, cpu: sides.cpu.strength }
   type MutableStats = { -readonly [Key in keyof MatchStats]: MatchStats[Key] }
   const stats: Record<MatchSide, MutableStats> = { local: emptyStats(), cpu: emptyStats() }
   const score = { local: 0, cpu: 0 }
   const random = createSeededRandom(input.seed)
   const blocks: MatchBlock[] = []
   for (const [blockIndex, minute] of MATCH_MINUTES.entries()) {
+    const changes: MatchEvent[] = []
+    if (substitutionRandom && SUBSTITUTION_MINUTES.includes(minute)) {
+      for (const key of ['local', 'cpu'] as const) {
+        const state = sides[key]
+        if (!state.unused.length || substitutionRandom() >= SUBSTITUTION_CHANCE) continue
+        const incomingId = state.unused.splice(Math.floor(substitutionRandom() * state.unused.length), 1)[0]
+        const incoming = input.catalog.find((player) => player.id === incomingId)!
+        const originals = new Set(Object.values(key === 'local' ? input.localLineup : input.cpuLineup))
+        const options = DRAFT_SLOTS.filter((slot) => slot.position === incoming.position && slot.position !== 'ARQ' && originals.has(state.team.lineup[slot.id] ?? ''))
+        if (!options.length) continue
+        const slot = options[Math.floor(substitutionRandom() * options.length)]
+        const outId = state.team.lineup[slot.id]!
+        const lineup = { ...state.team.lineup, [slot.id]: incomingId } as DraftLineup
+        const players = DRAFT_SLOT_IDS.map((id: DraftSlotId) => input.catalog.find((player) => player.id === lineup[id])!)
+        state.team = { ...state.team, lineup, players }
+        state.strength = calculateTeamStrength(state.team); state.features = tacticalFeatures(lineup, input.catalog); state.subbed = true
+        substitutionLog.push({ minute, side: key, outPlayerId: outId, inPlayerId: incomingId })
+        changes.push({ minute, side: key, type: 'substitution', playerId: incomingId, outPlayerId: outId })
+      }
+    }
+    sides.local.baseMidfield += sides.local.strength.midfield; sides.cpu.baseMidfield += sides.cpu.strength.midfield
     const adjustment: Record<MatchSide, TacticalAdjustment> = {
-      local: tacticalAdjustment(selection.local, features.local, features.cpu, selection.cpu, blockIndex),
-      cpu: tacticalAdjustment(selection.cpu, features.cpu, features.local, selection.local, blockIndex),
+      local: tacticalAdjustment(selection.local, sides.local.features, sides.cpu.features, selection.cpu, blockIndex),
+      cpu: tacticalAdjustment(selection.cpu, sides.cpu.features, sides.local.features, selection.local, blockIndex),
     }
     for (const key of ['local', 'cpu'] as const) for (const sector of ['attack', 'defense', 'midfield'] as const) adjustmentTotals[key][sector] += adjustment[key][sector]
     const effective = {
-      local: { ...strengths.local, attack: strengths.local.attack + adjustment.local.attack, defense: strengths.local.defense + adjustment.local.defense, midfield: strengths.local.midfield + adjustment.local.midfield },
-      cpu: { ...strengths.cpu, attack: strengths.cpu.attack + adjustment.cpu.attack, defense: strengths.cpu.defense + adjustment.cpu.defense, midfield: strengths.cpu.midfield + adjustment.cpu.midfield },
+      local: { ...sides.local.strength, attack: sides.local.strength.attack + adjustment.local.attack, defense: sides.local.strength.defense + adjustment.local.defense, midfield: sides.local.strength.midfield + adjustment.local.midfield },
+      cpu: { ...sides.cpu.strength, attack: sides.cpu.strength.attack + adjustment.cpu.attack, defense: sides.cpu.strength.defense + adjustment.cpu.defense, midfield: sides.cpu.strength.midfield + adjustment.cpu.midfield },
     }
     const localAttackChance = initiativeChance(effective.local, effective.cpu)
     const side: MatchSide = random() < localAttackChance ? 'local' : 'cpu'
     const opponent: MatchSide = side === 'local' ? 'cpu' : 'local'
-    const events: MatchEvent[] = [event(minute, side, 'attack', attacker(teams[side], random))]
+    const events: MatchEvent[] = [...changes, event(minute, side, 'attack', attacker(sides[side].team, random))]
     const shootingPower = effective[side].attack + effective[side].midfield * .16
     const resistance = effective[opponent].defense + effective[opponent].midfield * .12
     const shotChance = clamp(.65 + (shootingPower - resistance) / 180 + (random() - .5) * .2, .35, .86)
@@ -113,12 +160,12 @@ export function simulateMatch(input: SimulationInput): MatchResult {
         const goalChance = clamp(.4 + (shootingPower - resistance) / 240 + (random() - .5) * .12, .14, .62)
         if (random() < goalChance) {
           score[side]++
-          events.push(event(minute, side, 'goal', attacker(teams[side], random)))
+          events.push(event(minute, side, 'goal', attacker(sides[side].team, random)))
         } else {
           stats[opponent].saves++
           events.push(event(minute, opponent, 'save'))
         }
-      } else events.push(event(minute, side, 'shot', attacker(teams[side], random)))
+      } else events.push(event(minute, side, 'shot', attacker(sides[side].team, random)))
     } else {
       stats[opponent].recoveries++
       events.push(event(minute, opponent, 'recovery'))
@@ -127,12 +174,14 @@ export function simulateMatch(input: SimulationInput): MatchResult {
     const narrated = events.map((item) => { const tactic = eventInfluence(item.type, item.side, selection, adjustment); return tactic ? { ...item, tactic } : item })
     blocks.push({ minute, events: narrated, score: { ...score } })
   }
-  const meanMidfield = (side: MatchSide) => strengths[side].midfield + adjustmentTotals[side].midfield / MATCH_MINUTES.length
+  // Without a change the base midfield is constant; with one it is the block average of the elevens actually on the pitch.
+  const meanMidfield = (side: MatchSide) => (sides[side].subbed ? sides[side].baseMidfield / MATCH_MINUTES.length : strengths[side].midfield) + adjustmentTotals[side].midfield / MATCH_MINUTES.length
   const possessionLocal = Math.round(clamp(50 + (meanMidfield('local') - meanMidfield('cpu')) * .6 + (random() - .5) * 4, 36, 64))
   stats.local.possession = possessionLocal; stats.cpu.possession = 100 - possessionLocal
   return {
     catalogVersion: input.catalogVersion, rulesVersion: input.rulesVersion, seed: input.seed, local, cpu, strengths, stats, blocks,
     score, winner: score.local === score.cpu ? 'draw' : score.local > score.cpu ? 'local' : 'cpu',
+    ...(benches ? { benches: { local: benches.local.map((id) => input.catalog.find((player) => player.id === id)!), cpu: benches.cpu.map((id) => input.catalog.find((player) => player.id === id)!) }, substitutions: { version: SUBSTITUTION_RULES_VERSION, events: substitutionLog } } : {}),
     tactics: { version: TACTICS_VERSION, selection: { local: selection.local, cpu: selection.cpu }, adjustments: { local: meanAdjustment(adjustmentTotals.local), cpu: meanAdjustment(adjustmentTotals.cpu) } },
   }
 }

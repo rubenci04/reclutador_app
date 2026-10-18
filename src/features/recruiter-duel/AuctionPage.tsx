@@ -65,7 +65,7 @@ export function AuctionPage({ onDraftFree }: AuctionPageProps) {
     setGame(next); setError(null)
   }
   const customBudget = Number(setup.budgetText)
-  const customConfig: MatchConfig = { version: MATCH_CONFIG_VERSION, budget: customBudget, names: { recruiter_one: sanitizeName(setup.nameOne), recruiter_two: sanitizeName(setup.nameTwo) }, substitutes: false }
+  const customConfig: MatchConfig = { version: MATCH_CONFIG_VERSION, budget: customBudget, names: { recruiter_one: sanitizeName(setup.nameOne), recruiter_two: sanitizeName(setup.nameTwo) }, substitutes: setup.substitutes }
   const setupPreflight = isValidBudget(customBudget) ? preflightMatchConfig(DRAFT_CATALOG, customConfig) : { ok: false as const, reason: 'budget_range' as const }
   const config = setup.mode === 'custom' ? customConfig : CLASSIC_CONFIG
   const canStart = setup.mode === 'classic' || (setupPreflight.ok && Object.keys(nameIssues(customConfig.names)).length === 0)

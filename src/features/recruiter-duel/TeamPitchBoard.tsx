@@ -24,6 +24,7 @@ export function TeamPitchBoard({ game, participant, catalog, organize }: Props) 
   const selected = catalog.find((player) => player.id === selectedId)
   const team = game.teams[participant]
   return <>
+    {team.bench && <h3 className="starters-title">{t('lineup.startersTitle', { count: Object.values(team.lineup).filter(Boolean).length, total: DRAFT_SLOTS.length })}</h3>}
     <div className="team-pitch" role="group" aria-label={t('pitch.label')}>
       <div className="pitch-markings" aria-hidden="true"><i /><i /><i /></div>
       {DRAFT_SLOTS.map((slot) => {
@@ -41,6 +42,18 @@ export function TeamPitchBoard({ game, participant, catalog, organize }: Props) 
         </div>
       })}
     </div>
+    {team.bench && <section className="team-bench" aria-label={t('lineup.benchTitle', { count: team.bench.filter((slot) => slot.playerId).length, total: team.bench.length })}>
+      <h3>{t('lineup.benchTitle', { count: team.bench.filter((slot) => slot.playerId).length, total: team.bench.length })}</h3>
+      <div className="bench-row">{team.bench.map((slot, index) => {
+        const player = catalog.find((candidate) => candidate.id === slot.playerId)
+        const position = t(`positions.${slot.position}`)
+        const award = player ? game.record.find((entry) => entry.type === 'award' && entry.winner === participant && entry.playerId === player.id) : undefined
+        const price = award?.type === 'award' ? award.price : '—'
+        return <button key={index} className={`bench-slot ${player ? 'occupied' : 'vacant'}`} data-bench={index} data-position={slot.position} disabled={!player} aria-label={player ? t('lineup.benchDetails', { player: player.name, position, price }) : t('lineup.benchVacant', { position })} onClick={() => { if (player) { setSelectedId(player.id); dialog.current?.showModal() } }}>
+          <b>{player ? player.name : position}</b><span>{player ? t('teamProgress.rating', { rating: player.overall_rating }) : t('pitch.open')}</span>{player && <span>{position} · {t('teamProgress.paid', { amount: price })}</span>}
+        </button>
+      })}</div>
+    </section>}
     <dialog className="pitch-player-dialog" ref={dialog} aria-label={selected ? t('pitch.playerDetails', { player: selected.name }) : t('pitch.label')} onClose={() => setSelectedId(null)} onCancel={() => setSelectedId(null)}>
       <button className="secondary-action" onClick={() => dialog.current?.close()}>{t('pitch.close')}</button>
       {selected && <PlayerIdentity key={selected.id} player={selected} />}

@@ -14,7 +14,7 @@ export interface MatchConfig {
   readonly budget: number
   /** Free text, already sanitised; null means «use the default name of the interface language». */
   readonly names: Readonly<Record<ConfigRecruiter, string | null>>
-  /** Three optional substitutes per team (H3). Always false until that rule set is enabled. */
+  /** Three optional substitutes per team (1 DEF, 1 MED, 1 DEL): 14-player rosters and 28 cards in the auction. */
   readonly substitutes: boolean
 }
 
@@ -58,10 +58,17 @@ export function parseMatchConfig(value: unknown): MatchConfig | null {
 
 export const POSITIONS_ORDER: readonly Position[] = ['ARQ', 'DEF', 'MED', 'DEL']
 
-/** Players each team must sign, per general position. Single place to extend when optional substitutes are enabled. */
-export function rosterComposition(): Readonly<Record<Position, number>> {
-  return { ARQ: 1, DEF: 4, MED: 3, DEL: 3 }
+/** Optional bench: one defender, one midfielder and one forward (no goalkeeper in this first version). Single place to change it. */
+export const SUBSTITUTE_POSITIONS: readonly Position[] = ['DEF', 'MED', 'DEL']
+
+/** Players each team must sign, per general position: eleven starters plus the optional bench. */
+export function rosterComposition(config: MatchConfig): Readonly<Record<Position, number>> {
+  const composition: Record<Position, number> = { ARQ: 1, DEF: 4, MED: 3, DEL: 3 }
+  if (config.substitutes) for (const position of SUBSTITUTE_POSITIONS) composition[position]++
+  return composition
 }
+
+export const rosterSize = (config: MatchConfig) => Object.values(rosterComposition(config)).reduce((total, count) => total + count, 0)
 
 export type Preflight =
   | { readonly ok: true; readonly minimumPerTeam: number }
@@ -75,7 +82,7 @@ export type Preflight =
  */
 export function preflightMatchConfig(catalog: readonly Player[], config: MatchConfig): Preflight {
   if (!isValidBudget(config.budget)) return { ok: false, reason: 'budget_range' }
-  const composition = rosterComposition()
+  const composition = rosterComposition(config)
   let minimumPerTeam = 0; let minimumBoth = 0
   for (const position of POSITIONS_ORDER) {
     const prices = catalog.filter((player) => player.position === position).map((player) => player.price).sort((a, b) => a - b)
@@ -87,5 +94,5 @@ export function preflightMatchConfig(catalog: readonly Player[], config: MatchCo
 }
 
 /** Raw form state of the pre-toss screen (text as typed); `MatchConfig` is derived from it. */
-export interface SetupDraft { readonly mode: 'classic' | 'custom'; readonly nameOne: string; readonly nameTwo: string; readonly budgetText: string }
-export const DEFAULT_SETUP_DRAFT: SetupDraft = { mode: 'classic', nameOne: '', nameTwo: '', budgetText: String(CLASSIC_CONFIG.budget) }
+export interface SetupDraft { readonly mode: 'classic' | 'custom'; readonly nameOne: string; readonly nameTwo: string; readonly budgetText: string; readonly substitutes: boolean }
+export const DEFAULT_SETUP_DRAFT: SetupDraft = { mode: 'classic', nameOne: '', nameTwo: '', budgetText: String(CLASSIC_CONFIG.budget), substitutes: false }
