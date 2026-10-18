@@ -4,6 +4,13 @@
 
 Ejecutar npm run typecheck, npm run lint, npm test y npm run build. Registrar resultados y limitaciones en docs/qa con el identificador del encargo. No declarar éxito sin ejecución.
 
+## CODEX-006
+
+- Ejecutar las migraciones en PostgreSQL embebido con roles separados: miembro, rival, extraño y anon. Verificar RLS, privacidad, imposibilidad de escribir estado/configuración/miembros y restricciones de identidad/slots.
+- Probar contratos de comandos, versiones, validación estricta y configuración pública sin secretos.
+- Si se implementa lobby, probar creación/unión idempotente, ambos listos, expiración, límite de dos, salida y reconexión con snapshot oficial. Realtime solo invalida; no reconstruye estado.
+- Repetir permisos/RPC en Supabase configurado y usar dos perfiles independientes más una tercera identidad. Sin ese entorno, registrar NO EJECUTADO y no iniciar CODEX-006C.
+
 ## CODEX-001
 
 - Configuración: tres idiomas inicializan con claves completas; instalación nueva y valores inválidos usan es-AR.

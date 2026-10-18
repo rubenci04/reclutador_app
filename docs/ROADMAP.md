@@ -10,7 +10,7 @@ Plan inicial creado en CODEX-001: no había documentos anteriores. Las fases pos
 | F04 | Simulación táctica y equipo CPU | Primer partido local implementado por CODEX-004B |
 | F04.1 | Identidad El Reclutador, diagnóstico de balance y base de modalidades | Implementada como fundación técnica por CODEX-004C; no incorpora datos históricos ni torneos |
 | F04.2 | Duelo de Reclutadores local: subastas hot-seat y partido entre dos equipos | Implementada por CODEX-005B: carta individual, cara o cruz interactivo y partido compartido; CPU estratégica incorporada en CODEX-005C; online pendiente |
-| F05 | Versus online y salas entre amigos | Pendiente |
+| F05 | Versus online y salas entre amigos | CODEX-006A preparada y probada localmente; integración Supabase real pendiente; ver qa/CODEX-006A.md |
 | F06 | Resultados compartibles | Pendiente |
 
 ## Hitos de producto tras CODEX-004A
