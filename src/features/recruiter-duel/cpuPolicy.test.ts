@@ -6,6 +6,8 @@ import { beginBidding, createRecruiterDuel, currentRound, maximumSafeBid, nextAu
 import { CPU_STRATEGIES, decideCpu, privateValuation, takeCpuTurn, type CpuPublicContext } from './cpuPolicy'
 import type { AuctionTransition } from './auctionTypes'
 import { flagUrl, NATIONALITY_FLAGS, PHOTO_MANIFEST } from './visualAssets'
+import { ARGENTINA_PLAYERS } from '../themed-modes/modeCatalog'
+import fs from 'node:fs'
 import { ARGENTINA_CANDIDATES, ARGENTINA_EXPANSION, validateArgentinaCandidates, type ArgentinaCandidate } from '../player-catalog/argentinaExpansion'
 
 function get(result: AuctionTransition) { if (!result.ok) throw new Error(result.error); return result.game }
@@ -33,9 +35,12 @@ describe('CPU private valuations and visual contracts',()=>{
     expect(NATIONALITY_FLAGS.ARG).toBe('ar'); expect(NATIONALITY_FLAGS.KOR).toBe('kr'); expect(flagUrl('UNKNOWN')).toBeUndefined()
     for(const code of Object.keys(NATIONALITY_FLAGS)) expect(flagUrl(code)).toBeTruthy()
     for(const photo of PHOTO_MANIFEST) {
-      expect(DRAFT_CATALOG.some(player=>player.id===photo.playerId)).toBe(true)
+      expect(DRAFT_CATALOG.some(player=>player.id===photo.playerId) || ARGENTINA_PLAYERS.some(player=>player.id===photo.playerId)).toBe(true)
       expect(photo.path).toMatch(/^\/assets\/players\//); expect(photo.author).not.toBe(''); expect(photo.licenseUrl).toMatch(/^https:/); expect(photo.approval).toBe('approved')
+      expect(photo.license).not.toBe(''); expect(photo.sourceUrl).toMatch(/^https:\/\/commons\.wikimedia\.org\//); expect(photo.attribution).toContain(photo.license)
+      expect(fs.existsSync(`public${photo.path}`)).toBe(true)
     }
+    expect(new Set(PHOTO_MANIFEST.map(photo=>photo.playerId)).size).toBe(PHOTO_MANIFEST.length)
   })
   it('reserves four independent batches and rejects duplicate identities without generating players',()=>{
     expect(ARGENTINA_CANDIDATES).toHaveLength(0); expect(ARGENTINA_EXPANSION.batches).toHaveLength(4)
