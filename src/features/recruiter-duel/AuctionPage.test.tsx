@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { I18nextProvider } from 'react-i18next'
 import { createI18n } from '../../i18n'
-import { AuctionPage } from './AuctionPage'
+import { AuctionPage, COIN_TOSS_MS } from './AuctionPage'
 import { PlayerIdentity } from './PlayerIdentity'
 import { DRAFT_CATALOG } from '../draft/catalog'
 import * as drawHistory from './drawHistory'
@@ -25,7 +25,7 @@ describe('single-player auction interface', () => {
     act(() => { heads.click(); heads.click() })
     expect(toss).toHaveBeenCalledTimes(1)
     if (!reduced) expect(screen.getByRole('heading', { name: 'Coin toss' })).toBeInTheDocument()
-    act(() => vi.advanceTimersByTime(reduced ? 0 : 850))
+    act(() => vi.advanceTimersByTime(reduced ? 0 : COIN_TOSS_MS))
     expect(screen.getByRole('img', { name: 'Coin: Heads' })).toBeInTheDocument()
     expect(screen.getByText('The coin landed on Heads. Recruiter one starts recruiting.')).toBeVisible()
     act(() => vi.advanceTimersByTime(2000))
@@ -38,7 +38,7 @@ describe('single-player auction interface', () => {
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
-    act(() => vi.advanceTimersByTime(850))
+    act(() => vi.advanceTimersByTime(COIN_TOSS_MS))
     fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
     const input = screen.getByLabelText('Bid amount') as HTMLInputElement
     const minimum = Number(input.min)
@@ -66,7 +66,7 @@ describe('single-player auction interface', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     let expected = get(createRecruiterDuel(DRAFT_CATALOG, 'hot-seat-001', drawHistory.createDrawContext(DRAFT_CATALOG)))
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
-    act(() => vi.advanceTimersByTime(850))
+    act(() => vi.advanceTimersByTime(COIN_TOSS_MS))
     expected = get(revealCoinToss(get(startCoinToss(expected, 'heads'))))
     let checkedFull = false; let checkedOneDefender = false
     while (expected.phase !== 'TEAMS_COMPLETED') {
@@ -181,7 +181,7 @@ describe('single-player auction interface', () => {
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
-    act(() => vi.advanceTimersByTime(850))
+    act(() => vi.advanceTimersByTime(COIN_TOSS_MS))
     fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
     fireEvent.click(screen.getByRole('button', { name: 'Pass' }))
     fireEvent.click(screen.getByRole('button', { name: 'Confirm shared discard' }))
@@ -216,7 +216,7 @@ describe('single-player auction interface', () => {
     expect(screen.getByLabelText('CPU strategy')).toHaveValue('BALANCED')
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     fireEvent.click(screen.getByRole('button', { name: 'Tails' }))
-    act(() => vi.advanceTimersByTime(850))
+    act(() => vi.advanceTimersByTime(COIN_TOSS_MS))
     fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
     expect(screen.getByText(/CPU evaluating…/)).toBeInTheDocument()
     act(() => vi.advanceTimersByTime(650))
@@ -231,7 +231,7 @@ describe('single-player auction interface', () => {
     expect(screen.getByRole('button', { name: 'Heads' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
     expect(screen.getByRole('heading', { name: 'Coin toss' })).toBeInTheDocument()
-    act(() => vi.advanceTimersByTime(850))
+    act(() => vi.advanceTimersByTime(COIN_TOSS_MS))
     fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
     expect(screen.getByRole('button', { name: 'Bid' })).toBeEnabled()
     expect(screen.getByRole('button', { name: 'Pass' })).toBeEnabled()

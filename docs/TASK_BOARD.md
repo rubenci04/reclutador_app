@@ -51,6 +51,9 @@ Nomenclatura: DL-FXX-CAT-NNN; FXX indica fase y CAT responsabilidad. No existía
 | DL-F04-UI-009 | Marcador/HUD durante las subastas (CODEX-005G-C3A) | Completa técnicamente; revisión visual manual a 360/390 px pendiente |
 | DL-F04-TACTICS-005 | Resumen táctico explicado en el resultado (CODEX-005G-C3B) | Completa técnicamente: estrategias y ajuste medio visibles en tres idiomas; 539 pruebas aprobadas; QA visual NO ejecutada |
 | DL-F04-TACTICS-006 | Narración táctica por eventos y playtest del tamaño del efecto | Pendiente; el efecto táctico actual es de 1–4 pp; requeriría recalibrar |
+| DL-F04-UI-010 | Moneda pelota/estadio con lanzamiento 3D y animación omisible (CODEX-005G-C3C) | Completa técnicamente: resultado guardado, cara final idéntica, movimiento reducido, tres idiomas; QA visual NO ejecutada |
+| DL-F04-AUDIO-001 | Efectos sonoros sintetizados y controles de audio (CODEX-005G-C3C) | Completa técnicamente: siete efectos Web Audio sin archivos externos, volumen y activación persistentes, sin duplicados; 554 pruebas aprobadas; escucha real pendiente |
+| DL-F04-UI-011 | Unificación de movimiento y causa del timeout de AuctionPage (CODEX-005G-C3C) | Completa: tokens de duración/curva; el timeout es carga de CPU síncrona (≈1,7 s aislada), no asincronía |
 | DL-F03-I18N-001 | Traducir draft, presupuesto y confirmaciones | Completa en CODEX-004A |
 | DL-F04-I18N-001 | Traducir simulación y resultados | Completa en CODEX-004B |
 | DL-F05-I18N-001 | Traducir salas, espera y errores online | Pendiente |

@@ -1,4 +1,5 @@
 import { TacticalSummary } from './TacticalSummary'
+import { audio } from '../audio/audioEngine'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { DRAFT_CATALOG } from '../draft/catalog'
@@ -29,6 +30,16 @@ export function MatchScreen({ result, onRematch, onReturn, localName, cpuName, o
     return () => window.clearInterval(interval)
   }, [result.blocks.length, replayId])
   useEffect(() => { reportedFinished.current = false }, [result.seed, replayId])
+  // Sounds follow what is on screen: only blocks that just became visible, once per replay.
+  const heard = useRef<{ seed: string; replay: number; blocks: number; final: boolean } | null>(null)
+  useEffect(() => {
+    const shown = Math.min(blockIndex, result.blocks.length)
+    const previous = heard.current
+    if (!previous || previous.seed !== result.seed || previous.replay !== replayId) { heard.current = { seed: result.seed, replay: replayId, blocks: shown, final: finished }; return }
+    for (const block of result.blocks.slice(previous.blocks, shown)) for (const item of block.events) if (item.type === 'goal') audio.play('goal')
+    if (finished && !previous.final) audio.play('finalWhistle')
+    heard.current = { seed: result.seed, replay: replayId, blocks: shown, final: finished }
+  }, [blockIndex, replayId, result, finished])
   useEffect(() => { if (finished && !reportedFinished.current) { reportedFinished.current = true; onFinished?.() } }, [finished, onFinished])
   const visibleBlocks = result.blocks.slice(0, Math.min(blockIndex, result.blocks.length))
   const score = visibleBlocks.at(-1)?.score ?? { local: 0, cpu: 0 }
