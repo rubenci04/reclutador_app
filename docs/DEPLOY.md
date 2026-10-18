@@ -46,3 +46,12 @@ Opción 2, conectada a GitHub (despliegue automático en cada push):
 ## Actualización 19/10/2026 — duelo online
 Para jugar online hay que ejecutar también, en el editor SQL de Supabase, `supabase/migrations/202610190001_online_duel.sql` (después de las dos anteriores). Sin esa migración la app muestra el aviso «El servidor todavía no tiene la última versión del modo online». La migración es nueva (no modifica los datos de salas existentes) y es segura de ejecutar una vez.
 Prueba: abrir la app en dos navegadores, crear la sala en uno, pegar el enlace en el otro, marcar «Estoy listo» en ambos e «Iniciar sala» en el anfitrión.
+
+## Despliegue automático desde GitHub (repositorio `rubenci04/reclutador_app`)
+El código vive en https://github.com/rubenci04/reclutador_app (rama `main`; es la rama local `codex/current-club-audit`, con `git push`).
+Cloudflare no permite convertir un proyecto creado por subida directa (`draft-legends`) en uno conectado a Git, así que hay que crear un proyecto nuevo:
+1. Cloudflare → **Workers & Pages → Create → Pages → Connect to Git** → elegir `reclutador_app`.
+2. Rama de producción: `main`. Framework: **Vite**. Build command: `npm run build`. Output directory: `dist`. Variable `NODE_VERSION` = `22`.
+3. **Environment variables** (Production y Preview): `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY` (los valores de `.env.local`; son claves públicas).
+4. Cada `git push` a `main` desplegará solo. Si se quiere conservar la dirección `draft-legends.pages.dev`, hay que eliminar primero el proyecto antiguo y nombrar el nuevo igual.
+Mientras tanto, la subida directa sigue funcionando: `npm run build && npx wrangler pages deploy dist --project-name draft-legends --branch codex/current-club-audit`.
