@@ -62,6 +62,7 @@ Nomenclatura: DL-FXX-CAT-NNN; FXX indica fase y CAT responsabilidad. No existía
 | DL-F04-ROSTER-001 | Tres suplentes opcionales: 14 por equipo, 28 cartas y sustituciones automáticas subs-v1 (CODEX-005H-H3) | Completa técnicamente: clásico intacto, calibración de 4.000 partidas, 602 pruebas; QA visual pendiente |
 | DL-F04-DATA-003 | Auditoría de clubes de los 150 futbolistas al 18/10/2026 (CODEX-005H-H4) | 150/150 revisados: 118 verificados (93 ACTIVE, 25 RETIRED), 32 pendientes con motivo, 0 sin revisar; ratings, precios e IDs intactos; roles específicos: ninguno verificable (UNKNOWN); 606 pruebas |
 | DL-F04-DATA-004 | Primer lote argentino ARG-B01 (CODEX-005H-H5) | 50 registros arg_001–arg_050 (6/16/15/13) fuera de DRAFT_CATALOG, validador, 25 clubes con nombre, modo Fútbol Argentino preparado sin habilitar; Boca+River 58 % reconocido como límite; ver docs/qa/CODEX-005H-H5.md |
+| DL-F04-UX-001 | Celebración de subasta ganada (CODEX-005H-H6, parcial) | Banner «¡GANASTE LA SUBASTA!», sonido propio, camiseta resaltada y reduced-motion; el resto del pulido queda pendiente; ver docs/qa/CODEX-005H-H6.md |
 | DL-F03-I18N-001 | Traducir draft, presupuesto y confirmaciones | Completa en CODEX-004A |
 | DL-F04-I18N-001 | Traducir simulación y resultados | Completa en CODEX-004B |
 | DL-F05-I18N-001 | Traducir salas, espera y errores online | Pendiente |

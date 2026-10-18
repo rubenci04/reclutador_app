@@ -4,6 +4,8 @@ import type { SoundId } from '../audio/soundEffects'
 import type { AuctionPhase, AuctionRecord, RecruiterDuelGame } from './auctionTypes'
 
 const SOUND_FOR_RECORD: Partial<Record<AuctionRecord['type'], SoundId>> = { bid: 'bid', award: 'award', discard: 'discard', coin_toss: 'coinLand' }
+/** Winning the auction has its own cue; forced and completion awards keep the plain one. */
+export const soundForRecord = (entry: AuctionRecord): SoundId | undefined => (entry.type === 'award' && entry.reason === 'voluntary_bid' ? 'signing' : SOUND_FOR_RECORD[entry.type])
 
 /**
  * Plays each auction sound exactly once, from what is NEW in the stored game (records appended, phase entered).
@@ -19,7 +21,7 @@ export function useAuctionSounds(game: RecruiterDuelGame | null) {
       // One sound per kind per update, so a batch of records (early completion) is a single cue.
       const cues = new Set<SoundId>()
       for (const entry of game.record.slice(previous.records)) {
-        const sound = SOUND_FOR_RECORD[entry.type]
+        const sound = soundForRecord(entry)
         if (sound) cues.add(sound)
       }
       cues.forEach((sound) => audio.play(sound))

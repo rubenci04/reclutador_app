@@ -12,6 +12,7 @@ import { simulateMatch } from '../local-match/simulator'
 import { AuctionPage, COIN_TOSS_MS } from './AuctionPage'
 import * as drawHistory from './drawHistory'
 import { FootballCoin } from './FootballCoin'
+import { soundForRecord } from './useAuctionSounds'
 
 const storedResult = (seed: string) => createSeededRandom(`${seed}:coin`)() < .5 ? 'heads' : 'tails'
 let play: MockInstance<typeof audio.play>
@@ -104,7 +105,17 @@ describe('auction sounds', () => {
     act(() => vi.advanceTimersByTime(5000))
     expect(play).toHaveBeenCalledTimes(3)
     fireEvent.click(screen.getByRole('button', { name: 'Pass' }))
-    expect(play.mock.calls.map(([id]) => id)).toEqual(['coinToss', 'coinLand', 'bid', 'award'])
+    expect(play.mock.calls.map(([id]) => id)).toEqual(['coinToss', 'coinLand', 'bid', 'signing'])
+    expect(screen.getByText('YOU WON THE AUCTION!')).toBeInTheDocument()
+    expect(screen.getByText(/signs .* for \d+M\./, { selector: '.win-summary' })).toBeInTheDocument()
+    act(() => vi.advanceTimersByTime(5000))
+    expect(play).toHaveBeenCalledTimes(4)
+  })
+  it('keeps the plain award sound for mandatory awards and the signing cue for auction wins', () => {
+    const award = (reason: 'voluntary_bid' | 'forced_viability' | 'auto_complete') => ({ type: 'award' as const, round: 0, winner: 'recruiter_one' as const, playerId: 'plr_001', price: 5, reason })
+    expect(soundForRecord(award('voluntary_bid'))).toBe('signing')
+    expect(soundForRecord(award('forced_viability'))).toBe('award')
+    expect(soundForRecord(award('auto_complete'))).toBe('award')
   })
 })
 

@@ -29,6 +29,7 @@ import { TeamProgressBoard } from './TeamProgressBoard'
 import type { FormationRole } from '../tactics/roles'
 import type { StrategyId } from '../tactics/strategies'
 import { createDrawContext, DRAW_HISTORY_KEY, newDrawSeed, parseReplay, readDrawHistory } from './drawHistory'
+import { WinCelebration } from './WinCelebration'
 
 interface AuctionPageProps { readonly onDraftFree: () => void }
 /** Presentation time of the toss; the result is already stored when it starts. */
@@ -204,7 +205,7 @@ export function AuctionPage({ onDraftFree }: AuctionPageProps) {
           {game.phase === 'BIDDING' && availability && <p id="auction-assignment" className="assignment-notice" role="status">{availability.replacement ? t('discards.doublePass', { count: game.discardsRemaining, position: t(`positions.${footballer!.position}`) }) : availability.passAward ? t(availability.passAward.reason === 'voluntary_bid' ? 'auctionActions.passAwards' : 'auctionActions.mandatory', { participant: names[availability.passAward.winner], amount: availability.passAward.price }) : availability.fallback ? t('auctionActions.doublePass', { participant: names[availability.fallback.winner], amount: availability.fallback.price }) : availability.pass.reason ? t('auctionActions.blocks.' + availability.pass.reason) : null}</p>}
           {cpuTurn && <section className="bid-panel" role="status">{t('auctionActions.blocks.CPU_THINKING')}</section>}
           {lastCpuDecision?.type === 'cpu_decision' && <p className="cpu-status" role="status">{t(lastCpuDecision.action === 'bid' ? 'cpu.bids' : 'cpu.passes', {amount:lastCpuDecision.amount})}</p>}
-          {game.phase === 'ROUND_RESULT' && game.lastAward && <section className="award-result"><h2>{t(game.lastAward.reason === 'voluntary_bid' ? 'duel.roundResult' : 'cpu.mandatory')}</h2>{opponentMode === 'cpu' && game.lastAward.winner === 'recruiter_two' && game.lastAward.reason === 'voluntary_bid' && <p>{t('cpu.wins')}</p>}<p>{t('duel.awardPlayer', { participant: names[game.lastAward.winner], player: footballer.name, amount: game.lastAward.price })}</p><button className="primary-action" onClick={() => apply(nextAuctionRound(game, DRAFT_CATALOG))}>{t('duel.nextRound')}</button></section>}
+          {game.phase === 'ROUND_RESULT' && game.lastAward && <section className="award-result">{game.lastAward.reason === 'voluntary_bid' && (opponentMode !== 'cpu' || game.lastAward.winner === 'recruiter_one') && <WinCelebration participant={names[game.lastAward.winner]} player={footballer.name} amount={game.lastAward.price} />}<h2>{t(game.lastAward.reason === 'voluntary_bid' ? 'duel.roundResult' : 'cpu.mandatory')}</h2>{opponentMode === 'cpu' && game.lastAward.winner === 'recruiter_two' && game.lastAward.reason === 'voluntary_bid' && <p>{t('cpu.wins')}</p>}<p>{t('duel.awardPlayer', { participant: names[game.lastAward.winner], player: footballer.name, amount: game.lastAward.price })}</p><button className="primary-action" onClick={() => apply(nextAuctionRound(game, DRAFT_CATALOG))}>{t('duel.nextRound')}</button></section>}
         </section>}
         {game.phase === 'TEAMS_COMPLETED' && (() => {
           if (!RECRUITER_IDS.every((participant) => isValidOrganizedLineup(game.teams[participant].lineup, DRAFT_CATALOG, budgetOf(game)))) {
