@@ -1,4 +1,5 @@
-import batch from '../../data/argentina_collection_v1/ARG-B01.json'
+import batch01 from '../../data/argentina_collection_v1/ARG-B01.json'
+import batch02 from '../../data/argentina_collection_v1/ARG-B02.json'
 import type { Position } from '../../types/football'
 import type { Player } from '../../types/player'
 import { ARGENTINA_EXPANSION, validateArgentinaCandidates, type ArgentinaCandidate, type ArgentinaCareer } from './argentinaExpansion'
@@ -16,9 +17,14 @@ export interface ArgentinaRecord extends Player {
   readonly editorialStatus: 'SECONDARY_SOURCE_VERIFIED'
 }
 
-export const ARG_B01_IDS: readonly string[] = Array.from({ length: 50 }, (_, index) => `arg_${String(index + 1).padStart(3, '0')}`)
+/** Ids of one batch (1-based): ARG-B01 is arg_001..arg_050, ARG-B02 arg_051..arg_100, and so on. */
+export const batchIds = (batch: number): readonly string[] => Array.from({ length: 50 }, (_, index) => `arg_${String((batch - 1) * 50 + index + 1).padStart(3, '0')}`)
+export const ARG_B01_IDS = batchIds(1)
 /** Kept outside DRAFT_CATALOG: the Argentine mode is prepared, never enabled. */
-export const ARG_B01: readonly ArgentinaRecord[] = batch as unknown as readonly ArgentinaRecord[]
+export const ARG_B01: readonly ArgentinaRecord[] = batch01 as unknown as readonly ArgentinaRecord[]
+export const ARG_B02: readonly ArgentinaRecord[] = batch02 as unknown as readonly ArgentinaRecord[]
+/** Every Argentine record created so far, in id order. */
+export const ARG_RECORDS: readonly ArgentinaRecord[] = [...ARG_B01, ...ARG_B02]
 
 /** Candidate view used by the shared Argentine contract validator. */
 export function toCandidate(record: ArgentinaRecord): ArgentinaCandidate {
@@ -35,18 +41,20 @@ export interface ArgentinaBatchReport {
 
 const tierOf = (overall: number) => (overall >= 94 ? 'S' : overall >= 89 ? 'A' : overall >= 84 ? 'B' : overall >= 79 ? 'C' : 'D') as 'S' | 'A' | 'B' | 'C' | 'D'
 
-export function validateArgentinaBatch01(records: readonly ArgentinaRecord[], existing: readonly Player[]): ArgentinaBatchReport {
+/** `previous` holds earlier Argentine batches so a person cannot appear twice across batches. */
+export function validateArgentinaBatch(records: readonly ArgentinaRecord[], existing: readonly Player[], batch = 1, previous: readonly ArgentinaRecord[] = []): ArgentinaBatchReport {
+  const ids = batchIds(batch)
   const issues: string[] = []
   const positionCounts: Record<Position, number> = { ARQ: 0, DEF: 0, MED: 0, DEL: 0 }
   const tierCounts = { S: 0, A: 0, B: 0, C: 0, D: 0 }
-  const names = new Set(existing.map((player) => normalizePlayerName(player.name)))
+  const names = new Set([...existing, ...previous].map((player) => normalizePlayerName(player.name)))
   const seenNames = new Set<string>()
   const clubs = new Set<string>()
   if (records.length > 50) issues.push('over_quota')
   records.forEach((record, index) => {
-    const result = validatePlayer(record, ARG_B01_IDS)
+    const result = validatePlayer(record, ids)
     if (!result.valid) issues.push(`${record.id ?? index}:${result.issues.map((issue) => issue.code).join(',')}`)
-    if (record.id !== ARG_B01_IDS[index]) issues.push(`${record.id}:id_sequence`)
+    if (record.id !== ids[index]) issues.push(`${record.id}:id_sequence`)
     const key = normalizePlayerName(record.name)
     if (names.has(key) || seenNames.has(key)) issues.push(`${record.id}:duplicate_name`)
     seenNames.add(key)
@@ -60,11 +68,11 @@ export function validateArgentinaBatch01(records: readonly ArgentinaRecord[], ex
     positionCounts[record.position] += 1
     tierCounts[tierOf(record.overall_rating)] += 1
   })
-  const batchQuota = ARGENTINA_EXPANSION.batches[0].quotas
+  const batchQuota = ARGENTINA_EXPANSION.batches[batch - 1].quotas
   for (const position of Object.keys(batchQuota) as Position[]) {
     if (positionCounts[position] > batchQuota[position]) issues.push(`quota:${position}`)
   }
-  if (!validateArgentinaCandidates(records.map(toCandidate), existing, new Set(existing.map((player) => `player:${player.id}`)))) issues.push('candidate_contract')
+  if (!validateArgentinaCandidates(records.map(toCandidate), existing, new Set(previous.map((record) => record.identityKey)))) issues.push('candidate_contract')
   return { valid: issues.length === 0, issues, positionCounts, tierCounts, clubCount: clubs.size }
 }
 

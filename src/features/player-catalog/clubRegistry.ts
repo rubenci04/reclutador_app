@@ -23,6 +23,10 @@ export const clubRegistry: Readonly<Record<string, ClubIdentity | undefined>> = 
     ['talleres_cordoba', 'Talleres de Córdoba'], ['aldosivi', 'Aldosivi'], ['barracas_central', 'Barracas Central'], ['deportivo_merlo', 'Deportivo Merlo'],
     ['arsenal_sarandi', 'Arsenal de Sarandí'], ['platense', 'Platense'], ['instituto', 'Instituto'], ['banfield', 'Banfield'], ['tigre', 'Tigre'],
     ['defensa_y_justicia', 'Defensa y Justicia'], ['excelsior', 'Excelsior'], ['colo_colo', 'Colo-Colo'], ['supreme_sha_tin', 'Supreme Sha Tin'], ['alajuelense', 'Alajuelense'],
+    ['ferro_carril_oeste', 'Ferro Carril Oeste'], ['defensores_unidos', 'Defensores Unidos'], ['mandiyu', 'Mandiyú'], ['independiente_rivadavia', 'Independiente Rivadavia'], ['talleres_remedios_de_escalada', 'Talleres de Remedios de Escalada'],
+    ['deportivo_espanol', 'Deportivo Español'], ['argentino_de_rosario', 'Argentino de Rosario'], ['club_rivadavia', 'Club Rivadavia'], ['godoy_cruz', 'Godoy Cruz'], ['san_martin_tucuman', 'San Martín de Tucumán'],
+    ['atletico_tucuman', 'Atlético Tucumán'], ['all_boys', 'All Boys'], ['gimnasia_jujuy', 'Gimnasia y Esgrima de Jujuy'], ['central_norte', 'Central Norte'], ['boca_unidos', 'Boca Unidos'],
+    ['huracan_tres_arroyos', 'Huracán de Tres Arroyos'], ['estudiantes_buenos_aires', 'Estudiantes de Buenos Aires'],
   ].map(([id, name]) => [id, { id, name }]),
 ]))
 
