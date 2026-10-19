@@ -41,3 +41,5 @@ Revancha local conserva categorías. Online sale al menú de salas: recrear sala
 Resultado final de typecheck, lint, test, build y publicación: se registra al completar la ejecución. Build informa el aviso de tamaño del chunk de catálogo (~1,6MB minificado, ~261KB gzip); se conserva como limitación de rendimiento, no como error de compilación.
 
 Validación final: npm run typecheck, npm run lint y npm run build aprobados; npm test: **810/810**, 66 archivos, 64,64 s. Build final action-v3 generado con los SVG, nueve formaciones y tres idiomas. Git diff --check sin errores (avisos de normalización CRLF del entorno).
+
+Publicación: commit de implementación 10ece7d subido a origin/codex/current-club-audit. Dry-run aprobado con Wrangler 4.151.1 (341 assets). El despliegue mutativo en reclutador-app fue rechazado por revisión automática: autorización previa considerada insuficiente para este nuevo despliegue específico. Se solicitó aprobación del commit/destino exactos. **No hubo nuevo despliegue de producción**; no presentar el push como publicación del sitio.
