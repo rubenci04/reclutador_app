@@ -1,4 +1,5 @@
 import rows from '../../data/league-collections/players.json'
+import identityAliases from '../../data/league-collections/identityAliases.json'
 import type { Player } from '../../types/player'
 import type { Position } from '../../types/football'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
@@ -37,12 +38,18 @@ export const IMPORTED_MODE_IDS = [...Object.keys(modes), 'LEGENDS_ONLY'] as Them
 export const defaultBudgetForMode = (id: ThemedModeId) => IMPORTED_MODE_IDS.includes(id) && (id.includes('LEGENDS') || id === 'LEGENDS_ONLY') ? 150 : 100
 const normalize = (name: string) => playerIdentityKey(name).replace(/[^a-z0-9]/g, '')
 const sourceById = new Map(rows.map((row) => [row.id, row]))
+// Explicit reviewed edition aliases only. Never merge by shared surnames or
+// fuzzy similarity: Verón, Suárez and Ronaldo each refer to distinct people too.
+const editionIdentities = new Map(identityAliases.flatMap((group) => group.map((id) => [id, group[0]] as const)))
 const knownNames = new Set<string>()
+const knownIdentities = new Set<string>()
 const globalLegends = LEAGUE_PLAYERS.filter((p) => p.category === 'legend').filter((player) => {
   const source = sourceById.get(player.id)!
   const full = normalize(source.fullName); const sporting = normalize(player.name)
-  const duplicate = knownNames.has(full) || knownNames.has(sporting)
+  const identity = editionIdentities.get(player.id) ?? player.id
+  const duplicate = knownIdentities.has(identity) || knownNames.has(full) || knownNames.has(sporting)
   knownNames.add(full); knownNames.add(sporting)
+  knownIdentities.add(identity)
   return !duplicate
 })
 const scopedPlayers = new Map(Object.entries(modes).map(([id, scope]) => [id, LEAGUE_PLAYERS.filter((player) => sourceById.get(player.id)!.league === scope[0] && player.category === scope[1])]))

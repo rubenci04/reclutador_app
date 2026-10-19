@@ -2,6 +2,8 @@
 
 Fecha: 19/10/2026. Decisiones y procedencia: ADR-0014.
 
+Continuación de identidades: typecheck, lint y build aprobados; batería completa de 60 archivos y 773 pruebas aprobada en 59,99 s, sin omisiones. Salida: collections-identity-test-run.txt. Los diez grupos de variantes están registrados en src/data/league-collections/identityAliases.json, con pruebas de conservación de homónimos y de las ocho colecciones de 150.
+
 ## Resultado ejecutado
 
 | Comprobación | Resultado |
@@ -39,7 +41,7 @@ Son observaciones sintéticas, no porcentajes garantizados para cualquier equipo
 ## Datos y límites
 
 - 87 OVR de origen inferiores a 75 entran al juego con piso 75; los originales quedan en la procedencia. El precio y rango de juego se calculan con las funciones existentes. Las escalas S+/S/A/B/C/D de algunos TXT no se presentan como equivalentes a los tiers históricos del proyecto.
-- Global Legends contiene 561 versiones tras eliminar coincidencias de nombres completos/deportivos y alias ya registrados. La identificación de otras variantes requiere revisión editorial; no se declara una auditoría universal de identidades.
+- Global Legends contenía 561 versiones en la primera entrega. La continuación revisa diez grupos explícitos de variantes y elimina nueve duplicados adicionales: 552 versiones en el combinado. Se prueban alias y homónimos; no se declara una auditoría universal de identidades.
 - Las colecciones importadas son datos aportados, no verificaciones externas. Los clubes figuran como referencia. Los atributos sectoriales son perfiles de diseño por posición. El año 2000 de los históricos es un bucket técnico y no una fecha biográfica comprobada; la tarjeta importada evita presentarlo como tal.
 - La lista anterior de 200 argentinos y catalog_v1 permanecen conservadas. El selector Argentina Legends usa ahora la nueva lista de 150. El modo anterior Argentina Clubs sigue accesible.
 - Leyendas importadas: clásico 150M por equipo; actuales: 100M. Las pruebas usan reserva de técnico 8M. La configuración personalizada conserva validación y evita iniciar con un presupuesto insuficiente.

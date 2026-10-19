@@ -6,8 +6,24 @@ import { preflightMatchConfig, CLASSIC_CONFIG } from '../recruiter-duel/matchCon
 import { createRecruiterDuel, startDuelMatch, startCoinToss, revealCoinToss, beginBidding, nextAuctionRound, passAuction, placeBid, auctionAvailability, revealDiscardReplacement, revealNextAuctionRound } from '../recruiter-duel/auctionEngine'
 import type { AuctionTransition } from '../recruiter-duel/auctionTypes'
 import { approvedPhoto } from '../recruiter-duel/visualAssets'
+import identityAliases from '../../data/league-collections/identityAliases.json'
 
 describe('supplied league collections', () => {
+  it('reconciles reviewed career-name variants only in Global Legends and preserves distinct namesakes', () => {
+    const legends = catalogForMode('LEGENDS_ONLY')
+    const ids = new Set(legends.map((p) => p.id))
+    const aliasIds = identityAliases.flat()
+    expect(new Set(aliasIds).size).toBe(aliasIds.length)
+    for (const group of identityAliases) {
+      expect(group.every((id) => LEAGUE_PLAYERS.some((p) => p.id === id && p.category === 'legend'))).toBe(true)
+      expect(group.filter((id) => ids.has(id))).toEqual([group[0]])
+    }
+    expect(legends).toHaveLength(552)
+    for (const id of ['import_arg_ley_025', 'import_arg_ley_072', 'import_eng_epl_ley_008', 'import_esp_esp_leg_luis_suarez_miramontes', 'import_bra_bra_leg_ronaldo_luis_nazario_de_lima', 'import_bra_bra_leg_ronaldo_giovanelli']) expect(ids.has(id), id).toBe(true)
+    const matheuzinhos = catalogForMode('BRAZIL_CURRENT').filter((p) => p.name === 'Matheuzinho')
+    expect(matheuzinhos).toHaveLength(2)
+    expect(new Set(matheuzinhos.map((p) => p.id)).size).toBe(2)
+  })
   it('imports all 1,200 rows with valid positions, game ratings, prices, provenance and no photos', () => {
     expect(LEAGUE_PLAYERS).toHaveLength(1200)
     const ids = LEAGUE_PLAYERS.map((p) => p.id)

@@ -8,6 +8,7 @@
 | DL-F04-BAL-003 | Más oportunidades y sensibilidad a diferencias de poder | Implementada: action-v1, 18 oportunidades, calibración reproducible de 6.000 partidos; playtest real pendiente |
 | DL-F04-PLAY-005 | Series con el mismo plantel y ganador | Implementada: tres encuentros, dos adicionales en igualdad y penales; CPU, hot-seat, libre y nuevos partidos online |
 | DL-F04-UX-005 | Tres cartas de técnicos por contexto, referencias y ayudas | Implementada en tres idiomas, animaciones y movimiento reducido; QA visual bloqueada por timeout del navegador |
+| DL-F04-DATA-007 | Revisar variantes de nombres en Global Legends | Diez grupos explícitos revisados; nueve duplicados adicionales excluidos, 552 versiones en el combinado. Las ocho colecciones de 150 y los homónimos se conservan |
 
 Se mantienen abajo estados e informes históricos. El subconjunto anterior de 188 leyendas argentinas fue sustituido en el selector por las 150 aportadas en este pedido. Catálogos anteriores e IDs conservados. Detalle: qa/COLLECTIONS-SERIES.md y logs/COLLECTIONS-SERIES.md.
 
