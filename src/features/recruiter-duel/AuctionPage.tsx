@@ -1,5 +1,7 @@
 import { DRAFT_CATALOG } from '../draft/catalog'
-import { createCrossCategoryDraw, crossCategoryCatalog } from './crossCategoryDraw'
+import { createCrossCategoryDraw, crossCategoryCatalog, finishDualDraft } from './crossCategoryDraw'
+import { cpuAct, createDualDraft, discardCard, dualComplete, isSideComplete, signCard, type DualDraft } from './dualDraft'
+import { DualDraftScreen } from './DualDraftScreen'
 import { useCallback, useEffect, useMemo, useState, type SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LanguageSelector } from '../../components/LanguageSelector'
@@ -75,6 +77,8 @@ export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps)
   const [mode, setMode] = useState<ThemedModeId>('GLOBAL_CLASSIC')
   /** Mode of the running game; the setup screen follows `mode`. */
   const [gameMode, setGameMode] = useState<ThemedModeId>('GLOBAL_CLASSIC')
+  /** Live draw in progress for two different categories (local games only); becomes a normal game once both elevens are complete. */
+  const [dual, setDual] = useState<{ readonly draft: DualDraft; readonly first: ThemedModeId; readonly second: ThemedModeId; readonly vsCpu: boolean } | null>(null)
   const [localGame, setLocalGame] = useState<RecruiterDuelGame | null>(null)
   const game = online ? online.game : localGame
   /** Online, every change is an intent applied to the latest shared state; leaving the game exits the room. */
@@ -118,9 +122,15 @@ export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps)
     let seed: string
     try { seed = newDrawSeed() }
     catch { return setError(t('draw.randomError')) }
-    const created = secondCategory !== 'same' && secondCategory !== mode ? createCrossCategoryDraw(mode, secondCategory, seed, config) : createRecruiterDuel(catalog, seed, context, config)
-    if (!created.ok) return setError(t(`duel.errors.${created.error}`))
-    setGameMode(mode); setGame({ ...created.game, coachMode: mode, manualBench: true }); setError(null)
+    if (secondCategory !== 'same' && secondCategory !== mode && !online) {
+      const live = createDualDraft(mode, secondCategory, seed, config)
+      if (!live.ok) return setError(t(`duel.errors.${live.error}`))
+      setGameMode(mode); setDual({ draft: live.draft, first: mode, second: secondCategory, vsCpu: opponentMode === 'cpu' }); setError(null)
+    } else {
+      const created = secondCategory !== 'same' && secondCategory !== mode ? createCrossCategoryDraw(mode, secondCategory, seed, config) : createRecruiterDuel(catalog, seed, context, config)
+      if (!created.ok) return setError(t(`duel.errors.${created.error}`))
+      setGameMode(mode); setGame({ ...created.game, coachMode: mode, manualBench: true }); setError(null)
+    }
     let warning = saved.warning
     try { window.localStorage.setItem(drawHistoryKey(mode), JSON.stringify({ version: 1, games: [...saved.history.games, { seed, context }].slice(-5) })) }
     catch { warning = true }
@@ -282,6 +292,40 @@ export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps)
   const { notices, push, dismiss } = useAuctionNotices(game, catalog, { recruiter_one: game?.config?.names.recruiter_one ?? t('duel.recruiters.recruiter_one'), recruiter_two: game?.config?.names.recruiter_two ?? (opponentMode === 'cpu' ? 'CPU' : t('duel.recruiters.recruiter_two')) }, blockedMessage && availability && !['INVALID_OFFER'].includes(availability.bid.reason ?? '') ? { key: blockedKey, message: blockedMessage } : null)
   const names = { recruiter_one: game?.config?.names.recruiter_one ?? t('duel.recruiters.recruiter_one'), recruiter_two: game?.config?.names.recruiter_two ?? (opponentMode === 'cpu' ? 'CPU' : t('duel.recruiters.recruiter_two')) }
 
+  const dualFirst = dual?.first; const dualSecond = dual?.second
+  const dualCatalog = useMemo(() => dualFirst && dualSecond ? crossCategoryCatalog(dualFirst, dualSecond) : [], [dualFirst, dualSecond])
+  const cpuCursor = dual?.draft.sides.recruiter_two.cursor; const dualVsCpu = dual?.vsCpu; const cpuDone = dual ? isSideComplete(dual.draft.sides.recruiter_two) : true
+  // The computer decides on its own cards at a readable pace, independently of the person.
+  useEffect(() => {
+    if (!dualVsCpu || cpuDone) return
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    const timer = window.setTimeout(() => setDual((current) => {
+      if (!current || isSideComplete(current.draft.sides.recruiter_two)) return current
+      const result = cpuAct(current.draft, 'recruiter_two', crossCategoryCatalog(current.first, current.second))
+      return result.ok ? { ...current, draft: result.draft } : current
+    }), reduced ? 150 : 1100)
+    return () => window.clearTimeout(timer)
+  }, [dualVsCpu, cpuCursor, cpuDone])
+  const dualAct = (id: RecruiterId, act: typeof signCard) => setDual((current) => {
+    if (!current) return current
+    const result = act(current.draft, id, crossCategoryCatalog(current.first, current.second))
+    return result.ok ? { ...current, draft: result.draft } : current
+  })
+  const finishDual = () => {
+    if (!dual || !dualComplete(dual.draft)) return
+    const created = finishDualDraft(dual.draft, dual.first, dual.second)
+    if (!created.ok) return setError(t(`duel.errors.${created.error}`))
+    setGame({ ...created.game, coachMode: dual.first, manualBench: true }); setDual(null); setError(null)
+  }
+  if (dual && !game) {
+    const dualNames = { recruiter_one: dual.draft.config.names.recruiter_one ?? t('duel.recruiters.recruiter_one'), recruiter_two: dual.draft.config.names.recruiter_two ?? (dual.vsCpu ? 'CPU' : t('duel.recruiters.recruiter_two')) }
+    return <div className="draft-app duel-shell"><header className="draft-header"><a className="brand" href="#duel-main" aria-label={PRODUCT.name}><span className="brand-emblem">R</span><span>{PRODUCT.name}</span></a><AudioControls /><LanguageSelector /></header>
+      <main id="duel-main" className="duel-page">
+        <DualDraftScreen draft={dual.draft} catalog={dualCatalog} names={dualNames} categoryLabel={(id) => categoryLabel(id as ThemedModeId)} humans={dual.vsCpu ? ['recruiter_one'] : ['recruiter_one', 'recruiter_two']}
+          onSign={(id) => dualAct(id, signCard)} onDiscard={(id) => dualAct(id, discardCard)} onContinue={finishDual} onAbandon={() => setDual(null)} />
+        {error && <div className="draft-alert" role="alert"><p>{error}</p></div>}
+      </main></div>
+  }
   if (game && (game.phase === 'SIMULATING' || game.phase === 'MATCH_RESULT') && game.matchResult) {
     const Screen = online && !game.matchResult.actionModel ? MatchScreen : MatchSeriesScreen
     return <div className="draft-app duel-shell"><header className="draft-header"><a className="brand" href="#duel-main" aria-label={PRODUCT.name}><span className="brand-emblem">R</span><span>{PRODUCT.name}</span></a><AudioControls /><LanguageSelector /></header><Screen key={game.matchResult.seed} canAdjust={!online} secondIsHuman={opponentMode !== 'cpu'} onSeriesFinished={(winner, wins) => { if (!online) recordDuel(game.seed, winner === 'local' ? 'recruiter_one' : 'recruiter_two', { recruiter_one: wins.local, recruiter_two: wins.cpu }, null) }} result={game.matchResult} catalog={catalog} localName={names.recruiter_one} cpuName={names.recruiter_two} onFinished={() => { if (!online && game.phase === 'SIMULATING') apply(completeDuelMatch(game)) }} onNewMatch={online ? online.exit : () => setGame(null)} onRematch={online ? online.exit : start} onReturn={() => setGame(null)} /></div>

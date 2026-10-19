@@ -186,3 +186,15 @@ Validación: typecheck, lint, 831 pruebas y build ejecutados. QA visual en naveg
 | Muñecos sin ojos ni sonrisa; piel y largo de pelo por jugador | Hecho el dibujo y la carga opcional (src/data/player-appearance.json); sin datos todos usan el valor neutro |
 | Pie hábil, piel y pelo por jugador | Pendiente de datos: completar docs/research/PLAYER-FOOT-LIST.csv y ejecutar scripts/import-player-traits.mjs |
 | Patrones de camiseta y escudo (rayas, aros, mitades, banda, franja) | Hecho para ~55 clubes y selecciones; resto usa el corte en dos colores |
+
+## Sorteo en vivo, nombres comunes y ajustes — 19/10/2026
+
+| Tarea | Estado |
+| --- | --- |
+| Categorías distintas: dos sorteos en vivo e independientes en la misma pantalla (jugador/CPU o dos personas) | Hecho (local): src/features/recruiter-duel/dualDraft.ts + DualDraftScreen; fichar a precio base o descartar (3 por equipo); sin descartes la carta es obligatoria; la CPU decide sola. Salas online siguen con el armado inmediato |
+| Nombres comunes de jugadores (fullName intacto) | Hecho: scripts/standardize-player-names.mjs, 429 nombres; revisar excepciones |
+| Técnicos: una sola referencia y año, sin enlaces de fuente | Hecho |
+| Presupuesto 120M actuales / 150M leyendas | Hecho (defaultBudgetForMode) |
+| Poder global grande en HUD y paneles de equipo | Hecho (PowerBadge; con once incompleto muestra nivel medio) |
+| Suplentes por defecto | El mercado ya se abre tras el técnico si queda dinero; con 120M queda más saldo. No se añadieron suplentes obligatorios |
+| Análisis del resultado en tarjeta comparativa | Hecho; el detalle largo queda en «Ver detalle» |
