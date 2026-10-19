@@ -5,7 +5,7 @@ import { COACH_MAX_PRICE, coachReserveFor } from '../coaches/coachRules'
 
 /** Versioned configuration of one duel. The classic mode is exactly CLASSIC_CONFIG; nothing else holds a budget. */
 export const MATCH_CONFIG_VERSION = 1 as const
-export const BUDGET_PRESETS = [100, 125, 150, 175, 200] as const
+export const BUDGET_PRESETS = [100, 120, 150, 175, 200] as const
 export const BUDGET_LIMITS = { min: 60, max: 300, step: 5 } as const
 export const NAME_MAX_LENGTH = 24
 

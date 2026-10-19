@@ -1,7 +1,7 @@
 [
   {
     "id": "import_arg_act_001",
-    "name": "Ángel Fabián Di María",
+    "name": "Ángel Di María",
     "fullName": "Ángel Fabián Di María",
     "position": "DEL",
     "category": "contemporary",
@@ -19,7 +19,7 @@
   },
   {
     "id": "import_arg_act_002",
-    "name": "Leandro Daniel Paredes",
+    "name": "Leandro Paredes",
     "fullName": "Leandro Daniel Paredes",
     "position": "MED",
     "category": "contemporary",
@@ -37,7 +37,7 @@
   },
   {
     "id": "import_arg_act_003",
-    "name": "Lucas Manuel Zelarayán",
+    "name": "Lucas Zelarayán",
     "fullName": "Lucas Manuel Zelarayán",
     "position": "MED",
     "category": "contemporary",
@@ -55,7 +55,7 @@
   },
   {
     "id": "import_arg_act_004",
-    "name": "Mauro Wilney Arambarri",
+    "name": "Mauro Arambarri",
     "fullName": "Mauro Wilney Arambarri",
     "position": "MED",
     "category": "contemporary",
@@ -73,7 +73,7 @@
   },
   {
     "id": "import_arg_act_005",
-    "name": "Thiago Ezequiel Almada",
+    "name": "Thiago Almada",
     "fullName": "Thiago Ezequiel Almada",
     "position": "MED",
     "category": "contemporary",
@@ -91,7 +91,7 @@
   },
   {
     "id": "import_arg_act_006",
-    "name": "Ángel Martín Correa",
+    "name": "Ángel Correa",
     "fullName": "Ángel Martín Correa",
     "position": "MED",
     "category": "contemporary",
@@ -109,7 +109,7 @@
   },
   {
     "id": "import_arg_act_007",
-    "name": "Aníbal Ismael Moreno",
+    "name": "Aníbal Moreno",
     "fullName": "Aníbal Ismael Moreno",
     "position": "MED",
     "category": "contemporary",
@@ -127,7 +127,7 @@
   },
   {
     "id": "import_arg_act_008",
-    "name": "Damián Marcelino Moreno",
+    "name": "Damián Moreno",
     "fullName": "Damián Marcelino Moreno",
     "position": "MED",
     "category": "contemporary",
@@ -145,7 +145,7 @@
   },
   {
     "id": "import_arg_act_009",
-    "name": "Matías Ezequiel Vargas",
+    "name": "Matías Vargas",
     "fullName": "Matías Ezequiel Vargas",
     "position": "DEL",
     "category": "contemporary",
@@ -163,7 +163,7 @@
   },
   {
     "id": "import_arg_act_010",
-    "name": "Nicolás Hernán Gonzalo Otamendi",
+    "name": "Nicolás Otamendi",
     "fullName": "Nicolás Hernán Gonzalo Otamendi",
     "position": "DEF",
     "category": "contemporary",
@@ -181,7 +181,7 @@
   },
   {
     "id": "import_arg_act_011",
-    "name": "Néstor Fernando Muslera",
+    "name": "Néstor Muslera",
     "fullName": "Néstor Fernando Muslera",
     "position": "ARQ",
     "category": "contemporary",
@@ -199,7 +199,7 @@
   },
   {
     "id": "import_arg_act_012",
-    "name": "Adrián Emmanuel Martínez",
+    "name": "Adrián Martínez",
     "fullName": "Adrián Emmanuel Martínez",
     "position": "DEL",
     "category": "contemporary",
@@ -217,7 +217,7 @@
   },
   {
     "id": "import_arg_act_013",
-    "name": "Alan Hernán Lescano",
+    "name": "Alan Lescano",
     "fullName": "Alan Hernán Lescano",
     "position": "MED",
     "category": "contemporary",
@@ -253,7 +253,7 @@
   },
   {
     "id": "import_arg_act_015",
-    "name": "Gonzalo Ariel Montiel",
+    "name": "Gonzalo Montiel",
     "fullName": "Gonzalo Ariel Montiel",
     "position": "DEF",
     "category": "contemporary",
@@ -271,7 +271,7 @@
   },
   {
     "id": "import_arg_act_016",
-    "name": "Nicolás Emanuel Fernández",
+    "name": "Nicolás Fernández",
     "fullName": "Nicolás Emanuel Fernández",
     "position": "DEL",
     "category": "contemporary",
@@ -289,7 +289,7 @@
   },
   {
     "id": "import_arg_act_017",
-    "name": "Santiago Lionel Ascacíbar",
+    "name": "Santiago Ascacíbar",
     "fullName": "Santiago Lionel Ascacíbar",
     "position": "MED",
     "category": "contemporary",
@@ -307,7 +307,7 @@
   },
   {
     "id": "import_arg_act_018",
-    "name": "Sebastián Villa Cano",
+    "name": "Sebastián Villa",
     "fullName": "Sebastián Villa Cano",
     "position": "DEL",
     "category": "contemporary",
@@ -325,7 +325,7 @@
   },
   {
     "id": "import_arg_act_019",
-    "name": "Alex Adrián Arce",
+    "name": "Alex Arce",
     "fullName": "Alex Adrián Arce",
     "position": "DEL",
     "category": "contemporary",
@@ -343,7 +343,7 @@
   },
   {
     "id": "import_arg_act_020",
-    "name": "Carlos Joaquín Correa",
+    "name": "Carlos Correa",
     "fullName": "Carlos Joaquín Correa",
     "position": "MED",
     "category": "contemporary",
@@ -361,7 +361,7 @@
   },
   {
     "id": "import_arg_act_021",
-    "name": "Franco Sebastián Cristaldo",
+    "name": "Franco Cristaldo",
     "fullName": "Franco Sebastián Cristaldo",
     "position": "MED",
     "category": "contemporary",
@@ -379,7 +379,7 @@
   },
   {
     "id": "import_arg_act_022",
-    "name": "Guido Marcelo Carrillo",
+    "name": "Guido Carrillo",
     "fullName": "Guido Marcelo Carrillo",
     "position": "DEL",
     "category": "contemporary",
@@ -397,7 +397,7 @@
   },
   {
     "id": "import_arg_act_023",
-    "name": "Jaminton Leandro Campaz",
+    "name": "Jaminton Campaz",
     "fullName": "Jaminton Leandro Campaz",
     "position": "DEL",
     "category": "contemporary",
@@ -415,7 +415,7 @@
   },
   {
     "id": "import_arg_act_024",
-    "name": "Lautaro Emanuel Blanco",
+    "name": "Lautaro Blanco",
     "fullName": "Lautaro Emanuel Blanco",
     "position": "DEF",
     "category": "contemporary",
@@ -433,7 +433,7 @@
   },
   {
     "id": "import_arg_act_025",
-    "name": "Lautaro Federico Di Lollo",
+    "name": "Lautaro Di Lollo",
     "fullName": "Lautaro Federico Di Lollo",
     "position": "DEF",
     "category": "contemporary",
@@ -451,7 +451,7 @@
   },
   {
     "id": "import_arg_act_026",
-    "name": "Leandro Nicolás Lozano",
+    "name": "Leandro Lozano",
     "fullName": "Leandro Nicolás Lozano",
     "position": "DEF",
     "category": "contemporary",
@@ -523,7 +523,7 @@
   },
   {
     "id": "import_arg_act_030",
-    "name": "Marcos Javier Acuña",
+    "name": "Marcos Acuña",
     "fullName": "Marcos Javier Acuña",
     "position": "DEF",
     "category": "contemporary",
@@ -667,7 +667,7 @@
   },
   {
     "id": "import_arg_act_038",
-    "name": "Álvaro David Montero",
+    "name": "Álvaro Montero",
     "fullName": "Álvaro David Montero",
     "position": "ARQ",
     "category": "contemporary",
@@ -685,7 +685,7 @@
   },
   {
     "id": "import_arg_act_039",
-    "name": "Éver Maximiliano David Banega",
+    "name": "Éver Banega",
     "fullName": "Éver Maximiliano David Banega",
     "position": "MED",
     "category": "contemporary",
@@ -703,7 +703,7 @@
   },
   {
     "id": "import_arg_act_040",
-    "name": "Adam Fernando Bareiro",
+    "name": "Adam Bareiro",
     "fullName": "Adam Fernando Bareiro",
     "position": "DEL",
     "category": "contemporary",
@@ -721,7 +721,7 @@
   },
   {
     "id": "import_arg_act_041",
-    "name": "Agustín Federico Marchesín",
+    "name": "Agustín Marchesín",
     "fullName": "Agustín Federico Marchesín",
     "position": "ARQ",
     "category": "contemporary",
@@ -739,7 +739,7 @@
   },
   {
     "id": "import_arg_act_042",
-    "name": "Alex Nahuel Luna",
+    "name": "Alex Luna",
     "fullName": "Alex Nahuel Luna",
     "position": "MED",
     "category": "contemporary",
@@ -757,7 +757,7 @@
   },
   {
     "id": "import_arg_act_043",
-    "name": "Elías José Gómez",
+    "name": "Elías Gómez",
     "fullName": "Elías José Gómez",
     "position": "DEF",
     "category": "contemporary",
@@ -775,7 +775,7 @@
   },
   {
     "id": "import_arg_act_044",
-    "name": "Emanuel Hernán Mammana",
+    "name": "Emanuel Mammana",
     "fullName": "Emanuel Hernán Mammana",
     "position": "DEF",
     "category": "contemporary",
@@ -811,7 +811,7 @@
   },
   {
     "id": "import_arg_act_046",
-    "name": "Francisco Gabriel Ortega",
+    "name": "Francisco Ortega",
     "fullName": "Francisco Gabriel Ortega",
     "position": "DEF",
     "category": "contemporary",
@@ -847,7 +847,7 @@
   },
   {
     "id": "import_arg_act_048",
-    "name": "Franco Damián Vázquez",
+    "name": "Franco Vázquez",
     "fullName": "Franco Damián Vázquez",
     "position": "MED",
     "category": "contemporary",
@@ -865,7 +865,7 @@
   },
   {
     "id": "import_arg_act_049",
-    "name": "Franco Malcom Ibarra",
+    "name": "Franco Ibarra",
     "fullName": "Franco Malcom Ibarra",
     "position": "MED",
     "category": "contemporary",
@@ -883,7 +883,7 @@
   },
   {
     "id": "import_arg_act_050",
-    "name": "Gabriel Iván Neves",
+    "name": "Gabriel Neves",
     "fullName": "Gabriel Iván Neves",
     "position": "MED",
     "category": "contemporary",
@@ -901,7 +901,7 @@
   },
   {
     "id": "import_arg_act_051",
-    "name": "Gastón Andrés Lodico",
+    "name": "Gastón Lodico",
     "fullName": "Gastón Andrés Lodico",
     "position": "MED",
     "category": "contemporary",
@@ -919,7 +919,7 @@
   },
   {
     "id": "import_arg_act_052",
-    "name": "Hernán López Muñoz",
+    "name": "Hernán López",
     "fullName": "Hernán López Muñoz",
     "position": "MED",
     "category": "contemporary",
@@ -955,7 +955,7 @@
   },
   {
     "id": "import_arg_act_054",
-    "name": "Jeremías Conan Ledesma",
+    "name": "Jeremías Ledesma",
     "fullName": "Jeremías Conan Ledesma",
     "position": "ARQ",
     "category": "contemporary",
@@ -991,7 +991,7 @@
   },
   {
     "id": "import_arg_act_056",
-    "name": "Leandro González Pirez",
+    "name": "Leandro González Pírez",
     "fullName": "Leandro González Pirez",
     "position": "DEF",
     "category": "contemporary",
@@ -1027,7 +1027,7 @@
   },
   {
     "id": "import_arg_act_058",
-    "name": "Luis Ezequiel Unsain",
+    "name": "Luis Unsain",
     "fullName": "Luis Ezequiel Unsain",
     "position": "ARQ",
     "category": "contemporary",
@@ -1063,7 +1063,7 @@
   },
   {
     "id": "import_arg_act_060",
-    "name": "Matías Ezequiel Abaldo",
+    "name": "Matías Abaldo",
     "fullName": "Matías Ezequiel Abaldo",
     "position": "DEL",
     "category": "contemporary",
@@ -1081,7 +1081,7 @@
   },
   {
     "id": "import_arg_act_061",
-    "name": "Maximiliano Nahuel Salas",
+    "name": "Maximiliano Salas",
     "fullName": "Maximiliano Nahuel Salas",
     "position": "DEL",
     "category": "contemporary",
@@ -1117,7 +1117,7 @@
   },
   {
     "id": "import_arg_act_063",
-    "name": "Rafael Santos Borré",
+    "name": "Rafael Borré",
     "fullName": "Rafael Santos Borré",
     "position": "DEL",
     "category": "contemporary",
@@ -1135,7 +1135,7 @@
   },
   {
     "id": "import_arg_act_064",
-    "name": "Ramiro Mateo Carrera",
+    "name": "Ramiro Carrera",
     "fullName": "Ramiro Mateo Carrera",
     "position": "MED",
     "category": "contemporary",
@@ -1171,7 +1171,7 @@
   },
   {
     "id": "import_arg_act_066",
-    "name": "Ronaldo Iván Martínez",
+    "name": "Ronaldo Martínez",
     "fullName": "Ronaldo Iván Martínez",
     "position": "DEL",
     "category": "contemporary",
@@ -1279,7 +1279,7 @@
   },
   {
     "id": "import_arg_act_072",
-    "name": "Vicente Tomás Pizarro",
+    "name": "Vicente Pizarro",
     "fullName": "Vicente Tomás Pizarro",
     "position": "MED",
     "category": "contemporary",
@@ -1297,7 +1297,7 @@
   },
   {
     "id": "import_arg_act_073",
-    "name": "Víctor Ignacio Malcorra",
+    "name": "Víctor Malcorra",
     "fullName": "Víctor Ignacio Malcorra",
     "position": "MED",
     "category": "contemporary",
@@ -1315,7 +1315,7 @@
   },
   {
     "id": "import_arg_act_074",
-    "name": "Aarón Nicolás Molinas",
+    "name": "Aarón Molinas",
     "fullName": "Aarón Nicolás Molinas",
     "position": "MED",
     "category": "contemporary",
@@ -1369,7 +1369,7 @@
   },
   {
     "id": "import_arg_act_077",
-    "name": "Alexis Ricardo Cuello",
+    "name": "Alexis Cuello",
     "fullName": "Alexis Ricardo Cuello",
     "position": "DEL",
     "category": "contemporary",
@@ -1405,7 +1405,7 @@
   },
   {
     "id": "import_arg_act_079",
-    "name": "Ayrton Enrique Costa",
+    "name": "Ayrton Costa",
     "fullName": "Ayrton Enrique Costa",
     "position": "DEF",
     "category": "contemporary",
@@ -1423,7 +1423,7 @@
   },
   {
     "id": "import_arg_act_080",
-    "name": "Baltasar Gallego Rodríguez",
+    "name": "Baltasar Rodríguez",
     "fullName": "Baltasar Gallego Rodríguez",
     "position": "MED",
     "category": "contemporary",
@@ -1441,7 +1441,7 @@
   },
   {
     "id": "import_arg_act_081",
-    "name": "Brayan Josué Cortés",
+    "name": "Brayan Cortés",
     "fullName": "Brayan Josué Cortés",
     "position": "ARQ",
     "category": "contemporary",
@@ -1459,7 +1459,7 @@
   },
   {
     "id": "import_arg_act_082",
-    "name": "Carlos Alonso Enrique Palacios",
+    "name": "Carlos Palacios",
     "fullName": "Carlos Alonso Enrique Palacios",
     "position": "MED",
     "category": "contemporary",
@@ -1477,7 +1477,7 @@
   },
   {
     "id": "import_arg_act_083",
-    "name": "Carlos Roberto Izquierdoz",
+    "name": "Carlos Izquierdoz",
     "fullName": "Carlos Roberto Izquierdoz",
     "position": "DEF",
     "category": "contemporary",
@@ -1495,7 +1495,7 @@
   },
   {
     "id": "import_arg_act_084",
-    "name": "Claudio Andrés Baeza",
+    "name": "Claudio Baeza",
     "fullName": "Claudio Andrés Baeza",
     "position": "MED",
     "category": "contemporary",
@@ -1513,7 +1513,7 @@
   },
   {
     "id": "import_arg_act_085",
-    "name": "Diego Alfonso Valdés",
+    "name": "Diego Valdés",
     "fullName": "Diego Alfonso Valdés",
     "position": "MED",
     "category": "contemporary",
@@ -1531,7 +1531,7 @@
   },
   {
     "id": "import_arg_act_086",
-    "name": "Diego Luis Valoyes",
+    "name": "Diego Valoyes",
     "fullName": "Diego Luis Valoyes",
     "position": "DEL",
     "category": "contemporary",
@@ -1549,7 +1549,7 @@
   },
   {
     "id": "import_arg_act_087",
-    "name": "Duván Andrés Vergara",
+    "name": "Duván Vergara",
     "fullName": "Duván Andrés Vergara",
     "position": "DEL",
     "category": "contemporary",
@@ -1567,7 +1567,7 @@
   },
   {
     "id": "import_arg_act_088",
-    "name": "Eduardo Antonio Salvio",
+    "name": "Eduardo Salvio",
     "fullName": "Eduardo Antonio Salvio",
     "position": "DEL",
     "category": "contemporary",
@@ -1585,7 +1585,7 @@
   },
   {
     "id": "import_arg_act_089",
-    "name": "Edwuin Stiven Cetré",
+    "name": "Edwuin Cetré",
     "fullName": "Edwuin Stiven Cetré",
     "position": "DEL",
     "category": "contemporary",
@@ -1603,7 +1603,7 @@
   },
   {
     "id": "import_arg_act_090",
-    "name": "Emiliano Ariel Rigoni",
+    "name": "Emiliano Rigoni",
     "fullName": "Emiliano Ariel Rigoni",
     "position": "DEL",
     "category": "contemporary",
@@ -1621,7 +1621,7 @@
   },
   {
     "id": "import_arg_act_091",
-    "name": "Enner Remberto Valencia",
+    "name": "Enner Valencia",
     "fullName": "Enner Remberto Valencia",
     "position": "DEL",
     "category": "contemporary",
@@ -1639,7 +1639,7 @@
   },
   {
     "id": "import_arg_act_092",
-    "name": "Eric Exequiel Meza",
+    "name": "Eric Meza",
     "fullName": "Eric Exequiel Meza",
     "position": "DEF",
     "category": "contemporary",
@@ -1675,7 +1675,7 @@
   },
   {
     "id": "import_arg_act_094",
-    "name": "Facundo Alfonso Mallo",
+    "name": "Facundo Mallo",
     "fullName": "Facundo Alfonso Mallo",
     "position": "DEF",
     "category": "contemporary",
@@ -1693,7 +1693,7 @@
   },
   {
     "id": "import_arg_act_095",
-    "name": "Fausto Mariano Vera",
+    "name": "Fausto Vera",
     "fullName": "Fausto Mariano Vera",
     "position": "MED",
     "category": "contemporary",
@@ -1711,7 +1711,7 @@
   },
   {
     "id": "import_arg_act_096",
-    "name": "Federico Matías Zaracho",
+    "name": "Federico Zaracho",
     "fullName": "Federico Matías Zaracho",
     "position": "MED",
     "category": "contemporary",
@@ -1729,7 +1729,7 @@
   },
   {
     "id": "import_arg_act_097",
-    "name": "Gastón Alan Hernández",
+    "name": "Gastón Hernández",
     "fullName": "Gastón Alan Hernández",
     "position": "DEF",
     "category": "contemporary",
@@ -1747,7 +1747,7 @@
   },
   {
     "id": "import_arg_act_098",
-    "name": "Gastón Benedetti Taffarel",
+    "name": "Gastón Benedetti",
     "fullName": "Gastón Benedetti Taffarel",
     "position": "DEF",
     "category": "contemporary",
@@ -1765,7 +1765,7 @@
   },
   {
     "id": "import_arg_act_099",
-    "name": "Gastón Luciano Ávila",
+    "name": "Gastón Ávila",
     "fullName": "Gastón Luciano Ávila",
     "position": "DEF",
     "category": "contemporary",
@@ -1783,7 +1783,7 @@
   },
   {
     "id": "import_arg_act_100",
-    "name": "Giovanni Alejandro González",
+    "name": "Giovanni González",
     "fullName": "Giovanni Alejandro González",
     "position": "DEF",
     "category": "contemporary",
@@ -1801,7 +1801,7 @@
   },
   {
     "id": "import_arg_act_101",
-    "name": "Hernán Ismael Galíndez",
+    "name": "Hernán Galíndez",
     "fullName": "Hernán Ismael Galíndez",
     "position": "ARQ",
     "category": "contemporary",
@@ -1837,7 +1837,7 @@
   },
   {
     "id": "import_arg_act_103",
-    "name": "Ignacio Russo Cordero",
+    "name": "Ignacio Russo",
     "fullName": "Ignacio Russo Cordero",
     "position": "DEL",
     "category": "contemporary",
@@ -1945,7 +1945,7 @@
   },
   {
     "id": "import_arg_act_109",
-    "name": "Leandro Nicolás Díaz",
+    "name": "Leandro Díaz",
     "fullName": "Leandro Nicolás Díaz",
     "position": "DEL",
     "category": "contemporary",
@@ -2017,7 +2017,7 @@
   },
   {
     "id": "import_arg_act_113",
-    "name": "Lucas Ezequiel Piovi",
+    "name": "Lucas Piovi",
     "fullName": "Lucas Ezequiel Piovi",
     "position": "MED",
     "category": "contemporary",
@@ -2035,7 +2035,7 @@
   },
   {
     "id": "import_arg_act_114",
-    "name": "Lucas Gastón Robertone",
+    "name": "Lucas Robertone",
     "fullName": "Lucas Gastón Robertone",
     "position": "MED",
     "category": "contemporary",
@@ -2053,7 +2053,7 @@
   },
   {
     "id": "import_arg_act_115",
-    "name": "Luis Alfonso Espino",
+    "name": "Luis Espino",
     "fullName": "Luis Alfonso Espino",
     "position": "DEF",
     "category": "contemporary",
@@ -2071,7 +2071,7 @@
   },
   {
     "id": "import_arg_act_116",
-    "name": "Luis Ezequiel Chimy Ávila",
+    "name": "Chimy Ávila",
     "fullName": "Luis Ezequiel Chimy Ávila",
     "position": "DEL",
     "category": "contemporary",
@@ -2125,7 +2125,7 @@
   },
   {
     "id": "import_arg_act_119",
-    "name": "Matías Alejandro Fernández",
+    "name": "Matías Fernández",
     "fullName": "Matías Alejandro Fernández",
     "position": "MED",
     "category": "contemporary",
@@ -2143,7 +2143,7 @@
   },
   {
     "id": "import_arg_act_120",
-    "name": "Matías Alejandro Galarza",
+    "name": "Matías Galarza",
     "fullName": "Matías Alejandro Galarza",
     "position": "MED",
     "category": "contemporary",
@@ -2161,7 +2161,7 @@
   },
   {
     "id": "import_arg_act_121",
-    "name": "Maximiliano Eduardo Meza",
+    "name": "Maximiliano Meza",
     "fullName": "Maximiliano Eduardo Meza",
     "position": "DEL",
     "category": "contemporary",
@@ -2197,7 +2197,7 @@
   },
   {
     "id": "import_arg_act_123",
-    "name": "Nelson Federico Insfrán",
+    "name": "Nelson Insfrán",
     "fullName": "Nelson Federico Insfrán",
     "position": "ARQ",
     "category": "contemporary",
@@ -2215,7 +2215,7 @@
   },
   {
     "id": "import_arg_act_124",
-    "name": "Nicolás Adrián Oroz",
+    "name": "Nicolás Oroz",
     "fullName": "Nicolás Adrián Oroz",
     "position": "MED",
     "category": "contemporary",
@@ -2251,7 +2251,7 @@
   },
   {
     "id": "import_arg_act_126",
-    "name": "Nicolás Federico López",
+    "name": "Nicolás López",
     "fullName": "Nicolás Federico López",
     "position": "DEL",
     "category": "contemporary",
@@ -2269,7 +2269,7 @@
   },
   {
     "id": "import_arg_act_127",
-    "name": "Ray Kendry Páez",
+    "name": "Ray Páez",
     "fullName": "Ray Kendry Páez",
     "position": "MED",
     "category": "contemporary",
@@ -2287,7 +2287,7 @@
   },
   {
     "id": "import_arg_act_128",
-    "name": "Rick Jhonatan Lima Morais",
+    "name": "Rick Morais",
     "fullName": "Rick Jhonatan Lima Morais",
     "position": "DEL",
     "category": "contemporary",
@@ -2305,7 +2305,7 @@
   },
   {
     "id": "import_arg_act_129",
-    "name": "Rodrigo Andrés Battaglia",
+    "name": "Rodrigo Battaglia",
     "fullName": "Rodrigo Andrés Battaglia",
     "position": "MED",
     "category": "contemporary",
@@ -2359,7 +2359,7 @@
   },
   {
     "id": "import_arg_act_132",
-    "name": "Santiago Gabriel Montiel",
+    "name": "Santiago Montiel",
     "fullName": "Santiago Gabriel Montiel",
     "position": "DEL",
     "category": "contemporary",
@@ -2377,7 +2377,7 @@
   },
   {
     "id": "import_arg_act_133",
-    "name": "Santiago López Grobin",
+    "name": "Santiago López",
     "fullName": "Santiago López Grobin",
     "position": "DEL",
     "category": "contemporary",
@@ -2395,7 +2395,7 @@
   },
   {
     "id": "import_arg_act_134",
-    "name": "Santiago Misael Núñez",
+    "name": "Santiago Núñez",
     "fullName": "Santiago Misael Núñez",
     "position": "DEF",
     "category": "contemporary",
@@ -2431,7 +2431,7 @@
   },
   {
     "id": "import_arg_act_136",
-    "name": "Sasha Julián Marcich",
+    "name": "Sasha Marcich",
     "fullName": "Sasha Julián Marcich",
     "position": "DEF",
     "category": "contemporary",
@@ -2449,7 +2449,7 @@
   },
   {
     "id": "import_arg_act_137",
-    "name": "Sheyko Darko Studer",
+    "name": "Sheyko Studer",
     "fullName": "Sheyko Darko Studer",
     "position": "DEF",
     "category": "contemporary",
@@ -2467,7 +2467,7 @@
   },
   {
     "id": "import_arg_act_138",
-    "name": "Thiago Gastón Cardozo",
+    "name": "Thiago Cardozo",
     "fullName": "Thiago Gastón Cardozo",
     "position": "ARQ",
     "category": "contemporary",
@@ -2521,7 +2521,7 @@
   },
   {
     "id": "import_arg_act_141",
-    "name": "Tomás Oscar Badaloni",
+    "name": "Tomás Badaloni",
     "fullName": "Tomás Oscar Badaloni",
     "position": "DEL",
     "category": "contemporary",
@@ -2539,7 +2539,7 @@
   },
   {
     "id": "import_arg_act_142",
-    "name": "Óscar Manuel Cortés",
+    "name": "Óscar Cortés",
     "fullName": "Óscar Manuel Cortés",
     "position": "DEL",
     "category": "contemporary",
@@ -2575,7 +2575,7 @@
   },
   {
     "id": "import_arg_act_144",
-    "name": "César Ignacio Pérez",
+    "name": "César Pérez",
     "fullName": "César Ignacio Pérez",
     "position": "MED",
     "category": "contemporary",
@@ -2593,7 +2593,7 @@
   },
   {
     "id": "import_arg_act_145",
-    "name": "Guillermo Matías Pol Fernández",
+    "name": "Pol Fernández",
     "fullName": "Guillermo Matías Pol Fernández",
     "position": "MED",
     "category": "contemporary",
@@ -2611,7 +2611,7 @@
   },
   {
     "id": "import_arg_act_146",
-    "name": "José Ignacio Florentín",
+    "name": "José Florentín",
     "fullName": "José Ignacio Florentín",
     "position": "MED",
     "category": "contemporary",
@@ -2665,7 +2665,7 @@
   },
   {
     "id": "import_arg_act_149",
-    "name": "Williams Héctor Alarcón",
+    "name": "Williams Alarcón",
     "fullName": "Williams Héctor Alarcón",
     "position": "MED",
     "category": "contemporary",
@@ -2683,7 +2683,7 @@
   },
   {
     "id": "import_arg_act_150",
-    "name": "Yoshan Stiven Valois",
+    "name": "Yoshan Valois",
     "fullName": "Yoshan Stiven Valois",
     "position": "DEL",
     "category": "contemporary",
@@ -2701,7 +2701,7 @@
   },
   {
     "id": "import_arg_ley_001",
-    "name": "Diego Armando Maradona",
+    "name": "Diego Maradona",
     "fullName": "Diego Armando Maradona",
     "position": "MED",
     "category": "legend",
@@ -2719,7 +2719,7 @@
   },
   {
     "id": "import_arg_ley_002",
-    "name": "Alfredo Stéfano Di Stéfano",
+    "name": "Alfredo Di Stéfano",
     "fullName": "Alfredo Stéfano Di Stéfano",
     "position": "DEL",
     "category": "legend",
@@ -2737,7 +2737,7 @@
   },
   {
     "id": "import_arg_ley_003",
-    "name": "Arsenio Pastor Erico",
+    "name": "Arsenio Erico",
     "fullName": "Arsenio Pastor Erico",
     "position": "DEL",
     "category": "legend",
@@ -2755,7 +2755,7 @@
   },
   {
     "id": "import_arg_ley_004",
-    "name": "Adolfo Alfredo Pedernera",
+    "name": "Adolfo Pedernera",
     "fullName": "Adolfo Alfredo Pedernera",
     "position": "MED",
     "category": "legend",
@@ -2773,7 +2773,7 @@
   },
   {
     "id": "import_arg_ley_005",
-    "name": "Enzo Francescoli Uriarte",
+    "name": "Enzo Francescoli",
     "fullName": "Enzo Francescoli Uriarte",
     "position": "MED",
     "category": "legend",
@@ -2809,7 +2809,7 @@
   },
   {
     "id": "import_arg_ley_007",
-    "name": "Ángel Amadeo Labruna",
+    "name": "Ángel Labruna",
     "fullName": "Ángel Amadeo Labruna",
     "position": "DEL",
     "category": "legend",
@@ -2827,7 +2827,7 @@
   },
   {
     "id": "import_arg_ley_008",
-    "name": "Amadeo Raúl Carrizo",
+    "name": "Amadeo Carrizo",
     "fullName": "Amadeo Raúl Carrizo",
     "position": "ARQ",
     "category": "legend",
@@ -2845,7 +2845,7 @@
   },
   {
     "id": "import_arg_ley_009",
-    "name": "Daniel Alberto Passarella",
+    "name": "Daniel Passarella",
     "fullName": "Daniel Alberto Passarella",
     "position": "DEF",
     "category": "legend",
@@ -2863,7 +2863,7 @@
   },
   {
     "id": "import_arg_ley_010",
-    "name": "José Luis Félix Chilavert",
+    "name": "José Luis Chilavert",
     "fullName": "José Luis Félix Chilavert",
     "position": "ARQ",
     "category": "legend",
@@ -2899,7 +2899,7 @@
   },
   {
     "id": "import_arg_ley_012",
-    "name": "Ricardo Enrique Bochini",
+    "name": "Ricardo Bochini",
     "fullName": "Ricardo Enrique Bochini",
     "position": "MED",
     "category": "legend",
@@ -2917,7 +2917,7 @@
   },
   {
     "id": "import_arg_ley_013",
-    "name": "Ubaldo Matildo Fillol",
+    "name": "Ubaldo Fillol",
     "fullName": "Ubaldo Matildo Fillol",
     "position": "ARQ",
     "category": "legend",
@@ -2935,7 +2935,7 @@
   },
   {
     "id": "import_arg_ley_014",
-    "name": "Carlos Alberto Bianchi",
+    "name": "Carlos Bianchi",
     "fullName": "Carlos Alberto Bianchi",
     "position": "DEL",
     "category": "legend",
@@ -2953,7 +2953,7 @@
   },
   {
     "id": "import_arg_ley_015",
-    "name": "Gabriel Omar Batistuta",
+    "name": "Gabriel Batistuta",
     "fullName": "Gabriel Omar Batistuta",
     "position": "DEL",
     "category": "legend",
@@ -2971,7 +2971,7 @@
   },
   {
     "id": "import_arg_ley_016",
-    "name": "Javier Adelmar Zanetti",
+    "name": "Javier Zanetti",
     "fullName": "Javier Adelmar Zanetti",
     "position": "DEF",
     "category": "legend",
@@ -2989,7 +2989,7 @@
   },
   {
     "id": "import_arg_ley_017",
-    "name": "Mario Alberto Kempes",
+    "name": "Mario Kempes",
     "fullName": "Mario Alberto Kempes",
     "position": "DEL",
     "category": "legend",
@@ -3007,7 +3007,7 @@
   },
   {
     "id": "import_arg_ley_018",
-    "name": "Norberto Osvaldo Alonso",
+    "name": "Norberto Alonso",
     "fullName": "Norberto Osvaldo Alonso",
     "position": "MED",
     "category": "legend",
@@ -3043,7 +3043,7 @@
   },
   {
     "id": "import_arg_ley_020",
-    "name": "Carlos Alberto Tevez",
+    "name": "Carlos Tevez",
     "fullName": "Carlos Alberto Tevez",
     "position": "DEL",
     "category": "legend",
@@ -3061,7 +3061,7 @@
   },
   {
     "id": "import_arg_ley_021",
-    "name": "Fernando Carlos Redondo",
+    "name": "Fernando Redondo",
     "fullName": "Fernando Carlos Redondo",
     "position": "MED",
     "category": "legend",
@@ -3097,7 +3097,7 @@
   },
   {
     "id": "import_arg_ley_023",
-    "name": "Hernán Jorge Crespo",
+    "name": "Hernán Crespo",
     "fullName": "Hernán Jorge Crespo",
     "position": "DEL",
     "category": "legend",
@@ -3115,7 +3115,7 @@
   },
   {
     "id": "import_arg_ley_024",
-    "name": "José Francisco Sanfilippo",
+    "name": "José Sanfilippo",
     "fullName": "José Francisco Sanfilippo",
     "position": "DEL",
     "category": "legend",
@@ -3133,7 +3133,7 @@
   },
   {
     "id": "import_arg_ley_025",
-    "name": "Juan Sebastián Verón",
+    "name": "Sebastián Verón",
     "fullName": "Juan Sebastián Verón",
     "position": "MED",
     "category": "legend",
@@ -3169,7 +3169,7 @@
   },
   {
     "id": "import_arg_ley_027",
-    "name": "Roberto Alfredo Perfumo",
+    "name": "Roberto Perfumo",
     "fullName": "Roberto Alfredo Perfumo",
     "position": "DEF",
     "category": "legend",
@@ -3187,7 +3187,7 @@
   },
   {
     "id": "import_arg_ley_028",
-    "name": "Sergio Leonel Agüero",
+    "name": "Sergio Agüero",
     "fullName": "Sergio Leonel Agüero",
     "position": "DEL",
     "category": "legend",
@@ -3223,7 +3223,7 @@
   },
   {
     "id": "import_arg_ley_030",
-    "name": "Ariel Arnaldo Ortega",
+    "name": "Ariel Ortega",
     "fullName": "Ariel Arnaldo Ortega",
     "position": "MED",
     "category": "legend",
@@ -3259,7 +3259,7 @@
   },
   {
     "id": "import_arg_ley_032",
-    "name": "Francisco Antonio Varallo",
+    "name": "Francisco Varallo",
     "fullName": "Francisco Antonio Varallo",
     "position": "DEL",
     "category": "legend",
@@ -3295,7 +3295,7 @@
   },
   {
     "id": "import_arg_ley_034",
-    "name": "Hugo Orlando Gatti",
+    "name": "Hugo Gatti",
     "fullName": "Hugo Orlando Gatti",
     "position": "ARQ",
     "category": "legend",
@@ -3313,7 +3313,7 @@
   },
   {
     "id": "import_arg_ley_035",
-    "name": "Javier Alejandro Mascherano",
+    "name": "Javier Mascherano",
     "fullName": "Javier Alejandro Mascherano",
     "position": "MED",
     "category": "legend",
@@ -3331,7 +3331,7 @@
   },
   {
     "id": "import_arg_ley_036",
-    "name": "Jorge Hernán Bermúdez",
+    "name": "Jorge Bermúdez",
     "fullName": "Jorge Hernán Bermúdez",
     "position": "DEF",
     "category": "legend",
@@ -3349,7 +3349,7 @@
   },
   {
     "id": "import_arg_ley_037",
-    "name": "Jorge Luis Burruchaga",
+    "name": "Jorge Burruchaga",
     "fullName": "Jorge Luis Burruchaga",
     "position": "MED",
     "category": "legend",
@@ -3367,7 +3367,7 @@
   },
   {
     "id": "import_arg_ley_038",
-    "name": "José Marcelo Salas",
+    "name": "Marcelo Salas",
     "fullName": "José Marcelo Salas",
     "position": "DEL",
     "category": "legend",
@@ -3439,7 +3439,7 @@
   },
   {
     "id": "import_arg_ley_042",
-    "name": "Norberto Doroteo Méndez",
+    "name": "Norberto Méndez",
     "fullName": "Norberto Doroteo Méndez",
     "position": "MED",
     "category": "legend",
@@ -3457,7 +3457,7 @@
   },
   {
     "id": "import_arg_ley_043",
-    "name": "Oreste Omar Corbatta",
+    "name": "Oreste Corbatta",
     "fullName": "Oreste Omar Corbatta",
     "position": "DEL",
     "category": "legend",
@@ -3475,7 +3475,7 @@
   },
   {
     "id": "import_arg_ley_044",
-    "name": "Oscar Alfredo Ruggeri",
+    "name": "Oscar Ruggeri",
     "fullName": "Oscar Alfredo Ruggeri",
     "position": "DEF",
     "category": "legend",
@@ -3493,7 +3493,7 @@
   },
   {
     "id": "import_arg_ley_045",
-    "name": "René Orlando Houseman",
+    "name": "René Houseman",
     "fullName": "René Orlando Houseman",
     "position": "DEL",
     "category": "legend",
@@ -3511,7 +3511,7 @@
   },
   {
     "id": "import_arg_ley_046",
-    "name": "Ricardo Elbio Pavoni",
+    "name": "Ricardo Pavoni",
     "fullName": "Ricardo Elbio Pavoni",
     "position": "DEF",
     "category": "legend",
@@ -3529,7 +3529,7 @@
   },
   {
     "id": "import_arg_ley_047",
-    "name": "Roberto Eugenio Cherro",
+    "name": "Roberto Cherro",
     "fullName": "Roberto Eugenio Cherro",
     "position": "DEL",
     "category": "legend",
@@ -3547,7 +3547,7 @@
   },
   {
     "id": "import_arg_ley_048",
-    "name": "Roberto Fabián Ayala",
+    "name": "Roberto Ayala",
     "fullName": "Roberto Fabián Ayala",
     "position": "DEF",
     "category": "legend",
@@ -3565,7 +3565,7 @@
   },
   {
     "id": "import_arg_ley_049",
-    "name": "Rubén Walter Paz",
+    "name": "Rubén Paz",
     "fullName": "Rubén Walter Paz",
     "position": "MED",
     "category": "legend",
@@ -3619,7 +3619,7 @@
   },
   {
     "id": "import_arg_ley_052",
-    "name": "Walter Adrián Samuel",
+    "name": "Walter Samuel",
     "fullName": "Walter Adrián Samuel",
     "position": "DEF",
     "category": "legend",
@@ -3655,7 +3655,7 @@
   },
   {
     "id": "import_arg_ley_054",
-    "name": "Óscar Eduardo Córdoba",
+    "name": "Óscar Córdoba",
     "fullName": "Óscar Eduardo Córdoba",
     "position": "ARQ",
     "category": "legend",
@@ -3673,7 +3673,7 @@
   },
   {
     "id": "import_arg_ley_055",
-    "name": "Alberto Bernardino Ohaco",
+    "name": "Alberto Ohaco",
     "fullName": "Alberto Bernardino Ohaco",
     "position": "DEL",
     "category": "legend",
@@ -3691,7 +3691,7 @@
   },
   {
     "id": "import_arg_ley_056",
-    "name": "Antonio Alzamendi Casas",
+    "name": "Antonio Alzamendi",
     "fullName": "Antonio Alzamendi Casas",
     "position": "DEL",
     "category": "legend",
@@ -3709,7 +3709,7 @@
   },
   {
     "id": "import_arg_ley_057",
-    "name": "Antonio Ubaldo Rattín",
+    "name": "Antonio Rattín",
     "fullName": "Antonio Ubaldo Rattín",
     "position": "MED",
     "category": "legend",
@@ -3727,7 +3727,7 @@
   },
   {
     "id": "import_arg_ley_058",
-    "name": "Carlos Fernando Navarro Montoya",
+    "name": "Carlos Navarro Montoya",
     "fullName": "Carlos Fernando Navarro Montoya",
     "position": "ARQ",
     "category": "legend",
@@ -3745,7 +3745,7 @@
   },
   {
     "id": "import_arg_ley_059",
-    "name": "Claudio Paul Caniggia",
+    "name": "Claudio Caniggia",
     "fullName": "Claudio Paul Caniggia",
     "position": "DEL",
     "category": "legend",
@@ -3763,7 +3763,7 @@
   },
   {
     "id": "import_arg_ley_060",
-    "name": "Diego Alberto Milito",
+    "name": "Diego Milito",
     "fullName": "Diego Alberto Milito",
     "position": "DEL",
     "category": "legend",
@@ -3781,7 +3781,7 @@
   },
   {
     "id": "import_arg_ley_061",
-    "name": "Diego Pablo Simeone",
+    "name": "Diego Simeone",
     "fullName": "Diego Pablo Simeone",
     "position": "MED",
     "category": "legend",
@@ -3799,7 +3799,7 @@
   },
   {
     "id": "import_arg_ley_062",
-    "name": "Domingo Alberto Tarasconi",
+    "name": "Domingo Tarasconi",
     "fullName": "Domingo Alberto Tarasconi",
     "position": "DEL",
     "category": "legend",
@@ -3817,7 +3817,7 @@
   },
   {
     "id": "import_arg_ley_063",
-    "name": "Domingos Antônio da Guia",
+    "name": "Domingos da Guia",
     "fullName": "Domingos Antônio da Guia",
     "position": "DEF",
     "category": "legend",
@@ -3835,7 +3835,7 @@
   },
   {
     "id": "import_arg_ley_064",
-    "name": "Esteban Matías Cambiasso",
+    "name": "Esteban Cambiasso",
     "fullName": "Esteban Matías Cambiasso",
     "position": "MED",
     "category": "legend",
@@ -3853,7 +3853,7 @@
   },
   {
     "id": "import_arg_ley_065",
-    "name": "Gonzalo Gerardo Higuaín",
+    "name": "Gonzalo Higuaín",
     "fullName": "Gonzalo Gerardo Higuaín",
     "position": "DEL",
     "category": "legend",
@@ -3889,7 +3889,7 @@
   },
   {
     "id": "import_arg_ley_067",
-    "name": "Héctor Casimiro Yazalde",
+    "name": "Héctor Yazalde",
     "fullName": "Héctor Casimiro Yazalde",
     "position": "DEL",
     "category": "legend",
@@ -3907,7 +3907,7 @@
   },
   {
     "id": "import_arg_ley_068",
-    "name": "Héctor Horacio Scotta",
+    "name": "Héctor Scotta",
     "fullName": "Héctor Horacio Scotta",
     "position": "DEL",
     "category": "legend",
@@ -3925,7 +3925,7 @@
   },
   {
     "id": "import_arg_ley_069",
-    "name": "Isidro Lángara Galarraga",
+    "name": "Isidro Lángara",
     "fullName": "Isidro Lángara Galarraga",
     "position": "DEL",
     "category": "legend",
@@ -3997,7 +3997,7 @@
   },
   {
     "id": "import_arg_ley_073",
-    "name": "Manuel Gregorio Pelegrina",
+    "name": "Manuel Pelegrina",
     "fullName": "Manuel Gregorio Pelegrina",
     "position": "DEL",
     "category": "legend",
@@ -4015,7 +4015,7 @@
   },
   {
     "id": "import_arg_ley_074",
-    "name": "Marcelo Alberto Gallardo",
+    "name": "Marcelo Gallardo",
     "fullName": "Marcelo Alberto Gallardo",
     "position": "MED",
     "category": "legend",
@@ -4033,7 +4033,7 @@
   },
   {
     "id": "import_arg_ley_075",
-    "name": "Mauricio Alberto Serna",
+    "name": "Mauricio Serna",
     "fullName": "Mauricio Alberto Serna",
     "position": "MED",
     "category": "legend",
@@ -4051,7 +4051,7 @@
   },
   {
     "id": "import_arg_ley_076",
-    "name": "Oscar Tomás Más",
+    "name": "Oscar Más",
     "fullName": "Oscar Tomás Más",
     "position": "DEL",
     "category": "legend",
@@ -4069,7 +4069,7 @@
   },
   {
     "id": "import_arg_ley_077",
-    "name": "Pablo César Aimar",
+    "name": "Pablo Aimar",
     "fullName": "Pablo César Aimar",
     "position": "MED",
     "category": "legend",
@@ -4087,7 +4087,7 @@
   },
   {
     "id": "import_arg_ley_078",
-    "name": "Paulo Silas do Prado Pereira",
+    "name": "Paulo Silas",
     "fullName": "Paulo Silas do Prado Pereira",
     "position": "MED",
     "category": "legend",
@@ -4105,7 +4105,7 @@
   },
   {
     "id": "import_arg_ley_079",
-    "name": "Ramón Ángel Díaz",
+    "name": "Ramón Díaz",
     "fullName": "Ramón Ángel Díaz",
     "position": "DEL",
     "category": "legend",
@@ -4123,7 +4123,7 @@
   },
   {
     "id": "import_arg_ley_080",
-    "name": "René Alejandro Pontoni",
+    "name": "René Pontoni",
     "fullName": "René Alejandro Pontoni",
     "position": "DEL",
     "category": "legend",
@@ -4141,7 +4141,7 @@
   },
   {
     "id": "import_arg_ley_081",
-    "name": "Ricardo Daniel Bertoni",
+    "name": "Ricardo Bertoni",
     "fullName": "Ricardo Daniel Bertoni",
     "position": "DEL",
     "category": "legend",
@@ -4159,7 +4159,7 @@
   },
   {
     "id": "import_arg_ley_082",
-    "name": "Rinaldo Fioramonte Martino",
+    "name": "Rinaldo Martino",
     "fullName": "Rinaldo Fioramonte Martino",
     "position": "MED",
     "category": "legend",
@@ -4195,7 +4195,7 @@
   },
   {
     "id": "import_arg_ley_084",
-    "name": "Sergio Bismarck Villar",
+    "name": "Sergio Villar",
     "fullName": "Sergio Bismarck Villar",
     "position": "DEF",
     "category": "legend",
@@ -4231,7 +4231,7 @@
   },
   {
     "id": "import_arg_ley_086",
-    "name": "Ángel Clemente Rojas",
+    "name": "Ángel Rojas",
     "fullName": "Ángel Clemente Rojas",
     "position": "MED",
     "category": "legend",
@@ -4249,7 +4249,7 @@
   },
   {
     "id": "import_arg_ley_087",
-    "name": "Agustín Mario Cejas",
+    "name": "Agustín Cejas",
     "fullName": "Agustín Mario Cejas",
     "position": "ARQ",
     "category": "legend",
@@ -4267,7 +4267,7 @@
   },
   {
     "id": "import_arg_ley_088",
-    "name": "Alberto Federico Acosta",
+    "name": "Alberto Acosta",
     "fullName": "Alberto Federico Acosta",
     "position": "DEL",
     "category": "legend",
@@ -4285,7 +4285,7 @@
   },
   {
     "id": "import_arg_ley_089",
-    "name": "Alberto Máximo Zozaya",
+    "name": "Alberto Zozaya",
     "fullName": "Alberto Máximo Zozaya",
     "position": "DEL",
     "category": "legend",
@@ -4303,7 +4303,7 @@
   },
   {
     "id": "import_arg_ley_090",
-    "name": "Américo Rubén Gallego",
+    "name": "Américo Gallego",
     "fullName": "Américo Rubén Gallego",
     "position": "MED",
     "category": "legend",
@@ -4321,7 +4321,7 @@
   },
   {
     "id": "import_arg_ley_091",
-    "name": "Carlos Alberto Babington",
+    "name": "Carlos Babington",
     "fullName": "Carlos Alberto Babington",
     "position": "MED",
     "category": "legend",
@@ -4339,7 +4339,7 @@
   },
   {
     "id": "import_arg_ley_092",
-    "name": "Carlos Domingo Peucelle",
+    "name": "Carlos Peucelle",
     "fullName": "Carlos Domingo Peucelle",
     "position": "DEL",
     "category": "legend",
@@ -4357,7 +4357,7 @@
   },
   {
     "id": "import_arg_ley_093",
-    "name": "Celso Rafael Ayala",
+    "name": "Celso Ayala",
     "fullName": "Celso Rafael Ayala",
     "position": "DEF",
     "category": "legend",
@@ -4411,7 +4411,7 @@
   },
   {
     "id": "import_arg_ley_096",
-    "name": "Daniel Alberto Willington",
+    "name": "Daniel Willington",
     "fullName": "Daniel Alberto Willington",
     "position": "MED",
     "category": "legend",
@@ -4465,7 +4465,7 @@
   },
   {
     "id": "import_arg_ley_099",
-    "name": "Enzo Héctor Trossero",
+    "name": "Enzo Trossero",
     "fullName": "Enzo Héctor Trossero",
     "position": "DEF",
     "category": "legend",
@@ -4483,7 +4483,7 @@
   },
   {
     "id": "import_arg_ley_100",
-    "name": "Ermindo Ángel Onega",
+    "name": "Ermindo Onega",
     "fullName": "Ermindo Ángel Onega",
     "position": "MED",
     "category": "legend",
@@ -4519,7 +4519,7 @@
   },
   {
     "id": "import_arg_ley_102",
-    "name": "Evaristo Vicente Barrera",
+    "name": "Evaristo Barrera",
     "fullName": "Evaristo Vicente Barrera",
     "position": "DEL",
     "category": "legend",
@@ -4537,7 +4537,7 @@
   },
   {
     "id": "import_arg_ley_103",
-    "name": "Fernando Ezequiel Cavenaghi",
+    "name": "Fernando Cavenaghi",
     "fullName": "Fernando Ezequiel Cavenaghi",
     "position": "DEL",
     "category": "legend",
@@ -4555,7 +4555,7 @@
   },
   {
     "id": "import_arg_ley_104",
-    "name": "Fernando Rubén Gago",
+    "name": "Fernando Gago",
     "fullName": "Fernando Rubén Gago",
     "position": "MED",
     "category": "legend",
@@ -4573,7 +4573,7 @@
   },
   {
     "id": "import_arg_ley_105",
-    "name": "Gabriel Iván Heinze",
+    "name": "Gabriel Heinze",
     "fullName": "Gabriel Iván Heinze",
     "position": "DEF",
     "category": "legend",
@@ -4591,7 +4591,7 @@
   },
   {
     "id": "import_arg_ley_106",
-    "name": "Gerardo Daniel Martino",
+    "name": "Gerardo Martino",
     "fullName": "Gerardo Daniel Martino",
     "position": "MED",
     "category": "legend",
@@ -4609,7 +4609,7 @@
   },
   {
     "id": "import_arg_ley_107",
-    "name": "Hugo Benjamín Ibarra",
+    "name": "Hugo Ibarra",
     "fullName": "Hugo Benjamín Ibarra",
     "position": "DEF",
     "category": "legend",
@@ -4627,7 +4627,7 @@
   },
   {
     "id": "import_arg_ley_108",
-    "name": "Hugo Eduardo Villaverde",
+    "name": "Hugo Villaverde",
     "fullName": "Hugo Eduardo Villaverde",
     "position": "DEF",
     "category": "legend",
@@ -4645,7 +4645,7 @@
   },
   {
     "id": "import_arg_ley_109",
-    "name": "Iván Ramiro Córdoba",
+    "name": "Iván Córdoba",
     "fullName": "Iván Ramiro Córdoba",
     "position": "DEF",
     "category": "legend",
@@ -4681,7 +4681,7 @@
   },
   {
     "id": "import_arg_ley_111",
-    "name": "Javier Pedro Saviola",
+    "name": "Javier Saviola",
     "fullName": "Javier Pedro Saviola",
     "position": "DEL",
     "category": "legend",
@@ -4699,7 +4699,7 @@
   },
   {
     "id": "import_arg_ley_112",
-    "name": "Jorge Mario Olguín",
+    "name": "Jorge Olguín",
     "fullName": "Jorge Mario Olguín",
     "position": "DEF",
     "category": "legend",
@@ -4735,7 +4735,7 @@
   },
   {
     "id": "import_arg_ley_114",
-    "name": "Leandro Atilio Romagnoli",
+    "name": "Leandro Romagnoli",
     "fullName": "Leandro Atilio Romagnoli",
     "position": "MED",
     "category": "legend",
@@ -4753,7 +4753,7 @@
   },
   {
     "id": "import_arg_ley_115",
-    "name": "Leonardo Daniel Ponzio",
+    "name": "Leonardo Ponzio",
     "fullName": "Leonardo Daniel Ponzio",
     "position": "MED",
     "category": "legend",
@@ -4771,7 +4771,7 @@
   },
   {
     "id": "import_arg_ley_116",
-    "name": "Leopoldo Jacinto Luque",
+    "name": "Leopoldo Luque",
     "fullName": "Leopoldo Jacinto Luque",
     "position": "DEL",
     "category": "legend",
@@ -4807,7 +4807,7 @@
   },
   {
     "id": "import_arg_ley_118",
-    "name": "Luis Adolfo Galván",
+    "name": "Luis Galván",
     "fullName": "Luis Adolfo Galván",
     "position": "DEF",
     "category": "legend",
@@ -4825,7 +4825,7 @@
   },
   {
     "id": "import_arg_ley_119",
-    "name": "Luis Alberto Cubilla",
+    "name": "Luis Cubilla",
     "fullName": "Luis Alberto Cubilla",
     "position": "DEL",
     "category": "legend",
@@ -4843,7 +4843,7 @@
   },
   {
     "id": "import_arg_ley_120",
-    "name": "Mario Alberto Yepes",
+    "name": "Mario Yepes",
     "fullName": "Mario Alberto Yepes",
     "position": "DEF",
     "category": "legend",
@@ -4861,7 +4861,7 @@
   },
   {
     "id": "import_arg_ley_121",
-    "name": "Mario Emilio Heriberto Boyé",
+    "name": "Mario Boyé",
     "fullName": "Mario Emilio Heriberto Boyé",
     "position": "DEL",
     "category": "legend",
@@ -4879,7 +4879,7 @@
   },
   {
     "id": "import_arg_ley_122",
-    "name": "Maximiliano Rubén Rodríguez",
+    "name": "Maxi Rodríguez",
     "fullName": "Maximiliano Rubén Rodríguez",
     "position": "DEL",
     "category": "legend",
@@ -4897,7 +4897,7 @@
   },
   {
     "id": "import_arg_ley_123",
-    "name": "Natalio Agustín Pescia",
+    "name": "Natalio Pescia",
     "fullName": "Natalio Agustín Pescia",
     "position": "MED",
     "category": "legend",
@@ -4933,7 +4933,7 @@
   },
   {
     "id": "import_arg_ley_125",
-    "name": "Nelson Daniel Gutiérrez",
+    "name": "Nelson Gutiérrez",
     "fullName": "Nelson Daniel Gutiérrez",
     "position": "DEF",
     "category": "legend",
@@ -4969,7 +4969,7 @@
   },
   {
     "id": "import_arg_ley_127",
-    "name": "Ricardo Roberto Infante",
+    "name": "Ricardo Infante",
     "fullName": "Ricardo Roberto Infante",
     "position": "DEL",
     "category": "legend",
@@ -5005,7 +5005,7 @@
   },
   {
     "id": "import_arg_ley_129",
-    "name": "Roberto Néstor Sensini",
+    "name": "Roberto Sensini",
     "fullName": "Roberto Néstor Sensini",
     "position": "DEF",
     "category": "legend",
@@ -5023,7 +5023,7 @@
   },
   {
     "id": "import_arg_ley_130",
-    "name": "Rodolfo José Fischer",
+    "name": "Rodolfo Fischer",
     "fullName": "Rodolfo José Fischer",
     "position": "DEL",
     "category": "legend",
@@ -5041,7 +5041,7 @@
   },
   {
     "id": "import_arg_ley_131",
-    "name": "Rodrigo Sebastián Palacio",
+    "name": "Rodrigo Palacio",
     "fullName": "Rodrigo Sebastián Palacio",
     "position": "DEL",
     "category": "legend",
@@ -5059,7 +5059,7 @@
   },
   {
     "id": "import_arg_ley_132",
-    "name": "Sebastián Alejandro Battaglia",
+    "name": "Sebastián Battaglia",
     "fullName": "Sebastián Alejandro Battaglia",
     "position": "MED",
     "category": "legend",
@@ -5077,7 +5077,7 @@
   },
   {
     "id": "import_arg_ley_133",
-    "name": "Sergio Daniel Batista",
+    "name": "Sergio Batista",
     "fullName": "Sergio Daniel Batista",
     "position": "MED",
     "category": "legend",
@@ -5095,7 +5095,7 @@
   },
   {
     "id": "import_arg_ley_134",
-    "name": "Sergio Daniel Martínez",
+    "name": "Sergio Martínez",
     "fullName": "Sergio Daniel Martínez",
     "position": "DEL",
     "category": "legend",
@@ -5113,7 +5113,7 @@
   },
   {
     "id": "import_arg_ley_135",
-    "name": "Albeiro Usuriaga López",
+    "name": "Albeiro Usuriaga",
     "fullName": "Albeiro Usuriaga López",
     "position": "DEL",
     "category": "legend",
@@ -5131,7 +5131,7 @@
   },
   {
     "id": "import_arg_ley_136",
-    "name": "Aldo Pedro Poy",
+    "name": "Aldo Poy",
     "fullName": "Aldo Pedro Poy",
     "position": "DEL",
     "category": "legend",
@@ -5149,7 +5149,7 @@
   },
   {
     "id": "import_arg_ley_137",
-    "name": "Alejandro Javier Sabella",
+    "name": "Alejandro Sabella",
     "fullName": "Alejandro Javier Sabella",
     "position": "MED",
     "category": "legend",
@@ -5185,7 +5185,7 @@
   },
   {
     "id": "import_arg_ley_139",
-    "name": "Alfredo Hugo Rojas",
+    "name": "Alfredo Rojas",
     "fullName": "Alfredo Hugo Rojas",
     "position": "DEL",
     "category": "legend",
@@ -5203,7 +5203,7 @@
   },
   {
     "id": "import_arg_ley_140",
-    "name": "Bernardo Patricio Romeo",
+    "name": "Bernardo Romeo",
     "fullName": "Bernardo Patricio Romeo",
     "position": "DEL",
     "category": "legend",
@@ -5221,7 +5221,7 @@
   },
   {
     "id": "import_arg_ley_141",
-    "name": "Carlos Salvador Bilardo",
+    "name": "Carlos Bilardo",
     "fullName": "Carlos Salvador Bilardo",
     "position": "MED",
     "category": "legend",
@@ -5239,7 +5239,7 @@
   },
   {
     "id": "import_arg_ley_142",
-    "name": "Ezequiel Iván Lavezzi",
+    "name": "Ezequiel Lavezzi",
     "fullName": "Ezequiel Iván Lavezzi",
     "position": "DEL",
     "category": "legend",
@@ -5257,7 +5257,7 @@
   },
   {
     "id": "import_arg_ley_143",
-    "name": "Faryd Camilo Mondragón",
+    "name": "Faryd Mondragón",
     "fullName": "Faryd Camilo Mondragón",
     "position": "ARQ",
     "category": "legend",
@@ -5275,7 +5275,7 @@
   },
   {
     "id": "import_arg_ley_144",
-    "name": "Gerardo Alberto Bedoya",
+    "name": "Gerardo Bedoya",
     "fullName": "Gerardo Alberto Bedoya",
     "position": "DEF",
     "category": "legend",
@@ -5293,7 +5293,7 @@
   },
   {
     "id": "import_arg_ley_145",
-    "name": "Hugo Ernesto Gottardi",
+    "name": "Hugo Gottardi",
     "fullName": "Hugo Ernesto Gottardi",
     "position": "DEL",
     "category": "legend",
@@ -5311,7 +5311,7 @@
   },
   {
     "id": "import_arg_ley_146",
-    "name": "Ignacio Martín Scocco",
+    "name": "Ignacio Scocco",
     "fullName": "Ignacio Martín Scocco",
     "position": "DEL",
     "category": "legend",
@@ -5329,7 +5329,7 @@
   },
   {
     "id": "import_arg_ley_147",
-    "name": "Jonatan Ramón Maidana",
+    "name": "Jonatan Maidana",
     "fullName": "Jonatan Ramón Maidana",
     "position": "DEF",
     "category": "legend",
@@ -5347,7 +5347,7 @@
   },
   {
     "id": "import_arg_ley_148",
-    "name": "José Gustavo Sand",
+    "name": "José Sand",
     "fullName": "José Gustavo Sand",
     "position": "DEL",
     "category": "legend",
@@ -5365,7 +5365,7 @@
   },
   {
     "id": "import_arg_ley_149",
-    "name": "José Jorge González",
+    "name": "José González",
     "fullName": "José Jorge González",
     "position": "DEF",
     "category": "legend",
@@ -5401,7 +5401,7 @@
   },
   {
     "id": "import_eng_epl_act_001",
-    "name": "Erling Braut Haaland",
+    "name": "Erling Haaland",
     "fullName": "Erling Braut Haaland",
     "position": "DEL",
     "category": "contemporary",
@@ -5419,7 +5419,7 @@
   },
   {
     "id": "import_eng_epl_act_002",
-    "name": "Bruno Miguel Borges Fernandes",
+    "name": "Bruno Fernandes",
     "fullName": "Bruno Miguel Borges Fernandes",
     "position": "MED",
     "category": "contemporary",
@@ -5437,7 +5437,7 @@
   },
   {
     "id": "import_eng_epl_act_003",
-    "name": "Gabriel dos Santos Magalhães",
+    "name": "Gabriel Magalhães",
     "fullName": "Gabriel dos Santos Magalhães",
     "position": "DEF",
     "category": "contemporary",
@@ -5473,7 +5473,7 @@
   },
   {
     "id": "import_eng_epl_act_005",
-    "name": "David Raya Martín",
+    "name": "David Raya",
     "fullName": "David Raya Martín",
     "position": "ARQ",
     "category": "contemporary",
@@ -5527,7 +5527,7 @@
   },
   {
     "id": "import_eng_epl_act_008",
-    "name": "William Alain André Gabriel Saliba",
+    "name": "William Saliba",
     "fullName": "William Alain André Gabriel Saliba",
     "position": "DEF",
     "category": "contemporary",
@@ -5545,7 +5545,7 @@
   },
   {
     "id": "import_eng_epl_act_009",
-    "name": "Alisson Ramses Becker",
+    "name": "Alisson Becker",
     "fullName": "Alisson Ramses Becker",
     "position": "ARQ",
     "category": "contemporary",
@@ -5563,7 +5563,7 @@
   },
   {
     "id": "import_eng_epl_act_010",
-    "name": "Bukayo Ayoyinka Temidayo Saka",
+    "name": "Bukayo Saka",
     "fullName": "Bukayo Ayoyinka Temidayo Saka",
     "position": "DEL",
     "category": "contemporary",
@@ -5581,7 +5581,7 @@
   },
   {
     "id": "import_eng_epl_act_011",
-    "name": "Rúben dos Santos Gato Alves Dias",
+    "name": "Rúben Dias",
     "fullName": "Rúben dos Santos Gato Alves Dias",
     "position": "DEF",
     "category": "contemporary",
@@ -5617,7 +5617,7 @@
   },
   {
     "id": "import_eng_epl_act_013",
-    "name": "Bruno Guimarães Rodriguez Moura",
+    "name": "Bruno Guimarães",
     "fullName": "Bruno Guimarães Rodriguez Moura",
     "position": "MED",
     "category": "contemporary",
@@ -5653,7 +5653,7 @@
   },
   {
     "id": "import_eng_epl_act_015",
-    "name": "Enzo Jeremías Fernández",
+    "name": "Enzo Fernández",
     "fullName": "Enzo Jeremías Fernández",
     "position": "MED",
     "category": "contemporary",
@@ -5671,7 +5671,7 @@
   },
   {
     "id": "import_eng_epl_act_016",
-    "name": "Florian Richard Wirtz",
+    "name": "Florian Wirtz",
     "fullName": "Florian Richard Wirtz",
     "position": "MED",
     "category": "contemporary",
@@ -5707,7 +5707,7 @@
   },
   {
     "id": "import_eng_epl_act_018",
-    "name": "Mathis Rayan Cherki",
+    "name": "Mathis Cherki",
     "fullName": "Mathis Rayan Cherki",
     "position": "DEL",
     "category": "contemporary",
@@ -5725,7 +5725,7 @@
   },
   {
     "id": "import_eng_epl_act_019",
-    "name": "Moisés Isaac Caicedo Corozo",
+    "name": "Moisés Caicedo",
     "fullName": "Moisés Isaac Caicedo Corozo",
     "position": "MED",
     "category": "contemporary",
@@ -5743,7 +5743,7 @@
   },
   {
     "id": "import_eng_epl_act_020",
-    "name": "Viktor Einar Gyökeres",
+    "name": "Viktor Gyökeres",
     "fullName": "Viktor Einar Gyökeres",
     "position": "DEL",
     "category": "contemporary",
@@ -5761,7 +5761,7 @@
   },
   {
     "id": "import_eng_epl_act_021",
-    "name": "Addji Keaninkin Marc-Israel Guéhi",
+    "name": "Marc Guéhi",
     "fullName": "Addji Keaninkin Marc-Israel Guéhi",
     "position": "DEF",
     "category": "contemporary",
@@ -5779,7 +5779,7 @@
   },
   {
     "id": "import_eng_epl_act_022",
-    "name": "Antoine Serlom Semenyo",
+    "name": "Antoine Semenyo",
     "fullName": "Antoine Serlom Semenyo",
     "position": "DEL",
     "category": "contemporary",
@@ -5797,7 +5797,7 @@
   },
   {
     "id": "import_eng_epl_act_023",
-    "name": "Bradley Jean-Manuel Barcola",
+    "name": "Bradley Barcola",
     "fullName": "Bradley Jean-Manuel Barcola",
     "position": "DEL",
     "category": "contemporary",
@@ -5815,7 +5815,7 @@
   },
   {
     "id": "import_eng_epl_act_024",
-    "name": "Cole Jermaine Palmer",
+    "name": "Cole Palmer",
     "fullName": "Cole Jermaine Palmer",
     "position": "MED",
     "category": "contemporary",
@@ -5833,7 +5833,7 @@
   },
   {
     "id": "import_eng_epl_act_025",
-    "name": "Damián Emiliano Martínez Romero",
+    "name": "Emiliano Martínez",
     "fullName": "Damián Emiliano Martínez Romero",
     "position": "ARQ",
     "category": "contemporary",
@@ -5869,7 +5869,7 @@
   },
   {
     "id": "import_eng_epl_act_027",
-    "name": "Hugo Timothée Ekitiké",
+    "name": "Hugo Ekitiké",
     "fullName": "Hugo Timothée Ekitiké",
     "position": "DEL",
     "category": "contemporary",
@@ -5887,7 +5887,7 @@
   },
   {
     "id": "import_eng_epl_act_028",
-    "name": "Jordan Lee Pickford",
+    "name": "Jordan Pickford",
     "fullName": "Jordan Lee Pickford",
     "position": "ARQ",
     "category": "contemporary",
@@ -5923,7 +5923,7 @@
   },
   {
     "id": "import_eng_epl_act_030",
-    "name": "Ryan Jiro Gravenberch",
+    "name": "Ryan Gravenberch",
     "fullName": "Ryan Jiro Gravenberch",
     "position": "MED",
     "category": "contemporary",
@@ -5959,7 +5959,7 @@
   },
   {
     "id": "import_eng_epl_act_032",
-    "name": "Youri Marion A. Tielemans",
+    "name": "Youri Tielemans",
     "fullName": "Youri Marion A. Tielemans",
     "position": "MED",
     "category": "contemporary",
@@ -5995,7 +5995,7 @@
   },
   {
     "id": "import_eng_epl_act_034",
-    "name": "Boubacar Bernard Kamara",
+    "name": "Boubacar Kamara",
     "fullName": "Boubacar Bernard Kamara",
     "position": "MED",
     "category": "contemporary",
@@ -6013,7 +6013,7 @@
   },
   {
     "id": "import_eng_epl_act_035",
-    "name": "Bryan Tetsadong Marceau Mbeumo",
+    "name": "Bryan Mbeumo",
     "fullName": "Bryan Tetsadong Marceau Mbeumo",
     "position": "MED",
     "category": "contemporary",
@@ -6031,7 +6031,7 @@
   },
   {
     "id": "import_eng_epl_act_036",
-    "name": "Eberechi Oluchi Eze",
+    "name": "Eberechi Eze",
     "fullName": "Eberechi Oluchi Eze",
     "position": "MED",
     "category": "contemporary",
@@ -6049,7 +6049,7 @@
   },
   {
     "id": "import_eng_epl_act_037",
-    "name": "Elliot Junior Anderson",
+    "name": "Elliot Anderson",
     "fullName": "Elliot Junior Anderson",
     "position": "MED",
     "category": "contemporary",
@@ -6067,7 +6067,7 @@
   },
   {
     "id": "import_eng_epl_act_038",
-    "name": "Ezri Konsa Ngoyo",
+    "name": "Ezri Konsa",
     "fullName": "Ezri Konsa Ngoyo",
     "position": "DEF",
     "category": "contemporary",
@@ -6085,7 +6085,7 @@
   },
   {
     "id": "import_eng_epl_act_039",
-    "name": "Jurriën David Norman Timber",
+    "name": "Jurriën Timber",
     "fullName": "Jurriën David Norman Timber",
     "position": "DEF",
     "category": "contemporary",
@@ -6103,7 +6103,7 @@
   },
   {
     "id": "import_eng_epl_act_040",
-    "name": "Jérémy Baffour Doku",
+    "name": "Jérémy Doku",
     "fullName": "Jérémy Baffour Doku",
     "position": "DEL",
     "category": "contemporary",
@@ -6121,7 +6121,7 @@
   },
   {
     "id": "import_eng_epl_act_041",
-    "name": "Martín Zubimendi Ibáñez",
+    "name": "Martín Zubimendi",
     "fullName": "Martín Zubimendi Ibáñez",
     "position": "MED",
     "category": "contemporary",
@@ -6139,7 +6139,7 @@
   },
   {
     "id": "import_eng_epl_act_042",
-    "name": "Matheus Santos Carneiro da Cunha",
+    "name": "Matheus Cunha",
     "fullName": "Matheus Santos Carneiro da Cunha",
     "position": "MED",
     "category": "contemporary",
@@ -6157,7 +6157,7 @@
   },
   {
     "id": "import_eng_epl_act_043",
-    "name": "Morgan Elliot Rogers",
+    "name": "Morgan Rogers",
     "fullName": "Morgan Elliot Rogers",
     "position": "MED",
     "category": "contemporary",
@@ -6175,7 +6175,7 @@
   },
   {
     "id": "import_eng_epl_act_044",
-    "name": "Philip Walter Foden",
+    "name": "Phil Foden",
     "fullName": "Philip Walter Foden",
     "position": "MED",
     "category": "contemporary",
@@ -6193,7 +6193,7 @@
   },
   {
     "id": "import_eng_epl_act_045",
-    "name": "Piero Martín Hincapié Reyna",
+    "name": "Piero Hincapié",
     "fullName": "Piero Martín Hincapié Reyna",
     "position": "DEF",
     "category": "contemporary",
@@ -6283,7 +6283,7 @@
   },
   {
     "id": "import_eng_epl_act_050",
-    "name": "João Pedro Junqueira de Jesus",
+    "name": "João Pedro",
     "fullName": "João Pedro Junqueira de Jesus",
     "position": "DEL",
     "category": "contemporary",
@@ -6319,7 +6319,7 @@
   },
   {
     "id": "import_eng_epl_act_052",
-    "name": "Matheus Luiz Nunes",
+    "name": "Matheus Nunes",
     "fullName": "Matheus Luiz Nunes",
     "position": "DEF",
     "category": "contemporary",
@@ -6337,7 +6337,7 @@
   },
   {
     "id": "import_eng_epl_act_053",
-    "name": "Mikel Merino Zazón",
+    "name": "Mikel Merino",
     "fullName": "Mikel Merino Zazón",
     "position": "MED",
     "category": "contemporary",
@@ -6355,7 +6355,7 @@
   },
   {
     "id": "import_eng_epl_act_054",
-    "name": "Morgan Anthony Gibbs-White",
+    "name": "Morgan Gibbs-White",
     "fullName": "Morgan Anthony Gibbs-White",
     "position": "MED",
     "category": "contemporary",
@@ -6409,7 +6409,7 @@
   },
   {
     "id": "import_eng_epl_act_057",
-    "name": "Pedro Antonio Porro Sauceda",
+    "name": "Pedro Porro",
     "fullName": "Pedro Antonio Porro Sauceda",
     "position": "DEF",
     "category": "contemporary",
@@ -6427,7 +6427,7 @@
   },
   {
     "id": "import_eng_epl_act_058",
-    "name": "Ronald Federico Araújo da Silva",
+    "name": "Ronald Araújo",
     "fullName": "Ronald Federico Araújo da Silva",
     "position": "DEF",
     "category": "contemporary",
@@ -6463,7 +6463,7 @@
   },
   {
     "id": "import_eng_epl_act_060",
-    "name": "Adam James Wharton",
+    "name": "Adam Wharton",
     "fullName": "Adam James Wharton",
     "position": "MED",
     "category": "contemporary",
@@ -6517,7 +6517,7 @@
   },
   {
     "id": "import_eng_epl_act_063",
-    "name": "Cody Mathès Gakpo",
+    "name": "Cody Gakpo",
     "fullName": "Cody Mathès Gakpo",
     "position": "MED",
     "category": "contemporary",
@@ -6535,7 +6535,7 @@
   },
   {
     "id": "import_eng_epl_act_064",
-    "name": "Daniel Muñoz Mejía",
+    "name": "Daniel Muñoz",
     "fullName": "Daniel Muñoz Mejía",
     "position": "DEF",
     "category": "contemporary",
@@ -6553,7 +6553,7 @@
   },
   {
     "id": "import_eng_epl_act_065",
-    "name": "Dean Bradley Henderson",
+    "name": "Dean Henderson",
     "fullName": "Dean Bradley Henderson",
     "position": "ARQ",
     "category": "contemporary",
@@ -6571,7 +6571,7 @@
   },
   {
     "id": "import_eng_epl_act_066",
-    "name": "Estêvão Willian Almeida de Oliveira",
+    "name": "Estêvão",
     "fullName": "Estêvão Willian Almeida de Oliveira",
     "position": "DEL",
     "category": "contemporary",
@@ -6589,7 +6589,7 @@
   },
   {
     "id": "import_eng_epl_act_067",
-    "name": "Harry Jacob Maguire",
+    "name": "Harry Maguire",
     "fullName": "Harry Jacob Maguire",
     "position": "DEF",
     "category": "contemporary",
@@ -6607,7 +6607,7 @@
   },
   {
     "id": "import_eng_epl_act_068",
-    "name": "Igor Thiago Nascimento Rodrigues",
+    "name": "Igor Thiago",
     "fullName": "Igor Thiago Nascimento Rodrigues",
     "position": "DEL",
     "category": "contemporary",
@@ -6625,7 +6625,7 @@
   },
   {
     "id": "import_eng_epl_act_069",
-    "name": "Iliman Cheikh Baroy Ndiaye",
+    "name": "Iliman Ndiaye",
     "fullName": "Iliman Cheikh Baroy Ndiaye",
     "position": "MED",
     "category": "contemporary",
@@ -6643,7 +6643,7 @@
   },
   {
     "id": "import_eng_epl_act_070",
-    "name": "Jack Peter Grealish",
+    "name": "Jack Grealish",
     "fullName": "Jack Peter Grealish",
     "position": "MED",
     "category": "contemporary",
@@ -6661,7 +6661,7 @@
   },
   {
     "id": "import_eng_epl_act_071",
-    "name": "James Daniel Maddison",
+    "name": "James Maddison",
     "fullName": "James Daniel Maddison",
     "position": "MED",
     "category": "contemporary",
@@ -6679,7 +6679,7 @@
   },
   {
     "id": "import_eng_epl_act_072",
-    "name": "James David Garner",
+    "name": "James Garner",
     "fullName": "James David Garner",
     "position": "MED",
     "category": "contemporary",
@@ -6697,7 +6697,7 @@
   },
   {
     "id": "import_eng_epl_act_073",
-    "name": "Leon Christoph Goretzka",
+    "name": "Leon Goretzka",
     "fullName": "Leon Christoph Goretzka",
     "position": "MED",
     "category": "contemporary",
@@ -6733,7 +6733,7 @@
   },
   {
     "id": "import_eng_epl_act_075",
-    "name": "Marcos Nicolás Senesi Barón",
+    "name": "Marcos Senesi",
     "fullName": "Marcos Nicolás Senesi Barón",
     "position": "DEF",
     "category": "contemporary",
@@ -6787,7 +6787,7 @@
   },
   {
     "id": "import_eng_epl_act_078",
-    "name": "Maxence Guy Lacroix",
+    "name": "Maxence Lacroix",
     "fullName": "Maxence Guy Lacroix",
     "position": "DEF",
     "category": "contemporary",
@@ -6805,7 +6805,7 @@
   },
   {
     "id": "import_eng_epl_act_079",
-    "name": "Murillo Santiago Costa dos Santos",
+    "name": "Murillo",
     "fullName": "Murillo Santiago Costa dos Santos",
     "position": "DEF",
     "category": "contemporary",
@@ -6823,7 +6823,7 @@
   },
   {
     "id": "import_eng_epl_act_080",
-    "name": "Omar Khaled Marmoush",
+    "name": "Omar Marmoush",
     "fullName": "Omar Khaled Marmoush",
     "position": "DEL",
     "category": "contemporary",
@@ -6841,7 +6841,7 @@
   },
   {
     "id": "import_eng_epl_act_081",
-    "name": "Pau Francisco Torres",
+    "name": "Pau Torres",
     "fullName": "Pau Francisco Torres",
     "position": "DEF",
     "category": "contemporary",
@@ -6895,7 +6895,7 @@
   },
   {
     "id": "import_eng_epl_act_084",
-    "name": "Alex Jay Scott",
+    "name": "Alex Scott",
     "fullName": "Alex Jay Scott",
     "position": "MED",
     "category": "contemporary",
@@ -6913,7 +6913,7 @@
   },
   {
     "id": "import_eng_epl_act_085",
-    "name": "Amadou Ba Z. Mvom Onana",
+    "name": "Amadou Onana",
     "fullName": "Amadou Ba Z. Mvom Onana",
     "position": "MED",
     "category": "contemporary",
@@ -6949,7 +6949,7 @@
   },
   {
     "id": "import_eng_epl_act_087",
-    "name": "Benjamin William White",
+    "name": "Ben White",
     "fullName": "Benjamin William White",
     "position": "DEF",
     "category": "contemporary",
@@ -6985,7 +6985,7 @@
   },
   {
     "id": "import_eng_epl_act_089",
-    "name": "Fabian Lukas Schär",
+    "name": "Fabian Schär",
     "fullName": "Fabian Lukas Schär",
     "position": "DEF",
     "category": "contemporary",
@@ -7075,7 +7075,7 @@
   },
   {
     "id": "import_eng_epl_act_094",
-    "name": "Kai Lukas Havertz",
+    "name": "Kai Havertz",
     "fullName": "Kai Lukas Havertz",
     "position": "DEL",
     "category": "contemporary",
@@ -7111,7 +7111,7 @@
   },
   {
     "id": "import_eng_epl_act_096",
-    "name": "Kiernan Frank Dewsbury-Hall",
+    "name": "Kiernan Dewsbury-Hall",
     "fullName": "Kiernan Frank Dewsbury-Hall",
     "position": "MED",
     "category": "contemporary",
@@ -7129,7 +7129,7 @@
   },
   {
     "id": "import_eng_epl_act_097",
-    "name": "Kobbie Boateng Mainoo",
+    "name": "Kobbie Mainoo",
     "fullName": "Kobbie Boateng Mainoo",
     "position": "MED",
     "category": "contemporary",
@@ -7147,7 +7147,7 @@
   },
   {
     "id": "import_eng_epl_act_098",
-    "name": "Malick Laye Thiaw",
+    "name": "Malick Thiaw",
     "fullName": "Malick Laye Thiaw",
     "position": "DEF",
     "category": "contemporary",
@@ -7201,7 +7201,7 @@
   },
   {
     "id": "import_eng_epl_act_101",
-    "name": "Matthew Stuart Cash",
+    "name": "Matt Cash",
     "fullName": "Matthew Stuart Cash",
     "position": "DEF",
     "category": "contemporary",
@@ -7219,7 +7219,7 @@
   },
   {
     "id": "import_eng_epl_act_102",
-    "name": "Matz Willy Els Sels",
+    "name": "Matz Sels",
     "fullName": "Matz Willy Els Sels",
     "position": "ARQ",
     "category": "contemporary",
@@ -7237,7 +7237,7 @@
   },
   {
     "id": "import_eng_epl_act_103",
-    "name": "Michael Olabode Kayode",
+    "name": "Michael Kayode",
     "fullName": "Michael Olabode Kayode",
     "position": "DEF",
     "category": "contemporary",
@@ -7309,7 +7309,7 @@
   },
   {
     "id": "import_eng_epl_act_107",
-    "name": "Nicolás González Iglesias",
+    "name": "Nico González",
     "fullName": "Nicolás González Iglesias",
     "position": "MED",
     "category": "contemporary",
@@ -7327,7 +7327,7 @@
   },
   {
     "id": "import_eng_epl_act_108",
-    "name": "Nordi Mukiele Mulere",
+    "name": "Nordi Mukiele",
     "fullName": "Nordi Mukiele Mulere",
     "position": "DEF",
     "category": "contemporary",
@@ -7345,7 +7345,7 @@
   },
   {
     "id": "import_eng_epl_act_109",
-    "name": "Pedro Lomba Neto",
+    "name": "Pedro Neto",
     "fullName": "Pedro Lomba Neto",
     "position": "MED",
     "category": "contemporary",
@@ -7381,7 +7381,7 @@
   },
   {
     "id": "import_eng_epl_act_111",
-    "name": "Robin Gerardus Petrus Roefs",
+    "name": "Robin Roefs",
     "fullName": "Robin Gerardus Petrus Roefs",
     "position": "ARQ",
     "category": "contemporary",
@@ -7399,7 +7399,7 @@
   },
   {
     "id": "import_eng_epl_act_112",
-    "name": "Sven Adriaan Botman",
+    "name": "Sven Botman",
     "fullName": "Sven Adriaan Botman",
     "position": "DEF",
     "category": "contemporary",
@@ -7417,7 +7417,7 @@
   },
   {
     "id": "import_eng_epl_act_113",
-    "name": "Sávio Moreira de Oliveira (Savinho)",
+    "name": "Savinho",
     "fullName": "Sávio Moreira de Oliveira (Savinho)",
     "position": "DEL",
     "category": "contemporary",
@@ -7453,7 +7453,7 @@
   },
   {
     "id": "import_eng_epl_act_115",
-    "name": "Xavi Quentin Shay Simons",
+    "name": "Xavi Simons",
     "fullName": "Xavi Quentin Shay Simons",
     "position": "MED",
     "category": "contemporary",
@@ -7489,7 +7489,7 @@
   },
   {
     "id": "import_eng_epl_act_117",
-    "name": "Anthony David Junior Elanga",
+    "name": "Anthony Elanga",
     "fullName": "Anthony David Junior Elanga",
     "position": "DEL",
     "category": "contemporary",
@@ -7507,7 +7507,7 @@
   },
   {
     "id": "import_eng_epl_act_118",
-    "name": "Anton Levi Stach",
+    "name": "Anton Stach",
     "fullName": "Anton Levi Stach",
     "position": "MED",
     "category": "contemporary",
@@ -7561,7 +7561,7 @@
   },
   {
     "id": "import_eng_epl_act_121",
-    "name": "Carlos Noom Quomah Baleba",
+    "name": "Carlos Baleba",
     "fullName": "Carlos Noom Quomah Baleba",
     "position": "MED",
     "category": "contemporary",
@@ -7579,7 +7579,7 @@
   },
   {
     "id": "import_eng_epl_act_122",
-    "name": "Christopher Grant Wood",
+    "name": "Chris Wood",
     "fullName": "Christopher Grant Wood",
     "position": "DEL",
     "category": "contemporary",
@@ -7597,7 +7597,7 @@
   },
   {
     "id": "import_eng_epl_act_123",
-    "name": "Chukwunonso Azuka Noni Madueke",
+    "name": "Noni Madueke",
     "fullName": "Chukwunonso Azuka Noni Madueke",
     "position": "DEL",
     "category": "contemporary",
@@ -7615,7 +7615,7 @@
   },
   {
     "id": "import_eng_epl_act_124",
-    "name": "Dominic Ayodele Solanke-Mitchell",
+    "name": "Dominic Solanke",
     "fullName": "Dominic Ayodele Solanke-Mitchell",
     "position": "DEL",
     "category": "contemporary",
@@ -7669,7 +7669,7 @@
   },
   {
     "id": "import_eng_epl_act_127",
-    "name": "Harvey Lewis Barnes",
+    "name": "Harvey Barnes",
     "fullName": "Harvey Lewis Barnes",
     "position": "DEL",
     "category": "contemporary",
@@ -7687,7 +7687,7 @@
   },
   {
     "id": "import_eng_epl_act_128",
-    "name": "Iyenoma Destiny Udogie",
+    "name": "Destiny Udogie",
     "fullName": "Iyenoma Destiny Udogie",
     "position": "DEF",
     "category": "contemporary",
@@ -7705,7 +7705,7 @@
   },
   {
     "id": "import_eng_epl_act_129",
-    "name": "James Alan Tarkowski",
+    "name": "James Tarkowski",
     "fullName": "James Alan Tarkowski",
     "position": "DEF",
     "category": "contemporary",
@@ -7723,7 +7723,7 @@
   },
   {
     "id": "import_eng_epl_act_130",
-    "name": "Jarrad Paul Branthwaite",
+    "name": "Jarrad Branthwaite",
     "fullName": "Jarrad Paul Branthwaite",
     "position": "DEF",
     "category": "contemporary",
@@ -7741,7 +7741,7 @@
   },
   {
     "id": "import_eng_epl_act_131",
-    "name": "Joachim Christian Andersen",
+    "name": "Joachim Andersen",
     "fullName": "Joachim Christian Andersen",
     "position": "DEF",
     "category": "contemporary",
@@ -7759,7 +7759,7 @@
   },
   {
     "id": "import_eng_epl_act_132",
-    "name": "Joelinton Cássio Apolinário de Lira",
+    "name": "Joelinton",
     "fullName": "Joelinton Cássio Apolinário de Lira",
     "position": "MED",
     "category": "contemporary",
@@ -7777,7 +7777,7 @@
   },
   {
     "id": "import_eng_epl_act_133",
-    "name": "Levi Lamar Samuels Colwill",
+    "name": "Levi Colwill",
     "fullName": "Levi Lamar Samuels Colwill",
     "position": "DEF",
     "category": "contemporary",
@@ -7795,7 +7795,7 @@
   },
   {
     "id": "import_eng_epl_act_134",
-    "name": "Malo Arthur Gusto",
+    "name": "Malo Gusto",
     "fullName": "Malo Arthur Gusto",
     "position": "DEF",
     "category": "contemporary",
@@ -7849,7 +7849,7 @@
   },
   {
     "id": "import_eng_epl_act_137",
-    "name": "Rodrigo Bentancur Colmán",
+    "name": "Rodrigo Bentancur",
     "fullName": "Rodrigo Bentancur Colmán",
     "position": "MED",
     "category": "contemporary",
@@ -7867,7 +7867,7 @@
   },
   {
     "id": "import_eng_epl_act_138",
-    "name": "Sander Gard Bolin Berge",
+    "name": "Sander Berge",
     "fullName": "Sander Gard Bolin Berge",
     "position": "MED",
     "category": "contemporary",
@@ -7885,7 +7885,7 @@
   },
   {
     "id": "import_eng_epl_act_139",
-    "name": "Wesley Tidjan Fofana",
+    "name": "Wesley Fofana",
     "fullName": "Wesley Tidjan Fofana",
     "position": "DEF",
     "category": "contemporary",
@@ -7921,7 +7921,7 @@
   },
   {
     "id": "import_eng_epl_act_141",
-    "name": "Óscar Mingueza García",
+    "name": "Óscar Mingueza",
     "fullName": "Óscar Mingueza García",
     "position": "DEF",
     "category": "contemporary",
@@ -7957,7 +7957,7 @@
   },
   {
     "id": "import_eng_epl_act_143",
-    "name": "Exequiel Alejandro Palacios",
+    "name": "Exequiel Palacios",
     "fullName": "Exequiel Alejandro Palacios",
     "position": "MED",
     "category": "contemporary",
@@ -7975,7 +7975,7 @@
   },
   {
     "id": "import_eng_epl_act_144",
-    "name": "Ferdi Erenay Kadıoğlu",
+    "name": "Ferdi Kadıoğlu",
     "fullName": "Ferdi Erenay Kadıoğlu",
     "position": "DEF",
     "category": "contemporary",
@@ -7993,7 +7993,7 @@
   },
   {
     "id": "import_eng_epl_act_145",
-    "name": "Francisco Evanilson de Lima Barbosa",
+    "name": "Evanilson",
     "fullName": "Francisco Evanilson de Lima Barbosa",
     "position": "DEL",
     "category": "contemporary",
@@ -8011,7 +8011,7 @@
   },
   {
     "id": "import_eng_epl_act_146",
-    "name": "Ian Ethan Maatsen",
+    "name": "Ian Maatsen",
     "fullName": "Ian Ethan Maatsen",
     "position": "DEF",
     "category": "contemporary",
@@ -8029,7 +8029,7 @@
   },
   {
     "id": "import_eng_epl_act_147",
-    "name": "Justin Dean Kluivert",
+    "name": "Justin Kluivert",
     "fullName": "Justin Dean Kluivert",
     "position": "MED",
     "category": "contemporary",
@@ -8065,7 +8065,7 @@
   },
   {
     "id": "import_eng_epl_act_149",
-    "name": "Luke Paul Hoare Shaw",
+    "name": "Luke Shaw",
     "fullName": "Luke Paul Hoare Shaw",
     "position": "DEF",
     "category": "contemporary",
@@ -8083,7 +8083,7 @@
   },
   {
     "id": "import_eng_epl_act_150",
-    "name": "Mats Henrik Berne Wieffer",
+    "name": "Mats Wieffer",
     "fullName": "Mats Henrik Berne Wieffer",
     "position": "MED",
     "category": "contemporary",
@@ -8101,7 +8101,7 @@
   },
   {
     "id": "import_eng_epl_ley_001",
-    "name": "Cristiano Ronaldo dos Santos Aveiro",
+    "name": "Cristiano Ronaldo",
     "fullName": "Cristiano Ronaldo dos Santos Aveiro",
     "position": "DEL",
     "category": "legend",
@@ -8119,7 +8119,7 @@
   },
   {
     "id": "import_eng_epl_ley_002",
-    "name": "Thierry Daniel Henry",
+    "name": "Thierry Henry",
     "fullName": "Thierry Daniel Henry",
     "position": "DEL",
     "category": "legend",
@@ -8173,7 +8173,7 @@
   },
   {
     "id": "import_eng_epl_ley_005",
-    "name": "Sir Robert Bobby Charlton",
+    "name": "Bobby Charlton",
     "fullName": "Sir Robert Bobby Charlton",
     "position": "MED",
     "category": "legend",
@@ -8191,7 +8191,7 @@
   },
   {
     "id": "import_eng_epl_ley_006",
-    "name": "James Peter Jimmy Greaves",
+    "name": "Jimmy Greaves",
     "fullName": "James Peter Jimmy Greaves",
     "position": "DEL",
     "category": "legend",
@@ -8227,7 +8227,7 @@
   },
   {
     "id": "import_eng_epl_ley_008",
-    "name": "Luis Alberto Suárez Díaz",
+    "name": "Luis Suárez",
     "fullName": "Luis Alberto Suárez Díaz",
     "position": "DEL",
     "category": "legend",
@@ -8245,7 +8245,7 @@
   },
   {
     "id": "import_eng_epl_ley_009",
-    "name": "Mohamed Salah Hamed Mahrous Ghaly",
+    "name": "Mohamed Salah",
     "fullName": "Mohamed Salah Hamed Mahrous Ghaly",
     "position": "DEL",
     "category": "legend",
@@ -8263,7 +8263,7 @@
   },
   {
     "id": "import_eng_epl_ley_010",
-    "name": "Robert Frederick Chelsea Bobby Moore",
+    "name": "Bobby Moore",
     "fullName": "Robert Frederick Chelsea Bobby Moore",
     "position": "DEF",
     "category": "legend",
@@ -8281,7 +8281,7 @@
   },
   {
     "id": "import_eng_epl_ley_011",
-    "name": "Sir Kenneth Mathieson Dalglish",
+    "name": "Kenny Dalglish",
     "fullName": "Sir Kenneth Mathieson Dalglish",
     "position": "DEL",
     "category": "legend",
@@ -8299,7 +8299,7 @@
   },
   {
     "id": "import_eng_epl_ley_012",
-    "name": "Sir Stanley Matthews",
+    "name": "Stanley Matthews",
     "fullName": "Sir Stanley Matthews",
     "position": "DEL",
     "category": "legend",
@@ -8317,7 +8317,7 @@
   },
   {
     "id": "import_eng_epl_ley_013",
-    "name": "Wayne Mark Rooney",
+    "name": "Wayne Rooney",
     "fullName": "Wayne Mark Rooney",
     "position": "DEL",
     "category": "legend",
@@ -8335,7 +8335,7 @@
   },
   {
     "id": "import_eng_epl_ley_014",
-    "name": "William Ralph Dixie Dean",
+    "name": "Dixie Dean",
     "fullName": "William Ralph Dixie Dean",
     "position": "DEL",
     "category": "legend",
@@ -8353,7 +8353,7 @@
   },
   {
     "id": "import_eng_epl_ley_015",
-    "name": "Dennis Nicolaas Maria Bergkamp",
+    "name": "Dennis Bergkamp",
     "fullName": "Dennis Nicolaas Maria Bergkamp",
     "position": "DEL",
     "category": "legend",
@@ -8371,7 +8371,7 @@
   },
   {
     "id": "import_eng_epl_ley_016",
-    "name": "Frank James Lampard",
+    "name": "Frank Lampard",
     "fullName": "Frank James Lampard",
     "position": "MED",
     "category": "legend",
@@ -8389,7 +8389,7 @@
   },
   {
     "id": "import_eng_epl_ley_017",
-    "name": "Harry Edward Kane",
+    "name": "Harry Kane",
     "fullName": "Harry Edward Kane",
     "position": "DEL",
     "category": "legend",
@@ -8407,7 +8407,7 @@
   },
   {
     "id": "import_eng_epl_ley_018",
-    "name": "John George Terry",
+    "name": "John Terry",
     "fullName": "John George Terry",
     "position": "DEF",
     "category": "legend",
@@ -8461,7 +8461,7 @@
   },
   {
     "id": "import_eng_epl_ley_021",
-    "name": "Peter Bolesław Schmeichel",
+    "name": "Peter Schmeichel",
     "fullName": "Peter Bolesław Schmeichel",
     "position": "ARQ",
     "category": "legend",
@@ -8479,7 +8479,7 @@
   },
   {
     "id": "import_eng_epl_ley_022",
-    "name": "Rio Gavin Ferdinand",
+    "name": "Rio Ferdinand",
     "fullName": "Rio Gavin Ferdinand",
     "position": "DEF",
     "category": "legend",
@@ -8497,7 +8497,7 @@
   },
   {
     "id": "import_eng_epl_ley_023",
-    "name": "Rodrigo Hernández Cascante (Rodri)",
+    "name": "Rodri",
     "fullName": "Rodrigo Hernández Cascante (Rodri)",
     "position": "MED",
     "category": "legend",
@@ -8515,7 +8515,7 @@
   },
   {
     "id": "import_eng_epl_ley_024",
-    "name": "Roy Maurice Keane",
+    "name": "Roy Keane",
     "fullName": "Roy Maurice Keane",
     "position": "MED",
     "category": "legend",
@@ -8533,7 +8533,7 @@
   },
   {
     "id": "import_eng_epl_ley_025",
-    "name": "Ryan Joseph Giggs",
+    "name": "Ryan Giggs",
     "fullName": "Ryan Joseph Giggs",
     "position": "MED",
     "category": "legend",
@@ -8551,7 +8551,7 @@
   },
   {
     "id": "import_eng_epl_ley_026",
-    "name": "Sergio Leonel Agüero del Castillo",
+    "name": "Sergio Agüero",
     "fullName": "Sergio Leonel Agüero del Castillo",
     "position": "DEL",
     "category": "legend",
@@ -8569,7 +8569,7 @@
   },
   {
     "id": "import_eng_epl_ley_027",
-    "name": "Steven George Gerrard",
+    "name": "Steven Gerrard",
     "fullName": "Steven George Gerrard",
     "position": "MED",
     "category": "legend",
@@ -8587,7 +8587,7 @@
   },
   {
     "id": "import_eng_epl_ley_028",
-    "name": "Éric Daniel Pierre Cantona",
+    "name": "Éric Cantona",
     "fullName": "Éric Daniel Pierre Cantona",
     "position": "DEL",
     "category": "legend",
@@ -8623,7 +8623,7 @@
   },
   {
     "id": "import_eng_epl_ley_030",
-    "name": "David Silva Jiménez",
+    "name": "David Silva",
     "fullName": "David Silva Jiménez",
     "position": "MED",
     "category": "legend",
@@ -8659,7 +8659,7 @@
   },
   {
     "id": "import_eng_epl_ley_032",
-    "name": "Didier Yves Drogba Tébily",
+    "name": "Didier Drogba",
     "fullName": "Didier Yves Drogba Tébily",
     "position": "DEL",
     "category": "legend",
@@ -8677,7 +8677,7 @@
   },
   {
     "id": "import_eng_epl_ley_033",
-    "name": "Eden Michael Walter Hazard",
+    "name": "Eden Hazard",
     "fullName": "Eden Michael Walter Hazard",
     "position": "DEL",
     "category": "legend",
@@ -8695,7 +8695,7 @@
   },
   {
     "id": "import_eng_epl_ley_034",
-    "name": "Gareth Frank Bale",
+    "name": "Gareth Bale",
     "fullName": "Gareth Frank Bale",
     "position": "DEL",
     "category": "legend",
@@ -8731,7 +8731,7 @@
   },
   {
     "id": "import_eng_epl_ley_036",
-    "name": "Ian James Rush",
+    "name": "Ian Rush",
     "fullName": "Ian James Rush",
     "position": "DEL",
     "category": "legend",
@@ -8767,7 +8767,7 @@
   },
   {
     "id": "import_eng_epl_ley_038",
-    "name": "Joseph Kevin Keegan",
+    "name": "Kevin Keegan",
     "fullName": "Joseph Kevin Keegan",
     "position": "DEL",
     "category": "legend",
@@ -8821,7 +8821,7 @@
   },
   {
     "id": "import_eng_epl_ley_041",
-    "name": "Peter Leslie Shilton",
+    "name": "Peter Shilton",
     "fullName": "Peter Leslie Shilton",
     "position": "ARQ",
     "category": "legend",
@@ -8857,7 +8857,7 @@
   },
   {
     "id": "import_eng_epl_ley_043",
-    "name": "Sir Thomas Tom Finney",
+    "name": "Tom Finney",
     "fullName": "Sir Thomas Tom Finney",
     "position": "DEL",
     "category": "legend",
@@ -8875,7 +8875,7 @@
   },
   {
     "id": "import_eng_epl_ley_044",
-    "name": "Stephen Steve Bloomer",
+    "name": "Steve Bloomer",
     "fullName": "Stephen Steve Bloomer",
     "position": "DEL",
     "category": "legend",
@@ -8893,7 +8893,7 @@
   },
   {
     "id": "import_eng_epl_ley_045",
-    "name": "Vincent Jean Mpoy Kompany",
+    "name": "Vincent Kompany",
     "fullName": "Vincent Jean Mpoy Kompany",
     "position": "DEF",
     "category": "legend",
@@ -8911,7 +8911,7 @@
   },
   {
     "id": "import_eng_epl_ley_046",
-    "name": "Yaya Gnégnéri Touré",
+    "name": "Yaya Touré",
     "fullName": "Yaya Gnégnéri Touré",
     "position": "MED",
     "category": "legend",
@@ -8929,7 +8929,7 @@
   },
   {
     "id": "import_eng_epl_ley_047",
-    "name": "Alan David Hansen",
+    "name": "Alan Hansen",
     "fullName": "Alan David Hansen",
     "position": "DEF",
     "category": "legend",
@@ -8947,7 +8947,7 @@
   },
   {
     "id": "import_eng_epl_ley_048",
-    "name": "Andrew Andy Cole",
+    "name": "Andy Cole",
     "fullName": "Andrew Andy Cole",
     "position": "DEL",
     "category": "legend",
@@ -8965,7 +8965,7 @@
   },
   {
     "id": "import_eng_epl_ley_049",
-    "name": "Bernardo Mota Veiga de Carvalho e Silva",
+    "name": "Bernardo Silva",
     "fullName": "Bernardo Mota Veiga de Carvalho e Silva",
     "position": "MED",
     "category": "legend",
@@ -9019,7 +9019,7 @@
   },
   {
     "id": "import_eng_epl_ley_052",
-    "name": "Cesc Fàbregas Soler",
+    "name": "Cesc Fàbregas",
     "fullName": "Cesc Fàbregas Soler",
     "position": "MED",
     "category": "legend",
@@ -9037,7 +9037,7 @@
   },
   {
     "id": "import_eng_epl_ley_053",
-    "name": "Claude Makelele Sinda",
+    "name": "Claude Makelele",
     "fullName": "Claude Makelele Sinda",
     "position": "MED",
     "category": "legend",
@@ -9055,7 +9055,7 @@
   },
   {
     "id": "import_eng_epl_ley_054",
-    "name": "David Robert Joseph Beckham",
+    "name": "David Beckham",
     "fullName": "David Robert Joseph Beckham",
     "position": "MED",
     "category": "legend",
@@ -9109,7 +9109,7 @@
   },
   {
     "id": "import_eng_epl_ley_057",
-    "name": "Gary Alexander Neville",
+    "name": "Gary Neville",
     "fullName": "Gary Alexander Neville",
     "position": "DEF",
     "category": "legend",
@@ -9127,7 +9127,7 @@
   },
   {
     "id": "import_eng_epl_ley_058",
-    "name": "Gary Winston Lineker",
+    "name": "Gary Lineker",
     "fullName": "Gary Winston Lineker",
     "position": "DEL",
     "category": "legend",
@@ -9163,7 +9163,7 @@
   },
   {
     "id": "import_eng_epl_ley_060",
-    "name": "Graeme James Souness",
+    "name": "Graeme Souness",
     "fullName": "Graeme James Souness",
     "position": "MED",
     "category": "legend",
@@ -9181,7 +9181,7 @@
   },
   {
     "id": "import_eng_epl_ley_061",
-    "name": "Ian Edward Wright",
+    "name": "Ian Wright",
     "fullName": "Ian Edward Wright",
     "position": "DEL",
     "category": "legend",
@@ -9199,7 +9199,7 @@
   },
   {
     "id": "import_eng_epl_ley_062",
-    "name": "John Charles Bryan Barnes",
+    "name": "John Barnes",
     "fullName": "John Charles Bryan Barnes",
     "position": "DEL",
     "category": "legend",
@@ -9235,7 +9235,7 @@
   },
   {
     "id": "import_eng_epl_ley_064",
-    "name": "Robert Emmanuel Pirès",
+    "name": "Robert Pirès",
     "fullName": "Robert Emmanuel Pirès",
     "position": "MED",
     "category": "legend",
@@ -9325,7 +9325,7 @@
   },
   {
     "id": "import_eng_epl_ley_069",
-    "name": "Tony Alexander Adams",
+    "name": "Tony Adams",
     "fullName": "Tony Alexander Adams",
     "position": "DEF",
     "category": "legend",
@@ -9343,7 +9343,7 @@
   },
   {
     "id": "import_eng_epl_ley_070",
-    "name": "William Billy Wright",
+    "name": "Billy Wright",
     "fullName": "William Billy Wright",
     "position": "DEF",
     "category": "legend",
@@ -9361,7 +9361,7 @@
   },
   {
     "id": "import_eng_epl_ley_071",
-    "name": "Alexis Alejandro Sánchez Sánchez",
+    "name": "Alexis Sánchez",
     "fullName": "Alexis Alejandro Sánchez Sánchez",
     "position": "DEL",
     "category": "legend",
@@ -9379,7 +9379,7 @@
   },
   {
     "id": "import_eng_epl_ley_072",
-    "name": "Carlos Alberto Tevez",
+    "name": "Carlos Tevez",
     "fullName": "Carlos Alberto Tevez",
     "position": "DEL",
     "category": "legend",
@@ -9397,7 +9397,7 @@
   },
   {
     "id": "import_eng_epl_ley_073",
-    "name": "Charles Charlie Buchan",
+    "name": "Charlie Buchan",
     "fullName": "Charles Charlie Buchan",
     "position": "DEL",
     "category": "legend",
@@ -9433,7 +9433,7 @@
   },
   {
     "id": "import_eng_epl_ley_075",
-    "name": "César Azpilicueta Tanco",
+    "name": "César Azpilicueta",
     "fullName": "César Azpilicueta Tanco",
     "position": "DEF",
     "category": "legend",
@@ -9451,7 +9451,7 @@
   },
   {
     "id": "import_eng_epl_ley_076",
-    "name": "David de Gea Quintana",
+    "name": "David de Gea",
     "fullName": "David de Gea Quintana",
     "position": "ARQ",
     "category": "legend",
@@ -9469,7 +9469,7 @@
   },
   {
     "id": "import_eng_epl_ley_077",
-    "name": "Ederson Santana de Moraes",
+    "name": "Ederson",
     "fullName": "Ederson Santana de Moraes",
     "position": "ARQ",
     "category": "legend",
@@ -9487,7 +9487,7 @@
   },
   {
     "id": "import_eng_epl_ley_078",
-    "name": "Fernando José Torres Sanz",
+    "name": "Fernando Torres",
     "fullName": "Fernando José Torres Sanz",
     "position": "DEL",
     "category": "legend",
@@ -9541,7 +9541,7 @@
   },
   {
     "id": "import_eng_epl_ley_081",
-    "name": "Jamie Richard Vardy",
+    "name": "Jamie Vardy",
     "fullName": "Jamie Richard Vardy",
     "position": "DEL",
     "category": "legend",
@@ -9559,7 +9559,7 @@
   },
   {
     "id": "import_eng_epl_ley_082",
-    "name": "Javier Alejandro Mascherano",
+    "name": "Javier Mascherano",
     "fullName": "Javier Alejandro Mascherano",
     "position": "MED",
     "category": "legend",
@@ -9577,7 +9577,7 @@
   },
   {
     "id": "import_eng_epl_ley_083",
-    "name": "Kyle Andrew Walker",
+    "name": "Kyle Walker",
     "fullName": "Kyle Andrew Walker",
     "position": "DEF",
     "category": "legend",
@@ -9595,7 +9595,7 @@
   },
   {
     "id": "import_eng_epl_ley_084",
-    "name": "Matthew Matt Le Tissier",
+    "name": "Matt Le Tissier",
     "fullName": "Matthew Matt Le Tissier",
     "position": "MED",
     "category": "legend",
@@ -9631,7 +9631,7 @@
   },
   {
     "id": "import_eng_epl_ley_086",
-    "name": "Michael James Owen",
+    "name": "Michael Owen",
     "fullName": "Michael James Owen",
     "position": "DEL",
     "category": "legend",
@@ -9649,7 +9649,7 @@
   },
   {
     "id": "import_eng_epl_ley_087",
-    "name": "Nathaniel Nat Lofthouse",
+    "name": "Nat Lofthouse",
     "fullName": "Nathaniel Nat Lofthouse",
     "position": "DEL",
     "category": "legend",
@@ -9667,7 +9667,7 @@
   },
   {
     "id": "import_eng_epl_ley_088",
-    "name": "Patrice Latyr Evra",
+    "name": "Patrice Evra",
     "fullName": "Patrice Latyr Evra",
     "position": "DEF",
     "category": "legend",
@@ -9685,7 +9685,7 @@
   },
   {
     "id": "import_eng_epl_ley_089",
-    "name": "Paul John Gascoigne",
+    "name": "Paul Gascoigne",
     "fullName": "Paul John Gascoigne",
     "position": "MED",
     "category": "legend",
@@ -9703,7 +9703,7 @@
   },
   {
     "id": "import_eng_epl_ley_090",
-    "name": "Ricardo Alberto Silveira de Carvalho",
+    "name": "Ricardo Carvalho",
     "fullName": "Ricardo Alberto Silveira de Carvalho",
     "position": "DEF",
     "category": "legend",
@@ -9721,7 +9721,7 @@
   },
   {
     "id": "import_eng_epl_ley_091",
-    "name": "Riyad Karim Mahrez",
+    "name": "Riyad Mahrez",
     "fullName": "Riyad Karim Mahrez",
     "position": "DEL",
     "category": "legend",
@@ -9739,7 +9739,7 @@
   },
   {
     "id": "import_eng_epl_ley_092",
-    "name": "Robert Bernard Robbie Fowler",
+    "name": "Robbie Fowler",
     "fullName": "Robert Bernard Robbie Fowler",
     "position": "DEL",
     "category": "legend",
@@ -9775,7 +9775,7 @@
   },
   {
     "id": "import_eng_epl_ley_094",
-    "name": "Thibaut Nicolas Marc Courtois",
+    "name": "Thibaut Courtois",
     "fullName": "Thibaut Nicolas Marc Courtois",
     "position": "ARQ",
     "category": "legend",
@@ -9793,7 +9793,7 @@
   },
   {
     "id": "import_eng_epl_ley_095",
-    "name": "Trent John Alexander-Arnold",
+    "name": "Trent Alexander-Arnold",
     "fullName": "Trent John Alexander-Arnold",
     "position": "DEF",
     "category": "legend",
@@ -9811,7 +9811,7 @@
   },
   {
     "id": "import_eng_epl_ley_096",
-    "name": "Xabi Alonso Olano",
+    "name": "Xabi Alonso",
     "fullName": "Xabi Alonso Olano",
     "position": "MED",
     "category": "legend",
@@ -9829,7 +9829,7 @@
   },
   {
     "id": "import_eng_epl_ley_097",
-    "name": "Ángel Fabián Di María",
+    "name": "Ángel Di María",
     "fullName": "Ángel Fabián Di María",
     "position": "MED",
     "category": "legend",
@@ -9865,7 +9865,7 @@
   },
   {
     "id": "import_eng_epl_ley_099",
-    "name": "Carlos Henrique Casimiro (Casemiro)",
+    "name": "Casemiro",
     "fullName": "Carlos Henrique Casimiro (Casemiro)",
     "position": "MED",
     "category": "legend",
@@ -9883,7 +9883,7 @@
   },
   {
     "id": "import_eng_epl_ley_100",
-    "name": "David Désiré Marc Ginola",
+    "name": "David Ginola",
     "fullName": "David Désiré Marc Ginola",
     "position": "DEL",
     "category": "legend",
@@ -9901,7 +9901,7 @@
   },
   {
     "id": "import_eng_epl_ley_101",
-    "name": "Diego da Silva Costa",
+    "name": "Diego Costa",
     "fullName": "Diego da Silva Costa",
     "position": "DEL",
     "category": "legend",
@@ -9919,7 +9919,7 @@
   },
   {
     "id": "import_eng_epl_ley_102",
-    "name": "Dimitar Ivanov Berbatov",
+    "name": "Dimitar Berbatov",
     "fullName": "Dimitar Ivanov Berbatov",
     "position": "DEL",
     "category": "legend",
@@ -9937,7 +9937,7 @@
   },
   {
     "id": "import_eng_epl_ley_103",
-    "name": "Dwight Eversley Yorke",
+    "name": "Dwight Yorke",
     "fullName": "Dwight Eversley Yorke",
     "position": "DEL",
     "category": "legend",
@@ -9955,7 +9955,7 @@
   },
   {
     "id": "import_eng_epl_ley_104",
-    "name": "Edinson Roberto Cavani Gómez",
+    "name": "Edinson Cavani",
     "fullName": "Edinson Roberto Cavani Gómez",
     "position": "DEL",
     "category": "legend",
@@ -9973,7 +9973,7 @@
   },
   {
     "id": "import_eng_epl_ley_105",
-    "name": "Edward Paul Teddy Sheringham",
+    "name": "Teddy Sheringham",
     "fullName": "Edward Paul Teddy Sheringham",
     "position": "DEL",
     "category": "legend",
@@ -9991,7 +9991,7 @@
   },
   {
     "id": "import_eng_epl_ley_106",
-    "name": "Fernandinho (Fernando Luiz Roza)",
+    "name": "Fernandinho",
     "fullName": "Fernandinho (Fernando Luiz Roza)",
     "position": "MED",
     "category": "legend",
@@ -10009,7 +10009,7 @@
   },
   {
     "id": "import_eng_epl_ley_107",
-    "name": "Fábio Henrique Tavares (Fabinho)",
+    "name": "Fabinho",
     "fullName": "Fábio Henrique Tavares (Fabinho)",
     "position": "MED",
     "category": "legend",
@@ -10045,7 +10045,7 @@
   },
   {
     "id": "import_eng_epl_ley_109",
-    "name": "Gilberto Aparecido da Silva",
+    "name": "Gilberto Silva",
     "fullName": "Gilberto Aparecido da Silva",
     "position": "MED",
     "category": "legend",
@@ -10063,7 +10063,7 @@
   },
   {
     "id": "import_eng_epl_ley_110",
-    "name": "James Philip Milner",
+    "name": "James Milner",
     "fullName": "James Philip Milner",
     "position": "MED",
     "category": "legend",
@@ -10081,7 +10081,7 @@
   },
   {
     "id": "import_eng_epl_ley_111",
-    "name": "Jermain Colin Defoe",
+    "name": "Jermain Defoe",
     "fullName": "Jermain Colin Defoe",
     "position": "DEL",
     "category": "legend",
@@ -10099,7 +10099,7 @@
   },
   {
     "id": "import_eng_epl_ley_112",
-    "name": "Jerrel Jimmy Floyd Hasselbaink",
+    "name": "Jimmy Floyd Hasselbaink",
     "fullName": "Jerrel Jimmy Floyd Hasselbaink",
     "position": "DEL",
     "category": "legend",
@@ -10117,7 +10117,7 @@
   },
   {
     "id": "import_eng_epl_ley_113",
-    "name": "Juan Manuel Mata García",
+    "name": "Juan Mata",
     "fullName": "Juan Manuel Mata García",
     "position": "MED",
     "category": "legend",
@@ -10153,7 +10153,7 @@
   },
   {
     "id": "import_eng_epl_ley_115",
-    "name": "Karl Fredrik Ljungberg",
+    "name": "Karl Ljungberg",
     "fullName": "Karl Fredrik Ljungberg",
     "position": "MED",
     "category": "legend",
@@ -10171,7 +10171,7 @@
   },
   {
     "id": "import_eng_epl_ley_116",
-    "name": "Leslie Les Ferdinand",
+    "name": "Les Ferdinand",
     "fullName": "Leslie Les Ferdinand",
     "position": "DEL",
     "category": "legend",
@@ -10261,7 +10261,7 @@
   },
   {
     "id": "import_eng_epl_ley_121",
-    "name": "Michael Kojo Essien",
+    "name": "Michael Essien",
     "fullName": "Michael Kojo Essien",
     "position": "MED",
     "category": "legend",
@@ -10297,7 +10297,7 @@
   },
   {
     "id": "import_eng_epl_ley_123",
-    "name": "Nicolas Sébastien Anelka",
+    "name": "Nicolas Anelka",
     "fullName": "Nicolas Sébastien Anelka",
     "position": "DEL",
     "category": "legend",
@@ -10333,7 +10333,7 @@
   },
   {
     "id": "import_eng_epl_ley_125",
-    "name": "Pierre-Emerick Emiliano François Aubameyang",
+    "name": "Pierre-Emerick Aubameyang",
     "fullName": "Pierre-Emerick Emiliano François Aubameyang",
     "position": "DEL",
     "category": "legend",
@@ -10351,7 +10351,7 @@
   },
   {
     "id": "import_eng_epl_ley_126",
-    "name": "Raheem Shaquille Sterling",
+    "name": "Raheem Sterling",
     "fullName": "Raheem Shaquille Sterling",
     "position": "DEL",
     "category": "legend",
@@ -10369,7 +10369,7 @@
   },
   {
     "id": "import_eng_epl_ley_127",
-    "name": "Roberto Firmino Barbosa de Oliveira",
+    "name": "Roberto Firmino",
     "fullName": "Roberto Firmino Barbosa de Oliveira",
     "position": "DEL",
     "category": "legend",
@@ -10387,7 +10387,7 @@
   },
   {
     "id": "import_eng_epl_ley_128",
-    "name": "Romelu Menama Lukaku Bolingoli",
+    "name": "Romelu Lukaku",
     "fullName": "Romelu Menama Lukaku Bolingoli",
     "position": "DEL",
     "category": "legend",
@@ -10423,7 +10423,7 @@
   },
   {
     "id": "import_eng_epl_ley_130",
-    "name": "Santiago Santi Cazorla González",
+    "name": "Santi Cazorla",
     "fullName": "Santiago Santi Cazorla González",
     "position": "MED",
     "category": "legend",
@@ -10441,7 +10441,7 @@
   },
   {
     "id": "import_eng_epl_ley_131",
-    "name": "Augustine Azuka Jay-Jay Okocha",
+    "name": "Jay-Jay Okocha",
     "fullName": "Augustine Azuka Jay-Jay Okocha",
     "position": "MED",
     "category": "legend",
@@ -10459,7 +10459,7 @@
   },
   {
     "id": "import_eng_epl_ley_132",
-    "name": "Bernhard Carl Bert Trautmann",
+    "name": "Bert Trautmann",
     "fullName": "Bernhard Carl Bert Trautmann",
     "position": "ARQ",
     "category": "legend",
@@ -10495,7 +10495,7 @@
   },
   {
     "id": "import_eng_epl_ley_134",
-    "name": "Christian Dannemann Eriksen",
+    "name": "Christian Eriksen",
     "fullName": "Christian Dannemann Eriksen",
     "position": "MED",
     "category": "legend",
@@ -10531,7 +10531,7 @@
   },
   {
     "id": "import_eng_epl_ley_136",
-    "name": "Emmanuel Laurent Petit",
+    "name": "Emmanuel Petit",
     "fullName": "Emmanuel Laurent Petit",
     "position": "MED",
     "category": "legend",
@@ -10585,7 +10585,7 @@
   },
   {
     "id": "import_eng_epl_ley_139",
-    "name": "Hugo Hadrien Dominique Lloris",
+    "name": "Hugo Lloris",
     "fullName": "Hugo Hadrien Dominique Lloris",
     "position": "ARQ",
     "category": "legend",
@@ -10603,7 +10603,7 @@
   },
   {
     "id": "import_eng_epl_ley_140",
-    "name": "Jamie Lee Carragher",
+    "name": "Jamie Carragher",
     "fullName": "Jamie Lee Carragher",
     "position": "DEF",
     "category": "legend",
@@ -10621,7 +10621,7 @@
   },
   {
     "id": "import_eng_epl_ley_141",
-    "name": "Jan Bert Lieve Vertonghen",
+    "name": "Jan Vertonghen",
     "fullName": "Jan Bert Lieve Vertonghen",
     "position": "DEF",
     "category": "legend",
@@ -10657,7 +10657,7 @@
   },
   {
     "id": "import_eng_epl_ley_143",
-    "name": "José Manuel Pepe Reina Páez",
+    "name": "Pepe Reina",
     "fullName": "José Manuel Pepe Reina Páez",
     "position": "ARQ",
     "category": "legend",
@@ -10675,7 +10675,7 @@
   },
   {
     "id": "import_eng_epl_ley_144",
-    "name": "Joël André Job Matip",
+    "name": "Joël Matip",
     "fullName": "Joël André Job Matip",
     "position": "DEF",
     "category": "legend",
@@ -10711,7 +10711,7 @@
   },
   {
     "id": "import_eng_epl_ley_146",
-    "name": "Kasper Peter Schmeichel",
+    "name": "Kasper Schmeichel",
     "fullName": "Kasper Peter Schmeichel",
     "position": "ARQ",
     "category": "legend",
@@ -10729,7 +10729,7 @@
   },
   {
     "id": "import_eng_epl_ley_147",
-    "name": "Kolo Habib Touré",
+    "name": "Kolo Touré",
     "fullName": "Kolo Habib Touré",
     "position": "DEF",
     "category": "legend",
@@ -10747,7 +10747,7 @@
   },
   {
     "id": "import_eng_epl_ley_148",
-    "name": "Lauren (Laureano Bisan-Etamé Mayer)",
+    "name": "Lauren",
     "fullName": "Lauren (Laureano Bisan-Etamé Mayer)",
     "position": "DEF",
     "category": "legend",
@@ -10783,7 +10783,7 @@
   },
   {
     "id": "import_eng_epl_ley_150",
-    "name": "Mousa Sidi Yaya Dembélé",
+    "name": "Mousa Dembélé",
     "fullName": "Mousa Sidi Yaya Dembélé",
     "position": "MED",
     "category": "legend",
@@ -13681,7 +13681,7 @@
   },
   {
     "id": "import_bra_bra_leg_carlos_alberto_torres",
-    "name": "Carlos Alberto Torres",
+    "name": "Carlos Alberto",
     "fullName": "Carlos Alberto Torres",
     "position": "DEF",
     "category": "legend",

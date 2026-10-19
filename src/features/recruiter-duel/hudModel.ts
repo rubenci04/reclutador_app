@@ -1,6 +1,7 @@
 import type { Player } from '../../types/player'
 import { budgetOf, currentRound, maximumSafeBid, openingPriority, positionProgress, rosterIds } from './auctionEngine'
 import type { RecruiterDuelGame, RecruiterId } from './auctionTypes'
+import { teamStrengthPreview, type TeamStrength } from './teamStrength'
 
 export const HUD_POSITIONS = ['ARQ', 'DEF', 'MED', 'DEL'] as const
 export const SHARED_DISCARDS = 3
@@ -25,6 +26,8 @@ export interface HudParticipant {
   readonly bidCeiling: number | null
   /** Budget the engine keeps back to finish both elevens: remaining minus the safe ceiling. Null when no ceiling. */
   readonly reserved: number | null
+  /** Big figure shown first: global power with a full eleven, provisional mean level before. */
+  readonly strength: TeamStrength
 }
 
 export interface HudModel {
@@ -56,6 +59,7 @@ export function buildHudModel(game: RecruiterDuelGame, catalog: readonly Player[
       }),
       bidCeiling: hasCeiling ? ceiling : null,
       reserved: hasCeiling ? remaining - ceiling : null,
+      strength: teamStrengthPreview(game, id, catalog),
     }
   }
   return {

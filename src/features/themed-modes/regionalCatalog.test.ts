@@ -45,7 +45,7 @@ describe('category tree and nationality collections', () => {
     const historical = id.includes('LEGENDS')
     expect(players.every((p) => region.has(p.nationality) && p.category === (historical ? 'legend' : 'contemporary'))).toBe(true)
     const budget = defaultBudgetForMode(id)
-    expect(budget).toBe(historical ? 150 : 100)
+    expect(budget).toBe(historical ? 150 : 120)
     expect(preflightMatchConfig(players, { ...CLASSIC_CONFIG, budget, coaches: true, coachReserve: 8 }).ok).toBe(true)
     expect(generateCpuTeam(players, `regional-${id}`, budget).team.players).toHaveLength(11)
     const coaches = coachesForMode(id)

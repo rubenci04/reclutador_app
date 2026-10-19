@@ -109,11 +109,11 @@ describe('setup screen', () => {
     return i18n
   }
 
-  it('keeps the classic mode as the default: no extra fields, 100M summary, start enabled', async () => {
+  it('keeps the classic mode as the default: no extra fields, 120M summary, start enabled', async () => {
     await open()
     expect(screen.getByRole('radio', { name: /Classic/ })).toBeChecked()
     expect(screen.queryByLabelText('Team 1 name')).not.toBeInTheDocument()
-    expect(screen.getByText('Starting budget: 100M per team')).toBeInTheDocument()
+    expect(screen.getByText('Starting budget: 120M per team')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Start duel' })).toBeEnabled()
   })
 

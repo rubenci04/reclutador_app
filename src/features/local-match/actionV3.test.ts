@@ -16,8 +16,8 @@ const lineupFor = (names: readonly string[]): DraftLineup => {
   const used = new Set<string>()
   return Object.fromEntries(DRAFT_SLOTS.map((slot) => { const p = players.find((p) => !used.has(p.id) && p.position === slot.position); if (!p) throw new Error(`position:${slot.id}`); used.add(p.id); return [slot.id, p.id] })) as DraftLineup
 }
-const local = ['Túlio Maravilha', 'Claudio López', 'Lionel Messi', "Andrés D'Alessandro", 'Roberto Telch', 'Javier Alejandro Mascherano', 'Alfio Basile', 'Gabriel Iván Heinze', 'Branco', 'Zózimo', 'Zetti']
-const cpu = ['Claudio Paul Caniggia', 'Maximiliano Rubén Rodríguez', 'Domingo Alberto Tarasconi', 'Elano', 'Pedro Rocha', 'Diego Pablo Simeone', 'Luizinho', 'Bellini', 'Gerardo Alberto Bedoya', 'Walter Adrián Samuel', 'Carlos Germano']
+const local = ['Túlio Maravilha', 'Claudio López', 'Lionel Messi', "Andrés D'Alessandro", 'Roberto Telch', 'Javier Mascherano', 'Alfio Basile', 'Gabriel Heinze', 'Branco', 'Zózimo', 'Zetti']
+const cpu = ['Claudio Caniggia', 'Maxi Rodríguez', 'Domingo Tarasconi', 'Elano', 'Pedro Rocha', 'Diego Simeone', 'Luizinho', 'Bellini', 'Gerardo Bedoya', 'Walter Samuel', 'Carlos Germano']
 
 describe('action-v3 measured balance', () => {
   it('keeps complementary opportunities, bounded finishing and a visible star contribution', () => {

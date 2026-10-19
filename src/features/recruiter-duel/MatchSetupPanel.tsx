@@ -11,7 +11,7 @@ interface Props {
 }
 
 /** Pre-toss configuration. Classic keeps every default; custom exposes names and the shared starting budget. */
-export function MatchSetupPanel({ draft, onChange, versusCpu, preflight, classicBudget = 100 }: Props) {
+export function MatchSetupPanel({ draft, onChange, versusCpu, preflight, classicBudget = 120 }: Props) {
   const { t } = useTranslation()
   const budget = Number(draft.budgetText)
   const names = { recruiter_one: sanitizeName(draft.nameOne), recruiter_two: sanitizeName(draft.nameTwo) }
@@ -23,7 +23,7 @@ export function MatchSetupPanel({ draft, onChange, versusCpu, preflight, classic
     <div className="setup-modes" role="radiogroup" aria-label={t('setup.legend')}>
       {(['classic', 'custom'] as const).map((mode) => <label key={mode} className={draft.mode === mode ? 'chosen' : undefined}>
         <input type="radio" name="setup-mode" checked={draft.mode === mode} onChange={() => set({ mode })} />
-        <strong>{t(`setup.${mode}`)}</strong><small>{mode === 'classic' && classicBudget !== 100 ? t('collections.legendBudget', { amount: classicBudget }) : t(`setup.${mode}Detail`)}</small>
+        <strong>{t(`setup.${mode}`)}</strong><small>{mode === 'classic' && classicBudget > 120 ? t('collections.legendBudget', { amount: classicBudget }) : t(`setup.${mode}Detail`)}</small>
       </label>)}
     </div>
     <label className="setup-check"><input type="checkbox" checked={draft.coaches} onChange={(event) => set({ coaches: event.target.checked })} />{t('setup.coaches', { amount: draft.coachReserve ?? COACH_MAX_PRICE })}</label>

@@ -49,7 +49,7 @@ describe('single-player auction interface', () => {
     expect(screen.getByRole('button', { name: 'Bid' })).toHaveAccessibleDescription(/whole amount/)
     fireEvent.change(input, { target: { value: String(minimum + .5) } })
     expect(screen.getByRole('button', { name: 'Bid' })).toBeDisabled()
-    fireEvent.change(screen.getByLabelText('Bid amount'), { target: { value: '101' } })
+    fireEvent.change(screen.getByLabelText('Bid amount'), { target: { value: '121' } })
     const bid = screen.getByRole('button', { name: 'Bid' })
     expect(bid).toBeDisabled()
     expect(bid).toHaveAccessibleDescription(/remaining budget cannot cover/)

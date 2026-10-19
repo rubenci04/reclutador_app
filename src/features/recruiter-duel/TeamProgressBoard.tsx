@@ -2,6 +2,8 @@ import { useId, useState, useSyncExternalStore } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
 import { TeamPitchBoard } from './TeamPitchBoard'
+import { PowerBadge } from './PowerBadge'
+import { teamStrengthPreview } from './teamStrength'
 import { budgetOf, positionProgress, rosterIds } from './auctionEngine'
 import { RECRUITERS, type RecruiterDuelGame, type RecruiterId } from './auctionTypes'
 
@@ -29,6 +31,7 @@ export function TeamProgressBoard({ game, catalog, names }: Props) {
         const team = game.teams[participant]
         return <article key={participant} aria-label={names[participant]} hidden={mobile && visibleTeam !== participant}>
           <h3>{names[participant]}</h3>
+          <PowerBadge strength={teamStrengthPreview(game, participant, catalog)} />
           <p><span>{t('teamProgress.selected', { count: rosterIds(team).filter(Boolean).length, total: rosterIds(team).length })}</span> · <span>{t('duel.balance', { amount: budgetOf(game) - team.spent })}</span></p>
           <TeamPitchBoard game={game} participant={participant} catalog={catalog} />
           <ul className="team-missing">{(['ARQ', 'DEF', 'MED', 'DEL'] as const).map((position) => {

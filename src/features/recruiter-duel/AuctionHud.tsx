@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import type { HudModel, HudParticipant } from './hudModel'
 import type { RecruiterId } from './auctionTypes'
+import { PowerBadge } from './PowerBadge'
 import type { Position } from '../../types/football'
 
 interface Props {
@@ -19,6 +20,7 @@ function Panel({ hud, side, name, active, currentPosition }: { hud: HudModel; si
   const share = Math.max(0, Math.min(100, (side.remaining / hud.budget) * 100))
   return <article className={`hud-panel hud-${side.id}${active ? ' hud-active' : ''}`} aria-label={name} aria-current={active ? 'true' : undefined}>
     <header><span className="hud-shirt" aria-hidden="true" /><strong>{name}</strong>{active && <span className="hud-turn">{t('hud.turnBadge')}</span>}</header>
+    <PowerBadge strength={side.strength} />
     <div className="hud-budget" role="img" aria-label={t('hud.budgetBar', { name, remaining: side.remaining, total: hud.budget })}><i style={{ width: `${share}%` }} /></div>
     <p className="hud-money"><b>{t('hud.remaining', { amount: side.remaining })}</b><span>{t('hud.spent', { amount: side.spent })}</span></p>
     <p className="hud-signed">{t('hud.signings', { count: side.signed, total: hud.teamSize })}</p>

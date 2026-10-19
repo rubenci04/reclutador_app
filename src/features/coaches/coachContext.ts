@@ -46,6 +46,6 @@ export function coachesForMode(mode?: ThemedModeId): readonly Coach[] {
     const english: Readonly<Record<string, string>> = { Tuchel: 'Chelsea', Pochettino: 'Tottenham Hotspur' }
     // Legend editions pick the career reference of that country; current coaches keep their single current reference.
     const team = !legend ? refs?.[0] ?? coach.team : mode?.startsWith('SPAIN') ? spanish[coach.surname] ?? refs?.[0] ?? coach.team : mode?.startsWith('ENGLAND') ? english[coach.surname] ?? refs?.[0] ?? coach.team : refs?.[0] ?? coach.team
-    return { ...coach, team, teamKind: refs ? 'CLUB' : coach.teamKind, secondaryTeam: coach.status === 'ACTIVE' ? undefined : refs?.[1] }
+    return { ...coach, team, teamKind: refs ? 'CLUB' : coach.teamKind, secondaryTeam: undefined }
   })
 }
