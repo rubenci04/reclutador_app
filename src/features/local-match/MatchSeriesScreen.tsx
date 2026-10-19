@@ -4,7 +4,8 @@ import type { Player } from '../../types/player'
 import { DRAFT_CATALOG } from '../draft/catalog'
 import type { MatchResult, MatchSide } from './matchTypes'
 import { MatchScreen } from './MatchScreen'
-import { nextSeriesMatch, seriesPenalties, seriesStanding } from './matchSeries'
+import { nextSeriesMatch, seriesPenalties, seriesSetup, seriesStanding, type SeriesSetup } from './matchSeries'
+import { SeriesPrep } from './SeriesPrep'
 
 interface Props {
   readonly result: MatchResult
@@ -15,13 +16,19 @@ interface Props {
   readonly onNewMatch?: () => void
   readonly onReturn: () => void
   readonly onFinished?: () => void
+  /** Local games only: lets people change formation and strategy before each following game. */
+  readonly canAdjust?: boolean
+  /** True when the second side is a person (hot-seat) and also chooses. */
+  readonly secondIsHuman?: boolean
   readonly onSeriesFinished?: (winner: MatchSide, wins: Record<MatchSide, number>) => void
 }
 
-export function MatchSeriesScreen({ result, catalog = DRAFT_CATALOG, onSeriesFinished, ...props }: Props) {
+export function MatchSeriesScreen({ result, catalog = DRAFT_CATALOG, onSeriesFinished, canAdjust = false, secondIsHuman = false, ...props }: Props) {
   const { t } = useTranslation()
   const [matches, setMatches] = useState<readonly MatchResult[]>([result])
   const [finished, setFinished] = useState(false)
+  const [setup, setSetup] = useState<SeriesSetup>(() => seriesSetup(result))
+  const [preparing, setPreparing] = useState(false)
   const recorded = useRef(false)
   const current = matches[matches.length - 1]
   const standing = seriesStanding(matches)
@@ -42,7 +49,8 @@ export function MatchSeriesScreen({ result, catalog = DRAFT_CATALOG, onSeriesFin
         <p>{t('series.standing', { local: standing.wins.local, cpu: standing.wins.cpu })}</p>
         {!standing.closed && <p className="stage-indicator">{t('playtest.seriesProgress', { played: matches.length, next: matches.length + 1 })}</p>}
         {standing.closed ? <div className="series-winner"><h3>{t('series.winner', { name: name(winner) })}</h3>{penalties && <p>{t('series.penalties', { local: penalties.score.local, cpu: penalties.score.cpu })}</p>}</div>
-          : <button className="primary-action" onClick={() => { setMatches([...matches, nextSeriesMatch(result, matches.length + 1, catalog)]); setFinished(false) }}>{t(matches.length >= (result.seriesFormat === 'home-away' ? 2 : 3) ? 'series.tieBreak' : 'series.next')}</button>}
+          : preparing ? <SeriesPrep key={matches.length} setup={setup} catalog={catalog} names={{ local: name('local'), cpu: name('cpu') }} secondIsHuman={secondIsHuman} onStart={(next) => { setSetup(next); setMatches([...matches, nextSeriesMatch(result, matches.length + 1, catalog, next)]); setFinished(false); setPreparing(false) }} />
+          : <button className="primary-action" onClick={() => { if (canAdjust) { setPreparing(true); return } setMatches([...matches, nextSeriesMatch(result, matches.length + 1, catalog, setup)]); setFinished(false) }}>{t(canAdjust ? 'seriesPrep.prepare' : matches.length >= (result.seriesFormat === 'home-away' ? 2 : 3) ? 'series.tieBreak' : 'series.next')}</button>}
       </>}
     </section>
   </div>

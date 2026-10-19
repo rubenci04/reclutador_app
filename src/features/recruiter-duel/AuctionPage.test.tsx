@@ -133,9 +133,14 @@ describe('single-player auction interface', () => {
     expect(drawHistory.newDrawSeed).toHaveBeenCalledTimes(1)
     act(() => vi.advanceTimersByTime(15000))
     for (let game = 0; game < 4; game++) {
-      const next = screen.queryByRole('button', { name: /Next match|Play tiebreak/ })
+      const next = screen.queryByRole('button', { name: /Prepare next game/ })
       if (!next) break
-      fireEvent.click(next); act(() => vi.advanceTimersByTime(15000))
+      fireEvent.click(next)
+      expect(screen.getAllByRole('combobox', { name: /formation/i }).length).toBeGreaterThan(0)
+      fireEvent.click(screen.getAllByRole('radio')[1]); fireEvent.click(screen.getByRole('button', { name: 'Confirm strategy' }))
+      fireEvent.click(screen.getByRole('button', { name: /I am Recruiter two/ }))
+      fireEvent.click(screen.getAllByRole('radio')[2]); fireEvent.click(screen.getByRole('button', { name: 'Confirm strategy' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Start match' })); act(() => vi.advanceTimersByTime(15000))
     }
     vi.mocked(drawHistory.newDrawSeed).mockReturnValue('fresh-rematch')
     fireEvent.click(screen.getByRole('button', { name: 'Rematch' }))

@@ -521,3 +521,10 @@
 .bid-chip:hover:not(:disabled){border-color:#d5fb76;background:#1f3a2a}
 .bid-chip.bid-chip-max{border-color:#d5fb76;color:#d5fb76}
 .variant-section .mode-list{grid-template-columns:1fr}
+
+/* Formation select: dark list with light text (the native list was light on light) */
+.formation-selector select,.series-prep select{color-scheme:dark;background:#102016;color:#e6f0e7;border:1px solid #d5fb7699;border-radius:8px;padding:6px 10px}
+.formation-selector select option,.series-prep select option{background:#102016;color:#e6f0e7}
+.formation-selector select option:disabled,.series-prep select option:disabled{color:#7d8f7f}
+.series-prep{display:grid;gap:12px;margin-top:12px;padding:14px;border:1px solid #d5fb7655;border-radius:12px;background:#d5fb7608}
+.series-prep-formations{display:flex;flex-wrap:wrap;gap:12px 24px}.series-prep-formations label{display:grid;gap:4px;font-weight:700}
