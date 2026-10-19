@@ -4,7 +4,7 @@ import { I18nextProvider } from 'react-i18next'
 import { createI18n } from '../../i18n'
 import { AuctionPage, COIN_TOSS_MS } from './AuctionPage'
 import { PlayerIdentity } from './PlayerIdentity'
-import { DRAFT_CATALOG } from '../draft/catalog'
+import { GLOBAL_CURRENT as DRAFT_CATALOG } from '../player-catalog/globalCollection'
 import * as drawHistory from './drawHistory'
 import * as engine from './auctionEngine'
 import { beginBidding, createRecruiterDuel, maximumSafeBid, nextAuctionRound, passAuction, positionProgress, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss } from './auctionEngine'
@@ -64,7 +64,7 @@ describe('single-player auction interface', () => {
     const i18n = await createI18n('en')
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
-    let expected = get(createRecruiterDuel(DRAFT_CATALOG, 'hot-seat-001', drawHistory.createDrawContext(DRAFT_CATALOG)))
+    let expected = get(createRecruiterDuel(DRAFT_CATALOG, 'hot-seat-001', drawHistory.createDrawContext(DRAFT_CATALOG, [], 'rarity-v2')))
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
     act(() => vi.advanceTimersByTime(COIN_TOSS_MS))
     expected = get(revealCoinToss(get(startCoinToss(expected, 'heads'))))
@@ -215,7 +215,7 @@ describe('single-player auction interface', () => {
     render(<I18nextProvider i18n={i18n}><PlayerIdentity player={DRAFT_CATALOG.find((player) => player.id === 'plr_038')!} /></I18nextProvider>)
     const photo = screen.getByRole('img', { name: 'Photograph of Lionel Messi' })
     fireEvent.error(photo)
-    expect(screen.getByRole('img', { name: 'Avatar for Lionel Messi' })).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: 'Illustration of Lionel Messi wearing reference club colours' })).toBeInTheDocument()
   })
   it('offers CPU profiles, pauses its action and leaves the human controls available afterwards', async () => {
     vi.useFakeTimers()

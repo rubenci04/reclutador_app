@@ -1,4 +1,5 @@
 import { COACH_MAX_PRICE } from '../coaches/coachRules'
+import { GLOBAL_CURRENT } from '../player-catalog/globalCollection'
 import { DRAFT_CATALOG } from '../draft/catalog'
 import { createRecruiterDuel } from '../recruiter-duel/auctionEngine'
 import type { RecruiterDuelGame, RecruiterId } from '../recruiter-duel/auctionTypes'
@@ -6,6 +7,10 @@ import { createDrawContext, newDrawSeed } from '../recruiter-duel/drawHistory'
 import { CLASSIC_CONFIG } from '../recruiter-duel/matchConfig'
 import type { HistoryEntry, HistoryOutcome } from '../history/matchHistory'
 import { resolveSeries } from '../local-match/matchSeries'
+import { catalogForMode } from '../themed-modes/modeCatalog'
+import type { ThemedModeId } from '../themed-modes/modeTypes'
+import { defaultBudgetForMode } from '../player-catalog/leagueCollections'
+import { createCrossCategoryDraw, crossCategoryCatalog } from '../recruiter-duel/crossCategoryDraw'
 
 export const seatSide = (seat: 1 | 2): RecruiterId => (seat === 1 ? 'recruiter_one' : 'recruiter_two')
 export const otherSide = (side: RecruiterId): RecruiterId => (side === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one')
@@ -14,11 +19,12 @@ export const otherSide = (side: RecruiterId): RecruiterId => (side === 'recruite
 export const slimDuel = (game: RecruiterDuelGame): RecruiterDuelGame => ({ ...game, drawContext: undefined, drawDiagnostics: undefined })
 
 /** The host builds the deal once; the seed is random per room and stored with the state. */
-export function buildInitialDuel(names: { readonly host: string; readonly guest: string }): RecruiterDuelGame {
-  const config = { ...CLASSIC_CONFIG, coaches: true, coachReserve: COACH_MAX_PRICE, names: { recruiter_one: names.host, recruiter_two: names.guest } }
-  const created = createRecruiterDuel(DRAFT_CATALOG, newDrawSeed(), createDrawContext(DRAFT_CATALOG, []), config)
+export function buildInitialDuel(names: { readonly host: string; readonly guest: string }, first: ThemedModeId = 'GLOBAL_CLASSIC', second: ThemedModeId = first): RecruiterDuelGame {
+  const config = { ...CLASSIC_CONFIG, budget: Math.max(defaultBudgetForMode(first), defaultBudgetForMode(second)), coaches: true, coachReserve: COACH_MAX_PRICE, names: { recruiter_one: names.host, recruiter_two: names.guest } }
+  const catalog = catalogForMode(first); const seed = newDrawSeed()
+  const created = first !== second ? createCrossCategoryDraw(first, second, seed, config) : createRecruiterDuel(catalog, seed, createDrawContext(catalog, [], 'rarity-v2'), config)
   if (!created.ok) throw new Error(created.error)
-  return slimDuel({ ...created.game, coachMode: 'GLOBAL_CLASSIC' })
+  return slimDuel({ ...created.game, phase: 'LOBBY', coachMode: first, manualBench: true })
 }
 
 /** Structural check of what comes from the server; anything else is treated as "no game yet". */
@@ -41,11 +47,12 @@ export function onlineHistoryEntry(game: RecruiterDuelGame, mySide: RecruiterId,
   const names = { recruiter_one: game.config?.names.recruiter_one ?? '', recruiter_two: game.config?.names.recruiter_two ?? '' }
   const mine = names[mySide] || '—'; const theirs = names[otherSide(mySide)] || '—'
   const mapped = (side: RecruiterId): HistoryOutcome => (side === mySide ? 'recruiter_one' : 'recruiter_two')
-  if (forfeitBy) return { id: `online:${game.seed}`, at: new Date().toISOString(), mode: 'GLOBAL_CLASSIC', opponent: 'online', names: { recruiter_one: mine, recruiter_two: theirs }, outcome: mapped(otherSide(forfeitBy)), score: null, abandonedBy: forfeitBy === mySide ? 'recruiter_one' : 'recruiter_two' }
+  if (forfeitBy) return { id: `online:${game.seed}`, at: new Date().toISOString(), mode: game.coachMode ?? 'GLOBAL_CLASSIC', opponent: 'online', names: { recruiter_one: mine, recruiter_two: theirs }, outcome: mapped(otherSide(forfeitBy)), score: null, abandonedBy: forfeitBy === mySide ? 'recruiter_one' : 'recruiter_two' }
   const played = game.matchResult
   if (!played) return null
   if (played.actionModel) {
-    const series = resolveSeries(played, DRAFT_CATALOG)
+    const source = game.categoryPair ? crossCategoryCatalog(game.categoryPair.recruiter_one, game.categoryPair.recruiter_two) : catalogForMode(game.coachMode ?? 'GLOBAL_CLASSIC')
+    const series = resolveSeries(played, [...new Map([...source, ...GLOBAL_CURRENT, ...DRAFT_CATALOG].map((p) => [p.id, p])).values()])
     const winningSide = series.winner === 'local' ? 'recruiter_one' : 'recruiter_two'
     const wins = { recruiter_one: series.wins.local, recruiter_two: series.wins.cpu }
     return { id: `online:${game.seed}`, at: new Date().toISOString(), mode: 'GLOBAL_CLASSIC', opponent: 'online', names: { recruiter_one: mine, recruiter_two: theirs }, outcome: mapped(winningSide), score: { recruiter_one: wins[mySide], recruiter_two: wins[otherSide(mySide)] }, abandonedBy: null }

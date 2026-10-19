@@ -46,7 +46,7 @@ describe('club colours and generic badges', () => {
     const i18n=await createI18n(language)
     render(<I18nextProvider i18n={i18n}><ClubBadge clubId="river_plate" /><ClubBadge clubId="unknown" /></I18nextProvider>)
     const badge=screen.getByRole('img',{name:label})
-    expect(badge.children).toHaveLength(2); expect(badge.textContent).toBe('')
+    expect(badge.children).toHaveLength(1); expect(badge.querySelector('svg')).toBeInTheDocument(); expect(badge.querySelector('rect')).not.toBeInTheDocument(); expect(badge.textContent).toBe('')
     expect(badge).toHaveStyle({'--club-primary':'#FFFFFF','--club-secondary':'#CF2B38'})
     expect(screen.getByRole('img',{name:fallback})).toHaveClass('club-badge')
     expect(screen.getByText('River Plate')).toBeInTheDocument()

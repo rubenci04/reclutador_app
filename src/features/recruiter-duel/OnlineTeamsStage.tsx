@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
 import { DRAFT_SLOTS } from '../draft/draftTypes'
 import { startStrategyChoice } from '../tactics/strategyChoice'
-import { buySubstitute, reorderTeamLineup, startDuelMatch, swapBenchWithStarter } from './auctionEngine'
+import { chooseFormation, buySubstitute, reorderTeamLineup, startDuelMatch, swapBenchWithStarter } from './auctionEngine'
 import { chooseCoach, declineCoach } from './coachHiring'
 import { CoachMarket } from './CoachMarket'
 import { TeamPowerPanel } from './TeamPowerPanel'
@@ -12,6 +12,7 @@ import { LineupOrganizer } from './LineupOrganizer'
 import type { OnlineDuelBinding } from './onlineBinding'
 import { StrategyChoicePanel } from './StrategyChoicePanel'
 import { SubstituteMarket } from './SubstituteMarket'
+import { StageGuide } from '../onboarding/StageGuide'
 
 interface Props {
   readonly game: RecruiterDuelGame
@@ -72,6 +73,7 @@ export function OnlineTeamsStage({ game, online, names, catalog }: Props) {
   const names11 = (side: RecruiterId) => DRAFT_SLOTS.map((slot) => catalog.find((player) => player.id === game.teams[side].lineup[slot.id])?.name ?? '—').join(' · ')
 
   return <section className="teams-completed">
+    <StageGuide stage={confirmed ? 'strategy' : 'squad'} />
     <p className="eyebrow"><span />{t('duel.teamsCompleted')}</p><h1>{t('duel.readyMatch')}</h1>
     <div className="team-comparison">{([mine, theirs] as const).map((side) => <article key={side}>
       <h2>{names[side]}{side === mine ? ` (${t('online.duel.you')})` : ''}</h2>
@@ -80,7 +82,7 @@ export function OnlineTeamsStage({ game, online, names, catalog }: Props) {
     </article>)}</div>
     {!iChose && <TeamPowerPanel game={game} catalog={catalog} sides={[mine]} names={names} />}
     {!iChose && <>
-      <LineupOrganizer game={game} participant={mine} name={names[mine]} catalog={catalog} confirmed={confirmed} locked={false}
+      <LineupOrganizer onFormationChange={(formation) => online.submit((current) => { const next = chooseFormation(current, mine, formation, catalog); return next.ok ? next.game : current })} game={game} participant={mine} name={names[mine]} catalog={catalog} confirmed={confirmed} locked={false}
         onSwap={swap} onBenchSwap={benchSwap} onConfirm={() => setConfirmed(true)} onEdit={() => setConfirmed(false)} />
       {game.config?.coaches && <CoachMarket game={game} participant={mine} name={names[mine]} locked={false} onHire={hire} onDecline={decline} />}
       <SubstituteMarket game={game} participant={mine} name={names[mine]} catalog={catalog} locked={false} onBuy={buy} />

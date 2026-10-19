@@ -7,7 +7,8 @@ import type { Player } from '../../types/player'
 export function seriesStanding(matches: readonly MatchResult[]) {
   const wins = { local: 0, cpu: 0 }
   for (const match of matches) if (match.winner !== 'draw') wins[match.winner]++
-  const closed = matches.length === 3 && wins.local !== wins.cpu || matches.length >= 5
+  const homeAway = matches[0]?.seriesFormat === 'home-away'
+  const closed = homeAway ? matches.length >= 2 && wins.local !== wins.cpu || matches.length >= 3 : matches.length === 3 && wins.local !== wins.cpu || matches.length >= 5
   return { wins, closed, needsPenalties: closed && wins.local === wins.cpu }
 }
 
@@ -17,6 +18,8 @@ export function nextSeriesMatch(first: MatchResult, index: number, catalog: read
     localLineup: first.local.lineup, cpuLineup: first.cpu.lineup, catalog,
     catalogVersion: first.catalogVersion, rulesVersion: first.rulesVersion,
     seed: `${first.seed}:series:${index}`, actionModel: first.actionModel,
+    seriesFormat: first.seriesFormat,
+    formations: first.formations,
     budget: Math.max(100, first.local.spent, first.cpu.spent),
     rosterBonus: Boolean(first.quality), coaches: first.coaches,
     ...(first.benches ? { benches: { local: first.benches.local.map((p) => p.id), cpu: first.benches.cpu.map((p) => p.id) } } : {}),

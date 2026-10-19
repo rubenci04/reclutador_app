@@ -9,7 +9,7 @@
   "autoComplete": {"humanTitle":"Completar mi equipo","intro":"{{rival}} ya completó su once: los futbolistas que quedan solo pueden ser para {{participant}}. Revisá el detalle antes de confirmar.","remaining":"Futbolistas restantes: {{count}}","item":"{{player}} · {{position}} · {{price}}M","total":"Coste acumulado: {{amount}}M","finalBudget":"Presupuesto final previsto: {{amount}}M","confirm":"Completar mi equipo","manual":"Si preferís, seguí subastando carta por carta con los controles de abajo.","blocked":"La adjudicación rápida no está disponible: no todas las adjudicaciones son viables dentro de las reglas.","cpuTitle":"La CPU completa su equipo","cpuProgress":"{{participant}} ficha a {{player}} por {{price}}M ({{done}}/{{total}})","cpuIntro":"Tu once está completo. La CPU ficha los futbolistas que quedan por su precio base.","skip":"Omitir secuencia","cpuFailed":"No se pudo completar el equipo de la CPU automáticamente. Continuá con las subastas."},
   "stages": {"waitingSecond": "Estrategias: {{first}} ya eligió. Falta la estrategia de {{second}} y recién después se puede jugar el partido.", "step":"Paso {{current}} de {{total}}: {{label}}","order":"Ordená tu once","strategy":"Elegí tu estrategia","reveal":"Revelación y partido","showTeams":"Ver y editar equipos"},
   "recovery": {"invalidTeams":"Los equipos no son válidos y no se puede jugar el partido. Empezá una partida nueva.","restart":"Volver al inicio","retry":"Elegir estrategias de nuevo"},
-  "setup": {"coaches": "Directores técnicos: cada equipo contrata uno con el saldo restante (se reserva 1M en las subastas)", "substitutes": "Tres suplentes por equipo (1 defensor, 1 mediocampista, 1 delantero): planteles de 14", "legend":"Tipo de partida","classic":"Clásica","classicDetail":"100M, 4-3-3, once titulares","custom":"Personalizada","customDetail":"Nombres y presupuesto a elección","nameOne":"Nombre del equipo 1","nameTwo":"Nombre del equipo 2","nameCpu":"Nombre del rival (CPU)","nameHint":"{{count}}/{{max}} caracteres. Vacío usa el nombre predeterminado.","nameIssues":{"tooLong":"Máximo {{max}} caracteres.","duplicate":"Los dos nombres no pueden ser iguales."},"budget":"Presupuesto inicial de cada equipo","budgetCustom":"Otro valor ({{min}} a {{max}}M, en pasos de {{step}})","preflightOk":"Presupuesto viable: completar un equipo cuesta al menos {{minimum}}M con este catálogo.","preflight":{"budget_range":"El presupuesto debe ser un número entero entre {{min}} y {{max}}M, en pasos de {{step}}.","budget_too_low":"Con este presupuesto no se pueden completar legalmente los dos equipos: un equipo necesita al menos {{minimum}}M. Subí el presupuesto.","catalog_too_small":"El catálogo no alcanza para completar los dos equipos."},"summary":"Reglas de la partida","rules":{"coaches": "Un director técnico por equipo, contratado con el saldo restante (1M a 8M)", "startersBench": "Once titulares y tres suplentes (plantel de 14, 28 futbolistas en total)", "budget":"Presupuesto inicial: {{amount}}M por equipo","formation":"Formación 4-3-3","starters":"Once titulares, sin suplentes","discards":"Tres descartes compartidos"}},
+  "setup": {"coaches": "Directores técnicos: cada equipo contrata uno con el saldo restante (se reserva {{amount}}M en las subastas)", "substitutes": "Tres suplentes por equipo (1 defensor, 1 mediocampista, 1 delantero): planteles de 14", "legend":"Tipo de partida","classic":"Clásica","classicDetail":"100M, 4-3-3, once titulares","custom":"Personalizada","customDetail":"Nombres y presupuesto a elección","nameOne":"Nombre del equipo 1","nameTwo":"Nombre del equipo 2","nameCpu":"Nombre del rival (CPU)","nameHint":"{{count}}/{{max}} caracteres. Vacío usa el nombre predeterminado.","nameIssues":{"tooLong":"Máximo {{max}} caracteres.","duplicate":"Los dos nombres no pueden ser iguales."},"budget":"Presupuesto inicial de cada equipo","budgetCustom":"Otro valor ({{min}} a {{max}}M, en pasos de {{step}})","preflightOk":"Presupuesto viable: completar un equipo cuesta al menos {{minimum}}M con este catálogo.","preflight":{"budget_range":"El presupuesto debe ser un número entero entre {{min}} y {{max}}M, en pasos de {{step}}.","budget_too_low":"Con este presupuesto no se pueden completar legalmente los dos equipos: un equipo necesita al menos {{minimum}}M. Subí el presupuesto.","catalog_too_small":"El catálogo no alcanza para completar los dos equipos."},"summary":"Reglas de la partida","rules":{"coaches": "Un director técnico por equipo, contratado con el saldo restante (1M a 8M)", "startersBench": "Once titulares y tres suplentes (plantel de 14, 28 futbolistas en total)", "budget":"Presupuesto inicial: {{amount}}M por equipo","formation":"Formación 4-3-3","starters":"Once titulares, sin suplentes","discards":"Tres descartes compartidos"}},
   "coin": {"faces":{"heads":"Pelota","tails":"Estadio"},"skip":"Omitir animación","side":"Moneda: {{side}}","result":"Salió {{side}}. {{participant}} inicia el reclutamiento."},
   "auctionActions": {"autoSkip":"{{participant}} ya completó la posición {{position}}: no puede ofertar por este jugador y pasa solo.","claim":"Reclamar","available":"Podés ofertar dentro del máximo seguro.","confirmAssignment":"Confirmar adjudicación obligatoria","mandatory":"Adjudicación obligatoria: {{participant}} recibirá al futbolista por {{amount}}M al confirmar. Los cupos y presupuestos determinan esta asignación.","doublePass":"Si ambos pasan, {{participant}} recibirá al futbolista por {{amount}}M según prioridad y viabilidad.","passAwards":"Al pasar, {{participant}} gana la oferta vigente de {{amount}}M.","blocks":{"NOT_YOUR_TURN":"No es tu turno. Esperá la acción del otro reclutador.","POSITION_FULL":"Ya completaste el cupo de esta posición.","INSUFFICIENT_BUDGET":"El saldo disponible no alcanza para esta oferta.","FUTURE_BUDGET_RESERVED":"Ese dinero está reservado para completar legalmente los dos onces. Reducí la oferta si supera el máximo seguro.","CPU_THINKING":"La CPU está evaluando su acción. Esperá su decisión.","ACTION_PENDING":"Esta acción no está disponible en la etapa actual.","NO_LEGAL_ASSIGNMENT":"No existe una adjudicación legal para ambos equipos. La acción está bloqueada sin consumir presupuesto ni descartes.","INVALID_OFFER":"Ingresá un importe entero que respete la oferta mínima."}},
   "teamProgress": {"selected":"{{count}}/{{total}}","title":"Equipos en vivo","rating":"GRL {{rating}}","paid":"Pagado: {{amount}}M","empty":"Espacio disponible","missing":"{{position}}: faltan {{remaining}} ({{filled}}/{{capacity}})","full":"{{position}}: cupo completo ({{filled}}/{{capacity}})"},
@@ -28,7 +28,7 @@
   "modes": {
     "label": "MODALIDADES", "upcoming": "Próximas colecciones", "title": "Desafíos temáticos", "available": "Disponible", "status": { "positions": "Plantel insuficiente", "budget": "Sin once viable", "metadata": "Datos pendientes", "cpu": "CPU no compatible", "foundation": "Próximamente", "ready": "Disponible" },
     "items": {
-      "globalClassic": { "name": "Clásico global", "description": "Los 150 futbolistas auditados disponibles." },
+      "globalClassic": { "name": "Clásico global", "description": "300 futbolistas seleccionados de las colecciones disponibles; valoraciones editoriales." },
       "argentinaClubs": { "name": "Fútbol Argentino", "description": "Jugadores con trayectoria verificada en clubes de Argentina, sin importar su nacionalidad (200 futbolistas)." },
       "argentinaNationality": { "name": "Nacionalidad argentina", "description": "Solo futbolistas con nacionalidad ARG." },
       "argentinaLeague": { "name": "Liga argentina", "description": "Requiere trayectorias verificadas en Primera División." },
@@ -129,5 +129,111 @@
 "collections": {"legendBudget":"150M por equipo para leyendas, 4-3-3 y once titulares. El presupuesto permite conservar las valoraciones originales.","notice":"Colecciones editoriales: 150 actuales y 150 históricos por liga, sin fotos nuevas. Los históricos representan versiones de carrera; algunos siguen activos fuera de esa liga. Valoraciones adaptadas a la escala del juego.","referenceClub":"Club de referencia: {{club}}","editorial":"Dato de la base aportada · revisión externa pendiente"},
 "series": {"livePitch":"Cancha animada: representación del ataque","attacking":"Ataca {{name}}","title":"Mismo plantel · serie de tres","help":"Jugá los tres partidos con los mismos jugadores, suplentes, técnico y estrategia. Gana quien obtiene más victorias; los empates no suman. Si la serie empata, jugá dos encuentros más. Si siguen iguales, definen por penales. Cada partido tiene un sorteo nuevo; reproducir conserva el resultado.","game":"Partido {{count}}","standing":"Victorias: {{local}}–{{cpu}}","winner":"¡{{name}} gana la serie!","penalties":"Definición por penales: {{local}}–{{cpu}}","next":"Siguiente partido · mismo plantel","tieBreak":"Jugar desempate · mismo plantel"}
 ,
-"categoryTree": {"title":"Categorías","back":"Volver a categorías","open":"Ver actuales y leyendas","help":"Elegí una categoría y después la edición que querés jugar.","selected":"Edición seleccionada: {{name}}","nationalityHelp":"Se elige por nacionalidad, sin importar en qué liga o país juegue. Selección editorial de los jugadores disponibles; no es un ranking completo de 2026.","editionHelp":"Actuales: versión 2026. Leyendas: versión histórica de carrera; algunos jugadores pueden seguir activos fuera de esa liga.","groups":{"global":"Global","argentina":"Liga Argentina","england":"Liga inglesa","spain":"Liga española","brazil":"Liga brasileña","latinAmerica":"Latinoamérica","europe":"Europa"},"options":{"GLOBAL_CLASSIC":"Global actual 2026","LEGENDS_ONLY":"Leyendas históricas mundiales","ARGENTINA_CURRENT":"Liga Argentina actual 2026","ARGENTINA_LEGENDS":"Leyendas del fútbol argentino","ENGLAND_LEAGUE":"Liga inglesa actual 2026","ENGLAND_LEGENDS":"Leyendas de la Liga inglesa","SPAIN_LEAGUE":"Liga española actual 2026","SPAIN_LEGENDS":"Leyendas de la Liga española","BRAZIL_CURRENT":"Liga brasileña actual 2026","BRAZIL_LEGENDS":"Leyendas de la Liga brasileña","SOUTH_AMERICA_CURRENT":"Mejores latinoamericanos 2026","SOUTH_AMERICA_LEGENDS":"Leyendas latinoamericanas","EUROPE_CURRENT":"Mejores europeos 2026","EUROPE_LEGENDS":"Leyendas europeas"}}
+"categoryTree": {"title":"Categorías","back":"Volver a categorías","open":"Ver actuales y leyendas","help":"Elegí una categoría y después la edición que querés jugar.","selected":"Edición seleccionada: {{name}}","nationalityHelp":"Se elige por nacionalidad, sin importar en qué liga o país juegue. Selección editorial de los jugadores disponibles; no es un ranking completo de 2026.","editionHelp":"Actuales: versión 2026. Leyendas: versión histórica de carrera; algunos jugadores pueden seguir activos fuera de esa liga.","groups":{"global":"Global","argentina":"Liga Argentina","england":"Liga inglesa","spain":"Liga española","brazil":"Liga brasileña","latinAmerica":"Latinoamérica","europe":"Europa"},"options":{"GLOBAL_CLASSIC":"Global actual 2026","LEGENDS_ONLY":"Leyendas históricas mundiales","ARGENTINA_CURRENT":"Liga Argentina actual 2026","ARGENTINA_LEGENDS":"Leyendas del fútbol argentino","ENGLAND_LEAGUE":"Liga inglesa actual 2026","ENGLAND_LEGENDS":"Leyendas de la Liga inglesa","SPAIN_LEAGUE":"Liga española actual 2026","SPAIN_LEGENDS":"Leyendas de la Liga española","BRAZIL_CURRENT":"Liga brasileña actual 2026","BRAZIL_LEGENDS":"Leyendas de la Liga brasileña","SOUTH_AMERICA_CURRENT":"Mejores latinoamericanos 2026","SOUTH_AMERICA_LEGENDS":"Leyendas latinoamericanas","EUROPE_CURRENT":"Mejores europeos 2026","EUROPE_LEGENDS":"Leyendas europeas"}},
+  "playtest": {
+    "avatar": "Ilustración de {{name}} con camiseta de referencia",
+    "specificPosition": "Rol documentado: {{role}}",
+    "edition": "Edición: {{edition}}",
+    "sourceFile": "Fuente del listado: {{file}}",
+    "periodUnknown": "Períodos por club pendientes de documentar.",
+    "understood": "Entendido, continuar",
+    "formation": "Formación del once",
+    "formationHelp": "Solo se habilitan esquemas que podés formar con tus jugadores. Podés comprar suplentes para sumar defensores o mediocampistas. Elegir un esquema reorganiza tu once por posición y valoración; después podés ajustarlo.",
+    "affinityTitle": "Qué táctica combina con cada formación",
+    "manualBench": "Los suplentes no entran solos. Usá Reemplazar para cambiar uno o varios titulares antes de confirmar. Solo juega tu once elegido.",
+    "seriesTitle": "Ida, vuelta y desempate",
+    "seriesHelp": "Se juegan dos encuentros con el mismo plantel y decisiones. Gana quien acumula más victorias; los empates no suman. Si igualan en victorias, hay un tercer encuentro y, si sigue la igualdad, penales. No se aplica gol de visitante ni ventaja de localía.",
+    "seriesProgress": "Completaste {{played}} encuentro(s). El siguiente es el {{next}}: seguí con el mismo equipo.",
+    "why": "Ver explicación del partido",
+    "resultTitle": "Análisis del resultado: {{name}}",
+    "explain": "Potencia efectiva: {{local}} vs {{cpu}}. Extra por rangos: {{localQuality}} vs {{cpuQuality}}. Técnicos: {{localCoach}} vs {{cpuCoach}}. Formaciones: {{localFormation}} vs {{cpuFormation}}. Tácticas: {{localTactic}} vs {{cpuTactic}}. Estas decisiones influyeron en las oportunidades, junto con el azar. Una ventaja mejora la probabilidad, sin garantizar el resultado.",
+    "none": "Sin técnico",
+    "tiers": "Rangos del once · {{local}} / {{cpu}}",
+    "adjustments": "Ajustes tácticos medios (ataque / defensa / medio): {{local}} vs {{cpu}}. Incluyen la afinidad de formación.",
+    "opponentCategory": "Categoría del segundo equipo",
+    "sameCategory": "La misma del primer equipo",
+    "mixedHelp": "Con categorías distintas se sortean dos onces independientes a precio base, sin subasta compartida. Cada equipo usa jugadores y técnicos de su categoría. El presupuesto es igual para ambos.",
+    "photoAlt": "Fotografía de {{name}}",
+    "photoCredit": "Fotografía y licencia",
+    "guides": {
+      "squad": {
+        "title": "¡Ya tenés tu equipo!",
+        "body": "Primero elegí uno de los tres técnicos o seguí sin técnico. Si te queda dinero, podés comprar hasta tres suplentes: aparecen primero los jugadores que ambos dejaron pasar y se completa la oferta con otros del catálogo. Los suplentes son opcionales: intercambialos con titulares si querés. Después elegí una formación y confirmá tu once."
+      },
+      "strategy": {
+        "title": "Ahora elegí cómo jugar",
+        "body": "Con el once confirmado, elegí tu táctica. Leé sus ventajas y costos: no hay una que siempre gane. Cada rival elige en privado; al confirmar, el plantel queda cerrado para la serie."
+      },
+      "ready": {
+        "title": "¡Es hora del partido!",
+        "body": "Ambos equipos están listos. Iniciá el partido y seguí las jugadas. Después habrá una vuelta con el mismo once, técnico y táctica. Nueva partida permite elegir otra categoría; revancha conserva las categorías."
+      }
+    },
+    "roles": {
+      "CAM": "Mediapunta",
+      "CB": "Defensor central",
+      "CDM": "Mediocentro defensivo",
+      "CM": "Mediocentro",
+      "DC": "Delantero centro",
+      "DFC": "Defensor central",
+      "ED": "Extremo derecho",
+      "EI": "Extremo izquierdo",
+      "GK": "Arquero",
+      "LB": "Lateral izquierdo",
+      "LD": "Lateral derecho",
+      "LI": "Lateral izquierdo",
+      "LM": "Volante izquierdo",
+      "LW": "Extremo izquierdo",
+      "LWB": "Carrilero izquierdo",
+      "MC": "Mediocentro",
+      "MCD": "Mediocentro defensivo",
+      "MCO": "Mediapunta",
+      "MD": "Volante derecho",
+      "MI": "Volante izquierdo",
+      "POR": "Arquero",
+      "RB": "Lateral derecho",
+      "RM": "Volante derecho",
+      "RW": "Extremo derecho",
+      "SS": "Segundo delantero",
+      "ST": "Delantero centro"
+    },
+    "present": "actualidad",
+    "measurable": "Cómo se calculan las oportunidades",
+    "probabilities": "Con las potencias efectivas medias: reparto de ataques {{attackLocal}}% / {{attackCpu}}%; definición por remate al arco {{finishLocal}}% / {{finishCpu}}%. Son probabilidades de cada jugada, no de ganar el partido. Los S+ de campo añaden 1,2 puntos porcentuales de definición por jugador, hasta 3,6. La frecuencia de S+ en el sorteo es menor que la de otras cartas.",
+    "poolHelp": "Entre 150 y 300 jugadores por edición. Los S+ son raros: tienen un cuarto del peso de sorteo de otras cartas comparables. Cada posición conserva su cupo y el presupuesto debe permitir completar ambos equipos.",
+    "pitchFormation": "Cancha {{formation}}",
+    "table": {
+      "tactic": "Táctica",
+      "shape": "Formación afín",
+      "occupation": "Ocupación clave",
+      "strength": "Fortaleza principal",
+      "bonus": "Extra del juego"
+    },
+    "occupation": {
+      "NEUTRAL": "Reparto equilibrado",
+      "MIDFIELD_CONTROL": "Superioridad por el centro",
+      "WIDE_PLAY": "Lateral + extremo por banda",
+      "COUNTER_ATTACK": "Cobertura atrás + dos puntas",
+      "HIGH_PRESS": "Primera línea presiona la salida",
+      "LOW_BLOCK": "Densidad en el tercio defensivo"
+    },
+    "strength": {
+      "NEUTRAL": "Balance defensivo y ofensivo",
+      "MIDFIELD_CONTROL": "Posesión y pases interiores",
+      "WIDE_PLAY": "Amplitud, desborde y centros",
+      "COUNTER_ATTACK": "Ataque directo al espacio",
+      "HIGH_PRESS": "Recuperación cerca del arco rival",
+      "LOW_BLOCK": "Protección del área y del centro"
+    },
+    "bonuses": {
+      "NEUTRAL": "Sin extra",
+      "MIDFIELD_CONTROL": "+1,5 medio",
+      "WIDE_PLAY": "+1 ataque",
+      "COUNTER_ATTACK": "+1 ataque",
+      "HIGH_PRESS": "+1 ataque / +0,5 medio",
+      "LOW_BLOCK": "+1,5 defensa"
+    },
+    "tableNote": "Las afinidades son reglas del juego. La calidad, el rival y el azar también influyen. El 4-2-3-1 usa dos extremos del grupo DEL y un mediapunta del grupo MED; no exige convertir delanteros en mediocampistas. Para un 4-5-1 necesitás cinco MED: podés comprar dos suplentes de esa línea.",
+    "marketLeft": "Te quedan {{amount}}M. Podés comprar hasta tres suplentes de campo, incluso varios de la misma línea."
+  }
 }

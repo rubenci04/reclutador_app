@@ -135,3 +135,16 @@ CODEX-003C cierra DL-F02-DATA-006: 150/500, contemporary 150/300, legend 0/200, 
 ## CODEX-005C
 
 CPU estratégica local implementada como opción junto a hot-seat. Perfiles CONSERVATIVE/BALANCED/AGGRESSIVE, valoraciones privadas fijas por ronda, registro de decisiones y asignaciones obligatorias diferenciadas. Banderas locales MIT y piloto de una foto verificada con créditos. Preparación de 200 nuevas identidades argentinas: 0/200 creadas; cuatro lotes ARG-B01..04, namespace independiente. Ver [ADR-0009](decisions/ADR-0009.md), ARGENTINA_COLLECTION.md y qa/CODEX-005C.md.
+
+## Pedido de playtest — 19/10/2026
+
+| Tarea | Estado |
+| --- | --- |
+| Global actual 300 y categorías entre 150–300 | Implementada; cantidades en qa/COLLECTION-SIZES.json |
+| Leyendas aún activas, avatar, escudos, roles y fuentes | Implementada; períodos biográficos con evidencia disponible, resto pendiente explícito |
+| Suplentes manuales y nueve formaciones | Implementada en CPU, hot-seat y armado online |
+| Ida/vuelta, tercero, explicación y guías | Implementada; rematch local conserva categorías; online vuelve a salas |
+| Elegir categorías diferentes | Sorteos independientes en local y online; sin subasta compartida |
+| Poder global y S+ medibles | action-v3 y rarity-v2; qa/ACTION-V3-calibration.json y RARITY-*.json |
+| Investigación de imágenes y fotos de técnicos | Cinco fotos con licencias; resto con iniciales; research/PLAYER-MEDIA-2026-10-19.md |
+| Validación y publicación | Ver qa/PLAYTEST-EXPANSION.md; solo afirmar acciones realmente ejecutadas |

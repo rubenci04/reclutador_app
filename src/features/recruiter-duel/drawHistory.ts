@@ -3,6 +3,7 @@ import { createSecureSeed } from '../local-match/seededRandom'
 
 export const DRAW_HISTORY_KEY = 'reclutador.duel-draws.v1'
 export interface DrawContext {
+  readonly policy?: 'rarity-v2'
   readonly version: 1
   readonly catalogKey: string
   readonly recent: readonly (readonly string[])[]
@@ -16,7 +17,7 @@ export function validContext(value: unknown, catalog: readonly Player[]): value 
   if (!value || typeof value !== 'object') return false
   const item = value as DrawContext
   const ids = new Set(catalog.map((player) => player.id))
-  return item.version === 1 && item.catalogKey === catalogKey(catalog) && Array.isArray(item.recent) && item.recent.length <= 5
+  return (item.policy === undefined || item.policy === 'rarity-v2') && item.version === 1 && item.catalogKey === catalogKey(catalog) && Array.isArray(item.recent) && item.recent.length <= 5
     && item.recent.every((draw) => Array.isArray(draw) && draw.length <= 22 && new Set(draw).size === draw.length && draw.every((id) => typeof id === 'string' && ids.has(id)))
 }
 export function parseReplay(text: string, catalog: readonly Player[]): DrawReplay | null {
@@ -39,9 +40,9 @@ export function readDrawHistory(storage: Pick<Storage, 'getItem'>, catalog: read
     return { history: value, warning: false }
   } catch { return { history: empty, warning: true } }
 }
-export function createDrawContext(catalog: readonly Player[], recent: readonly (readonly string[])[] = []): DrawContext {
+export function createDrawContext(catalog: readonly Player[], recent: readonly (readonly string[])[] = [], policy?: 'rarity-v2'): DrawContext {
   const ids = new Set(catalog.map((player) => player.id))
-  return { version: 1, catalogKey: catalogKey(catalog), recent: recent.slice(-5).map((draw) => [...new Set(draw.filter((id) => ids.has(id)))].slice(0, 22)) }
+  return { version: 1, ...(policy ? { policy } : {}), catalogKey: catalogKey(catalog), recent: recent.slice(-5).map((draw) => [...new Set(draw.filter((id) => ids.has(id)))].slice(0, 22)) }
 }
 export function newDrawSeed(): string {
   return createSecureSeed()

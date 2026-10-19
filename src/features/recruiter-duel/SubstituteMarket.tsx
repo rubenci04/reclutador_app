@@ -27,7 +27,7 @@ export function SubstituteMarket({ game, participant, name, catalog, locked, onB
   if (!hasOptions && !signed.length) return null
   return <section className="substitute-market" aria-label={t('market.title', { name })}>
     <h3>{t('market.title', { name })}</h3>
-    <p className="market-left">{t('market.left', { amount: left })}</p>
+    <p className="market-left">{t(game.manualBench ? 'playtest.marketLeft' : 'market.left', { amount: left })}</p>
     {signed.length > 0 && <ul className="market-signed">{signed.map((player) => <li key={player.id}>{t('market.signed', { player: player.name, position: t(`positions.${player.position}`), price: player.price })}</li>)}</ul>}
     {hasOptions && !locked && SUBSTITUTE_POSITIONS.map((position) => {
       const options = market.filter((player) => player.position === position).slice(0, PER_LINE)
@@ -37,6 +37,6 @@ export function SubstituteMarket({ game, participant, name, catalog, locked, onB
       </div>
     })}
     {hasOptions && locked && <p>{t('market.closed')}</p>}
-    {hasOptions && !locked && <p className="market-hint">{t('market.hint')}</p>}
+    {hasOptions && !locked && <p className="market-hint">{t(game.manualBench ? 'playtest.manualBench' : 'market.hint')}</p>}
   </section>
 }

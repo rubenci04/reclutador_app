@@ -1,3 +1,6 @@
+import { ModeSelector } from '../themed-modes/ModeSelector'
+import { CATEGORY_GROUPS } from '../themed-modes/categoryTree'
+import type { ThemedModeId } from '../themed-modes/modeTypes'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LanguageSelector } from '../../components/LanguageSelector'
@@ -20,6 +23,8 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
   const [room, setRoom] = useState<RoomSnapshot | null>(null)
   const [name, setName] = useState('')
   const [roomName, setRoomName] = useState('')
+  const [category, setCategory] = useState<ThemedModeId>('GLOBAL_CLASSIC')
+  const [opponentCategory, setOpponentCategory] = useState<ThemedModeId | 'same'>('same')
   const { notices, push, dismiss } = useToasts()
   const known = useRef<{ roomId: string; members: Map<string, { name: string; ready: boolean }> } | null>(null)
   const [code, setCode] = useState(invitationFromUrl)
@@ -179,7 +184,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
     let guest = room.members.find(m => m.seat === 2)?.name ?? ''
     if (guest === host) guest = (guest + ' (2)').slice(0, 24)
     let initial
-    try { initial = buildInitialDuel({ host, guest }) } catch { setError('INVALID_ACTION'); return }
+    try { initial = buildInitialDuel({ host, guest }, category, opponentCategory === 'same' ? category : opponentCategory) } catch { setError('INVALID_ACTION'); return }
     const id = crypto.randomUUID(); const version = room.version; const roomIdValue = room.roomId
     void run(() => gateway.startDuel(roomIdValue, version, slimDuel(initial), id))
   }
@@ -226,7 +231,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
         <p role="status">{t('online.connection.' + connection)}</p><p>{t('online.peerNotice')}</p>
         <h2>{room.roomName ? t('online.roomTitle', { name: room.roomName }) : t('online.lobby')}</h2>
         {room.shortCode && <p className="online-code"><span>{t('online.roomCode')}</span> <strong>{room.shortCode}</strong></p>}
-        <p>{t('online.classic')}</p>
+        {lobbyOpen && room.hostId === userId && <><ModeSelector selected={category} onChange={setCategory} /><label>{t('playtest.opponentCategory')}<select value={opponentCategory} onChange={(e) => setOpponentCategory(e.target.value as ThemedModeId | 'same')}><option value="same">{t('playtest.sameCategory')}</option>{CATEGORY_GROUPS.flatMap((g) => g.modes).map((id) => <option key={id} value={id}>{t('categoryTree.options.' + id)}</option>)}</select></label>{opponentCategory !== 'same' && opponentCategory !== category && <p>{t('playtest.mixedHelp')}</p>}</>}
         <ol className="online-steps"><li>{t('online.step1')}</li><li>{t('online.step2')}</li><li>{t('online.step3')}</li></ol>
         <p>{t('online.expires', { date: new Date(room.expiresAt).toLocaleString(i18n.language) })}</p>
         <ul className="online-members">{([1,2] as const).map(seat => {

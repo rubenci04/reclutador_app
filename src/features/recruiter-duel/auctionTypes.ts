@@ -5,6 +5,7 @@ import type { StrategyId } from '../tactics/strategies'
 import type { MatchConfig } from './matchConfig'
 import type { DrawContext } from './drawHistory'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
+import type { FormationId } from '../tactics/formations'
 
 export const RECRUITERS = ['recruiter_one', 'recruiter_two'] as const
 export type RecruiterId = (typeof RECRUITERS)[number]
@@ -22,6 +23,7 @@ export interface AuctionRound {
 export interface BenchSlot { readonly position: Player['position']; readonly playerId: string | null }
 
 export interface RecruiterTeam {
+  readonly formation?: FormationId
   readonly lineup: DraftLineup
   readonly spent: number
   readonly bench?: readonly BenchSlot[]
@@ -49,6 +51,9 @@ export interface RoundAward {
 }
 
 export interface RecruiterDuelGame {
+  readonly legacyCatalog?: boolean
+  readonly categoryPair?: Readonly<Record<RecruiterId, ThemedModeId>>
+  readonly manualBench?: boolean
   readonly coachMode?: ThemedModeId
   readonly seed: string
   readonly drawContext?: DrawContext

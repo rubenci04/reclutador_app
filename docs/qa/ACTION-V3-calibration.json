@@ -1,0 +1,93 @@
+{
+  "reportedBefore": {
+    "samples": 1500,
+    "wins": 701,
+    "draws": 280,
+    "losses": 519,
+    "zeros": 7,
+    "goalsPerGame": 4.964,
+    "tripleLosses": 53,
+    "independentTripleLossRisk": 0.041421735999999994
+  },
+  "reportedAfter": {
+    "samples": 1500,
+    "wins": 979,
+    "draws": 253,
+    "losses": 268,
+    "zeros": 15,
+    "goalsPerGame": 4.161333333333333,
+    "tripleLosses": 9,
+    "independentTripleLossRisk": 0.00570335762962963
+  },
+  "effectiveStrengths": {
+    "local": {
+      "attack": 87.98,
+      "defense": 91.48,
+      "midfield": 98.76,
+      "global": 92.7
+    },
+    "cpu": {
+      "attack": 92.93,
+      "defense": 92.67,
+      "midfield": 86.42,
+      "global": 90.7
+    }
+  },
+  "margins": [
+    {
+      "delta": 0,
+      "samples": 1500,
+      "wins": 573,
+      "draws": 307,
+      "losses": 620,
+      "zeros": 17,
+      "goalsPerGame": 4.1786666666666665,
+      "tripleLosses": 111,
+      "independentTripleLossRisk": 0.07061570370370371
+    },
+    {
+      "delta": 2,
+      "samples": 1500,
+      "wins": 1103,
+      "draws": 222,
+      "losses": 175,
+      "zeros": 14,
+      "goalsPerGame": 4.39,
+      "tripleLosses": 1,
+      "independentTripleLossRisk": 0.0015879629629629631
+    },
+    {
+      "delta": 3,
+      "samples": 1500,
+      "wins": 1299,
+      "draws": 122,
+      "losses": 79,
+      "zeros": 10,
+      "goalsPerGame": 4.606,
+      "tripleLosses": 1,
+      "independentTripleLossRisk": 0.00014608562962962964
+    },
+    {
+      "delta": 4,
+      "samples": 1500,
+      "wins": 1403,
+      "draws": 63,
+      "losses": 34,
+      "zeros": 3,
+      "goalsPerGame": 4.978,
+      "tripleLosses": 0,
+      "independentTripleLossRisk": 0.000011645629629629632
+    },
+    {
+      "delta": 5,
+      "samples": 1500,
+      "wins": 1473,
+      "draws": 22,
+      "losses": 5,
+      "zeros": 3,
+      "goalsPerGame": 5.444,
+      "tripleLosses": 0,
+      "independentTripleLossRisk": 3.703703703703704e-8
+    }
+  ]
+}

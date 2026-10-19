@@ -1,3 +1,4 @@
+import { ALL_GLOBAL_LEGENDS } from './globalCollection'
 import { describe, expect, it } from 'vitest'
 import { LEAGUE_PLAYERS, LEAGUE_PROVENANCE, IMPORTED_MODE_IDS, defaultBudgetForMode } from './leagueCollections'
 import { validatePlayer } from './validatePlayer'
@@ -10,15 +11,16 @@ import identityAliases from '../../data/league-collections/identityAliases.json'
 
 describe('supplied league collections', () => {
   it('reconciles reviewed career-name variants only in Global Legends and preserves distinct namesakes', () => {
-    const legends = catalogForMode('LEGENDS_ONLY')
+    const legends = ALL_GLOBAL_LEGENDS
     const ids = new Set(legends.map((p) => p.id))
     const aliasIds = identityAliases.flat()
     expect(new Set(aliasIds).size).toBe(aliasIds.length)
     for (const group of identityAliases) {
       expect(group.every((id) => LEAGUE_PLAYERS.some((p) => p.id === id && p.category === 'legend'))).toBe(true)
-      expect(group.filter((id) => ids.has(id))).toEqual([group[0]])
+      const representative = group.includes('import_eng_epl_ley_001') ? 'import_esp_esp_leg_cristiano_ronaldo_dos_santos_aveiro' : group[0]
+      expect(group.filter((id) => ids.has(id))).toEqual([representative])
     }
-    expect(legends).toHaveLength(552)
+    expect(legends).toHaveLength(553)
     for (const id of ['import_arg_ley_025', 'import_arg_ley_072', 'import_eng_epl_ley_008', 'import_esp_esp_leg_luis_suarez_miramontes', 'import_bra_bra_leg_ronaldo_luis_nazario_de_lima', 'import_bra_bra_leg_ronaldo_giovanelli']) expect(ids.has(id), id).toBe(true)
     const matheuzinhos = catalogForMode('BRAZIL_CURRENT').filter((p) => p.name === 'Matheuzinho')
     expect(matheuzinhos).toHaveLength(2)

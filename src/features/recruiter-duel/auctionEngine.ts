@@ -1,7 +1,9 @@
 import { DRAFT_BUDGET_MILLIONS } from '../../data/catalogRules'
 import { coachReserveFor, coachEffect } from '../coaches/coachRules'
 import { coachById } from '../coaches/coachCatalog'
+import { formationSlots, organizeFormation, isFormationId, type FormationId } from '../tactics/formations'
 import type { Player } from '../../types/player'
+import { catalogForMode } from '../themed-modes/modeCatalog'
 import { createEmptyLineup, summarizeDraft } from '../draft/draftModel'
 import { DRAFT_SLOTS } from '../draft/draftTypes'
 import { MATCH_RULES_VERSION } from '../local-match/matchTypes'
@@ -26,8 +28,8 @@ const opponent = (participant: RecruiterId): RecruiterId => participant === FIRS
 const emptyTeam = (config: MatchConfig = CLASSIC_CONFIG): RecruiterTeam => ({ lineup: createEmptyLineup(), spent: 0, ...(config.substitutes ? { bench: SUBSTITUTE_POSITIONS.map((position) => ({ position, playerId: null })) } : {}) })
 const playerMap = (catalog: readonly Player[]) => new Map(catalog.map((player) => [player.id, player] as const))
 const benchSlots = (team: RecruiterTeam) => team.bench ?? []
-const teamCount = (team: RecruiterTeam, position: Player['position']) => DRAFT_SLOTS.filter((slot) => slot.position === position && team.lineup[slot.id]).length + benchSlots(team).filter((slot) => slot.position === position && slot.playerId).length
-const capacityOf = (team: RecruiterTeam, position: Player['position']) => DRAFT_SLOTS.filter((slot) => slot.position === position).length + benchSlots(team).filter((slot) => slot.position === position).length
+const teamCount = (team: RecruiterTeam, position: Player['position']) => formationSlots(team.formation).filter((slot) => slot.position === position && team.lineup[slot.id]).length + benchSlots(team).filter((slot) => slot.position === position && slot.playerId).length
+const capacityOf = (team: RecruiterTeam, position: Player['position']) => formationSlots(team.formation).filter((slot) => slot.position === position).length + benchSlots(team).filter((slot) => slot.position === position).length
 export const positionProgress = (team: RecruiterTeam, position: Player['position']) => {
   const capacity = capacityOf(team, position)
   const filled = teamCount(team, position)
@@ -77,12 +79,13 @@ export function canFinishRounds(rounds: readonly AuctionRound[], fromIndex: numb
 export const DRAW_BASE_SHARE = [0.75, 0.85, 1] as const
 
 /** Swaps expensive cards (more likely the dearer they are) for cheaper unused players of the same position until the share is met. */
-function shaveToShare(selected: AuctionRound[], catalog: readonly Player[], cap: number, random: () => number) {
+function shaveToShare(selected: AuctionRound[], catalog: readonly Player[], cap: number, random: () => number, protectStars = false) {
   const price = new Map(catalog.map((player) => [player.id, player.price] as const))
   const chosen = new Set(selected.map((round) => round.playerId))
   let total = selected.reduce((sum, round) => sum + price.get(round.playerId)!, 0)
   for (let guard = 0; total > cap && guard < 300; guard++) {
-    const weights = selected.map((round) => price.get(round.playerId)! ** 2)
+    const weights = selected.map((round) => protectStars && catalog.find((p) => p.id === round.playerId)!.overall_rating >= 98 ? 0 : price.get(round.playerId)! ** 2)
+    if (!weights.some((w) => w > 0)) break
     let ticket = random() * weights.reduce((sum, weight) => sum + weight, 0); let index = 0
     while (index < weights.length - 1 && ticket >= weights[index]) { ticket -= weights[index]; index++ }
     const round = selected[index]; const cost = price.get(round.playerId)!
@@ -105,14 +108,14 @@ function createRounds(catalog: readonly Player[], seed: string, context: DrawCon
     const strength = relaxation * Math.min(1, Math.max(0, (eligible.length - required[position]) / required[position]))
     const options = context ? eligible.sort((a, b) => a.id.localeCompare(b.id)).map((player) => {
       const appearances = context.recent.filter((draw) => draw.includes(player.id)).length
-      const weight = 1 / (1 + 2 * strength * appearances)
+      const weight = (context.policy === 'rarity-v2' && player.overall_rating >= 98 ? .25 : 1) / (1 + 2 * strength * appearances)
       return { player, key: -Math.log(Math.max(Number.MIN_VALUE, random())) / weight }
     }).sort((a, b) => a.key - b.key || a.player.id.localeCompare(b.player.id)).slice(0, required[position]).map(({ player }) => player)
       : shuffleSeeded(eligible, random).slice(0, required[position])
     if (options.length !== required[position]) return null
     selected.push(...options.map((candidate) => ({ position, playerId: candidate.id })))
   }
-  shaveToShare(selected, catalog, Math.floor(baseShare * 2 * config.budget), random)
+  shaveToShare(selected, catalog, Math.floor(baseShare * 2 * config.budget), random, context?.policy === 'rarity-v2')
   const ordered = shuffleSeeded(selected, random)
   return canFinishRounds(ordered, 0, { recruiter_one: emptyTeam(config), recruiter_two: emptyTeam(config) }, playerMap(catalog), config.budget - coachReserveFor(config)) ? ordered : null
 }
@@ -124,7 +127,8 @@ export function createRecruiterDuel(catalog: readonly Player[], seed: string, co
   if (new Set(catalog.map((player) => player.id)).size !== catalog.length || (context && !validContext(context, catalog))) return { ok: false, error: 'auction_pool_unavailable' }
   for (let attempt = 0; attempt < 48; attempt++) {
     const relaxation = attempt < 16 ? 1 : attempt < 32 ? .5 : 0
-    const rounds = createRounds(catalog, `${seed}:attempt:${attempt}`, context, relaxation, config, DRAW_BASE_SHARE[Math.min(2, Math.floor(attempt / 16))])
+    const shares = context?.policy === 'rarity-v2' ? [.85, .925, 1] : DRAW_BASE_SHARE
+    const rounds = createRounds(catalog, `${seed}:attempt:${attempt}`, context, relaxation, config, shares[Math.min(2, Math.floor(attempt / 16))])
     if (!rounds) continue
     return { ok: true, game: { seed, ...(config === CLASSIC_CONFIG ? {} : { config }), ...(context ? { drawContext: structuredClone(context) } : {}), drawDiagnostics: { attempts: attempt + 1, relaxation, smallPoolPositions: POSITIONS.filter((position) => catalog.filter((player) => player.position === position).length < 4 * rosterComposition(config)[position]) }, phase: 'LOBBY', rounds, roundIndex: 0, discardsRemaining: 3, discardedPlayerIds: [], lastDiscard: null, coinCall: null, coinResult: null, coinTossWinner: null, openingOrder: [], teams: { recruiter_one: emptyTeam(config), recruiter_two: emptyTeam(config) }, activeParticipant: null, currentBid: null, passedParticipants: [], lastAward: null, record: [], matchResult: null } }
   }
@@ -165,7 +169,8 @@ export function revealCoinToss(game: RecruiterDuelGame): AuctionTransition {
   if (game.phase !== 'COIN_TOSS' || !game.coinCall || !game.coinResult) return { ok: false, error: 'invalid_transition' }
   const winner: RecruiterId = game.coinCall === game.coinResult ? FIRST : SECOND
   const openingOrder = game.rounds.map((_, index) => index % 2 === 0 ? winner : opponent(winner))
-  return transition(game, { phase: 'REVEAL_PLAYER', coinTossWinner: winner, openingOrder, record: [...game.record, { type: 'coin_toss', calledSide: game.coinCall, result: game.coinResult, winner }] })
+  const direct = game.categoryPair && game.categoryPair.recruiter_one !== game.categoryPair.recruiter_two
+  return transition(game, { phase: direct ? 'TEAMS_COMPLETED' : 'REVEAL_PLAYER', coinTossWinner: winner, openingOrder, record: [...game.record, { type: 'coin_toss', calledSide: game.coinCall, result: game.coinResult, winner }] })
 }
 
 export function beginBidding(game: RecruiterDuelGame): AuctionTransition {
@@ -304,7 +309,7 @@ export const revealNextAuctionRound = (game: RecruiterDuelGame): AuctionTransiti
  */
 export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player[], strategies?: Readonly<Record<RecruiterId, unknown>>, actionModel = false): AuctionTransition {
   if (game.phase !== 'TEAMS_COMPLETED') return { ok: false, error: 'invalid_transition' }
-  if (![FIRST, SECOND].every((participant) => isValidOrganizedLineup(game.teams[participant].lineup, catalog, budgetOf(game)))) return { ok: false, error: 'teams_invalid' }
+  if (![FIRST, SECOND].every((participant) => isValidOrganizedLineup(game.teams[participant].lineup, catalog, budgetOf(game), game.teams[participant].formation))) return { ok: false, error: 'teams_invalid' }
   const chosen = strategies ?? { recruiter_one: 'NEUTRAL', recruiter_two: 'NEUTRAL' }
   if (!isStrategyId(chosen.recruiter_one) || !isStrategyId(chosen.recruiter_two)) return { ok: false, error: 'invalid_strategy' }
   const stored: Record<RecruiterId, StrategyId> = { recruiter_one: chosen.recruiter_one, recruiter_two: chosen.recruiter_two }
@@ -312,7 +317,7 @@ export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player
   const benches = { local: benchIds(FIRST), cpu: benchIds(SECOND) }
   const coachFor = (participant: RecruiterId) => { const coach = coachById(game.teams[participant].coachId); return coach ? { id: coach.id, ...coachEffect(coach, stored[participant]) } : null }
   const coaches = { local: coachFor(FIRST), cpu: coachFor(SECOND) }
-  const matchResult = simulateMatch({ ...(actionModel ? { actionModel: 'action-v2' as const } : {}), localLineup: game.teams[FIRST].lineup, cpuLineup: game.teams[SECOND].lineup, catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match`, rosterBonus: true, ...(game.config ? { budget: game.config.budget } : {}), ...(benches.local.length || benches.cpu.length ? { benches } : {}), ...(coaches.local || coaches.cpu ? { coaches } : {}), tactics: { version: TACTICS_VERSION, local: stored.recruiter_one, cpu: stored.recruiter_two } })
+  const matchResult = simulateMatch({ ...(game.teams[FIRST].formation || game.teams[SECOND].formation || actionModel ? { formations: { local: game.teams[FIRST].formation ?? '4-3-3', cpu: game.teams[SECOND].formation ?? '4-3-3' } } : {}), ...(actionModel ? { seriesFormat: 'home-away' as const, actionModel: 'action-v3' as const } : {}), localLineup: game.teams[FIRST].lineup, cpuLineup: game.teams[SECOND].lineup, catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match`, rosterBonus: true, ...(game.config ? { budget: game.config.budget } : {}), ...(!game.manualBench && (benches.local.length || benches.cpu.length) ? { benches } : {}), ...(coaches.local || coaches.cpu ? { coaches } : {}), tactics: { version: TACTICS_VERSION, local: stored.recruiter_one, cpu: stored.recruiter_two } })
   return transition(game, { phase: 'SIMULATING', matchResult, strategies: stored })
 }
 
@@ -346,10 +351,12 @@ export function substituteMarket(game: RecruiterDuelGame, participant: Recruiter
   if (game.phase !== 'TEAMS_COMPLETED') return []
   const team = game.teams[participant]
   if (game.config?.coaches && !team.coachId && !team.coachDeclined) return []
+  if (benchSlots(team).length >= 3) return []
   const left = budgetOf(game) - team.spent
-  if (budgetOf(game) - game.teams[opponent(participant)].spent <= 0) return []
+  if (!game.manualBench && budgetOf(game) - game.teams[opponent(participant)].spent <= 0) return []
   const taken = new Set(benchSlots(team).map((slot) => slot.position))
-  return substitutePool(game, catalog).filter((player) => !taken.has(player.position) && player.price <= left)
+  const eligible = game.categoryPair ? new Set(catalogForMode(game.categoryPair[participant]).map((p) => p.id)) : null
+  return substitutePool(game, eligible ? catalog.filter((p) => eligible.has(p.id)) : catalog).filter((player) => (game.manualBench || !taken.has(player.position)) && player.price <= left)
     .sort((a, b) => b.overall_rating - a.overall_rating || a.price - b.price || a.id.localeCompare(b.id))
 }
 
@@ -361,7 +368,7 @@ export function swapBenchWithStarter(game: RecruiterDuelGame, participant: Recru
   if (game.phase !== 'TEAMS_COMPLETED') return { ok: false, error: 'invalid_transition' }
   const team = game.teams[participant]
   const bench = benchSlots(team)[benchIndex]
-  const slot = DRAFT_SLOTS.find((candidate) => candidate.id === slotId)
+  const slot = formationSlots(team.formation).find((candidate) => candidate.id === slotId)
   const starterId = slot ? team.lineup[slot.id] : null
   if (!bench?.playerId || !slot || !starterId || slot.position !== bench.position) return { ok: false, error: 'invalid_substitute' }
   const swapped: RecruiterTeam = { ...team, lineup: { ...team.lineup, [slot.id]: bench.playerId }, bench: benchSlots(team).map((candidate, index) => index === benchIndex ? { ...candidate, playerId: starterId } : candidate) }
@@ -386,6 +393,18 @@ export function autoBuySubstitutes(game: RecruiterDuelGame, participant: Recruit
     const result = buySubstitute(current, participant, pick.id, catalog)
     if (result.ok) current = result.game
   }
+  if (current.manualBench) {
+    for (let index = 0; index < benchSlots(current.teams[participant]).length; index++) {
+      const team = current.teams[participant]; const place = benchSlots(team)[index]
+      const incoming = catalog.find((p) => p.id === place.playerId)
+      const slots = formationSlots(team.formation).filter((s) => s.position === place.position)
+      const weakest = [...slots].sort((a, b) => catalog.find((p) => p.id === team.lineup[a.id])!.overall_rating - catalog.find((p) => p.id === team.lineup[b.id])!.overall_rating)[0]
+      if (incoming && weakest && incoming.overall_rating > catalog.find((p) => p.id === team.lineup[weakest.id])!.overall_rating) {
+        const swap = swapBenchWithStarter(current, participant, index, weakest.id)
+        if (swap.ok) current = swap.game
+      }
+    }
+  }
   return current
 }
 
@@ -398,9 +417,26 @@ export type LineupReorder =
 /** Reorders one team within a line after the auctions. Ownership and `spent` never change. */
 export function reorderTeamLineup(game: RecruiterDuelGame, participant: RecruiterId, slotA: FormationRole, slotB: FormationRole): LineupReorder {
   if (game.phase !== 'TEAMS_COMPLETED') return { ok: false, error: 'invalid_transition' }
+  const slots = formationSlots(game.teams[participant].formation)
+  if (game.teams[participant].formation && game.teams[participant].formation !== '4-3-3') {
+    if (!slots.some((s) => s.id === slotA) || !slots.some((s) => s.id === slotB) || slots.find((s) => s.id === slotA)!.position !== slots.find((s) => s.id === slotB)!.position) return { ok: false, error: 'different_line' }
+    const team = game.teams[participant]
+    return { ok: true, game: { ...game, teams: { ...game.teams, [participant]: { ...team, lineup: { ...team.lineup, [slotA]: team.lineup[slotB], [slotB]: team.lineup[slotA] } } } } }
+  }
   const swapped = swapWithinLine(game.teams[participant].lineup, slotA, slotB)
   if (!swapped.ok) return swapped
   return { ok: true, game: { ...game, teams: { ...game.teams, [participant]: { ...game.teams[participant], lineup: swapped.lineup } } } }
+}
+
+export function chooseFormation(game: RecruiterDuelGame, participant: RecruiterId, formation: FormationId, catalog: readonly Player[]): AuctionTransition {
+  if (game.phase !== 'TEAMS_COMPLETED' || !isFormationId(formation)) return { ok: false, error: 'invalid_transition' }
+  const team = game.teams[participant]
+  const owned = [...Object.values(team.lineup), ...(team.bench ?? []).map((p) => p.playerId)].filter((id): id is string => Boolean(id))
+  const lineup = organizeFormation(owned, formation, catalog)
+  if (!lineup) return { ok: false, error: 'teams_invalid' }
+  const starters = new Set(Object.values(lineup))
+  const bench = owned.filter((id) => !starters.has(id)).map((id) => ({ playerId: id, position: catalog.find((p) => p.id === id)!.position }))
+  return transition(game, { teams: { ...game.teams, [participant]: { ...team, formation, lineup, bench } } })
 }
 
 const isComplete = isRosterComplete

@@ -2,7 +2,7 @@ import type { MatchBlock, MatchEvent, MatchResult, MatchSide, MatchStats } from 
 
 /** Reveal one opportunity at a time; never change the stored match or its seed. */
 export function playbackFrames(result: MatchResult): readonly MatchBlock[] {
-  if (result.actionModel !== 'action-v2') return result.blocks
+  if (result.actionModel !== 'action-v2' && result.actionModel !== 'action-v3') return result.blocks
   const frames: MatchBlock[] = []
   const score = { local: 0, cpu: 0 }
   for (const block of result.blocks) {

@@ -56,7 +56,7 @@ export function validatePlayer(input: unknown, allowedIds: readonly string[] = E
   }
   if (present('name') && present('id')) {
     const registeredId = resolvePlayerIdentity(record.name as string)
-    if (registeredId && registeredId !== record.id && !String(record.id).startsWith('import_')) {
+    if (registeredId && registeredId !== record.id && !String(record.id).startsWith('import_') && !String(record.id).startsWith('edition_')) {
       issues.push({ code: 'identity_mismatch', field: 'name', expected: registeredId, actual: record.id })
     }
   }

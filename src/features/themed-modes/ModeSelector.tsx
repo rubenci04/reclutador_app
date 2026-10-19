@@ -35,7 +35,7 @@ export function ModeSelector({ selected, onChange }: ModeSelectorProps) {
   }
   return <section className="mode-selector" aria-labelledby="mode-title">
     <div><p className="eyebrow"><span />{t('modes.label')}</p><h2 id="mode-title" ref={heading} tabIndex={-1}>{group ? t(`categoryTree.groups.${group.id}`) : t('categoryTree.title')}</h2></div>
-    <p className="category-selection" role="status">{t('categoryTree.selected', { name: selectedName })}</p>
+    <p className="market-hint">{t('playtest.poolHelp')}</p><p className="category-selection" role="status">{t('categoryTree.selected', { name: selectedName })}</p>
     {group ? <>
       <button className="secondary-action category-back" onClick={() => setOpenGroup(null)}>{t('categoryTree.back')}</button>
       <p className="market-hint">{t(group.id === 'europe' || group.id === 'latinAmerica' ? 'categoryTree.nationalityHelp' : 'categoryTree.editionHelp')}</p>

@@ -155,3 +155,12 @@ CPU estratégica local implementada como opción junto a hot-seat. Perfiles CONS
 - Completar 270 duelos reales, nueve combinaciones dificultad/perfil, 22 IDs exclusivos, gasto de jugadores hasta 92M y técnico hasta 100M total. Verificar poder del panel contra el simulador.
 - Reserva 1–8M, parser estricto, fallback antiguo 1M, nueva oferta con técnico S y otro de 1M, ofertas exclusivas y exportación de configuración.
 - Comprobar fichas de técnicos, reserva, accesibilidad y traducciones es-AR/en/pt-BR mediante DOM. La QA visual real queda registrada aparte.
+
+## Playtest ampliado — 19/10/2026
+
+- Comprobar las catorce ediciones entre 150 y 300, activos/leyendas por nacionalidad y exclusión de retiros ya documentados.
+- Calibrar la reproducción exacta del caso 92,7 vs 90,7 con Messi, Bianchi/control y Bilardo/contraataque; medir victorias, empates, derrotas, ceros y riesgo estimado de tres derrotas independientes. Comparar márgenes homogéneos 0,2,3,4,5 en 1.500 semillas cada uno.
+- Medir 160 sorteos por política en Global, Global leyendas y España leyendas; S+ posibles pero raros, 22 identidades, cuotas por posición, variedad y viabilidad. No confundir peso inicial con frecuencia final.
+- Verificar formación/posición real, conservación de gasto/propiedad, ausencia de sustituciones automáticas nuevas y continuidad de formaciones entre encuentros.
+- Comprobar guías, fuentes, rol y avatar en tres idiomas, y nueva partida/revancha. Probar categorías distintas y elegibilidad de técnicos/suplentes; online con PostgreSQL local, sin afirmar dos navegadores reales.
+- Ejecutar typecheck, lint, test y build. Revisar imágenes descargadas; QA visual del sitio y escucha real deben registrarse por separado.

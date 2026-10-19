@@ -26,7 +26,7 @@ export function MatchSetupPanel({ draft, onChange, versusCpu, preflight, classic
         <strong>{t(`setup.${mode}`)}</strong><small>{mode === 'classic' && classicBudget !== 100 ? t('collections.legendBudget', { amount: classicBudget }) : t(`setup.${mode}Detail`)}</small>
       </label>)}
     </div>
-    <label className="setup-check"><input type="checkbox" checked={draft.coaches} onChange={(event) => set({ coaches: event.target.checked })} />{t('setup.coaches')}</label>
+    <label className="setup-check"><input type="checkbox" checked={draft.coaches} onChange={(event) => set({ coaches: event.target.checked })} />{t('setup.coaches', { amount: draft.coachReserve ?? COACH_MAX_PRICE })}</label>
     {draft.coaches && <label>{t('coach.reserveLabel')}<select value={draft.coachReserve ?? COACH_MAX_PRICE} onChange={(event) => set({ coachReserve: Number(event.target.value) })}>{Array.from({ length: COACH_MAX_PRICE }, (_, index) => index + 1).map((amount) => <option key={amount} value={amount}>{amount}M</option>)}</select><small>{t('coach.reserveHint', { amount: draft.coachReserve ?? COACH_MAX_PRICE })}</small></label>}
     {draft.mode === 'custom' && <>
       {(['one', 'two'] as const).map((side) => {

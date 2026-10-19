@@ -21,7 +21,7 @@ describe('current and reference club presentation', () => {
     expect(within(currentRow).getByRole('img',{name:badge})).toHaveStyle({'--club-primary':'#38434D'})
     const referenceRow=screen.getByText(reference).parentElement!
     expect(within(referenceRow).getByText('FC Barcelona')).toBeInTheDocument()
-    expect(screen.getByRole('link')).toHaveAttribute('href',clubs.capturePlayerClubs(messi).sourceUrl)
+    expect(screen.getByRole('link', { name: i18n.t('playerClubs.sourceFor', { player: messi.name }) })).toHaveAttribute('href',clubs.capturePlayerClubs(messi).sourceUrl)
   })
   it('does not present historical Real Madrid as Marcelo current club', async () => {
     const i18n=await createI18n('en'); const player=DRAFT_CATALOG.find((candidate)=>candidate.id==='plr_009')!

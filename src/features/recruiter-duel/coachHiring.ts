@@ -31,7 +31,7 @@ export function coachOffers(seed: string, reserve: number = COACH_RESERVE, mode?
 export function coachMarket(game: RecruiterDuelGame, participant: RecruiterId): Coach[] {
   if (game.phase !== 'TEAMS_COMPLETED' || !game.config?.coaches || game.teams[participant].coachId) return []
   const left = budgetOf(game) - game.teams[participant].spent
-  return coachOffers(game.seed, coachReserveFor(game.config), game.coachMode)[participant].filter((coach) => coach.price <= left)
+  return coachOffers(game.seed, coachReserveFor(game.config), (game.categoryPair?.[participant] ?? game.coachMode))[participant].filter((coach) => coach.price <= left)
 }
 
 export function chooseCoach(game: RecruiterDuelGame, participant: RecruiterId, coachId: string): AuctionTransition {
@@ -58,4 +58,4 @@ export function autoChooseCoach(game: RecruiterDuelGame, participant: RecruiterI
   return result.ok ? result.game : game
 }
 
-export const coachOf = (game: RecruiterDuelGame, participant: RecruiterId) => coachOffers(game.seed, coachReserveFor(game.config), game.coachMode)[participant].find((coach) => coach.id === game.teams[participant].coachId) ?? coachById(game.teams[participant].coachId)
+export const coachOf = (game: RecruiterDuelGame, participant: RecruiterId) => coachOffers(game.seed, coachReserveFor(game.config), (game.categoryPair?.[participant] ?? game.coachMode))[participant].find((coach) => coach.id === game.teams[participant].coachId) ?? coachById(game.teams[participant].coachId)

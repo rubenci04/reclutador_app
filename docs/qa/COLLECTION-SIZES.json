@@ -1,0 +1,156 @@
+[
+  {
+    "mode": "GLOBAL_CLASSIC",
+    "count": 300,
+    "stars": 2,
+    "positions": {
+      "ARQ": 29,
+      "DEF": 81,
+      "MED": 104,
+      "DEL": 86
+    }
+  },
+  {
+    "mode": "LEGENDS_ONLY",
+    "count": 300,
+    "stars": 4,
+    "positions": {
+      "ARQ": 29,
+      "DEF": 50,
+      "MED": 91,
+      "DEL": 130
+    }
+  },
+  {
+    "mode": "ARGENTINA_CURRENT",
+    "count": 150,
+    "stars": 0,
+    "positions": {
+      "ARQ": 17,
+      "DEF": 38,
+      "MED": 55,
+      "DEL": 40
+    }
+  },
+  {
+    "mode": "ARGENTINA_LEGENDS",
+    "count": 150,
+    "stars": 1,
+    "positions": {
+      "ARQ": 8,
+      "DEF": 28,
+      "MED": 46,
+      "DEL": 68
+    }
+  },
+  {
+    "mode": "ENGLAND_LEAGUE",
+    "count": 150,
+    "stars": 0,
+    "positions": {
+      "ARQ": 14,
+      "DEF": 52,
+      "MED": 53,
+      "DEL": 31
+    }
+  },
+  {
+    "mode": "ENGLAND_LEGENDS",
+    "count": 150,
+    "stars": 0,
+    "positions": {
+      "ARQ": 13,
+      "DEF": 27,
+      "MED": 50,
+      "DEL": 60
+    }
+  },
+  {
+    "mode": "SPAIN_LEAGUE",
+    "count": 150,
+    "stars": 0,
+    "positions": {
+      "ARQ": 15,
+      "DEF": 37,
+      "MED": 50,
+      "DEL": 48
+    }
+  },
+  {
+    "mode": "SPAIN_LEGENDS",
+    "count": 150,
+    "stars": 3,
+    "positions": {
+      "ARQ": 7,
+      "DEF": 25,
+      "MED": 50,
+      "DEL": 68
+    }
+  },
+  {
+    "mode": "BRAZIL_CURRENT",
+    "count": 150,
+    "stars": 0,
+    "positions": {
+      "ARQ": 15,
+      "DEF": 30,
+      "MED": 54,
+      "DEL": 51
+    }
+  },
+  {
+    "mode": "BRAZIL_LEGENDS",
+    "count": 150,
+    "stars": 1,
+    "positions": {
+      "ARQ": 19,
+      "DEF": 32,
+      "MED": 48,
+      "DEL": 51
+    }
+  },
+  {
+    "mode": "SOUTH_AMERICA_CURRENT",
+    "count": 300,
+    "stars": 1,
+    "positions": {
+      "ARQ": 35,
+      "DEF": 75,
+      "MED": 100,
+      "DEL": 90
+    }
+  },
+  {
+    "mode": "SOUTH_AMERICA_LEGENDS",
+    "count": 300,
+    "stars": 3,
+    "positions": {
+      "ARQ": 28,
+      "DEF": 60,
+      "MED": 89,
+      "DEL": 123
+    }
+  },
+  {
+    "mode": "EUROPE_CURRENT",
+    "count": 246,
+    "stars": 1,
+    "positions": {
+      "ARQ": 26,
+      "DEF": 72,
+      "MED": 90,
+      "DEL": 58
+    }
+  },
+  {
+    "mode": "EUROPE_LEGENDS",
+    "count": 222,
+    "stars": 1,
+    "positions": {
+      "ARQ": 20,
+      "DEF": 39,
+      "MED": 74,
+      "DEL": 89
+    }
+  }
+]

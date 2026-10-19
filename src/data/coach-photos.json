@@ -1,0 +1,57 @@
+[
+  {
+    "coachId": "coach_001",
+    "name": "Lionel Scaloni",
+    "path": "/assets/coaches/coach_001.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Scaloni.jpg",
+    "author": "Romean2",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "verifiedAt": "2026-10-19",
+    "changes": "Wikimedia 250px thumbnail; CSS display crop only."
+  },
+  {
+    "coachId": "coach_002",
+    "name": "Diego Simeone",
+    "path": "/assets/coaches/coach_002.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Diego_Simeone_-_01.jpg",
+    "author": "Carlos Delgado",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "verifiedAt": "2026-10-19",
+    "changes": "Wikimedia 250px thumbnail; CSS display crop only."
+  },
+  {
+    "coachId": "coach_034",
+    "name": "Pep Guardiola",
+    "path": "/assets/coaches/coach_034.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pep_Guardiola_2021.jpg",
+    "author": "Steffen Prößdorf, crop by ArsenalGhanaPartey",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "verifiedAt": "2026-10-19",
+    "changes": "Wikimedia 250px thumbnail; CSS display crop only."
+  },
+  {
+    "coachId": "coach_035",
+    "name": "Carlo Ancelotti",
+    "path": "/assets/coaches/coach_035.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Carlo_Ancelotti_2016_ICC.jpg",
+    "author": "goatling from Wherever my imagination can afford to go",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "verifiedAt": "2026-10-19",
+    "changes": "Wikimedia 250px thumbnail; CSS display crop only."
+  },
+  {
+    "coachId": "coach_092",
+    "name": "Alex Ferguson",
+    "path": "/assets/coaches/coach_092.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alex_Ferguson_02.jpg",
+    "author": "Alex_Ferguson.jpg: photo with zoom\nderivative work: Alex_Ferguson_02.jpg",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "verifiedAt": "2026-10-19",
+    "changes": "Wikimedia 250px thumbnail; CSS display crop only."
+  }
+]

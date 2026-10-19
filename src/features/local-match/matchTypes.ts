@@ -1,5 +1,6 @@
 import type { CoachEffect } from '../coaches/coachTypes'
 import type { Player } from '../../types/player'
+import type { FormationId } from '../tactics/formations'
 import type { DraftLineup } from '../draft/draftTypes'
 import type { StrategyId, TACTICS_VERSION } from '../tactics/strategies'
 import type { TacticalAdjustment } from '../tactics/tacticalModel'
@@ -74,7 +75,9 @@ export interface RosterAdvantage {
 }
 
 export interface MatchResult {
-  readonly actionModel?: 'action-v1' | 'action-v2'
+  readonly formations?: Readonly<Record<MatchSide, FormationId>>
+  readonly seriesFormat?: 'home-away'
+  readonly actionModel?: 'action-v1' | 'action-v2' | 'action-v3'
   readonly catalogVersion: 'catalog_v1'
   readonly rulesVersion: typeof MATCH_RULES_VERSION
   readonly seed: string

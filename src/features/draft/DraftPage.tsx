@@ -49,7 +49,7 @@ export function DraftPage({ onDuel }: DraftPageProps) {
     catch { setMatchError(true); return }
     const cpu = generateCpuTeam(DRAFT_CATALOG, seed)
     setMatchError(false)
-    setMatchResult(simulateMatch({ actionModel: 'action-v2', localLineup: lineup, cpuLineup: cpu.team.lineup, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed }))
+    setMatchResult(simulateMatch({ seriesFormat: 'home-away' as const, actionModel: 'action-v3', localLineup: lineup, cpuLineup: cpu.team.lineup, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed }))
   }
   if (matchResult) return <div className="draft-app"><header className="draft-header"><a className="brand" href="#draft-main" aria-label={PRODUCT.name}><span className="brand-emblem">ER</span><span>{PRODUCT.name}</span></a><div className="header-actions">{onDuel && <button className="header-mode" onClick={onDuel}>{t('duel.backToDuel')}</button>}<AudioControls /><LanguageSelector /></div></header><MatchSeriesScreen key={matchResult.seed} result={matchResult} onRematch={startCpuMatch} onReturn={() => setMatchResult(null)} /></div>
   return <div className="draft-app">

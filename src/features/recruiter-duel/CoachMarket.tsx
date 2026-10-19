@@ -1,3 +1,4 @@
+import { CoachPortrait } from '../coaches/CoachPortrait'
 import { useTranslation } from 'react-i18next'
 import { coachAge, coachEffect, coachReserveFor, COACH_AS_OF_YEAR } from '../coaches/coachRules'
 import type { Coach } from '../coaches/coachTypes'
@@ -26,7 +27,7 @@ export function CoachMarket({ game, participant, name, locked, onHire, onDecline
   if (hired) return <section className="coach-market" aria-label={t('coach.title', { name })}>
     <h3>{t('coach.title', { name })}</h3>
     <article className="coach-card coach-hired-card">
-      <span className="coach-emblem" aria-hidden="true">{hired.name[0]}{hired.surname[0]}<b>{hired.tier}</b></span>
+      <CoachPortrait coach={hired} />
       <strong>{label(hired)}</strong>
       <span>{t(hired.teamKind === 'NATIONAL' ? 'coach.referenceNational' : 'coach.referenceClub', { team: hired.team })}</span>
       {hired.secondaryTeam && <span>{t('coach.secondaryReference', { team: hired.secondaryTeam })}</span>}
@@ -36,10 +37,10 @@ export function CoachMarket({ game, participant, name, locked, onHire, onDecline
   if (!market.length) return null
   return <section className="coach-market" aria-label={t('coach.title', { name })}>
     <h3>{t('coach.title', { name })}</h3>
-    <p className="market-left">{t('coach.left', { amount: left, count: coachOffers(game.seed, coachReserveFor(game.config), game.coachMode)[participant].length })}</p>
+    <p className="market-left">{t('coach.left', { amount: left, count: coachOffers(game.seed, coachReserveFor(game.config), (game.categoryPair?.[participant] ?? game.coachMode))[participant].length })}</p>
     {locked ? <p>{t('coach.closed')}</p> : <>
-      <div className="market-options coach-grid">{coachOffers(game.seed, coachReserveFor(game.config), game.coachMode)[participant].map((coach) => <button key={coach.id} disabled={!market.some((c) => c.id === coach.id)} className="secondary-action coach-card" onClick={() => onHire(coach.id)}>
-        <span className="coach-emblem" aria-hidden="true">{coach.name[0]}{coach.surname[0]}<b>{coach.tier}</b></span>
+      <div className="market-options coach-grid">{coachOffers(game.seed, coachReserveFor(game.config), (game.categoryPair?.[participant] ?? game.coachMode))[participant].map((coach) => <button key={coach.id} disabled={!market.some((c) => c.id === coach.id)} className="secondary-action coach-card" onClick={() => onHire(coach.id)}>
+        <CoachPortrait coach={coach} />
         <strong>{label(coach)}</strong>
         <span>{t(`coach.status.${coach.status}`)} · {coach.deathYear ? t('coach.lifespan', { birth: coach.birthYear, death: coach.deathYear, age: coachAge(coach) }) : t('coach.referenceAge', { year: COACH_AS_OF_YEAR, age: coachAge(coach) })}</span>
         <span>{t(coach.teamKind === 'NATIONAL' ? 'coach.referenceNational' : 'coach.referenceClub', { team: coach.team })}</span>

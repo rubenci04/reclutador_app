@@ -85,3 +85,7 @@ Definidas las parejas actuales/leyendas para Global, Argentina, Brasil, España,
 ## Simulación, técnicos y dificultad CPU — 18/10/2026
 
 Implementación del pedido del usuario: capa squad-quality-v1 para duelos, poder efectivo por bloque, afinidad técnico/táctica, reserva elegible 1–8M (8M inicial) y dificultad CPU independiente de agresividad. Se conservan los 100 técnicos existentes; auditoría completa de sus biografías y playtest de balance pendientes. ADR-0013 y QA SIMULATION-COACHES.
+
+## Playtest ampliado — 19/10/2026
+
+Implementadas las categorías de 150–300, el ajuste medible action-v3, rareza S+ sin eliminación económica sistemática, suplentes manuales, nueve formaciones con afinidad, guías de etapas, serie de dos más tercero, sorteos de categorías distintas y presentación con personajes/fotos. ADR-0017 reemplaza las reglas nuevas de series de ADR-0014; se conserva el comportamiento antiguo versionado. La cobertura completa de biografías/fotos y la revisión visual real siguen distinguidas de la implementación técnica.

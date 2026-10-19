@@ -15,26 +15,30 @@ const positions = { ARQ:['POR','GK','ARQ'], DEF:['DFC','LD','LI','DF','CB','RB',
 const slug = (s) => s.normalize('NFD').replace(/\p{M}/gu,'').toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'')
 const records = []
 for (const [league, file] of Object.entries(files)) {
+  const sourceText = readFileSync(`docs/${file}`, 'utf8')
+  const references = Object.fromEntries([...sourceText.matchAll(/^([A-Z]\d+)\s*\|[^\n]*\r?\n(https:\/\/\S+)/gm)].map((m) => [m[1], m[2]]))
   let category = 'contemporary'
   let count = 0
-  for (const line of readFileSync(`docs/${file}`, 'utf8').split(/\r?\n/)) {
+  for (const line of sourceText.split(/\r?\n/)) {
     if (/^BEGIN_(LEYENDAS|HISTORICOS)/.test(line)) category = 'legend'
-    let id, name, fullName, club, nationality, position, rating, rank
+    let id, name, fullName, club, nationality, position, rating, rank, status, sourceUrl
     if (line.includes('|') && /^(?:EPL-)?(?:ACT|LEY)-\d/.test(line)) {
       const cols = line.split('|')
       ;[id,,rank,name,nationality,position,rating,club] = cols
       fullName = name
+      status = cols[8]; sourceUrl = cols[10]
       category = id.includes('LEY') ? 'legend' : 'contemporary'
       nationality = countries[nationality]
     } else if (/^\d+\t/.test(line)) {
       const cols = line.split('\t')
       ;[rank,id,,,name,club,,nationality,position,rating] = cols
       fullName = `${cols[2]} ${cols[3]}`
+      status = cols[11]; sourceUrl = references[cols.at(-1).split(/[;, ]/)[0]] ?? null
       nationality = fifa[nationality] ?? nationality
     } else continue
     const mapped = Object.entries(positions).find(([,codes]) => codes.includes(position))?.[0]
     if (!mapped || !nationality || !Number.isFinite(Number(rating))) throw new Error(`Invalid source row: ${league}/${id}/${position}/${nationality}`)
-    records.push({ id:`import_${league.toLowerCase()}_${slug(id)}`, name, fullName, position:mapped, category, nationality, club_tag:slug(club), league, club, sourceFile:file, sourceId:id, sourceRank:Number(rank), sourceRating:Number(rating), sourcePosition:position })
+    records.push({ id:`import_${league.toLowerCase()}_${slug(id)}`, name, fullName, position:mapped, category, nationality, club_tag:slug(club), league, club, sourceFile:file, sourceId:id, sourceRank:Number(rank), sourceRating:Number(rating), sourcePosition:position, sourceStatus:status, sourceUrl })
     count++
   }
   if (count !== 300) throw new Error(`${file}: expected 300 rows, got ${count}`)

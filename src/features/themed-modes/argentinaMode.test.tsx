@@ -2,7 +2,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { I18nextProvider } from 'react-i18next'
 import { createI18n } from '../../i18n'
-import { DRAFT_CATALOG } from '../draft/catalog'
 import { createDrawContext } from '../recruiter-duel/drawHistory'
 import * as drawHistory from '../recruiter-duel/drawHistory'
 import { AuctionPage, COIN_TOSS_MS } from '../recruiter-duel/AuctionPage'
@@ -23,7 +22,7 @@ describe('Argentine football mode', () => {
     expect(result.diagnostic.availability).toBe('available')
     expect(result.diagnostic.cpuCompatible).toBe(true)
     expect(result.players).toHaveLength(200)
-    expect(catalogForMode('GLOBAL_CLASSIC')).toBe(DRAFT_CATALOG)
+    expect(catalogForMode('GLOBAL_CLASSIC')).toHaveLength(300)
     expect(catalogForMode('ARGENTINA_CLUBS')).toHaveLength(200)
     expect(PLAYABLE_MODES.has('ARGENTINA_CURRENT')).toBe(true)
   })
@@ -77,7 +76,7 @@ describe('mode selection in the page', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
     act(() => vi.advanceTimersByTime(COIN_TOSS_MS))
     const catalog = catalogForMode(modeId)
-    const expected = must(createRecruiterDuel(catalog, 'arg-seed-1', createDrawContext(catalog, []), { ...CLASSIC_CONFIG, budget: defaultBudgetForMode(modeId), coaches: true, coachReserve: 8 }) as AuctionTransition)
+    const expected = must(createRecruiterDuel(catalog, 'arg-seed-1', createDrawContext(catalog, [], 'rarity-v2'), { ...CLASSIC_CONFIG, budget: defaultBudgetForMode(modeId), coaches: true, coachReserve: 8 }) as AuctionTransition)
     const first = catalog.find((player) => player.id === expected.rounds[0].playerId)!
     expect(screen.getAllByText(first.name).length).toBeGreaterThan(0)
     expect(localStorage.getItem(`reclutador.duel-draws.v1.${historySuffix}`)).not.toBeNull()

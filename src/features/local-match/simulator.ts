@@ -1,4 +1,6 @@
 import type { Player } from '../../types/player'
+import { opportunityChances, finishingChance } from './probabilityModel'
+import { formationSlots, formationAffinity, isFormationId, type FormationId } from '../tactics/formations'
 import type { CoachEffect } from '../coaches/coachTypes'
 import { summarizeDraft } from '../draft/draftModel'
 import { DRAFT_SLOT_IDS, DRAFT_SLOTS, type DraftLineup, type DraftSlotId } from '../draft/draftTypes'
@@ -10,7 +12,9 @@ import { composeStrength, squadQuality, SQUAD_QUALITY_VERSION } from './squadQua
 import { MATCH_MINUTES, MATCH_RULES_VERSION, type MatchBlock, type MatchEvent, type MatchResult, type MatchSide, type MatchStats, type MatchTeam, type RosterAdvantage, type TeamStrength } from './matchTypes'
 
 export interface SimulationInput {
-  readonly actionModel?: 'action-v1' | 'action-v2'
+  readonly formations?: Readonly<Record<MatchSide, FormationId>>
+  readonly seriesFormat?: 'home-away'
+  readonly actionModel?: 'action-v1' | 'action-v2' | 'action-v3'
   readonly localLineup: DraftLineup
   readonly cpuLineup: DraftLineup
   readonly catalog: readonly Player[]
@@ -62,16 +66,18 @@ export function rosterAdvantage(localGlobal: number, cpuGlobal: number): RosterA
  * Engine-boundary check of an organised eleven: exactly the 11 slots, exclusive catalog players, each in a slot of its own line, budget respected.
  * Screen confirmation is a UI step; in the future online mode the server must run this same validation authoritatively.
  */
-export function isValidOrganizedLineup(lineup: DraftLineup, catalog: readonly Player[], budget?: number) {
+export function isValidOrganizedLineup(lineup: DraftLineup, catalog: readonly Player[], budget?: number, formation?: FormationId) {
+  if (formation !== undefined && !isFormationId(formation)) return false
+  const slots = formationSlots(formation)
   const keys = Object.keys(lineup)
   if (keys.length !== DRAFT_SLOTS.length || !DRAFT_SLOTS.every((slot) => keys.includes(slot.id))) return false
   if (new Set(DRAFT_SLOTS.map((slot) => lineup[slot.id])).size !== DRAFT_SLOTS.length) return false
-  if (!DRAFT_SLOTS.every((slot) => catalog.find((player) => player.id === lineup[slot.id])?.position === slot.position)) return false
+  if (!slots.every((slot) => catalog.find((player) => player.id === lineup[slot.id])?.position === slot.position)) return false
   return summarizeDraft(lineup, catalog, budget).canConfirm
 }
 
-function teamFrom(lineup: DraftLineup, catalog: readonly Player[], budget?: number): MatchTeam {
-  if (!isValidOrganizedLineup(lineup, catalog, budget)) throw new Error('invalid_match_lineup')
+function teamFrom(lineup: DraftLineup, catalog: readonly Player[], budget?: number, formation?: FormationId): MatchTeam {
+  if (!isValidOrganizedLineup(lineup, catalog, budget, formation)) throw new Error('invalid_match_lineup')
   const summary = summarizeDraft(lineup, catalog, budget)
   return { lineup, players: summary.selectedPlayers, spent: summary.spent, averageRating: summary.averageRating ?? 0 }
 }
@@ -99,8 +105,14 @@ function event(minute: MatchEvent['minute'], side: MatchSide | null, type: Match
   return { minute, side, type, ...(player ? { playerId: player.id } : {}) }
 }
 
-function attacker(team: MatchTeam, random: () => number) {
+function attacker(team: MatchTeam, random: () => number, weighted = false) {
   const attacking = team.players.filter((player) => player.position === 'DEL' || player.position === 'MED')
+  if (weighted) {
+    const weights = attacking.map((p) => Math.max(1, p.att_rating - 60) ** 2)
+    let ticket = random() * weights.reduce((a, b) => a + b, 0)
+    for (let i = 0; i < attacking.length; i++) { ticket -= weights[i]; if (ticket <= 0) return attacking[i] }
+    return attacking[attacking.length - 1]
+  }
   return attacking[Math.floor(random() * attacking.length)]
 }
 
@@ -111,16 +123,16 @@ const meanAdjustment = (total: TacticalAdjustment): TacticalAdjustment => ({ att
 /** Pure deterministic simulator. Events and statistics are emitted from the same block decisions. */
 export function simulateMatch(input: SimulationInput): MatchResult {
   if (input.rulesVersion !== MATCH_RULES_VERSION || input.catalogVersion !== 'catalog_v1') throw new Error('unsupported_match_rules')
-  const local = teamFrom(input.localLineup, input.catalog, input.budget)
-  const cpu = teamFrom(input.cpuLineup, input.catalog, input.budget)
+  const local = teamFrom(input.localLineup, input.catalog, input.budget, input.formations?.local)
+  const cpu = teamFrom(input.cpuLineup, input.catalog, input.budget, input.formations?.cpu)
   const selection = input.tactics === undefined ? NEUTRAL_SELECTION : parseStrategySelection(input.tactics)
   if (!selection) throw new Error('invalid_strategy')
   const benches = input.benches
   if (benches && (!isValidBench(benches.local, input.localLineup, input.catalog) || !isValidBench(benches.cpu, input.cpuLineup, input.catalog))) throw new Error('invalid_match_bench')
   type Side = { team: MatchTeam; strength: TeamStrength; features: ReturnType<typeof tacticalFeatures>; unused: string[]; subbed: boolean; baseMidfield: number }
   const sides: Record<MatchSide, Side> = {
-    local: { team: local, strength: calculateTeamStrength(local), features: tacticalFeatures(local.lineup, input.catalog), unused: [...(benches?.local ?? [])], subbed: false, baseMidfield: 0 },
-    cpu: { team: cpu, strength: calculateTeamStrength(cpu), features: tacticalFeatures(cpu.lineup, input.catalog), unused: [...(benches?.cpu ?? [])], subbed: false, baseMidfield: 0 },
+    local: { team: local, strength: calculateTeamStrength(local), features: tacticalFeatures(local.lineup, input.catalog, input.formations?.local), unused: [...(benches?.local ?? [])], subbed: false, baseMidfield: 0 },
+    cpu: { team: cpu, strength: calculateTeamStrength(cpu), features: tacticalFeatures(cpu.lineup, input.catalog, input.formations?.cpu), unused: [...(benches?.cpu ?? [])], subbed: false, baseMidfield: 0 },
   }
   const substitutionRandom = benches ? createSeededRandom(`${input.seed}:subs`) : null
   const substitutionLog: { minute: (typeof MATCH_MINUTES)[number]; side: MatchSide; outPlayerId: string; inPlayerId: string }[] = []
@@ -146,14 +158,14 @@ export function simulateMatch(input: SimulationInput): MatchResult {
         const incomingId = state.unused.splice(Math.floor(substitutionRandom() * state.unused.length), 1)[0]
         const incoming = input.catalog.find((player) => player.id === incomingId)!
         const originals = new Set(Object.values(key === 'local' ? input.localLineup : input.cpuLineup))
-        const options = DRAFT_SLOTS.filter((slot) => slot.position === incoming.position && slot.position !== 'ARQ' && originals.has(state.team.lineup[slot.id] ?? ''))
+        const options = formationSlots(input.formations?.[key]).filter((slot) => slot.position === incoming.position && slot.position !== 'ARQ' && originals.has(state.team.lineup[slot.id] ?? ''))
         if (!options.length) continue
         const slot = options[Math.floor(substitutionRandom() * options.length)]
         const outId = state.team.lineup[slot.id]!
         const lineup = { ...state.team.lineup, [slot.id]: incomingId } as DraftLineup
         const players = DRAFT_SLOT_IDS.map((id: DraftSlotId) => input.catalog.find((player) => player.id === lineup[id])!)
         state.team = { ...state.team, lineup, players }
-        state.strength = calculateTeamStrength(state.team); state.features = tacticalFeatures(lineup, input.catalog); state.subbed = true
+        state.strength = calculateTeamStrength(state.team); state.features = tacticalFeatures(lineup, input.catalog, input.formations?.[key]); state.subbed = true
         substitutionLog.push({ minute, side: key, outPlayerId: outId, inPlayerId: incomingId })
         changes.push({ minute, side: key, type: 'substitution', playerId: incomingId, outPlayerId: outId })
       }
@@ -163,7 +175,11 @@ export function simulateMatch(input: SimulationInput): MatchResult {
       local: tacticalAdjustment(selection.local, sides.local.features, sides.cpu.features, selection.cpu, blockIndex),
       cpu: tacticalAdjustment(selection.cpu, sides.cpu.features, sides.local.features, selection.local, blockIndex),
     }
-    for (const key of ['local', 'cpu'] as const) for (const sector of ['attack', 'defense', 'midfield'] as const) adjustmentTotals[key][sector] += adjustment[key][sector]
+    for (const key of ['local', 'cpu'] as const) {
+      const affinity = input.formations ? formationAffinity(input.formations[key], selection[key]) : ZERO_ADJUSTMENT
+      adjustment[key] = { attack: adjustment[key].attack + affinity.attack, defense: adjustment[key].defense + affinity.defense, midfield: adjustment[key].midfield + affinity.midfield }
+      for (const sector of ['attack', 'defense', 'midfield'] as const) adjustmentTotals[key][sector] += adjustment[key][sector]
+    }
     const strengthFor = (key: MatchSide) => {
       const qualityBonus = input.rosterBonus ? squadQuality(sides[key].team.players).bonus : 0
       qualityTotals[key] += qualityBonus
@@ -174,13 +190,14 @@ export function simulateMatch(input: SimulationInput): MatchResult {
     // Versioned action models: v1 has three opportunities per block, v2 four.
     // Stored/classic simulations retain their original parameters and stream.
     const events: MatchEvent[] = [...changes]
-    const lively = input.actionModel === 'action-v2'
+    const calibrated = input.actionModel === 'action-v3'
+    const lively = input.actionModel === 'action-v2' || calibrated
     for (let opportunity = 0; opportunity < (lively ? 4 : input.actionModel ? 3 : 1); opportunity++) {
       const classicChance = initiativeChance(effective.local, effective.cpu)
-      const localAttackChance = input.actionModel ? clamp(.5 + (classicChance - .5) * 3.5, .15, .85) : classicChance
+      const localAttackChance = calibrated ? opportunityChances(effective.local, effective.cpu) : input.actionModel ? clamp(.5 + (classicChance - .5) * 3.5, .15, .85) : classicChance
       const side: MatchSide = random() < localAttackChance ? 'local' : 'cpu'
       const opponent: MatchSide = side === 'local' ? 'cpu' : 'local'
-      events.push(event(minute, side, 'attack', attacker(sides[side].team, random)))
+      events.push(event(minute, side, 'attack', attacker(sides[side].team, random, calibrated)))
       const shootingPower = effective[side].attack + effective[side].midfield * .16
       const resistance = effective[opponent].defense + effective[opponent].midfield * .12
       const shotChance = clamp((lively ? .76 : .65) + (shootingPower - resistance) / 180 + (random() - .5) * .2, lively ? .68 : .35, lively ? .9 : .86)
@@ -189,15 +206,15 @@ export function simulateMatch(input: SimulationInput): MatchResult {
         const onTarget = random() < clamp((lively ? .72 : .65) + (shootingPower - resistance) / 220, lively ? .66 : .38, lively ? .88 : .84)
         if (onTarget) {
           stats[side].shotsOnTarget++
-          const goalChance = clamp((lively ? .34 : input.actionModel ? .3 : .4) + (shootingPower - resistance) / (input.actionModel ? 75 : 240) + (random() - .5) * .12, lively ? .28 : .14, .62)
+          const goalChance = calibrated ? finishingChance(effective[side], effective[opponent], sides[side].team.players.filter((p) => p.position !== 'ARQ' && p.overall_rating >= 98).length) : clamp((lively ? .34 : input.actionModel ? .3 : .4) + (shootingPower - resistance) / (input.actionModel ? 75 : 240) + (random() - .5) * .12, lively ? .28 : .14, .62)
           if (random() < goalChance) {
             score[side]++
-            events.push(event(minute, side, 'goal', attacker(sides[side].team, random)))
+            events.push(event(minute, side, 'goal', attacker(sides[side].team, random, calibrated)))
           } else {
             stats[opponent].saves++
             events.push(event(minute, opponent, 'save'))
           }
-        } else events.push(event(minute, side, 'shot', attacker(sides[side].team, random)))
+        } else events.push(event(minute, side, 'shot', attacker(sides[side].team, random, calibrated)))
       } else {
         stats[opponent].recoveries++
         events.push(event(minute, opponent, 'recovery'))
@@ -217,6 +234,8 @@ export function simulateMatch(input: SimulationInput): MatchResult {
   }
   return {
     catalogVersion: input.catalogVersion, rulesVersion: input.rulesVersion, seed: input.seed, local, cpu, strengths, stats, blocks,
+    ...(input.seriesFormat ? { seriesFormat: input.seriesFormat } : {}),
+    ...(input.formations ? { formations: input.formations } : {}),
     ...(input.actionModel ? { actionModel: input.actionModel } : {}),
     score, winner: score.local === score.cpu ? 'draw' : score.local > score.cpu ? 'local' : 'cpu',
     ...(input.rosterBonus || input.coaches ? { effectiveStrengths: { local: meanStrength('local'), cpu: meanStrength('cpu') } } : {}),

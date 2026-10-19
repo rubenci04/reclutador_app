@@ -2,6 +2,8 @@
 import { readFileSync } from 'node:fs'
 import { PGlite } from '@electric-sql/pglite'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { buildInitialDuel } from './onlineDuel'
+import { startCoinToss, revealCoinToss } from '../recruiter-duel/auctionEngine'
 
 const db = new PGlite()
 const host = '00000000-0000-4000-8000-0000000000a1'
@@ -59,6 +61,27 @@ beforeAll(async () => {
 afterAll(async () => { await db.close() })
 
 describe('online duel: starting', () => {
+  it('accepts a real mixed-category draw and advances both participants to arranging without a migration', async () => {
+    await asUser(host)
+    const created = await call<{ roomId: string; inviteCode: string }>("public.online_create_room('Ana',$1)", [nextAction()])
+    await asUser(guest)
+    let latest = (await call<{ version: number }>('public.online_join_room($1,$2,$3)', [created.inviteCode, 'Beto', nextAction()])).version
+    for (const user of [host, guest]) {
+      await asUser(user)
+      latest = (await call<{ version: number }>("public.online_command($1,$2,$3,'SET_READY','{\"ready\":true}'::jsonb)", [created.roomId, nextAction(), latest])).version
+    }
+    await asUser(host)
+    const initial = buildInitialDuel({ host: 'Ana', guest: 'Beto' }, 'SPAIN_LEGENDS', 'ARGENTINA_CURRENT')
+    latest = (await call<{ version: number }>('public.online_start_duel($1,$2,$3,$4::jsonb)', [created.roomId, nextAction(), latest, JSON.stringify(initial)])).version
+    const tossed = startCoinToss(initial, 'heads'); if (!tossed.ok) throw new Error(tossed.error)
+    latest = (await call<{ version: number }>('public.online_submit_state($1,$2,$3,$4::jsonb)', [created.roomId, nextAction(), latest, JSON.stringify(tossed.game)])).version
+    const revealed = revealCoinToss(tossed.game); if (!revealed.ok) throw new Error(revealed.error)
+    await call('public.online_submit_state($1,$2,$3,$4::jsonb)', [created.roomId, nextAction(), latest, JSON.stringify(revealed.game)])
+    await asUser(guest)
+    const seen = await call<{ state: { phase: string; categoryPair: unknown } }>('public.online_snapshot($1)', [created.roomId])
+    expect(seen.state.phase).toBe('TEAMS_COMPLETED')
+    expect(seen.state.categoryPair).toEqual(initial.categoryPair)
+  })
   it('only the host starts, with a well-formed initial state, and both members then see it', async () => {
     await asUser(guest)
     await expect(call('public.online_start_duel($1,$2,$3,$4::jsonb)', [room, nextAction(), version, JSON.stringify(state())])).rejects.toThrow(/NOT_YOUR_TURN/)

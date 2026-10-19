@@ -1,9 +1,11 @@
 import { clubVisuals } from './clubVisuals'
+import leagueRows from '../../data/league-collections/players.json'
 
 export interface ClubIdentity { readonly id: string; readonly name: string }
 
 /** Stable IDs shared by historical references, current affiliations, histories and badges. */
 export const clubRegistry: Readonly<Record<string, ClubIdentity | undefined>> = Object.freeze(Object.fromEntries([
+  ...leagueRows.map((p) => [p.club_tag, { id: p.club_tag, name: p.club }]),
   ...Object.values(clubVisuals).filter((club) => club !== undefined).map((club) => [club.id, { id: club.id, name: club.name }]),
   ...[
     ['inter_miami', 'Inter Miami CF'], ['pumas_unam', 'Pumas UNAM'], ['rosario_central', 'Rosario Central'],

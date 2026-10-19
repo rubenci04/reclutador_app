@@ -1,0 +1,52 @@
+import { describe, expect, it } from 'vitest'
+import { writeFileSync } from 'node:fs'
+import { CATEGORY_GROUPS } from '../themed-modes/categoryTree'
+import { catalogForMode } from '../themed-modes/modeCatalog'
+import { defaultBudgetForMode } from '../player-catalog/leagueCollections'
+import { createRecruiterDuel } from './auctionEngine'
+import { createDrawContext } from './drawHistory'
+import { CLASSIC_CONFIG } from './matchConfig'
+
+describe('collection size and draw rarity', () => {
+  it('keeps all fourteen editions between 150 and 300, preserving players outside the playable cut', () => {
+    const counts = CATEGORY_GROUPS.flatMap((g) => g.modes).map((mode) => {
+      const players = catalogForMode(mode)
+      expect(players.length, mode).toBeGreaterThanOrEqual(150)
+      expect(players.length, mode).toBeLessThanOrEqual(300)
+      return { mode, count: players.length, stars: players.filter((p) => p.overall_rating >= 98).length, positions: Object.fromEntries(['ARQ', 'DEF', 'MED', 'DEL'].map((pos) => [pos, players.filter((p) => p.position === pos).length])) }
+    })
+    writeFileSync('docs/qa/COLLECTION-SIZES.json', JSON.stringify(counts, null, 2) + '\n')
+  })
+  it.each(['GLOBAL_CLASSIC', 'LEGENDS_ONLY', 'SPAIN_LEGENDS'] as const)('%s keeps S+ rare but obtainable while maintaining seeded variety and exclusive positions', (mode) => {
+    const catalog = catalogForMode(mode)
+    const byId = new Map(catalog.map((p) => [p.id, p]))
+    const config = { ...CLASSIC_CONFIG, budget: defaultBudgetForMode(mode), coaches: true, coachReserve: 8 }
+    let baselineStars = 0; let rareStars = 0
+    const unique = new Set<string>(); const signatures = new Set<string>()
+    for (let i = 0; i < 160; i++) {
+      for (const policy of [undefined, 'rarity-v2'] as const) {
+        const result = createRecruiterDuel(catalog, `rarity:${mode}:${i}`, createDrawContext(catalog, [], policy), config)
+        expect(result.ok).toBe(true)
+        if (!result.ok) continue
+        expect(new Set(result.game.rounds.map((r) => r.playerId)).size).toBe(22)
+        const stars = result.game.rounds.filter((r) => byId.get(r.playerId)!.overall_rating >= 98).length
+        if (policy) {
+          rareStars += stars
+          result.game.rounds.forEach((r) => unique.add(r.playerId))
+          signatures.add(result.game.rounds.map((r) => r.playerId).join(','))
+          for (const [pos, count] of [['ARQ', 2], ['DEF', 8], ['MED', 6], ['DEL', 6]] as const) expect(result.game.rounds.filter((r) => r.position === pos)).toHaveLength(count)
+        } else baselineStars += stars
+      }
+    }
+    const theoreticalUniformStars = 160 * (['ARQ', 'DEF', 'MED', 'DEL'] as const).reduce((sum, pos, i) => sum + [2, 8, 6, 6][i] * catalog.filter((p) => p.position === pos && p.overall_rating >= 98).length / catalog.filter((p) => p.position === pos).length, 0)
+    const report = { mode, draws: 160, baselineStars, rareStars, theoreticalUniformStars, uniquePlayers: unique.size, distinctDraws: signatures.size }
+    console.info('rarity-v2', JSON.stringify(report))
+    writeFileSync(`docs/qa/RARITY-${mode}.json`, JSON.stringify(report, null, 2) + '\n')
+    // Old economy often eliminated every star. Rarity must not make them impossible.
+    expect(rareStars).toBeGreaterThan(0)
+    expect(rareStars).toBeLessThan(theoreticalUniformStars * .65)
+    expect(rareStars / 160).toBeLessThan(.15)
+    expect(unique.size).toBeGreaterThan(catalog.length * .65)
+    expect(signatures.size).toBe(160)
+  }, 30000)
+})

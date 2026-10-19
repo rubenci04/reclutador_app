@@ -2,9 +2,10 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
 import type { LineupSwapError } from '../tactics/lineupOrdering'
-import { ROLE_LINE, type FormationRole } from '../tactics/roles'
+import { type FormationRole } from '../tactics/roles'
+import { FORMATION_IDS, formationSlots, organizeFormation, type FormationId } from '../tactics/formations'
+import { FormationGuide } from '../tactics/FormationGuide'
 import type { RecruiterDuelGame, RecruiterId } from './auctionTypes'
-import { DRAFT_SLOTS } from '../draft/draftTypes'
 import { TeamPitchBoard } from './TeamPitchBoard'
 
 interface Props {
@@ -20,15 +21,20 @@ interface Props {
   readonly onBenchSwap?: (benchIndex: number, slot: FormationRole) => boolean
   readonly onConfirm: () => void
   readonly onEdit: () => void
+  readonly onFormationChange?: (formation: FormationId) => void
 }
 
 /** One participant's post-auction ordering step: pick two shirts of the same line to swap them, then confirm. */
-export function LineupOrganizer({ game, participant, name, catalog, confirmed, locked = false, onSwap, onBenchSwap, onConfirm, onEdit }: Props) {
+export function LineupOrganizer({ game, participant, name, catalog, confirmed, locked = false, onSwap, onBenchSwap, onConfirm, onEdit, onFormationChange }: Props) {
   const { t } = useTranslation()
   const [selected, setSelected] = useState<FormationRole | null>(null)
   const [editing, setEditing] = useState(false)
   const [message, setMessage] = useState<{ kind: 'info' | 'error'; text: string } | null>(null)
   const [benchTarget, setBenchTarget] = useState<Record<number, string>>({})
+  const team = game.teams[participant]
+  const slots = formationSlots(team.formation)
+  const owned = [...Object.values(team.lineup), ...(team.bench ?? []).map((p) => p.playerId)].filter((id): id is string => Boolean(id))
+  const roleLabel = (id: FormationRole) => team.formation && team.formation !== '4-3-3' ? t(`positions.${slots.find((s) => s.id === id)!.position}`) : t(`lineup.roles.${id}`)
   const bench = (game.teams[participant].bench ?? []).flatMap((place, index) => place.playerId ? [{ index, place, player: catalog.find((candidate) => candidate.id === place.playerId) }] : [])
   const playerName = (slot: FormationRole) => catalog.find((player) => player.id === game.teams[participant].lineup[slot])?.name ?? ''
   const drop = (from: FormationRole, to: FormationRole) => {
@@ -42,7 +48,7 @@ export function LineupOrganizer({ game, participant, name, catalog, confirmed, l
     if (confirmed) return
     if (!selected) {
       setSelected(slot)
-      return setMessage({ kind: 'info', text: t('lineup.selectedStatus', { player: playerName(slot), line: t(`positions.${ROLE_LINE[slot]}`) }) })
+      return setMessage({ kind: 'info', text: t('lineup.selectedStatus', { player: playerName(slot), line: t(`positions.${slots.find((s) => s.id === slot)!.position}`) }) })
     }
     if (selected === slot) { setSelected(null); return setMessage(null) }
     const first = playerName(selected); const second = playerName(slot)
@@ -52,19 +58,20 @@ export function LineupOrganizer({ game, participant, name, catalog, confirmed, l
   }
   return <section className="lineup-organizer" aria-labelledby={`lineup-title-${participant}`}>
     <h2 id={`lineup-title-${participant}`}>{t('lineup.turn', { participant: name })}</h2>
+    {onFormationChange && <div className="formation-selector"><label>{t('playtest.formation')}<select disabled={confirmed || locked} value={team.formation ?? '4-3-3'} onChange={(e) => { onFormationChange(e.target.value as FormationId); setSelected(null); setBenchTarget({}) }}>{FORMATION_IDS.map((id) => <option key={id} value={id} disabled={!organizeFormation(owned, id, catalog)}>{id}</option>)}</select></label><p>{t('playtest.formationHelp')}</p><FormationGuide /></div>}
     <p>{t(editing ? 'lineup.instructions' : 'lineup.reviewHint')}</p>
     {!confirmed && <button className={editing ? 'primary-action' : 'secondary-action'} aria-pressed={editing} onClick={() => { setEditing(!editing); setSelected(null); setMessage(null) }}>{t(editing ? 'lineup.editModeOn' : 'lineup.editMode')}</button>}
     {editing && !confirmed && <>
-      {selected && <p className="lineup-selected" role="status">{t('lineup.selectedBanner', { player: playerName(selected), role: t(`lineup.roles.${selected}`) })}</p>}
+      {selected && <p className="lineup-selected" role="status">{t('lineup.selectedBanner', { player: playerName(selected), role: roleLabel(selected) })}</p>}
       <p className="lineup-legend">{t('lineup.dragHint')} <span><i className="apt apt-NATURAL" />{t('lineup.legend.NATURAL')}</span> <span><i className="apt apt-ADAPTED" />{t('lineup.legend.ADAPTED')}</span> <span><i className="apt apt-UNKNOWN" />{t('lineup.legend.UNKNOWN')}</span></p>
     </>}
     {!confirmed && onBenchSwap && bench.length > 0 && <div className="bench-swap" role="group" aria-label={t('lineup.benchSwap.title')}>
-      <h3>{t('lineup.benchSwap.title')}</h3><p>{t('lineup.benchSwap.hint')}</p>
+      <h3>{t('lineup.benchSwap.title')}</h3><p>{t('lineup.benchSwap.hint')}</p>{game.manualBench && <p>{t('playtest.manualBench')}</p>}
       {bench.map(({ index, place, player }) => {
-        const options = DRAFT_SLOTS.filter((slot) => slot.position === place.position)
+        const options = slots.filter((slot) => slot.position === place.position)
         const target = benchTarget[index] ?? options[0]?.id
         return <div key={index} className="bench-swap-row"><strong>{player?.name}</strong>
-          <label>{t('lineup.benchSwap.replace')}<select value={target} onChange={(event) => setBenchTarget({ ...benchTarget, [index]: event.target.value })}>{options.map((slot) => <option key={slot.id} value={slot.id}>{t(`lineup.roles.${slot.id}`)} · {catalog.find((candidate) => candidate.id === game.teams[participant].lineup[slot.id])?.name}</option>)}</select></label>
+          <label>{t('lineup.benchSwap.replace')}<select value={target} onChange={(event) => setBenchTarget({ ...benchTarget, [index]: event.target.value })}>{options.map((slot) => <option key={slot.id} value={slot.id}>{roleLabel(slot.id)} · {catalog.find((candidate) => candidate.id === game.teams[participant].lineup[slot.id])?.name}</option>)}</select></label>
           <button className="secondary-action" onClick={() => { const slot = target as FormationRole; const out = playerName(slot); if (onBenchSwap(index, slot)) setMessage({ kind: 'info', text: t('lineup.benchSwap.done', { incoming: player?.name, outgoing: out }) }) }}>{t('lineup.benchSwap.action')}</button></div>
       })}
     </div>}

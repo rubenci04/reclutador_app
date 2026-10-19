@@ -1,5 +1,7 @@
 # Reclutador
 
+Actualización de playtest 19/10: action-v3, 150–300 jugadores por edición, Global actual 300, leyendas activas en ambas ediciones, suplentes manuales, nueve formaciones, ida/vuelta con tercero de desempate, categorías distintas y guías por etapa. Ver [ADR-0017](docs/decisions/ADR-0017.md) y [validación y límites](docs/qa/PLAYTEST-EXPANSION.md).
+
 Simulación actualizada: **action-v2** en partidas nuevas, 24 oportunidades mostradas una a una y estadísticas durante el relato. Mantiene series con el mismo plantel y reduce los 0–0 sin forzar goles. La versión del motor aparece en el partido para identificar reportes. Ver [decisión y fórmulas](docs/decisions/ADR-0016.md) y [validación/pedido completo](docs/qa/ACTION-V2.md).
 
 Categorías: Global, Liga Argentina, Liga inglesa, Liga española, Liga brasileña, Latinoamérica y Europa. Cada una abre actuales 2026 y leyendas. Latinoamérica/Europa seleccionan por nacionalidad en cualquier liga, con 100M para actuales y 150M para leyendas. Ver [ADR-0015](docs/decisions/ADR-0015.md).

@@ -1,4 +1,5 @@
 import type { Player } from '../../types/player'
+import type { FormationId } from './formations'
 import type { DraftLineup } from '../draft/draftTypes'
 import { STRATEGY_PROFILES, type StrategyId } from './strategies'
 
@@ -50,7 +51,19 @@ function mean(players: readonly Player[], pick: (player: Player) => number) {
   return players.reduce((total, player) => total + pick(player), 0) / players.length
 }
 
-export function tacticalFeatures(lineup: DraftLineup, catalog: readonly Player[]): TacticalFeatures {
+export function tacticalFeatures(lineup: DraftLineup, catalog: readonly Player[], formation?: FormationId): TacticalFeatures {
+  if (formation && formation !== '4-3-3') {
+    const players = Object.values(lineup).map((id) => catalog.find((p) => p.id === id)!)
+    const defenders = players.filter((p) => p.position === 'DEF'); const mids = players.filter((p) => p.position === 'MED')
+    const forwards = players.filter((p) => p.position === 'DEL'); const keeper = players.find((p) => p.position === 'ARQ')!
+    return {
+      flankThreat: mean(forwards, (p) => p.att_rating) * .7 + mean(defenders, (p) => (p.att_rating + p.phy_rating) / 2) * .3,
+      fullbackDefense: mean(defenders, (p) => p.def_rating), midfieldControl: mean(mids, (p) => p.men_rating * .6 + p.att_rating * .4),
+      transitionThreat: mean(forwards, (p) => (p.att_rating + p.phy_rating) / 2), stamina: mean([...mids, ...forwards], (p) => p.phy_rating),
+      centralDefense: mean(defenders, (p) => p.def_rating) * .5 + mean(mids, (p) => p.def_rating) * .2 + keeper.def_rating * .3,
+      backlineRecovery: mean(defenders, (p) => p.phy_rating),
+    }
+  }
   const at = (...slots: (keyof DraftLineup)[]) => slots.map((slot) => catalog.find((player) => player.id === lineup[slot])!)
   const wingers = at('LW', 'RW'); const backs = at('LB', 'RB'); const mids = at('LCM', 'CDM', 'RCM')
   const forwards = at('LW', 'ST', 'RW'); const runners = at('LCM', 'CDM', 'RCM', 'LW', 'ST', 'RW')

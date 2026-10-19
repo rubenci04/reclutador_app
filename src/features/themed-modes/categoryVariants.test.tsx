@@ -33,7 +33,7 @@ describe('current and legend category variants', () => {
     expect(onChange).not.toHaveBeenCalled()
   })
   it('keeps the two original catalogs intact and enables the supplied league editions', () => {
-    expect(catalogForMode('GLOBAL_CLASSIC')).toBe(DRAFT_CATALOG)
+    expect(catalogForMode('GLOBAL_CLASSIC')).toHaveLength(300)
     expect(catalogForMode('ARGENTINA_CLUBS')).toEqual(ARGENTINA_PLAYERS)
     const legends = catalogForMode('ARGENTINA_LEGENDS')
     expect(legends).toHaveLength(150)
