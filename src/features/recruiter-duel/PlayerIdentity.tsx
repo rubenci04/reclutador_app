@@ -1,5 +1,5 @@
 import coachPhotos from '../../data/coach-photos.json'
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
 import { getPlayerTier } from '../player-catalog/getPlayerTier'
@@ -13,13 +13,15 @@ export function PlayerIdentity({ player }: { readonly player:Player }) {
   const [failed,setFailed] = useState(false)
   const [flagFailed,setFlagFailed] = useState(false)
   const photo = approvedPhoto(player.id); const flag = flagUrl(player.nationality)
-  return <div className="single-player-card"><div className="player-avatar">
+  const tier = getPlayerTier(player.overall_rating)
+  const tierClass = player.overall_rating >= 98 ? 'tier-card-s-plus' : `tier-card-${tier.toLowerCase()}`
+  return <div className={`single-player-card ${tierClass} pos-${player.position}`}><div className="player-avatar">
     {photo && !failed ? <img src={photo.path} alt={t('cpu.photoAlt',{player:player.name})} onError={() => setFailed(true)} /> : <PlayerAvatar player={player} />}
     <b>{player.overall_rating}</b></div><article><small>{t('duel.playerDrawn')}</small><h2>{player.name}</h2>
-    <ul className="player-ratings" aria-label={t('ratings.label', { rating: player.overall_rating })}>{([['att', player.att_rating], ['def', player.def_rating], ['phy', player.phy_rating], ['men', player.men_rating]] as const).map(([key, value]) => <li key={key} className={value >= 90 ? 'top-rating' : undefined}><b>{value}</b><small>{t(`ratings.${key}`)}</small></li>)}</ul>
-    <p>{flag && !flagFailed ? <img className="nationality-flag" src={flag} alt={t('cpu.flagAlt',{code:player.nationality})} onError={() => setFlagFailed(true)} /> : <span aria-label={t('cpu.flagMissing')}>◇</span>} {player.nationality} · {t(`positions.${player.position}`)} · {t('duel.tier',{tier:getPlayerTier(player.overall_rating)})}</p>
+    <ul className="player-ratings" aria-label={t('ratings.label', { rating: player.overall_rating })}>{([['att', player.att_rating], ['def', player.def_rating], ['phy', player.phy_rating], ['men', player.men_rating]] as const).map(([key, value]) => <li key={key} className={value >= 90 ? 'top-rating' : value >= 85 ? 'high-rating' : undefined}><b>{value}</b><small>{t(`ratings.${key}`)}</small><i className="rating-bar" aria-hidden="true" style={{ '--rating': `${Math.min(99, value)}%` } as CSSProperties} /></li>)}</ul>
+    <p>{flag && !flagFailed ? <img className="nationality-flag" src={flag} alt={t('cpu.flagAlt',{code:player.nationality})} onError={() => setFlagFailed(true)} /> : <span aria-label={t('cpu.flagMissing')}>◇</span>} {player.nationality} · <span className="pos-pill">{t(`positions.${player.position}`)}</span> · <span className="tier-badge">{t('duel.tier',{tier})}</span></p>
     {specificPosition(player) && <p>{t('playtest.specificPosition', { role: t(`playtest.roles.${specificPosition(player)}`) })}</p>}
-    <PlayerClubDetails player={player} /><b>{t('duel.basePrice',{amount:player.price})}</b></article></div>
+    <PlayerClubDetails player={player} /><b className="base-price-chip">{t('duel.basePrice',{amount:player.price})}</b></article></div>
 }
 
 export function VisualCredits() {

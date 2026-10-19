@@ -27,7 +27,7 @@ export function CoachMarket({ game, participant, name, locked, onHire, onDecline
   const effectText = (coach: Coach) => { const e = coachEffect(coach); return { attack: e.attack.toFixed(1), defense: e.defense.toFixed(1), midfield: e.midfield.toFixed(1) } }
   if (hired) return <section className="coach-market" aria-label={t('coach.title', { name })}>
     <h3>{t('coach.title', { name })}</h3>
-    <article className="coach-card coach-hired-card">
+    <article className="coach-card coach-hired-card" data-tier={hired.tier} data-focus={hired.focus}>
       <CoachPortrait coach={hired} />
       <strong>{label(hired)}</strong>
       <span>{t(`coach.status.${hired.status}`)}</span>
@@ -40,7 +40,7 @@ export function CoachMarket({ game, participant, name, locked, onHire, onDecline
     <h3>{t('coach.title', { name })}</h3>
     <p className="market-left">{t('coach.left', { amount: left, count: coachOffers(game.seed, coachReserveFor(game.config), (game.categoryPair?.[participant] ?? game.coachMode))[participant].length })}</p>
     {locked ? <p>{t('coach.closed')}</p> : <>
-      <div className="market-options coach-grid">{coachOffers(game.seed, coachReserveFor(game.config), (game.categoryPair?.[participant] ?? game.coachMode))[participant].map((coach) => <article key={coach.id} className="coach-card">
+      <div className="market-options coach-grid">{coachOffers(game.seed, coachReserveFor(game.config), (game.categoryPair?.[participant] ?? game.coachMode))[participant].map((coach) => <article key={coach.id} className="coach-card" data-tier={coach.tier} data-focus={coach.focus}>
         <CoachPortrait coach={coach} />
         <strong>{label(coach)}</strong>
         <span>{t(`coach.status.${coach.status}`)} · {coach.deathYear ? t('coach.lifespan', { birth: coach.birthYear, death: coach.deathYear, age: coachAge(coach) }) : t('coach.referenceAge', { year: COACH_AS_OF_YEAR, age: coachAge(coach) })}</span>

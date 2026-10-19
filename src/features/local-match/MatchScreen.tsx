@@ -28,6 +28,16 @@ interface MatchScreenProps {
 
 function money(value: number) { return `${value}M` }
 
+const EVENT_ICONS: Readonly<Record<MatchEvent['type'], string>> = { goal: '⚽', shot: '🎯', save: '🧤', attack: '⚔', recovery: '↺', substitution: '⇄', final: '⏱' }
+const EVENT_WEIGHT: Partial<Record<MatchEvent['type'], number>> = { attack: 1, shot: 2, goal: 3 }
+/** Percentage (0-100) of the danger created so far that belongs to the local side; 50 before anything happens. */
+function momentumShare(events: readonly MatchEvent[]) {
+  let local = 0; let cpu = 0
+  for (const item of events) { const weight = EVENT_WEIGHT[item.type] ?? 0; if (item.side === 'local') local += weight; else if (item.side === 'cpu') cpu += weight }
+  return local + cpu === 0 ? 50 : Math.round((local / (local + cpu)) * 100)
+}
+function share(local: number, cpu: number) { return local + cpu === 0 ? 50 : (local / (local + cpu)) * 100 }
+
 function teamPlayers(result: MatchResult, side: MatchSide) { return result[side].players.map((player) => player.name).join(' · ') }
 
 export function MatchScreen({ result, onRematch, onNewMatch = onRematch, onReturn, localName, cpuName, onFinished, catalog = DRAFT_CATALOG, showNewMatchActions = true, onReplayStart, resultExplanationNote }: MatchScreenProps) {
@@ -58,7 +68,8 @@ export function MatchScreen({ result, onRematch, onNewMatch = onRematch, onRetur
   const score = visibleBlocks.at(-1)?.score ?? { local: 0, cpu: 0 }
   const events = useMemo(() => visibleBlocks.flatMap((block) => block.events), [visibleBlocks])
   const displayedStats = (result.actionModel === 'action-v2' || result.actionModel === 'action-v3') && !finished ? visibleStats(events) : result.stats
-  const recentGoal = visibleBlocks.at(-1)?.events.find((event) => event.type === 'goal')
+  const momentum = momentumShare(events)
+  const recentGoal =visibleBlocks.at(-1)?.events.find((event) => event.type === 'goal')
   const recentAttack = visibleBlocks.at(-1)?.events.filter((event) => event.type === 'attack').at(-1)
   const outcome = result.winner === 'draw' ? 'draw' : result.winner === 'local' ? 'victory' : 'defeat'
   const powers = result.effectiveStrengths ?? result.strengths
@@ -70,13 +81,17 @@ export function MatchScreen({ result, onRematch, onNewMatch = onRematch, onRetur
       <HelpTip topic="match" />
       <header className="match-heading"><p className="eyebrow"><span />{finished ? t('match.final') : t('match.playing')}</p><button className="secondary-action" onClick={onReturn}>{t('match.returnDraft')}</button></header>
       <div className="match-scoreboard"><div><strong>{teamName('local')}</strong><small>{money(result.local.spent)} · {result.local.averageRating} GRL</small><small>{t('match.globalPower', { value: powers.local.global })}</small></div><div className="match-score"><span>{score.local}</span><small>{finished ? t(`match.${outcome}`) : t('match.minute', { minute: playbackBlocks[Math.min(blockIndex, playbackBlocks.length - 1)].minute })}</small><span>{score.cpu}</span></div><div><strong>{teamName('cpu')}</strong><small>{money(result.cpu.spent)} · {result.cpu.averageRating} GRL</small><small>{t('match.globalPower', { value: powers.cpu.global })}</small></div></div>
+      <div className="momentum" role="img" aria-label={t('live.momentum', { local: momentum, cpu: 100 - momentum })}>
+        {!finished && <span className="live-chip"><i aria-hidden="true" />{t('live.inPlay')}</span>}
+        <div className="momentum-bar" aria-hidden="true"><i className="momentum-local" style={{ width: `${momentum}%` }} /></div>
+      </div>
       <p className="power-explanation">{t('match.powerExplanation')} {result.actionModel && <small className="match-model">{t('match.model', { version: result.actionModel })}</small>}</p>
       {result.actionModel === 'action-v3' && <details className="match-probabilities"><summary>{t('playtest.measurable')}</summary><p>{t('playtest.probabilities', probabilityExplanation(result))}</p></details>}
       {(result.actionModel === 'action-v2' || result.actionModel === 'action-v3') && <p className="market-hint">{t('match.actionHelp')}</p>}
       {!finished && <div className={`live-match-pitch ${recentAttack?.side === 'cpu' ? 'toward-local' : ''}`} aria-label={t('series.livePitch')}><span className="live-center-circle" aria-hidden="true" /><span className="live-ball" aria-hidden="true">⚽</span><small>{recentAttack ? t('series.attacking', { name: teamName(recentAttack.side) }) : t('match.minute', { minute: 0 })}</small></div>}
       {recentGoal && <div className="goal-flash" key={result.seed + ':' + replayId + ':' + blockIndex} role="status"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27" /><path d="m30 14 14 10-5 17H21l-5-17Z" /></svg>{t('match.goalCelebration', { team: teamName(recentGoal.side) })}</div>}
       <div className="match-progress" aria-label={t('match.progress')}><span style={{ width: `${(Math.min(blockIndex, playbackBlocks.length) / playbackBlocks.length) * 100}%` }} /></div>
-      <div className="match-layout"><section className="match-narration"><h2>{t('match.versus')}</h2>{events.length ? <ol>{events.map((item, index) => <li className={item.type === 'goal' ? 'goal-event' : ''} key={`${item.minute}-${index}`}><time>{item.minute}'</time><span>{eventText(item)}</span>{item.tactic && <small className="event-tactic">{t('match.influence', { tactic: t(`match.tacticNotes.${item.tactic}`) })}</small>}</li>)}</ol> : <p>{t('match.minute', { minute: 0 })}</p>}</section><section className="match-stats"><h2>{t('match.statistics')}</h2>{(['shots', 'shotsOnTarget', 'saves', 'recoveries', 'possession'] as const).map((stat) => <div key={stat}><span>{displayedStats.local[stat]}{stat === 'possession' ? '%' : ''}</span><small>{t(`match.${stat === 'shotsOnTarget' ? 'onTarget' : stat}`)}</small><span>{displayedStats.cpu[stat]}{stat === 'possession' ? '%' : ''}</span></div>)}</section></div>
+      <div className="match-layout"><section className="match-narration"><h2>{t('match.versus')}</h2>{events.length ? <ol>{events.map((item, index) => <li className={`event-${item.type}${item.type === 'goal' ? ' goal-event' : ''}`} key={`${item.minute}-${index}`}><time>{item.minute}'</time><i className="event-icon" aria-hidden="true">{EVENT_ICONS[item.type]}</i><span>{eventText(item)}</span>{item.tactic && <small className="event-tactic tactic-chip">{t('match.influence', { tactic: t(`match.tacticNotes.${item.tactic}`) })}</small>}</li>)}</ol> : <p>{t('match.minute', { minute: 0 })}</p>}</section><section className="match-stats"><h2>{t('match.statistics')}</h2>{(['shots', 'shotsOnTarget', 'saves', 'recoveries', 'possession'] as const).map((stat) => <div key={stat}><span>{displayedStats.local[stat]}{stat === 'possession' ? '%' : ''}</span><small>{t(`match.${stat === 'shotsOnTarget' ? 'onTarget' : stat}`)}</small><span>{displayedStats.cpu[stat]}{stat === 'possession' ? '%' : ''}</span><div className="stat-bar" aria-hidden="true"><i style={{ width: `${share(displayedStats.local[stat], displayedStats.cpu[stat])}%` }} /></div></div>)}</section></div>
       {finished && <section className="match-summary"><h2>{t(`match.${outcome}`)} · {result.score.local}–{result.score.cpu}</h2><p>{teamPlayers(result, 'local')}</p><p>{teamPlayers(result, 'cpu')}</p><dl><div><dt>{t('match.attackPower')}</dt><dd>{powers.local.attack} · {powers.cpu.attack}</dd></div><div><dt>{t('match.defensePower')}</dt><dd>{powers.local.defense} · {powers.cpu.defense}</dd></div><div><dt>{t('match.midfieldControl')}</dt><dd>{powers.local.midfield} · {powers.cpu.midfield}</dd></div></dl><TacticalSummary result={result} teamName={teamName} /><div className="match-actions">{showNewMatchActions && <><button className="primary-action" onClick={onRematch}>{t('match.rematch')}</button><button className="secondary-action" onClick={onNewMatch}>{t('match.newMatch')}</button></>}<button className="secondary-action" onClick={() => { onReplayStart?.(); setBlockIndex(0); setReplayId((value) => value + 1) }}>{t('match.replay')}</button><button className="secondary-action" onClick={onReturn}>{t('match.returnDraft')}</button></div></section>}
     </section>
   </main>

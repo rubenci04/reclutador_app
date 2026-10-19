@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { STRATEGY_IDS, type StrategyId } from '../tactics/strategies'
 import { FormationGuide } from '../tactics/FormationGuide'
+import { StrategyDiagram } from './StrategyDiagram'
 import { revealedStrategies, type StrategyChoice } from '../tactics/strategyChoice'
 
 interface Props {
@@ -34,9 +35,9 @@ export function StrategyChoicePanel({ choice, chooser, nextChooser, names, onCon
     return <section className="strategy-panel strategy-reveal" aria-live="polite">
       <h2>{t('strategyChoice.revealTitle')}</h2>
       <div className="strategy-reveal-grid">{(['first', 'second'] as const).map((side) => <article key={side} className="strategy-card strategy-revealed">
-        <h3>{names[side]}</h3><strong>{t(`tactics.strategies.${revealed[side]}.name`)}</strong>
+        <h3>{names[side]}</h3><StrategyDiagram id={revealed[side]} /><strong>{t(`tactics.strategies.${revealed[side]}.name`)}</strong>
         <p>{t(`tactics.strategies.${revealed[side]}.objective`)}</p>
-      </article>)}</div>
+      </article>)}<span className="vs-badge" aria-hidden="true">VS</span></div>
       <p className="strategy-note">{t('strategyChoice.noGuarantee')}</p>
       <button className="primary-action" onClick={() => { if (starting.current) return; starting.current = true; if (!onStart()) starting.current = false }}>{t('duel.startMatch')}</button>
     </section>
@@ -54,10 +55,10 @@ export function StrategyChoicePanel({ choice, chooser, nextChooser, names, onCon
     <FormationGuide />
     <div className="strategy-grid" role="radiogroup" aria-labelledby="strategy-title">{STRATEGY_IDS.map((id) => <label key={id} className={`strategy-card${selected === id ? ' chosen' : ''}`}>
       <input type="radio" name="strategy" value={id} checked={selected === id} onChange={() => setSelected(id)} />
-      <strong>{t(`tactics.strategies.${id}.name`)}</strong>
-      <span><b>{t('strategyChoice.seeks')}</b> {t(`tactics.strategies.${id}.objective`)}</span>
-      <span><b>{t('strategyChoice.advantage')}</b> {t(`tactics.strategies.${id}.advantages`)}</span>
-      <span><b>{t('strategyChoice.risk')}</b> {t(`tactics.strategies.${id}.risks`)}</span>
+      <StrategyDiagram id={id} /><strong>{t(`tactics.strategies.${id}.name`)}</strong>
+      <span><b><span aria-hidden="true">🎯</span> {t('strategyChoice.seeks')}</b> {t(`tactics.strategies.${id}.objective`)}</span>
+      <span><b><span aria-hidden="true">⚡</span> {t('strategyChoice.advantage')}</b> {t(`tactics.strategies.${id}.advantages`)}</span>
+      <span><b><span aria-hidden="true">⚠️</span> {t('strategyChoice.risk')}</b> {t(`tactics.strategies.${id}.risks`)}</span>
     </label>)}</div>
     <p className="strategy-note">{t('strategyChoice.noGuarantee')}</p>
     <button className="primary-action" disabled={!selected} onClick={() => { if (selected) { const picked = selected; setSelected(null); onConfirm(picked) } }}>{t('strategyChoice.confirm')}</button>

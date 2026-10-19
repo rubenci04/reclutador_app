@@ -152,3 +152,16 @@ CPU estratégica local implementada como opción junto a hot-seat. Perfiles CONS
 | Poder global y S+ medibles | action-v3 y rarity-v2; qa/ACTION-V3-calibration.json y RARITY-*.json |
 | Investigación de imágenes y fotos de técnicos | Cinco fotos con licencias; resto con iniciales; research/PLAYER-MEDIA-2026-10-19.md |
 | Validación y publicación | Ver qa/PLAYTEST-EXPANSION.md; solo afirmar acciones realmente ejecutadas |
+
+## Plan UX/UI (CODEX-UX-003 a 008) — 19/10/2026
+
+| Tarea | Estado |
+| --- | --- |
+| DL-F04-UI-014 Emblemas de categoría (planeta, banderas) | Implementada: modeVisuals/ModeEmblem; sin textos nuevos |
+| DL-F04-UI-015 Colores por tier y posición, cartas y técnicos | Implementada: tokens CSS, barras de atributos, tier S+ visual desde 98 |
+| DL-F04-UI-016 Dados 3D de sorteo + sonido diceRoll | Implementada: presentacional, sin cambiar el motor; es-AR/en/pt-BR |
+| DL-F04-UI-017 Fichas de puja, turno activo, semáforo de riesgo | Implementada; fichas +N relativas a la oferta actual |
+| DL-F04-UI-018 Cara a cara y pizarras tácticas | Implementada (botón «Revelar» de dados omitido: los dados se tiran solos al revelar) |
+| DL-F04-UI-019 Momentum, feed con iconos y barras comparativas | Implementada; el momentum se deriva de eventos visibles (ataque 1, remate 2, gol 3) |
+
+Validación: typecheck, lint, 831 pruebas y build ejecutados. QA visual en navegador/móvil (390×844) NO ejecutada.
