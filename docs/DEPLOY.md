@@ -1,4 +1,28 @@
-# Despliegue: Cloudflare Pages + Supabase
+# Despliegue: producción actual y antecedentes
+
+## Producción verificada — 19/10/2026
+
+- URL usada por el usuario: https://reclutador-app.rea-04.workers.dev/.
+- Servicio real: **Cloudflare Worker `reclutador-app` con assets estáticos**, no el antiguo proyecto Pages `draft-legends`.
+- Código publicado: **e19296f**, rama de trabajo/remota `codex/current-club-audit`.
+- Rama predeterminada GitHub comprobada: `main`, en `dbffe2f` al diagnosticar. Las dos ramas no son equivalentes. Los pushes recientes a la rama de trabajo no actualizaron el Worker.
+- Publicación autorizada expresamente por el usuario después del diagnóstico. Build nuevo y dry-run aprobados. Versión activa al 100%: `f5d7bd6b-abce-4759-822b-c679339ba8e6`, etiqueta `e19296f`, 19/10/2026 a las **02:01:59 de Argentina**.
+- Verificación HTTP posterior: HTML coincide con dist; bundles públicos contienen action-v2, categoryTree e import_arg_; el bundle online conserva URL/clave pública de Supabase. No equivale a un E2E de dos usuarios reales ni a QA visual.
+
+Procedimiento usado (no cambia ramas ni configura despliegue automático):
+
+```powershell
+npm run build
+npx --no-install wrangler deploy --name reclutador-app --assets ./dist --compatibility-date 2026-10-12 --keep-vars --no-autoconfig --tag e19296f --message "Publish e19296f: category tree and action-v2" --dry-run
+npx --no-install wrangler deploy --name reclutador-app --assets ./dist --compatibility-date 2026-10-12 --keep-vars --no-autoconfig --tag e19296f --message "Publish e19296f: category tree and action-v2"
+npx --no-install wrangler deployments status --name reclutador-app
+```
+
+Para publicaciones futuras usar la etiqueta/hash del commit realmente compilado y verificar la URL pública. No subir a Pages esperando que cambie este Worker. No se modificaron bindings, secretos, migraciones ni la rama `main`. Wrangler gestiona su sesión; no leer ni extraer tokens para llamadas manuales.
+
+## Antecedentes de Pages y propuestas anteriores
+
+El texto siguiente se conserva como historial. Sus instrucciones de Pages, rama main, ausencia de remoto y migraciones pendientes describen etapas anteriores; no acreditan la configuración de producción actual indicada arriba.
 
 El juego es una app estática (Vite). Cloudflare Pages la sirve; Supabase solo se usa para el modo online (`?online`). El modo local funciona sin Supabase.
 
