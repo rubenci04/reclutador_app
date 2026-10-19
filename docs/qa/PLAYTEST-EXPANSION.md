@@ -43,3 +43,7 @@ Resultado final de typecheck, lint, test, build y publicación: se registra al c
 Validación final: npm run typecheck, npm run lint y npm run build aprobados; npm test: **810/810**, 66 archivos, 64,64 s. Build final action-v3 generado con los SVG, nueve formaciones y tres idiomas. Git diff --check sin errores (avisos de normalización CRLF del entorno).
 
 Publicación: commit de implementación 10ece7d subido a origin/codex/current-club-audit. Dry-run aprobado con Wrangler 4.151.1 (341 assets). El despliegue mutativo en reclutador-app fue rechazado por revisión automática: autorización previa considerada insuficiente para este nuevo despliegue específico. Se solicitó aprobación del commit/destino exactos. **No hubo nuevo despliegue de producción**; no presentar el push como publicación del sitio.
+
+## Despliegue autorizado y verificado — 19/10/2026, 11:57 (Argentina)
+
+El usuario autorizó explícitamente publicar 10ece7d tras el rechazo anterior. Despliegue completado con Wrangler 4.151.1, --keep-vars, Worker reclutador-app. Versión a68ce039-02e7-41da-8aca-3f9841625cd7, etiqueta 10ece7d, activa al 100%. URL: https://reclutador-app.rea-04.workers.dev/. El HTML público coincide con dist/index.html. Bundle AuctionPage-oXhFksC9.js, estilos index-Lkef5eHE.css y fotografía coach_001.jpg responden HTTP 200 y tienen SHA-256 idéntico a los archivos locales. Entrada index-BhYfw8Ns.js referenciada correctamente. No se modificaron variables ni esquema de base de datos. Esta verificación HTTP y del despliegue no sustituye un playtest visual de producción.
