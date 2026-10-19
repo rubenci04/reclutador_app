@@ -10,7 +10,7 @@ import { composeStrength, squadQuality, SQUAD_QUALITY_VERSION } from './squadQua
 import { MATCH_MINUTES, MATCH_RULES_VERSION, type MatchBlock, type MatchEvent, type MatchResult, type MatchSide, type MatchStats, type MatchTeam, type RosterAdvantage, type TeamStrength } from './matchTypes'
 
 export interface SimulationInput {
-  readonly actionModel?: 'action-v1'
+  readonly actionModel?: 'action-v1' | 'action-v2'
   readonly localLineup: DraftLineup
   readonly cpuLineup: DraftLineup
   readonly catalog: readonly Player[]
@@ -171,10 +171,11 @@ export function simulateMatch(input: SimulationInput): MatchResult {
     }
     const effective = { local: strengthFor('local'), cpu: strengthFor('cpu') }
     for (const key of ['local', 'cpu'] as const) for (const sector of ['attack', 'defense', 'midfield'] as const) effectiveTotals[key][sector] += effective[key][sector]
-    // Versioned action model: three opportunities per block and stronger response
-    // to sector margins. Stored/classic simulations retain their exact stream.
+    // Versioned action models: v1 has three opportunities per block, v2 four.
+    // Stored/classic simulations retain their original parameters and stream.
     const events: MatchEvent[] = [...changes]
-    for (let opportunity = 0; opportunity < (input.actionModel ? 3 : 1); opportunity++) {
+    const lively = input.actionModel === 'action-v2'
+    for (let opportunity = 0; opportunity < (lively ? 4 : input.actionModel ? 3 : 1); opportunity++) {
       const classicChance = initiativeChance(effective.local, effective.cpu)
       const localAttackChance = input.actionModel ? clamp(.5 + (classicChance - .5) * 3.5, .15, .85) : classicChance
       const side: MatchSide = random() < localAttackChance ? 'local' : 'cpu'
@@ -182,13 +183,13 @@ export function simulateMatch(input: SimulationInput): MatchResult {
       events.push(event(minute, side, 'attack', attacker(sides[side].team, random)))
       const shootingPower = effective[side].attack + effective[side].midfield * .16
       const resistance = effective[opponent].defense + effective[opponent].midfield * .12
-      const shotChance = clamp(.65 + (shootingPower - resistance) / 180 + (random() - .5) * .2, .35, .86)
+      const shotChance = clamp((lively ? .76 : .65) + (shootingPower - resistance) / 180 + (random() - .5) * .2, lively ? .68 : .35, lively ? .9 : .86)
       if (random() < shotChance) {
         stats[side].shots++
-        const onTarget = random() < clamp(.65 + (shootingPower - resistance) / 220, .38, .84)
+        const onTarget = random() < clamp((lively ? .72 : .65) + (shootingPower - resistance) / 220, lively ? .66 : .38, lively ? .88 : .84)
         if (onTarget) {
           stats[side].shotsOnTarget++
-          const goalChance = clamp((input.actionModel ? .3 : .4) + (shootingPower - resistance) / (input.actionModel ? 75 : 240) + (random() - .5) * .12, .14, .62)
+          const goalChance = clamp((lively ? .34 : input.actionModel ? .3 : .4) + (shootingPower - resistance) / (input.actionModel ? 75 : 240) + (random() - .5) * .12, lively ? .28 : .14, .62)
           if (random() < goalChance) {
             score[side]++
             events.push(event(minute, side, 'goal', attacker(sides[side].team, random)))

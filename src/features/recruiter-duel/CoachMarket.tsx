@@ -25,7 +25,13 @@ export function CoachMarket({ game, participant, name, locked, onHire, onDecline
   const effectText = (coach: Coach) => { const e = coachEffect(coach); return { attack: e.attack.toFixed(1), defense: e.defense.toFixed(1), midfield: e.midfield.toFixed(1) } }
   if (hired) return <section className="coach-market" aria-label={t('coach.title', { name })}>
     <h3>{t('coach.title', { name })}</h3>
-    <p>{t('coach.hired', { coach: label(hired), team: hired.team, price: hired.price, ...effectText(hired) })}</p>
+    <article className="coach-card coach-hired-card">
+      <span className="coach-emblem" aria-hidden="true">{hired.name[0]}{hired.surname[0]}<b>{hired.tier}</b></span>
+      <strong>{label(hired)}</strong>
+      <span>{t(hired.teamKind === 'NATIONAL' ? 'coach.referenceNational' : 'coach.referenceClub', { team: hired.team })}</span>
+      {hired.secondaryTeam && <span>{t('coach.secondaryReference', { team: hired.secondaryTeam })}</span>}
+      <p>{t('coach.hired', { coach: label(hired), team: hired.team, price: hired.price, ...effectText(hired) })}</p>
+    </article>
   </section>
   if (!market.length) return null
   return <section className="coach-market" aria-label={t('coach.title', { name })}>

@@ -1,5 +1,9 @@
 # Reclutador
 
+Simulación actualizada: **action-v2** en partidas nuevas, 24 oportunidades mostradas una a una y estadísticas durante el relato. Mantiene series con el mismo plantel y reduce los 0–0 sin forzar goles. La versión del motor aparece en el partido para identificar reportes. Ver [decisión y fórmulas](docs/decisions/ADR-0016.md) y [validación/pedido completo](docs/qa/ACTION-V2.md).
+
+Categorías: Global, Liga Argentina, Liga inglesa, Liga española, Liga brasileña, Latinoamérica y Europa. Cada una abre actuales 2026 y leyendas. Latinoamérica/Europa seleccionan por nacionalidad en cualquier liga, con 100M para actuales y 150M para leyendas. Ver [ADR-0015](docs/decisions/ADR-0015.md).
+
 Actualización 19/10/2026: cuatro bases aportadas (1.200 versiones), ocho colecciones actuales/históricas y Global Legends combinado, sin fotos nuevas. Tres cartas de técnicos por liga/época. Nuevas simulaciones con 18 oportunidades y series del mismo plantel: tres encuentros, dos más si empatan y penales para resolver. Las leyendas importadas usan 150M por equipo. Valoraciones editoriales y perfiles por posición; no equivalen a una auditoría factual. Ver [ADR-0014](docs/decisions/ADR-0014.md) y [QA](docs/qa/COLLECTIONS-SERIES.md). Las descripciones de hitos anteriores se conservan como historial.
 
 Videojuego web de draft de fútbol. El modo principal es **Duelo de Reclutadores**: dos personas comparten una computadora, compiten por cada subasta y completan 22 fichajes exclusivos antes de enfrentar sus equipos. Disponen de tres descartes compartidos por doble pase sin oferta, con reemplazo viable de la misma posición: hasta 25 candidatos. Draft Libre conserva la construcción individual y Contra CPU incorpora tres perfiles de puja estratégica reproducible.

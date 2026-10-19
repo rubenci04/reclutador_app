@@ -312,7 +312,7 @@ export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player
   const benches = { local: benchIds(FIRST), cpu: benchIds(SECOND) }
   const coachFor = (participant: RecruiterId) => { const coach = coachById(game.teams[participant].coachId); return coach ? { id: coach.id, ...coachEffect(coach, stored[participant]) } : null }
   const coaches = { local: coachFor(FIRST), cpu: coachFor(SECOND) }
-  const matchResult = simulateMatch({ ...(actionModel ? { actionModel: 'action-v1' as const } : {}), localLineup: game.teams[FIRST].lineup, cpuLineup: game.teams[SECOND].lineup, catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match`, rosterBonus: true, ...(game.config ? { budget: game.config.budget } : {}), ...(benches.local.length || benches.cpu.length ? { benches } : {}), ...(coaches.local || coaches.cpu ? { coaches } : {}), tactics: { version: TACTICS_VERSION, local: stored.recruiter_one, cpu: stored.recruiter_two } })
+  const matchResult = simulateMatch({ ...(actionModel ? { actionModel: 'action-v2' as const } : {}), localLineup: game.teams[FIRST].lineup, cpuLineup: game.teams[SECOND].lineup, catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match`, rosterBonus: true, ...(game.config ? { budget: game.config.budget } : {}), ...(benches.local.length || benches.cpu.length ? { benches } : {}), ...(coaches.local || coaches.cpu ? { coaches } : {}), tactics: { version: TACTICS_VERSION, local: stored.recruiter_one, cpu: stored.recruiter_two } })
   return transition(game, { phase: 'SIMULATING', matchResult, strategies: stored })
 }
 

@@ -10,6 +10,7 @@ import type { MetadataIndex } from './metadata'
 import { THEMED_MODES } from './modes'
 import { THEMED_MODE_IDS, type ThemedModeId } from './modeTypes'
 import { ModeSelector } from './ModeSelector'
+import { CATEGORY_GROUPS } from './categoryTree'
 
 const definition = (id: ThemedModeId) => THEMED_MODES.find((mode) => mode.id === id)!
 const player = (id: string, category: Player['category'], nationality = 'ARG'): Player => ({
@@ -17,6 +18,20 @@ const player = (id: string, category: Player['category'], nationality = 'ARG'): 
 })
 
 describe('current and legend category variants', () => {
+  it('keeps the selected edition when opening another category or returning to the main menu', async () => {
+    const i18n = await createI18n('en')
+    const onChange = vi.fn()
+    render(<I18nextProvider i18n={i18n}><ModeSelector selected="ARGENTINA_CURRENT" onChange={onChange} /></I18nextProvider>)
+    expect(screen.getByRole('status')).toHaveTextContent('Argentine league current players 2026')
+    fireEvent.click(screen.getByRole('button', { name: /^Europe/ }))
+    expect(onChange).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button', { name: 'Back to categories' }))
+    expect(screen.getAllByRole('button')).toHaveLength(7)
+    expect(screen.getByRole('status')).toHaveTextContent('Argentine league current players 2026')
+    fireEvent.click(screen.getByRole('button', { name: /^Argentine league/ }))
+    expect(screen.getByRole('button', { name: /^Argentine league current players 2026/ })).toHaveAttribute('aria-pressed', 'true')
+    expect(onChange).not.toHaveBeenCalled()
+  })
   it('keeps the two original catalogs intact and enables the supplied league editions', () => {
     expect(catalogForMode('GLOBAL_CLASSIC')).toBe(DRAFT_CATALOG)
     expect(catalogForMode('ARGENTINA_CLUBS')).toEqual(ARGENTINA_PLAYERS)
@@ -59,7 +74,7 @@ describe('current and legend category variants', () => {
     expect(eligiblePlayers(players, definition('EUROPE_LEGENDS'), metadata)).toEqual([players[3]])
   })
 
-  it.each(['es-AR', 'en', 'pt-BR'] as const)('translates every category in %s and keeps upcoming collections disabled', async (language) => {
+  it.each(['es-AR', 'en', 'pt-BR'] as const)('translates the seven categories and their editions in %s', async (language) => {
     const i18n = await createI18n(language)
     expect(THEMED_MODES.map((mode) => mode.id).sort()).toEqual([...THEMED_MODE_IDS].sort())
     expect(new Set(THEMED_MODES.map((mode) => mode.id)).size).toBe(THEMED_MODE_IDS.length)
@@ -68,12 +83,18 @@ describe('current and legend category variants', () => {
     }
     const onChange = vi.fn()
     render(<I18nextProvider i18n={i18n}><ModeSelector selected="GLOBAL_CLASSIC" onChange={onChange} /></I18nextProvider>)
-    fireEvent.click(screen.getByText(new RegExp(i18n.t('modes.upcoming'))))
-    for (const mode of THEMED_MODES) {
-      const button = screen.getByRole('button', { name: (_name, element) => element.querySelector('strong')?.textContent === i18n.t(`modes.items.${mode.translationKey}.name`) })
-      if (!PLAYABLE_MODES.has(mode.id)) expect(button).toBeDisabled()
+    expect(screen.getAllByRole('button')).toHaveLength(7)
+    for (const group of CATEGORY_GROUPS) {
+      fireEvent.click(screen.getByRole('button', { name: new RegExp('^' + i18n.t('categoryTree.groups.' + group.id)) }))
+      expect(screen.getByRole('heading', { name: i18n.t('categoryTree.groups.' + group.id) })).toHaveFocus()
+      for (const id of group.modes) {
+        const button = screen.getByRole('button', { name: new RegExp('^' + i18n.t('categoryTree.options.' + id)) })
+        expect(button).toBeEnabled()
+        fireEvent.click(button)
+        expect(onChange).toHaveBeenLastCalledWith(id)
+      }
+      fireEvent.click(screen.getByRole('button', { name: i18n.t('categoryTree.back') }))
     }
-    fireEvent.click(screen.getByRole('button', { name: new RegExp(i18n.t('modes.items.argentinaLegends.name')) }))
-    expect(onChange).toHaveBeenCalledExactlyOnceWith('ARGENTINA_LEGENDS')
+    expect(onChange).toHaveBeenCalledTimes(14)
   })
 })

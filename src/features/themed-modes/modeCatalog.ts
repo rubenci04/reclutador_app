@@ -6,9 +6,10 @@ import { EMPTY_METADATA, type MetadataIndex } from './metadata'
 import { THEMED_MODES } from './modes'
 import type { ThemedModeId } from './modeTypes'
 import { importedPlayersForMode, IMPORTED_MODE_IDS } from '../player-catalog/leagueCollections'
+import { regionalPlayersForMode, REGIONAL_MODE_IDS } from './regionalCatalog'
 
 /** Modes a player can actually start. The rest of the list stays a foundation ("coming soon"). */
-export const PLAYABLE_MODES: ReadonlySet<ThemedModeId> = new Set<ThemedModeId>(['GLOBAL_CLASSIC', 'ARGENTINA_CLUBS', ...IMPORTED_MODE_IDS])
+export const PLAYABLE_MODES: ReadonlySet<ThemedModeId> = new Set<ThemedModeId>(['GLOBAL_CLASSIC', 'ARGENTINA_CLUBS', ...IMPORTED_MODE_IDS, ...REGIONAL_MODE_IDS])
 
 /** Plain Player records of the Argentine collection (arg_* ids): no extra fields travel into a game. */
 export const ARGENTINA_PLAYERS: readonly Player[] = ARG_RECORDS.map((record) => ({
@@ -23,14 +24,14 @@ export interface ModeCatalog { readonly players: readonly Player[]; readonly met
 
 /** Source players and evidence for a mode; the engine then plays with the eligible subset. */
 export function modeSource(id: ThemedModeId): ModeCatalog {
-  const imported = importedPlayersForMode(id)
+  const imported = importedPlayersForMode(id) ?? regionalPlayersForMode(id)
   if (imported) return { players: imported, metadata: EMPTY_METADATA, allowedIds: imported.map((player) => player.id) }
   return id === 'ARGENTINA_CLUBS' || id === 'ARGENTINA_LEGENDS' || id === 'ARGENTINA_CURRENT' ? { players: ARGENTINA_PLAYERS, metadata: ARGENTINA_METADATA, allowedIds: ARGENTINA_PLAYERS.map((player) => player.id) } : { players: DRAFT_CATALOG, metadata: EMPTY_METADATA }
 }
 
 /** Players a game of this mode draws from. Global keeps the exact 150-player catalog object. */
 export function catalogForMode(id: ThemedModeId): readonly Player[] {
-  const imported = importedPlayersForMode(id)
+  const imported = importedPlayersForMode(id) ?? regionalPlayersForMode(id)
   if (imported) return imported
   if (id === 'GLOBAL_CLASSIC') return DRAFT_CATALOG
   const definition = THEMED_MODES.find((mode) => mode.id === id)

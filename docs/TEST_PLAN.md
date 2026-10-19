@@ -1,5 +1,20 @@
 # Plan de pruebas
 
+## action-v2 — 19/10/2026
+
+- Comparar v1/v2 con 300 semillas por cada una de las catorce ediciones reales (8.400 encuentros), con onces exclusivos y reserva 8M; medir 0–0, goles y coherencia de eventos/estadísticas.
+- Ejecutar 1.500 semillas por margen 0/2/3/4/5 en cada motor (15.000 encuentros sintéticos), medir victorias/empates/0–0 y conservar compatibilidad clásica/v1.
+- Verificar 24 fragmentos, una oportunidad por fragmento, mismos eventos/marcadores, estadísticas progresivas y reproducción DOM sin recalcular ni mostrar estadísticas futuras.
+- Ejecutar los cuatro controles y registrar bloqueo de QA visual real; mantener seguimiento explícito del pedido original.
+
+## Árbol de categorías — 19/10/2026
+
+- Siete entradas principales, dos ediciones cada una, vuelta sin perder selección y foco al navegar; es-AR/en/pt-BR con catorce hojas habilitadas.
+- Liga Argentina actual usa los 150 aportados; colección mixta anterior conservada para reproducción, sin tercera opción visible.
+- Latinoamérica incluye México/Centroamérica/Caribe latino; Europa se basa en nacionalidad. Cristiano portugués elegible aun con un club fuera de Europa. No reclasificar leyendas aún activas como actuales.
+- Cuatro pools regionales separados por categoría, sin duplicados reconocidos ni pérdida de homónimos; técnicos por nacionalidad/versión, dos onces asequibles y rival CPU reproducible.
+- Ejecutar typecheck/lint/test/build. Intentar navegador real y documentar límites visuales.
+
 ## Colecciones y series — 19/10/2026
 
 - Importar los cuatro archivos, comprobar 1.200 IDs, 150 por liga/categoría, nacionalidades normalizadas, posiciones, ratings, precios y ausencia de fotos.

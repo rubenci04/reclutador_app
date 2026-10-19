@@ -4,6 +4,7 @@ import type { Player } from '../../types/player'
 import { CONMEBOL_ASSOCIATIONS, UEFA_ASSOCIATIONS } from './modes'
 import type { MetadataIndex } from './metadata'
 import type { ModeAvailability, ModeDiagnostic, ThemedModeDefinition } from './modeTypes'
+import { EUROPEAN_NATIONALITIES, LATIN_AMERICAN_ASSOCIATIONS } from './nationalityRegions'
 
 function hasVerifiedCareer(playerId: string, rule: ThemedModeDefinition['rule'], metadata: MetadataIndex) {
   return metadata[playerId]?.careers?.some((career) => {
@@ -39,6 +40,8 @@ export function isCpuCompatible(players: readonly Player[]) {
 export function eligiblePlayers(catalog: readonly Player[], definition: ThemedModeDefinition, metadata: MetadataIndex): Player[] {
   return catalog.filter((player) => {
     const rule = definition.rule
+    if (rule.nationalityRegion === 'LATIN_AMERICA' && !LATIN_AMERICAN_ASSOCIATIONS.has(player.nationality)) return false
+    if (rule.nationalityRegion === 'EUROPE' && !EUROPEAN_NATIONALITIES.has(player.nationality)) return false
     if (rule.nationality && player.nationality !== rule.nationality) return false
     if (rule.category && player.category !== rule.category) return false
     if (rule.era && player.era !== rule.era) return false

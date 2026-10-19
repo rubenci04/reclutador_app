@@ -1,5 +1,21 @@
 # Tablero de tareas
 
+## Revisión de emoción del simulador — 19/10/2026
+
+| ID | Actividad | Estado |
+|---|---|---|
+| DL-F04-BAL-004 | Reducir 0–0 y medir ventaja 3–4 con datos reales | action-v2: 24 oportunidades; comparación de 8.400 partidos reales y 15.000 sintéticos, ADR-0016; playtest humano pendiente |
+| DL-F04-UX-007 | Relato jugada por jugada y estadísticas en vivo | Implementado para v2 sin recalcular ni cambiar la duración total; tarjeta también para técnico contratado, tres idiomas; QA visual bloqueada por Work settings |
+
+Seguimiento de cada punto del pedido original: qa/ACTION-V2.md. Los informes previos se conservan como historia de v1.
+
+## Categorías jerárquicas — 19/10/2026
+
+| ID | Actividad | Estado |
+|---|---|---|
+| DL-F04-UX-006 | Siete categorías con actuales/leyendas y botón de vuelta | Implementada en es-AR/en/pt-BR; conserva selección, foco y contratos anteriores |
+| DL-F04-MODE-002 | Latinoamérica y Europa por nacionalidad global | Cuatro ediciones habilitadas con datos existentes, técnicos por nacionalidad/versión y presupuestos 100/150M; ver ADR-0015 y qa/CATEGORY-TREE.md |
+
 ## Pedido de colecciones y series — 19/10/2026
 
 | ID | Actividad | Estado |

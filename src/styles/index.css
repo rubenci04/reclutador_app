@@ -332,12 +332,14 @@
 @media(forced-colors:active){.team-power{border-color:CanvasText}.power-bar i{background:Highlight}}
 
 .coach-card { display: flex; flex-direction: column; align-items: flex-start; gap: .4rem; text-align: left; min-width: 0; overflow-wrap: anywhere; }
+.category-groups button { min-height:100px; }.category-selection { padding:10px 14px; border-left:3px solid #d5fb76; background:#ffffff08; overflow-wrap:anywhere; }.category-back { margin-bottom:12px; }#mode-title:focus { outline:2px solid #d5fb76; outline-offset:5px; border-radius:4px; }
 .coach-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
 .coach-grid .coach-card { position:relative; padding:20px; border:1px solid #c7eb7b80; border-radius:18px; background:linear-gradient(155deg,#304d39,#101e21 75%); box-shadow:0 12px 24px #0004; transition:transform .2s,box-shadow .2s; }
 .coach-grid .coach-card:hover:not(:disabled),.coach-grid .coach-card:focus-visible { transform:translateY(-5px); box-shadow:0 16px 30px #0006; outline:2px solid #d5fb76; outline-offset:3px; }
 .coach-grid .coach-card:disabled { opacity:.5; }
 .coach-emblem { position:relative; display:grid; place-items:center; width:76px; height:88px; margin:0 auto 12px; font-size:30px; font-weight:900; color:#d5fb76; border:2px solid #d5fb76; border-radius:35% 35% 45% 45%; background:#122a23; }
 .coach-emblem b { position:absolute; right:-14px; bottom:0; border-radius:50%; background:#d5fb76; color:#14251c; padding:5px 10px; font-size:18px; }
+.coach-hired-card { padding:20px; border:1px solid #d5fb76; border-radius:18px; background:linear-gradient(155deg,#304d39,#101e21); }.coach-hired-card .coach-emblem { margin-left:0; }.match-model { display:block; margin-top:8px; opacity:.75; }.match-narration li:last-child { border-left:3px solid #d5fb76; background:#d5fb7610; }
 .series-card { max-width:1100px; margin:0 auto 28px; padding:24px; border:1px solid #d5fb7666; border-radius:18px; background:linear-gradient(120deg,#203827,#132322); }
 .series-card p { max-width:80ch; line-height:1.6; }.series-results { display:flex; flex-wrap:wrap; gap:12px; list-style:none; padding:0; }.series-results li { padding:12px 18px; border:1px solid #ffffff30; border-radius:10px; }.series-winner { color:#d5fb76; animation:series-reveal .4s ease-out; }
 @keyframes series-reveal { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }

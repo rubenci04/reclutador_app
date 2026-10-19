@@ -35,7 +35,7 @@ const modes: Partial<Record<ThemedModeId, readonly [string, Player['category']]>
   ENGLAND_LEAGUE: ['ENG', 'contemporary'], ENGLAND_LEGENDS: ['ENG', 'legend'],
 }
 export const IMPORTED_MODE_IDS = [...Object.keys(modes), 'LEGENDS_ONLY'] as ThemedModeId[]
-export const defaultBudgetForMode = (id: ThemedModeId) => IMPORTED_MODE_IDS.includes(id) && (id.includes('LEGENDS') || id === 'LEGENDS_ONLY') ? 150 : 100
+export const defaultBudgetForMode = (id: ThemedModeId) => id.includes('LEGENDS') || id === 'LEGENDS_ONLY' ? 150 : 100
 const normalize = (name: string) => playerIdentityKey(name).replace(/[^a-z0-9]/g, '')
 const sourceById = new Map(rows.map((row) => [row.id, row]))
 // Explicit reviewed edition aliases only. Never merge by shared surnames or

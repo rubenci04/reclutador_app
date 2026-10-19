@@ -1,0 +1,18 @@
+
+ RUN  v5.0.5 C:/Users/rea_0/Documents/ChatGPT/Fútbol Draft
+
+············stdout | src/features/local-match/matchSeries.test.ts > action-v1 calibration > adds activity and increases winning chances progressively at 2, 3 and 5 global points
+action-v1 calibration / 1500 seeds per margin [{"delta":0,"wins":554,"draws":387,"goals":4155,"goalless":74},{"delta":2,"wins":831,"draws":346,"goals":4197,"goalless":70},{"delta":3,"wins":955,"draws":308,"goals":4313,"goalless":71},{"delta":4,"wins":1081,"draws":239,"goals":4480,"goalless":52},{"delta":5,"wins":1172,"draws":196,"goals":4713,"goalless":37}]
+
+···stdout | src/features/local-match/matchSeries.test.ts > action-v2 calibration > adds activity and increases winning chances progressively at 2, 3 and 5 global points
+action-v2 calibration / 1500 seeds per margin [{"delta":0,"wins":655,"draws":253,"goals":7851,"goalless":1},{"delta":2,"wins":952,"draws":227,"goals":8065,"goalless":2},{"delta":3,"wins":1089,"draws":191,"goals":8160,"goalless":1},{"delta":4,"wins":1206,"draws":153,"goals":8510,"goalless":2},{"delta":5,"wins":1318,"draws":103,"goals":8766,"goalless":1}]
+
+··stdout | src/features/local-match/actionRealCatalog.test.ts > action-v2 real collections diagnostic > reduces goalless matches on all 14 available editions without inventing goals
+Real catalog action comparison [{"id":"GLOBAL_CLASSIC","samples":300,"oldZeros":129,"newZeros":10,"oldGoals":278,"newGoals":900},{"id":"LEGENDS_ONLY","samples":300,"oldZeros":11,"newZeros":1,"oldGoals":901,"newGoals":1713},{"id":"ARGENTINA_CURRENT","samples":300,"oldZeros":20,"newZeros":1,"oldGoals":779,"newGoals":1479},{"id":"ARGENTINA_LEGENDS","samples":300,"oldZeros":10,"newZeros":0,"oldGoals":862,"newGoals":1609},{"id":"ENGLAND_LEAGUE","samples":300,"oldZeros":25,"newZeros":3,"oldGoals":723,"newGoals":1452},{"id":"ENGLAND_LEGENDS","samples":300,"oldZeros":17,"newZeros":2,"oldGoals":764,"newGoals":1432},{"id":"SPAIN_LEAGUE","samples":300,"oldZeros":8,"newZeros":0,"oldGoals":915,"newGoals":1771},{"id":"SPAIN_LEGENDS","samples":300,"oldZeros":16,"newZeros":0,"oldGoals":809,"newGoals":1573},{"id":"BRAZIL_CURRENT","samples":300,"oldZeros":18,"newZeros":1,"oldGoals":767,"newGoals":1551},{"id":"BRAZIL_LEGENDS","samples":300,"oldZeros":7,"newZeros":0,"oldGoals":972,"newGoals":1809},{"id":"SOUTH_AMERICA_CURRENT","samples":300,"oldZeros":4,"newZeros":0,"oldGoals":1156,"newGoals":2123},{"id":"SOUTH_AMERICA_LEGENDS","samples":300,"oldZeros":12,"newZeros":0,"oldGoals":931,"newGoals":1821},{"id":"EUROPE_CURRENT","samples":300,"oldZeros":1,"newZeros":0,"oldGoals":1113,"newGoals":2032},{"id":"EUROPE_LEGENDS","samples":300,"oldZeros":13,"newZeros":0,"oldGoals":823,"newGoals":1616}]
+
+·
+
+ Test Files  4 passed (4)
+      Tests  18 passed (18)
+   Start at  01:54:03
+   Duration  5.25s (tests 45%, environment 38%, setup 9%, transform 4%, import 4%)

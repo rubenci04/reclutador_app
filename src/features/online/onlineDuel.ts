@@ -44,7 +44,7 @@ export function onlineHistoryEntry(game: RecruiterDuelGame, mySide: RecruiterId,
   if (forfeitBy) return { id: `online:${game.seed}`, at: new Date().toISOString(), mode: 'GLOBAL_CLASSIC', opponent: 'online', names: { recruiter_one: mine, recruiter_two: theirs }, outcome: mapped(otherSide(forfeitBy)), score: null, abandonedBy: forfeitBy === mySide ? 'recruiter_one' : 'recruiter_two' }
   const played = game.matchResult
   if (!played) return null
-  if (played.actionModel === 'action-v1') {
+  if (played.actionModel) {
     const series = resolveSeries(played, DRAFT_CATALOG)
     const winningSide = series.winner === 'local' ? 'recruiter_one' : 'recruiter_two'
     const wins = { recruiter_one: series.wins.local, recruiter_two: series.wins.cpu }

@@ -55,7 +55,7 @@ describe('three matches plus two tiebreaks', () => {
   })
 })
 
-describe('action-v1 calibration', () => {
+describe.each(['action-v1', 'action-v2'] as const)('%s calibration', (actionModel) => {
   it('adds activity and increases winning chances progressively at 2, 3 and 5 global points', () => {
     const selected = new Set(Object.values(localLineup))
     const cpuSelected = new Set(Object.values(cpuLineup))
@@ -63,28 +63,34 @@ describe('action-v1 calibration', () => {
     const localPlayers = DRAFT_CATALOG.filter((p) => selected.has(p.id)).map((p) => ({ ...p, id: `local_${p.id}` }))
     const cpuPlayers = DRAFT_CATALOG.filter((p) => cpuSelected.has(p.id)).map((p) => ({ ...p, id: `cpu_${p.id}` }))
     const line = (original: typeof localLineup, prefix: string) => Object.fromEntries(Object.entries(original).map(([slot, id]) => [slot, `${prefix}_${id}`])) as typeof localLineup
-    const outcomes: { delta: number; wins: number; draws: number; goals: number }[] = []
-    for (const delta of [0, 2, 3, 5]) {
+    const outcomes: { delta: number; wins: number; draws: number; goals: number; goalless: number }[] = []
+    for (const delta of [0, 2, 3, 4, 5]) {
       const catalog = [...localPlayers.map((p) => ({ ...p, overall_rating: 80 + delta, att_rating: 80 + delta, def_rating: 80 + delta, phy_rating: 80 + delta, men_rating: 80 + delta, price: 3 })), ...cpuPlayers.map((p) => ({ ...p, overall_rating: 80, att_rating: 80, def_rating: 80, phy_rating: 80, men_rating: 80, price: 3 }))]
-      let wins = 0; let draws = 0; let goals = 0
+      let wins = 0; let draws = 0; let goals = 0; let goalless = 0
       for (let index = 0; index < 1500; index++) {
-        const match = simulateMatch({ localLineup: line(localLineup, 'local'), cpuLineup: line(cpuLineup, 'cpu'), catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `action-balance-${index}`, actionModel: 'action-v1' })
+        const match = simulateMatch({ localLineup: line(localLineup, 'local'), cpuLineup: line(cpuLineup, 'cpu'), catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `action-balance-${index}`, actionModel })
         if (match.winner === 'local') wins++
         if (match.winner === 'draw') draws++
         goals += match.score.local + match.score.cpu
+        if (match.score.local + match.score.cpu === 0) goalless++
         if (index === 0) {
-          expect(match.blocks.flatMap((b) => b.events).filter((e) => e.type === 'attack')).toHaveLength(18)
+          expect(match.blocks.flatMap((b) => b.events).filter((e) => e.type === 'attack')).toHaveLength(actionModel === 'action-v2' ? 24 : 18)
           expect(match.stats.local.possession + match.stats.cpu.possession).toBe(100)
           expect(match.blocks.flatMap((b) => b.events).filter((e) => e.type === 'goal')).toHaveLength(match.score.local + match.score.cpu)
         }
       }
-      outcomes.push({ delta, wins, draws, goals })
+      outcomes.push({ delta, wins, draws, goals, goalless })
     }
-    console.info('ACTION-V1 calibration / 1500 seeds per margin', JSON.stringify(outcomes))
+    console.info(`${actionModel} calibration / 1500 seeds per margin`, JSON.stringify(outcomes))
     expect(outcomes[0].wins / 1500).toBeGreaterThan(.3)
     expect(outcomes[0].wins / 1500).toBeLessThan(.45)
     for (let index = 1; index < outcomes.length; index++) expect(outcomes[index].wins).toBeGreaterThan(outcomes[index - 1].wins)
     expect(outcomes[3].wins / 1500).toBeGreaterThan(.55)
     expect(outcomes[3].wins / 1500).toBeLessThan(.9)
+    if (actionModel === 'action-v2') {
+      expect(outcomes.every((o) => o.goalless / 1500 < .035)).toBe(true)
+      expect(outcomes[0].goals / 1500).toBeGreaterThan(4)
+      expect(outcomes[2].wins / 1500).toBeGreaterThan(.65)
+    }
   }, 30_000)
 })

@@ -11,6 +11,27 @@ import { simulateMatch } from './simulator'
 afterEach(() => vi.useRealTimers())
 
 describe('match playback', () => {
+  it('reveals action-v2 one opportunity at a time, with live stats and the same replay', async () => {
+    vi.useFakeTimers()
+    const result = simulateMatch({ localLineup: generateCpuTeam(DRAFT_CATALOG, 'v2-screen-local').team.lineup, cpuLineup: generateCpuTeam(DRAFT_CATALOG, 'v2-screen-cpu').team.lineup, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: 'v2-screen', actionModel: 'action-v2' })
+    const i18n = await createI18n('en'); const finished = vi.fn()
+    const view = render(<I18nextProvider i18n={i18n}><MatchScreen result={result} onFinished={finished} onReturn={vi.fn()} onRematch={vi.fn()} /></I18nextProvider>)
+    expect(screen.getByText('Engine: action-v2')).toBeInTheDocument()
+    const stats = view.container.querySelector('.match-stats')!
+    expect(stats.querySelector('div')?.textContent).toBe('0Shots0')
+    act(() => vi.advanceTimersByTime(625))
+    expect(view.container.querySelectorAll('.match-narration li').length).toBeGreaterThanOrEqual(2)
+    expect(view.container.querySelectorAll('.match-narration li').length).toBeLessThan(5)
+    expect(finished).not.toHaveBeenCalled()
+    act(() => vi.advanceTimersByTime(14375))
+    expect(finished).toHaveBeenCalledTimes(1)
+    expect(screen.getByText('Full time')).toBeInTheDocument()
+    expect(stats.querySelector('div')?.textContent).toBe(`${result.stats.local.shots}Shots${result.stats.cpu.shots}`)
+    fireEvent.click(screen.getByRole('button', { name: 'Replay match' }))
+    expect(stats.querySelector('div')?.textContent).toBe('0Shots0')
+    act(() => vi.advanceTimersByTime(15000))
+    expect(screen.getByText(new RegExp(`${result.score.local}–${result.score.cpu}`))).toBeInTheDocument()
+  })
   it('finishes six timed blocks and replays a calculated result without invoking a rematch', async () => {
     vi.useFakeTimers()
     const local = generateCpuTeam(DRAFT_CATALOG, 'screen-local')

@@ -64,13 +64,14 @@ describe('mode selection in the page', () => {
   beforeEach(() => { localStorage.clear(); vi.spyOn(drawHistory, 'newDrawSeed').mockReturnValue('arg-seed-1') })
   afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); localStorage.clear() })
   it.each([
-    ['ARGENTINA_CLUBS', /Argentine football/, 'argentina_clubs'],
-    ['ARGENTINA_LEGENDS', /Argentina · legends/, 'argentina_legends'],
+    ['ARGENTINA_CURRENT', /Argentine league current players 2026/, 'argentina_current'],
+    ['ARGENTINA_LEGENDS', /Argentine football legends/, 'argentina_legends'],
   ] as const)('starts %s with the selected collection and its own draw history', async (modeId, label, historySuffix) => {
     vi.useFakeTimers()
     const i18n = await createI18n('en')
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
-    expect(screen.getByRole('button', { name: /Global classic/ })).not.toBeDisabled()
+    expect(screen.getByRole('button', { name: /^Global/ })).not.toBeDisabled()
+    fireEvent.click(screen.getByRole('button', { name: /^Argentine league/ }))
     fireEvent.click(screen.getByRole('button', { name: label }))
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))

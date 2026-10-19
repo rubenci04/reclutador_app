@@ -1,6 +1,7 @@
 import type { ThemedModeId } from '../themed-modes/modeTypes'
 import { COACH_CATALOG, EXTRA_COACHES } from './coachCatalog'
 import type { Coach } from './coachTypes'
+import { EUROPEAN_NATIONALITIES, LATIN_AMERICAN_ASSOCIATIONS } from '../themed-modes/nationalityRegions'
 
 /** Reference affiliations, not assertions of employment in October 2026.
  * A coach may occur in multiple scopes, and keeps the same identity/effect.
@@ -30,6 +31,8 @@ export function coachesForMode(mode?: ThemedModeId): readonly Coach[] {
   else if (mode?.startsWith('BRAZIL')) pool = legend ? scoped(['Santana', 'Zagallo', 'Perez (Lula)'], true) : scoped(BRA_ACTIVE, false)
   else if (mode?.startsWith('SPAIN')) pool = legend ? scoped(['Cruyff', 'del Bosque', 'Menotti', 'Herrera', 'Di Stéfano', 'Martino'], true) : scoped(ESP_ACTIVE, false)
   else if (mode?.startsWith('ENGLAND')) pool = legend ? scoped(['Ferguson', 'Clough', 'Busby'], true) : scoped(ENG_ACTIVE, false)
+  else if (mode?.startsWith('SOUTH_AMERICA')) pool = COACH_CATALOG.filter((c) => LATIN_AMERICAN_ASSOCIATIONS.has(c.nationality) && (c.status === 'LEGEND') === Boolean(legend))
+  else if (mode?.startsWith('EUROPE_')) pool = COACH_CATALOG.filter((c) => EUROPEAN_NATIONALITIES.has(c.nationality) && (c.status === 'LEGEND') === Boolean(legend))
   else if (legend) pool = COACH_CATALOG.filter((c) => c.status === 'LEGEND' && (c.tier === 'S' || c.tier === 'A'))
   else if (mode === 'GLOBAL_CLASSIC') pool = COACH_CATALOG.filter((c) => c.status === 'ACTIVE')
   return pool.map((coach) => {

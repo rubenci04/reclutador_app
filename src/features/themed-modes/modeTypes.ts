@@ -10,6 +10,7 @@ export const THEMED_MODE_IDS = [
 export type ThemedModeId = (typeof THEMED_MODE_IDS)[number]
 
 export interface ModeRule {
+  readonly nationalityRegion?: 'LATIN_AMERICA' | 'EUROPE'
   readonly nationality?: string
   readonly confederation?: 'CONMEBOL' | 'UEFA'
   readonly clubId?: string

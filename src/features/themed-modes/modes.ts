@@ -21,10 +21,10 @@ export const THEMED_MODES: readonly ThemedModeDefinition[] = [
   { id: 'SPAIN_LEGENDS', translationKey: 'spainLegends', rule: { leagueId: 'esp_la_liga', category: 'legend' } },
   { id: 'ENGLAND_LEAGUE', translationKey: 'englandLeague', rule: { leagueId: 'eng_premier_league', category: 'contemporary' } },
   { id: 'ENGLAND_LEGENDS', translationKey: 'englandLegends', rule: { leagueId: 'eng_premier_league', category: 'legend' } },
-  { id: 'SOUTH_AMERICA_CURRENT', translationKey: 'southAmericaCurrent', rule: { confederation: 'CONMEBOL', category: 'contemporary' } },
-  { id: 'SOUTH_AMERICA_LEGENDS', translationKey: 'southAmericaLegends', rule: { confederation: 'CONMEBOL', category: 'legend' } },
-  { id: 'EUROPE_CURRENT', translationKey: 'europeCurrent', rule: { confederation: 'UEFA', category: 'contemporary' } },
-  { id: 'EUROPE_LEGENDS', translationKey: 'europeLegends', rule: { confederation: 'UEFA', category: 'legend' } },
+  { id: 'SOUTH_AMERICA_CURRENT', translationKey: 'southAmericaCurrent', rule: { nationalityRegion: 'LATIN_AMERICA', category: 'contemporary' } },
+  { id: 'SOUTH_AMERICA_LEGENDS', translationKey: 'southAmericaLegends', rule: { nationalityRegion: 'LATIN_AMERICA', category: 'legend' } },
+  { id: 'EUROPE_CURRENT', translationKey: 'europeCurrent', rule: { nationalityRegion: 'EUROPE', category: 'contemporary' } },
+  { id: 'EUROPE_LEGENDS', translationKey: 'europeLegends', rule: { nationalityRegion: 'EUROPE', category: 'legend' } },
 ] as const
 
 export const CONMEBOL_ASSOCIATIONS = new Set(['ARG', 'BOL', 'BRA', 'CHI', 'COL', 'ECU', 'PAR', 'PER', 'URU', 'VEN'])

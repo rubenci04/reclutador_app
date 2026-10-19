@@ -1,5 +1,13 @@
 # Roadmap
 
+## Acción y emoción — 19/10/2026
+
+action-v2 sustituye v1 en nuevas partidas: 24 oportunidades con relato individual y estadísticas progresivas. Diagnóstico de 14 ediciones reales detecta y reduce esterilidad ofensiva; calibración de márgenes 0/2/3/4/5. Resultados antiguos y sus series mantienen versión. ADR-0016 y qa/ACTION-V2.md detallan fórmulas, seguimiento del pedido y playtest pendiente.
+
+## Categorías jerárquicas — 19/10/2026
+
+Selector reorganizado en Global, Argentina, Inglaterra, España, Brasil, Latinoamérica y Europa, con actuales 2026/leyendas dentro de cada categoría y navegación de vuelta. Cuatro colecciones regionales habilitadas por nacionalidad, independientemente de dónde jueguen; Latinoamérica incluye México/Centroamérica/Caribe latino. No se crean valoraciones ni se cambian contratos históricos. ADR-0015 y qa/CATEGORY-TREE.md.
+
 ## Colecciones y series — 19/10/2026
 
 Pedido actual implementado: 1.200 versiones aportadas, ocho colecciones de liga, Global Legends combinado, tres técnicos por liga/época y simulación action-v1. Series con plantel fijo: tres partidos, dos más en igualdad y penales si continúa. Las colecciones históricas importadas usan 150M por equipo para conservar OVR/precios. Ayudas y animaciones en tres idiomas. No implica completitud de catalog_v1 ni aprobación factual de los TXT. ADR-0014 y qa/COLLECTIONS-SERIES.md documentan decisiones, pruebas y limitación de QA visual.
