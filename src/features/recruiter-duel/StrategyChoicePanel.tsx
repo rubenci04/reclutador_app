@@ -52,6 +52,7 @@ export function StrategyChoicePanel({ choice, chooser, nextChooser, names, onCon
   return <section className="strategy-panel" key={choice.step} aria-labelledby="strategy-title">
     <h2 id="strategy-title">{t('strategyChoice.title', { participant: chooser })}</h2>
     <p>{t('strategyChoice.instructions')}</p>
+    {choice.step === 'FIRST' && <p className="strategy-note">{t('strategyChoice.formationHint')}</p>}
     <FormationGuide />
     <div className="strategy-grid" role="radiogroup" aria-labelledby="strategy-title">{STRATEGY_IDS.map((id) => <label key={id} className={`strategy-card${selected === id ? ' chosen' : ''}`}>
       <input type="radio" name="strategy" value={id} checked={selected === id} onChange={() => setSelected(id)} />
