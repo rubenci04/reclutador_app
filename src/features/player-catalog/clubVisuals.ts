@@ -1,4 +1,7 @@
 /** Editorial colours for the game, not official brand specifications or crest artwork. */
+/** How the two colours are laid out on shirt and shield. 'duo' is the plain split used when nothing more specific is known. */
+export type KitPattern = 'duo' | 'stripes' | 'hoops' | 'halves' | 'sash' | 'hband' | 'vband' | 'plain'
+
 export interface ClubVisual {
   readonly id: string
   readonly name: string
@@ -7,6 +10,19 @@ export interface ClubVisual {
   /** Neutral outline: remains visible against either coloured panel. */
   readonly contrast: string
   readonly variant?: 'duo'
+  readonly pattern?: KitPattern
+}
+
+/** Editorial: loosely follows how each club usually dresses, as original geometry (no licensed kits or crests). */
+const CLUB_PATTERNS: Readonly<Record<string, KitPattern>> = {
+  barcelona: 'stripes', ac_milan: 'stripes', inter_milan: 'stripes', juventus: 'stripes', atletico_madrid: 'stripes', real_betis: 'stripes', athletic_club: 'stripes', real_sociedad: 'stripes',
+  racing_club: 'stripes', estudiantes_la_plata: 'stripes', san_lorenzo: 'stripes', brighton_hove_albion: 'stripes', psv_eindhoven: 'stripes', lens: 'stripes', fenerbahce: 'stripes',
+  besiktas: 'stripes', porto: 'stripes', botafogo: 'stripes', gremio: 'stripes', fluminense: 'stripes', crystal_palace: 'stripes', bournemouth: 'stripes', newcastle_united: 'stripes', argentina: 'stripes',
+  celtic: 'hoops', flamengo: 'hoops', newells_old_boys: 'halves', galatasaray: 'halves',
+  river_plate: 'sash', velez_sarsfield: 'sash', rayo_vallecano: 'sash', olympique_lyon: 'sash', boca_juniors: 'hband', paris_saint_germain: 'vband', ajax: 'vband',
+  real_madrid: 'plain', bayern_munich: 'plain', borussia_dortmund: 'plain', liverpool: 'plain', manchester_united: 'plain', manchester_city: 'plain', chelsea: 'plain', tottenham_hotspur: 'plain',
+  arsenal: 'plain', napoli: 'plain', independiente: 'plain', palmeiras: 'plain', sao_paulo: 'plain', corinthians: 'plain', santos: 'plain', benfica: 'plain', al_hilal: 'plain', al_nassr: 'plain',
+  wolverhampton_wanderers: 'plain', sevilla: 'plain', brazil: 'plain', brasil: 'plain', france: 'plain', francia: 'plain', germany: 'plain', alemania: 'plain',
 }
 
 export const clubVisuals: Readonly<Record<string, ClubVisual | undefined>> = Object.fromEntries([
@@ -82,6 +98,14 @@ export const clubVisuals: Readonly<Record<string, ClubVisual | undefined>> = Obj
 export const neutralClubVisual: ClubVisual = { id: 'neutral', name: '', primary: '#38434D', secondary: '#B6C0C8', contrast: '#88949E', variant: 'duo' }
 
 export function getClubVisual(id: string): ClubVisual {
+  const visual = baseClubVisual(id)
+  const key = id.replace(/^(national_|selection_|seleccion_)/, '')
+  const patternKey = [id, key, visual.id].find((candidate) => Object.hasOwn(CLUB_PATTERNS, candidate))
+  const pattern = patternKey === undefined ? undefined : CLUB_PATTERNS[patternKey]
+  return pattern ? { ...visual, pattern } : visual
+}
+
+function baseClubVisual(id: string): ClubVisual {
   const national: Record<string, readonly [string, string]> = { argentina: ['#82c9ec', '#ffffff'], brazil: ['#f1d43b', '#287b44'], brasil: ['#f1d43b', '#287b44'], portugal: ['#bb2839', '#236646'], spain: ['#c52d36', '#f1cc35'], espana: ['#c52d36', '#f1cc35'], england: ['#ffffff', '#c52d36'], inglaterra: ['#ffffff', '#c52d36'], france: ['#244b95', '#ffffff'], francia: ['#244b95', '#ffffff'], germany: ['#ffffff', '#171717'], alemania: ['#ffffff', '#171717'], italy: ['#2866b4', '#ffffff'], italia: ['#2866b4', '#ffffff'], uruguay: ['#85c9e8', '#171717'], netherlands: ['#e57d26', '#ffffff'], mexico: ['#237448', '#ffffff'], colombia: ['#f2d339', '#264f9a'] }
   const nationalKey = id.replace(/^(national_|selection_|seleccion_)/, '')
   if (Object.hasOwn(national, nationalKey)) { const colors = national[nationalKey]; return { id, name: '', primary: colors[0], secondary: colors[1], contrast: '#88949E', variant: 'duo' } }

@@ -176,3 +176,13 @@ Validación: typecheck, lint, 831 pruebas y build ejecutados. QA visual en naveg
 | Pie hábil en cartas | Pendiente: no existe el dato en el catálogo; requiere fuente verificable |
 | Avatares con rasgos (sin ojos/boca, pelo, tono de piel) | Futuro (pedido del usuario); requiere dato verificable por jugador y criterio respetuoso |
 | Formación editable según estrategia elegida | Pendiente de decisión: hoy se edita antes de elegir estrategia y se bloquea al empezar |
+
+## Técnicos, muñecos y camisetas — 19/10/2026
+
+| Tarea | Estado |
+| --- | --- |
+| Técnicos actuales por edición (≥10, un solo club de referencia y año 2026) | Hecho: Liga española 12, inglesa 13, brasileña 11, argentina 16; 18 técnicos añadidos sin verificar (docs/research/COACHES-ADDED-2026-10-19.md) |
+| Oferta de 3 técnicos que alcanzan con el dinero restante | Hecho: coachOffers(…, left) + coachOffersFor; precio pagado guardado en coachPrice |
+| Muñecos sin ojos ni sonrisa; piel y largo de pelo por jugador | Hecho el dibujo y la carga opcional (src/data/player-appearance.json); sin datos todos usan el valor neutro |
+| Pie hábil, piel y pelo por jugador | Pendiente de datos: completar docs/research/PLAYER-FOOT-LIST.csv y ejecutar scripts/import-player-traits.mjs |
+| Patrones de camiseta y escudo (rayas, aros, mitades, banda, franja) | Hecho para ~55 clubes y selecciones; resto usa el corte en dos colores |

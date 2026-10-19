@@ -26,3 +26,25 @@ describe('league coach offers', () => {
     expect(coachesForMode('ARGENTINA_CURRENT').some((c) => c.surname === 'Scaloni')).toBe(false)
   })
 })
+
+describe('current editions: at least ten current coaches with a single reference', () => {
+  const currentModes = ['ARGENTINA_CURRENT', 'SPAIN_LEAGUE', 'ENGLAND_LEAGUE', 'BRAZIL_CURRENT', 'SOUTH_AMERICA_CURRENT', 'EUROPE_CURRENT', 'GLOBAL_CLASSIC'] as const
+  it.each(currentModes)('%s has ten or more current coaches and no second reference', (mode) => {
+    const pool = coachesForMode(mode)
+    expect(pool.length).toBeGreaterThanOrEqual(10)
+    expect(pool.every((coach) => coach.status === 'ACTIVE' && coach.secondaryTeam === undefined && coach.team.length > 0)).toBe(true)
+  })
+  it('does not show Flick, Guardiola or Enrique with a former club in the Spanish current edition', () => {
+    const spain = coachesForMode('SPAIN_LEAGUE')
+    expect(spain.find((c) => c.surname === 'Flick')?.team).toBe('FC Barcelona')
+    expect(spain.some((c) => ['Guardiola', 'Enrique', 'Aguirre', 'Emery'].includes(c.surname))).toBe(false)
+  })
+  it('offers three coaches that the recruiter can pay for with what is left', () => {
+    for (const mode of currentModes) for (let seed = 0; seed < 10; seed++) {
+      const offers = coachOffers(`left-${seed}`, 3, mode, { recruiter_one: 5, recruiter_two: 12 })
+      expect(offers.recruiter_one).toHaveLength(3)
+      expect(offers.recruiter_one.every((c) => c.price <= 5)).toBe(true)
+      expect(offers.recruiter_two.every((c) => c.price <= 12)).toBe(true)
+    }
+  })
+})

@@ -21,10 +21,11 @@ const REFERENCES: Readonly<Record<string, readonly [string, string?]>> = {
   Pusineri: ['Independiente', 'Atlético Tucumán'], Soso: ["Newell's Old Boys", 'Defensa y Justicia'],
   Veira: ['San Lorenzo', 'River Plate'],
 }
-const ARG_ACTIVE = ['Gallardo', 'Costas', 'Úbeda', 'Heinze', 'Beccacece', 'Zielinski', 'Quinteros', 'Kudelka', 'Berti', 'Pusineri', 'Soso']
-const BRA_ACTIVE = ['Ferreira', 'Luís', 'Crespo', 'Coudet', 'Domínguez', 'Milito', 'Díaz']
-const ESP_ACTIVE = ['Simeone', 'Flick', 'Guardiola', 'Emery', 'Enrique', 'Aguirre']
-const ENG_ACTIVE = ['Guardiola', 'Arteta', 'Slot', 'Howe', 'Emery', 'Glasner', 'Silva', 'Maresca', 'Tuchel', 'Pochettino']
+const ARG_ACTIVE = ['Gallardo', 'Costas', 'Úbeda', 'Heinze', 'Beccacece', 'Zielinski', 'Quinteros', 'Kudelka', 'Berti', 'Pusineri', 'Soso', 'Tevez', 'Méndez', 'Vaccari', 'Pellegrino', 'Holan']
+const BRA_ACTIVE = ['Ferreira', 'Luís', 'Crespo', 'Coudet', 'Domínguez', 'Milito', 'Díaz', 'Gaúcho', 'Jardim', 'Lage', 'Menezes']
+/** Current editions list coaches whose single reference club plays in that league; national-team and foreign-club coaches are left out. */
+const ESP_ACTIVE = ['Simeone', 'Flick', 'Alonso', 'García Toral', 'Pellegrini', 'Valverde', 'Bordalás', 'Arrasate', 'Corberán', 'Sánchez', 'Pérez', 'González']
+const ENG_ACTIVE = ['Guardiola', 'Arteta', 'Slot', 'Howe', 'Emery', 'Glasner', 'Silva', 'Maresca', 'Amorim', 'Frank', 'Iraola', 'Hürzeler', 'Farke']
 const scoped = (names: readonly string[], legend: boolean) => [...COACH_CATALOG, ...EXTRA_COACHES].filter((coach) => names.includes(coach.surname) && (coach.status === 'LEGEND') === legend)
 
 export function coachesForMode(mode?: ThemedModeId): readonly Coach[] {
@@ -43,7 +44,8 @@ export function coachesForMode(mode?: ThemedModeId): readonly Coach[] {
     // In the Spanish legend edition, the Spanish affiliation is primary.
     const spanish: Readonly<Record<string, string>> = { Menotti: 'FC Barcelona', Guardiola: 'FC Barcelona', Emery: 'Sevilla', Enrique: 'FC Barcelona', Aguirre: 'Mallorca', Martino: 'FC Barcelona' }
     const english: Readonly<Record<string, string>> = { Tuchel: 'Chelsea', Pochettino: 'Tottenham Hotspur' }
-    const team = mode?.startsWith('SPAIN') ? spanish[coach.surname] ?? refs?.[0] ?? coach.team : mode?.startsWith('ENGLAND') ? english[coach.surname] ?? refs?.[0] ?? coach.team : refs?.[0] ?? coach.team
-    return { ...coach, team, teamKind: refs ? 'CLUB' : coach.teamKind, secondaryTeam: refs?.[1] }
+    // Legend editions pick the career reference of that country; current coaches keep their single current reference.
+    const team = !legend ? refs?.[0] ?? coach.team : mode?.startsWith('SPAIN') ? spanish[coach.surname] ?? refs?.[0] ?? coach.team : mode?.startsWith('ENGLAND') ? english[coach.surname] ?? refs?.[0] ?? coach.team : refs?.[0] ?? coach.team
+    return { ...coach, team, teamKind: refs ? 'CLUB' : coach.teamKind, secondaryTeam: coach.status === 'ACTIVE' ? undefined : refs?.[1] }
   })
 }

@@ -29,6 +29,8 @@ export interface RecruiterTeam {
   readonly bench?: readonly BenchSlot[]
   /** Coach hired after the auctions with the money left. Absent when the match has no coaches or none was hired. */
   readonly coachId?: string
+  /** What the coach actually cost (a starter contract can be cheaper than his tier price). */
+  readonly coachPrice?: number
   /** The recruiter chose to go without a coach, which opens the substitute step. */
   readonly coachDeclined?: boolean
 }

@@ -124,6 +124,24 @@ export const COACH_CATALOG: readonly Coach[] = ROWS.map((row, index) => {
 
 export const EXTRA_COACHES: readonly Coach[] = [
   { id: 'coach_lula', name: 'Luiz Alonso', surname: 'Perez (Lula)', birthYear: 1922, deathYear: 1972, team: 'Santos', teamKind: 'CLUB', nationality: 'BRA', status: 'LEGEND', tier: 'A', focus: 'ATTACK', price: 5 },
+  { id: 'coach_x_alonso', name: 'Xabi', surname: 'Alonso', birthYear: 1981, team: 'Real Madrid', teamKind: 'CLUB', nationality: 'ESP', status: 'ACTIVE', tier: 'A', focus: 'MIDFIELD', price: 5 },
+  { id: 'coach_x_marcelino', name: 'Marcelino', surname: 'García Toral', birthYear: 1965, team: 'Villarreal', teamKind: 'CLUB', nationality: 'ESP', status: 'ACTIVE', tier: 'B', focus: 'DEFENSE', price: 3 },
+  { id: 'coach_x_pellegrini', name: 'Manuel', surname: 'Pellegrini', birthYear: 1953, team: 'Real Betis', teamKind: 'CLUB', nationality: 'CHI', status: 'ACTIVE', tier: 'B', focus: 'BALANCED', price: 3 },
+  { id: 'coach_x_valverde', name: 'Ernesto', surname: 'Valverde', birthYear: 1964, team: 'Athletic Club', teamKind: 'CLUB', nationality: 'ESP', status: 'ACTIVE', tier: 'B', focus: 'BALANCED', price: 3 },
+  { id: 'coach_x_bordalas', name: 'José', surname: 'Bordalás', birthYear: 1964, team: 'Getafe', teamKind: 'CLUB', nationality: 'ESP', status: 'ACTIVE', tier: 'C', focus: 'DEFENSE', price: 2 },
+  { id: 'coach_x_arrasate', name: 'Jagoba', surname: 'Arrasate', birthYear: 1978, team: 'Osasuna', teamKind: 'CLUB', nationality: 'ESP', status: 'ACTIVE', tier: 'C', focus: 'BALANCED', price: 2 },
+  { id: 'coach_x_corberan', name: 'Carlos', surname: 'Corberán', birthYear: 1983, team: 'Valencia', teamKind: 'CLUB', nationality: 'ESP', status: 'ACTIVE', tier: 'C', focus: 'ATTACK', price: 2 },
+  { id: 'coach_x_michel', name: 'Míchel', surname: 'Sánchez', birthYear: 1975, team: 'Girona', teamKind: 'CLUB', nationality: 'ESP', status: 'ACTIVE', tier: 'C', focus: 'ATTACK', price: 2 },
+  { id: 'coach_x_inigo', name: 'Iñigo', surname: 'Pérez', birthYear: 1988, team: 'Rayo Vallecano', teamKind: 'CLUB', nationality: 'ESP', status: 'ACTIVE', tier: 'D', focus: 'MIDFIELD', price: 1 },
+  { id: 'coach_x_manolo', name: 'Manolo', surname: 'González', birthYear: 1980, team: 'Espanyol', teamKind: 'CLUB', nationality: 'ESP', status: 'ACTIVE', tier: 'D', focus: 'DEFENSE', price: 1 },
+  { id: 'coach_x_frank', name: 'Thomas', surname: 'Frank', birthYear: 1973, team: 'Tottenham Hotspur', teamKind: 'CLUB', nationality: 'DEN', status: 'ACTIVE', tier: 'B', focus: 'BALANCED', price: 3 },
+  { id: 'coach_x_iraola', name: 'Andoni', surname: 'Iraola', birthYear: 1982, team: 'Bournemouth', teamKind: 'CLUB', nationality: 'ESP', status: 'ACTIVE', tier: 'B', focus: 'ATTACK', price: 3 },
+  { id: 'coach_x_hurzeler', name: 'Fabian', surname: 'Hürzeler', birthYear: 1993, team: 'Brighton & Hove Albion', teamKind: 'CLUB', nationality: 'SUI', status: 'ACTIVE', tier: 'C', focus: 'ATTACK', price: 2 },
+  { id: 'coach_x_farke', name: 'Daniel', surname: 'Farke', birthYear: 1976, team: 'Leeds United', teamKind: 'CLUB', nationality: 'GER', status: 'ACTIVE', tier: 'C', focus: 'MIDFIELD', price: 2 },
+  { id: 'coach_x_renato', name: 'Renato', surname: 'Gaúcho', birthYear: 1962, team: 'Grêmio', teamKind: 'CLUB', nationality: 'BRA', status: 'ACTIVE', tier: 'B', focus: 'ATTACK', price: 3 },
+  { id: 'coach_x_jardim', name: 'Leonardo', surname: 'Jardim', birthYear: 1974, team: 'Cruzeiro', teamKind: 'CLUB', nationality: 'POR', status: 'ACTIVE', tier: 'B', focus: 'BALANCED', price: 3 },
+  { id: 'coach_x_lage', name: 'Bruno', surname: 'Lage', birthYear: 1976, team: 'Botafogo', teamKind: 'CLUB', nationality: 'POR', status: 'ACTIVE', tier: 'C', focus: 'BALANCED', price: 2 },
+  { id: 'coach_x_mano', name: 'Mano', surname: 'Menezes', birthYear: 1962, team: 'Fluminense', teamKind: 'CLUB', nationality: 'BRA', status: 'ACTIVE', tier: 'C', focus: 'DEFENSE', price: 2 },
   { id: 'coach_busby', name: 'Matt', surname: 'Busby', birthYear: 1909, deathYear: 1994, team: 'Manchester United', teamKind: 'CLUB', nationality: 'SCO', status: 'LEGEND', tier: 'A', focus: 'BALANCED', price: 5 },
 ]
 export const coachById = (id: string | undefined) => [...COACH_CATALOG, ...EXTRA_COACHES].find((coach) => coach.id === id)
