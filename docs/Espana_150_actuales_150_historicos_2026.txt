@@ -1,0 +1,493 @@
+CATÁLOGO EDITORIAL — PRIMERA DIVISIÓN DE ESPAÑA — v1.0
+Fecha de corte: 18 de octubre de 2026. Temporada vigente: 2026/27.
+Contenido: 150 actuales de los veinte clubes + 150 históricos que jugaron en Primera.
+Formato: TXT UTF-8; dos cuadros tabulados (TSV), importables por separado.
+
+CRITERIOS Y ESCALA
+Valoraciones propias para diseño de videojuegos, no medias oficiales de EA, FIFA o Konami.
+Actuales: estimación editorial de nivel presente, calidad por posición, rendimiento reciente,
+regularidad y capacidad de decidir partidos. Los fichajes recientes pueden estar incluidos.
+La cobertura de los veinte clubes condiciona la selección: no es una clasificación oficial
+ni una demostración estadística de que éstos sean los 150 mejores sin excepción.
+No se aplicó una fórmula cuantitativa reproducible ni se analizaron todos los partidos.
+Históricos: mejor versión GLOBAL DE CARRERA, incluso si su pico ocurrió fuera de España.
+Por ejemplo, Maradona 98, Henry 94 y Kaká 93 no valoran sólo su etapa en el club español.
+Se incluyen retirados, fallecidos y jugadores que continuaron fuera de LaLiga. El campo
+estado=historico_fuera_laliga NO significa que todos estén retirados. Sergio Ramos está
+incluido como histórico: una negociación con un club de LaLiga no equivale a un fichaje.
+Se exigió participación en la Primera División iniciada en 1929: no se incluye a figuras
+cuya carrera española terminó antes de su creación, aunque sean leyendas de sus clubes.
+
+D = 0–72 | C = 73–75 | B = 76–79 | A = 80–84 | S = 85–92 | S+ = 93–99.
+Los activos se clasifican hasta S; S+ queda reservado aquí para versiones históricas.
+Los empates de media se ordenan alfabéticamente por nombre deportivo, sin ventaja adicional.
+Una diferencia de 1–2 puntos es orientativa: ajustar después de probar la economía del juego.
+
+DATOS E IMPORTACIÓN
+nombre y apellido reconstruyen el nombre personal usado; la separación es operativa.
+Mostrar nombre_deportivo en la interfaz. No deducir apodos como Gavi, Pedri o Isco del apellido.
+club_actual identifica al equipo representado por el activo; club_espanol_referencia es
+una elección histórica entre equipos reales de Primera por los que pasó el futbolista.
+El club de referencia no pretende enumerar toda su carrera ni ser su club actual.
+Una sola fila histórica por persona: Ronaldo jugó para Barcelona y Madrid, pero no se duplica.
+Nacionalidad principal normalizada; no se listan todos los pasaportes ni selecciones históricas.
+Di Stéfano se etiqueta Argentina; Puskás y Kubala, Hungría, aunque también representaron España.
+Pepe, Deco, Diego Costa y Marcos Senna se etiquetan por su selección deportiva principal.
+Los códigos ENG y WLS se usan para Inglaterra y Gales (convención futbolística); el resto
+son códigos de país de tres letras. No tratar todos los códigos como ISO 3166-1 estricto.
+Posiciones: GK arquero; CB central; RB/LB lateral; LWB carrilero izquierdo; CDM pivote;
+CM interior; CAM enganche; RM/LM volante de banda; RW/LW extremo; SS segundo punta; ST nueve.
+id identifica una versión dentro de este catálogo, no un registro de LaLiga o EA.
+Al fusionar con Brasil u otras ligas, conciliar PERSONAS antes de sumar registros:
+Ronaldo, Ronaldinho, Marcelo, etc. pueden tener versiones históricas en varios catálogos.
+fuentes remite al índice final y respalda datos biográficos o pertenencia al club; las
+fuentes generales no justifican cada punto de media, que es exclusivamente editorial.
+Los nombres de las páginas de plantel pueden actualizarse después de esta fecha de corte.
+Copiar cada bloque entre BEGIN y END, sin los marcadores, y usar TAB como separador.
+No hay fórmulas ejecutables; media_global y ranking_editorial son números enteros.
+
+COBERTURA ACTUAL POR CLUB
+Real Madrid: 16
+FC Barcelona: 16
+Atlético de Madrid: 14
+Athletic Club: 10
+Real Betis: 10
+Real Sociedad: 9
+Villarreal CF: 8
+Sevilla FC: 7
+RC Celta: 7
+Valencia CF: 7
+Getafe CF: 7
+CA Osasuna: 6
+Rayo Vallecano: 6
+RC Deportivo: 6
+RCD Espanyol: 5
+Deportivo Alavés: 4
+Elche CF: 3
+Racing de Santander: 3
+Levante UD: 3
+Málaga CF: 3
+
+DISTRIBUCIÓN DE RANGOS
+Activos: D=1, C=2, B=59, A=59, S=29.
+Históricos: S=107, S+=43.
+
+BEGIN_ACTUALES_150
+ranking_editorial	id	nombre	apellido	nombre_deportivo	club_actual	nacionalidad	nacionalidad_iso3	posicion	media_global	rango	estado	fecha_corte	fuentes
+1	esp-act-kylian-mbappe-lottin	Kylian	Mbappé Lottin	Kylian Mbappé	Real Madrid	Francia	FRA	ST	92	S	activo_laliga	2026-10-18	C01
+2	esp-act-lamine-yamal-nasraoui-ebana	Lamine	Yamal Nasraoui Ebana	Lamine Yamal	FC Barcelona	España	ESP	RW	92	S	activo_laliga	2026-10-18	C02
+3	esp-act-pedro-gonzalez-lopez	Pedro	González López	Pedri	FC Barcelona	España	ESP	CM	90	S	activo_laliga	2026-10-18	C02
+4	esp-act-raphael-dias-belloli	Raphael	Dias Belloli	Raphinha	FC Barcelona	Brasil	BRA	LW	90	S	activo_laliga	2026-10-18	C02
+5	esp-act-federico-santiago-valverde-dipetta	Federico Santiago	Valverde Dipetta	Federico Valverde	Real Madrid	Uruguay	URY	CM	89	S	activo_laliga	2026-10-18	C01
+6	esp-act-jude-victor-william-bellingham	Jude Victor William	Bellingham	Jude Bellingham	Real Madrid	Inglaterra	ENG	CAM	89	S	activo_laliga	2026-10-18	C01
+7	esp-act-rodrigo-hernandez-cascante	Rodrigo	Hernández Cascante	Rodri	FC Barcelona	España	ESP	CDM	89	S	activo_laliga	2026-10-18	C02;C22
+8	esp-act-thibaut-nicolas-marc-courtois	Thibaut Nicolas Marc	Courtois	Thibaut Courtois	Real Madrid	Bélgica	BEL	GK	89	S	activo_laliga	2026-10-18	C01
+9	esp-act-vinicius-jose-paixao-de-oliveira-junior	Vinícius José	Paixão de Oliveira Júnior	Vinícius Júnior	Real Madrid	Brasil	BRA	LW	89	S	activo_laliga	2026-10-18	C01
+10	esp-act-jan-oblak	Jan	Oblak	Jan Oblak	Atlético de Madrid	Eslovenia	SVN	GK	87	S	activo_laliga	2026-10-18	C03
+11	esp-act-julian-alvarez	Julián	Álvarez	Julián Álvarez	Atlético de Madrid	Argentina	ARG	ST	87	S	activo_laliga	2026-10-18	C03
+12	esp-act-aurelien-djani-tchouameni	Aurélien Djani	Tchouaméni	Aurélien Tchouaméni	Real Madrid	Francia	FRA	CDM	86	S	activo_laliga	2026-10-18	C01
+13	esp-act-frenkie-de-jong	Frenkie	de Jong	Frenkie de Jong	FC Barcelona	Países Bajos	NLD	CM	86	S	activo_laliga	2026-10-18	C02
+14	esp-act-jules-olivier-kounde	Jules Olivier	Koundé	Jules Koundé	FC Barcelona	Francia	FRA	RB	86	S	activo_laliga	2026-10-18	C02
+15	esp-act-nicholas-williams-arthuer	Nicholas	Williams Arthuer	Nico Williams	Athletic Club	España	ESP	LW	86	S	activo_laliga	2026-10-18	C04
+16	esp-act-pau-cubarsi-paredes	Pau	Cubarsí Paredes	Pau Cubarsí	FC Barcelona	España	ESP	CB	86	S	activo_laliga	2026-10-18	C02
+17	esp-act-ademola-lookman-olajade-alade-aylola-lookman	Ademola Lookman	Olajade Alade Aylola Lookman	Ademola Lookman	Atlético de Madrid	Nigeria	NGA	LW	85	S	activo_laliga	2026-10-18	C03
+18	esp-act-arda-guler	Arda	Güler	Arda Güler	Real Madrid	Turquía	TUR	CAM	85	S	activo_laliga	2026-10-18	C01
+19	esp-act-bernardo-mota-veiga-de-carvalho-e-silva	Bernardo Mota	Veiga de Carvalho e Silva	Bernardo Silva	Real Madrid	Portugal	PRT	CM	85	S	activo_laliga	2026-10-18	C01;C23
+20	esp-act-cristian-gabriel-romero	Cristian Gabriel	Romero	Cristian Romero	Atlético de Madrid	Argentina	ARG	CB	85	S	activo_laliga	2026-10-18	C03
+21	esp-act-daniel-olmo-carvajal	Daniel	Olmo Carvajal	Dani Olmo	FC Barcelona	España	ESP	CAM	85	S	activo_laliga	2026-10-18	C02
+22	esp-act-dean-donny-huijsen-wijsmuller	Dean Donny	Huijsen Wijsmuller	Dean Huijsen	Real Madrid	España	ESP	CB	85	S	activo_laliga	2026-10-18	C01
+23	esp-act-ibrahima-konate	Ibrahima	Konaté	Ibrahima Konaté	Real Madrid	Francia	FRA	CB	85	S	activo_laliga	2026-10-18	C01
+24	esp-act-joan-garcia-pons	Joan	García Pons	Joan García	FC Barcelona	España	ESP	GK	85	S	activo_laliga	2026-10-18	C02
+25	esp-act-marc-cucurella-saseta	Marc	Cucurella Saseta	Marc Cucurella	Real Madrid	España	ESP	LB	85	S	activo_laliga	2026-10-18	C01
+26	esp-act-trent-john-alexander-arnold	Trent John	Alexander-Arnold	Trent Alexander-Arnold	Real Madrid	Inglaterra	ENG	RB	85	S	activo_laliga	2026-10-18	C01
+27	esp-act-unai-simon-mendibil	Unai	Simón Mendibil	Unai Simón	Athletic Club	España	ESP	GK	85	S	activo_laliga	2026-10-18	C04
+28	esp-act-alejandro-baena-rodriguez	Alejandro	Baena Rodríguez	Álex Baena	Atlético de Madrid	España	ESP	CAM	85	S	activo_laliga	2026-10-18	C03
+29	esp-act-alejandro-grimaldo-garcia	Alejandro	Grimaldo García	Álex Grimaldo	Atlético de Madrid	España	ESP	LWB	85	S	activo_laliga	2026-10-18	C03
+30	esp-act-alejandro-balde-martinez	Alejandro	Balde Martínez	Alejandro Balde	FC Barcelona	España	ESP	LB	84	A	activo_laliga	2026-10-18	C02
+31	esp-act-antonio-rudiger	Antonio	Rüdiger	Antonio Rüdiger	Real Madrid	Alemania	DEU	CB	84	A	activo_laliga	2026-10-18	C01
+32	esp-act-david-hancko	Dávid	Hancko	Dávid Hancko	Atlético de Madrid	Eslovaquia	SVK	CB	84	A	activo_laliga	2026-10-18	C03
+33	esp-act-eduardo-celmi-camavinga	Eduardo Celmi	Camavinga	Eduardo Camavinga	Real Madrid	Francia	FRA	CM	84	A	activo_laliga	2026-10-18	C01
+34	esp-act-fermin-lopez-marin	Fermín	López Marín	Fermín López	FC Barcelona	España	ESP	CAM	84	A	activo_laliga	2026-10-18	C02
+35	esp-act-gabriel-fernando-de-jesus	Gabriel Fernando	de Jesus	Gabriel Jesus	FC Barcelona	Brasil	BRA	ST	84	A	activo_laliga	2026-10-18	C02
+36	esp-act-francisco-roman-alarcon-suarez	Francisco Román	Alarcón Suárez	Isco	Real Betis	España	ESP	CAM	84	A	activo_laliga	2026-10-18	C05
+37	esp-act-mikel-oyarzabal-ugarte	Mikel	Oyarzabal Ugarte	Mikel Oyarzabal	Real Sociedad	España	ESP	ST	84	A	activo_laliga	2026-10-18	C06
+38	esp-act-oihan-sancet-tirapu	Oihan	Sancet Tirapu	Oihan Sancet	Athletic Club	España	ESP	CAM	84	A	activo_laliga	2026-10-18	C04
+39	esp-act-pablo-barrios-rivas	Pablo	Barrios Rivas	Pablo Barrios	Atlético de Madrid	España	ESP	CM	84	A	activo_laliga	2026-10-18	C03
+40	esp-act-rodrygo-silva-de-goes	Rodrygo	Silva de Goes	Rodrygo	Real Madrid	Brasil	BRA	RW	84	A	activo_laliga	2026-10-18	C01
+41	esp-act-alexander-srloth	Alexander	Sørloth	Alexander Sørloth	Atlético de Madrid	Noruega	NOR	ST	83	A	activo_laliga	2026-10-18	C03
+42	esp-act-antony-matheus-dos-santos	Antony Matheus	dos Santos	Antony	Real Betis	Brasil	BRA	RW	83	A	activo_laliga	2026-10-18	C05
+43	esp-act-aymeric-jean-louis-gerard-alphonse-laporte	Aymeric Jean Louis Gérard Alphonse	Laporte	Aymeric Laporte	Athletic Club	España	ESP	CB	83	A	activo_laliga	2026-10-18	C04
+44	esp-act-daniel-vivian-moreno	Daniel	Vivian Moreno	Dani Vivian	Athletic Club	España	ESP	CB	83	A	activo_laliga	2026-10-18	C04
+45	esp-act-eric-garcia-martret	Eric	García Martret	Eric García	FC Barcelona	España	ESP	CB	83	A	activo_laliga	2026-10-18	C02
+46	esp-act-pablo-martin-paez-gavira	Pablo Martín	Páez Gavira	Gavi	FC Barcelona	España	ESP	CM	83	A	activo_laliga	2026-10-18	C02
+47	esp-act-jonathan-christian-david	Jonathan Christian	David	Jonathan David	Atlético de Madrid	Canadá	CAN	ST	83	A	activo_laliga	2026-10-18	C03
+48	esp-act-joao-pedro-cavaco-cancelo	João Pedro	Cavaco Cancelo	João Cancelo	FC Barcelona	Portugal	PRT	RB	83	A	activo_laliga	2026-10-18	C02
+49	esp-act-karim-david-adeyemi	Karim-David	Adeyemi	Karim Adeyemi	FC Barcelona	Alemania	DEU	LW	83	A	activo_laliga	2026-10-18	C02
+50	esp-act-marcos-llorente-moreno	Marcos	Llorente Moreno	Marcos Llorente	Atlético de Madrid	España	ESP	RM	83	A	activo_laliga	2026-10-18	C03
+51	esp-act-morten-hjulmand	Morten	Hjulmand	Morten Hjulmand	Atlético de Madrid	Dinamarca	DNK	CDM	83	A	activo_laliga	2026-10-18	C03
+52	esp-act-takefusa-kubo	Takefusa	Kubo	Takefusa Kubo	Real Sociedad	Japón	JPN	RW	83	A	activo_laliga	2026-10-18	C06
+53	esp-act-alejandro-remiro-gargallo	Alejandro	Remiro Gargallo	Álex Remiro	Real Sociedad	España	ESP	GK	83	A	activo_laliga	2026-10-18	C06
+54	esp-act-alberto-moleiro-gonzalez	Alberto	Moleiro González	Alberto Moleiro	Villarreal CF	España	ESP	CAM	82	A	activo_laliga	2026-10-18	C07
+55	esp-act-juan-camilo-hernandez-suarez	Juan Camilo	Hernández Suárez	Cucho Hernández	Real Betis	Colombia	COL	ST	82	A	activo_laliga	2026-10-18	C05
+56	esp-act-georges-mikautadze	Georges	Mikautadze	Georges Mikautadze	Villarreal CF	Georgia	GEO	ST	82	A	activo_laliga	2026-10-18	C07
+57	esp-act-giovani-lo-celso	Giovani	Lo Celso	Giovani Lo Celso	Real Betis	Argentina	ARG	CAM	82	A	activo_laliga	2026-10-18	C05
+58	esp-act-giuliano-simeone-baldini	Giuliano	Simeone Baldini	Giuliano Simeone	Atlético de Madrid	Argentina	ARG	RW	82	A	activo_laliga	2026-10-18	C03
+59	esp-act-inaki-williams-arthuer	Iñaki	Williams Arthuer	Iñaki Williams	Athletic Club	Ghana	GHA	RW	82	A	activo_laliga	2026-10-18	C04
+60	esp-act-juan-marcos-foyth	Juan Marcos	Foyth	Juan Foyth	Villarreal CF	Argentina	ARG	CB	82	A	activo_laliga	2026-10-18	C07
+61	esp-act-kang-in-lee	Kang-in	Lee	Kang-in Lee	Atlético de Madrid	Corea del Sur	KOR	CAM	82	A	activo_laliga	2026-10-18	C03
+62	esp-act-pape-alassane-gueye	Pape Alassane	Gueye	Pape Gueye	Villarreal CF	Senegal	SEN	CDM	82	A	activo_laliga	2026-10-18	C07
+63	esp-act-yan-diomande	Yan	Diomande	Yan Diomande	Real Madrid	Costa de Marfil	CIV	LW	82	A	activo_laliga	2026-10-18	C01
+64	esp-act-youssouf-fofana	Youssouf	Fofana	Youssouf Fofana	Sevilla FC	Francia	FRA	CM	82	A	activo_laliga	2026-10-18	C08
+65	esp-act-ayoze-perez-gutierrez	Ayoze	Pérez Gutiérrez	Ayoze Pérez	Villarreal CF	España	ESP	ST	81	A	activo_laliga	2026-10-18	C07
+66	esp-act-abdessamad-ezzalzouli	Abdessamad	Ezzalzouli	Ez Abde	Real Betis	Marruecos	MAR	LW	81	A	activo_laliga	2026-10-18	C05
+67	esp-act-iago-aspas-juncal	Iago	Aspas Juncal	Iago Aspas	RC Celta	España	ESP	SS	81	A	activo_laliga	2026-10-18	C09
+68	esp-act-javier-guerra-moreno	Javier	Guerra Moreno	Javi Guerra	Valencia CF	España	ESP	CM	81	A	activo_laliga	2026-10-18	C10
+69	esp-act-alejandro-berenguer-remiro	Alejandro	Berenguer Remiro	Álex Berenguer	Athletic Club	España	ESP	LW	81	A	activo_laliga	2026-10-18	C04
+70	esp-act-aimar-oroz-huarte	Aimar	Oroz Huarte	Aimar Oroz	CA Osasuna	España	ESP	CAM	80	A	activo_laliga	2026-10-18	C11
+71	esp-act-ander-barrenetxea-muguruza	Ander	Barrenetxea Muguruza	Ander Barrenetxea	Real Sociedad	España	ESP	LW	80	A	activo_laliga	2026-10-18	C06
+72	esp-act-ante-budimir	Ante	Budimir	Ante Budimir	CA Osasuna	Croacia	HRV	ST	80	A	activo_laliga	2026-10-18	C11
+73	esp-act-borja-iglesias-quintas	Borja	Iglesias Quintas	Borja Iglesias	RC Celta	España	ESP	ST	80	A	activo_laliga	2026-10-18	C09
+74	esp-act-carlos-soler-barragan	Carlos	Soler Barragán	Carlos Soler	Real Sociedad	España	ESP	CM	80	A	activo_laliga	2026-10-18	C06
+75	esp-act-daniel-carvajal-ramos	Daniel	Carvajal Ramos	Dani Carvajal	Getafe CF	España	ESP	RB	80	A	activo_laliga	2026-10-18	C13;C24
+76	esp-act-gerard-moreno-balaguero	Gerard	Moreno Balagueró	Gerard Moreno	Villarreal CF	España	ESP	ST	80	A	activo_laliga	2026-10-18	C07
+77	esp-act-igor-zubeldia-elorza	Igor	Zubeldia Elorza	Igor Zubeldia	Real Sociedad	España	ESP	CB	80	A	activo_laliga	2026-10-18	C06
+78	esp-act-isaac-palazon-camacho	Isaac	Palazón Camacho	Isi Palazón	Rayo Vallecano	España	ESP	CAM	80	A	activo_laliga	2026-10-18	C12
+79	esp-act-inigo-ruiz-de-galarreta-etxeberria	Iñigo	Ruiz de Galarreta Etxeberria	Iñigo Ruiz de Galarreta	Athletic Club	España	ESP	CM	80	A	activo_laliga	2026-10-18	C04
+80	esp-act-jorge-de-frutos-sebastian	Jorge	de Frutos Sebastián	Jorge de Frutos	Rayo Vallecano	España	ESP	RW	80	A	activo_laliga	2026-10-18	C12
+81	esp-act-jose-luis-gaya-pena	José Luis	Gayà Peña	José Gayà	Valencia CF	España	ESP	LB	80	A	activo_laliga	2026-10-18	C10
+82	esp-act-jose-maria-gimenez-de-vargas	José María	Giménez de Vargas	José María Giménez	RC Deportivo	Uruguay	URY	CB	80	A	activo_laliga	2026-10-18	C16
+83	esp-act-lucien-jefferson-agoume	Lucien Jefferson	Agoumé	Lucien Agoumé	Sevilla FC	Francia	FRA	CDM	80	A	activo_laliga	2026-10-18	C08
+84	esp-act-nicolas-pepe	Nicolas	Pépé	Nicolas Pépé	Villarreal CF	Costa de Marfil	CIV	RW	80	A	activo_laliga	2026-10-18	C07
+85	esp-act-pablo-fornals-malla	Pablo	Fornals Malla	Pablo Fornals	Real Betis	España	ESP	CM	80	A	activo_laliga	2026-10-18	C05
+86	esp-act-sergio-camello-perez	Sergio	Camello Pérez	Sergio Camello	Rayo Vallecano	España	ESP	ST	80	A	activo_laliga	2026-10-18	C12
+87	esp-act-sergio-gomez-martin	Sergio	Gómez Martín	Sergio Gómez	Real Sociedad	España	ESP	LM	80	A	activo_laliga	2026-10-18	C06
+88	esp-act-alvaro-valles-rosa	Álvaro	Valles Rosa	Álvaro Valles	Real Betis	España	ESP	GK	80	A	activo_laliga	2026-10-18	C05
+89	esp-act-jose-angel-esmoris-tasende	José Ángel	Esmorís Tasende	Angeliño	RC Deportivo	España	ESP	LB	79	B	activo_laliga	2026-10-18	C16
+90	esp-act-benat-prados-diaz	Beñat	Prados Díaz	Beñat Prados	Athletic Club	España	ESP	CM	79	B	activo_laliga	2026-10-18	C04
+91	esp-act-bryan-zaragoza-martinez	Bryan	Zaragoza Martínez	Bryan Zaragoza	RCD Espanyol	España	ESP	LW	79	B	activo_laliga	2026-10-18	C14
+92	esp-act-david-soria-solis	David	Soria Solís	David Soria	Getafe CF	España	ESP	GK	79	B	activo_laliga	2026-10-18	C13
+93	esp-act-diego-javier-llorente-rios	Diego Javier	Llorente Ríos	Diego Llorente	Real Betis	España	ESP	CB	79	B	activo_laliga	2026-10-18	C05
+94	esp-act-facundo-valentin-buonanotte	Facundo Valentín	Buonanotte	Facundo Buonanotte	Elche CF	Argentina	ARG	CAM	79	B	activo_laliga	2026-10-18	C19
+95	esp-act-harvey-daniel-james-elliott	Harvey Daniel James	Elliott	Harvey Elliott	Valencia CF	Inglaterra	ENG	CAM	79	B	activo_laliga	2026-10-18	C10
+96	esp-act-hugo-duro-perales	Hugo	Duro Perales	Hugo Duro	Valencia CF	España	ESP	ST	79	B	activo_laliga	2026-10-18	C10
+97	esp-act-moriba-kourouma-kourouma	Moriba	Kourouma Kourouma	Ilaix Moriba	RC Celta	Guinea	GIN	CM	79	B	activo_laliga	2026-10-18	C09
+98	esp-act-ionut-andrei-radu	Ionuț Andrei	Radu	Ionuț Radu	RC Celta	Rumania	ROU	GK	79	B	activo_laliga	2026-10-18	C09
+99	esp-act-javier-galan-gil	Javier	Galán Gil	Javi Galán	RC Celta	España	ESP	LB	79	B	activo_laliga	2026-10-18	C09
+100	esp-act-jon-gorrotxategi-etxaniz	Jon	Gorrotxategi Etxaniz	Jon Gorrotxategi	Real Sociedad	España	ESP	CDM	79	B	activo_laliga	2026-10-18	C06
+101	esp-act-jon-martin-vicente	Jon	Martín Vicente	Jon Martín	Real Sociedad	España	ESP	CB	79	B	activo_laliga	2026-10-18	C06
+102	esp-act-jon-moncayola-tollar	Jon	Moncayola Tollar	Jon Moncayola	CA Osasuna	España	ESP	CM	79	B	activo_laliga	2026-10-18	C11
+103	esp-act-marc-casado-torras	Marc	Casadó Torras	Marc Casadó	RC Deportivo	España	ESP	CDM	79	B	activo_laliga	2026-10-18	C16
+104	esp-act-natan-bernardo-de-souza	Natan Bernardo	de Souza	Natan	Real Betis	Brasil	BRA	CB	79	B	activo_laliga	2026-10-18	C05
+105	esp-act-odysseas-vlachodimos	Odysseas	Vlachodimos	Odysseas Vlachodimos	Sevilla FC	Grecia	GRC	GK	79	B	activo_laliga	2026-10-18	C08
+106	esp-act-jose-luis-garcia-vaya	José Luis	García Vayá	Pepelu	Valencia CF	España	ESP	CDM	79	B	activo_laliga	2026-10-18	C10
+107	esp-act-pierre-emerick-emiliano-francois-aubameyang	Pierre-Emerick Emiliano François	Aubameyang	Pierre-Emerick Aubameyang	RC Deportivo	Gabón	GAB	ST	79	B	activo_laliga	2026-10-18	C16
+108	esp-act-ruben-estephan-vargas-martinez	Rubén Estephan	Vargas Martínez	Rubén Vargas	Sevilla FC	Suiza	CHE	LW	79	B	activo_laliga	2026-10-18	C08
+109	esp-act-sergi-cardona-bermudez	Sergi	Cardona Bermúdez	Sergi Cardona	Villarreal CF	España	ESP	LB	79	B	activo_laliga	2026-10-18	C07
+110	esp-act-sergio-canales-madrazo	Sergio	Canales Madrazo	Sergio Canales	Racing de Santander	España	ESP	CAM	79	B	activo_laliga	2026-10-18	C17
+111	esp-act-sergio-herrera-piron	Sergio	Herrera Pirón	Sergio Herrera	CA Osasuna	España	ESP	GK	79	B	activo_laliga	2026-10-18	C11
+112	esp-act-yeremay-hernandez-cubas	Yeremay	Hernández Cubas	Yeremay Hernández	RC Deportivo	España	ESP	LW	79	B	activo_laliga	2026-10-18	C16
+113	esp-act-yuri-berchiche-izeta	Yuri	Berchiche Izeta	Yuri Berchiche	Athletic Club	España	ESP	LB	79	B	activo_laliga	2026-10-18	C04
+114	esp-act-antonio-blanco-conde	Antonio	Blanco Conde	Antonio Blanco	Deportivo Alavés	España	ESP	CDM	78	B	activo_laliga	2026-10-18	C15
+115	esp-act-antonio-sivera-salva	Antonio	Sivera Salvá	Antonio Sivera	Deportivo Alavés	España	ESP	GK	78	B	activo_laliga	2026-10-18	C15
+116	esp-act-arnaut-adam-danjuma-groeneveld	Arnaut Adam	Danjuma Groeneveld	Arnaut Danjuma	Valencia CF	Países Bajos	NLD	LW	78	B	activo_laliga	2026-10-18	C10
+117	esp-act-borja-mayoral-moya	Borja	Mayoral Moya	Borja Mayoral	Getafe CF	España	ESP	ST	78	B	activo_laliga	2026-10-18	C13
+118	esp-act-carl-anders-theodor-starfelt	Carl Anders Theodor	Starfelt	Carl Starfelt	RC Celta	Suecia	SWE	CB	78	B	activo_laliga	2026-10-18	C09
+119	esp-act-christantus-ugonna-uche	Christantus	Ugonna Uche	Christantus Uche	Getafe CF	Nigeria	NGA	CAM	78	B	activo_laliga	2026-10-18	C13
+120	esp-act-cesar-tarrega-requeni	César	Tárrega Requeni	César Tárrega	Valencia CF	España	ESP	CB	78	B	activo_laliga	2026-10-18	C10
+121	esp-act-eduard-exposito-jaen	Eduard	Expósito Jaén	Edu Expósito	RCD Espanyol	España	ESP	CM	78	B	activo_laliga	2026-10-18	C14
+122	esp-act-flavien-enzo-boyomo	Flavien Enzo	Boyomo	Enzo Boyomo	CA Osasuna	Camerún	CMR	CB	78	B	activo_laliga	2026-10-18	C11
+123	esp-act-karl-etta-eyong	Karl	Etta Eyong	Etta Eyong	Levante UD	Camerún	CMR	ST	78	B	activo_laliga	2026-10-18	C18
+124	esp-act-facundo-bernal-cruz	Facundo	Bernal Cruz	Facundo Bernal	Real Betis	Uruguay	URY	CDM	78	B	activo_laliga	2026-10-18	C05
+125	esp-act-ferran-jutgla-blanch	Ferran	Jutglà Blanch	Ferran Jutglà	RC Celta	España	ESP	ST	78	B	activo_laliga	2026-10-18	C09
+126	esp-act-florian-lejeune	Florian	Lejeune	Florian Lejeune	Rayo Vallecano	Francia	FRA	CB	78	B	activo_laliga	2026-10-18	C12
+127	esp-act-felix-alexandre-andrade-sanches-correia	Félix Alexandre	Andrade Sanches Correia	Félix Correia	Sevilla FC	Portugal	PRT	RW	78	B	activo_laliga	2026-10-18	C08
+128	esp-act-gabriel-alonso-suazo-urbina	Gabriel Alonso	Suazo Urbina	Gabriel Suazo	Sevilla FC	Chile	CHL	LB	78	B	activo_laliga	2026-10-18	C08
+129	esp-act-lucas-boye	Lucas	Boyé	Lucas Boyé	Deportivo Alavés	Argentina	ARG	ST	78	B	activo_laliga	2026-10-18	C15
+130	esp-act-lucas-torro-marset	Lucas	Torró Marset	Lucas Torró	CA Osasuna	España	ESP	CDM	78	B	activo_laliga	2026-10-18	C11
+131	esp-act-mario-martin-rielves	Mario	Martín Rielves	Mario Martín	Getafe CF	España	ESP	CDM	78	B	activo_laliga	2026-10-18	C13
+132	esp-act-pathe-ismael-ciss	Pathé Ismaël	Ciss	Pathé Ciss	Rayo Vallecano	Senegal	SEN	CDM	78	B	activo_laliga	2026-10-18	C12
+133	esp-act-yassir-zabiri	Yassir	Zabiri	Yassir Zabiri	Racing de Santander	Marruecos	MAR	ST	78	B	activo_laliga	2026-10-18	C17
+134	esp-act-alvaro-garcia-rivera	Álvaro	García Rivera	Álvaro García	Rayo Vallecano	España	ESP	LW	78	B	activo_laliga	2026-10-18	C12
+135	esp-act-djene-dakonam-ortega	Djené	Dakonam Ortega	Djené	Getafe CF	Togo	TGO	CB	77	B	activo_laliga	2026-10-18	C13
+136	esp-act-inigo-vicente-elorduy	Iñigo	Vicente Elorduy	Iñigo Vicente	Racing de Santander	España	ESP	LW	77	B	activo_laliga	2026-10-18	C17
+137	esp-act-enrique-jesus-salas-valiente	Enrique Jesús	Salas Valiente	Kike Salas	Sevilla FC	España	ESP	CB	77	B	activo_laliga	2026-10-18	C08
+138	esp-act-leandro-daniel-cabrera-sasia	Leandro Daniel	Cabrera Sasía	Leandro Cabrera	RCD Espanyol	Uruguay	URY	CB	77	B	activo_laliga	2026-10-18	C14
+139	esp-act-leonardo-roman-riquelme	Leonardo	Román Riquelme	Leo Román	RC Deportivo	España	ESP	GK	77	B	activo_laliga	2026-10-18	C16
+140	esp-act-nemanja-gudelj	Nemanja	Gudelj	Nemanja Gudelj	Getafe CF	Serbia	SRB	CDM	77	B	activo_laliga	2026-10-18	C13
+141	esp-act-omar-el-hilali	Omar	El Hilali	Omar El Hilali	RCD Espanyol	Marruecos	MAR	RB	77	B	activo_laliga	2026-10-18	C14
+142	esp-act-grady-george-diangana	Grady George	Diangana	Grady Diangana	Elche CF	RD del Congo	COD	RW	76	B	activo_laliga	2026-10-18	C19
+143	esp-act-ivan-romero-de-avila-araque	Iván	Romero de Ávila Araque	Iván Romero	Levante UD	España	ESP	ST	76	B	activo_laliga	2026-10-18	C18
+144	esp-act-mathew-david-ryan	Mathew David	Ryan	Mathew Ryan	Levante UD	Australia	AUS	GK	76	B	activo_laliga	2026-10-18	C18
+145	esp-act-matias-ezequiel-dituro	Matías Ezequiel	Dituro	Matías Dituro	Elche CF	Argentina	ARG	GK	76	B	activo_laliga	2026-10-18	C19
+146	esp-act-nahuel-tenaglia	Nahuel	Tenaglia	Nahuel Tenaglia	Deportivo Alavés	Argentina	ARG	RB	76	B	activo_laliga	2026-10-18	C15
+147	esp-act-angel-fortuno-vinas	Ángel	Fortuño Viñas	Ángel Fortuño	RCD Espanyol	España	ESP	GK	76	B	activo_laliga	2026-10-18	C14
+148	esp-act-david-larrubia-romano	David	Larrubia Romano	David Larrubia	Málaga CF	España	ESP	CAM	75	C	activo_laliga	2026-10-18	C20
+149	esp-act-adrian-nino-heredia	Adrián	Niño Heredia	Adrián Niño	Málaga CF	España	ESP	ST	73	C	activo_laliga	2026-10-18	C20
+150	esp-act-izan-merino-rodriguez	Izan	Merino Rodríguez	Izan Merino	Málaga CF	España	ESP	CDM	72	D	activo_laliga	2026-10-18	C20
+END_ACTUALES_150
+
+BEGIN_HISTORICOS_150
+ranking_editorial	id	nombre	apellido	nombre_deportivo	club_espanol_referencia	nacionalidad	nacionalidad_iso3	posicion	media_global	rango	estado	base_valoracion	fecha_corte	fuentes
+1	esp-leg-lionel-andres-messi-cuccittini	Lionel Andrés	Messi Cuccittini	Lionel Messi	FC Barcelona	Argentina	ARG	RW	99	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L01
+2	esp-leg-cristiano-ronaldo-dos-santos-aveiro	Cristiano Ronaldo	dos Santos Aveiro	Cristiano Ronaldo	Real Madrid	Portugal	PRT	LW	98	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02;L21
+3	esp-leg-diego-armando-maradona	Diego Armando	Maradona	Diego Maradona	FC Barcelona	Argentina	ARG	CAM	98	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L01
+4	esp-leg-alfredo-stefano-di-stefano-laulhe	Alfredo Stéfano	Di Stéfano Laulhé	Alfredo Di Stéfano	Real Madrid	Argentina	ARG	SS	97	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02;L18
+5	esp-leg-hendrik-johannes-cruijff	Hendrik Johannes	Cruijff	Johan Cruyff	FC Barcelona	Países Bajos	NLD	SS	97	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L01
+6	esp-leg-ronaldo-luis-nazario-de-lima	Ronaldo Luís	Nazário de Lima	Ronaldo	Real Madrid	Brasil	BRA	ST	97	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02
+7	esp-leg-ferenc-puskas	Ferenc	Puskás	Ferenc Puskás	Real Madrid	Hungría	HUN	ST	96	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02;L18
+8	esp-leg-romario-de-souza-faria	Romário	de Souza Faria	Romário	FC Barcelona	Brasil	BRA	ST	96	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L01
+9	esp-leg-ronaldo-de-assis-moreira	Ronaldo	de Assis Moreira	Ronaldinho	FC Barcelona	Brasil	BRA	CAM	96	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L01
+10	esp-leg-zinedine-yazid-zidane	Zinédine Yazid	Zidane	Zinédine Zidane	Real Madrid	Francia	FRA	CAM	96	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02
+11	esp-leg-andres-iniesta-lujan	Andrés	Iniesta Luján	Andrés Iniesta	FC Barcelona	España	ESP	CM	95	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L01
+12	esp-leg-luis-alberto-suarez-diaz	Luis Alberto	Suárez Díaz	Luis Suárez	FC Barcelona	Uruguay	URY	ST	95	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+13	esp-leg-luka-modric	Luka	Modrić	Luka Modrić	Real Madrid	Croacia	HRV	CM	95	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04
+14	esp-leg-xavier-hernandez-creus	Xavier	Hernández Creus	Xavi	FC Barcelona	España	ESP	CM	95	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L01
+15	esp-leg-karim-mostafa-benzema	Karim Mostafa	Benzema	Karim Benzema	Real Madrid	Francia	FRA	ST	94	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04
+16	esp-leg-luis-suarez-miramontes	Luis	Suárez Miramontes	Luis Suárez Miramontes	FC Barcelona	España	ESP	CM	94	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+17	esp-leg-luis-filipe-madeira-caeiro-figo	Luís Filipe	Madeira Caeiro Figo	Luís Figo	Real Madrid	Portugal	PRT	RW	94	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02
+18	esp-leg-laszlo-kubala-stecz	László	Kubala Stecz	László Kubala	FC Barcelona	Hungría	HUN	SS	94	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+19	esp-leg-michael-laudrup	Michael	Laudrup	Michael Laudrup	FC Barcelona	Dinamarca	DNK	CAM	94	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L01
+20	esp-leg-neymar-da-silva-santos-junior	Neymar	da Silva Santos Júnior	Neymar	FC Barcelona	Brasil	BRA	LW	94	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+21	esp-leg-rivaldo-vitor-borba-ferreira	Rivaldo	Vítor Borba Ferreira	Rivaldo	FC Barcelona	Brasil	BRA	CAM	94	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L01
+22	esp-leg-robert-lewandowski	Robert	Lewandowski	Robert Lewandowski	FC Barcelona	Polonia	POL	ST	94	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L17
+23	esp-leg-thierry-daniel-henry	Thierry Daniel	Henry	Thierry Henry	FC Barcelona	Francia	FRA	LW	94	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03;L23
+24	esp-leg-daniel-alves-da-silva	Daniel	Alves da Silva	Dani Alves	FC Barcelona	Brasil	BRA	RB	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+25	esp-leg-fabio-cannavaro	Fabio	Cannavaro	Fabio Cannavaro	Real Madrid	Italia	ITA	CB	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04
+26	esp-leg-hristo-stoichkov-stoichkov	Hristo	Stoichkov Stoichkov	Hristo Stoichkov	FC Barcelona	Bulgaria	BGR	LW	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L01
+27	esp-leg-hugo-sanchez-marquez	Hugo	Sánchez Márquez	Hugo Sánchez	Real Madrid	México	MEX	ST	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02
+28	esp-leg-iker-casillas-fernandez	Iker	Casillas Fernández	Iker Casillas	Real Madrid	España	ESP	GK	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02
+29	esp-leg-ricardo-izecson-dos-santos-leite	Ricardo Izecson	dos Santos Leite	Kaká	Real Madrid	Brasil	BRA	CAM	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04;L26
+30	esp-leg-mario-alberto-kempes-chiodi	Mario Alberto	Kempes Chiodi	Mario Kempes	Valencia CF	Argentina	ARG	ST	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L06
+31	esp-leg-francisco-gento-lopez	Francisco	Gento López	Paco Gento	Real Madrid	España	ESP	LW	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02;L18
+32	esp-leg-raymond-kopaszewski	Raymond	Kopaszewski	Raymond Kopa	Real Madrid	Francia	FRA	CAM	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02;L18
+33	esp-leg-raul-gonzalez-blanco	Raúl	González Blanco	Raúl	Real Madrid	España	ESP	SS	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02
+34	esp-leg-ricardo-zamora-martinez	Ricardo	Zamora Martínez	Ricardo Zamora	Real Madrid	España	ESP	GK	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02;L22
+35	esp-leg-roberto-carlos-da-silva-rocha	Roberto Carlos	da Silva Rocha	Roberto Carlos	Real Madrid	Brasil	BRA	LB	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02
+36	esp-leg-rutgerus-johannes-martinus-van-nistelrooij	Rutgerus Johannes Martinus	van Nistelrooij	Ruud van Nistelrooy	Real Madrid	Países Bajos	NLD	ST	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04
+37	esp-leg-samuel-eto-o-fils	Samuel	Eto'o Fils	Samuel Eto'o	FC Barcelona	Camerún	CMR	ST	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+38	esp-leg-sergio-leonel-aguero-del-castillo	Sergio Leonel	Agüero del Castillo	Sergio Agüero	Atlético de Madrid	Argentina	ARG	ST	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L08
+39	esp-leg-sergio-busquets-burgos	Sergio	Busquets Burgos	Sergio Busquets	FC Barcelona	España	ESP	CDM	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+40	esp-leg-sergio-ramos-garcia	Sergio	Ramos García	Sergio Ramos	Real Madrid	España	ESP	CB	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04;L25
+41	esp-leg-pedro-telmo-zarraonandia-montoya	Pedro Telmo	Zarraonandía Montoya	Telmo Zarra	Athletic Club	España	ESP	ST	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L12
+42	esp-leg-toni-kroos	Toni	Kroos	Toni Kroos	Real Madrid	Alemania	DEU	CM	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04
+43	esp-leg-zlatan-ibrahimovic	Zlatan	Ibrahimović	Zlatan Ibrahimović	FC Barcelona	Suecia	SWE	ST	93	S+	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+44	esp-leg-amancio-amaro-varela	Amancio	Amaro Varela	Amancio	Real Madrid	España	ESP	RW	92	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02
+45	esp-leg-antoine-griezmann	Antoine	Griezmann	Antoine Griezmann	Atlético de Madrid	Francia	FRA	SS	92	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L09
+46	esp-leg-bernd-schuster	Bernd	Schuster	Bernd Schuster	FC Barcelona	Alemania	DEU	CM	92	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+47	esp-leg-carles-puyol-saforcada	Carles	Puyol Saforcada	Carles Puyol	FC Barcelona	España	ESP	CB	92	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+48	esp-leg-david-josue-jimenez-silva	David Josué	Jiménez Silva	David Silva	Valencia CF	España	ESP	CAM	92	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L06
+49	esp-leg-david-villa-sanchez	David	Villa Sánchez	David Villa	Valencia CF	España	ESP	ST	92	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L06
+50	esp-leg-fernando-carlos-redondo-neri	Fernando Carlos	Redondo Neri	Fernando Redondo	Real Madrid	Argentina	ARG	CDM	92	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L05
+51	esp-leg-fernando-jose-torres-sanz	Fernando José	Torres Sanz	Fernando Torres	Atlético de Madrid	España	ESP	ST	92	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L08
+52	esp-leg-gareth-frank-bale	Gareth Frank	Bale	Gareth Bale	Real Madrid	Gales	WLS	RW	92	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04
+53	esp-leg-marcelo-vieira-da-silva-junior	Marcelo	Vieira da Silva Júnior	Marcelo	Real Madrid	Brasil	BRA	LB	92	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04
+54	esp-leg-radamel-falcao-garcia-zarate	Radamel Falcao	García Zárate	Radamel Falcao	Atlético de Madrid	Colombia	COL	ST	92	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L08
+55	esp-leg-ronald-koeman	Ronald	Koeman	Ronald Koeman	FC Barcelona	Países Bajos	NLD	CB	92	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+56	esp-leg-jose-roberto-gama-de-oliveira	José Roberto	Gama de Oliveira	Bebeto	RC Deportivo	Brasil	BRA	SS	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L13
+57	esp-leg-carlos-henrique-casimiro	Carlos Henrique	Casimiro	Casemiro	Real Madrid	Brasil	BRA	CDM	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04
+58	esp-leg-david-robert-joseph-beckham	David Robert Joseph	Beckham	David Beckham	Real Madrid	Inglaterra	ENG	RM	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04
+59	esp-leg-davor-suker	Davor	Šuker	Davor Šuker	Sevilla FC	Croacia	HRV	ST	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L07
+60	esp-leg-diego-forlan-corazo	Diego	Forlán Corazo	Diego Forlán	Atlético de Madrid	Uruguay	URY	ST	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L08
+61	esp-leg-diego-roberto-godin-leal	Diego Roberto	Godín Leal	Diego Godín	Atlético de Madrid	Uruguay	URY	CB	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L08
+62	esp-leg-emilio-butragueno-santos	Emilio	Butragueño Santos	Emilio Butragueño	Real Madrid	España	ESP	SS	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02;L19
+63	esp-leg-fernando-ruiz-hierro	Fernando Ruiz	Hierro	Fernando Hierro	Real Madrid	España	ESP	CB	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02;L20
+64	esp-leg-gerard-pique-bernabeu	Gerard	Piqué Bernabéu	Gerard Piqué	FC Barcelona	España	ESP	CB	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+65	esp-leg-gheorghe-hagi	Gheorghe	Hagi	Gheorghe Hagi	FC Barcelona	Rumania	ROU	CAM	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+66	esp-leg-josep-samitier-vilalta	Josep	Samitier Vilalta	Josep Samitier	FC Barcelona	España	ESP	SS	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+67	esp-leg-jose-angel-iribar-kortajarena	José Ángel	Iribar Kortajarena	José Ángel Iribar	Athletic Club	España	ESP	GK	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L12
+68	esp-leg-juan-roman-riquelme	Juan Román	Riquelme	Juan Román Riquelme	Villarreal CF	Argentina	ARG	CAM	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L14
+69	esp-leg-mesut-ozil	Mesut	Özil	Mesut Özil	Real Madrid	Alemania	DEU	CAM	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04;L28
+70	esp-leg-patrick-stephan-kluivert	Patrick Stephan	Kluivert	Patrick Kluivert	FC Barcelona	Países Bajos	NLD	ST	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+71	esp-leg-paulo-jorge-dos-santos-futre	Paulo Jorge	dos Santos Futre	Paulo Futre	Atlético de Madrid	Portugal	PRT	LW	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L10
+72	esp-leg-kepler-laveran-de-lima-ferreira	Képler Laveran	de Lima Ferreira	Pepe	Real Madrid	Portugal	PRT	CB	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04
+73	esp-leg-roberto-fabian-ayala	Roberto Fabián	Ayala	Roberto Ayala	Valencia CF	Argentina	ARG	CB	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L06
+74	esp-leg-xabier-alonso-olano	Xabier	Alonso Olano	Xabi Alonso	Real Madrid	España	ESP	CDM	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04
+75	esp-leg-angel-fabian-di-maria-hernandez	Ángel Fabián	Di María Hernández	Ángel Di María	Real Madrid	Argentina	ARG	RW	91	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04;L27
+76	esp-leg-andoni-zubizarreta-urreta	Andoni	Zubizarreta Urreta	Andoni Zubizarreta	FC Barcelona	España	ESP	GK	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+77	esp-leg-agustin-sauto-arana	Agustín	Sauto Arana	Bata	Athletic Club	España	ESP	ST	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L12
+78	esp-leg-claude-makelele-sinda	Claude	Makélélé Sinda	Claude Makélélé	Real Madrid	Francia	FRA	CDM	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04
+79	esp-leg-cesar-rodriguez-alvarez	César	Rodríguez Álvarez	César Rodríguez	FC Barcelona	España	ESP	ST	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+80	esp-leg-anderson-luis-de-souza	Ânderson Luís	de Souza	Deco	FC Barcelona	Portugal	PRT	CAM	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+81	esp-leg-gaizka-mendieta-zabala	Gaizka	Mendieta Zabala	Gaizka Mendieta	Valencia CF	España	ESP	RM	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L06
+82	esp-leg-gary-winston-lineker	Gary Winston	Lineker	Gary Lineker	FC Barcelona	Inglaterra	ENG	ST	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+83	esp-leg-henrik-edward-larsson	Henrik Edward	Larsson	Henrik Larsson	FC Barcelona	Suecia	SWE	ST	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+84	esp-leg-ivan-rakitic	Ivan	Rakitić	Iván Rakitić	Sevilla FC	Croacia	HRV	CM	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L07
+85	esp-leg-javier-alejandro-mascherano	Javier Alejandro	Mascherano	Javier Mascherano	FC Barcelona	Argentina	ARG	CDM	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+86	esp-leg-jordi-alba-ramos	Jordi	Alba Ramos	Jordi Alba	FC Barcelona	España	ESP	LB	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03;L23
+87	esp-leg-jose-emilio-santamaria-iglesias	José Emilio	Santamaría Iglesias	José Santamaría	Real Madrid	Uruguay	URY	CB	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02;L18
+88	esp-leg-juan-gomez-gonzalez	Juan	Gómez González	Juanito	Real Madrid	España	ESP	SS	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02
+89	esp-leg-jose-luis-aragones-suarez	José Luis	Aragonés Suárez	Luis Aragonés	Atlético de Madrid	España	ESP	CAM	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L10
+90	esp-leg-manuel-sanchis-hontiyuelo	Manuel	Sanchís Hontiyuelo	Manolo Sanchís	Real Madrid	España	ESP	CB	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02;L19
+91	esp-leg-edmundo-suarez-de-trabanco	Edmundo	Suárez de Trabanco	Mundo	Valencia CF	España	ESP	ST	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L06
+92	esp-leg-pablo-cesar-aimar-giordano	Pablo César	Aimar Giordano	Pablo Aimar	Valencia CF	Argentina	ARG	CAM	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L06
+93	esp-leg-jose-martinez-sanchez	José	Martínez Sánchez	Pirri	Real Madrid	España	ESP	CM	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02;L20
+94	esp-leg-predrag-mijatovic	Predrag	Mijatović	Predrag Mijatović	Valencia CF	Montenegro	MNE	SS	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L06
+95	esp-leg-enrique-castro-gonzalez	Enrique	Castro González	Quini	Sporting de Gijón	España	ESP	ST	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L11
+96	esp-leg-raphael-xavier-varane	Raphaël Xavier	Varane	Raphaël Varane	Real Madrid	Francia	FRA	CB	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04
+97	esp-leg-ricardo-alberto-silveira-de-carvalho	Ricardo Alberto	Silveira de Carvalho	Ricardo Carvalho	Real Madrid	Portugal	PRT	CB	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04
+98	esp-leg-rudolphus-antonius-makaay	Rudolphus Antonius	Makaay	Roy Makaay	RC Deportivo	Países Bajos	NLD	ST	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L13
+99	esp-leg-jose-santiago-canizares-ruiz	José Santiago	Cañizares Ruiz	Santiago Cañizares	Valencia CF	España	ESP	GK	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L06
+100	esp-leg-carlos-alonso-gonzalez	Carlos Alonso	González	Santillana	Real Madrid	España	ESP	ST	90	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02;L20
+101	esp-leg-agustin-gainza-vicandi	Agustín	Gaínza Vicandi	Agustín Gaínza	Athletic Club	España	ESP	LW	89	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L12
+102	esp-leg-claudio-javier-lopez	Claudio Javier	López	Claudio López	Valencia CF	Argentina	ARG	SS	89	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L06
+103	esp-leg-diego-da-silva-costa	Diego	da Silva Costa	Diego Costa	Atlético de Madrid	España	ESP	ST	89	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L08
+104	esp-leg-fernando-morientes-sanchez	Fernando	Morientes Sánchez	Fernando Morientes	Real Madrid	España	ESP	ST	89	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L04
+105	esp-leg-filipe-luis-kasmirski	Filipe Luís	Kasmirski	Filipe Luís	Atlético de Madrid	Brasil	BRA	LB	89	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L08
+106	esp-leg-frederic-oumar-kanoute	Frédéric Oumar	Kanouté	Frédéric Kanouté	Sevilla FC	Mali	MLI	ST	89	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L07
+107	esp-leg-josep-guardiola-sala	Josep	Guardiola Sala	Josep Guardiola	FC Barcelona	España	ESP	CDM	89	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+108	esp-leg-jose-antonio-camacho-alfaro	José Antonio	Camacho Alfaro	José Antonio Camacho	Real Madrid	España	ESP	LB	89	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02;L20
+109	esp-leg-jose-eulogio-garate-ormaechea	José Eulogio	Gárate Ormaechea	José Eulogio Gárate	Atlético de Madrid	España	ESP	ST	89	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L10
+110	esp-leg-juan-carlos-valeron-santana	Juan Carlos	Valerón Santana	Juan Carlos Valerón	RC Deportivo	España	ESP	CAM	89	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L13
+111	esp-leg-juan-manuel-mata-garcia	Juan Manuel	Mata García	Juan Mata	Valencia CF	España	ESP	CAM	89	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L06
+112	esp-leg-estanislau-basora-brunet	Estanislau	Basora Brunet	Ladislao Basora	FC Barcelona	España	ESP	RW	89	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+113	esp-leg-luis-fabiano-clemente	Luís Fabiano	Clemente	Luís Fabiano	Sevilla FC	Brasil	BRA	ST	89	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L07
+114	esp-leg-mauro-da-silva-gomes	Mauro	da Silva Gomes	Mauro Silva	RC Deportivo	Brasil	BRA	CDM	89	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L13
+115	esp-leg-jose-miguel-gonzalez-martin-del-campo	José Miguel	González Martín del Campo	Míchel	Real Madrid	España	ESP	RM	89	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02;L19
+116	esp-leg-santiago-cazorla-gonzalez	Santiago	Cazorla González	Santi Cazorla	Villarreal CF	España	ESP	CM	89	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L14;L24
+117	esp-leg-victor-valdes-arribas	Víctor	Valdés Arribas	Víctor Valdés	FC Barcelona	España	ESP	GK	89	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+118	esp-leg-adelardo-rodriguez-sanchez	Adelardo	Rodríguez Sánchez	Adelardo	Atlético de Madrid	España	ESP	CM	88	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L10
+119	esp-leg-arda-turan	Arda	Turan	Arda Turan	Atlético de Madrid	Turquía	TUR	LM	88	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L08
+120	esp-leg-darko-kovacevic	Darko	Kovačević	Darko Kovačević	Real Sociedad	Serbia	SRB	ST	88	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L16
+121	esp-leg-djalma-feitosa-dias	Djalma	Feitosa Dias	Djalminha	RC Deportivo	Brasil	BRA	CAM	88	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L13
+122	esp-leg-jesus-navas-gonzalez	Jesús	Navas González	Jesús Navas	Sevilla FC	España	ESP	RB	88	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L07
+123	esp-leg-joaquin-sanchez-rodriguez	Joaquín	Sánchez Rodríguez	Joaquín	Real Betis	España	ESP	RW	88	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L15
+124	esp-leg-jorge-alberto-francisco-valdano-castellanos	Jorge Alberto Francisco	Valdano Castellanos	Jorge Valdano	Real Madrid	Argentina	ARG	ST	88	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L05
+125	esp-leg-julen-guerrero-lopez	Julen	Guerrero López	Julen Guerrero	Athletic Club	España	ESP	CAM	88	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L12
+126	esp-leg-marcos-antonio-senna-da-silva	Marcos Antônio	Senna da Silva	Marcos Senna	Villarreal CF	España	ESP	CDM	88	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L14
+127	esp-leg-rafael-martin-vazquez	Rafael	Martín Vázquez	Martín Vázquez	Real Madrid	España	ESP	CM	88	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L02;L19
+128	esp-leg-miguel-bernardo-bianquetti	Miguel	Bernardo Bianquetti	Migueli	FC Barcelona	España	ESP	CB	88	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+129	esp-leg-joao-miranda-de-souza-filho	João	Miranda de Souza Filho	Miranda	Atlético de Madrid	Brasil	BRA	CB	88	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L08
+130	esp-leg-pedro-eliezer-rodriguez-ledesma	Pedro Eliezer	Rodríguez Ledesma	Pedro	FC Barcelona	España	ESP	RW	88	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+131	esp-leg-ruben-baraja-vegas	Rubén	Baraja Vegas	Rubén Baraja	Valencia CF	España	ESP	CM	88	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L06
+132	esp-leg-andres-palop-cervera	Andrés	Palop Cervera	Andrés Palop	Sevilla FC	España	ESP	GK	87	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L07
+133	esp-leg-aritz-aduriz-zubeldia	Aritz	Aduriz Zubeldia	Aritz Aduriz	Athletic Club	España	ESP	ST	87	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L12
+134	esp-leg-david-albelda-aliques	David	Albelda Aliqués	David Albelda	Valencia CF	España	ESP	CDM	87	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L06
+135	esp-leg-diego-tristan-herrera	Diego	Tristán Herrera	Diego Tristán	RC Deportivo	España	ESP	ST	87	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L13
+136	esp-leg-francisco-javier-gonzalez-perez	Francisco Javier	González Pérez	Fran	RC Deportivo	España	ESP	LM	87	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L13
+137	esp-leg-gabriel-fernandez-arenas	Gabriel	Fernández Arenas	Gabi	Atlético de Madrid	España	ESP	CDM	87	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L08
+138	esp-leg-giovanni-christiaan-van-bronckhorst	Giovanni Christiaan	van Bronckhorst	Giovanni van Bronckhorst	FC Barcelona	Países Bajos	NLD	LB	87	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+139	esp-leg-guillermo-amor-martinez	Guillermo	Amor Martínez	Guillermo Amor	FC Barcelona	España	ESP	CM	87	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+140	esp-leg-jose-maria-bakero-escudero	José María	Bakero Escudero	José Mari Bakero	FC Barcelona	España	ESP	CAM	87	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+141	esp-leg-jose-ramon-alexanko-ventosa	José Ramón	Alexanko Ventosa	José Ramón Alexanko	FC Barcelona	España	ESP	CB	87	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+142	esp-leg-juan-francisco-torres-belen	Juan Francisco	Torres Belén	Juanfran	Atlético de Madrid	España	ESP	RB	87	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L08
+143	esp-leg-ludovic-vincent-giuly	Ludovic Vincent	Giuly	Ludovic Giuly	FC Barcelona	Francia	FRA	RW	87	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+144	esp-leg-nihat-kahveci	Nihat	Kahveci	Nihat Kahveci	Real Sociedad	Turquía	TUR	SS	87	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L16
+145	esp-leg-ruben-hugo-ayala-sanabria	Rubén Hugo	Ayala Sanabria	Ratón Ayala	Atlético de Madrid	Argentina	ARG	LW	87	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L10
+146	esp-leg-tiago-cardoso-mendes	Tiago Cardoso	Mendes	Tiago	Atlético de Madrid	Portugal	PRT	CM	87	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L08
+147	esp-leg-aitor-begiristain-mujika	Aitor	Begiristain Mujika	Txiki Begiristain	FC Barcelona	España	ESP	LW	87	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+148	esp-leg-joseba-andoni-etxeberria-lizardi	Joseba Andoni	Etxeberria Lizardi	Joseba Etxeberria	Athletic Club	España	ESP	RW	86	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L12
+149	esp-leg-manuel-sarabia-lopez	Manuel	Sarabia López	Manu Sarabia	Athletic Club	España	ESP	SS	86	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L12
+150	esp-leg-victor-munoz-manrique	Víctor	Muñoz Manrique	Víctor Muñoz	FC Barcelona	España	ESP	CM	86	S	historico_fuera_laliga	pico_carrera_global	2026-10-18	L03
+END_HISTORICOS_150
+
+FUENTES Y REFERENCIAS — investigación para el corte 18/10/2026
+C01 | Real Madrid: plantilla oficial vigente
+https://www.realmadrid.com/es-ES/futbol/primer-equipo-masculino/plantilla
+C02 | Barcelona: plantilla oficial vigente
+https://www.fcbarcelona.es/es/futbol/primer-equipo/jugadores
+C03 | Atlético: plantilla oficial vigente
+https://www.atleticodemadrid.com/jugadores-primer-equipo/
+C04 | Athletic: plantilla oficial 2026/27
+https://www.athletic-club.eus/equipos/athletic-club/2026-27/plantilla/
+C05 | Betis: plantilla y préstamos 2026/27
+https://www.goal.com/es-ar/equipo/real-betis/equipo/ah8dala7suqqkj04n2l8xz4zd
+C06 | Real Sociedad: plantilla oficial
+https://www.realsociedad.eus/es/e/plantilla/real-sociedad
+C07 | Villarreal: plantilla UEFA 2026/27 y nacionalidades
+https://es.uefa.com/uefachampionsleague/clubs/70691--villarreal/squad/
+C08 | Sevilla: convocatoria y alineación 18/10/2026
+https://www.uol.com.br/esporte/futebol/ultimas-noticias/2026/10/18/real-madrid-sevilla-como-foi-o-jogo.ghtm
+C09 | Celta: dorsales oficiales, mercado cerrado
+https://rccelta.es/equipo/actualidad/los-dorsales-del-celta-para-la-temporada-26-27/
+C10 | Valencia: plantilla 2026/27
+https://arearival.es/valencia/plantilla/
+C11 | Osasuna: dorsales oficiales 2026/27
+https://www.osasuna.es/dorsales-del-club-atletico-osasuna-para-la-temporada-2026-27
+C12 | Rayo Vallecano: plantilla oficial
+https://www.rayovallecano.es/jugadores
+C13 | Getafe: plantilla oficial vigente
+https://www.getafecf.com/plantilla?category=player
+C14 | Espanyol: alineación 17/10/2026
+https://cadenaser.com/nacional/2026/10/17/rcd-espanyol-atletico-de-madrid-en-directo-el-partido-de-la-jornada-9-de-laliga-en-vivo-cadena-ser/
+C15 | Alavés: alineación 18/10/2026
+https://cadenaser.com/euskadi/2026/10/18/el-alaves-cae-sin-merecerlo-en-balaidos-y-enlaza-5-partidos-sin-ganar-ser-vitoria/
+C16 | Deportivo: plantilla oficial vigente
+https://www.rcdeportivo.es/es/depor
+C17 | Racing: alineación 18/10/2026
+https://cadenaser.com/nacional/2026/10/18/osasuna-racing-de-santander-en-directo-el-partido-de-la-jornada-9-de-laliga-en-vivo-cadena-ser/
+C18 | Levante: plantilla oficial vigente
+https://www.levanteud.com/plantilla
+C19 | Elche: plantilla y nacionalidades 2026/27
+https://www.sportball.es/plantilla-elche/
+C20 | Málaga: alineación 18/10/2026
+https://cadenaser.com/nacional/2026/10/18/malaga-cf-real-sociedad-en-directo-el-partido-de-la-jornada-9-de-laliga-en-vivo-cadena-ser/
+C21 | LaLiga: los veinte clubes y clasificación vigente
+https://www.laliga.com/laliga-easports/clasificacion
+C22 | Barcelona: incorporación oficial de Rodri
+https://www.fcbarcelona.es/es/noticias/4561501/el-fc-barcelona-ficha-a-rodrigo-hernandez
+C23 | Real Madrid: incorporación oficial de Bernardo Silva
+https://www.realmadrid.com/es-ES/noticias/club/comunicados/comunicado-oficial-bernardo-silva-17-06-2026
+C24 | Getafe: incorporación de Carvajal
+https://www.reuters.com/sports/soccer/former-real-madrid-defender-carvajal-signs-getafe-2026-10-13/
+C25 | Espanyol: evaluación de Fortuño, Cabrera y Zaragoza
+https://as.com/futbol/primera/aprobados-y-suspensos-de-un-espanyol-de-madera-f202610-n/
+C26 | LaLiga: referencias de goleadores a la fecha de corte
+https://as.com/futbol/primera/camello-tiene-mas-gol-que-todo-el-getafe-f202610-n/
+L01 | Barcelona: galería oficial de jugadores históricos
+https://www.fcbarcelona.es/es/club/historia/jugadores-historicos
+L02 | Real Madrid: contexto histórico y figuras del club
+https://es.wikipedia.org/wiki/Real_Madrid_Club_de_F%C3%BAtbol
+L03 | Barcelona: archivo oficial de exjugadores y biografías
+https://players.fcbarcelona.com/es/
+L04 | Real Madrid: archivo de historia de jugadores
+https://www.realmadrid.com/es-ES/el-club/historia/leyendas-futbol
+L05 | Real Madrid: generación de los noventa, Redondo y Valdano
+https://www.realmadrid.com/static/sobre-el-real-madrid/historia/futbol/1991-2000/
+L06 | Valencia: leyendas, informe institucional 2024/25
+https://www.valenciacf.com/public/Attachment/2026/2/grupo_vcf_ccaa_2024-2025.pdf
+L07 | LaLiga: doce históricos del Sevilla y sus trayectorias
+https://www.laliga.com/noticias/jugadores-historicos-sevilla-fc
+L08 | Atlético: historia de sus finales y equipos 2010–2016
+https://as.com/futbol/2016/05/05/champions/1462428179_723804.html
+L09 | Orlando City: salida de Griezmann del Atlético en 2026
+https://www.orlandocitysc.com/news/global-soccer-icon-and-world-cup-winner-antoine-griezmann-to-join-orlando-city-sc
+L10 | Atlético: Futre, Gárate, Aragonés y Adelardo
+https://www.atleticodemadrid.com/noticias/paulo-futre-sera-la-imagen-del-carne-de-socio-de-la-temporada-2022-23
+L11 | Sporting: sociedad histórica y goles de Quini en Primera
+https://as.com/futbol/recuerdos-de-una-sociedad-irrepetible-f202610-n/
+L12 | Athletic: archivo histórico oficial
+https://www.athletic-club.eus/historia/
+L13 | Deportivo: jugadores legendarios, archivo oficial
+https://www.rcdeportivo.es/es/protagonistas-jugadores-legendarios
+L14 | Villarreal: once histórico oficial y partido de leyendas
+https://villarrealcf.es/centenario/el-partido-de-las-leyendas/
+L15 | Joaquín: trayectoria histórica Betis
+https://www.realbetisbalompie.es/noticias/primer-equipo/joaquin-capitan-y-leyenda-del-real-betis-anuncia-su-retirada-28945
+L16 | LaLiga: históricos Real Sociedad, Nihat y Kovačević
+https://www.laliga.com/noticias/jugadores-historicos-real-sociedad
+L17 | Lewandowski: temporadas 2022–2026 en el archivo Barça
+https://players.fcbarcelona.com/es/jugador/2927-robert-lewandowski-robert-lewandowski
+L18 | Puskás: ficha oficial y generación de Di Stéfano
+https://www.realmadrid.com/es-ES/el-club/historia/leyendas-futbol/ferenc-puskas-biro/
+L19 | Quinta del Buitre: biografía oficial de Butragueño
+https://www.realmadrid.com/es-ES/el-club/historia/leyendas-futbol/emilio-butragueno-santos
+L20 | Real Madrid: máximos históricos de partidos
+https://www.realmadrid.com/es-ES/noticias/futbol/primer-equipo/actualidad/benzema-decimo-madridista-con-mas-partidos
+L21 | Cristiano: ficha histórica oficial
+https://www.realmadrid.com/es-ES/el-club/historia/leyendas-futbol/cristiano-ronaldo-dos-santos-aveiro/
+L22 | Zamora: ficha histórica oficial
+https://www.realmadrid.com/es-ES/el-club/historia/leyendas-futbol/ricardo-zamora-martinez
+L23 | Barcelona: once europeo y americano de leyendas; Henry y Alba
+https://penyes.fcbarcelona.com/es/noticias/4044093/europa-vs-america-completados-los-xi-quien-ganariax
+L24 | Cazorla: retiro profesional en julio de 2026
+https://efe.com/deportes/2026-07-02/santi-cazorla-retirada-futbol/
+L25 | Sergio Ramos: situación fuera de LaLiga, negociación sin fichaje confirmado al corte
+https://as.com/futbol/primera/carvajal-del-madrid-al-cielo-de-getafe-f202610-n/
+L26 | Kaká: ficha oficial Real Madrid
+https://www.realmadrid.com/es-ES/el-club/historia/leyendas-futbol/ricardo-izecson-dos-santos-leite
+L27 | Di María: ficha oficial Real Madrid
+https://www.realmadrid.com/es-ES/el-club/historia/leyendas-futbol/angel-di-maria
+L28 | Özil: ficha oficial Real Madrid
+https://www.realmadrid.com/es-ES/el-club/historia/leyendas-futbol/mesut-ozil
+L29 | Zamorano: ficha histórica oficial
+https://www.realmadrid.com/es-ES/el-club/historia/leyendas-futbol/ivan-luis-zamorano-zamora/

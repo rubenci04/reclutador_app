@@ -1,5 +1,14 @@
 # Plan de pruebas
 
+## Colecciones y series — 19/10/2026
+
+- Importar los cuatro archivos, comprobar 1.200 IDs, 150 por liga/categoría, nacionalidades normalizadas, posiciones, ratings, precios y ausencia de fotos.
+- Completar cinco duelos por cada colección nueva/Global Legends: onces exclusivos y presupuesto válido, con reserva de 8M. Verificar disponibilidad de los selectores.
+- Calibrar 1.500 semillas por diferencia global 0/2/3/5 (6.000 partidos); coherencia de eventos y estadísticas, 18 oportunidades y progresión de probabilidades sin garantías.
+- Comprobar tres encuentros obligatorios, exactamente dos adicionales si hay igualdad, penales y determinismo; conservar once, suplentes, técnico y estrategia; replay sin nuevas tiradas ni duplicados de historial.
+- Verificar tres técnicos distintos por oferta, contexto actual/histórico, referencias de liga, reserva 1/4/8M y repetición entre equipos permitida.
+- Regresión completa typecheck/lint/test/build, incluyendo partidas anteriores y online. QA visual escritorio/390/360 px y movimiento reducido mediante navegador real; registrar impedimento si no accede a Vite.
+
 ## Comprobaciones de cada entrega
 
 Ejecutar npm run typecheck, npm run lint, npm test y npm run build. Registrar resultados y limitaciones en docs/qa con el identificador del encargo. No declarar éxito sin ejecución.

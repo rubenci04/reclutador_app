@@ -62,11 +62,11 @@ describe('coach hiring in a duel', () => {
     expect(parseMatchConfig({ ...CLASSIC_CONFIG, coaches: true })).toEqual(config)
     expect(parseMatchConfig({ ...CLASSIC_CONFIG, coaches: 'yes' })).toBeNull()
   })
-  it('offers six distinct coaches to each recruiter, always one at the reserved price', () => {
+  it('offers three distinct coaches per recruiter, allowing the same coach on opposing teams', () => {
     for (const seed of ['a', 'b', 'c', 'd']) {
       const offers = coachOffers(seed)
-      expect(offers.recruiter_one).toHaveLength(6); expect(offers.recruiter_two).toHaveLength(6)
-      expect(new Set([...offers.recruiter_one, ...offers.recruiter_two].map((coach) => coach.id)).size).toBe(12)
+      expect(offers.recruiter_one).toHaveLength(3); expect(offers.recruiter_two).toHaveLength(3)
+      for (const choices of Object.values(offers)) expect(new Set(choices.map((coach) => coach.id)).size).toBe(3)
       for (const side of ['recruiter_one', 'recruiter_two'] as const) expect(offers[side].some((coach) => coach.price === COACH_RESERVE)).toBe(true)
       expect(coachOffers(seed)).toEqual(offers)
     }
@@ -89,7 +89,7 @@ describe('coach hiring in a duel', () => {
     expect(hired.teams.recruiter_one.coachId).toBe(pick.id)
     expect(coachMarket(hired, 'recruiter_one')).toEqual([])
     expect(chooseCoach(hired, 'recruiter_one', pick.id)).toEqual({ ok: false, error: 'invalid_coach' })
-    expect(chooseCoach(game, 'recruiter_one', coachOffers(game.seed).recruiter_two[0].id)).toEqual({ ok: false, error: 'invalid_coach' })
+    expect(chooseCoach(game, 'recruiter_one', 'missing-coach')).toEqual({ ok: false, error: 'invalid_coach' })
     const both = autoChooseCoach(hired, 'recruiter_two')
     expect(both.teams.recruiter_two.coachId).toBeDefined()
     expect(autoChooseCoach(both, 'recruiter_two')).toBe(both)

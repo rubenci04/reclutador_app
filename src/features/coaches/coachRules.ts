@@ -9,7 +9,7 @@ export const COACH_MAX_PRICE = 8
 /** Missing in legacy games: preserve their original 1M reserve. New games default to 8M. */
 export const coachReserveFor = (config?: { readonly coaches?: boolean; readonly coachReserve?: number }) => config?.coaches ? config.coachReserve ?? COACH_RESERVE : 0
 /** Coaches offered to each recruiter. */
-export const COACH_OFFER_SIZE = 6
+export const COACH_OFFER_SIZE = 3
 
 /** Coaches cost a fraction of a footballer: 1 to 8 million by tier. */
 export const COACH_TIER_PRICE: Readonly<Record<CoachTier, number>> = { S: COACH_MAX_PRICE, A: 5, B: 3, C: 2, D: COACH_RESERVE }

@@ -12,7 +12,7 @@ import { PlayerSelector } from './PlayerSelector'
 import { useDraftStore } from './draftState'
 import { DRAFT_SLOTS, type DraftSlotId } from './draftTypes'
 import { generateCpuTeam } from '../local-match/cpuTeam'
-import { MatchScreen } from '../local-match/MatchScreen'
+import { MatchSeriesScreen } from '../local-match/MatchSeriesScreen'
 import { MATCH_RULES_VERSION, type MatchResult } from '../local-match/matchTypes'
 import { simulateMatch } from '../local-match/simulator'
 import { createSecureSeed } from '../local-match/seededRandom'
@@ -49,9 +49,9 @@ export function DraftPage({ onDuel }: DraftPageProps) {
     catch { setMatchError(true); return }
     const cpu = generateCpuTeam(DRAFT_CATALOG, seed)
     setMatchError(false)
-    setMatchResult(simulateMatch({ localLineup: lineup, cpuLineup: cpu.team.lineup, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed }))
+    setMatchResult(simulateMatch({ actionModel: 'action-v1', localLineup: lineup, cpuLineup: cpu.team.lineup, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed }))
   }
-  if (matchResult) return <div className="draft-app"><header className="draft-header"><a className="brand" href="#draft-main" aria-label={PRODUCT.name}><span className="brand-emblem">ER</span><span>{PRODUCT.name}</span></a><div className="header-actions">{onDuel && <button className="header-mode" onClick={onDuel}>{t('duel.backToDuel')}</button>}<AudioControls /><LanguageSelector /></div></header><MatchScreen key={matchResult.seed} result={matchResult} onRematch={startCpuMatch} onReturn={() => setMatchResult(null)} /></div>
+  if (matchResult) return <div className="draft-app"><header className="draft-header"><a className="brand" href="#draft-main" aria-label={PRODUCT.name}><span className="brand-emblem">ER</span><span>{PRODUCT.name}</span></a><div className="header-actions">{onDuel && <button className="header-mode" onClick={onDuel}>{t('duel.backToDuel')}</button>}<AudioControls /><LanguageSelector /></div></header><MatchSeriesScreen key={matchResult.seed} result={matchResult} onRematch={startCpuMatch} onReturn={() => setMatchResult(null)} /></div>
   return <div className="draft-app">
     <a href="#draft-main" className="skip-link">{t('home.skip')}</a>
     <header className="draft-header"><a className="brand" href="#draft-main" aria-label={PRODUCT.name}><span className="brand-emblem">ER</span><span>{PRODUCT.name}</span></a><div className="header-actions">{onDuel && <button className="header-mode" onClick={onDuel}>{t('duel.backToDuel')}</button>}<AudioControls /><LanguageSelector /></div></header>

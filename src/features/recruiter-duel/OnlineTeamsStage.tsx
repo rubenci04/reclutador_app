@@ -48,7 +48,7 @@ export function OnlineTeamsStage({ game, online, names, catalog }: Props) {
         if (cancelled) return
         submit((current) => {
           if (current.phase !== 'TEAMS_COMPLETED') return current
-          const started = startDuelMatch(current, catalog, strategies)
+          const started = startDuelMatch(current, catalog, strategies, true)
           return started.ok ? started.game : current
         })
       } catch { if (!cancelled) setStartFailed(true) }

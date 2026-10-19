@@ -10,6 +10,7 @@ import { composeStrength, squadQuality, SQUAD_QUALITY_VERSION } from './squadQua
 import { MATCH_MINUTES, MATCH_RULES_VERSION, type MatchBlock, type MatchEvent, type MatchResult, type MatchSide, type MatchStats, type MatchTeam, type RosterAdvantage, type TeamStrength } from './matchTypes'
 
 export interface SimulationInput {
+  readonly actionModel?: 'action-v1'
   readonly localLineup: DraftLineup
   readonly cpuLineup: DraftLineup
   readonly catalog: readonly Player[]
@@ -170,30 +171,36 @@ export function simulateMatch(input: SimulationInput): MatchResult {
     }
     const effective = { local: strengthFor('local'), cpu: strengthFor('cpu') }
     for (const key of ['local', 'cpu'] as const) for (const sector of ['attack', 'defense', 'midfield'] as const) effectiveTotals[key][sector] += effective[key][sector]
-    const localAttackChance = initiativeChance(effective.local, effective.cpu)
-    const side: MatchSide = random() < localAttackChance ? 'local' : 'cpu'
-    const opponent: MatchSide = side === 'local' ? 'cpu' : 'local'
-    const events: MatchEvent[] = [...changes, event(minute, side, 'attack', attacker(sides[side].team, random))]
-    const shootingPower = effective[side].attack + effective[side].midfield * .16
-    const resistance = effective[opponent].defense + effective[opponent].midfield * .12
-    const shotChance = clamp(.65 + (shootingPower - resistance) / 180 + (random() - .5) * .2, .35, .86)
-    if (random() < shotChance) {
-      stats[side].shots++
-      const onTarget = random() < clamp(.65 + (shootingPower - resistance) / 220, .38, .84)
-      if (onTarget) {
-        stats[side].shotsOnTarget++
-        const goalChance = clamp(.4 + (shootingPower - resistance) / 240 + (random() - .5) * .12, .14, .62)
-        if (random() < goalChance) {
-          score[side]++
-          events.push(event(minute, side, 'goal', attacker(sides[side].team, random)))
-        } else {
-          stats[opponent].saves++
-          events.push(event(minute, opponent, 'save'))
-        }
-      } else events.push(event(minute, side, 'shot', attacker(sides[side].team, random)))
-    } else {
-      stats[opponent].recoveries++
-      events.push(event(minute, opponent, 'recovery'))
+    // Versioned action model: three opportunities per block and stronger response
+    // to sector margins. Stored/classic simulations retain their exact stream.
+    const events: MatchEvent[] = [...changes]
+    for (let opportunity = 0; opportunity < (input.actionModel ? 3 : 1); opportunity++) {
+      const classicChance = initiativeChance(effective.local, effective.cpu)
+      const localAttackChance = input.actionModel ? clamp(.5 + (classicChance - .5) * 3.5, .15, .85) : classicChance
+      const side: MatchSide = random() < localAttackChance ? 'local' : 'cpu'
+      const opponent: MatchSide = side === 'local' ? 'cpu' : 'local'
+      events.push(event(minute, side, 'attack', attacker(sides[side].team, random)))
+      const shootingPower = effective[side].attack + effective[side].midfield * .16
+      const resistance = effective[opponent].defense + effective[opponent].midfield * .12
+      const shotChance = clamp(.65 + (shootingPower - resistance) / 180 + (random() - .5) * .2, .35, .86)
+      if (random() < shotChance) {
+        stats[side].shots++
+        const onTarget = random() < clamp(.65 + (shootingPower - resistance) / 220, .38, .84)
+        if (onTarget) {
+          stats[side].shotsOnTarget++
+          const goalChance = clamp((input.actionModel ? .3 : .4) + (shootingPower - resistance) / (input.actionModel ? 75 : 240) + (random() - .5) * .12, .14, .62)
+          if (random() < goalChance) {
+            score[side]++
+            events.push(event(minute, side, 'goal', attacker(sides[side].team, random)))
+          } else {
+            stats[opponent].saves++
+            events.push(event(minute, opponent, 'save'))
+          }
+        } else events.push(event(minute, side, 'shot', attacker(sides[side].team, random)))
+      } else {
+        stats[opponent].recoveries++
+        events.push(event(minute, opponent, 'recovery'))
+      }
     }
     if (minute === 90) events.push(event(minute, null, 'final'))
     const narrated = events.map((item) => { const tactic = eventInfluence(item.type, item.side, selection, adjustment); return tactic ? { ...item, tactic } : item })
@@ -209,6 +216,7 @@ export function simulateMatch(input: SimulationInput): MatchResult {
   }
   return {
     catalogVersion: input.catalogVersion, rulesVersion: input.rulesVersion, seed: input.seed, local, cpu, strengths, stats, blocks,
+    ...(input.actionModel ? { actionModel: input.actionModel } : {}),
     score, winner: score.local === score.cpu ? 'draw' : score.local > score.cpu ? 'local' : 'cpu',
     ...(input.rosterBonus || input.coaches ? { effectiveStrengths: { local: meanStrength('local'), cpu: meanStrength('cpu') } } : {}),
     ...(benches ? { benches: { local: benches.local.map((id) => input.catalog.find((player) => player.id === id)!), cpu: benches.cpu.map((id) => input.catalog.find((player) => player.id === id)!) }, substitutions: { version: SUBSTITUTION_RULES_VERSION, events: substitutionLog } } : {}),

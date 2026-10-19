@@ -332,3 +332,19 @@
 @media(forced-colors:active){.team-power{border-color:CanvasText}.power-bar i{background:Highlight}}
 
 .coach-card { display: flex; flex-direction: column; align-items: flex-start; gap: .4rem; text-align: left; min-width: 0; overflow-wrap: anywhere; }
+.coach-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+.coach-grid .coach-card { position:relative; padding:20px; border:1px solid #c7eb7b80; border-radius:18px; background:linear-gradient(155deg,#304d39,#101e21 75%); box-shadow:0 12px 24px #0004; transition:transform .2s,box-shadow .2s; }
+.coach-grid .coach-card:hover:not(:disabled),.coach-grid .coach-card:focus-visible { transform:translateY(-5px); box-shadow:0 16px 30px #0006; outline:2px solid #d5fb76; outline-offset:3px; }
+.coach-grid .coach-card:disabled { opacity:.5; }
+.coach-emblem { position:relative; display:grid; place-items:center; width:76px; height:88px; margin:0 auto 12px; font-size:30px; font-weight:900; color:#d5fb76; border:2px solid #d5fb76; border-radius:35% 35% 45% 45%; background:#122a23; }
+.coach-emblem b { position:absolute; right:-14px; bottom:0; border-radius:50%; background:#d5fb76; color:#14251c; padding:5px 10px; font-size:18px; }
+.series-card { max-width:1100px; margin:0 auto 28px; padding:24px; border:1px solid #d5fb7666; border-radius:18px; background:linear-gradient(120deg,#203827,#132322); }
+.series-card p { max-width:80ch; line-height:1.6; }.series-results { display:flex; flex-wrap:wrap; gap:12px; list-style:none; padding:0; }.series-results li { padding:12px 18px; border:1px solid #ffffff30; border-radius:10px; }.series-winner { color:#d5fb76; animation:series-reveal .4s ease-out; }
+@keyframes series-reveal { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+.live-match-pitch { position:relative; height:100px; margin:16px 0; overflow:hidden; border:1px solid #ffffff55; border-radius:12px; background:repeating-linear-gradient(90deg,#254d32 0 12%,#203f2b 12% 24%); }
+.live-match-pitch:before { content:''; position:absolute; left:50%; height:100%; border-left:1px solid #ffffff55; }.live-center-circle { position:absolute; width:66px; height:66px; border:1px solid #ffffff55; border-radius:50%; top:16px; left:calc(50% - 33px); }
+.live-ball { position:absolute; left:12%; top:22px; font-size:26px; animation:live-attack 2.5s ease-in-out infinite; }.toward-local .live-ball { animation-direction:reverse; }.live-match-pitch small { position:absolute; bottom:6px; left:0; width:100%; text-align:center; color:#fff; text-shadow:0 1px 3px #000; }
+@keyframes live-attack { 0% { left:12%; transform:rotate(0); } 45% { top:10px; } 100% { left:84%; transform:rotate(280deg); } }
+@media(max-width:650px) { .coach-grid { grid-template-columns:1fr; }.coach-grid .coach-card { padding:16px; }.coach-emblem { width:58px; height:64px; font-size:24px; }.series-card { margin:0 12px 20px; padding:16px; } }
+@media(prefers-reduced-motion:reduce) { .coach-grid .coach-card { transition:none; }.coach-grid .coach-card:hover:not(:disabled),.coach-grid .coach-card:focus-visible { transform:none; }.series-winner { animation:none; } }
+@media(prefers-reduced-motion:reduce) { .live-ball { animation:none; left:60%; }.toward-local .live-ball { left:30%; } }

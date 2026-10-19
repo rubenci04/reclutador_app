@@ -1,5 +1,16 @@
 # Tablero de tareas
 
+## Pedido de colecciones y series — 19/10/2026
+
+| ID | Actividad | Estado |
+|---|---|---|
+| DL-F04-DATA-006 | Incorporar las cuatro bases aportadas, ratings, rangos y precios, sin fotos | Implementada: 1.200 versiones, ocho colecciones y Global Legends combinado; revisión factual/editorial pendiente, ADR-0014 |
+| DL-F04-BAL-003 | Más oportunidades y sensibilidad a diferencias de poder | Implementada: action-v1, 18 oportunidades, calibración reproducible de 6.000 partidos; playtest real pendiente |
+| DL-F04-PLAY-005 | Series con el mismo plantel y ganador | Implementada: tres encuentros, dos adicionales en igualdad y penales; CPU, hot-seat, libre y nuevos partidos online |
+| DL-F04-UX-005 | Tres cartas de técnicos por contexto, referencias y ayudas | Implementada en tres idiomas, animaciones y movimiento reducido; QA visual bloqueada por timeout del navegador |
+
+Se mantienen abajo estados e informes históricos. El subconjunto anterior de 188 leyendas argentinas fue sustituido en el selector por las 150 aportadas en este pedido. Catálogos anteriores e IDs conservados. Detalle: qa/COLLECTIONS-SERIES.md y logs/COLLECTIONS-SERIES.md.
+
 Nomenclatura: DL-FXX-CAT-NNN; FXX indica fase y CAT responsabilidad. No existía tablero anterior.
 
 | ID | Actividad | Estado |

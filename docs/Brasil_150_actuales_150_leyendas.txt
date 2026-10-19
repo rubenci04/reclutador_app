@@ -1,0 +1,555 @@
+CATÁLOGO EDITORIAL DE FÚTBOL BRASILEÑO — v1.1
+Fecha de corte: 18 de octubre de 2026 (Argentina).
+Contenido: 150 activos de los 20 clubes de Série A 2026 + 150 leyendas retiradas.
+Formato: TXT UTF-8; dos bloques tabulados (TSV), con encabezados, importables por separado.
+
+ALCANCE Y CRITERIOS
+La lista actual es una selección editorial de 150 destacados con cobertura de los 20 clubes,
+no un ranking oficial ni el resultado de un algoritmo exhaustivo sobre todos los futbolistas.
+Se ponderan calidad técnica por posición, rendimiento reciente, regularidad y capacidad de
+influir en partidos; no se confunde prestigio histórico con nivel actual. Las lesiones y
+la falta de continuidad influyen de forma cualitativa. No se calculó una fórmula estadística
+reproducible ni se analizaron todos los partidos. Los desempates por media son alfabéticos.
+Las medias son propuestas de diseño para un videojuego, no puntuaciones oficiales de EA,
+FIFA, eFootball ni Konami. Diferencias de 1–2 puntos son orientativas y ajustables.
+
+ESCALA COMÚN DE MEDIA GLOBAL (0–99)
+D: 0–72 | C: 73–75 | B: 76–79 | A: 80–84 | S: 85–92 | S+: 93–99.
+El catálogo actual usa 72–87; las leyendas usan 83–99. D es el escalón inferior de ESTA
+selección, no una afirmación de que el jugador sea malo. La escala admite comparación entre
+ambos grupos, pero una leyenda representa su mejor versión y un activo su versión actual.
+
+LEYENDAS
+Sólo exjugadores retirados del fútbol profesional de once, incluidos fallecidos. Partidos
+de homenaje, showbol o exhibición no se consideran actividad profesional vigente.
+La media refleja el PICO GLOBAL DE CARRERA, incluso si ocurrió fuera de Brasil: por ejemplo,
+Ronaldo 97 no representa exclusivamente al Ronaldo de Cruzeiro o Corinthians. El club
+brasileño de referencia es una elección editorial entre clubes reales por los que jugó,
+no un club actual ni necesariamente aquel donde alcanzó el pico. No es un inventario
+exhaustivo de todos sus equipos brasileños. Se incluyen torneos anteriores al formato moderno
+de Série A, para no excluir a Pelé, Garrincha y otras figuras del fútbol brasileño histórico.
+
+IDENTIDAD E IMPORTACIÓN
+nombre + apellido reconstruyen el nombre personal usado en el catálogo. En nombres
+lusófonos la separación es operativa, no una certificación legal de apellidos. Usar siempre
+nombre_deportivo para mostrar Pelé, Hulk, Zico, etc.; nunca deducirlo de apellido.
+id es un identificador propio, no un ID de FIFA/CBF/EA. Mantenerlo estable tras importar.
+nacionalidad indica una nacionalidad deportiva principal; no enumera todos los pasaportes.
+Jorginho se registra como Italia; Amuzu como Ghana. No se deduce nacionalidad del nacimiento.
+posicion es una posición principal editorial: GK arquero, CB central, RB/LB lateral,
+CDM pivote, CM interior, CAM enganche, RM/LM volante de banda, RW/LW extremo,
+SS segundo delantero, ST centrodelantero. Roles alternativos no están modelados.
+fuentes remite a las referencias al final; respalda identidad/plantel/historia, no la media.
+Las fuentes de plantel pueden contener inscritos que salieron o préstamos: se priorizaron
+elencos vigentes y noticias recientes. La fecha de consulta no garantiza actualización diaria.
+Los nombres propios conservan tildes y caracteres Unicode.
+
+Para importar: copiar sólo el bloque entre BEGIN y END correspondiente, sin los marcadores,
+y seleccionar tabulación como separador. Las primeras líneas del bloque son encabezados.
+No hay fórmulas ni celdas ejecutables; los números de media/ranking son enteros.
+
+COBERTURA ACTUAL POR CLUB
+Flamengo: 13
+Palmeiras: 13
+Cruzeiro: 10
+Fluminense: 10
+São Paulo: 9
+Bahia: 9
+Corinthians: 9
+Santos: 8
+Atlético Mineiro: 8
+Grêmio: 8
+Athletico Paranaense: 7
+Botafogo: 7
+Internacional: 7
+Vasco da Gama: 7
+Red Bull Bragantino: 6
+Coritiba: 5
+Mirassol: 5
+Vitória: 3
+Remo: 3
+Chapecoense: 3
+
+DISTRIBUCIÓN DE RANGOS
+Activos: D=2, C=7, B=73, A=63, S=5.
+Leyendas: A=7, S=121, S+=22.
+
+BEGIN_ACTUALES_150
+ranking_editorial	id	nombre	apellido	nombre_deportivo	club_actual	nacionalidad	nacionalidad_iso3	posicion	media_global	rango	estado	fecha_corte	fuentes
+1	bra-act-giorgian-daniel-de-arrascaeta-benedetti	Giorgian Daniel	de Arrascaeta Benedetti	Arrascaeta	Flamengo	Uruguay	URY	CAM	87	S	activo	2026-10-18	C01
+2	bra-act-lucas-tolentino-coelho-de-lima	Lucas	Tolentino Coelho de Lima	Lucas Paquetá	Flamengo	Brasil	BRA	CAM	86	S	activo	2026-10-18	C01
+3	bra-act-pedro-guilherme-abreu-dos-santos	Pedro Guilherme	Abreu dos Santos	Pedro	Flamengo	Brasil	BRA	ST	86	S	activo	2026-10-18	C01
+4	bra-act-jhon-adolfo-arias-andrade	Jhon Adolfo	Arias Andrade	Jhon Arias	Palmeiras	Colombia	COL	RW	85	S	activo	2026-10-18	C02
+5	bra-act-matheus-fellipe-costa-pereira	Matheus	Fellipe Costa Pereira	Matheus Pereira	Cruzeiro	Brasil	BRA	CAM	85	S	activo	2026-10-18	C04
+6	bra-act-andreas-hugo-hoelgebaum-pereira	Andreas Hugo	Hoelgebaum Pereira	Andreas Pereira	Palmeiras	Brasil	BRA	CM	84	A	activo	2026-10-18	C02
+7	bra-act-gustavo-raul-gomez-portillo	Gustavo Raúl	Gómez Portillo	Gustavo Gómez	Palmeiras	Paraguay	PRY	CB	84	A	activo	2026-10-18	C02
+8	bra-act-kaio-jorge-pinto-ramos	Kaio Jorge	Pinto Ramos	Kaio Jorge	Cruzeiro	Brasil	BRA	ST	84	A	activo	2026-10-18	C04
+9	bra-act-kevin-viveros-rodallega	Kevin	Viveros Rodallega	Kevin Viveros	Athletico Paranaense	Colombia	COL	ST	84	A	activo	2026-10-18	C14
+10	bra-act-neymar-da-silva-santos-junior	Neymar	da Silva Santos Júnior	Neymar	Santos	Brasil	BRA	CAM	84	A	activo	2026-10-18	C09;C27
+11	bra-act-samuel-dias-lino	Samuel	Dias Lino	Samuel Lino	Flamengo	Brasil	BRA	LW	84	A	activo	2026-10-18	C01
+12	bra-act-agustin-daniel-rossi	Agustín Daniel	Rossi	Agustín Rossi	Flamengo	Argentina	ARG	GK	83	A	activo	2026-10-18	C01
+13	bra-act-danilo-dos-santos-de-oliveira	Danilo	dos Santos de Oliveira	Danilo	Botafogo	Brasil	BRA	CM	83	A	activo	2026-10-18	C07
+14	bra-act-jose-manuel-lopez	José Manuel	López	Flaco López	Palmeiras	Argentina	ARG	ST	83	A	activo	2026-10-18	C02
+15	bra-act-gabriel-barbosa-almeida	Gabriel	Barbosa Almeida	Gabigol	Santos	Brasil	BRA	ST	83	A	activo	2026-10-18	C09;C27
+16	bra-act-gerson-santos-da-silva	Gerson	Santos da Silva	Gerson	Cruzeiro	Brasil	BRA	CM	83	A	activo	2026-10-18	C04
+17	bra-act-jorge-andres-carrascal-guardo	Jorge Andrés	Carrascal Guardo	Jorge Carrascal	Flamengo	Colombia	COL	CAM	83	A	activo	2026-10-18	C01
+18	bra-act-jorge-luiz-frello-filho	Jorge Luiz	Frello Filho	Jorginho	Flamengo	Italia	ITA	CDM	83	A	activo	2026-10-18	C01
+19	bra-act-leonardo-ortiz	Leonardo	Ortiz	Léo Ortiz	Flamengo	Brasil	BRA	CB	83	A	activo	2026-10-18	C01
+20	bra-act-vitor-hugo-roque-ferreira	Vitor Hugo	Roque Ferreira	Vitor Roque	Palmeiras	Brasil	BRA	ST	83	A	activo	2026-10-18	C02
+21	bra-act-alan-patrick-lourenco	Alan Patrick	Lourenço	Alan Patrick	Internacional	Brasil	BRA	CAM	82	A	activo	2026-10-18	C12
+22	bra-act-erick-antonio-pulgar-farfan	Erick Antonio	Pulgar Farfán	Erick Pulgar	Flamengo	Chile	CHL	CDM	82	A	activo	2026-10-18	C01
+23	bra-act-everson-felipe-marques-pires	Everson	Felipe Marques Pires	Everson	Atlético Mineiro	Brasil	BRA	GK	82	A	activo	2026-10-18	C05;C23
+24	bra-act-fabio-deivson-lopes-maciel	Fábio Deivson	Lopes Maciel	Fábio	Fluminense	Brasil	BRA	GK	82	A	activo	2026-10-18	C03;C33
+25	bra-act-givanildo-vieira-de-sousa	Givanildo	Vieira de Sousa	Hulk	Fluminense	Brasil	BRA	ST	82	A	activo	2026-10-18	C03;C33
+26	bra-act-jefferson-david-savarino-quintero	Jefferson David	Savarino Quintero	Jefferson Savarino	Fluminense	Venezuela	VEN	RW	82	A	activo	2026-10-18	C03;C33
+27	bra-act-joaquin-piquerez-moreira	Joaquín	Piquerez Moreira	Joaquín Piquerez	Palmeiras	Uruguay	URY	LB	82	A	activo	2026-10-18	C02
+28	bra-act-jonathan-calleri	Jonathan	Calleri	Jonathan Calleri	São Paulo	Argentina	ARG	ST	82	A	activo	2026-10-18	C10
+29	bra-act-luciano-batista-da-silva-junior	Luciano	Batista da Silva Júnior	Luciano Juba	Bahia	Brasil	BRA	LB	82	A	activo	2026-10-18	C06
+30	bra-act-leonardo-pereira	Leonardo	Pereira	Léo Pereira	Flamengo	Brasil	BRA	CB	82	A	activo	2026-10-18	C01
+31	bra-act-diego-nicolas-de-la-cruz-arcosa	Diego Nicolás	de la Cruz Arcosa	Nicolás de la Cruz	Flamengo	Uruguay	URY	CM	82	A	activo	2026-10-18	C01
+32	bra-act-rodrigo-garro	Rodrigo	Garro	Rodrigo Garro	Corinthians	Argentina	ARG	CAM	82	A	activo	2026-10-18	C08
+33	bra-act-carlos-miguel-dos-santos-pereira	Carlos Miguel	dos Santos Pereira	Carlos Miguel	Palmeiras	Brasil	BRA	GK	81	A	activo	2026-10-18	C02
+34	bra-act-carlos-vinicius-alves-morais	Carlos Vinícius	Alves Morais	Carlos Vinícius	Grêmio	Brasil	BRA	ST	81	A	activo	2026-10-18	C11
+35	bra-act-fabricio-bruno-soares-de-faria	Fabrício Bruno	Soares de Faria	Fabrício Bruno	Cruzeiro	Brasil	BRA	CB	81	A	activo	2026-10-18	C04
+36	bra-act-frederico-rodrigues-de-paula-santos	Frederico	Rodrigues de Paula Santos	Fred	Atlético Mineiro	Brasil	BRA	CM	81	A	activo	2026-10-18	C05;C23
+37	bra-act-gonzalo-jordy-plata-jimenez	Gonzalo Jordy	Plata Jiménez	Gonzalo Plata	Flamengo	Ecuador	ECU	RW	81	A	activo	2026-10-18	C01
+38	bra-act-guilherme-antonio-arana-lopes	Guilherme Antonio	Arana Lopes	Guilherme Arana	Fluminense	Brasil	BRA	LB	81	A	activo	2026-10-18	C03;C33
+39	bra-act-gustavo-henrique-furtado-scarpa	Gustavo Henrique	Furtado Scarpa	Gustavo Scarpa	Atlético Mineiro	Brasil	BRA	CAM	81	A	activo	2026-10-18	C05;C23
+40	bra-act-hugo-de-souza-nogueira	Hugo	de Souza Nogueira	Hugo Souza	Corinthians	Brasil	BRA	GK	81	A	activo	2026-10-18	C08
+41	bra-act-lucas-rodrigues-moura-da-silva	Lucas	Rodrigues Moura da Silva	Lucas Moura	São Paulo	Brasil	BRA	CAM	81	A	activo	2026-10-18	C10
+42	bra-act-luciano-federico-acosta	Luciano Federico	Acosta	Luciano Acosta	Fluminense	Argentina	ARG	CAM	81	A	activo	2026-10-18	C03;C33
+43	bra-act-marlon-rodrigues-de-freitas	Marlon	Rodrigues de Freitas	Marlon Freitas	Palmeiras	Brasil	BRA	CDM	81	A	activo	2026-10-18	C02
+44	bra-act-mauricio-magalhaes-prado	Maurício	Magalhães Prado	Mauricio	Palmeiras	Brasil	BRA	CAM	81	A	activo	2026-10-18	C02
+45	bra-act-memphis-depay	Memphis	Depay	Memphis Depay	Corinthians	Países Bajos	NLD	SS	81	A	activo	2026-10-18	C08
+46	bra-act-murilo-cerqueira-paim	Murilo	Cerqueira Paim	Murilo	Palmeiras	Brasil	BRA	CB	81	A	activo	2026-10-18	C02
+47	bra-act-paulo-henrique-sampaio-filho	Paulo Henrique	Sampaio Filho	Paulinho	Palmeiras	Brasil	BRA	SS	81	A	activo	2026-10-18	C02
+48	bra-act-renan-augusto-lodi-dos-santos	Renan Augusto	Lodi dos Santos	Renan Lodi	Atlético Mineiro	Brasil	BRA	LB	81	A	activo	2026-10-18	C05;C23
+49	bra-act-vitor-eduardo-da-silva-matos	Vitor Eduardo	da Silva Matos	Vitão	Flamengo	Brasil	BRA	CB	81	A	activo	2026-10-18	C01
+50	bra-act-yuri-alberto-monteiro-da-silva	Yuri Alberto	Monteiro da Silva	Yuri Alberto	Corinthians	Brasil	BRA	ST	81	A	activo	2026-10-18	C08
+51	bra-act-agustin-canobbio-graviz	Agustín	Canobbio Graviz	Agustín Canobbio	Fluminense	Uruguay	URY	LW	80	A	activo	2026-10-18	C03;C33
+52	bra-act-alex-nicolao-telles	Alex Nicolao	Telles	Alex Telles	Botafogo	Brasil	BRA	LB	80	A	activo	2026-10-18	C07
+53	bra-act-alexandro-ezequiel-bernabei	Alexandro Ezequiel	Bernabei	Alexandro Bernabei	Internacional	Argentina	ARG	LB	80	A	activo	2026-10-18	C12
+54	bra-act-carlos-andres-gomez-hinestroza	Carlos Andrés	Gómez Hinestroza	Andrés Gómez	Vasco da Gama	Colombia	COL	LW	80	A	activo	2026-10-18	C13;C24
+55	bra-act-arthur-henrique-ramos-de-oliveira-melo	Arthur Henrique	Ramos de Oliveira Melo	Arthur Melo	Santos	Brasil	BRA	CM	80	A	activo	2026-10-18	C09;C27
+56	bra-act-cristian-nicolas-medina	Cristian Nicolás	Medina	Cristian Medina	Botafogo	Argentina	ARG	CM	80	A	activo	2026-10-18	C07
+57	bra-act-felipe-anderson-pereira-gomes	Felipe	Anderson Pereira Gomes	Felipe Anderson	Palmeiras	Brasil	BRA	RW	80	A	activo	2026-10-18	C02
+58	bra-act-hercules-pereira-do-nascimento	Hércules	Pereira do Nascimento	Hércules	Fluminense	Brasil	BRA	CM	80	A	activo	2026-10-18	C03;C33
+59	bra-act-jean-lucas-de-souza-oliveira	Jean Lucas	de Souza Oliveira	Jean Lucas	Bahia	Brasil	BRA	CM	80	A	activo	2026-10-18	C06
+60	bra-act-luciano-da-rocha-neves	Luciano	da Rocha Neves	Luciano	São Paulo	Brasil	BRA	SS	80	A	activo	2026-10-18	C10
+61	bra-act-leonardo-cesar-jardim	Leonardo César	Jardim	Léo Jardim	Vasco da Gama	Brasil	BRA	GK	80	A	activo	2026-10-18	C13;C24
+62	bra-act-matheus-henrique-de-souza	Matheus Henrique	de Souza	Matheus Henrique	Cruzeiro	Brasil	BRA	CM	80	A	activo	2026-10-18	C04
+63	bra-act-mathias-adalberto-villasanti-rolon	Mathías Adalberto	Villasanti Rolón	Mathías Villasanti	Grêmio	Paraguay	PRY	CDM	80	A	activo	2026-10-18	C11
+64	bra-act-philippe-coutinho-correia	Philippe	Coutinho Correia	Philippe Coutinho	Santos	Brasil	BRA	CAM	80	A	activo	2026-10-18	C09;C27
+65	bra-act-santiago-leonel-sosa-taressia	Santiago Leonel	Sosa Taressia	Santiago Sosa	Vasco da Gama	Argentina	ARG	CDM	80	A	activo	2026-10-18	C13;C24
+66	bra-act-sergio-ramon-rochet-alvarez	Sergio Ramón	Rochet Álvarez	Sergio Rochet	Internacional	Uruguay	URY	GK	80	A	activo	2026-10-18	C12
+67	bra-act-tomas-esteban-cuello	Tomás Esteban	Cuello	Tomás Cuello	Atlético Mineiro	Argentina	ARG	LW	80	A	activo	2026-10-18	C05;C23
+68	bra-act-everton-augusto-de-barros-ribeiro	Éverton Augusto	de Barros Ribeiro	Éverton Ribeiro	Bahia	Brasil	BRA	CAM	80	A	activo	2026-10-18	C06
+69	bra-act-alan-steven-franco-palma	Alan Steven	Franco Palma	Alan Franco	Atlético Mineiro	Ecuador	ECU	CM	79	B	activo	2026-10-18	C05;C23
+70	bra-act-alan-hernan-lescano	Alan Hernán	Lescano	Alan Lescano	Vasco da Gama	Argentina	ARG	CAM	79	B	activo	2026-10-18	C13;C24
+71	bra-act-alejo-veliz	Alejo	Véliz	Alejo Véliz	Bahia	Argentina	ARG	ST	79	B	activo	2026-10-18	C06
+72	bra-act-arthur-mendonca-cabral	Arthur	Mendonça Cabral	Arthur Cabral	Botafogo	Brasil	BRA	ST	79	B	activo	2026-10-18	C07
+73	bra-act-artur-victor-guimaraes	Artur Victor	Guimarães	Artur	São Paulo	Brasil	BRA	RW	79	B	activo	2026-10-18	C10
+74	bra-act-breno-de-souza-bidon	Breno	de Souza Bidon	Breno Bidon	Corinthians	Brasil	BRA	CM	79	B	activo	2026-10-18	C08
+75	bra-act-caio-alexandre-souza-e-silva	Caio Alexandre	Souza e Silva	Caio Alexandre	Bahia	Brasil	BRA	CDM	79	B	activo	2026-10-18	C06
+76	bra-act-cassio-ramos	Cássio	Ramos	Cássio	Cruzeiro	Brasil	BRA	GK	79	B	activo	2026-10-18	C04
+77	bra-act-erick-da-costa-farias	Erick	da Costa Farias	Erick Pulga	Bahia	Brasil	BRA	LW	79	B	activo	2026-10-18	C06
+78	bra-act-everton-sousa-soares	Everton	Sousa Soares	Everton Cebolinha	Santos	Brasil	BRA	LW	79	B	activo	2026-10-18	C09;C27
+79	bra-act-facundo-colidio	Facundo	Colidio	Facundo Colidio	Vasco da Gama	Argentina	ARG	SS	79	B	activo	2026-10-18	C13;C24
+80	bra-act-aldemir-dos-santos-ferreira	Aldemir	dos Santos Ferreira	Ferreira	São Paulo	Brasil	BRA	LW	79	B	activo	2026-10-18	C10
+81	bra-act-johan-stiven-carbonero-balanta	Johan Stiven	Carbonero Balanta	Johan Carbonero	Internacional	Colombia	COL	LW	79	B	activo	2026-10-18	C12
+82	bra-act-john-kennedy-batista-de-souza	John Kennedy	Batista de Souza	John Kennedy	Fluminense	Brasil	BRA	ST	79	B	activo	2026-10-18	C03;C33
+83	bra-act-josue-filipe-soares-pesqueira	Josué Filipe	Soares Pesqueira	Josué	Coritiba	Portugal	PRT	CAM	79	B	activo	2026-10-18	C16
+84	bra-act-keny-alexander-arroyo-alvarado	Keny Alexander	Arroyo Alvarado	Keny Arroyo	Cruzeiro	Ecuador	ECU	RW	79	B	activo	2026-10-18	C04
+85	bra-act-lucas-piton-crivellaro	Lucas	Piton Crivellaro	Lucas Piton	Vasco da Gama	Brasil	BRA	LB	79	B	activo	2026-10-18	C13;C24
+86	bra-act-lucas-daniel-romero	Lucas Daniel	Romero	Lucas Romero	Cruzeiro	Argentina	ARG	CDM	79	B	activo	2026-10-18	C04
+87	bra-act-marcos-antonio-silva-santos	Marcos Antônio	Silva Santos	Marcos Antônio	São Paulo	Brasil	BRA	CM	79	B	activo	2026-10-18	C10
+88	bra-act-matheus-martinelli-lima	Matheus	Martinelli Lima	Martinelli	Fluminense	Brasil	BRA	CM	79	B	activo	2026-10-18	C03;C33
+89	bra-act-zander-mateo-cassierra-cabezas	Zander Mateo	Cassierra Cabezas	Mateo Cassierra	Atlético Mineiro	Colombia	COL	ST	79	B	activo	2026-10-18	C05;C23
+90	bra-act-rafael-pires-monteiro	Rafael	Pires Monteiro	Rafael	São Paulo	Brasil	BRA	GK	79	B	activo	2026-10-18	C10
+91	bra-act-rodinei-marcelo-de-almeida	Rodinei	Marcelo de Almeida	Rodinei	Santos	Brasil	BRA	RB	79	B	activo	2026-10-18	C09;C27
+92	bra-act-mateus-cardoso-lemos-martins	Mateus	Cardoso Lemos Martins	Tetê	Grêmio	Brasil	BRA	RW	79	B	activo	2026-10-18	C11
+93	bra-act-thiago-henrique-mendes-ribeiro	Thiago Henrique	Mendes Ribeiro	Thiago Mendes	Vasco da Gama	Brasil	BRA	CDM	79	B	activo	2026-10-18	C13;C24
+94	bra-act-weverton-pereira-da-silva	Weverton	Pereira da Silva	Weverton	Grêmio	Brasil	BRA	GK	79	B	activo	2026-10-18	C11
+95	bra-act-william-de-asevedo-furtado	William	de Asevedo Furtado	William	Cruzeiro	Brasil	BRA	RB	79	B	activo	2026-10-18	C04
+96	bra-act-alvaro-martin-barreal	Álvaro Martín	Barreal	Álvaro Barreal	Santos	Argentina	ARG	LM	79	B	activo	2026-10-18	C09;C27
+97	bra-act-andre-martin-carrillo-diaz	André Martín	Carrillo Díaz	André Carrillo	Corinthians	Perú	PER	CM	78	B	activo	2026-10-18	C08
+98	bra-act-bernard-anicio-caldeira-duarte	Bernard	Anício Caldeira Duarte	Bernard	Atlético Mineiro	Brasil	BRA	LW	78	B	activo	2026-10-18	C05;C23
+99	bra-act-bruno-zapelli	Bruno	Zapelli	Bruno Zapelli	Athletico Paranaense	Argentina	ARG	CAM	78	B	activo	2026-10-18	C14
+100	bra-act-francis-apelete-amuzu	Francis Apelete	Amuzu	Francis Amuzu	Grêmio	Ghana	GHA	LW	78	B	activo	2026-10-18	C11;C26
+101	bra-act-gabriel-armando-de-abreu	Gabriel	Armando de Abreu	Gabriel Paulista	Corinthians	Brasil	BRA	CB	78	B	activo	2026-10-18	C08
+102	bra-act-guillermo-alfonso-maripan-loaysa	Guillermo Alfonso	Maripán Loaysa	Guillermo Maripán	Internacional	Chile	CHL	CB	78	B	activo	2026-10-18	C12
+103	bra-act-gustavo-henrique-vernes	Gustavo Henrique	Vernes	Gustavo Henrique	Corinthians	Brasil	BRA	CB	78	B	activo	2026-10-18	C08
+104	bra-act-hakim-ziyech	Hakim	Ziyech	Hakim Ziyech	Botafogo	Marruecos	MAR	CAM	78	B	activo	2026-10-18	C07
+105	bra-act-isidro-miguel-pitta-saldivar	Isidro Miguel	Pitta Saldívar	Isidro Pitta	Red Bull Bragantino	Paraguay	PRY	ST	78	B	activo	2026-10-18	C15
+106	bra-act-juan-pablo-freytes	Juan Pablo	Freytes	Juan Freytes	Fluminense	Argentina	ARG	CB	78	B	activo	2026-10-18	C03;C33
+107	bra-act-luis-antonio-da-rocha-junior	Luis Antônio	da Rocha Júnior	Juninho Capixaba	Red Bull Bragantino	Brasil	BRA	LB	78	B	activo	2026-10-18	C15;C32
+108	bra-act-khellven-douglas-silva-oliveira	Khellven	Douglas Silva Oliveira	Khellven	Palmeiras	Brasil	BRA	RB	78	B	activo	2026-10-18	C02
+109	bra-act-cristian-gonzalo-olivera-ibarra	Cristian Gonzalo	Olivera Ibarra	Kike Olivera	Bahia	Uruguay	URY	RW	78	B	activo	2026-10-18	C06
+110	bra-act-lucas-verissimo-da-silva	Lucas	Veríssimo da Silva	Lucas Veríssimo	Santos	Brasil	BRA	CB	78	B	activo	2026-10-18	C09;C27
+111	bra-act-lucas-villalba	Lucas	Villalba	Lucas Villalba	Cruzeiro	Argentina	ARG	CB	78	B	activo	2026-10-18	C04
+112	bra-act-martin-braithwaite-christensen	Martin	Braithwaite Christensen	Martin Braithwaite	Grêmio	Dinamarca	DNK	ST	78	B	activo	2026-10-18	C11
+113	bra-act-matheus-franca-silva	Matheus	França Silva	Matheuzinho	Corinthians	Brasil	BRA	RB	78	B	activo	2026-10-18	C08
+114	bra-act-mycael-pontes-moreira	Mycael	Pontes Moreira	Mycael	Athletico Paranaense	Brasil	BRA	GK	78	B	activo	2026-10-18	C14
+115	bra-act-nicolas-brian-acevedo-tabarez	Nicolás Brian	Acevedo Tabárez	Nicolás Acevedo	Bahia	Uruguay	URY	CDM	78	B	activo	2026-10-18	C06
+116	bra-act-pablo-maia-fortunato	Pablo	Maia Fortunato	Pablo Maia	São Paulo	Brasil	BRA	CDM	78	B	activo	2026-10-18	C10
+117	bra-act-pedro-luccas-morisco-da-silva	Pedro Luccas	Morisco da Silva	Pedro Morisco	Coritiba	Brasil	BRA	GK	78	B	activo	2026-10-18	C16
+118	bra-act-robert-abel-arboleda-escobar	Robert Abel	Arboleda Escobar	Robert Arboleda	São Paulo	Ecuador	ECU	CB	78	B	activo	2026-10-18	C10
+119	bra-act-ronaldo-de-oliveira-strada	Ronaldo	de Oliveira Strada	Ronaldo	Bahia	Brasil	BRA	GK	78	B	activo	2026-10-18	C06
+120	bra-act-victor-alexander-da-silva	Victor Alexander	da Silva	Vitinho	Botafogo	Brasil	BRA	RB	78	B	activo	2026-10-18	C07
+121	bra-act-alerrandro-barra-mansa-realino-de-souza	Alerrandro	Barra Mansa Realino de Souza	Alerrandro	Internacional	Brasil	BRA	ST	77	B	activo	2026-10-18	C12
+122	bra-act-cleiton-schwengber	Cleiton	Schwengber	Cleiton	Red Bull Bragantino	Brasil	BRA	GK	77	B	activo	2026-10-18	C15
+123	bra-act-cristian-david-pavon	Cristian David	Pavón	Cristian Pavón	Grêmio	Argentina	ARG	RW	77	B	activo	2026-10-18	C11
+124	bra-act-erick-de-arruda-serafim	Erick	de Arruda Serafim	Erick	Vitória	Brasil	BRA	RW	77	B	activo	2026-10-18	C20
+125	bra-act-joao-victor-machado-cruz	João Victor	Machado Cruz	João Cruz	Athletico Paranaense	Brasil	BRA	CAM	77	B	activo	2026-10-18	C14;C31
+126	bra-act-lucas-angel-esquivel	Lucas Ángel	Esquivel	Lucas Esquivel	Athletico Paranaense	Argentina	ARG	LB	77	B	activo	2026-10-18	C14
+127	bra-act-matheus-martins-silva-dos-santos	Matheus	Martins Silva dos Santos	Matheus Martins	Botafogo	Brasil	BRA	LW	77	B	activo	2026-10-18	C07
+128	bra-act-niclas-eliasson-santana	Niclas	Eliasson Santana	Niclas Eliasson	Internacional	Suecia	SWE	RW	77	B	activo	2026-10-18	C12
+129	bra-act-pedro-rocha-neves	Pedro	Rocha Neves	Pedro Rocha	Coritiba	Brasil	BRA	LW	77	B	activo	2026-10-18	C16
+130	bra-act-reinaldo-manoel-da-silva	Reinaldo	Manoel da Silva	Reinaldo	Mirassol	Brasil	BRA	LB	77	B	activo	2026-10-18	C17;C30
+131	bra-act-john-stiven-mendoza-valencia	John Stiven	Mendoza Valencia	Stiven Mendoza	Athletico Paranaense	Colombia	COL	LW	77	B	activo	2026-10-18	C14
+132	bra-act-breno-henrique-vasconcelos-lopes	Breno Henrique	Vasconcelos Lopes	Breno Lopes	Coritiba	Brasil	BRA	LW	76	B	activo	2026-10-18	C16
+133	bra-act-eduardo-colcenti-antunes	Eduardo	Colcenti Antunes	Eduardo Sasha	Red Bull Bragantino	Brasil	BRA	ST	76	B	activo	2026-10-18	C15
+134	bra-act-eric-dos-santos-rodrigues	Eric	dos Santos Rodrigues	Eric Ramires	Red Bull Bragantino	Brasil	BRA	CM	76	B	activo	2026-10-18	C15
+135	bra-act-gustavo-marques-alves-dos-santos	Gustavo	Marques Alves dos Santos	Gustavo Marques	Red Bull Bragantino	Brasil	BRA	CB	76	B	activo	2026-10-18	C15
+136	bra-act-gustavo-martins-de-souza-santos	Gustavo	Martins de Souza Santos	Gustavo Martins	Grêmio	Brasil	BRA	CB	76	B	activo	2026-10-18	C11
+137	bra-act-jadson-alves-dos-santos	Jadson	Alves dos Santos	Jadson	Athletico Paranaense	Brasil	BRA	CM	76	B	activo	2026-10-18	C14
+138	bra-act-matheus-martins-fogaca-de-paulo	Matheus	Martins Fogaça de Paulo	Matheuzinho	Vitória	Brasil	BRA	CAM	76	B	activo	2026-10-18	C20;C28
+139	bra-act-carlos-rene-de-sousa-ferreira	Carlos Renê	de Sousa Ferreira	Renê	Vitória	Brasil	BRA	ST	76	B	activo	2026-10-18	C20;C29
+140	bra-act-sebastian-gomez-londono	Sebastián	Gómez Londoño	Sebastián Gómez	Coritiba	Colombia	COL	CDM	76	B	activo	2026-10-18	C16
+141	bra-act-walter-leandro-capeloza-artune	Walter	Leandro Capeloza Artune	Walter	Mirassol	Brasil	BRA	GK	76	B	activo	2026-10-18	C17;C30
+142	bra-act-carlos-eduardo-de-oliveira-alves	Carlos Eduardo	de Oliveira Alves	Eduardo	Mirassol	Brasil	BRA	CAM	75	C	activo	2026-10-18	C17;C30
+143	bra-act-alesson-dos-santos-batista	Alesson	dos Santos Batista	Alesson	Mirassol	Brasil	BRA	LW	74	C	activo	2026-10-18	C17;C30
+144	bra-act-shaylon-kallyson-cardoso	Shaylon	Kallyson Cardoso	Shaylon	Mirassol	Brasil	BRA	CAM	74	C	activo	2026-10-18	C17;C30
+145	bra-act-vitor-frezzatti-bueno	Vitor	Frezzatti Bueno	Vitor Bueno	Remo	Brasil	BRA	CAM	74	C	activo	2026-10-18	C18;C25
+146	bra-act-glaybson-yago-souza-lisboa	Glaybson Yago	Souza Lisboa	Yago Pikachu	Remo	Brasil	BRA	RM	74	C	activo	2026-10-18	C18;C25
+147	bra-act-antonio-javier-galeano-ferreira	Antonio Javier	Galeano Ferreira	Antonio Galeano	Remo	Paraguay	PRY	RW	73	C	activo	2026-10-18	C18;C25
+148	bra-act-yago-felipe-da-costa-rocha	Yago Felipe	da Costa Rocha	Yago Felipe	Chapecoense	Brasil	BRA	CM	73	C	activo	2026-10-18	C19
+149	bra-act-giovanni-augusto-oliveira-cardoso	Giovanni Augusto	Oliveira Cardoso	Giovanni Augusto	Chapecoense	Brasil	BRA	CAM	72	D	activo	2026-10-18	C19
+150	bra-act-mauricio-garcez-de-jesus	Maurício	Garcez de Jesus	Maurício Garcez	Chapecoense	Brasil	BRA	LW	72	D	activo	2026-10-18	C19
+END_ACTUALES_150
+
+BEGIN_LEYENDAS_150
+ranking_editorial	id	nombre	apellido	nombre_deportivo	club_brasileno_referencia	nacionalidad	nacionalidad_iso3	posicion	media_global	rango	estado	base_valoracion	fecha_corte	fuentes
+1	bra-leg-edson-arantes-do-nascimento	Edson	Arantes do Nascimento	Pelé	Santos	Brasil	BRA	SS	99	S+	retirado	pico_carrera_global	2026-10-18	H01
+2	bra-leg-manuel-francisco-dos-santos	Manuel Francisco	dos Santos	Garrincha	Botafogo	Brasil	BRA	RW	97	S+	retirado	pico_carrera_global	2026-10-18	H02
+3	bra-leg-ronaldo-luis-nazario-de-lima	Ronaldo Luís	Nazário de Lima	Ronaldo	Cruzeiro	Brasil	BRA	ST	97	S+	retirado	pico_carrera_global	2026-10-18	H03
+4	bra-leg-romario-de-souza-faria	Romário	de Souza Faria	Romário	Vasco da Gama	Brasil	BRA	ST	96	S+	retirado	pico_carrera_global	2026-10-18	H04
+5	bra-leg-ronaldo-de-assis-moreira	Ronaldo	de Assis Moreira	Ronaldinho	Atlético Mineiro	Brasil	BRA	CAM	96	S+	retirado	pico_carrera_global	2026-10-18	H05
+6	bra-leg-arthur-antunes-coimbra	Arthur Antunes	Coimbra	Zico	Flamengo	Brasil	BRA	CAM	96	S+	retirado	pico_carrera_global	2026-10-18	H06
+7	bra-leg-valdir-pereira	Valdir	Pereira	Didi	Botafogo	Brasil	BRA	CM	94	S+	retirado	pico_carrera_global	2026-10-18	H02
+8	bra-leg-nilton-dos-santos	Nílton	dos Santos	Nilton Santos	Botafogo	Brasil	BRA	LB	94	S+	retirado	pico_carrera_global	2026-10-18	H02
+9	bra-leg-rivaldo-vitor-borba-ferreira	Rivaldo	Vítor Borba Ferreira	Rivaldo	Palmeiras	Brasil	BRA	CAM	94	S+	retirado	pico_carrera_global	2026-10-18	H07
+10	bra-leg-marcos-evangelista-de-morais	Marcos Evangelista	de Morais	Cafu	São Paulo	Brasil	BRA	RB	93	S+	retirado	pico_carrera_global	2026-10-18	H10
+11	bra-leg-carlos-alberto-torres	Carlos Alberto	Torres	Carlos Alberto Torres	Santos	Brasil	BRA	RB	93	S+	retirado	pico_carrera_global	2026-10-18	H01
+12	bra-leg-djalma-dos-santos	Djalma	dos Santos	Djalma Santos	Palmeiras	Brasil	BRA	RB	93	S+	retirado	pico_carrera_global	2026-10-18	H08
+13	bra-leg-elias-ricardo-figueroa-brander	Elías Ricardo	Figueroa Brander	Elías Figueroa	Internacional	Chile	CHL	CB	93	S+	retirado	pico_carrera_global	2026-10-18	H16
+14	bra-leg-paulo-roberto-falcao	Paulo Roberto	Falcão	Falcão	Internacional	Brasil	BRA	CM	93	S+	retirado	pico_carrera_global	2026-10-18	H11
+15	bra-leg-jair-ventura-filho	Jair Ventura	Filho	Jairzinho	Botafogo	Brasil	BRA	RW	93	S+	retirado	pico_carrera_global	2026-10-18	H02
+16	bra-leg-ricardo-izecson-dos-santos-leite	Ricardo Izecson	dos Santos Leite	Kaká	São Paulo	Brasil	BRA	CAM	93	S+	retirado	pico_carrera_global	2026-10-18	H14
+17	bra-leg-leonidas-da-silva	Leônidas	da Silva	Leônidas	São Paulo	Brasil	BRA	ST	93	S+	retirado	pico_carrera_global	2026-10-18	H10
+18	bra-leg-roberto-rivellino	Roberto	Rivellino	Rivellino	Corinthians	Brasil	BRA	CAM	93	S+	retirado	pico_carrera_global	2026-10-18	H12
+19	bra-leg-roberto-carlos-da-silva-rocha	Roberto Carlos	da Silva Rocha	Roberto Carlos	Palmeiras	Brasil	BRA	LB	93	S+	retirado	pico_carrera_global	2026-10-18	H09
+20	bra-leg-socrates-brasileiro-sampaio-de-souza-vieira-de-oliveira	Sócrates	Brasileiro Sampaio de Souza Vieira de Oliveira	Sócrates	Corinthians	Brasil	BRA	CAM	93	S+	retirado	pico_carrera_global	2026-10-18	H12
+21	bra-leg-eduardo-goncalves-de-andrade	Eduardo	Gonçalves de Andrade	Tostão	Cruzeiro	Brasil	BRA	SS	93	S+	retirado	pico_carrera_global	2026-10-18	H13
+22	bra-leg-thomaz-soares-da-silva	Thomaz	Soares da Silva	Zizinho	Flamengo	Brasil	BRA	CAM	93	S+	retirado	pico_carrera_global	2026-10-18	H15
+23	bra-leg-ademir-da-guia	Ademir	da Guia	Ademir da Guia	Palmeiras	Brasil	BRA	CAM	92	S	retirado	pico_carrera_global	2026-10-18	H08
+24	bra-leg-ademir-marques-de-menezes	Ademir	Marques de Menezes	Ademir de Menezes	Vasco da Gama	Brasil	BRA	ST	92	S	retirado	pico_carrera_global	2026-10-18	H04
+25	bra-leg-antonio-de-oliveira-filho	Antônio	de Oliveira Filho	Careca	São Paulo	Brasil	BRA	ST	92	S	retirado	pico_carrera_global	2026-10-18	H10
+26	bra-leg-domingos-antonio-da-guia	Domingos Antônio	da Guia	Domingos da Guia	Flamengo	Brasil	BRA	CB	92	S	retirado	pico_carrera_global	2026-10-18	B08
+27	bra-leg-arthur-friedenreich	Arthur	Friedenreich	Friedenreich	Paulistano	Brasil	BRA	ST	92	S	retirado	pico_carrera_global	2026-10-18	B07
+28	bra-leg-gerson-de-oliveira-nunes	Gérson	de Oliveira Nunes	Gérson	Botafogo	Brasil	BRA	CM	92	S	retirado	pico_carrera_global	2026-10-18	H02
+29	bra-leg-marcelo-vieira-da-silva-junior	Marcelo	Vieira da Silva Júnior	Marcelo	Fluminense	Brasil	BRA	LB	92	S	retirado	pico_carrera_global	2026-10-18	H29
+30	bra-leg-jose-reinaldo-de-lima	José Reinaldo	de Lima	Reinaldo	Atlético Mineiro	Brasil	BRA	ST	92	S	retirado	pico_carrera_global	2026-10-18	H05
+31	bra-leg-clarence-clyde-seedorf	Clarence Clyde	Seedorf	Seedorf	Botafogo	Países Bajos	NLD	CM	92	S	retirado	pico_carrera_global	2026-10-18	B13
+32	bra-leg-adriano-leite-ribeiro	Adriano	Leite Ribeiro	Adriano	Flamengo	Brasil	BRA	ST	91	S	retirado	pico_carrera_global	2026-10-18	H30
+33	bra-leg-jose-roberto-gama-de-oliveira	José Roberto	Gama de Oliveira	Bebeto	Vasco da Gama	Brasil	BRA	SS	91	S	retirado	pico_carrera_global	2026-10-18	H04
+34	bra-leg-carlos-alberto-tevez	Carlos Alberto	Tévez	Carlos Tévez	Corinthians	Argentina	ARG	SS	91	S	retirado	pico_carrera_global	2026-10-18	H28
+35	bra-leg-nelson-de-jesus-silva	Nélson	de Jesus Silva	Dida	Cruzeiro	Brasil	BRA	GK	91	S	retirado	pico_carrera_global	2026-10-18	H13
+36	bra-leg-diego-forlan-corazo	Diego	Forlán Corazo	Forlán	Internacional	Uruguay	URY	ST	91	S	retirado	pico_carrera_global	2026-10-18	B14
+37	bra-leg-gylmar-dos-santos-neves	Gylmar	dos Santos Neves	Gilmar	Santos	Brasil	BRA	GK	91	S	retirado	pico_carrera_global	2026-10-18	H01
+38	bra-leg-julio-botelho	Júlio	Botelho	Julinho Botelho	Palmeiras	Brasil	BRA	RW	91	S	retirado	pico_carrera_global	2026-10-18	H08
+39	bra-leg-leovegildo-lins-da-gama-junior	Leovegildo Lins	da Gama Júnior	Júnior	Flamengo	Brasil	BRA	LB	91	S	retirado	pico_carrera_global	2026-10-18	H17
+40	bra-leg-luis-edmundo-pereira	Luís	Edmundo Pereira	Luís Pereira	Palmeiras	Brasil	BRA	CB	91	S	retirado	pico_carrera_global	2026-10-18	H08
+41	bra-leg-lucimar-da-silva-ferreira	Lucimar	da Silva Ferreira	Lúcio	Internacional	Brasil	BRA	CB	91	S	retirado	pico_carrera_global	2026-10-18	H09
+42	bra-leg-carlos-roberto-de-oliveira	Carlos Roberto	de Oliveira	Roberto Dinamite	Vasco da Gama	Brasil	BRA	ST	91	S	retirado	pico_carrera_global	2026-10-18	H04
+43	bra-leg-aldair-nascimento-dos-santos	Aldair	Nascimento dos Santos	Aldair	Flamengo	Brasil	BRA	CB	90	S	retirado	pico_carrera_global	2026-10-18	H18
+44	bra-leg-alexsandro-de-souza	Alexsandro	de Souza	Alex	Cruzeiro	Brasil	BRA	CAM	90	S	retirado	pico_carrera_global	2026-10-18	H13
+45	bra-leg-antonio-wilson-vieira-honorio	Antônio Wilson	Vieira Honório	Coutinho	Santos	Brasil	BRA	ST	90	S	retirado	pico_carrera_global	2026-10-18	H01
+46	bra-leg-anderson-luis-de-souza	Ânderson Luís	de Souza	Deco	Fluminense	Portugal	PRT	CAM	90	S	retirado	pico_carrera_global	2026-10-18	H31
+47	bra-leg-dirceu-lopes-mendes	Dirceu	Lopes Mendes	Dirceu Lopes	Cruzeiro	Brasil	BRA	CAM	90	S	retirado	pico_carrera_global	2026-10-18	H13
+48	bra-leg-edmundo-alves-de-souza-neto	Edmundo	Alves de Souza Neto	Edmundo	Vasco da Gama	Brasil	BRA	SS	90	S	retirado	pico_carrera_global	2026-10-18	H04
+49	bra-leg-heleno-de-freitas	Heleno	de Freitas	Heleno de Freitas	Botafogo	Brasil	BRA	ST	90	S	retirado	pico_carrera_global	2026-10-18	H02
+50	bra-leg-antonio-augusto-ribeiro-reis-junior	Antônio Augusto	Ribeiro Reis Júnior	Juninho Pernambucano	Vasco da Gama	Brasil	BRA	CM	90	S	retirado	pico_carrera_global	2026-10-18	H04
+51	bra-leg-jose-leandro-de-souza-ferreira	José Leandro	de Souza Ferreira	Leandro	Flamengo	Brasil	BRA	RB	90	S	retirado	pico_carrera_global	2026-10-18	H17
+52	bra-leg-marcos-roberto-silveira-reis	Marcos Roberto	Silveira Reis	Marcos	Palmeiras	Brasil	BRA	GK	90	S	retirado	pico_carrera_global	2026-10-18	H08
+53	bra-leg-pedro-virgilio-rocha-franchetti	Pedro Virgilio	Rocha Franchetti	Pedro Rocha	São Paulo	Uruguay	URY	CAM	90	S	retirado	pico_carrera_global	2026-10-18	H10
+54	bra-leg-jose-macia	José	Macia	Pepe	Santos	Brasil	BRA	LW	90	S	retirado	pico_carrera_global	2026-10-18	H01
+55	bra-leg-rai-souza-vieira-de-oliveira	Raí	Souza Vieira de Oliveira	Raí	São Paulo	Brasil	BRA	CAM	90	S	retirado	pico_carrera_global	2026-10-18	H10
+56	bra-leg-rogerio-ceni	Rogério	Ceni	Rogério Ceni	São Paulo	Brasil	BRA	GK	90	S	retirado	pico_carrera_global	2026-10-18	H10
+57	bra-leg-antonio-carlos-cerezo	Antônio Carlos	Cerezo	Toninho Cerezo	Atlético Mineiro	Brasil	BRA	CM	90	S	retirado	pico_carrera_global	2026-10-18	H05
+58	bra-leg-edvaldo-izidio-neto	Edvaldo	Izídio Neto	Vavá	Palmeiras	Brasil	BRA	ST	90	S	retirado	pico_carrera_global	2026-10-18	H08
+59	bra-leg-hilderaldo-luiz-bellini	Hilderaldo Luiz	Bellini	Bellini	Vasco da Gama	Brasil	BRA	CB	89	S	retirado	pico_carrera_global	2026-10-18	H04
+60	bra-leg-carlos-jose-castilho	Carlos José	Castilho	Castilho	Fluminense	Brasil	BRA	GK	89	S	retirado	pico_carrera_global	2026-10-18	H24
+61	bra-leg-clodoaldo-tavares-de-santana	Clodoaldo	Tavares de Santana	Clodoaldo	Santos	Brasil	BRA	CDM	89	S	retirado	pico_carrera_global	2026-10-18	H01
+62	bra-leg-alfonso-dario-pereyra-bueno	Alfonso Darío	Pereyra Bueno	Darío Pereyra	São Paulo	Uruguay	URY	CB	89	S	retirado	pico_carrera_global	2026-10-18	H10
+63	bra-leg-carlos-alberto-gamarra-pavon	Carlos Alberto	Gamarra Pavón	Gamarra	Corinthians	Paraguay	PRY	CB	89	S	retirado	pico_carrera_global	2026-10-18	B10
+64	bra-leg-gilberto-aparecido-da-silva	Gilberto Aparecido	da Silva	Gilberto Silva	Atlético Mineiro	Brasil	BRA	CDM	89	S	retirado	pico_carrera_global	2026-10-18	B02
+65	bra-leg-jorge-de-amorim-campos	Jorge de Amorim	Campos	Jorginho	Flamengo	Brasil	BRA	RB	89	S	retirado	pico_carrera_global	2026-10-18	B01
+66	bra-leg-leonardo-nascimento-de-araujo	Leonardo	Nascimento de Araújo	Leonardo	São Paulo	Brasil	BRA	LM	89	S	retirado	pico_carrera_global	2026-10-18	H10
+67	bra-leg-luis-fabiano-clemente	Luís Fabiano	Clemente	Luís Fabiano	São Paulo	Brasil	BRA	ST	89	S	retirado	pico_carrera_global	2026-10-18	H10
+68	bra-leg-marcelo-pereira-surcin	Marcelo	Pereira Surcin	Marcelinho Carioca	Corinthians	Brasil	BRA	CAM	89	S	retirado	pico_carrera_global	2026-10-18	H12
+69	bra-leg-mauro-ramos-de-oliveira	Mauro	Ramos de Oliveira	Mauro Ramos	Santos	Brasil	BRA	CB	89	S	retirado	pico_carrera_global	2026-10-18	H01
+70	bra-leg-mauro-da-silva-gomes	Mauro	da Silva Gomes	Mauro Silva	Bragantino	Brasil	BRA	CDM	89	S	retirado	pico_carrera_global	2026-10-18	H20
+71	bra-leg-jose-oscar-bernardi	José Oscar	Bernardi	Oscar	São Paulo	Brasil	BRA	CB	89	S	retirado	pico_carrera_global	2026-10-18	H10
+72	bra-leg-paulo-cezar-lima	Paulo Cézar	Lima	Paulo Cézar Caju	Botafogo	Brasil	BRA	LW	89	S	retirado	pico_carrera_global	2026-10-18	H02
+73	bra-leg-wilson-da-silva-piazza	Wilson da Silva	Piazza	Piazza	Cruzeiro	Brasil	BRA	CDM	89	S	retirado	pico_carrera_global	2026-10-18	H13
+74	bra-leg-renato-portaluppi	Renato	Portaluppi	Renato Gaúcho	Grêmio	Brasil	BRA	RW	89	S	retirado	pico_carrera_global	2026-10-18	H26
+75	bra-leg-juan-pablo-sorin	Juan Pablo	Sorín	Sorín	Cruzeiro	Argentina	ARG	LB	89	S	retirado	pico_carrera_global	2026-10-18	B11
+76	bra-leg-claudio-andre-mergen-taffarel	Cláudio André	Mergen Taffarel	Taffarel	Internacional	Brasil	BRA	GK	89	S	retirado	pico_carrera_global	2026-10-18	H16
+77	bra-leg-jose-ely-de-miranda	José Ely	de Miranda	Zito	Santos	Brasil	BRA	CDM	89	S	retirado	pico_carrera_global	2026-10-18	H01
+78	bra-leg-jose-roberto-da-silva-junior	José Roberto	da Silva Júnior	Zé Roberto	Palmeiras	Brasil	BRA	CM	89	S	retirado	pico_carrera_global	2026-10-18	H21
+79	bra-leg-amarildo-tavares-da-silveira	Amarildo	Tavares da Silveira	Amarildo	Botafogo	Brasil	BRA	ST	88	S	retirado	pico_carrera_global	2026-10-18	H02
+80	bra-leg-francisco-javier-arce-rolon	Francisco Javier	Arce Rolón	Arce	Palmeiras	Paraguay	PRY	RB	88	S	retirado	pico_carrera_global	2026-10-18	B15
+81	bra-leg-moacir-barbosa-nascimento	Moacir	Barbosa Nascimento	Barbosa	Vasco da Gama	Brasil	BRA	GK	88	S	retirado	pico_carrera_global	2026-10-18	H04
+82	bra-leg-claudio-ibraim-vaz-leal	Cláudio Ibraim	Vaz Leal	Branco	Fluminense	Brasil	BRA	LB	88	S	retirado	pico_carrera_global	2026-10-18	H24
+83	bra-leg-diego-alfredo-lugano-moreno	Diego Alfredo	Lugano Moreno	Diego Lugano	São Paulo	Uruguay	URY	CB	88	S	retirado	pico_carrera_global	2026-10-18	H10
+84	bra-leg-djalma-feitosa-dias	Djalma	Feitosa Dias	Djalminha	Palmeiras	Brasil	BRA	CAM	88	S	retirado	pico_carrera_global	2026-10-18	H23
+85	bra-leg-carlos-caetano-bledorn-verri	Carlos Caetano	Bledorn Verri	Dunga	Internacional	Brasil	BRA	CDM	88	S	retirado	pico_carrera_global	2026-10-18	H16
+86	bra-leg-evair-aparecido-paulino	Evair Aparecido	Paulino	Evair	Palmeiras	Brasil	BRA	ST	88	S	retirado	pico_carrera_global	2026-10-18	H08
+87	bra-leg-freddy-eusebio-rincon-valencia	Freddy Eusebio	Rincón Valencia	Freddy Rincón	Corinthians	Colombia	COL	CM	88	S	retirado	pico_carrera_global	2026-10-18	B12
+88	bra-leg-hugo-eduardo-de-leon-rodriguez	Hugo Eduardo	de León Rodríguez	Hugo de León	Grêmio	Uruguay	URY	CB	88	S	retirado	pico_carrera_global	2026-10-18	B03
+89	bra-leg-mario-jardel-de-almeida-ribeiro	Mário	Jardel de Almeida Ribeiro	Jardel	Grêmio	Brasil	BRA	ST	88	S	retirado	pico_carrera_global	2026-10-18	B03
+90	bra-leg-luiz-carlos-ferreira	Luiz Carlos	Ferreira	Luizinho	Atlético Mineiro	Brasil	BRA	CB	88	S	retirado	pico_carrera_global	2026-10-18	B05
+91	bra-leg-hailton-correa-de-arruda	Haílton	Corrêa de Arruda	Manga	Internacional	Brasil	BRA	GK	88	S	retirado	pico_carrera_global	2026-10-18	H16
+92	bra-leg-jose-carlos-nepomuceno-mozer	José Carlos	Nepomuceno Mozer	Mozer	Flamengo	Brasil	BRA	CB	88	S	retirado	pico_carrera_global	2026-10-18	H17
+93	bra-leg-luis-antonio-correa-da-costa	Luís Antônio	Corrêa da Costa	Müller	São Paulo	Brasil	BRA	SS	88	S	retirado	pico_carrera_global	2026-10-18	H10
+94	bra-leg-manoel-rezende-de-mattos-cabral	Manoel	Rezende de Mattos Cabral	Nelinho	Cruzeiro	Brasil	BRA	RB	88	S	retirado	pico_carrera_global	2026-10-18	H13
+95	bra-leg-ricardo-roberto-barreto-da-rocha	Ricardo Roberto	Barreto da Rocha	Ricardo Rocha	São Paulo	Brasil	BRA	CB	88	S	retirado	pico_carrera_global	2026-10-18	H10
+96	bra-leg-julio-cesar-romero-insfran	Julio César	Romero Insfrán	Romerito	Fluminense	Paraguay	PRY	CAM	88	S	retirado	pico_carrera_global	2026-10-18	H24
+97	bra-leg-mario-jorge-lobo-zagallo	Mário Jorge	Lobo Zagallo	Zagallo	Botafogo	Brasil	BRA	LW	88	S	retirado	pico_carrera_global	2026-10-18	H02
+98	bra-leg-eder-aleixo-de-assis	Éder	Aleixo de Assis	Éder Aleixo	Atlético Mineiro	Brasil	BRA	LW	88	S	retirado	pico_carrera_global	2026-10-18	H05
+99	bra-leg-andres-nicolas-d-alessandro	Andrés Nicolás	D'Alessandro	Andrés D'Alessandro	Internacional	Argentina	ARG	CAM	87	S	retirado	pico_carrera_global	2026-10-18	H16
+100	bra-leg-paulo-cezar-carpegiani	Paulo Cézar	Carpegiani	Carpegiani	Internacional	Brasil	BRA	CM	87	S	retirado	pico_carrera_global	2026-10-18	H16
+101	bra-leg-claudio-christovam-de-pinho	Cláudio	Christóvam de Pinho	Cláudio	Corinthians	Brasil	BRA	RW	87	S	retirado	pico_carrera_global	2026-10-18	B20
+102	bra-leg-dario-jose-dos-santos	Dario José	dos Santos	Dadá Maravilha	Atlético Mineiro	Brasil	BRA	ST	87	S	retirado	pico_carrera_global	2026-10-18	H05
+103	bra-leg-diego-ribas-da-cunha	Diego	Ribas da Cunha	Diego Ribas	Santos	Brasil	BRA	CAM	87	S	retirado	pico_carrera_global	2026-10-18	H22
+104	bra-leg-frederico-chaves-guedes	Frederico	Chaves Guedes	Fred	Fluminense	Brasil	BRA	ST	87	S	retirado	pico_carrera_global	2026-10-18	H24
+105	bra-leg-anderson-hernanes-de-carvalho-viana-lima	Anderson Hernanes	de Carvalho Viana Lima	Hernanes	São Paulo	Brasil	BRA	CM	87	S	retirado	pico_carrera_global	2026-10-18	H10
+106	bra-leg-osvaldo-giroldo-junior	Osvaldo	Giroldo Júnior	Juninho Paulista	São Paulo	Brasil	BRA	CAM	87	S	retirado	pico_carrera_global	2026-10-18	B02
+107	bra-leg-luiz-trochillo	Luiz	Trochillo	Luizinho Pequeno Polegar	Corinthians	Brasil	BRA	CAM	87	S	retirado	pico_carrera_global	2026-10-18	B20
+108	bra-leg-iomar-do-nascimento	Iomar	do Nascimento	Mazinho	Vasco da Gama	Brasil	BRA	CM	87	S	retirado	pico_carrera_global	2026-10-18	H04
+109	bra-leg-orlando-pecanha-de-carvalho	Orlando	Peçanha de Carvalho	Orlando Peçanha	Vasco da Gama	Brasil	BRA	CB	87	S	retirado	pico_carrera_global	2026-10-18	B09
+110	bra-leg-waldir-cardoso-lebrego	Waldir	Cardoso Lebrêgo	Quarentinha	Botafogo	Brasil	BRA	ST	87	S	retirado	pico_carrera_global	2026-10-18	H02
+111	bra-leg-raul-guilherme-plassmann	Raul Guilherme	Plassmann	Raul Plassmann	Cruzeiro	Brasil	BRA	GK	87	S	retirado	pico_carrera_global	2026-10-18	H13
+112	bra-leg-sergio-bernardino	Sérgio	Bernardino	Serginho Chulapa	São Paulo	Brasil	BRA	ST	87	S	retirado	pico_carrera_global	2026-10-18	H10
+113	bra-leg-wladimir-rodrigues-dos-santos	Wladimir	Rodrigues dos Santos	Wladimir	Corinthians	Brasil	BRA	LB	87	S	retirado	pico_carrera_global	2026-10-18	B20
+114	bra-leg-armelino-donizete-quagliato	Armelino Donizete	Quagliato	Zetti	São Paulo	Brasil	BRA	GK	87	S	retirado	pico_carrera_global	2026-10-18	H10
+115	bra-leg-jose-maria-rodrigues-alves	José Maria	Rodrigues Alves	Zé Maria	Corinthians	Brasil	BRA	RB	87	S	retirado	pico_carrera_global	2026-10-18	B20
+116	bra-leg-zozimo-alves-calazaes	Zózimo Alves	Calazães	Zózimo	Bangu	Brasil	BRA	CB	87	S	retirado	pico_carrera_global	2026-10-18	B09
+117	bra-leg-oswaldo-silva	Oswaldo	Silva	Baltazar	Corinthians	Brasil	BRA	ST	86	S	retirado	pico_carrera_global	2026-10-18	B20
+118	bra-leg-carlos-germano-schwantz	Carlos Germano	Schwantz	Carlos Germano	Vasco da Gama	Brasil	BRA	GK	86	S	retirado	pico_carrera_global	2026-10-18	H04
+119	bra-leg-denilson-de-oliveira-araujo	Denílson	de Oliveira Araújo	Denílson	São Paulo	Brasil	BRA	LW	86	S	retirado	pico_carrera_global	2026-10-18	B02
+120	bra-leg-diego-alves-carreira	Diego	Alves Carreira	Diego Alves	Flamengo	Brasil	BRA	GK	86	S	retirado	pico_carrera_global	2026-10-18	B17
+121	bra-leg-elano-blumer	Elano	Blumer	Elano	Santos	Brasil	BRA	CM	86	S	retirado	pico_carrera_global	2026-10-18	B23
+122	bra-leg-fernando-lucio-da-costa	Fernando Lúcio	da Costa	Fernandão	Internacional	Brasil	BRA	ST	86	S	retirado	pico_carrera_global	2026-10-18	H16
+123	bra-leg-jefferson-de-oliveira-galvao	Jefferson	de Oliveira Galvão	Jefferson	Botafogo	Brasil	BRA	GK	86	S	retirado	pico_carrera_global	2026-10-18	B18
+124	bra-leg-joao-soares-de-almeida-filho	João	Soares de Almeida Filho	Joãozinho	Cruzeiro	Brasil	BRA	LW	86	S	retirado	pico_carrera_global	2026-10-18	H13
+125	bra-leg-vanderlei-eustaquio-de-oliveira	Vanderlei Eustáquio	de Oliveira	Palhinha	Cruzeiro	Brasil	BRA	ST	86	S	retirado	pico_carrera_global	2026-10-18	H13
+126	bra-leg-dejan-petkovic	Dejan	Petković	Petković	Flamengo	Serbia	SRB	CAM	86	S	retirado	pico_carrera_global	2026-10-18	H27
+127	bra-leg-renato-dirnei-florencio-santos	Renato	Dirnei Florêncio Santos	Renato	Santos	Brasil	BRA	CM	86	S	retirado	pico_carrera_global	2026-10-18	B23
+128	bra-leg-ricardo-oliveira	Ricardo	Oliveira	Ricardo Oliveira	Santos	Brasil	BRA	ST	86	S	retirado	pico_carrera_global	2026-10-18	B22
+129	bra-leg-ronaldo-giovanelli	Ronaldo	Giovanelli	Ronaldo Giovanelli	Corinthians	Brasil	BRA	GK	86	S	retirado	pico_carrera_global	2026-10-18	B20
+130	bra-leg-tulio-humberto-pereira-costa	Túlio Humberto	Pereira Costa	Túlio Maravilha	Botafogo	Brasil	BRA	ST	86	S	retirado	pico_carrera_global	2026-10-18	B04
+131	bra-leg-jorge-luis-valdivia-toro	Jorge Luis	Valdivia Toro	Valdivia	Palmeiras	Chile	CHL	CAM	86	S	retirado	pico_carrera_global	2026-10-18	H08
+132	bra-leg-valdomiro-vaz-franco	Valdomiro	Vaz Franco	Valdomiro	Internacional	Brasil	BRA	RW	86	S	retirado	pico_carrera_global	2026-10-18	H16
+133	bra-leg-victor-leandro-bagy	Victor Leandro	Bagy	Victor	Atlético Mineiro	Brasil	BRA	GK	86	S	retirado	pico_carrera_global	2026-10-18	H05
+134	bra-leg-carlos-antonio-dobbert-de-carvalho-leite	Carlos Antônio	Dobbert de Carvalho Leite	Carvalho Leite	Botafogo	Brasil	BRA	ST	85	S	retirado	pico_carrera_global	2026-10-18	B06
+135	bra-leg-danrlei-de-deus-hinterholz	Danrlei	de Deus Hinterholz	Danrlei	Grêmio	Brasil	BRA	GK	85	S	retirado	pico_carrera_global	2026-10-18	B03
+136	bra-leg-narciso-horacio-doval	Narciso Horacio	Doval	Doval	Fluminense	Argentina	ARG	SS	85	S	retirado	pico_carrera_global	2026-10-18	H24
+137	bra-leg-edilson-da-silva-ferreira	Edílson	da Silva Ferreira	Edílson	Corinthians	Brasil	BRA	SS	85	S	retirado	pico_carrera_global	2026-10-18	B02
+138	bra-leg-luiz-carlos-bombonato-goulart	Luiz Carlos	Bombonato Goulart	Luizão	Corinthians	Brasil	BRA	ST	85	S	retirado	pico_carrera_global	2026-10-18	B02
+139	bra-leg-jose-ferreira-neto	José Ferreira	Neto	Neto	Corinthians	Brasil	BRA	CAM	85	S	retirado	pico_carrera_global	2026-10-18	B20
+140	bra-leg-edvaldo-oliveira-chaves	Edvaldo Oliveira	Chaves	Pita	Santos	Brasil	BRA	CAM	85	S	retirado	pico_carrera_global	2026-10-18	H01
+141	bra-leg-joao-coelho-neto	João	Coelho Neto	Preguinho	Fluminense	Brasil	BRA	ST	85	S	retirado	pico_carrera_global	2026-10-18	H24
+142	bra-leg-ricardo-luis-pozzi-rodrigues	Ricardo Luís	Pozzi Rodrigues	Ricardinho	Corinthians	Brasil	BRA	CAM	85	S	retirado	pico_carrera_global	2026-10-18	B02
+143	bra-leg-marcos-andre-batista-dos-santos	Marcos André	Batista dos Santos	Vampeta	Corinthians	Brasil	BRA	CDM	85	S	retirado	pico_carrera_global	2026-10-18	B02
+144	bra-leg-dario-leonardo-conca	Darío Leonardo	Conca	Darío Conca	Fluminense	Argentina	ARG	CAM	84	A	retirado	pico_carrera_global	2026-10-18	H24
+145	bra-leg-fernando-buttenbender-prass	Fernando	Büttenbender Prass	Fernando Prass	Palmeiras	Brasil	BRA	GK	84	A	retirado	pico_carrera_global	2026-10-18	B19
+146	bra-leg-jose-kleberson-pereira	José Kléberson	Pereira	Kléberson	Athletico Paranaense	Brasil	BRA	CM	84	A	retirado	pico_carrera_global	2026-10-18	B02
+147	bra-leg-washington-sebastian-abreu-gallo	Washington Sebastián	Abreu Gallo	Loco Abreu	Botafogo	Uruguay	URY	ST	84	A	retirado	pico_carrera_global	2026-10-18	B16
+148	bra-leg-wagner-fernando-velloso	Wagner Fernando	Velloso	Velloso	Palmeiras	Brasil	BRA	GK	84	A	retirado	pico_carrera_global	2026-10-18	H08
+149	bra-leg-washington-stecanela-cerqueira	Washington	Stecanela Cerqueira	Washington	Athletico Paranaense	Brasil	BRA	ST	84	A	retirado	pico_carrera_global	2026-10-18	H25
+150	bra-leg-fabio-costa	Fábio	Costa	Fábio Costa	Santos	Brasil	BRA	GK	83	A	retirado	pico_carrera_global	2026-10-18	H01
+END_LEYENDAS_150
+
+FUENTES CONSULTADAS — actualización de la selección histórica, octubre de 2026
+C01 | Flamengo: registro y nombre completo
+https://www.cbf.com.br/futebol-brasileiro/times/campeonato-brasileiro/serie-a/2026/20016?tab=atletas
+C02 | Palmeiras: elenco oficial y préstamos
+https://www.palmeiras.com.br/elenco/
+C03 | Fluminense: elenco, nacionalidad y posición
+https://www.espn.com.br/futebol/time/elenco/_/id/3445/fluminense
+C04 | Cruzeiro: elenco y préstamos
+https://www.goal.com/br/equipe/cruzeiro/time/bd6vujl7jfv4wtc8gvo1o1t5y
+C05 | Atlético Mineiro: elenco temporada 2026
+https://www.galodigital.com.br/enciclopedia/Futebol_Profissional_-_Temporada_2026
+C06 | Bahia: elenco oficial
+https://esporteclubebahia.com.br/elenco/masculino/
+C07 | Botafogo: elenco oficial, nombres completos y nacionalidad
+https://www.botafogo.com.br/elenco/futebol
+C08 | Corinthians: registro de jugadores
+https://www.cbf.com.br/futebol-brasileiro/times/campeonato-brasileiro/serie-a/2026/20001
+C09 | Santos: alineación del 18/10/2026
+https://www.uol.com.br/esporte/futebol/ultimas-noticias/2026/10/18/fluminense-x-santos-pelo-campeonato-brasileiro.ghtm
+C10 | São Paulo: elenco oficial
+https://www.saopaulofc.net/esporte/futebol-masculino-profissional/
+C11 | Grêmio: elenco y alineación oficial
+https://gremio.net/home
+C12 | Internacional: elenco oficial
+https://www.internacional.com.br/equipes/masculino
+C13 | Vasco: elenco y nombres completos; incluye salidas
+https://www.netvasco.com.br/futebol/jogadores-elenco-2026.shtml
+C14 | Athletico: alineación 17/10/2026
+https://www.uol.com.br/esporte/futebol/ultimas-noticias/2026/10/17/athletico-x-palmeiras-brasileirao.ghtm
+C15 | Red Bull Bragantino: elenco oficial por posición
+https://www.redbullbragantino.com/br-pt/blog/jogadores-red-bull-bragantino
+C16 | Coritiba: registro de jugadores
+https://www.cbf.com.br/futebol-brasileiro/times/campeonato-brasileiro/serie-a/2026/61590
+C17 | Mirassol: elenco oficial
+https://mirassolfc.com.br/blogs/elenco
+C18 | Remo: elenco tras primera ventana; contrastar con C25
+https://ge.globo.com/pa/futebol/times/remo/noticia/2026/03/28/com-30-mudancas-veja-elenco-do-remo-ao-fim-do-primeiro-ciclo-de-contratacoes.ghtml
+C19 | Chapecoense: elenco oficial
+https://chapecoense.com/elenco/
+C20 | Vitória: alineación y bajas al 18/10/2026
+https://ge.globo.com/ba/futebol/times/vitoria/noticia/2026/10/18/escalacao-do-vitoria-contra-o-corinthians-veja-time-provavel-duvidas-e-desfalques.ghtml
+C21 | Goleadores de Série A 2026
+https://www.espn.com.br/futebol/estatisticas/_/liga/bra.1
+C22 | Clubes participantes y tabla oficial 2026
+https://www.cbf.com.br/futebol-brasileiro/tabelas/campeonato-brasileiro/serie-a
+C23 | Fred: regreso oficial a Atlético Mineiro
+https://atletico.com.br/fred-e-do-galo/
+C24 | Vasco: Colidio, Sosa y Lescano tras la ventana
+https://ge.globo.com/futebol/times/vasco/noticia/2026/10/13/argentina-o-berco-do-trio-de-reforcos-que-mudou-o-patamar-do-vasco-no-ano.ghtml
+C25 | Remo: convocatoria y alineación del 18/10/2026
+https://www.remo100porcento.com/futebol-profissional/2026/remo-esta-escalado-com-david-braga-e-ivan-quaresma-para-enfrentar-o-rb-bragantino-sp
+C26 | Amuzu: selección de Ghana
+https://www.transfermarkt.com.br/francis-amuzu/nationalmannschaft/spieler/423604
+C27 | Santos: Arthur Melo y elenco continental
+https://gol.conmebol.com/sudamericana/pt-br/news/santos-na-conmebol-sudamericana-2026-resultados-elenco-e-calendario
+C28 | Matheuzinho de Vitória: identidad
+https://www.transfermarkt.com.br/matheuzinho/profil/spieler/365368
+C29 | Renê de Vitória: identidad
+https://www.zerozero.pt/jogador/rene/978363
+C30 | Mirassol: equipo de octubre, fuente rival oficial
+https://internacional.com.br/noticias/masculino/inter-e-superado-em-mirassol
+C31 | João Cruz: nombre completo, CBF
+https://www.cbf.com.br/futebol-brasileiro/atletas/campeonato-brasileiro/serie-b/2026/650809
+C32 | Juninho Capixaba: nombre completo
+https://pt.wikipedia.org/wiki/Juninho_Capixaba
+C33 | Fluminense: registro y nombres completos
+https://www.cbf.com.br/futebol-brasileiro/times/campeonato-brasileiro/serie-a/2026/20014
+H01 | Santos: galería oficial de ídolos
+https://www.santosfc.com.br/idolos/
+H02 | Botafogo: galería oficial de ídolos
+https://www.botafogo.com.br/idolos
+H03 | Ronaldo: trayectoria y retiro
+https://pt.wikipedia.org/wiki/Ronaldo_Naz%C3%A1rio
+H04 | Vasco: panel oficial de ídolos históricos
+https://vasco.com.br/futebol/vasco-lanca-painel-homenageando-idolos-historicos-do-club/
+H05 | Atlético Mineiro: Hall da Fama
+https://atletico.com.br/institucional/identidade/idolos/
+H06 | Zico: reconocimiento oficial de Flamengo
+https://www.flamengo.com.br/noticias/institucional/zico-esta-de-volta-ao-flamengo-como-embaixador-do-clube
+H07 | Rivaldo: carrera en Brasil
+https://pt.wikipedia.org/wiki/Rivaldo
+H08 | Palmeiras: galería oficial de craques
+https://www.palmeiras.com.br/craque/
+H09 | Brasil 2002: estado de retiro de sus figuras
+https://www.terra.com.br/esportes/futebol/brasil-x-alemanha-veja-por-onde-andam-os-jogadores-da-final-de-2002,dbb9a2cd5d7df4c6f7549133e62fb0b5hzx570mb.html
+H10 | São Paulo: grandes ídolos oficiales
+https://www.saopaulofc.net/spfcpedia/grandes-idolos/
+H11 | Falcão: biografía oficial de Internacional
+https://www.internacional.com.br/clube/idolos/falcao
+H12 | Corinthians: ídolos históricos
+https://ge.globo.com/futebol/times/corinthians/noticia/2010/08/de-neco-ronaldo-timao-coleciona-idolos-ao-longo-das-geracoes.html
+H13 | Cruzeiro: historia centenaria e ídolos
+https://ge.globo.com/futebol/times/cruzeiro/noticia/cruzeiro-100-anos-os-idolos-que-ajudaram-a-construir-a-historia-centenaria-do-clube.ghtml
+H14 | Kaká: biografía y retiro, CBF
+https://www.cbf.com.br/selecao-brasileira/noticias/selecao-masculina/a/kaka-completa-43-anos-nesta-terca-feira
+H15 | Zizinho: biografía FIFA y etapa Flamengo
+https://www.fifa.com/en/tournaments/mens/worldcup/articles/zizinho-brazil-1950-profile
+H16 | Internacional: galería oficial de ídolos
+https://www.internacional.com.br/clube/idolos
+H17 | Flamengo: formación histórica 1981
+https://www.flamengo.com.br/noticias/geral/comissao-tecnica-tambem-tem-seus-crias
+H18 | Aldair: Comité Olímpico de Brasil
+https://www.cob.org.br/time-brasil/medalhistas-olimpicos/aldair-nascimento-dos-santos
+H20 | Mauro Silva: nombre y carrera brasileña
+https://ge.globo.com/ESP/Noticia/Futebol/0%2C%2CMUL346735-4274%2C00.html
+H21 | Zé Roberto: retiro y trayectoria
+https://pt.wikipedia.org/wiki/Z%C3%A9_Roberto_%28futebolista%29
+H22 | Diego Ribas: retiro y etapa Santos
+https://ge.globo.com/futebol/times/flamengo/noticia/2022/11/05/com-12-titulos-pelo-flamengo-diego-anuncia-que-se-aposentara-do-futebol-no-fim-de-2022.ghtml
+H23 | Djalminha: biografía y retiro
+https://pt.wikipedia.org/wiki/Djalminha
+H24 | Fluminense: galería oficial de ídolos
+https://www.fluminense.com.br/sobre/idolos
+H25 | Washington: retiro y campaña histórica de 2004
+https://ge.globo.com/futebol/noticia/2011/01/entre-lagrimas-washington-confirma-vou-parar-de-jogar.html
+H26 | Renato Portaluppi: galería oficial de Grêmio
+https://gremio.net/herois/heroi/9
+H27 | Petković: carrera posterior al fútbol profesional
+https://www.flamengo.com.br/noticias/flamengo/petkovic-estreia-com-a-camisa-10-e-gol-pelo-time-de-futebol-de-7-do-flamengo
+H28 | Tévez: retiro profesional
+https://ge.globo.com/futebol/futebol-internacional/futebol-argentino/noticia/2022/06/04/carlitos-tevez-anuncia-oficialmente-aposentadoria-dos-gramados-ja-dei-tudo-que-tinha.ghtml
+H29 | Marcelo: retiro y etapas Fluminense
+https://agenciabrasil.ebc.com.br/esportes/noticia/2025-02/sem-clube-desde-novembro-marcelo-anuncia-aposentadoria-aos-36-anos
+H30 | Adriano: nombre y despedida del fútbol
+https://efe.com/deportes/2024-12-16/heroes-de-inter-y-flamengo-se-reunen-para-el-adios-de-adriano/
+H31 | Deco: retiro y etapa Fluminense
+https://ge.globo.com/futebol/times/fluminense/noticia/2013/08/apos-lesao-pelo-fluminense-deco-anuncia-o-fim-de-sua-carreira.html
+B01 | Brasil 1994: convocatoria y clubes
+https://ge.globo.com/gato-mestre/noticia/2026/05/18/copa-do-mundo-veja-todas-as-convocacoes-da-selecao-brasileira-na-historia.ghtml
+B02 | Brasil 2002: convocatoria FIFA y clubes
+https://www.fifa.com/pt/news/articles/copa-2002-brasil-campeao-penta
+B03 | Grêmio: héroes oficiales
+https://gremio.net/herois
+B04 | Túlio: trayectoria y retiro
+https://pt.wikipedia.org/wiki/T%C3%BAlio_Maravilha
+B05 | Luizinho: biografía histórica Atlético
+https://atletico.com.br/idolos/luizinho/
+B06 | Carvalho Leite: biografía histórica Botafogo
+https://ge.globo.com/platb/memoriaec/2012/05/28/carvalho-leite-100-anos/
+B07 | Friedenreich: trayectoria histórica
+https://www1.folha.uol.com.br/blogs/andancas-na-metropole/2026/03/arthur-friedenreich-levantou-a-moral-do-futebol-brasileiro.shtml
+B08 | Domingos da Guia: trayectoria histórica
+https://www.national-football-teams.com/player/54955/Domingos_Da_Guia.html
+B09 | Brasil 1958 y 1962: convocatorias y clubes
+https://ge.globo.com/gato-mestre/noticia/2026/05/18/copa-do-mundo-veja-todas-as-convocacoes-da-selecao-brasileira-na-historia.ghtml
+B10 | Gamarra: trayectoria brasileña
+https://www.internacional.com.br/clube/idolos/gamarra
+B11 | Sorín: trayectoria brasileña
+https://www.transfermarkt.com/juan-pablo-sorin/profil/spieler/7925
+B12 | Rincón: trayectoria brasileña
+https://www.senalcolombia.tv/deportes/equipos-coloso-freddy-rincon
+B13 | Seedorf: trayectoria en Botafogo
+https://botafogo.com.br/noticias/obrigado-seedorf
+B14 | Forlán: trayectoria en Internacional
+https://auf.org.uy/diego-forlan/
+B15 | Arce: biografía oficial Palmeiras
+https://www.palmeiras.com.br/craques/arce/
+B16 | Abreu: retiro profesional
+https://www.uol.com.br/esporte/futebol/ultimas-noticias/lancepress/2021/06/10/loco-abreu-aos-44-anos-anuncia-aposentadoria-em-seu-31-clube-na-carreira.amp.htm
+B17 | Diego Alves: retiro profesional
+https://ge.globo.com/google/amp/futebol/futebol-internacional/noticia/2025/01/21/nove-meses-apos-deixar-o-celta-diego-alves-ex-flamengo-anuncia-aposentadoria-como-atleta.ghtml
+B18 | Jefferson: ídolo Botafogo y retiro
+https://botafogo.com.br/noticias/entre-os-maiores
+B19 | Fernando Prass: biografía oficial Palmeiras
+https://www.palmeiras.com.br/craques/fernando-prass/
+B20 | Corinthians: dieciocho ídolos históricos
+https://www.gazetaesportiva.com/times/corinthians/relembre-18-grandes-idolos-da-historia-do-corinthians/
+B22 | Ricardo Oliveira: trayectoria y retiro
+https://tntsports.com.br/futebolbrasileiro/Ricardo-Oliveira-anuncia-aposentadoria-A-idade-chegou-e-esta-tudo-certo-20230728-0009.html
+B23 | Elano y Renato: exjugadores históricos Santos
+https://www.santosfc.com.br/idolos-e-bicampeoes-brasileiros-pelo-santos-fc-em-2002-e-2004-elano-e-renato-realizam-palestra-para-as-categorias-de-base/

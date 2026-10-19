@@ -1,5 +1,7 @@
-import { COACH_CATALOG, coachById } from '../coaches/coachCatalog'
-import { COACH_OFFER_SIZE, COACH_RESERVE, COACH_MAX_PRICE, coachReserveFor, coachEffect } from '../coaches/coachRules'
+import { coachById } from '../coaches/coachCatalog'
+import { coachesForMode } from '../coaches/coachContext'
+import type { ThemedModeId } from '../themed-modes/modeTypes'
+import { COACH_OFFER_SIZE, COACH_RESERVE, coachReserveFor, coachEffect } from '../coaches/coachRules'
 import type { Coach } from '../coaches/coachTypes'
 import { createSeededRandom, shuffleSeeded } from '../local-match/seededRandom'
 import { budgetOf } from './auctionEngine'
@@ -8,25 +10,28 @@ import type { AuctionTransition, RecruiterDuelGame, RecruiterId } from './auctio
 const SIDES: readonly RecruiterId[] = ['recruiter_one', 'recruiter_two']
 
 /**
- * The coaches each recruiter may choose from, derived from the game seed (no extra state, replayable). The two offers never
- * share a coach, and each holds one coach at the reserved price, so nobody is ever left unable to hire.
+ * Three distinct coaches per recruiter, derived from seed and collection.
+ * Opponents may share a coach; each has a starter contract within the reserve.
  */
-export function coachOffers(seed: string, reserve: number = COACH_RESERVE): Readonly<Record<RecruiterId, readonly Coach[]>> {
-  const shuffled = shuffleSeeded(COACH_CATALOG, createSeededRandom(`${seed}:coaches`))
-  const cheap = shuffled.filter((coach) => coach.price === COACH_RESERVE).slice(0, SIDES.length)
-  const top = reserve >= COACH_MAX_PRICE ? shuffled.filter((coach) => coach.tier === 'S').slice(0, SIDES.length) : []
-  const rest = shuffled.filter((coach) => !cheap.includes(coach) && !top.includes(coach))
-  const order = (coaches: readonly Coach[]) => [...coaches].sort((a, b) => b.price - a.price || a.surname.localeCompare(b.surname))
-  const count = COACH_OFFER_SIZE - 1 - (top.length ? 1 : 0)
-  const offer = (index: number) => order([cheap[index], ...(top.length ? [top[index]] : []), ...rest.slice(index * count, (index + 1) * count)])
-  return { recruiter_one: offer(0), recruiter_two: offer(1) }
+export function coachOffers(seed: string, reserve: number = COACH_RESERVE, mode?: ThemedModeId): Readonly<Record<RecruiterId, readonly Coach[]>> {
+  const pool = coachesForMode(mode)
+  const offer = (side: RecruiterId): readonly Coach[] => {
+    const shuffled = shuffleSeeded(pool, createSeededRandom(`${seed}:coaches:${side}`))
+    const cheap = [...shuffled].sort((a, b) => a.price - b.price)[0]
+    const top = [...shuffled].filter((c) => c.id !== cheap.id).sort((a, b) => b.price - a.price)[0]
+    const rest = shuffled.filter((c) => c.id !== cheap.id && c.id !== top?.id)
+    // A contextual starter contract guarantees an affordable option even in a
+    // historical pool without D coaches. Identity and strength remain unchanged.
+    return [{ ...cheap, price: Math.min(cheap.price, reserve) }, ...(top ? [top] : []), ...rest.slice(0, COACH_OFFER_SIZE - 2)].sort((a, b) => b.price - a.price)
+  }
+  return { recruiter_one: offer(SIDES[0]), recruiter_two: offer(SIDES[1]) }
 }
 
 /** What the recruiter can still hire: his offer, only while the squads are being organised, only with money and without a coach yet. */
 export function coachMarket(game: RecruiterDuelGame, participant: RecruiterId): Coach[] {
   if (game.phase !== 'TEAMS_COMPLETED' || !game.config?.coaches || game.teams[participant].coachId) return []
   const left = budgetOf(game) - game.teams[participant].spent
-  return coachOffers(game.seed, coachReserveFor(game.config))[participant].filter((coach) => coach.price <= left)
+  return coachOffers(game.seed, coachReserveFor(game.config), game.coachMode)[participant].filter((coach) => coach.price <= left)
 }
 
 export function chooseCoach(game: RecruiterDuelGame, participant: RecruiterId, coachId: string): AuctionTransition {
@@ -53,4 +58,4 @@ export function autoChooseCoach(game: RecruiterDuelGame, participant: RecruiterI
   return result.ok ? result.game : game
 }
 
-export const coachOf = (game: Pick<RecruiterDuelGame, 'teams'>, participant: RecruiterId) => coachById(game.teams[participant].coachId)
+export const coachOf = (game: RecruiterDuelGame, participant: RecruiterId) => coachOffers(game.seed, coachReserveFor(game.config), game.coachMode)[participant].find((coach) => coach.id === game.teams[participant].coachId) ?? coachById(game.teams[participant].coachId)

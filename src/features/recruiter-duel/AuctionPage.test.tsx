@@ -131,6 +131,11 @@ describe('single-player auction interface', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Replay match' }))
     expect(drawHistory.newDrawSeed).toHaveBeenCalledTimes(1)
     act(() => vi.advanceTimersByTime(15000))
+    for (let game = 0; game < 4; game++) {
+      const next = screen.queryByRole('button', { name: /Next match|Play tiebreak/ })
+      if (!next) break
+      fireEvent.click(next); act(() => vi.advanceTimersByTime(15000))
+    }
     vi.mocked(drawHistory.newDrawSeed).mockReturnValue('fresh-rematch')
     fireEvent.click(screen.getByRole('button', { name: 'Rematch' }))
     expect(drawHistory.newDrawSeed).toHaveBeenCalledTimes(2)

@@ -49,12 +49,12 @@ describe('coach reserve and affinity', () => {
     const minimum = preflightMatchConfig(fixedPrices, { ...config, budget: 60 })
     expect(minimum.ok).toBe(false)
   })
-  it('offers top coaches without duplicates for the full reserve and keeps old seeded offers unchanged', () => {
+  it('offers three distinct choices with a top coach and affordable starter contract', () => {
     for (let seed = 0; seed < 100; seed++) {
       const offers = coachOffers(`reserve-${seed}`, 8)
-      expect(new Set(Object.values(offers).flat().map((coach) => coach.id)).size).toBe(12)
+      for (const choices of Object.values(offers)) expect(new Set(choices.map((coach) => coach.id)).size).toBe(3)
       for (const choices of Object.values(offers)) {
-        expect(choices).toHaveLength(6)
+        expect(choices).toHaveLength(3)
         expect(choices.some((coach) => coach.tier === 'S')).toBe(true)
         expect(choices.some((coach) => coach.price === 1)).toBe(true)
       }

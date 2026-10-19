@@ -17,13 +17,15 @@ interface MatchScreenProps {
   readonly onFinished?: () => void
   /** Players of the mode being played; Global (the 150) when omitted. */
   readonly catalog?: readonly Player[]
+  readonly showNewMatchActions?: boolean
+  readonly onReplayStart?: () => void
 }
 
 function money(value: number) { return `${value}M` }
 
 function teamPlayers(result: MatchResult, side: MatchSide) { return result[side].players.map((player) => player.name).join(' · ') }
 
-export function MatchScreen({ result, onRematch, onReturn, localName, cpuName, onFinished, catalog = DRAFT_CATALOG }: MatchScreenProps) {
+export function MatchScreen({ result, onRematch, onReturn, localName, cpuName, onFinished, catalog = DRAFT_CATALOG, showNewMatchActions = true, onReplayStart }: MatchScreenProps) {
   const { t } = useTranslation()
   const [blockIndex, setBlockIndex] = useState(0)
   const [replayId, setReplayId] = useState(0)
@@ -49,6 +51,7 @@ export function MatchScreen({ result, onRematch, onReturn, localName, cpuName, o
   const score = visibleBlocks.at(-1)?.score ?? { local: 0, cpu: 0 }
   const events = useMemo(() => visibleBlocks.flatMap((block) => block.events), [visibleBlocks])
   const recentGoal = visibleBlocks.at(-1)?.events.find((event) => event.type === 'goal')
+  const recentAttack = visibleBlocks.at(-1)?.events.filter((event) => event.type === 'attack').at(-1)
   const outcome = result.winner === 'draw' ? 'draw' : result.winner === 'local' ? 'victory' : 'defeat'
   const powers = result.effectiveStrengths ?? result.strengths
   const teamName = (side: MatchSide | null) => side === 'local' ? (localName ?? t('game.myTeam')) : (cpuName ?? t('match.cpuTeam'))
@@ -59,10 +62,11 @@ export function MatchScreen({ result, onRematch, onReturn, localName, cpuName, o
       <header className="match-heading"><p className="eyebrow"><span />{finished ? t('match.final') : t('match.playing')}</p><button className="secondary-action" onClick={onReturn}>{t('match.returnDraft')}</button></header>
       <div className="match-scoreboard"><div><strong>{teamName('local')}</strong><small>{money(result.local.spent)} · {result.local.averageRating} GRL</small><small>{t('match.globalPower', { value: powers.local.global })}</small></div><div className="match-score"><span>{score.local}</span><small>{finished ? t(`match.${outcome}`) : t('match.minute', { minute: result.blocks[Math.min(blockIndex, 5)].minute })}</small><span>{score.cpu}</span></div><div><strong>{teamName('cpu')}</strong><small>{money(result.cpu.spent)} · {result.cpu.averageRating} GRL</small><small>{t('match.globalPower', { value: powers.cpu.global })}</small></div></div>
       <p className="power-explanation">{t('match.powerExplanation')}</p>
+      {!finished && <div className={`live-match-pitch ${recentAttack?.side === 'cpu' ? 'toward-local' : ''}`} aria-label={t('series.livePitch')}><span className="live-center-circle" aria-hidden="true" /><span className="live-ball" aria-hidden="true">⚽</span><small>{recentAttack ? t('series.attacking', { name: teamName(recentAttack.side) }) : t('match.minute', { minute: 0 })}</small></div>}
       {recentGoal && <div className="goal-flash" key={result.seed + ':' + replayId + ':' + blockIndex} role="status"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27" /><path d="m30 14 14 10-5 17H21l-5-17Z" /></svg>{t('match.goalCelebration', { team: teamName(recentGoal.side) })}</div>}
       <div className="match-progress" aria-label={t('match.progress')}><span style={{ width: `${(Math.min(blockIndex, 6) / 6) * 100}%` }} /></div>
       <div className="match-layout"><section className="match-narration"><h2>{t('match.versus')}</h2>{events.length ? <ol>{events.map((item, index) => <li className={item.type === 'goal' ? 'goal-event' : ''} key={`${item.minute}-${index}`}><time>{item.minute}'</time><span>{eventText(item)}</span>{item.tactic && <small className="event-tactic">{t('match.influence', { tactic: t(`match.tacticNotes.${item.tactic}`) })}</small>}</li>)}</ol> : <p>{t('match.minute', { minute: 0 })}</p>}</section><section className="match-stats"><h2>{t('match.statistics')}</h2>{(['shots', 'shotsOnTarget', 'saves', 'recoveries', 'possession'] as const).map((stat) => <div key={stat}><span>{result.stats.local[stat]}{stat === 'possession' ? '%' : ''}</span><small>{t(`match.${stat === 'shotsOnTarget' ? 'onTarget' : stat}`)}</small><span>{result.stats.cpu[stat]}{stat === 'possession' ? '%' : ''}</span></div>)}</section></div>
-      {finished && <section className="match-summary"><h2>{t(`match.${outcome}`)} · {result.score.local}–{result.score.cpu}</h2><p>{teamPlayers(result, 'local')}</p><p>{teamPlayers(result, 'cpu')}</p><dl><div><dt>{t('match.attackPower')}</dt><dd>{powers.local.attack} · {powers.cpu.attack}</dd></div><div><dt>{t('match.defensePower')}</dt><dd>{powers.local.defense} · {powers.cpu.defense}</dd></div><div><dt>{t('match.midfieldControl')}</dt><dd>{powers.local.midfield} · {powers.cpu.midfield}</dd></div></dl><TacticalSummary result={result} teamName={teamName} /><div className="match-actions"><button className="primary-action" onClick={onRematch}>{t('match.rematch')}</button><button className="secondary-action" onClick={onRematch}>{t('match.newMatch')}</button><button className="secondary-action" onClick={() => { setBlockIndex(0); setReplayId((value) => value + 1) }}>{t('match.replay')}</button><button className="secondary-action" onClick={onReturn}>{t('match.returnDraft')}</button></div></section>}
+      {finished && <section className="match-summary"><h2>{t(`match.${outcome}`)} · {result.score.local}–{result.score.cpu}</h2><p>{teamPlayers(result, 'local')}</p><p>{teamPlayers(result, 'cpu')}</p><dl><div><dt>{t('match.attackPower')}</dt><dd>{powers.local.attack} · {powers.cpu.attack}</dd></div><div><dt>{t('match.defensePower')}</dt><dd>{powers.local.defense} · {powers.cpu.defense}</dd></div><div><dt>{t('match.midfieldControl')}</dt><dd>{powers.local.midfield} · {powers.cpu.midfield}</dd></div></dl><TacticalSummary result={result} teamName={teamName} /><div className="match-actions">{showNewMatchActions && <><button className="primary-action" onClick={onRematch}>{t('match.rematch')}</button><button className="secondary-action" onClick={onRematch}>{t('match.newMatch')}</button></>}<button className="secondary-action" onClick={() => { onReplayStart?.(); setBlockIndex(0); setReplayId((value) => value + 1) }}>{t('match.replay')}</button><button className="secondary-action" onClick={onReturn}>{t('match.returnDraft')}</button></div></section>}
     </section>
   </main>
 }

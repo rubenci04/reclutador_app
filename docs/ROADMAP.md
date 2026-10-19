@@ -1,5 +1,9 @@
 # Roadmap
 
+## Colecciones y series — 19/10/2026
+
+Pedido actual implementado: 1.200 versiones aportadas, ocho colecciones de liga, Global Legends combinado, tres técnicos por liga/época y simulación action-v1. Series con plantel fijo: tres partidos, dos más en igualdad y penales si continúa. Las colecciones históricas importadas usan 150M por equipo para conservar OVR/precios. Ayudas y animaciones en tres idiomas. No implica completitud de catalog_v1 ni aprobación factual de los TXT. ADR-0014 y qa/COLLECTIONS-SERIES.md documentan decisiones, pruebas y limitación de QA visual.
+
 Plan inicial creado en CODEX-001: no había documentos anteriores. Las fases posteriores son propuestas y requieren encargos independientes.
 
 | Fase | Objetivo | Estado |

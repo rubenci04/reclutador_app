@@ -4,7 +4,7 @@ import { I18nextProvider } from 'react-i18next'
 import { createI18n } from '../../i18n'
 import type { Player } from '../../types/player'
 import { DRAFT_CATALOG } from '../draft/catalog'
-import { eligiblePlayers, evaluateMode } from './filterEngine'
+import { eligiblePlayers } from './filterEngine'
 import { ARGENTINA_PLAYERS, catalogForMode, modeSource, PLAYABLE_MODES } from './modeCatalog'
 import type { MetadataIndex } from './metadata'
 import { THEMED_MODES } from './modes'
@@ -17,18 +17,19 @@ const player = (id: string, category: Player['category'], nationality = 'ARG'): 
 })
 
 describe('current and legend category variants', () => {
-  it('keeps the two original catalogs intact and enables only the validated Argentine legend subset', () => {
+  it('keeps the two original catalogs intact and enables the supplied league editions', () => {
     expect(catalogForMode('GLOBAL_CLASSIC')).toBe(DRAFT_CATALOG)
     expect(catalogForMode('ARGENTINA_CLUBS')).toEqual(ARGENTINA_PLAYERS)
     const legends = catalogForMode('ARGENTINA_LEGENDS')
-    expect(legends).toHaveLength(188)
+    expect(legends).toHaveLength(150)
     expect(legends.every((record) => record.category === 'legend')).toBe(true)
     const source = modeSource('ARGENTINA_LEGENDS')
-    expect(evaluateMode(source.players, definition('ARGENTINA_LEGENDS'), source.metadata, source.allowedIds).diagnostic.availability).toBe('available')
+    expect(source.players).toEqual(legends)
+    expect(source.metadata).toEqual({}) // Supplied scope is not fabricated verified career metadata.
     const current = modeSource('ARGENTINA_CURRENT')
-    expect(evaluateMode(current.players, definition('ARGENTINA_CURRENT'), current.metadata, current.allowedIds).diagnostic.availability).toBe('insufficient_players')
-    expect(PLAYABLE_MODES.has('ARGENTINA_CURRENT')).toBe(false)
-    expect(PLAYABLE_MODES.has('LEGENDS_ONLY')).toBe(false)
+    expect(current.players).toHaveLength(150)
+    expect(PLAYABLE_MODES.has('ARGENTINA_CURRENT')).toBe(true)
+    expect(PLAYABLE_MODES.has('LEGENDS_ONLY')).toBe(true)
   })
 
   it.each([

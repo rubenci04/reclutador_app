@@ -1,0 +1,23 @@
+
+> draft-legends@0.1.0 test
+> vitest run --reporter=dot
+
+
+ RUN  v5.0.5 C:/Users/rea_0/Documents/ChatGPT/Fútbol Draft
+
+··························································································································································stdout | src/features/recruiter-duel/drawVariety.test.ts > diagnoses 1,000 reproducible draws per policy, including quotas, budgets, frequencies and overlaps
+CODEX-005F draw diagnostic {"seedPattern":"005F-sample-0..999","expectedTiersWithoutBudget":{"S":2.64957264957265,"A":4.394871794871795,"B":6.538461538461538,"C":5.346153846153847,"D":3.070940170940171},"theoreticalUniformPairOverlap":3.2786324786324785,"before":{"draws":1000,"meanAdjacentOverlap":3.87987987987988,"adjacentAtLeastFive":337,"meanLastFiveOverlap":13.04004004004004,"fourGameCommonAtLeastFive":0,"maxFourGameCommon":2,"maxAttempts":1,"relaxed":0,"meanBaseCost":145.696,"tiers":{"S":797,"A":2748,"B":6843,"C":7173,"D":4439}},"after":{"draws":1000,"meanAdjacentOverlap":2.8018018018018016,"adjacentAtLeastFive":121,"meanLastFiveOverlap":11.004004004004004,"fourGameCommonAtLeastFive":0,"maxFourGameCommon":2,"maxAttempts":1,"relaxed":0,"meanBaseCost":146.148,"tiers":{"S":723,"A":2817,"B":7011,"C":7120,"D":4329}}}
+
+···································································stdout | src/features/local-match/matchSeries.test.ts > action-v1 calibration > adds activity and increases winning chances progressively at 2, 3 and 5 global points
+ACTION-V1 calibration / 1500 seeds per margin [{"delta":0,"wins":554,"draws":387,"goals":4155},{"delta":2,"wins":831,"draws":346,"goals":4197},{"delta":3,"wins":955,"draws":308,"goals":4313},{"delta":5,"wins":1172,"draws":196,"goals":4713}]
+
+······································································································································································································································································································································································································································································································································································
+
+ Test Files  60 passed (60)
+      Tests  771 passed (771)
+   Start at  01:35:45
+   Duration  61.04s (tests 62%, environment 27%, setup 7%, import 3%, transform 1%)
+
+Environment  jsdom was created 60 times · 105.20s total, 27% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments

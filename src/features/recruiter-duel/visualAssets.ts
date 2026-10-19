@@ -3,7 +3,7 @@ import fetchedPhotos from '../../data/player-photos.json'
 
 export const NATIONALITY_FLAGS = {
   ARG:'ar', BRA:'br', URU:'uy', CHI:'cl', COL:'co', PAR:'py', ECU:'ec', PER:'pe', VEN:'ve', MEX:'mx', USA:'us', CAN:'ca', ENG:'gb-eng', SCO:'gb-sct', WAL:'gb-wls', NED:'nl', GER:'de', FRA:'fr', ESP:'es', ITA:'it', POR:'pt', BEL:'be', CRO:'hr', POL:'pl', SWE:'se', DEN:'dk', NOR:'no', JPN:'jp', KOR:'kr', AUS:'au', SEN:'sn', CMR:'cm', CIV:'ci', GHA:'gh', NGA:'ng', EGY:'eg', MAR:'ma', ALG:'dz', SUI:'ch', ISL:'is', CRC:'cr', SVN:'si', AUT:'at', BIH:'ba', PAN:'pa', TUN:'tn', IRN:'ir', KSA:'sa', QAT:'qa',
-} satisfies Record<(typeof NATIONALITY_CODES)[number], string>
+} satisfies Partial<Record<(typeof NATIONALITY_CODES)[number], string>>
 
 export function flagUrl(code: string) {
   const iso = NATIONALITY_FLAGS[code as keyof typeof NATIONALITY_FLAGS]

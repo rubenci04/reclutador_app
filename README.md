@@ -1,5 +1,7 @@
 # Reclutador
 
+Actualización 19/10/2026: cuatro bases aportadas (1.200 versiones), ocho colecciones actuales/históricas y Global Legends combinado, sin fotos nuevas. Tres cartas de técnicos por liga/época. Nuevas simulaciones con 18 oportunidades y series del mismo plantel: tres encuentros, dos más si empatan y penales para resolver. Las leyendas importadas usan 150M por equipo. Valoraciones editoriales y perfiles por posición; no equivalen a una auditoría factual. Ver [ADR-0014](docs/decisions/ADR-0014.md) y [QA](docs/qa/COLLECTIONS-SERIES.md). Las descripciones de hitos anteriores se conservan como historial.
+
 Videojuego web de draft de fútbol. El modo principal es **Duelo de Reclutadores**: dos personas comparten una computadora, compiten por cada subasta y completan 22 fichajes exclusivos antes de enfrentar sus equipos. Disponen de tres descartes compartidos por doble pase sin oferta, con reemplazo viable de la misma posición: hasta 25 candidatos. Draft Libre conserva la construcción individual y Contra CPU incorpora tres perfiles de puja estratégica reproducible.
 
 El nombre comercial pasó de Draft Legends a **Reclutador** en CODEX-005B. La clave persistida `draft-legends.draft-v1`, la versión `catalog_v1`, los IDs `plr_*`, rutas y carpetas históricas se mantienen deliberadamente: los borradores locales compatibles no requieren migración y continúan restaurándose con el mismo esquema.

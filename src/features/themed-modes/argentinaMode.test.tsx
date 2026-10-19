@@ -10,6 +10,8 @@ import { auctionAvailability, beginBidding, createRecruiterDuel, nextAuctionRoun
 import type { AuctionTransition, RecruiterDuelGame } from '../recruiter-duel/auctionTypes'
 import { evaluateMode } from './filterEngine'
 import { ARGENTINA_METADATA, ARGENTINA_PLAYERS, catalogForMode, PLAYABLE_MODES } from './modeCatalog'
+import { defaultBudgetForMode } from '../player-catalog/leagueCollections'
+import { CLASSIC_CONFIG } from '../recruiter-duel/matchConfig'
 import { THEMED_MODES } from './modes'
 
 const must = (result: AuctionTransition): RecruiterDuelGame => { if (!result.ok) throw new Error(result.error); return result.game }
@@ -23,7 +25,7 @@ describe('Argentine football mode', () => {
     expect(result.players).toHaveLength(200)
     expect(catalogForMode('GLOBAL_CLASSIC')).toBe(DRAFT_CATALOG)
     expect(catalogForMode('ARGENTINA_CLUBS')).toHaveLength(200)
-    expect([...PLAYABLE_MODES].sort()).toEqual(['ARGENTINA_CLUBS', 'ARGENTINA_LEGENDS', 'GLOBAL_CLASSIC'])
+    expect(PLAYABLE_MODES.has('ARGENTINA_CURRENT')).toBe(true)
   })
   it('selects by career in Argentina, never by nationality', () => {
     const foreigner = ARGENTINA_PLAYERS.find((player) => player.nationality !== 'ARG')!
@@ -33,7 +35,7 @@ describe('Argentine football mode', () => {
   it.each(['ARGENTINA_CLUBS', 'ARGENTINA_LEGENDS'] as const)('plays 60 full duels on %s without an illegal team', (modeId) => {
     const catalog = catalogForMode(modeId)
     for (let index = 0; index < 60; index++) {
-      const created = createRecruiterDuel(catalog, `arg-mode-${index}`)
+      const created = createRecruiterDuel(catalog, `arg-mode-${index}`, undefined, { ...CLASSIC_CONFIG, budget: defaultBudgetForMode(modeId) })
       if (!created.ok) throw new Error(`${index}:${created.error}`)
       let game = must(beginBidding(must(revealCoinToss(must(startCoinToss(created.game, 'heads'))))))
       for (let step = 0; step < 1500 && game.phase !== 'TEAMS_COMPLETED'; step++) {
@@ -48,10 +50,10 @@ describe('Argentine football mode', () => {
       expect(game.phase).toBe('TEAMS_COMPLETED')
       const ids = Object.values(game.teams.recruiter_one.lineup).concat(Object.values(game.teams.recruiter_two.lineup))
       expect(new Set(ids).size).toBe(22)
-      expect(game.teams.recruiter_one.spent).toBeLessThanOrEqual(100)
-      expect(game.teams.recruiter_two.spent).toBeLessThanOrEqual(100)
+      expect(game.teams.recruiter_one.spent).toBeLessThanOrEqual(defaultBudgetForMode(modeId))
+      expect(game.teams.recruiter_two.spent).toBeLessThanOrEqual(defaultBudgetForMode(modeId))
       if (modeId === 'ARGENTINA_LEGENDS') expect(ids.every((id) => catalog.find((player) => player.id === id)?.category === 'legend')).toBe(true)
-      for (const id of ['recruiter_one', 'recruiter_two'] as const) expect(Object.values(game.teams[id].lineup).every((player) => player?.startsWith('arg_'))).toBe(true)
+      for (const id of ['recruiter_one', 'recruiter_two'] as const) expect(Object.values(game.teams[id].lineup).every((player) => player?.startsWith(modeId === 'ARGENTINA_CLUBS' ? 'arg_' : 'import_arg_'))).toBe(true)
       const played = must(startDuelMatch(game, catalog))
       expect(played.matchResult).not.toBeNull()
     }
@@ -74,8 +76,7 @@ describe('mode selection in the page', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
     act(() => vi.advanceTimersByTime(COIN_TOSS_MS))
     const catalog = catalogForMode(modeId)
-    const expected = must(createRecruiterDuel(catalog, 'arg-seed-1', createDrawContext(catalog, []))
-      ? (createRecruiterDuel(catalog, 'arg-seed-1', createDrawContext(catalog, [])) as AuctionTransition) : { ok: false, error: 'invalid_transition' })
+    const expected = must(createRecruiterDuel(catalog, 'arg-seed-1', createDrawContext(catalog, []), { ...CLASSIC_CONFIG, budget: defaultBudgetForMode(modeId), coaches: true, coachReserve: 8 }) as AuctionTransition)
     const first = catalog.find((player) => player.id === expected.rounds[0].playerId)!
     expect(screen.getAllByText(first.name).length).toBeGreaterThan(0)
     expect(localStorage.getItem(`reclutador.duel-draws.v1.${historySuffix}`)).not.toBeNull()

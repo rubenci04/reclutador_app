@@ -302,7 +302,7 @@ export const revealNextAuctionRound = (game: RecruiterDuelGame): AuctionTransiti
  * Starts the match from the organised elevens. `strategies` are optional (NEUTRAL when omitted) and are validated here,
  * together with both lineups, instead of letting the simulator throw. Secret simultaneous choice belongs to C3.
  */
-export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player[], strategies?: Readonly<Record<RecruiterId, unknown>>): AuctionTransition {
+export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player[], strategies?: Readonly<Record<RecruiterId, unknown>>, actionModel = false): AuctionTransition {
   if (game.phase !== 'TEAMS_COMPLETED') return { ok: false, error: 'invalid_transition' }
   if (![FIRST, SECOND].every((participant) => isValidOrganizedLineup(game.teams[participant].lineup, catalog, budgetOf(game)))) return { ok: false, error: 'teams_invalid' }
   const chosen = strategies ?? { recruiter_one: 'NEUTRAL', recruiter_two: 'NEUTRAL' }
@@ -312,7 +312,7 @@ export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player
   const benches = { local: benchIds(FIRST), cpu: benchIds(SECOND) }
   const coachFor = (participant: RecruiterId) => { const coach = coachById(game.teams[participant].coachId); return coach ? { id: coach.id, ...coachEffect(coach, stored[participant]) } : null }
   const coaches = { local: coachFor(FIRST), cpu: coachFor(SECOND) }
-  const matchResult = simulateMatch({ localLineup: game.teams[FIRST].lineup, cpuLineup: game.teams[SECOND].lineup, catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match`, rosterBonus: true, ...(game.config ? { budget: game.config.budget } : {}), ...(benches.local.length || benches.cpu.length ? { benches } : {}), ...(coaches.local || coaches.cpu ? { coaches } : {}), tactics: { version: TACTICS_VERSION, local: stored.recruiter_one, cpu: stored.recruiter_two } })
+  const matchResult = simulateMatch({ ...(actionModel ? { actionModel: 'action-v1' as const } : {}), localLineup: game.teams[FIRST].lineup, cpuLineup: game.teams[SECOND].lineup, catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match`, rosterBonus: true, ...(game.config ? { budget: game.config.budget } : {}), ...(benches.local.length || benches.cpu.length ? { benches } : {}), ...(coaches.local || coaches.cpu ? { coaches } : {}), tactics: { version: TACTICS_VERSION, local: stored.recruiter_one, cpu: stored.recruiter_two } })
   return transition(game, { phase: 'SIMULATING', matchResult, strategies: stored })
 }
 

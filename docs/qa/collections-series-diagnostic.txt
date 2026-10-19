@@ -1,0 +1,24 @@
+
+ RUN  v5.0.5 C:/Users/rea_0/Documents/ChatGPT/Fútbol Draft
+
+ ✓ src/features/player-catalog/leagueCollections.test.ts > supplied league collections > imports all 1,200 rows with valid positions, game ratings, prices, provenance and no photos 11ms
+ ✓ src/features/player-catalog/leagueCollections.test.ts > supplied league collections > ARGENTINA_CURRENT supports affordable exclusive teams and simulation 54ms
+ ✓ src/features/player-catalog/leagueCollections.test.ts > supplied league collections > ARGENTINA_LEGENDS supports affordable exclusive teams and simulation 54ms
+ ✓ src/features/player-catalog/leagueCollections.test.ts > supplied league collections > BRAZIL_CURRENT supports affordable exclusive teams and simulation 33ms
+ ✓ src/features/player-catalog/leagueCollections.test.ts > supplied league collections > BRAZIL_LEGENDS supports affordable exclusive teams and simulation 33ms
+ ✓ src/features/player-catalog/leagueCollections.test.ts > supplied league collections > SPAIN_LEAGUE supports affordable exclusive teams and simulation 34ms
+ ✓ src/features/player-catalog/leagueCollections.test.ts > supplied league collections > SPAIN_LEGENDS supports affordable exclusive teams and simulation 33ms
+ ✓ src/features/player-catalog/leagueCollections.test.ts > supplied league collections > ENGLAND_LEAGUE supports affordable exclusive teams and simulation 28ms
+ ✓ src/features/player-catalog/leagueCollections.test.ts > supplied league collections > ENGLAND_LEGENDS supports affordable exclusive teams and simulation 25ms
+ ✓ src/features/player-catalog/leagueCollections.test.ts > supplied league collections > LEGENDS_ONLY supports affordable exclusive teams and simulation 60ms
+stdout | src/features/local-match/matchSeries.test.ts > action-v1 calibration > adds activity and increases winning chances progressively at 2, 3 and 5 global points
+ACTION-V1 calibration / 1500 seeds per margin [{"delta":0,"wins":554,"draws":387,"goals":4155},{"delta":2,"wins":831,"draws":346,"goals":4197},{"delta":3,"wins":955,"draws":308,"goals":4313},{"delta":5,"wins":1172,"draws":196,"goals":4713}]
+
+ ✓ src/features/local-match/matchSeries.test.ts > three matches plus two tiebreaks > plays three before deciding, adds exactly two after a tie, and requires penalties when still tied 4ms
+ ✓ src/features/local-match/matchSeries.test.ts > three matches plus two tiebreaks > keeps both teams, coaches and strategies with a fresh reproducible seed; penalties always resolve 42ms
+ ✓ src/features/local-match/matchSeries.test.ts > action-v1 calibration > adds activity and increases winning chances progressively at 2, 3 and 5 global points 442ms
+
+ Test Files  2 passed (2)
+      Tests  13 passed (13)
+   Start at  01:33:44
+   Duration  2.00s (environment 51%, tests 23%, setup 13%, transform 7%, import 5%)

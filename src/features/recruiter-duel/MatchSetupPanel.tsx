@@ -7,10 +7,11 @@ interface Props {
   readonly onChange: (draft: SetupDraft) => void
   readonly versusCpu: boolean
   readonly preflight: Preflight
+  readonly classicBudget?: number
 }
 
 /** Pre-toss configuration. Classic keeps every default; custom exposes names and the shared starting budget. */
-export function MatchSetupPanel({ draft, onChange, versusCpu, preflight }: Props) {
+export function MatchSetupPanel({ draft, onChange, versusCpu, preflight, classicBudget = 100 }: Props) {
   const { t } = useTranslation()
   const budget = Number(draft.budgetText)
   const names = { recruiter_one: sanitizeName(draft.nameOne), recruiter_two: sanitizeName(draft.nameTwo) }
@@ -22,7 +23,7 @@ export function MatchSetupPanel({ draft, onChange, versusCpu, preflight }: Props
     <div className="setup-modes" role="radiogroup" aria-label={t('setup.legend')}>
       {(['classic', 'custom'] as const).map((mode) => <label key={mode} className={draft.mode === mode ? 'chosen' : undefined}>
         <input type="radio" name="setup-mode" checked={draft.mode === mode} onChange={() => set({ mode })} />
-        <strong>{t(`setup.${mode}`)}</strong><small>{t(`setup.${mode}Detail`)}</small>
+        <strong>{t(`setup.${mode}`)}</strong><small>{mode === 'classic' && classicBudget !== 100 ? t('collections.legendBudget', { amount: classicBudget }) : t(`setup.${mode}Detail`)}</small>
       </label>)}
     </div>
     <label className="setup-check"><input type="checkbox" checked={draft.coaches} onChange={(event) => set({ coaches: event.target.checked })} />{t('setup.coaches')}</label>
@@ -54,7 +55,7 @@ export function MatchSetupPanel({ draft, onChange, versusCpu, preflight }: Props
     <section className="setup-summary" aria-label={t('setup.summary')}>
       <h3>{t('setup.summary')}</h3>
       <ul>
-        <li>{t('setup.rules.budget', { amount: draft.mode === 'custom' && isValidBudget(budget) ? budget : 100 })}</li>
+        <li>{t('setup.rules.budget', { amount: draft.mode === 'custom' && isValidBudget(budget) ? budget : classicBudget })}</li>
         <li>{t('setup.rules.formation')}</li>
         <li>{t(draft.mode === 'custom' && draft.substitutes ? 'setup.rules.startersBench' : 'setup.rules.starters')}</li>
         <li>{t('setup.rules.discards')}</li>

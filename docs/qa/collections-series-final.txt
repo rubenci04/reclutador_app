@@ -1,0 +1,15 @@
+
+ RUN  v5.0.5 C:/Users/rea_0/Documents/ChatGPT/Fútbol Draft
+
+stdout | src/features/local-match/matchSeries.test.ts > action-v1 calibration > adds activity and increases winning chances progressively at 2, 3 and 5 global points
+ACTION-V1 calibration / 1500 seeds per margin [{"delta":0,"wins":554,"draws":387,"goals":4155},{"delta":2,"wins":831,"draws":346,"goals":4197},{"delta":3,"wins":955,"draws":308,"goals":4313},{"delta":5,"wins":1172,"draws":196,"goals":4713}]
+
+ ✓ src/features/local-match/matchSeries.test.ts > three matches plus two tiebreaks > plays three before deciding, adds exactly two after a tie, and requires penalties when still tied 4ms
+ ✓ src/features/local-match/matchSeries.test.ts > three matches plus two tiebreaks > keeps both teams, coaches and strategies with a fresh reproducible seed; penalties always resolve 36ms
+ ✓ src/features/local-match/matchSeries.test.ts > three matches plus two tiebreaks > gives online participants the same series winner with mirrored history and no shared input mutation 6ms
+ ✓ src/features/local-match/matchSeries.test.ts > action-v1 calibration > adds activity and increases winning chances progressively at 2, 3 and 5 global points 350ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  01:37:46
+   Duration  1.83s (environment 52%, tests 23%, setup 12%, transform 9%, import 4%)

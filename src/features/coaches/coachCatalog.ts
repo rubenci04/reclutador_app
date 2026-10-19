@@ -122,4 +122,8 @@ export const COACH_CATALOG: readonly Coach[] = ROWS.map((row, index) => {
   return { id: `coach_${String(index + 1).padStart(3, '0')}`, name, surname, birthYear, ...(deathYear ? { deathYear } : {}), team, teamKind: kind === 'N' ? 'NATIONAL' : 'CLUB', nationality, status: status === 'A' ? 'ACTIVE' : 'LEGEND', tier, focus: FOCUS[focus], price: COACH_TIER_PRICE[tier] }
 })
 
-export const coachById = (id: string | undefined) => COACH_CATALOG.find((coach) => coach.id === id)
+export const EXTRA_COACHES: readonly Coach[] = [
+  { id: 'coach_lula', name: 'Luiz Alonso', surname: 'Perez (Lula)', birthYear: 1922, deathYear: 1972, team: 'Santos', teamKind: 'CLUB', nationality: 'BRA', status: 'LEGEND', tier: 'A', focus: 'ATTACK', price: 5 },
+  { id: 'coach_busby', name: 'Matt', surname: 'Busby', birthYear: 1909, deathYear: 1994, team: 'Manchester United', teamKind: 'CLUB', nationality: 'SCO', status: 'LEGEND', tier: 'A', focus: 'BALANCED', price: 5 },
+]
+export const coachById = (id: string | undefined) => [...COACH_CATALOG, ...EXTRA_COACHES].find((coach) => coach.id === id)

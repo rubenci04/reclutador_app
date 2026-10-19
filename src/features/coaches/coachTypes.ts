@@ -13,6 +13,7 @@ export interface Coach {
   /** Reference club or national team the coach has represented; not a verified current employment claim. Proper noun: never translated. */
   readonly team: string
   readonly teamKind: 'CLUB' | 'NATIONAL'
+  readonly secondaryTeam?: string
   readonly nationality: string
   readonly status: 'ACTIVE' | 'LEGEND'
   readonly tier: CoachTier

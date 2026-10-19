@@ -74,6 +74,7 @@ export interface RosterAdvantage {
 }
 
 export interface MatchResult {
+  readonly actionModel?: 'action-v1'
   readonly catalogVersion: 'catalog_v1'
   readonly rulesVersion: typeof MATCH_RULES_VERSION
   readonly seed: string

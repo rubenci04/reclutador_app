@@ -4,6 +4,7 @@ import type { MatchResult } from '../local-match/matchTypes'
 import type { StrategyId } from '../tactics/strategies'
 import type { MatchConfig } from './matchConfig'
 import type { DrawContext } from './drawHistory'
+import type { ThemedModeId } from '../themed-modes/modeTypes'
 
 export const RECRUITERS = ['recruiter_one', 'recruiter_two'] as const
 export type RecruiterId = (typeof RECRUITERS)[number]
@@ -48,6 +49,7 @@ export interface RoundAward {
 }
 
 export interface RecruiterDuelGame {
+  readonly coachMode?: ThemedModeId
   readonly seed: string
   readonly drawContext?: DrawContext
   readonly drawDiagnostics?: { readonly attempts: number; readonly relaxation: number; readonly smallPoolPositions: readonly Player['position'][] }
