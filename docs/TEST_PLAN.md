@@ -1,5 +1,9 @@
 # Plan de pruebas
 
+## Cartas y banco — 19/10/2026
+
+Verificar categoría persistente, 600 períodos de leyendas por club, Cristiano United/Madrid separados, referencias de técnicos por edición, cuatro gestos banco/cancha, rechazo de otra línea y bloqueo tras confirmar. Ejecutar typecheck, lint, test y build; separar pruebas DOM de revisión visual real. Resultados y límites en qa/REFERENCE-CARDS-UX.md.
+
 ## action-v2 — 19/10/2026
 
 - Comparar v1/v2 con 300 semillas por cada una de las catorce ediciones reales (8.400 encuentros), con onces exclusivos y reserva 8M; medir 0–0, goles y coherencia de eventos/estadísticas.

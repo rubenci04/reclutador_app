@@ -17,6 +17,9 @@ const REFERENCES: Readonly<Record<string, readonly [string, string?]>> = {
   Costas: ['Racing Club'], Úbeda: ['Boca Juniors'], Kudelka: ['Huracán'],
   Flick: ['FC Barcelona', 'Bayern München'], Arteta: ['Arsenal'], Slot: ['Liverpool'],
   Ferreira: ['Palmeiras'], Luís: ['Flamengo'], Crespo: ['São Paulo', 'Defensa y Justicia'],
+  Almirón: ['Boca Juniors', 'Lanús'], Méndez: ['Vélez Sarsfield'],
+  Pusineri: ['Independiente', 'Atlético Tucumán'], Soso: ["Newell's Old Boys", 'Defensa y Justicia'],
+  Veira: ['San Lorenzo', 'River Plate'],
 }
 const ARG_ACTIVE = ['Gallardo', 'Costas', 'Úbeda', 'Heinze', 'Beccacece', 'Zielinski', 'Quinteros', 'Kudelka', 'Berti', 'Pusineri', 'Soso']
 const BRA_ACTIVE = ['Ferreira', 'Luís', 'Crespo', 'Coudet', 'Domínguez', 'Milito', 'Díaz']

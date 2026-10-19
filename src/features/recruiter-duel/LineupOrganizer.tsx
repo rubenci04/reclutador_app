@@ -28,6 +28,7 @@ interface Props {
 export function LineupOrganizer({ game, participant, name, catalog, confirmed, locked = false, onSwap, onBenchSwap, onConfirm, onEdit, onFormationChange }: Props) {
   const { t } = useTranslation()
   const [selected, setSelected] = useState<FormationRole | null>(null)
+  const [selectedBench, setSelectedBench] = useState<number | null>(null)
   const [editing, setEditing] = useState(false)
   const [message, setMessage] = useState<{ kind: 'info' | 'error'; text: string } | null>(null)
   const [benchTarget, setBenchTarget] = useState<Record<number, string>>({})
@@ -38,14 +39,23 @@ export function LineupOrganizer({ game, participant, name, catalog, confirmed, l
   const bench = (game.teams[participant].bench ?? []).flatMap((place, index) => place.playerId ? [{ index, place, player: catalog.find((candidate) => candidate.id === place.playerId) }] : [])
   const playerName = (slot: FormationRole) => catalog.find((player) => player.id === game.teams[participant].lineup[slot])?.name ?? ''
   const drop = (from: FormationRole, to: FormationRole) => {
-    if (confirmed || from === to) return
+    if (confirmed || locked || from === to) return
     const first = playerName(from); const second = playerName(to)
     const error = onSwap(from, to)
-    setSelected(null)
+    setSelected(null); setSelectedBench(null)
     setMessage(error ? { kind: 'error', text: t(`lineup.errors.${error}`) } : { kind: 'info', text: t('lineup.swapped', { first, second }) })
   }
+  const swapBench = (index: number, slot: FormationRole) => {
+    if (confirmed || locked || !onBenchSwap) return
+    const incoming = bench.find((p) => p.index === index)?.player?.name
+    const outgoing = playerName(slot)
+    const success = onBenchSwap(index, slot)
+    setSelected(null); setSelectedBench(null)
+    setMessage(success ? { kind: 'info', text: t('lineup.benchSwap.done', { incoming, outgoing }) } : { kind: 'error', text: t('lineup.errors.different_line') })
+  }
   const pick = (slot: FormationRole) => {
-    if (confirmed) return
+    if (confirmed || locked) return
+    if (selectedBench !== null) return swapBench(selectedBench, slot)
     if (!selected) {
       setSelected(slot)
       return setMessage({ kind: 'info', text: t('lineup.selectedStatus', { player: playerName(slot), line: t(`positions.${slots.find((s) => s.id === slot)!.position}`) }) })
@@ -56,29 +66,36 @@ export function LineupOrganizer({ game, participant, name, catalog, confirmed, l
     if (error) return setMessage({ kind: 'error', text: t(`lineup.errors.${error}`) })
     setSelected(null); setMessage({ kind: 'info', text: t('lineup.swapped', { first, second }) })
   }
+  const pickBench = (index: number) => {
+    if (confirmed || locked) return
+    if (selected) return swapBench(index, selected)
+    if (selectedBench === index) { setSelectedBench(null); setMessage(null); return }
+    setSelectedBench(index)
+    setMessage({ kind: 'info', text: t('rosterUX.benchSelected', { player: bench.find((p) => p.index === index)?.player?.name }) })
+  }
   return <section className="lineup-organizer" aria-labelledby={`lineup-title-${participant}`}>
     <h2 id={`lineup-title-${participant}`}>{t('lineup.turn', { participant: name })}</h2>
-    {onFormationChange && <div className="formation-selector"><label>{t('playtest.formation')}<select disabled={confirmed || locked} value={team.formation ?? '4-3-3'} onChange={(e) => { onFormationChange(e.target.value as FormationId); setSelected(null); setBenchTarget({}) }}>{FORMATION_IDS.map((id) => <option key={id} value={id} disabled={!organizeFormation(owned, id, catalog)}>{id}</option>)}</select></label><p>{t('playtest.formationHelp')}</p><FormationGuide /></div>}
-    <p>{t(editing ? 'lineup.instructions' : 'lineup.reviewHint')}</p>
-    {!confirmed && <button className={editing ? 'primary-action' : 'secondary-action'} aria-pressed={editing} onClick={() => { setEditing(!editing); setSelected(null); setMessage(null) }}>{t(editing ? 'lineup.editModeOn' : 'lineup.editMode')}</button>}
+    {onFormationChange && <div className="formation-selector"><label>{t('playtest.formation')}<select disabled={confirmed || locked} value={team.formation ?? '4-3-3'} onChange={(e) => { onFormationChange(e.target.value as FormationId); setSelected(null); setSelectedBench(null); setBenchTarget({}) }}>{FORMATION_IDS.map((id) => <option key={id} value={id} disabled={!organizeFormation(owned, id, catalog)}>{id}</option>)}</select></label><p>{t('playtest.formationHelp')}</p><FormationGuide /></div>}
+    <p>{t(editing ? 'lineup.instructions' : bench.length > 0 && onBenchSwap ? 'rosterUX.benchHint' : 'lineup.reviewHint')}</p>
+    {!confirmed && <button className={editing ? 'primary-action' : 'secondary-action'} aria-pressed={editing} onClick={() => { setEditing(!editing); setSelected(null); setSelectedBench(null); setMessage(null) }}>{t(editing ? 'lineup.editModeOn' : 'lineup.editMode')}</button>}
     {editing && !confirmed && <>
       {selected && <p className="lineup-selected" role="status">{t('lineup.selectedBanner', { player: playerName(selected), role: roleLabel(selected) })}</p>}
       <p className="lineup-legend">{t('lineup.dragHint')} <span><i className="apt apt-NATURAL" />{t('lineup.legend.NATURAL')}</span> <span><i className="apt apt-ADAPTED" />{t('lineup.legend.ADAPTED')}</span> <span><i className="apt apt-UNKNOWN" />{t('lineup.legend.UNKNOWN')}</span></p>
     </>}
-    {!confirmed && onBenchSwap && bench.length > 0 && <div className="bench-swap" role="group" aria-label={t('lineup.benchSwap.title')}>
+    {!confirmed && !locked && onBenchSwap && bench.length > 0 && <div className="bench-swap" role="group" aria-label={t('lineup.benchSwap.title')}>
       <h3>{t('lineup.benchSwap.title')}</h3><p>{t('lineup.benchSwap.hint')}</p>{game.manualBench && <p>{t('playtest.manualBench')}</p>}
       {bench.map(({ index, place, player }) => {
         const options = slots.filter((slot) => slot.position === place.position)
         const target = benchTarget[index] ?? options[0]?.id
         return <div key={index} className="bench-swap-row"><strong>{player?.name}</strong>
           <label>{t('lineup.benchSwap.replace')}<select value={target} onChange={(event) => setBenchTarget({ ...benchTarget, [index]: event.target.value })}>{options.map((slot) => <option key={slot.id} value={slot.id}>{roleLabel(slot.id)} · {catalog.find((candidate) => candidate.id === game.teams[participant].lineup[slot.id])?.name}</option>)}</select></label>
-          <button className="secondary-action" onClick={() => { const slot = target as FormationRole; const out = playerName(slot); if (onBenchSwap(index, slot)) setMessage({ kind: 'info', text: t('lineup.benchSwap.done', { incoming: player?.name, outgoing: out }) }) }}>{t('lineup.benchSwap.action')}</button></div>
+          <button className="secondary-action" onClick={() => swapBench(index, target as FormationRole)}>{t('lineup.benchSwap.action')}</button></div>
       })}
     </div>}
-    <TeamPitchBoard game={game} participant={participant} catalog={catalog} organize={editing && !confirmed ? { selectedSlot: selected, onPick: pick, onDrop: drop } : undefined} />
+    <TeamPitchBoard game={game} participant={participant} catalog={catalog} organize={(editing || bench.length > 0 && onBenchSwap) && !confirmed && !locked ? { selectedSlot: selected, selectedBench, onPick: pick, onDrop: drop, onBenchPick: onBenchSwap ? pickBench : undefined, onBenchDrop: onBenchSwap ? swapBench : undefined } : undefined} />
     <p role={message?.kind === 'error' ? 'alert' : 'status'} className={message?.kind === 'error' ? 'draft-alert' : undefined}>{message?.text}</p>
     {confirmed
-      ? <div className="duel-actions"><strong role="status">{t('lineup.confirmed')}</strong>{!locked && <button className="secondary-action" onClick={() => { setSelected(null); setMessage(null); onEdit() }}>{t('lineup.edit')}</button>}</div>
-      : <div className="duel-actions"><button className="primary-action" onClick={() => { setSelected(null); setMessage(null); setEditing(false); onConfirm() }}>{t('lineup.confirm')}</button></div>}
+      ? <div className="duel-actions"><strong role="status">{t('lineup.confirmed')}</strong>{!locked && <button className="secondary-action" onClick={() => { setSelected(null); setSelectedBench(null); setMessage(null); onEdit() }}>{t('lineup.edit')}</button>}</div>
+      : <div className="duel-actions"><button className="primary-action" onClick={() => { setSelected(null); setSelectedBench(null); setMessage(null); setEditing(false); onConfirm() }}>{t('lineup.confirm')}</button></div>}
   </section>
 }

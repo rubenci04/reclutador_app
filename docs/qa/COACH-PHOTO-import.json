@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-10-19",
+  "imported": 100,
+  "skipped": [],
+  "unavailable": [
+    {
+      "coachId": "coach_023",
+      "name": "Julio Vaccari",
+      "reason": "No reusable portrait found on Wikipedia/Commons."
+    },
+    {
+      "coachId": "coach_026",
+      "name": "Ariel Holan",
+      "reason": "No reusable portrait found on Wikipedia/Commons."
+    }
+  ]
+}

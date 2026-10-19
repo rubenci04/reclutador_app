@@ -134,7 +134,7 @@ it.each(['es-AR', 'en', 'pt-BR'] as const)('shows coach cards, reference age/tea
   render(<I18nextProvider i18n={i18n}><CoachMarket game={game} participant="recruiter_one" name="Test" locked={false} onHire={onHire} onDecline={vi.fn()} /></I18nextProvider>)
   const coach = coachMarket(game, 'recruiter_one')[0]
   const button = screen.getByRole('button', { name: new RegExp(`${coach.name} ${coach.surname}`) })
-  expect(button).toHaveTextContent(coach.team)
+  expect(button.closest('article')).toHaveTextContent(coach.team)
   expect(button).toHaveTextContent(`${coach.price}M`)
   fireEvent.click(button)
   expect(onHire).toHaveBeenCalledWith(coach.id)

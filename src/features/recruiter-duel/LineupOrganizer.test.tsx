@@ -7,7 +7,7 @@ import { DRAFT_CATALOG } from '../draft/catalog'
 import { generateCpuTeam } from '../local-match/cpuTeam'
 import { MATCH_RULES_VERSION } from '../local-match/matchTypes'
 import { simulateMatch } from '../local-match/simulator'
-import { createRecruiterDuel, reorderTeamLineup, startDuelMatch } from './auctionEngine'
+import { createRecruiterDuel, reorderTeamLineup, startDuelMatch, swapBenchWithStarter } from './auctionEngine'
 import type { RecruiterDuelGame } from './auctionTypes'
 import { LineupOrganizer } from './LineupOrganizer'
 
@@ -60,6 +60,37 @@ function Harness() {
 }
 
 describe('LineupOrganizer', () => {
+  it.each(['click', 'drag', 'reverse-click', 'reverse-drag'])('swaps a bench player on the pitch with %s and refuses other lines and confirmed teams', async (gesture) => {
+    const initial = completedGame()
+    const owned = new Set([...Object.values(initial.teams.recruiter_one.lineup), ...Object.values(initial.teams.recruiter_two.lineup)])
+    const sub = DRAFT_CATALOG.find(p => p.position === 'DEF' && !owned.has(p.id))!
+    const starter = initial.teams.recruiter_one.lineup.LB!
+    function BenchHarness() {
+      const [game, setGame] = useState<RecruiterDuelGame>({ ...initial, teams: { ...initial.teams, recruiter_one: { ...initial.teams.recruiter_one, bench: [{ position: 'DEF', playerId: sub.id }] } } })
+      const [confirmed, setConfirmed] = useState(false)
+      return <LineupOrganizer game={game} participant="recruiter_one" name="One" catalog={DRAFT_CATALOG} confirmed={confirmed} onSwap={() => null} onBenchSwap={(index, slot) => { const result = swapBenchWithStarter(game, 'recruiter_one', index, slot); if (result.ok) setGame(result.game); return result.ok }} onConfirm={() => setConfirmed(true)} onEdit={() => setConfirmed(false)} />
+    }
+    const i18n = await createI18n('en')
+    const view = render(<I18nextProvider i18n={i18n}><BenchHarness /></I18nextProvider>)
+    const shirt = (slot: string) => view.container.querySelector(`[data-slot="${slot}"] button`) as HTMLButtonElement
+    const bench = () => view.container.querySelector('[data-bench="0"]') as HTMLButtonElement
+    fireEvent.click(bench()); expect(shirt('LB')).toHaveClass('swap-target'); expect(shirt('GK')).toHaveClass('swap-dim')
+    fireEvent.click(shirt('GK')); expect(screen.getByRole('alert')).toHaveTextContent('Only footballers in the same line')
+    expect(bench()).toHaveTextContent(sub.name)
+    if (gesture.includes('drag')) {
+      const data = new Map<string, string>(); const transfer = { setData: (key: string, value: string) => data.set(key, value), getData: (key: string) => data.get(key) ?? '' }
+      fireEvent.dragStart(gesture === 'drag' ? bench() : shirt('LB'), { dataTransfer: transfer })
+      fireEvent.drop(gesture === 'drag' ? shirt('LB') : bench(), { dataTransfer: transfer })
+    } else {
+      fireEvent.click(gesture === 'click' ? bench() : shirt('LB'))
+      fireEvent.click(gesture === 'click' ? shirt('LB') : bench())
+    }
+    expect(shirt('LB')).toHaveTextContent(sub.name.length > 18 ? sub.name.split(' ').slice(-1)[0] : sub.name)
+    expect(bench()).toHaveTextContent(nameOf(starter))
+    fireEvent.click(screen.getByRole('button', { name: 'Confirm eleven' }))
+    expect(bench()).not.toHaveAttribute('draggable', 'true')
+    expect(shirt('LB')).not.toHaveAttribute('aria-pressed')
+  })
   it('swaps two defenders on the board, rejects cross-line swaps and confirms', async () => {
     const i18n = await createI18n('en')
     const start = completedGame().teams.recruiter_one.lineup

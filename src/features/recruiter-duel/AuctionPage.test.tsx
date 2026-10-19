@@ -20,6 +20,7 @@ describe('single-player auction interface', () => {
     const i18n = await createI18n('en')
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
+    expect(screen.getByRole('region', { name: 'Category for this game' })).toHaveTextContent('Global current players 2026')
     const toss = vi.spyOn(engine, 'startCoinToss')
     const heads = screen.getByRole('button', { name: 'Heads' })
     act(() => { heads.click(); heads.click() })

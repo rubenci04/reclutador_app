@@ -1,5 +1,9 @@
 # Tablero de tareas
 
+## Cartas y banco — 19/10/2026
+
+Categoría visible durante subasta, períodos por club para 600 leyendas importadas, tarjetas de técnicos con nacionalidad/trayectorias y 100 fotos, banco intercambiable desde la cancha, contraste y animaciones implementados. 824 pruebas aprobadas. Dos técnicos sin foto reutilizable encontrada; QA visual en navegador impedida por Work. Ver qa/REFERENCE-CARDS-UX.md y logs/REFERENCE-CARDS-UX-2026-10-19.md. Push solicitado sobre codex/current-club-audit; despliegue separado.
+
 ## Producción — 19/10/2026
 
 | ID | Actividad | Estado |

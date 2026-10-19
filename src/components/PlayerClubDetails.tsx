@@ -20,7 +20,7 @@ export function PlayerClubDetails({ player, asOfDate = CLUB_AUDIT_AS_OF }: { rea
       <span>{t(`playerClubs.status.${status}`)} · {t('playtest.edition', { edition: t(`catalog.categories.${player.category}`) })}</span>
       <small>{t('collections.editorial')}</small>
       {details.sourceUrl ? <a href={details.sourceUrl} target="_blank" rel="noreferrer">{t('playerClubs.source')}</a> : <small>{t('playtest.sourceFile', { file: details.sourceFile })}</small>}
-      {periods.length ? periods.map((period) => <a key={period.club} href={period.url} target="_blank" rel="noreferrer">{period.club} · {period.from}–{period.to ?? t('playtest.present')}</a>) : player.category === 'legend' && <small>{t('playtest.periodUnknown')}</small>}
+      {periods.length ? periods.map((period) => <a key={`${period.club}-${period.from}-${period.to}`} href={period.url} target="_blank" rel="noreferrer">{period.club} · {period.from}–{period.to ?? t('playtest.present')}</a>) : player.category === 'legend' && <small>{t('playtest.periodUnknown')}</small>}
     </span>
   }
   return <span className="player-club-details">
@@ -31,7 +31,7 @@ export function PlayerClubDetails({ player, asOfDate = CLUB_AUDIT_AS_OF }: { rea
     <span className="club-audit-date">{t('playerClubs.asOf', { date:snapshot.asOfDate })} · {t(verified ? 'playerClubs.verified' : 'playerClubs.pending')}
       {verified && snapshot.sourceUrl && <> · <a href={snapshot.sourceUrl} target="_blank" rel="noreferrer" aria-label={t('playerClubs.sourceFor', { player:player.name })}>{t('playerClubs.source')}</a></>}
     </span>
-    {periods.map((period) => <a key={period.club} href={period.url} target="_blank" rel="noreferrer">{period.club} · {period.from}–{period.to ?? t('playtest.present')}</a>)}
+    {periods.map((period) => <a key={`${period.club}-${period.from}-${period.to}`} href={period.url} target="_blank" rel="noreferrer">{period.club} · {period.from}–{period.to ?? t('playtest.present')}</a>)}
     {player.category === 'legend' && !periods.length && <small>{t('playtest.periodUnknown')}</small>}
   </span>
 }

@@ -1,3 +1,4 @@
+import { CoachReferenceDetails } from '../coaches/CoachReferenceDetails'
 import { CoachPortrait } from '../coaches/CoachPortrait'
 import { useTranslation } from 'react-i18next'
 import { coachAge, coachEffect, coachReserveFor, COACH_AS_OF_YEAR } from '../coaches/coachRules'
@@ -29,8 +30,8 @@ export function CoachMarket({ game, participant, name, locked, onHire, onDecline
     <article className="coach-card coach-hired-card">
       <CoachPortrait coach={hired} />
       <strong>{label(hired)}</strong>
-      <span>{t(hired.teamKind === 'NATIONAL' ? 'coach.referenceNational' : 'coach.referenceClub', { team: hired.team })}</span>
-      {hired.secondaryTeam && <span>{t('coach.secondaryReference', { team: hired.secondaryTeam })}</span>}
+      <span>{t(`coach.status.${hired.status}`)}</span>
+      <CoachReferenceDetails coach={hired} />
       <p>{t('coach.hired', { coach: label(hired), team: hired.team, price: hired.price, ...effectText(hired) })}</p>
     </article>
   </section>
@@ -39,15 +40,15 @@ export function CoachMarket({ game, participant, name, locked, onHire, onDecline
     <h3>{t('coach.title', { name })}</h3>
     <p className="market-left">{t('coach.left', { amount: left, count: coachOffers(game.seed, coachReserveFor(game.config), (game.categoryPair?.[participant] ?? game.coachMode))[participant].length })}</p>
     {locked ? <p>{t('coach.closed')}</p> : <>
-      <div className="market-options coach-grid">{coachOffers(game.seed, coachReserveFor(game.config), (game.categoryPair?.[participant] ?? game.coachMode))[participant].map((coach) => <button key={coach.id} disabled={!market.some((c) => c.id === coach.id)} className="secondary-action coach-card" onClick={() => onHire(coach.id)}>
+      <div className="market-options coach-grid">{coachOffers(game.seed, coachReserveFor(game.config), (game.categoryPair?.[participant] ?? game.coachMode))[participant].map((coach) => <article key={coach.id} className="coach-card">
         <CoachPortrait coach={coach} />
         <strong>{label(coach)}</strong>
         <span>{t(`coach.status.${coach.status}`)} · {coach.deathYear ? t('coach.lifespan', { birth: coach.birthYear, death: coach.deathYear, age: coachAge(coach) }) : t('coach.referenceAge', { year: COACH_AS_OF_YEAR, age: coachAge(coach) })}</span>
-        <span>{t(coach.teamKind === 'NATIONAL' ? 'coach.referenceNational' : 'coach.referenceClub', { team: coach.team })}</span>
-        {coach.secondaryTeam && <span>{t('coach.secondaryReference', { team: coach.secondaryTeam })}</span>}
+        <CoachReferenceDetails coach={coach} />
         <span>{t('coach.cardLevel', { tier: coach.tier, focus: t(`coach.focus.${coach.focus}`), price: coach.price })}</span>
         <small>{t('coach.cardEffect', effectText(coach))}</small>
-      </button>)}</div>
+        <button className="primary-action" disabled={!market.some((c) => c.id === coach.id)} onClick={() => onHire(coach.id)}>{t('coach.hireCard', { name: label(coach), price: coach.price })}</button>
+      </article>)}</div>
       <p className="market-hint">{t('coach.affinityHint')}</p>
       <p className="market-hint">{t('coach.contextHint')}</p>
       <button className="secondary-action" onClick={onDecline}>{t('coach.decline')}</button>
