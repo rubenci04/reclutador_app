@@ -14,12 +14,27 @@ function Globe({ gold }: { readonly gold: boolean }) {
   </svg>
 }
 
-export function ModeEmblem({ visual }: { readonly visual: ModeVisual }) {
-  const flags = visual.flags.map((code) => ({ code, url: flagUrl(code) })).filter((flag): flag is { code: string; url: string } => Boolean(flag.url))
-  return <span className={`mode-emblem mode-emblem-${visual.kind}`} style={{ '--mode-accent': visual.accent } as CSSProperties} aria-hidden="true">
+/** Simplified silhouettes: recognisable outlines, not cartography. */
+const MAPS = {
+  'south-america': { box: '0 0 60 80', points: '16,6 26,2 36,6 46,10 56,18 52,24 58,30 50,40 44,48 40,58 34,70 30,78 26,76 26,64 24,52 18,44 12,36 10,26 8,16' },
+  europe: { box: '0 0 80 70', points: '6,40 10,30 8,22 16,16 14,8 24,4 30,10 36,6 44,2 56,4 66,2 74,10 70,18 62,22 66,30 58,36 62,44 54,50 46,46 42,56 34,52 28,60 20,56 22,48 12,46' },
+} as const
+
+function MapShape({ map }: { readonly map: keyof typeof MAPS }) {
+  return <svg className="mode-map" data-testid={`map-${map}`} viewBox={MAPS[map].box} aria-hidden="true" focusable="false"><polygon points={MAPS[map].points} /></svg>
+}
+
+/** Faded artwork behind a category's name: the country flag, a globe or the continent's map. */
+export function ModeBackdrop({ visual }: { readonly visual: ModeVisual }) {
+  const flag = visual.flags[0] ? flagUrl(visual.flags[0]) : undefined
+  return <span className={`mode-backdrop mode-backdrop-${visual.kind}`} style={{ '--mode-accent': visual.accent } as CSSProperties} aria-hidden="true">
     {(visual.kind === 'globe' || visual.kind === 'globe-gold') && <Globe gold={visual.kind === 'globe-gold'} />}
-    {visual.kind === 'single-flag' && flags.map((flag) => <img key={flag.code} className="mode-flag" src={flag.url} alt="" />)}
-    {visual.kind === 'multi-flag' && <span className="mode-flag-fan">{flags.slice(0, 6).map((flag) => <img key={flag.code} className="mode-flag" src={flag.url} alt="" />)}</span>}
-    <span className={`mode-variant ${visual.legend ? 'is-legend' : 'is-current'}`}>{visual.legend ? '★' : '⚡'}</span>
+    {visual.kind === 'single-flag' && flag && <img className="mode-flag" src={flag} alt="" />}
+    {visual.kind === 'map' && visual.map && <MapShape map={visual.map} />}
   </span>
+}
+
+/** Football for current players, star for legends. */
+export function VariantIcon({ legend }: { readonly legend: boolean }) {
+  return <span className={`mode-variant ${legend ? 'is-legend' : 'is-current'}`} data-testid={legend ? 'icon-legend' : 'icon-current'} aria-hidden="true">{legend ? '★' : '⚽'}</span>
 }

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { ModeEmblem } from './ModeEmblem'
+import { ModeBackdrop, VariantIcon } from './ModeEmblem'
 import { MODE_VISUALS, groupVisual } from './modeVisuals'
 import { useTranslation } from 'react-i18next'
 import { modeSource, PLAYABLE_MODES } from './modeCatalog'
@@ -34,7 +34,7 @@ export function ModeSelector({ selected, onChange }: ModeSelectorProps) {
     const enabled = playable && diagnostic.availability === 'available'
     const state = enabled ? t('modes.available') : playable ? t(`modes.status.${diagnostic.reason}`) : t('modes.status.foundation')
     const visual = MODE_VISUALS[mode.id]
-    return <button key={mode.id} className={`mode-card ${selected === mode.id ? 'is-selected' : ''}`} style={{ '--mode-accent': visual.accent } as CSSProperties} aria-pressed={selected === mode.id} disabled={!enabled} onClick={() => onChange(mode.id)}><ModeEmblem visual={visual} /><strong>{t(`categoryTree.options.${id}`)}</strong><span>{t(`modes.items.${mode.translationKey}.description`)}</span><small className={`mode-state ${enabled ? 'is-ready' : 'is-pending'}`}>{diagnostic.eligibleCount} · {state} · {defaultBudgetForMode(id)}M</small></button>
+    return <button key={mode.id} className={`mode-card ${selected === mode.id ? 'is-selected' : ''}`} style={{ '--mode-accent': visual.accent } as CSSProperties} aria-pressed={selected === mode.id} disabled={!enabled} onClick={() => onChange(mode.id)}><VariantIcon legend={visual.legend} /><strong>{t(`categoryTree.options.${id}`)}</strong><span>{t(`modes.items.${mode.translationKey}.description`)}</span><small className={`mode-state ${enabled ? 'is-ready' : 'is-pending'}`}>{diagnostic.eligibleCount} · {state} · {defaultBudgetForMode(id)}M</small></button>
   }
   return <section className="mode-selector" aria-labelledby="mode-title">
     <div><p className="eyebrow"><span />{t('modes.label')}</p><h2 id="mode-title" ref={heading} tabIndex={-1}>{group ? t(`categoryTree.groups.${group.id}`) : t('categoryTree.title')}</h2></div>
@@ -42,11 +42,11 @@ export function ModeSelector({ selected, onChange }: ModeSelectorProps) {
     {group ? <>
       <button className="secondary-action category-back" onClick={() => setOpenGroup(null)}>{t('categoryTree.back')}</button>
       <p className="market-hint">{t(group.id === 'europe' || group.id === 'latinAmerica' ? 'categoryTree.nationalityHelp' : 'categoryTree.editionHelp')}</p>
-      <div className="mode-list">{group.modes.map(card)}</div>
+      {group.modes.map((id) => <section key={id} className="variant-section"><h3><VariantIcon legend={MODE_VISUALS[id].legend} /> {t(MODE_VISUALS[id].legend ? 'categoryTree.legendsTitle' : 'categoryTree.currentTitle')}</h3><div className="mode-list">{card(id)}</div></section>)}
     </> : <>
       <p className="market-hint">{t('categoryTree.help')}</p>
       <div className="mode-list category-groups">{CATEGORY_GROUPS.map((item) => <button key={item.id} className={`mode-card ${(item.modes as readonly ThemedModeId[]).includes(selected) ? 'is-selected' : ''}`} style={{ '--mode-accent': groupVisual(item.id).accent } as CSSProperties} onClick={() => setOpenGroup(item.id)}>
-        <ModeEmblem visual={groupVisual(item.id)} /><strong>{t(`categoryTree.groups.${item.id}`)}</strong><span>{t('categoryTree.open')}</span>
+        <ModeBackdrop visual={groupVisual(item.id)} /><strong>{t(`categoryTree.groups.${item.id}`)}</strong><span>{t('categoryTree.open')}</span>
       </button>)}</div>
     </>}
   </section>

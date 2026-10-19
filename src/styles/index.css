@@ -398,11 +398,8 @@
 /* CODEX-UX-003: category emblems (globe / flags) */
 .mode-list button.mode-card{position:relative;border-top:3px solid var(--mode-accent,#ffffff22)}
 .mode-list button.mode-card.is-selected{border-color:var(--mode-accent,#d5fb76);box-shadow:0 0 0 1px var(--mode-accent,#d5fb76),0 0 18px color-mix(in srgb,var(--mode-accent,#d5fb76) 45%,transparent)}
-.mode-emblem{display:flex!important;align-items:center;gap:6px;height:34px;margin-bottom:6px}
 .mode-globe{width:34px;height:34px;flex:none}
 .mode-flag{width:34px;height:23px;object-fit:cover;border-radius:3px;border:1px solid #ffffff40;box-shadow:0 1px 3px #0006}
-.mode-emblem-single-flag .mode-flag{width:40px;height:27px}
-.mode-flag-fan{display:flex}.mode-flag-fan .mode-flag{width:24px;height:16px;margin-left:-6px}.mode-flag-fan .mode-flag:first-child{margin-left:0}
 .mode-variant{margin-left:auto;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;font-size:11px;line-height:1;background:#ffffff14}
 .mode-variant.is-legend{background:#fbbf24;color:#4a3000}.mode-variant.is-current{background:#22c55e33;color:#86efac}
 .mode-list button small.mode-state{display:flex;align-items:center;gap:5px}
@@ -505,3 +502,22 @@
 .match-stats .stat-bar{grid-column:1/-1;display:block;height:6px;border-radius:3px;overflow:hidden;background:var(--p2-accent);padding:0;border:0}
 .match-stats .stat-bar i{display:block;height:100%;background:var(--p1-accent);transition:width .4s}
 @media(prefers-reduced-motion:reduce){.live-chip i{animation:none}.momentum-local,.match-stats .stat-bar i{transition:none}}
+
+/* Category redesign: backdrop artwork, football for current players, star for legends */
+.mode-list button.mode-card{overflow:hidden;min-height:84px}
+.mode-list button.mode-card>strong,.mode-list button.mode-card>span:not(.mode-backdrop),.mode-list button.mode-card>small{position:relative;z-index:1}
+.mode-backdrop{position:absolute;inset:0;display:block!important;pointer-events:none;z-index:0}
+.mode-backdrop:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#102016 38%,#10201600 100%)}
+.mode-backdrop .mode-flag{position:absolute;right:0;top:0;width:62%;height:100%;object-fit:cover;border:0;border-radius:0;box-shadow:none;opacity:.55}
+.mode-backdrop .mode-globe{position:absolute;right:-6px;top:50%;width:86px;height:86px;transform:translateY(-50%);opacity:.7}
+.mode-backdrop .mode-map{position:absolute;right:6px;top:50%;height:86%;width:auto;transform:translateY(-50%);fill:var(--mode-accent);opacity:.6}
+.variant-section{margin:10px 0}.variant-section h3{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-size:.95rem}
+.mode-variant{margin-left:0!important;flex:none}
+.mode-list button.mode-card .mode-variant{display:grid!important;width:24px;height:24px;margin-bottom:4px;font-size:13px}
+.variant-section h3 .mode-variant{display:inline-grid}
+
+/* Bid chips: plain game buttons, no casino look */
+.bid-chip,.bid-chip:nth-child(1),.bid-chip:nth-child(3),.bid-chip:nth-child(4),.bid-chip.bid-chip-max{min-width:0;min-height:40px;padding:0 14px;border-radius:8px;border:1px solid #d5fb7666;background:#14281e;color:#e6f0e7;font-weight:700;box-shadow:none}
+.bid-chip:hover:not(:disabled){border-color:#d5fb76;background:#1f3a2a}
+.bid-chip.bid-chip-max{border-color:#d5fb76;color:#d5fb76}
+.variant-section .mode-list{grid-template-columns:1fr}

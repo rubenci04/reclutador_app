@@ -165,3 +165,14 @@ CPU estratégica local implementada como opción junto a hot-seat. Perfiles CONS
 | DL-F04-UI-019 Momentum, feed con iconos y barras comparativas | Implementada; el momentum se deriva de eventos visibles (ataque 1, remate 2, gol 3) |
 
 Validación: typecheck, lint, 831 pruebas y build ejecutados. QA visual en navegador/móvil (390×844) NO ejecutada.
+
+## Ajustes tras revisión visual — 19/10/2026
+
+| Tarea | Estado |
+| --- | --- |
+| Fichas de puja sin estética de casino | Hecho: botones sobrios del mismo estilo que el resto |
+| Categorías: bandera/mapa/globo de fondo, Actuales (⚽) y Leyendas (★) por categoría | Hecho; mapas de Sudamérica y Europa son siluetas simplificadas, mejorables |
+| Regla de «máximo seguro 0M» demasiado restrictiva | Pendiente de decisión del usuario (invariante de viabilidad del motor; ver conversación) |
+| Pie hábil en cartas | Pendiente: no existe el dato en el catálogo; requiere fuente verificable |
+| Avatares con rasgos (sin ojos/boca, pelo, tono de piel) | Futuro (pedido del usuario); requiere dato verificable por jugador y criterio respetuoso |
+| Formación editable según estrategia elegida | Pendiente de decisión: hoy se edita antes de elegir estrategia y se bloquea al empezar |
