@@ -63,7 +63,7 @@ describe('single-player auction interface', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
     expect(screen.getByLabelText('Bid amount')).not.toHaveValue(101)
   })
-  it.each(['home', 'rematch'])('explains full slots, replays the series and navigates to %s', async (destination) => {
+  it.each(['home', 'rematch', 'live'])('explains full slots, replays the series and navigates to %s', async (destination) => {
     vi.useFakeTimers()
     const get = (result: AuctionCreation | AuctionTransition) => { if (!result.ok) throw new Error(result.error); return result.game }
     const i18n = await createI18n('en')
@@ -141,6 +141,19 @@ describe('single-player auction interface', () => {
     expect(screen.getByRole('heading', { name: 'Strategies revealed' })).toBeInTheDocument()
     expect(screen.getByText('High press')).toBeInTheDocument(); expect(screen.getByText('Low block')).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Confirm strategy' })).not.toBeInTheDocument()
+    expect(screen.getByRole('radio', { name: 'Manage match' })).toBeChecked()
+    if (destination === 'live') {
+      const batch = vi.spyOn(engine, 'startDuelMatch')
+      const play = screen.getByRole('button', { name: 'Start match' })
+      act(() => { play.click(); play.click() })
+      expect(screen.getByRole('heading', { name: 'Manage the match' })).toHaveTextContent('Manage the match')
+      expect(batch).not.toHaveBeenCalled()
+      fireEvent.click(screen.getByRole('button', { name: 'View next block' }))
+      fireEvent.click(screen.getByRole('button', { name: 'View next block' }))
+      expect(screen.getByRole('heading', { name: 'Recruiter one’s turn' })).toHaveFocus()
+      return
+    }
+    fireEvent.click(screen.getByRole('radio', { name: 'Quick simulation' }))
     fireEvent.click(screen.getByRole('button', { name: 'Start match' }))
     act(() => vi.advanceTimersByTime(15000))
     fireEvent.click(screen.getByRole('button', { name: 'Replay match' }))

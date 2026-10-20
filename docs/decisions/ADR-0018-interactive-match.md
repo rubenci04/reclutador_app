@@ -6,6 +6,8 @@ Actualización SIM-004B: API de dominio implementada sin conexión a UI/online. 
 
 ## 1. Sistema observado y dependencias
 
+Actualización SIM-005: UI local CPU/hot-seat consume la API de SIM-004B con origen sin resultado precalculado; rápida e históricos conservan batch. InstructionPolicy pura recibe plantilla propia y proyección pública, fija la CPU antes del envío humano y no cambia fórmulas. Handover oculta la primera orden hasta confirmar ambas. La serie conserva adquisición y snapshots de origen/final con interactive-result-v1; sólo el resumen de serie cerrada se guarda en el historial existente. La pausa local usa checkpoint/restore con autoridad en memoria separada y revisión sin avance; no admite rollback, importación autocertificada ni recuperación tras recarga. Simular el resto requiere KEEP explícito para ambos participantes. Sin POSTURE ni online interactivo. Ver [QA SIM-005](../qa/SIM-005.md), incluidos límites de calibración y persistencia. El análisis original siguiente se conserva como antecedente.
+
 `simulateMatch` (`local-match/simulator.ts`) es puro respecto de sus entradas, pero hoy ejecuta seis iteraciones completas en una sola llamada. `MATCH_RULES_VERSION` es `local-match-v2`; `actionModel` distingue clásico (ausente), v1, v2 y v3. Estos identificadores no son intercambiables. `MATCH_MINUTES` contiene 15/30/45/60/75/90. El modelo clásico genera una oportunidad por bloque, v1 tres, v2/v3 cuatro. Son marcadores lógicos, no timestamps por segundo.
 
 Orden efectivo de cada bloque:

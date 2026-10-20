@@ -1,5 +1,16 @@
 # Plan de pruebas
 
+## SIM-005 — 20/10/2026
+
+- Completar CPU y hot-seat con la API incremental real, preservando gasto de adquisición/técnico, reserva y banco. Comprobar inicio sin bloques/resultados futuros.
+- Cubrir 30/45/60/75: KEEP, estrategia, cambio manual válido e inválido, comandos repetidos, prefijos confirmados y reproducibilidad de seed + instrucciones.
+- Acreditar que la CPU usa sólo datos propios/públicos y decide igual antes/después de un plan humano privado; no asignar bonus por dificultad.
+- Validar foco y traducciones en tres idiomas, handover sin primera instrucción visible, pausa/reanudación, velocidad, movimiento reducido, avance bloqueado y KEEP explícito al simular resto.
+- Checkpoint/restore local con autoridad separada; impedir rollback tras avanzar. Verificar restauración del motor y paridad histórica en SIM-004B.
+- Completar series y preparación conservando roster/ledger; registrar una vez, repetir sin recalcular, salida confirmada y vuelta al inicio.
+- Comparar 300 semillas sintéticas emparejadas entre rápida actual e interactiva; informar modalidad legacy automática aparte, reconocer asimetría del banco y no afirmar equilibrio competitivo.
+- Ejecutar typecheck, lint, test y build. Separar DOM de QA visual real/capturas; ver [evidencia y límites](qa/SIM-005.md).
+
 ## UX-NAV-005 — 20/10/2026
 
 - Finalizar serie y volver a menú de rivales con foco, sin reabrir draft/configuración; un solo botón de salida del partido.

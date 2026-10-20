@@ -78,7 +78,7 @@ async function open(mode: 'cpu' | 'hot', seed: string) {
 }
 
 const strategy = (name: RegExp) => { fireEvent.click(screen.getByRole('radio', { name })); click('Confirm strategy') }
-const finishMatch = () => { click('Start match'); act(() => vi.advanceTimersByTime(16_000)); expect(screen.getByText('Full time')).toBeInTheDocument() }
+const finishMatch = () => { fireEvent.click(screen.getByRole('radio', { name: 'Quick simulation' })); click('Start match'); act(() => vi.advanceTimersByTime(16_000)); expect(screen.getByText('Full time')).toBeInTheDocument() }
 
 describe('A. human against CPU: early completion to final result', () => {
   it('the CPU completes its team automatically, then ordering, strategies, reveal and match', async () => {
@@ -99,7 +99,17 @@ describe('A. human against CPU: early completion to final result', () => {
     strategy(/Counter-attack/)
     expect(screen.getByRole('heading', { name: 'Strategies revealed' })).toBeInTheDocument()
     expect(screen.getByText(/Step 3 of 3/)).toBeInTheDocument()
-    finishMatch()
+    const batch = vi.spyOn(engine, 'startDuelMatch')
+    expect(screen.getByRole('radio', { name: 'Manage match' })).toBeChecked()
+    click('Start match')
+    click('View next block'); click('View next block')
+    expect(screen.getByRole('heading', { name: 'Recruiter one’s turn' })).toHaveFocus()
+    for (let i = 0; i < 20 && !button('Replay match'); i++) {
+      if (button('Confirm decision')) click('Confirm decision')
+      else click('View next block')
+    }
+    expect(button('Replay match')).not.toBeNull()
+    expect(batch).not.toHaveBeenCalled()
   }, 120_000)
 
   it('the sequence can be skipped and gives the same team as letting it run', async () => {
@@ -166,6 +176,7 @@ describe('transitions are protected and recoverable', () => {
     await act(async () => { await i18n.changeLanguage('es-AR') })
     expect(screen.getByRole('heading', { name: 'Estrategias reveladas' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Jugar partido' })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('radio', { name: 'Simulación rápida' }))
     const start = vi.spyOn(engine, 'startDuelMatch')
     const play = button('Jugar partido')!
     act(() => { play.click(); play.click() })

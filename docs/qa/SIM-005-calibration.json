@@ -1,0 +1,25 @@
+{
+  "seeds": 300,
+  "population": "synthetic equal-cost squads, fixed lineup/bench; not a real catalog balance claim",
+  "automatic": {
+    "goals": 1390,
+    "localWins": 116,
+    "draws": 59,
+    "substitutions": 0
+  },
+  "interactive": {
+    "goals": 1274,
+    "localWins": 35,
+    "draws": 35,
+    "substitutions": 1200
+  },
+  "legacyAutomaticBench": {
+    "goals": 1401,
+    "localWins": 125,
+    "draws": 47,
+    "substitutions": 804
+  },
+  "changed": 300,
+  "meanGoalsDelta": -0.38666666666666666,
+  "method": "Paired seeds. Actual quick mode (confirmed eleven, no auto-subs) versus local LOW_BLOCK at30, DEF substitution at45, KEEP thereafter; CPU HARD policy. Legacy auto-subs recorded separately. No boosts or model changes."
+}

@@ -1,5 +1,21 @@
 # Tablero de tareas
 
+## SIM-005 — 20/10/2026
+
+| Entrega | Estado |
+| --- | --- |
+| Adaptador incremental directo, ledger real, banco y reserva de técnico preservados | Hecho local, sin precalcular MatchResult |
+| Dirigir / rápida, cuatro ventanas, estrategias y sustituciones manuales | Hecho, tres idiomas |
+| CPU pura determinista y hot-seat con órdenes separadas | Hecho, sin bonus ni lectura de planes humanos |
+| Pausa/velocidad/movimiento, KEEP explícito para simular resto | Hecho; ninguna decisión se omite |
+| Series, revancha, replay e historial único | Hecho; motor histórico intacto |
+| Auditoría y pausa con checkpoint local | Hecho en memoria; recuperación tras recarga e importación no implementadas |
+| Typecheck / lint / 949 tests / build | Pasan; advertencia de bundle grande |
+| Calibración 300 semillas emparejadas | Hecho; no acredita balance competitivo |
+| Capturas y revisión visual móvil/escritorio | Pendiente: acceso a navegador rechazado por política |
+
+Detalle: [QA SIM-005](qa/SIM-005.md). Sin push, merge, deploy ni cambios online/Supabase/catálogo; archivos ajenos conservados.
+
 ## UX-NAV-005 — 20/10/2026
 
 Navegación de partido/serie al inicio corregida, salidas confirmadas, online a salas sin abandono/cierre implícitos, pausa/velocidad de reproducción y acceso móvil directo a canchas; tres idiomas. [Auditoría, controles y límites](qa/UX-NAV-005.md). Base SIM-004B conservada; sin cambios al motor ni backend.

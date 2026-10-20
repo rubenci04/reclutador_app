@@ -1,5 +1,9 @@
 # Roadmap
 
+## SIM-005 — 20/10/2026
+
+Integración incremental local CPU/hot-seat sobre SIM-004B: modo dirigir destacado y alternativa rápida, decisiones de estrategia/cambios en cuatro ventanas, política CPU determinista, privacidad por entrega de dispositivo y series con auditoría versionada. No se cambian reglas históricas ni se habilita online interactivo. Pausa local sin recuperación tras recarga; balance con humanos y QA visual real pendientes. [QA y calibración](qa/SIM-005.md).
+
 ## Acción y emoción — 19/10/2026
 
 action-v2 sustituye v1 en nuevas partidas: 24 oportunidades con relato individual y estadísticas progresivas. Diagnóstico de 14 ediciones reales detecta y reduce esterilidad ofensiva; calibración de márgenes 0/2/3/4/5. Resultados antiguos y sus series mantienen versión. ADR-0016 y qa/ACTION-V2.md detallan fórmulas, seguimiento del pedido y playtest pendiente.

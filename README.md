@@ -1,5 +1,7 @@
 # Reclutador
 
+SIM-005: los duelos locales nuevos permiten **Dirigir partido** contra CPU o en hot-seat, con decisiones a los 30/45/60/75 minutos, estrategias y cambios manuales. **Simulación rápida** conserva el flujo automático existente. Online e históricos mantienen su comportamiento. [Contratos, pruebas y limitaciones](docs/qa/SIM-005.md).
+
 Actualización de playtest 19/10: action-v3, 150–300 jugadores por edición, Global actual 300, leyendas activas en ambas ediciones, suplentes manuales, nueve formaciones, ida/vuelta con tercero de desempate, categorías distintas y guías por etapa. Ver [ADR-0017](docs/decisions/ADR-0017.md) y [validación y límites](docs/qa/PLAYTEST-EXPANSION.md).
 
 Simulación actualizada: **action-v2** en partidas nuevas, 24 oportunidades mostradas una a una y estadísticas durante el relato. Mantiene series con el mismo plantel y reduce los 0–0 sin forzar goles. La versión del motor aparece en el partido para identificar reportes. Ver [decisión y fórmulas](docs/decisions/ADR-0016.md) y [validación/pedido completo](docs/qa/ACTION-V2.md).

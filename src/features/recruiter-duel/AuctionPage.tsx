@@ -1,3 +1,6 @@
+import { LiveSeriesScreen } from '../local-match/LiveSeriesScreen'
+import { createDuelSession } from '../local-match/interactive/duelSession'
+import type { Session } from '../local-match/interactive'
 import { ConfirmNavigation } from '../../components/ConfirmNavigation'
 import { DRAFT_CATALOG } from '../draft/catalog'
 import { createCrossCategoryDraw, crossCategoryCatalog, finishDualDraft } from './crossCategoryDraw'
@@ -82,6 +85,8 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
   const [gameMode, setGameMode] = useState<ThemedModeId>('GLOBAL_CLASSIC')
   /** Live draw in progress for two different categories (local games only); becomes a normal game once both elevens are complete. */
   const [dual, setDual] = useState<{ readonly draft: DualDraft; readonly first: ThemedModeId; readonly second: ThemedModeId; readonly vsCpu: boolean } | null>(null)
+  const [liveOrigin, setLiveOrigin] = useState<Session | null>(null)
+  const [matchMode, setMatchMode] = useState<'live' | 'quick'>('live')
   const [localGame, setLocalGame] = useState<RecruiterDuelGame | null>(null)
   const game = online ? online.game : localGame
   const entryVisible = !game && !dual
@@ -124,6 +129,7 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
   const canStart = preflightMatchConfig(catalog, config).ok && (setup.mode === 'classic' || (setupPreflight.ok && Object.keys(nameIssues(customConfig.names)).length === 0))
   const start = () => {
     if (!canStart) return
+    setMatchMode('live')
     const saved = readDrawHistory({ getItem: (key) => window.localStorage.getItem(key) }, catalog, drawHistoryKey(mode))
     const recent = saved.history.games.flatMap((entry) => {
       const previous = createRecruiterDuel(catalog, entry.seed, entry.context)
@@ -229,7 +235,7 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
   }
   const goHome = () => {
     if (online) return online.exit()
-    setDual(null); setGame(null); setEntryChosen(false); setStrategyChoice(null); setError(null)
+    setLiveOrigin(null); setDual(null); setGame(null); setEntryChosen(false); setStrategyChoice(null); setError(null)
   }
   const abandon = (participant: 'recruiter_one' | 'recruiter_two') => {
     if (!game) return
@@ -239,6 +245,12 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
   }
   /** Starts the match. Returns false when the engine refuses, so the start button can be used again. */
   const playMatch = (current: RecruiterDuelGame, first: StrategyId, second: StrategyId) => {
+    if (!online && current.manualBench && matchMode === 'live') {
+      const created = createDuelSession(current, catalog, { recruiter_one: first, recruiter_two: second })
+      if (!created.ok) { setError(t('liveDT.error', { code: created.error })); return false }
+      setLiveOrigin(created.value)
+      return true
+    }
     const result = startDuelMatch(current, catalog, { recruiter_one: first, recruiter_two: second }, true)
     apply(result)
     // Local history records the series winner after the final playback.
@@ -341,6 +353,7 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
         {error && <div className="draft-alert" role="alert"><p>{error}</p></div>}
       </main></div>
   }
+  if (liveOrigin && game && !online) return <div className="draft-app duel-shell"><header className="draft-header"><a className="brand" href="#match-main">{PRODUCT.name}</a><AudioControls /><LanguageSelector /></header><LiveSeriesScreen origin={liveOrigin} acquisition={game} versusCpu={opponentMode === 'cpu'} difficulty={difficulty} names={{ local: names.recruiter_one, cpu: names.recruiter_two }} onReturn={goHome} onRematch={() => { setLiveOrigin(null); start() }} onNewMatch={() => { setLiveOrigin(null); setGame(null) }} onSeriesFinished={(winner, wins) => recordDuel(game.seed, winner === 'local' ? 'recruiter_one' : 'recruiter_two', { recruiter_one: wins.local, recruiter_two: wins.cpu }, null)} /></div>
   if (game && (game.phase === 'SIMULATING' || game.phase === 'MATCH_RESULT') && game.matchResult) {
     const Screen = online && !game.matchResult.actionModel ? MatchScreen : MatchSeriesScreen
     return <div className="draft-app duel-shell"><header className="draft-header"><a className="brand" href="#match-main" aria-label={PRODUCT.name}><span className="brand-emblem">R</span><span>{PRODUCT.name}</span></a><AudioControls /><LanguageSelector /></header><Screen key={game.matchResult.seed} canAdjust={!online} secondIsHuman={opponentMode !== 'cpu'} onSeriesFinished={(winner, wins) => { if (!online) recordDuel(game.seed, winner === 'local' ? 'recruiter_one' : 'recruiter_two', { recruiter_one: wins.local, recruiter_two: wins.cpu }, null) }} result={game.matchResult} catalog={catalog} localName={names.recruiter_one} cpuName={names.recruiter_two} onFinished={() => { if (!online && game.phase === 'SIMULATING') apply(completeDuelMatch(game)) }} showNewMatchActions={!online} returnLabel={online ? t('navigation.rooms') : undefined} exitWarning={online ? t('navigation.onlinePlaybackExit') : undefined} onNewMatch={online ? undefined : () => setGame(null)} onRematch={online ? online.exit : start} onReturn={goHome} /></div>
@@ -443,6 +456,7 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
 
 
             </details>}
+            {revealed && game.manualBench && <fieldset className="match-mode"><legend>{t('liveDT.mode')}</legend><label><input type="radio" name="match-mode" checked={matchMode === 'live'} onChange={() => setMatchMode('live')} />{t('liveDT.direct')}</label><label><input type="radio" name="match-mode" checked={matchMode === 'quick'} onChange={() => setMatchMode('quick')} />{t('liveDT.quick')}</label></fieldset>}
             {choice && <>
               {opponentMode === 'cpu' && !revealed && <p role="status">{t('strategyChoice.cpuFixed')}</p>}
               <StrategyChoicePanel choice={choice} chooser={choice.step === 'SECOND' ? names.recruiter_two : names.recruiter_one} nextChooser={names.recruiter_two} names={{ first: names.recruiter_one, second: names.recruiter_two }}
