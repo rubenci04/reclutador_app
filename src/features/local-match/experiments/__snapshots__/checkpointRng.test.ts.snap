@@ -1,0 +1,49 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`freezes complete legacy results for action-v1 before any incremental extraction > action-v1:baseline-0:automatic=false 1`] = `"3033ab7c46d00b07df9ec2b61c7c3ab3bca3ef58e0f578b8b78e9bba56031e16"`;
+
+exports[`freezes complete legacy results for action-v1 before any incremental extraction > action-v1:baseline-0:automatic=true 1`] = `"facaefaa8ee61cdb8ab1295cf1f95b2b8cac056fb8981ce7b1971a46d69388a3"`;
+
+exports[`freezes complete legacy results for action-v1 before any incremental extraction > action-v1:baseline-1:automatic=false 1`] = `"f26e88cd24ae8fb05fc1dd04ab7947068eb06798f94110d227bb7487ec15e71b"`;
+
+exports[`freezes complete legacy results for action-v1 before any incremental extraction > action-v1:baseline-1:automatic=true 1`] = `"e0d5c6567a224c6438915a4b4e41b08249c6e9f811aa6da087dd79e8ea88ccaa"`;
+
+exports[`freezes complete legacy results for action-v1 before any incremental extraction > action-v1:baseline-2:automatic=false 1`] = `"e8426767752fd6f9dbe21c72c891112ab6c3e8b7c7a51783b904ba86968e8fab"`;
+
+exports[`freezes complete legacy results for action-v1 before any incremental extraction > action-v1:baseline-2:automatic=true 1`] = `"141ab336107019d676a550f5df140d4538bc72793cd45e8e7307fc87b6b2413d"`;
+
+exports[`freezes complete legacy results for action-v2 before any incremental extraction > action-v2:baseline-0:automatic=false 1`] = `"6e0ba9439f7c0f027f1a557c5330267600660327ba38f0f746ac6ee859bfb102"`;
+
+exports[`freezes complete legacy results for action-v2 before any incremental extraction > action-v2:baseline-0:automatic=true 1`] = `"e784819ac35335de4dc3bb787c00511bc2f808cd29df979b3282344fa77f182b"`;
+
+exports[`freezes complete legacy results for action-v2 before any incremental extraction > action-v2:baseline-1:automatic=false 1`] = `"75d015423f65167d35d7c0822632fc4ffb38a9c9abf8c421a82cf9354ecdb1c5"`;
+
+exports[`freezes complete legacy results for action-v2 before any incremental extraction > action-v2:baseline-1:automatic=true 1`] = `"90e00db97ba30b033e4b7d793a9e1840de699494827b7f6e2119a3ea3952b066"`;
+
+exports[`freezes complete legacy results for action-v2 before any incremental extraction > action-v2:baseline-2:automatic=false 1`] = `"195b9ff44bf8df9c5d37cf792ccac8dbef223b0d267a494de35b13b8b54d1ada"`;
+
+exports[`freezes complete legacy results for action-v2 before any incremental extraction > action-v2:baseline-2:automatic=true 1`] = `"fbdd3d6463dbfdb93f4c6ae271e766f1373d28a9d12cff8520e06a1c20af31b5"`;
+
+exports[`freezes complete legacy results for action-v3 before any incremental extraction > action-v3:baseline-0:automatic=false 1`] = `"402b2a9e82f548f8954de54063724e0aa27c5a0e4b1250cb5c9fe9489210c029"`;
+
+exports[`freezes complete legacy results for action-v3 before any incremental extraction > action-v3:baseline-0:automatic=true 1`] = `"350820a3174012b226da20263ecca7f255dff8d0bb075851ea33ddc121638e8d"`;
+
+exports[`freezes complete legacy results for action-v3 before any incremental extraction > action-v3:baseline-1:automatic=false 1`] = `"76aae4d561558789ab134464e1683099eed92735e288cff91b56b5a5a991d090"`;
+
+exports[`freezes complete legacy results for action-v3 before any incremental extraction > action-v3:baseline-1:automatic=true 1`] = `"95abdf7efe8ddcb5c410273f65a0ec9ca5a0f1c7162e55376499ec917883582a"`;
+
+exports[`freezes complete legacy results for action-v3 before any incremental extraction > action-v3:baseline-2:automatic=false 1`] = `"49c4c98e6602f4be79637d037ed3d51189989425a92fc619d496cbaf899d4871"`;
+
+exports[`freezes complete legacy results for action-v3 before any incremental extraction > action-v3:baseline-2:automatic=true 1`] = `"84a062bdcda25a53d2f7763dba0ba4eef99d97d82307415f563c56fd0a7b904c"`;
+
+exports[`freezes complete legacy results for undefined before any incremental extraction > classic:baseline-0:automatic=false 1`] = `"68d2c5fab4218a111baa25adbe0f49192046ae71b6f8d4ef62a491289477de74"`;
+
+exports[`freezes complete legacy results for undefined before any incremental extraction > classic:baseline-0:automatic=true 1`] = `"1f562af19eac8a444f5e986c8d7d592503148c71f72b23f986cb248e725fbde4"`;
+
+exports[`freezes complete legacy results for undefined before any incremental extraction > classic:baseline-1:automatic=false 1`] = `"ab0ff402a82c9444fd6725b26f22a9a2a2195bf1a829b39aa94756a147c4a638"`;
+
+exports[`freezes complete legacy results for undefined before any incremental extraction > classic:baseline-1:automatic=true 1`] = `"ed8abc8bb22fdee61a3be216b326ddcdcc95b76291f21b2c2b3a6539737367ff"`;
+
+exports[`freezes complete legacy results for undefined before any incremental extraction > classic:baseline-2:automatic=false 1`] = `"8c9e76c7123ea097837c6abe72dd37803931b1afeb8eca9607a5ff791ab15120"`;
+
+exports[`freezes complete legacy results for undefined before any incremental extraction > classic:baseline-2:automatic=true 1`] = `"652b4bb8b17ce9abef2ab1d8d3cb545a0b6694f6ff7401625d67a28530f3a8c4"`;

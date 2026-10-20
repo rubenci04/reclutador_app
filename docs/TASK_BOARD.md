@@ -1,5 +1,9 @@
 # Tablero de tareas
 
+## SIM-004A — 20/10/2026
+
+Diseño incremental y prueba aislada de continuidad RNG: [ADR-0018](decisions/ADR-0018-interactive-match.md), [QA y límites](qa/SIM-004A.md). Cuatro ventanas propuestas, 24 golden históricos y reanudación RNG probada. Motor productivo intacto. SIM-004B pendiente de encargo: extracción/equivalencia completa, decisiones e integración; autoridad online requiere trabajo posterior explícito.
+
 ## COACH-FLOW — 20/10/2026
 
 Secuencia técnico → suplentes/once → poder/tácticas y 65/120 técnicos S implementados. Evidencia y límites en qa/COACH-FLOW.md; QA visual pendiente por navegador deshabilitado.

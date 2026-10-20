@@ -1,5 +1,11 @@
 # Plan de pruebas
 
+## SIM-004A — 20/10/2026
+
+- Comprobar continuidad bit a bit del RNG al serializar/restaurar, streams principal/subs independientes, cero y wraparound, snapshots inválidos rechazados.
+- Fijar 24 golden del resultado completo con inputs sintéticos inmutables para clásico/v1/v2/v3, con/sin subs/táctica/técnico, sin alterar motor ni expectativas históricas.
+- Ejecutar los cuatro controles y preservar informes ajenos. Igualdad de una sesión incremental completa y decisiones futuras son aceptación de SIM-004B en ADR-0018, no una capacidad ya implementada.
+
 ## Cartas y banco — 19/10/2026
 
 Verificar categoría persistente, 600 períodos de leyendas por club, Cristiano United/Madrid separados, referencias de técnicos por edición, cuatro gestos banco/cancha, rechazo de otra línea y bloqueo tras confirmar. Ejecutar typecheck, lint, test y build; separar pruebas DOM de revisión visual real. Resultados y límites en qa/REFERENCE-CARDS-UX.md.
