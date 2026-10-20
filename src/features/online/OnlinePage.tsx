@@ -1,3 +1,4 @@
+import { ConfirmNavigation } from '../../components/ConfirmNavigation'
 import { ModeSelector } from '../themed-modes/ModeSelector'
 import { CATEGORY_GROUPS } from '../themed-modes/categoryTree'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
@@ -37,7 +38,9 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
   const [retry, setRetry] = useState<(() => Promise<RoomSnapshot | null>) | null>(null)
   const mounted = useRef(true)
   const operation = useRef(false)
+  const heading = useRef<HTMLHeadingElement>(null)
   const roomId = room?.roomId
+  useEffect(() => { heading.current?.focus() }, [roomId])
   useEffect(() => { mounted.current = true; return () => { mounted.current = false } }, [])
   useEffect(() => {
     if (!gateway) return
@@ -172,12 +175,11 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
   const { clear: clearSync } = sync
   const exit = useCallback(() => {
     if (userId) rememberRoom(userId, null)
-    // The host cleans up a room whose game is over; nobody can use it any more.
-    if (gateway && room && room.hostId === userId && (forfeitBy || duel?.matchResult)) void gateway.closeRoom(room.roomId, crypto.randomUUID()).catch(() => undefined)
+    // Navigation only: leaving playback never forfeits or closes the shared room.
     clearSync(); setRoom(null)
     const url = new URL(window.location.href); url.searchParams.delete('online'); window.history.replaceState(null, '', url)
     setCode('')
-  }, [userId, clearSync, gateway, room, forfeitBy, duel])
+  }, [userId, clearSync])
   function startDuel() {
     if (!room || !gateway || room.hostId !== userId) return
     const host = room.members.find(m => m.seat === 1)?.name ?? ''
@@ -203,7 +205,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
         <h1>{t('online.duel.forfeitTitle')}</h1>
         <p>{t('online.duel.forfeitBody', { loser: names[forfeitBy], winner: names[otherSide(forfeitBy)] })}</p>
         <p><strong>{forfeitBy === binding.mySide ? t('online.duel.youLost') : t('online.duel.youWon')}</strong></p>
-        <button className="primary-action" onClick={exit}>{t('online.back')}</button>
+        <button className="primary-action" onClick={exit}>{t('navigation.rooms')}</button>
       </section></main>
     </div>
   }
@@ -211,7 +213,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
     <header className="draft-header"><span className="brand">Reclutador</span><LanguageSelector /></header>
     <main className="online-main">
       <button className="secondary-action" onClick={onBack} disabled={busy}>{t('online.back')}</button>
-      <p className="eyebrow">{t('online.eyebrow')}</p><h1>{t('online.title')}</h1>
+      <p className="eyebrow">{t('online.eyebrow')}</p><h1 ref={heading} tabIndex={-1}>{t('online.title')}</h1>
       <details className="entry-options"><summary>{t('entry.rules')}</summary><p>{t('online.sessionNotice')}</p></details>
       {error && <p role="alert">{t('online.errors.' + error)}{error === 'NOT_CONFIGURED' && import.meta.env.DEV && <><br />{t('online.configHelp')}</>}</p>}
       {retry && <button className="primary-action" disabled={busy} onClick={() => { void run(retry) }}>{t('online.retry')}</button>}
@@ -244,7 +246,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
         {lobbyOpen && <div className="duel-actions">
           <button className="primary-action" disabled={busy || !!retry || !own} onClick={() => send({actionType:'SET_READY',payload:{ready:!own?.ready}})}>{t(own?.ready ? 'online.unready' : 'online.markReady')}</button>
           {room.hostId === userId && <button className="primary-action" disabled={busy || !!retry || room.status !== 'READY'} onClick={startDuel}>{t('online.start')}</button>}
-          <button className="secondary-action" disabled={busy || !!retry} onClick={() => { if (room.hostId === userId && gateway) { const id = room.roomId; const version = room.version; void run(async () => { try { await gateway.closeRoom(id, crypto.randomUUID()); return null } catch (e) { if (errorCode(e) !== 'BACKEND_OUTDATED') throw e; return gateway.command({ actionType: 'LEAVE', payload: {}, roomId: id, expectedVersion: version, actionId: crypto.randomUUID() }) } }) } else send({actionType:'LEAVE',payload:{}}) }}>{room.hostId === userId ? t('online.deleteRoom') : t('online.leave')}</button>
+          <ConfirmNavigation disabled={busy || !!retry} label={room.hostId === userId ? t('online.deleteRoom') : t('online.leave')} message={t(room.hostId === userId ? 'navigation.deleteRoomWarning' : 'navigation.leaveRoomWarning')} onConfirm={() => { if (room.hostId === userId && gateway) { const id = room.roomId; const version = room.version; void run(async () => { try { await gateway.closeRoom(id, crypto.randomUUID()); return null } catch (e) { if (errorCode(e) !== 'BACKEND_OUTDATED') throw e; return gateway.command({ actionType: 'LEAVE', payload: {}, roomId: id, expectedVersion: version, actionId: crypto.randomUUID() }) } }) } else send({actionType:'LEAVE',payload:{}}) }} />
         </div>}
         {room.status === 'READY' && room.hostId !== userId && <p className="auction-banner" role="status"><strong>{t('online.waitHost')}</strong></p>}
         {room.status === 'IN_PROGRESS' && !duel && <><p role="status">{t('online.legacyRoom')}</p>{room.hostId === userId && <button className="primary-action" disabled={busy || !!retry} onClick={startDuel}>{t('online.start')}</button>}</>}

@@ -1,5 +1,9 @@
 # Tablero de tareas
 
+## UX-NAV-005 — 20/10/2026
+
+Navegación de partido/serie al inicio corregida, salidas confirmadas, online a salas sin abandono/cierre implícitos, pausa/velocidad de reproducción y acceso móvil directo a canchas; tres idiomas. [Auditoría, controles y límites](qa/UX-NAV-005.md). Base SIM-004B conservada; sin cambios al motor ni backend.
+
 ## SIM-004B — 20/10/2026
 
 API incremental v3, ventanas bilaterales, instrucciones y checkpoints implementados sin integrar UI ni autoridad online. Motor histórico y golden conservados; 168 comparaciones reales sin diferencias completas. Contrato/API y controles: [SIM-004B](qa/SIM-004B.md). SIM-005, backend interactivo y despliegue pendientes de encargos explícitos.

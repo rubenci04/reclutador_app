@@ -176,7 +176,7 @@ describe('transitions are protected and recoverable', () => {
 
   it('shows a recoverable message instead of a frozen screen when the teams are invalid', async () => {
     const seed = findEarlyCompletionSeed(true)
-    await open('cpu', seed)
+    const i18n = await open('cpu', seed)
     drive(() => screen.queryByRole('button', { name: 'Skip sequence' }) !== null)
     click('Skip sequence')
     if (!button('Confirm eleven')) fireEvent.click(document.querySelector('.coach-market > .secondary-action')!)
@@ -184,7 +184,8 @@ describe('transitions are protected and recoverable', () => {
     click('Confirm eleven')
     expect(screen.getAllByRole('alert').map((item) => item.textContent).join(' ')).toContain('The teams are not valid')
     click('Back to start')
-    expect(button('Start duel')).not.toBeNull()
+    expect(button('Start duel')).toBeNull()
+    expect(document.activeElement).toHaveTextContent(i18n.t('entry.chooseRival'))
   }, 120_000)
 
   it('autoCompleteAll refuses when the budget cannot cover it and leaves the game untouched', () => {

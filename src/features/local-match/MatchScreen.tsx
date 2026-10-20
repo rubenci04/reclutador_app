@@ -1,3 +1,4 @@
+import { ConfirmNavigation } from '../../components/ConfirmNavigation'
 import { HelpTip } from '../onboarding/HelpTip'
 import { TacticalSummary } from './TacticalSummary'
 import { audio } from '../audio/audioEngine'
@@ -12,6 +13,9 @@ import { playerName } from './simulator'
 import type { MatchEvent, MatchResult, MatchSide } from './matchTypes'
 
 interface MatchScreenProps {
+  readonly returnLabel?: string
+  readonly exitWarning?: string
+  readonly confirmReturn?: boolean
   readonly resultExplanationNote?: string
   readonly result: MatchResult
   readonly onRematch: () => void
@@ -40,18 +44,26 @@ function share(local: number, cpu: number) { return local + cpu === 0 ? 50 : (lo
 
 function teamPlayers(result: MatchResult, side: MatchSide) { return result[side].players.map((player) => player.name).join(' · ') }
 
-export function MatchScreen({ result, onRematch, onNewMatch = onRematch, onReturn, localName, cpuName, onFinished, catalog = DRAFT_CATALOG, showNewMatchActions = true, onReplayStart, resultExplanationNote }: MatchScreenProps) {
+export function MatchScreen({ result, onRematch, onNewMatch, onReturn, localName, cpuName, onFinished, catalog = DRAFT_CATALOG, showNewMatchActions = true, onReplayStart, resultExplanationNote, returnLabel, exitWarning, confirmReturn = false }: MatchScreenProps) {
   const { t } = useTranslation()
   const playbackBlocks = useMemo(() => playbackFrames(result), [result])
-  const intervalMs = (result.actionModel === 'action-v2' || result.actionModel === 'action-v3') ? 625 : 2500
+  const [paused, setPaused] = useState(false)
+  const [speed, setSpeed] = useState(1)
+  const [exitOpen, setExitOpen] = useState(false)
+  const main = useRef<HTMLElement>(null)
+  const finalHeading = useRef<HTMLHeadingElement>(null)
+  const intervalMs = ((result.actionModel === 'action-v2' || result.actionModel === 'action-v3') ? 625 : 2500) / speed
   const [blockIndex, setBlockIndex] = useState(0)
   const [replayId, setReplayId] = useState(0)
   const reportedFinished = useRef(false)
   const finished = blockIndex >= playbackBlocks.length
   useEffect(() => {
+    if (paused || exitOpen || finished) return
     const interval = window.setInterval(() => setBlockIndex((current) => current >= playbackBlocks.length ? current : current + 1), intervalMs)
     return () => window.clearInterval(interval)
-  }, [playbackBlocks.length, replayId, intervalMs])
+  }, [playbackBlocks.length, replayId, intervalMs, paused, exitOpen, finished])
+  useEffect(() => { main.current?.focus({ preventScroll: true }) }, [result.seed, replayId])
+  useEffect(() => { if (finished && result.seriesFormat !== 'home-away') finalHeading.current?.focus({ preventScroll: true }) }, [finished, result.seriesFormat])
   useEffect(() => { reportedFinished.current = false }, [result.seed, replayId])
   // Sounds follow what is on screen: only blocks that just became visible, once per replay.
   const heard = useRef<{ seed: string; replay: number; blocks: number; final: boolean } | null>(null)
@@ -75,11 +87,11 @@ export function MatchScreen({ result, onRematch, onNewMatch = onRematch, onRetur
   const powers = result.effectiveStrengths ?? result.strengths
   const teamName = (side: MatchSide | null) => side === 'local' ? (localName ?? t('game.myTeam')) : (cpuName ?? t('match.cpuTeam'))
   const eventText = (item: MatchEvent) => t(`match.events.${item.type}`, { team: teamName(item.side), player: playerName(item, catalog) ?? '', out: catalog.find((candidate) => candidate.id === item.outPlayerId)?.name ?? '' })
-  return <main className="match-screen" aria-live="polite">
+  return <main id="match-main" ref={main} tabIndex={-1} className="match-screen" aria-live="polite">
     {finished && result.seriesFormat === 'home-away' && <ResultExplanation key={result.seed + ':' + replayId} result={result} name={(side) => teamName(side)} note={resultExplanationNote} />}
     <section className="match-card" aria-label={t('match.versus')}>
       <HelpTip topic="match" />
-      <header className="match-heading"><p className="eyebrow"><span />{finished ? t('match.final') : t('match.playing')}</p><button className="secondary-action" onClick={onReturn}>{t('match.returnDraft')}</button></header>
+      <header className="match-heading"><p className="eyebrow"><span />{finished ? t('match.final') : t('match.playing')}</p>{!finished || confirmReturn ? <ConfirmNavigation label={!finished ? t('navigation.exitMatch') : returnLabel ?? t('navigation.home')} message={exitWarning ?? t('navigation.matchExitWarning')} onConfirm={onReturn} onOpenChange={setExitOpen} /> : <button className="secondary-action" onClick={onReturn}>{returnLabel ?? t('navigation.home')}</button>}</header>
       <div className="match-scoreboard"><div><strong>{teamName('local')}</strong><small>{money(result.local.spent)} · {result.local.averageRating} GRL</small><small>{t('match.globalPower', { value: powers.local.global })}</small></div><div className="match-score"><span>{score.local}</span><small>{finished ? t(`match.${outcome}`) : t('match.minute', { minute: playbackBlocks[Math.min(blockIndex, playbackBlocks.length - 1)].minute })}</small><span>{score.cpu}</span></div><div><strong>{teamName('cpu')}</strong><small>{money(result.cpu.spent)} · {result.cpu.averageRating} GRL</small><small>{t('match.globalPower', { value: powers.cpu.global })}</small></div></div>
       <div className="momentum" role="img" aria-label={t('live.momentum', { local: momentum, cpu: 100 - momentum })}>
         {!finished && <span className="live-chip"><i aria-hidden="true" />{t('live.inPlay')}</span>}
@@ -90,9 +102,10 @@ export function MatchScreen({ result, onRematch, onNewMatch = onRematch, onRetur
       {(result.actionModel === 'action-v2' || result.actionModel === 'action-v3') && <p className="market-hint">{t('match.actionHelp')}</p>}
       {!finished && <div className={`live-match-pitch ${recentAttack?.side === 'cpu' ? 'toward-local' : ''}`} aria-label={t('series.livePitch')}><span className="live-center-circle" aria-hidden="true" /><span className="live-ball" aria-hidden="true">⚽</span><small>{recentAttack ? t('series.attacking', { name: teamName(recentAttack.side) }) : t('match.minute', { minute: 0 })}</small></div>}
       {recentGoal && <div className="goal-flash" key={result.seed + ':' + replayId + ':' + blockIndex} role="status"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27" /><path d="m30 14 14 10-5 17H21l-5-17Z" /></svg>{t('match.goalCelebration', { team: teamName(recentGoal.side) })}</div>}
+      {!finished && <div className="playback-controls" role="group" aria-label={t('navigation.playback')}><button className="secondary-action" aria-pressed={paused} onClick={() => setPaused(!paused)}>{t(paused ? 'navigation.resume' : 'navigation.pause')}</button><label>{t('navigation.speed')}<select value={speed} onChange={(event) => setSpeed(Number(event.target.value))}><option value={1}>1×</option><option value={2}>2×</option><option value={4}>4×</option></select></label></div>}
       <div className="match-progress" aria-label={t('match.progress')}><span style={{ width: `${(Math.min(blockIndex, playbackBlocks.length) / playbackBlocks.length) * 100}%` }} /></div>
       <div className="match-layout"><section className="match-narration"><h2>{t('match.versus')}</h2>{events.length ? <ol>{events.map((item, index) => <li className={`event-${item.type}${item.type === 'goal' ? ' goal-event' : ''}`} key={`${item.minute}-${index}`}><time>{item.minute}'</time><i className="event-icon" aria-hidden="true">{EVENT_ICONS[item.type]}</i><span>{eventText(item)}</span>{item.tactic && <small className="event-tactic tactic-chip">{t('match.influence', { tactic: t(`match.tacticNotes.${item.tactic}`) })}</small>}</li>)}</ol> : <p>{t('match.minute', { minute: 0 })}</p>}</section><section className="match-stats"><h2>{t('match.statistics')}</h2>{(['shots', 'shotsOnTarget', 'saves', 'recoveries', 'possession'] as const).map((stat) => <div key={stat}><span>{displayedStats.local[stat]}{stat === 'possession' ? '%' : ''}</span><small>{t(`match.${stat === 'shotsOnTarget' ? 'onTarget' : stat}`)}</small><span>{displayedStats.cpu[stat]}{stat === 'possession' ? '%' : ''}</span><div className="stat-bar" aria-hidden="true"><i style={{ width: `${share(displayedStats.local[stat], displayedStats.cpu[stat])}%` }} /></div></div>)}</section></div>
-      {finished && <section className="match-summary"><h2>{t(`match.${outcome}`)} · {result.score.local}–{result.score.cpu}</h2><p>{teamPlayers(result, 'local')}</p><p>{teamPlayers(result, 'cpu')}</p><dl><div><dt>{t('match.attackPower')}</dt><dd>{powers.local.attack} · {powers.cpu.attack}</dd></div><div><dt>{t('match.defensePower')}</dt><dd>{powers.local.defense} · {powers.cpu.defense}</dd></div><div><dt>{t('match.midfieldControl')}</dt><dd>{powers.local.midfield} · {powers.cpu.midfield}</dd></div></dl><TacticalSummary result={result} teamName={teamName} /><div className="match-actions">{showNewMatchActions && <><button className="primary-action" onClick={onRematch}>{t('match.rematch')}</button><button className="secondary-action" onClick={onNewMatch}>{t('match.newMatch')}</button></>}<button className="secondary-action" onClick={() => { onReplayStart?.(); setBlockIndex(0); setReplayId((value) => value + 1) }}>{t('match.replay')}</button><button className="secondary-action" onClick={onReturn}>{t('match.returnDraft')}</button></div></section>}
+      {finished && <section className="match-summary"><h2 ref={finalHeading} tabIndex={-1}>{t(`match.${outcome}`)} · {result.score.local}–{result.score.cpu}</h2><p>{teamPlayers(result, 'local')}</p><p>{teamPlayers(result, 'cpu')}</p><dl><div><dt>{t('match.attackPower')}</dt><dd>{powers.local.attack} · {powers.cpu.attack}</dd></div><div><dt>{t('match.defensePower')}</dt><dd>{powers.local.defense} · {powers.cpu.defense}</dd></div><div><dt>{t('match.midfieldControl')}</dt><dd>{powers.local.midfield} · {powers.cpu.midfield}</dd></div></dl><TacticalSummary result={result} teamName={teamName} /><div className="match-actions">{showNewMatchActions && <><button className="primary-action" title={t('navigation.rematchHint')} onClick={onRematch}>{t('match.rematch')}</button>{onNewMatch && <button className="secondary-action" onClick={onNewMatch}>{t('match.newMatch')}</button>}</>}<button className="secondary-action" onClick={() => { onReplayStart?.(); setPaused(false); setBlockIndex(0); setReplayId((value) => value + 1) }}>{t('match.replay')}</button></div></section>}
     </section>
   </main>
 }

@@ -630,3 +630,9 @@
   .bid-panel { scroll-margin-top: 12px; }
 }
 @media(prefers-reduced-motion:reduce) { .hud-active .hud-turn, .cpu-status, .draft-alert { animation: none; } }
+
+.playback-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 12px 0; }
+.playback-controls label { display: flex; align-items: center; gap: 8px; }
+.navigation-dialog .duel-actions button { min-height: 44px; }
+.navigation-dialog { animation: panel-enter 150ms ease-out; }
+@media (prefers-reduced-motion: reduce) { .navigation-dialog { animation: none; } }

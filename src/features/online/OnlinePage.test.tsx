@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { I18nextProvider } from 'react-i18next'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -6,6 +6,10 @@ import { createI18n, type Language } from '../../i18n'
 import { CLASSIC_ONLINE, OnlineError, type RoomCommand, type RoomSnapshot } from './contracts'
 import { OnlinePage } from './OnlinePage'
 import { readRememberedRoom, rememberRoom, type OnlineGateway } from './onlineGateway'
+import { buildInitialDuel } from './onlineDuel'
+import { DRAFT_CATALOG } from '../draft/catalog'
+import { generateCpuTeam } from '../local-match/cpuTeam'
+import { simulateMatch } from '../local-match/simulator'
 
 const host = '00000000-0000-4000-8000-000000000001'
 const guest = '00000000-0000-4000-8000-000000000002'
@@ -50,7 +54,7 @@ describe('online lobby presentation using an explicit test adapter', () => {
     await show()
     expect(screen.getByRole('alert')).toHaveTextContent('VITE_SUPABASE_URL')
     expect(screen.getByRole('button',{name:'Crear sala'})).toBeDisabled()
-    expect(screen.getByRole('button',{name:'Volver al menú'})).toBeEnabled()
+    expect(screen.getByRole('button',{name:'Volver al inicio'})).toBeEnabled()
   })
   it.each(['es-AR','en','pt-BR'] as const)('creates a room and renders translated accessible controls in %s', async language => {
     const {gateway} = fakeGateway()
@@ -125,8 +129,29 @@ describe('online lobby presentation using an explicit test adapter', () => {
     const fake = fakeGateway(); rememberRoom(host,fixture().roomId)
     await show(fake.gateway); await screen.findByText('Boca')
     await userEvent.click(screen.getByRole('button',{name:'Eliminar sala'}))
+    expect(fake.gateway.closeRoom).not.toHaveBeenCalled()
+    await userEvent.click(within(screen.getByRole('dialog')).getByRole('button',{name:'Eliminar sala'}))
     expect(await screen.findByRole('button',{name:'Crear sala'})).toBeEnabled()
     expect(fake.gateway.closeRoom).toHaveBeenCalledTimes(1)
     expect(readRememberedRoom(host)).toBeNull()
+  })
+  it('returns from match playback to rooms without forfeiting, closing the room or starting another game', async () => {
+    const fake = fakeGateway(); rememberRoom(host, fixture().roomId)
+    const game = buildInitialDuel({ host: 'Boca', guest: 'River' })
+    const matchResult = simulateMatch({ localLineup: generateCpuTeam(DRAFT_CATALOG, 'online-nav-one').team.lineup, cpuLineup: generateCpuTeam(DRAFT_CATALOG, 'online-nav-two').team.lineup, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1', rulesVersion: 'local-match-v2', seed: 'online-nav' })
+    const active: RoomSnapshot = { ...fixture(), status: 'IN_PROGRESS', state: { ...game, phase: 'SIMULATING', matchResult } }
+    fake.gateway.snapshot = vi.fn(async () => active)
+    await show(fake.gateway, 'en')
+    const exit = await screen.findByRole('button', { name: 'Exit match' })
+    await userEvent.click(exit)
+    const dialog = screen.getByRole('dialog')
+    expect(dialog).toHaveTextContent('The room and recorded result will remain unchanged.')
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Exit match' }))
+    expect(await screen.findByRole('button', { name: 'Create room' })).toBeEnabled()
+    expect(screen.getByRole('heading', { name: 'Versus Online' })).toHaveFocus()
+    expect(fake.gateway.forfeit).not.toHaveBeenCalled()
+    expect(fake.gateway.closeRoom).not.toHaveBeenCalled()
+    expect(fake.gateway.submitState).not.toHaveBeenCalled()
+    expect(fake.gateway.startDuel).not.toHaveBeenCalled()
   })
 })

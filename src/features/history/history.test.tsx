@@ -57,7 +57,8 @@ describe('abandoning a match', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Yes, abandon and lose' }))
     const [saved] = matchHistory.getSnapshot()
     expect(saved).toMatchObject({ opponent: 'cpu', outcome: 'recruiter_two', abandonedBy: 'recruiter_one', score: null })
-    expect(screen.getByRole('button', { name: 'Start duel' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Start duel' })).toBeNull()
+    expect(screen.getByRole('heading', { name: (await createI18n('en')).t('entry.chooseRival') })).toHaveFocus()
     expect(screen.getByText(/1 played · 0 won · 0 drawn · 1 lost/)).toBeInTheDocument()
   })
   it('lets hot-seat players choose who gives up', async () => {

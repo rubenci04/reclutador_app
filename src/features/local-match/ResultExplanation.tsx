@@ -9,7 +9,8 @@ import { probabilityExplanation } from './probabilityExplanation'
 export function ResultExplanation({ result, name, note = '' }: { readonly result: MatchResult; readonly name: (side: MatchSide) => string; readonly note?: string }) {
   const { t } = useTranslation(); const [closed, setClosed] = useState(false)
   const ref = useRef<HTMLDialogElement>(null); const titleId = useId()
-  useEffect(() => { const dialog = ref.current; if (dialog && !dialog.open) { if (dialog.showModal) dialog.showModal(); else dialog.setAttribute('open', '') } }, [closed])
+  const reopen = useRef<HTMLButtonElement>(null)
+  useEffect(() => { if (closed) { reopen.current?.focus(); return } const dialog = ref.current; if (dialog && !dialog.open) { if (dialog.showModal) dialog.showModal(); else dialog.setAttribute('open', '') } }, [closed])
   const strengths = result.effectiveStrengths ?? result.strengths
   const winner = result.winner === 'draw' ? null : result.winner
   const label = winner ? name(winner) : t('match.draw')
@@ -24,8 +25,8 @@ export function ResultExplanation({ result, name, note = '' }: { readonly result
     { key: 'formation', label: t('resultCard.formation'), local: result.formations?.local ?? '4-3-3', cpu: result.formations?.cpu ?? '4-3-3' },
     { key: 'tactic', label: t('resultCard.tactic'), local: strategy('local'), cpu: strategy('cpu') },
   ]
-  if (closed) return <button className="secondary-action" onClick={() => setClosed(false)}>{t('playtest.why')}</button>
-  return <dialog ref={ref} className="guide-dialog result-dialog" aria-labelledby={titleId} onCancel={(event) => event.preventDefault()}>
+  if (closed) return <button ref={reopen} className="secondary-action" onClick={() => setClosed(false)}>{t('playtest.why')}</button>
+  return <dialog ref={ref} className="guide-dialog result-dialog" aria-labelledby={titleId} onCancel={(event) => { event.preventDefault(); setClosed(true) }}>
     <h2 id={titleId}>{t('playtest.resultTitle', { name: label })}</h2>
     <div className="result-grid" role="table" aria-label={t('resultCard.compare')}>
       <div className="result-head" role="row"><span role="columnheader" /><strong role="columnheader" className="side-local">{name('local')}</strong><strong role="columnheader" className="side-cpu">{name('cpu')}</strong></div>

@@ -1,5 +1,13 @@
 # Plan de pruebas
 
+## UX-NAV-005 — 20/10/2026
+
+- Finalizar serie y volver a menú de rivales con foco, sin reabrir draft/configuración; un solo botón de salida del partido.
+- Salida activa confirmada: cancelar/Escape conserva sesión y foco; Tab/Shift+Tab contenidos; confirmación no duplicada.
+- Pausa/velocidad de reproducción sin simulación nueva; repetir conserva resultado, siguiente conserva plantel/reglas; preparación cancelable sólo antes de decisiones confirmadas.
+- Online con gateway de prueba: volver a salas no llama forfeit/closeRoom/submitState/startDuel; eliminar sala confirmado. Cancha móvil abre con acceso directo sin avanzar decisiones.
+- Tres idiomas; typecheck/lint/test/build y límites visuales reales documentados.
+
 ## SIM-004B — 20/10/2026
 
 - Paridad completa con motor histórico: nueve formaciones, sin/con subs, kernel de cuatro modelos y 168 parejas de catorce colecciones; golden A sin modificar.

@@ -63,7 +63,7 @@ describe('single-player auction interface', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
     expect(screen.getByLabelText('Bid amount')).not.toHaveValue(101)
   })
-  it('explains full slots, keeps passing legal, replays the match and draws a fresh rematch', async () => {
+  it.each(['home', 'rematch'])('explains full slots, replays the series and navigates to %s', async (destination) => {
     vi.useFakeTimers()
     const get = (result: AuctionCreation | AuctionTransition) => { if (!result.ok) throw new Error(result.error); return result.game }
     const i18n = await createI18n('en')
@@ -156,6 +156,15 @@ describe('single-player auction interface', () => {
       fireEvent.click(screen.getAllByRole('radio')[2]); fireEvent.click(screen.getByRole('button', { name: 'Confirm strategy' }))
       fireEvent.click(screen.getByRole('button', { name: 'Start match' })); act(() => vi.advanceTimersByTime(15000))
     }
+    if (destination === 'home') {
+      expect(screen.getAllByRole('button', { name: 'Back to home' })).toHaveLength(1)
+      fireEvent.click(screen.getByRole('button', { name: 'Back to home' }))
+      expect(screen.getByRole('heading', { name: i18n.t('entry.chooseRival') })).toHaveFocus()
+      expect(screen.queryByRole('button', { name: 'Start duel' })).toBeNull()
+      expect(screen.queryByText('Full time')).toBeNull()
+      expect(drawHistory.newDrawSeed).toHaveBeenCalledTimes(1)
+      return
+    }
     vi.mocked(drawHistory.newDrawSeed).mockReturnValue('fresh-rematch')
     fireEvent.click(screen.getByRole('button', { name: 'Rematch' }))
     expect(drawHistory.newDrawSeed).toHaveBeenCalledTimes(2)
@@ -188,9 +197,9 @@ describe('single-player auction interface', () => {
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
     fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.local') }))
     fireEvent.click(screen.getByText(i18n.t('entry.customize')))
-    fireEvent.click(screen.getByText('Reproduce draw', { selector: 'summary' }))
+    fireEvent.click(screen.getByText('Repeat recruitment', { selector: 'summary' }))
     fireEvent.change(screen.getByLabelText('Original seed and context'), { target: { value: JSON.stringify({ seed: 'imported', context }) } })
-    fireEvent.click(screen.getByRole('button', { name: 'Reproduce draw' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Repeat recruitment' }))
     expect(drawHistory.newDrawSeed).not.toHaveBeenCalled()
     expect(localStorage.getItem(drawHistory.DRAW_HISTORY_KEY)).toBeNull()
     expect(JSON.parse((screen.getByLabelText('Original seed and context') as HTMLTextAreaElement).value)).toEqual({ seed: 'imported', context })
@@ -202,9 +211,9 @@ describe('single-player auction interface', () => {
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
     fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.local') }))
     fireEvent.click(screen.getByText(i18n.t('entry.customize')))
-    fireEvent.click(screen.getByText('Reproduce draw', { selector: 'summary' }))
+    fireEvent.click(screen.getByText('Repeat recruitment', { selector: 'summary' }))
     fireEvent.change(screen.getByLabelText('Original seed and context'), { target: { value: '{}' } })
-    fireEvent.click(screen.getByRole('button', { name: 'Reproduce draw' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Repeat recruitment' }))
     expect(screen.getByRole('alert')).toHaveTextContent('context is invalid')
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     expect(screen.getByRole('button', { name: 'Heads' })).toBeInTheDocument()

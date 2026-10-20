@@ -15,16 +15,17 @@ const subscribe = (notify: () => void) => {
   return () => media?.removeEventListener('change', notify)
 }
 const serverSnapshot = () => false
-interface Props { readonly game: RecruiterDuelGame; readonly catalog: readonly Player[]; readonly names: Readonly<Record<RecruiterId, string>> }
+interface Props { readonly game: RecruiterDuelGame; readonly catalog: readonly Player[]; readonly names: Readonly<Record<RecruiterId, string>>; readonly open?: boolean; readonly onOpenChange?: (open: boolean) => void }
 
-export function TeamProgressBoard({ game, catalog, names }: Props) {
+export function TeamProgressBoard({ game, catalog, names, open, onOpenChange }: Props) {
   const { t } = useTranslation()
   const panelId = useId()
   const mobile = useSyncExternalStore(subscribe, mobileSnapshot, serverSnapshot)
-  const [expanded, setExpanded] = useState(false)
+  const [internalOpen, setInternalOpen] = useState(false)
+  const expanded = open ?? internalOpen
   const [visibleTeam, setVisibleTeam] = useState<RecruiterId>('recruiter_one')
-  return <section id="team-progress" className="team-progress" aria-label={t('teamProgress.title')}>
-    {mobile ? <button className="secondary-action" aria-expanded={expanded} aria-controls={panelId} onClick={() => setExpanded(!expanded)}>{t('teamProgress.title')}</button> : <h2>{t('teamProgress.title')}</h2>}
+  return <section id="team-progress" tabIndex={-1} className="team-progress" aria-label={t('teamProgress.title')}>
+    {mobile ? <button className="secondary-action" aria-expanded={expanded} aria-controls={panelId} onClick={() => onOpenChange ? onOpenChange(!expanded) : setInternalOpen(!expanded)}>{t('teamProgress.title')}</button> : <h2>{t('teamProgress.title')}</h2>}
     <div id={panelId} className="team-progress-grid" hidden={mobile && !expanded}>
       {mobile && <div className="pitch-team-switch" role="group" aria-label={t('pitch.switchTeam')}>{RECRUITERS.map((participant) => <button className="secondary-action" key={participant} aria-pressed={visibleTeam === participant} onClick={() => setVisibleTeam(participant)}>{names[participant]}</button>)}</div>}
       {RECRUITERS.map((participant) => {

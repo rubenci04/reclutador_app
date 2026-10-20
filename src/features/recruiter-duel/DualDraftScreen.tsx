@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { ConfirmNavigation } from '../../components/ConfirmNavigation'
 import type { Player } from '../../types/player'
 import { PlayerIdentity } from './PlayerIdentity'
 import { PowerBadge } from './PowerBadge'
@@ -32,7 +33,7 @@ export function DualDraftScreen({ draft, catalog, names, categoryLabel, humans, 
     return t('dual.skipped', { player: name, reason: t(`dual.reason.${event.reason}`) })
   }
   return <section className="dual-draft" aria-label={t('dual.title')}>
-    <header className="dual-heading"><div><p className="eyebrow"><span />{t('dual.title')}</p><h1>{t('dual.subtitle')}</h1></div><button className="secondary-action" onClick={onAbandon}>{t('dual.abandon')}</button></header>
+    <header className="dual-heading"><div><p className="eyebrow"><span />{t('dual.title')}</p><h1>{t('dual.subtitle')}</h1></div><ConfirmNavigation label={t('navigation.home')} message={t('navigation.recruitmentExitWarning')} onConfirm={onAbandon} /></header>
     <div className="dual-columns">{DUAL_SIDES.map((id) => {
       const side = draft.sides[id]; const card = currentCard(draft, id, catalog); const human = humans.includes(id)
       const complete = isSideComplete(side)

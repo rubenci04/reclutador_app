@@ -1,3 +1,4 @@
+import { ConfirmNavigation } from '../../components/ConfirmNavigation'
 import { DRAFT_CATALOG } from '../draft/catalog'
 import { createCrossCategoryDraw, crossCategoryCatalog, finishDualDraft } from './crossCategoryDraw'
 import { cpuAct, createDualDraft, discardCard, dualComplete, isSideComplete, signCard, type DualDraft } from './dualDraft'
@@ -69,8 +70,6 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
   const categoryLabel = (id: ThemedModeId) => t(id === 'ARGENTINA_CLUBS' ? 'modes.items.argentinaClubs.name' : 'categoryTree.options.' + id)
   const [entryChosen, setEntryChosen] = useState(false)
   const entryHeading = useRef<HTMLHeadingElement>(null)
-  const entryNavigated = useRef(false)
-  useEffect(() => { if (entryNavigated.current) entryHeading.current?.focus(); entryNavigated.current = true }, [entryChosen])
   const [opponentMode, setOpponentMode] = useState<'hotseat' | 'cpu'>('hotseat')
   const [strategy, setStrategy] = useState<CpuStrategy>('BALANCED')
   const [difficulty, setDifficulty] = useState<CpuDifficulty>('HARD')
@@ -85,6 +84,10 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
   const [dual, setDual] = useState<{ readonly draft: DualDraft; readonly first: ThemedModeId; readonly second: ThemedModeId; readonly vsCpu: boolean } | null>(null)
   const [localGame, setLocalGame] = useState<RecruiterDuelGame | null>(null)
   const game = online ? online.game : localGame
+  const entryVisible = !game && !dual
+  useEffect(() => { if (entryVisible) entryHeading.current?.focus() }, [entryChosen, entryVisible])
+  const [pitchesOpen, setPitchesOpen] = useState(false)
+
   const auctionAction = useRef<HTMLButtonElement>(null)
   useEffect(() => {
     if (game?.phase === 'ROUND_RESULT' || game?.phase === 'REVEAL_PLAYER') auctionAction.current?.focus({ preventScroll: true })
@@ -224,11 +227,15 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
   const recordDuel = (id: string, outcome: HistoryOutcome, score: { recruiter_one: number; recruiter_two: number } | null, abandonedBy: 'recruiter_one' | 'recruiter_two' | null) => {
     matchHistory.record({ id, at: new Date().toISOString(), mode: gameMode, opponent: opponentMode, names: { recruiter_one: names.recruiter_one, recruiter_two: names.recruiter_two }, outcome, score, abandonedBy })
   }
+  const goHome = () => {
+    if (online) return online.exit()
+    setDual(null); setGame(null); setEntryChosen(false); setStrategyChoice(null); setError(null)
+  }
   const abandon = (participant: 'recruiter_one' | 'recruiter_two') => {
     if (!game) return
     if (online) return online.forfeit()
     recordDuel(game.seed, participant === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one', null, participant)
-    setStrategyChoice(null); setError(null); setGame(null)
+    goHome()
   }
   /** Starts the match. Returns false when the engine refuses, so the start button can be used again. */
   const playMatch = (current: RecruiterDuelGame, first: StrategyId, second: StrategyId) => {
@@ -330,13 +337,13 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
     return <div className="draft-app duel-shell"><header className="draft-header"><a className="brand" href="#duel-main" aria-label={PRODUCT.name}><span className="brand-emblem">R</span><span>{PRODUCT.name}</span></a><AudioControls /><LanguageSelector /></header>
       <main id="duel-main" className="duel-page">
         <DualDraftScreen draft={dual.draft} catalog={dualCatalog} names={dualNames} categoryLabel={(id) => categoryLabel(id as ThemedModeId)} humans={dual.vsCpu ? ['recruiter_one'] : ['recruiter_one', 'recruiter_two']}
-          onSign={(id) => dualAct(id, signCard)} onDiscard={(id) => dualAct(id, discardCard)} onContinue={finishDual} onAbandon={() => setDual(null)} />
+          onSign={(id) => dualAct(id, signCard)} onDiscard={(id) => dualAct(id, discardCard)} onContinue={finishDual} onAbandon={goHome} />
         {error && <div className="draft-alert" role="alert"><p>{error}</p></div>}
       </main></div>
   }
   if (game && (game.phase === 'SIMULATING' || game.phase === 'MATCH_RESULT') && game.matchResult) {
     const Screen = online && !game.matchResult.actionModel ? MatchScreen : MatchSeriesScreen
-    return <div className="draft-app duel-shell"><header className="draft-header"><a className="brand" href="#duel-main" aria-label={PRODUCT.name}><span className="brand-emblem">R</span><span>{PRODUCT.name}</span></a><AudioControls /><LanguageSelector /></header><Screen key={game.matchResult.seed} canAdjust={!online} secondIsHuman={opponentMode !== 'cpu'} onSeriesFinished={(winner, wins) => { if (!online) recordDuel(game.seed, winner === 'local' ? 'recruiter_one' : 'recruiter_two', { recruiter_one: wins.local, recruiter_two: wins.cpu }, null) }} result={game.matchResult} catalog={catalog} localName={names.recruiter_one} cpuName={names.recruiter_two} onFinished={() => { if (!online && game.phase === 'SIMULATING') apply(completeDuelMatch(game)) }} onNewMatch={online ? online.exit : () => setGame(null)} onRematch={online ? online.exit : start} onReturn={() => setGame(null)} /></div>
+    return <div className="draft-app duel-shell"><header className="draft-header"><a className="brand" href="#match-main" aria-label={PRODUCT.name}><span className="brand-emblem">R</span><span>{PRODUCT.name}</span></a><AudioControls /><LanguageSelector /></header><Screen key={game.matchResult.seed} canAdjust={!online} secondIsHuman={opponentMode !== 'cpu'} onSeriesFinished={(winner, wins) => { if (!online) recordDuel(game.seed, winner === 'local' ? 'recruiter_one' : 'recruiter_two', { recruiter_one: wins.local, recruiter_two: wins.cpu }, null) }} result={game.matchResult} catalog={catalog} localName={names.recruiter_one} cpuName={names.recruiter_two} onFinished={() => { if (!online && game.phase === 'SIMULATING') apply(completeDuelMatch(game)) }} showNewMatchActions={!online} returnLabel={online ? t('navigation.rooms') : undefined} exitWarning={online ? t('navigation.onlinePlaybackExit') : undefined} onNewMatch={online ? undefined : () => setGame(null)} onRematch={online ? online.exit : start} onReturn={goHome} /></div>
   }
   return <div className="draft-app duel-shell">
     <header className="draft-header"><a className="brand" href="#duel-main" aria-label={PRODUCT.name}><span className="brand-emblem">R</span><span>{PRODUCT.name}</span></a><AudioControls /><LanguageSelector /></header>
@@ -373,10 +380,10 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
       </section>}
       {(() => { const topic = helpTopicForPhase(game?.phase); return game && topic && !(game && ['SIMULATING', 'MATCH_RESULT', 'DISCARD_RESULT', 'COIN_TOSS', 'NEXT_ROUND'].includes(game.phase)) ? <HelpTip topic={topic} /> : null })()}
       {online && online.connection !== 'connected' && <p className="auction-banner auction-banner-blocked" role="status">{t('online.connection.' + online.connection)}</p>}
-      {game && <AbandonGame versusCpu={opponentMode === 'cpu'} names={names} onAbandon={abandon} onlySide={online?.mySide} />}
+      {game && !online && <ConfirmNavigation label={t('navigation.home')} message={t('navigation.recruitmentExitWarning')} onConfirm={goHome} />}{game && <AbandonGame versusCpu={opponentMode === 'cpu'} names={names} onAbandon={abandon} onlySide={online?.mySide} />}
       {game && !game.categoryPair && !hud && <p className="discard-counter" role="status">{t('discards.available', { count: game.discardsRemaining })}{game.discardsRemaining === 0 && <span> · {t('discards.exhausted')}</span>}</p>}
       {game?.phase === 'DISCARD_RESULT' && game.lastDiscard && <section className="discard-scene" aria-live="polite"><h2>{t('discards.newDraw')}</h2><DiceRoller key={game.lastDiscard.playerId} position={playerById(game.lastDiscard.playerId).position} tier={diceTier(playerById(game.lastDiscard.playerId).overall_rating)} roundNumber={game.roundIndex + 1} /><div className="card-discard"><PlayerIdentity player={playerById(game.lastDiscard.playerId)} /></div></section>}
-      {hud && game && <AuctionHud hud={hud} names={names} currentPosition={game.phase === 'BIDDING' || game.phase === 'REVEAL_PLAYER' ? footballer?.position : undefined} onShowPitches={() => document.getElementById('team-progress')?.scrollIntoView({ behavior: 'smooth' })} />}
+      {hud && game && <AuctionHud hud={hud} names={names} currentPosition={game.phase === 'BIDDING' || game.phase === 'REVEAL_PLAYER' ? footballer?.position : undefined} onShowPitches={() => { setPitchesOpen(true); const court = document.getElementById('team-progress'); court?.focus({ preventScroll: true }); court?.scrollIntoView?.({ behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }) }} />}
       {error && game?.phase !== 'TEAMS_COMPLETED' && <p className="draft-alert" role="alert">{error}</p>}
       {game?.phase === 'LOBBY' && online && online.mySide !== 'recruiter_one' && <section className="coin-toss" role="status"><h1>{t('duel.chooseCoin')}</h1><p>{t('online.duel.waitingCoin', { name: names.recruiter_one })}</p></section>}
       {game?.phase === 'LOBBY' && !(online && online.mySide !== 'recruiter_one') && <section className="coin-toss coin-choice"><h1>{t('duel.chooseCoin')}</h1><p>{t('duel.chooseCoinDetail')}</p><div className="coin-faces">{(['heads', 'tails'] as const).map((side) => <button key={side} className="coin-face-choice" aria-label={t(`duel.${side}`)} onClick={() => chooseCoin(side)}><CoinFace side={side} /><strong aria-hidden="true">{t(`duel.${side}`)}</strong><small aria-hidden="true">{t(`coin.faces.${side}`)}</small></button>)}</div></section>}
@@ -415,7 +422,7 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
         {game.phase === 'TEAMS_COMPLETED' && online && <OnlineTeamsStage game={game} online={online} names={names} catalog={catalog} />}
         {game.phase === 'TEAMS_COMPLETED' && !online && (() => {
           if (!RECRUITER_IDS.every((participant) => isValidOrganizedLineup(game.teams[participant].lineup, catalog, budgetOf(game), game.teams[participant].formation))) {
-            return <section className="teams-completed" role="alert"><p>{t('recovery.invalidTeams')}</p><button className="primary-action" onClick={() => setGame(null)}>{t('recovery.restart')}</button></section>
+            return <section className="teams-completed" role="alert"><p>{t('recovery.invalidTeams')}</p><button className="primary-action" onClick={goHome}>{t('recovery.restart')}</button></section>
           }
           const humans = RECRUITER_IDS.filter((participant) => !(opponentMode === 'cpu' && participant === 'recruiter_two'))
           const pending = humans.find((participant) => !orderingDone(participant))
@@ -445,7 +452,7 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
           </section>
         })()}
       </>}
-      {game && <>{game.phase !== 'TEAMS_COMPLETED' && <TeamProgressBoard game={game} catalog={catalog} names={names} />}<details className="draw-replay"><summary>{t('draw.export')}</summary><p>{t('draw.explanation')}</p><label>{t('draw.context')}<textarea readOnly value={JSON.stringify({ seed: game.seed, context: game.drawContext, ...(game.categoryPair ? { categoryPair: game.categoryPair } : {}), ...(game.config ? { config: game.config } : {}) })} /></label></details></>}
+      {game && <>{game.phase !== 'TEAMS_COMPLETED' && <TeamProgressBoard open={pitchesOpen} onOpenChange={setPitchesOpen} game={game} catalog={catalog} names={names} />}<details className="draw-replay"><summary>{t('draw.export')}</summary><p>{t('draw.explanation')}</p><label>{t('draw.context')}<textarea readOnly value={JSON.stringify({ seed: game.seed, context: game.drawContext, ...(game.categoryPair ? { categoryPair: game.categoryPair } : {}), ...(game.config ? { config: game.config } : {}) })} /></label></details></>}
       <NoticeToasts notices={notices} onDismiss={dismiss} />
       {storageWarning && <p role="status">{t('draw.storageWarning')}</p>}
       <VisualCredits />

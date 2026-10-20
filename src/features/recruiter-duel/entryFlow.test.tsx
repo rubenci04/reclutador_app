@@ -1,5 +1,5 @@
-import { beforeEach, expect, it, vi } from 'vitest'
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { afterEach, beforeEach, expect, it, vi } from 'vitest'
+import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { I18nextProvider } from 'react-i18next'
 import { createI18n } from '../../i18n'
 import { AuctionPage } from './AuctionPage'
@@ -9,6 +9,7 @@ import { helpStore } from '../onboarding/helpStore'
 import { TUTORIAL_STEPS } from '../onboarding/helpTopics'
 
 beforeEach(() => { localStorage.clear(); helpStore.forgetMemory() })
+afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals() })
 
 it.each(['es-AR', 'en', 'pt-BR'] as const)('offers rivals first and an unchanged classic start in %s', async (language) => {
   const i18n = await createI18n(language)
@@ -53,4 +54,28 @@ it('limits onboarding to three steps and persists opting out even when skipped',
   fireEvent.click(screen.getByRole('button', { name: 'How to play' }))
   fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' })
   expect(screen.getByRole('button', { name: 'How to play' })).toHaveFocus()
+})
+
+it('opens the mobile pitch directly and returns home only after confirmation', async () => {
+  vi.useFakeTimers()
+  vi.stubGlobal('matchMedia', (query: string) => ({ matches: query.includes('max-width'), addEventListener: vi.fn(), removeEventListener: vi.fn() }))
+  const i18n = await createI18n('en')
+  render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
+  fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.local') }))
+  fireEvent.click(screen.getByRole('button', { name: i18n.t('duel.start') }))
+  fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
+  fireEvent.click(screen.getByRole('button', { name: i18n.t('coin.skip') }))
+  expect(screen.getByRole('button', { name: i18n.t('duel.beginBidding') })).toBeEnabled()
+  const pitches = screen.getByRole('region', { name: i18n.t('teamProgress.title') })
+  expect(within(pitches).getByRole('button', { name: i18n.t('teamProgress.title') })).toHaveAttribute('aria-expanded', 'false')
+  fireEvent.click(screen.getByRole('button', { name: i18n.t('hud.showPitches') }))
+  expect(pitches).toHaveFocus()
+  expect(within(pitches).getByRole('button', { name: i18n.t('teamProgress.title') })).toHaveAttribute('aria-expanded', 'true')
+  expect(screen.getByRole('button', { name: i18n.t('duel.beginBidding') })).toBeEnabled()
+  fireEvent.click(screen.getByRole('button', { name: i18n.t('navigation.home') }))
+  fireEvent.keyDown(screen.getByRole('dialog'), { key: 'Escape' })
+  expect(screen.getByRole('button', { name: i18n.t('duel.beginBidding') })).toBeEnabled()
+  fireEvent.click(screen.getByRole('button', { name: i18n.t('navigation.home') }))
+  act(() => within(screen.getByRole('dialog')).getByRole('button', { name: i18n.t('navigation.home') }).click())
+  expect(screen.getByRole('heading', { name: i18n.t('entry.chooseRival') })).toHaveFocus()
 })

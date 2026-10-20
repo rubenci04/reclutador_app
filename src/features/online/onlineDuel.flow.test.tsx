@@ -210,6 +210,7 @@ describe('closing rooms from the interface', () => {
     await waitFor(() => expect(guest.getByRole('button', { name: 'Leave room' })).toBeInTheDocument())
     await waitFor(() => expect(host.getAllByText('Beto').length).toBeGreaterThan(0))
     fireEvent.click(host.getByRole('button', { name: 'Delete room' }))
+    fireEvent.click(within(host.getByRole('dialog')).getByRole('button', { name: 'Delete room' }))
     await waitFor(() => expect(guest.getByText(/The host closed the room/)).toBeInTheDocument(), { timeout: 10000 })
     await waitFor(() => expect(host.getByRole('button', { name: 'Create room' })).toBeInTheDocument())
   }, 60000)
