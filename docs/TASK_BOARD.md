@@ -1,5 +1,10 @@
 # Tablero de tareas
 
+## COACH-FLOW — 20/10/2026
+
+Secuencia técnico → suplentes/once → poder/tácticas y 65/120 técnicos S implementados. Evidencia y límites en qa/COACH-FLOW.md; QA visual pendiente por navegador deshabilitado.
+
+
 ## ENTRY-CPU — 20/10/2026
 
 Inicio de tres rivales sin Draft Libre y CPU difícil reforzada implementados; reglas online progresivas. Ver qa/ENTRY-CPU.md. QA visual bloqueada por Work settings.

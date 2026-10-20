@@ -605,3 +605,7 @@
 .coach-details > span, .coach-details small { display: block; }
 .coach-help { margin: 10px 0; }
 .coach-grid .coach-card > .primary-action { min-height: 44px; margin-top: auto; }
+.teams-completed .coach-market, .teams-completed .substitute-market, .teams-completed .lineup-organizer { animation: panel-enter var(--motion-base) var(--motion-ease); }
+.teams-completed .coach-card { transition: transform var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease); }
+.teams-completed .coach-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px #0005; }
+@media (prefers-reduced-motion: reduce) { .teams-completed .coach-market, .teams-completed .substitute-market, .teams-completed .lineup-organizer { animation: none; } .teams-completed .coach-card { transition: none; } .teams-completed .coach-card:hover { transform: none; } }

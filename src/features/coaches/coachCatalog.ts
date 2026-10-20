@@ -117,12 +117,12 @@ const ROWS: readonly Row[] = [
   ['Telê', 'Santana', 1931, 2006, 'São Paulo', 'C', 'BRA', 'L', 'B', 'A'],
 ]
 
-export const COACH_CATALOG: readonly Coach[] = ROWS.map((row, index) => {
+const BASE_COACH_CATALOG: readonly Coach[] = ROWS.map((row, index) => {
   const [name, surname, birthYear, deathYear, team, kind, nationality, status, tier, focus] = row
   return { id: `coach_${String(index + 1).padStart(3, '0')}`, name, surname, birthYear, ...(deathYear ? { deathYear } : {}), team, teamKind: kind === 'N' ? 'NATIONAL' : 'CLUB', nationality, status: status === 'A' ? 'ACTIVE' : 'LEGEND', tier, focus: FOCUS[focus], price: COACH_TIER_PRICE[tier] }
 })
 
-export const EXTRA_COACHES: readonly Coach[] = [
+const BASE_EXTRA_COACHES: readonly Coach[] = [
   { id: 'coach_lula', name: 'Luiz Alonso', surname: 'Perez (Lula)', birthYear: 1922, deathYear: 1972, team: 'Santos', teamKind: 'CLUB', nationality: 'BRA', status: 'LEGEND', tier: 'A', focus: 'ATTACK', price: 5 },
   { id: 'coach_x_alonso', name: 'Xabi', surname: 'Alonso', birthYear: 1981, team: 'Real Madrid', teamKind: 'CLUB', nationality: 'ESP', status: 'ACTIVE', tier: 'A', focus: 'MIDFIELD', price: 5 },
   { id: 'coach_x_marcelino', name: 'Marcelino', surname: 'García Toral', birthYear: 1965, team: 'Villarreal', teamKind: 'CLUB', nationality: 'ESP', status: 'ACTIVE', tier: 'B', focus: 'DEFENSE', price: 3 },
@@ -144,4 +144,15 @@ export const EXTRA_COACHES: readonly Coach[] = [
   { id: 'coach_x_mano', name: 'Mano', surname: 'Menezes', birthYear: 1962, team: 'Fluminense', teamKind: 'CLUB', nationality: 'BRA', status: 'ACTIVE', tier: 'C', focus: 'DEFENSE', price: 2 },
   { id: 'coach_busby', name: 'Matt', surname: 'Busby', birthYear: 1909, deathYear: 1994, team: 'Manchester United', teamKind: 'CLUB', nationality: 'SCO', status: 'LEGEND', tier: 'A', focus: 'BALANCED', price: 5 },
 ]
+/** Editorial S selection: all 32 historical references plus 33 current coaches.
+ * Tiers are game design, not a claim of factual ranking or current employment.
+ */
+const ELITE_CURRENT = new Set([
+  'Scaloni', 'Simeone', 'Pochettino', 'Gallardo', 'Bielsa', 'Alfaro', 'Domínguez', 'Lorenzo', 'Costas', 'Díaz', 'Almeyda', 'Sampaoli',
+  'Guardiola', 'Ancelotti', 'Flick', 'Enrique', 'Slot', 'Arteta', 'Tuchel', 'Nagelsmann', 'Deschamps', 'Martínez', 'Inzaghi', 'Conte', 'Allegri', 'Mourinho', 'Emery', 'Kompany', 'Howe', 'Ferreira', 'Alonso', 'Pellegrini', 'Valverde',
+])
+const eliteCoach = (coach: Coach): Coach => coach.status === 'LEGEND' || ELITE_CURRENT.has(coach.surname)
+  ? { ...coach, tier: 'S', price: COACH_TIER_PRICE.S } : coach
+export const COACH_CATALOG: readonly Coach[] = BASE_COACH_CATALOG.map(eliteCoach)
+export const EXTRA_COACHES: readonly Coach[] = BASE_EXTRA_COACHES.map(eliteCoach)
 export const coachById = (id: string | undefined) => [...COACH_CATALOG, ...EXTRA_COACHES].find((coach) => coach.id === id)

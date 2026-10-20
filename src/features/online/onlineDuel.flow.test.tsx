@@ -145,8 +145,10 @@ describe('online duel, two browsers against the real database', () => {
     expect(turns).toBeGreaterThan(20)
     await waitFor(() => { expect(host.getByText(/TEAMS COMPLETE/i)).toBeInTheDocument(); expect(guest.getByText(/TEAMS COMPLETE/i)).toBeInTheDocument() }, { timeout: 10000 })
 
-    // Each person arranges only their own team, then picks a strategy in secret.
+    // Each person decides on a coach before arranging their eleven.
     for (const view of [host, guest]) {
+      const decline = view.queryByRole('button', { name: /No coach/ })
+      if (decline) fireEvent.click(decline)
       await waitFor(() => expect(view.getByRole('button', { name: 'Confirm eleven' })).toBeEnabled())
       fireEvent.click(view.getByRole('button', { name: 'Confirm eleven' }))
     }

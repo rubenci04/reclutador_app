@@ -80,12 +80,14 @@ export function OnlineTeamsStage({ game, online, names, catalog }: Props) {
       <strong>{t('duel.spent', { amount: game.teams[side].spent })}</strong>
       {side === mine ? <p>{names11(side)}</p> : <p>{t('online.duel.rivalArranging')}</p>}
     </article>)}</div>
-    {!iChose && <TeamPowerPanel game={game} catalog={catalog} sides={[mine]} names={names} />}
+    {confirmed && !iChose && <TeamPowerPanel game={game} catalog={catalog} sides={[mine]} names={names} />}
     {!iChose && <>
+      {!confirmed && game.config?.coaches && !game.teams[mine].coachDeclined && <CoachMarket game={game} participant={mine} name={names[mine]} locked={false} onHire={hire} onDecline={decline} />}
+      {!confirmed && (!game.config?.coaches || game.teams[mine].coachId || game.teams[mine].coachDeclined) && <>
+      <SubstituteMarket game={game} participant={mine} name={names[mine]} catalog={catalog} locked={false} onBuy={buy} />
       <LineupOrganizer onFormationChange={(formation) => online.submit((current) => { const next = chooseFormation(current, mine, formation, catalog); return next.ok ? next.game : current })} game={game} participant={mine} name={names[mine]} catalog={catalog} confirmed={confirmed} locked={false}
         onSwap={swap} onBenchSwap={benchSwap} onConfirm={() => setConfirmed(true)} onEdit={() => setConfirmed(false)} />
-      {game.config?.coaches && <CoachMarket game={game} participant={mine} name={names[mine]} locked={false} onHire={hire} onDecline={decline} />}
-      <SubstituteMarket game={game} participant={mine} name={names[mine]} catalog={catalog} locked={false} onBuy={buy} />
+      </>}
       {confirmed
         ? <StrategyChoicePanel choice={choice} chooser={names[mine]} nextChooser={names[theirs]} names={{ first: names[mine], second: names[theirs] }}
           onConfirm={(strategy) => { void online.chooseStrategy(strategy) }} onHandover={() => {}} onStart={() => false} />

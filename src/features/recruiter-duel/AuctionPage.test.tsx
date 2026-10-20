@@ -110,11 +110,15 @@ describe('single-player auction interface', () => {
       if (expected.phase === 'NEXT_ROUND') expected = get(revealNextAuctionRound(expected))
     }
     expect(checkedFull).toBe(true); expect(checkedOneDefender).toBe(true)
+    const declineCoachButton = document.querySelector('.coach-market > .secondary-action')
+    if (declineCoachButton) fireEvent.click(declineCoachButton)
     expect(screen.getByRole('button', { name: 'Confirm eleven' })).toBeEnabled()
     expect(document.querySelector('#team-progress')).toBeNull()
     expect(screen.queryByRole('button', { name: 'Start match' })).not.toBeInTheDocument()
+    if (!screen.queryByRole('button', { name: 'Confirm eleven' })) fireEvent.click(document.querySelector('.coach-market > .secondary-action')!)
     fireEvent.click(screen.getByRole('button', { name: 'Confirm eleven' }))
     expect(screen.queryByRole('radiogroup')).not.toBeInTheDocument()
+    if (!screen.queryByRole('button', { name: 'Confirm eleven' })) fireEvent.click(document.querySelector('.coach-market > .secondary-action')!)
     fireEvent.click(screen.getByRole('button', { name: 'Confirm eleven' }))
     // Secret strategy choice: first recruiter picks, device is handed over, second picks, then both are revealed.
     expect(screen.getByRole('radiogroup')).toBeInTheDocument()

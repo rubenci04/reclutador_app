@@ -44,12 +44,14 @@ function findEarlyCompletionSeed(secondIsCpu: boolean) {
 }
 
 const button = (name: string | RegExp) => screen.queryByRole('button', { name }) as HTMLButtonElement | null
-const click = (name: string | RegExp) => { const target = button(name); if (!target) throw new Error(`missing button ${String(name)}`); fireEvent.click(target) }
+const click = (name: string | RegExp) => { if (name === 'Confirm eleven' && !button(name)) { const decline = document.querySelector('.coach-market > .secondary-action') as HTMLButtonElement | null; if (decline) fireEvent.click(decline) } const target = button(name); if (!target) throw new Error(`missing button ${String(name)}`); fireEvent.click(target) }
 
 /** Mirrors the engine policy above through the real interface. Returns once `stop()` is true. */
 function drive(stop: () => boolean, limit = 900) {
   for (let step = 0; step < limit; step++) {
     if (stop()) return
+    const decline = document.querySelector('.coach-market > .secondary-action') as HTMLButtonElement | null
+    if (decline) { fireEvent.click(decline); continue }
     if (button('Start auction')) { click('Start auction'); continue }
     const next = button(/^(Next round|Confirm signing and continue)$/); if (next) { click(next.textContent!); continue }
     const panel = document.querySelector('.bid-panel h2')?.textContent ?? ''
@@ -105,6 +107,7 @@ describe('A. human against CPU: early completion to final result', () => {
     await open('cpu', seed)
     drive(() => screen.queryByRole('button', { name: 'Skip sequence' }) !== null)
     click('Skip sequence')
+    if (!button('Confirm eleven')) fireEvent.click(document.querySelector('.coach-market > .secondary-action')!)
     expect(button('Confirm eleven')).not.toBeNull()
     const skipped = [...document.querySelectorAll('.lineup-organizer .pitch-shirt')].map((node) => node.getAttribute('aria-label'))
     expect(skipped.length).toBeGreaterThan(0)
@@ -176,6 +179,7 @@ describe('transitions are protected and recoverable', () => {
     await open('cpu', seed)
     drive(() => screen.queryByRole('button', { name: 'Skip sequence' }) !== null)
     click('Skip sequence')
+    if (!button('Confirm eleven')) fireEvent.click(document.querySelector('.coach-market > .secondary-action')!)
     vi.spyOn(simulator, 'isValidOrganizedLineup').mockReturnValue(false)
     click('Confirm eleven')
     expect(screen.getAllByRole('alert').map((item) => item.textContent).join(' ')).toContain('The teams are not valid')

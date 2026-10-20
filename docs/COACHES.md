@@ -32,3 +32,7 @@ Actualiza las reglas anteriores sin borrar su historia:
 - La contratación usa el saldo real tras el once, antes de los suplentes. El sobrante sigue disponible; se puede rechazar el técnico.
 - Afinidad: foco ATTACK con WIDE_PLAY/COUNTER_ATTACK, DEFENSE con LOW_BLOCK, MIDFIELD con MIDFIELD_CONTROL/HIGH_PRESS: bonus base ×1,15; BALANCED con cualquier táctica no neutral: ×1,05. Máximo 3 puntos por sector. NEUTRAL conserva el bonus previo. La afinidad se calcula al revelar la táctica y se guarda en el resultado.
 - Cartas con nombre/apellido, actual/leyenda, edad aproximada o años de vida, club/selección de referencia, nivel, foco, precio y bonus base. Todos los textos en es-AR/en/pt-BR.
+
+## Selección editorial COACH-FLOW — 20/10/2026
+
+Catálogo combinado: 120 técnicos, 65 S (54,17 %), con 32 leyendas y 33 actuales elegidos explícitamente. Los promovidos usan precio 8M y bonus S existentes. Contratos contextuales con precio reducido conservados. Técnico primero, luego suplentes/once y confirmación antes de tácticas. Ver qa/COACH-FLOW.md.
