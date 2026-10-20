@@ -1,0 +1,68 @@
+{
+  "version": "attack-tree-v1",
+  "seeds": 150,
+  "note": "Synthetic equal-price squads, KEEP in every window. Not a competitive balance study; no formula was tuned from these figures.",
+  "policies": {
+    "flank with the best receiver, cross": {
+      "matches": 150,
+      "plays": 450,
+      "passOk": 331,
+      "passLost": 119,
+      "crossChosen": 331,
+      "crossOk": 215,
+      "shotChosen": 0,
+      "shotsEnding": 215,
+      "wideOrBlocked": 53,
+      "saved": 88,
+      "goals": 74,
+      "localGoals": 316,
+      "passSuccessRate": 0.736,
+      "shotReachedPerPlay": 0.478,
+      "goalPerPlay": 0.164,
+      "goalAfterPassRate": 0.224,
+      "localGoalsPerMatch": 2.107
+    },
+    "always shoot": {
+      "matches": 150,
+      "plays": 450,
+      "passOk": 332,
+      "passLost": 118,
+      "crossChosen": 0,
+      "crossOk": 0,
+      "shotChosen": 332,
+      "shotsEnding": 295,
+      "wideOrBlocked": 133,
+      "saved": 115,
+      "goals": 84,
+      "localGoals": 326,
+      "passSuccessRate": 0.738,
+      "shotReachedPerPlay": 0.656,
+      "goalPerPlay": 0.187,
+      "goalAfterPassRate": 0.253,
+      "localGoalsPerMatch": 2.173
+    },
+    "cross when possible": {
+      "matches": 150,
+      "plays": 450,
+      "passOk": 338,
+      "passLost": 112,
+      "crossChosen": 338,
+      "crossOk": 217,
+      "shotChosen": 0,
+      "shotsEnding": 217,
+      "wideOrBlocked": 53,
+      "saved": 85,
+      "goals": 79,
+      "localGoals": 321,
+      "passSuccessRate": 0.751,
+      "shotReachedPerPlay": 0.482,
+      "goalPerPlay": 0.176,
+      "goalAfterPassRate": 0.234,
+      "localGoalsPerMatch": 2.14
+    },
+    "batch baseline, same squads, no tree": {
+      "matches": 150,
+      "localGoalsPerMatch": 2.38
+    }
+  }
+}

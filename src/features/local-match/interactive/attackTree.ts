@@ -1,0 +1,166 @@
+import type { Player } from '../../../types/player'
+import type { DraftLineup } from '../../draft/draftTypes'
+import { formationSlots, type FormationId } from '../../tactics/formations'
+import type { StrategyId } from '../../tactics/strategies'
+import type { MatchEvent, MatchSide, PlayStep, TeamStrength } from '../matchTypes'
+
+/**
+ * attack-tree-v1: the first interactive attack. One eligible opportunity of the local side (against the CPU) is played as
+ * a short chain of decisions instead of the batch draws. The chain has its own seeded stream (`<seed>:tree`), so the main
+ * block stream, the substitution stream and every historical result are untouched.
+ *
+ * The footballers only expose the five catalogue ratings, so each role below is a documented estimate built from them:
+ *   passer (progressive pass)   .5 attack + .3 mental + .2 overall
+ *   receiver (control)          .4 attack + .3 mental + .3 overall
+ *   crosser (delivery)          .5 attack + .3 mental + .2 overall
+ *   header                      .45 attack + .35 physical + .2 overall
+ *   shooter                     .5 attack + .3 overall + .2 mental
+ *   defender                    .5 defence + .25 physical + .25 mental
+ *   goalkeeper                  .6 overall + .4 defence
+ * Every probability is clamped well inside (0, 1): a better player improves the odds and never guarantees the outcome.
+ */
+export const ATTACK_TREE_VERSION = 'attack-tree-v1' as const
+export const ATTACK_TREE_LIMIT = 3
+/** A cross that finds a free head is a better chance than an average shot; it pays for the extra risk of the delivery. */
+const HEADER_BONUS = .06
+
+export type Sector = 'LEFT' | 'RIGHT'
+export type PlayChoice = 'LEFT' | 'RIGHT' | 'CROSS' | 'SHOOT'
+export type PlayNode = 'DIRECTION' | 'FINISH'
+export interface PlayOption { readonly choice: PlayChoice; readonly available: boolean; readonly playerId: string | null; readonly rivalId: string | null }
+export interface PendingPlay {
+  readonly id: string
+  readonly node: PlayNode
+  readonly protagonistId: string
+  /** Set once the pass succeeded. */
+  readonly receiverId: string | null
+  readonly sector: Sector | null
+  readonly options: readonly PlayOption[]
+}
+export interface PlayLogEntry { readonly id: string; readonly playId: string; readonly node: PlayNode; readonly choice: PlayChoice }
+
+export interface Squad { readonly lineup: DraftLineup; readonly formation: FormationId }
+export interface PlayContext {
+  readonly minute: MatchEvent['minute']
+  readonly catalog: readonly Player[]
+  readonly local: Squad
+  readonly cpu: Squad
+  readonly effective: Readonly<Record<MatchSide, TeamStrength>>
+  readonly strategy: Readonly<Record<MatchSide, StrategyId>>
+}
+
+const clamp = (value: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, value))
+export const passerQuality = (p: Player) => .5 * p.att_rating + .3 * p.men_rating + .2 * p.overall_rating
+export const receiverQuality = (p: Player) => .4 * p.att_rating + .3 * p.men_rating + .3 * p.overall_rating
+export const crosserQuality = (p: Player) => .5 * p.att_rating + .3 * p.men_rating + .2 * p.overall_rating
+export const headerQuality = (p: Player) => .45 * p.att_rating + .35 * p.phy_rating + .2 * p.overall_rating
+export const shooterQuality = (p: Player) => .5 * p.att_rating + .3 * p.overall_rating + .2 * p.men_rating
+export const defenderQuality = (p: Player) => .5 * p.def_rating + .25 * p.phy_rating + .25 * p.men_rating
+export const keeperQuality = (p: Player) => .6 * p.overall_rating + .4 * p.def_rating
+
+/** Midfield and attack-versus-defence balance of the vigente effective strengths (already include strategy, coach, formation, squad). */
+export function playContext(ctx: Pick<PlayContext, 'effective'>) {
+  return clamp((ctx.effective.local.midfield - ctx.effective.cpu.midfield) * .004 + (ctx.effective.local.attack - ctx.effective.cpu.defense) * .003, -.08, .08)
+}
+
+export function passChance(passer: Player, receiver: Player, defender: Player, edge: number, strategy: Readonly<Record<MatchSide, StrategyId>>) {
+  const wide = (strategy.local === 'WIDE_PLAY' ? .03 : 0) + (strategy.cpu === 'LOW_BLOCK' ? -.02 : 0)
+  return clamp(.74 + (passerQuality(passer) - 80) * .004 + (receiverQuality(receiver) - 80) * .007 - (defenderQuality(defender) - 80) * .006 + edge + wide, .28, .90)
+}
+export function crossChance(crosser: Player, target: Player, defender: Player, edge: number) {
+  return clamp(.66 + (crosserQuality(crosser) - 80) * .005 + (headerQuality(target) - 80) * .003 - (defenderQuality(defender) - 80) * .005 + edge, .22, .82)
+}
+export const blockChance = (shooter: Player, defender: Player, edge: number) => clamp(.15 + (defenderQuality(defender) - 80) * .004 - (shooterQuality(shooter) - 80) * .003 - edge * .5, .06, .38)
+export const shotOnTargetChance = (shooter: Player) => clamp(.74 + (shooterQuality(shooter) - 80) * .004, .45, .88)
+export const headerOnTargetChance = (target: Player, defender: Player) => clamp(.76 + (headerQuality(target) - 80) * .004 - (defenderQuality(defender) - 80) * .002, .45, .88)
+export const scoringChance = (quality: number, keeper: Player, edge: number, bonus = 0) => clamp(.42 + bonus + (quality - 80) * .006 - (keeperQuality(keeper) - 80) * .006 + edge * .5, .10, .56)
+
+type Placed = { readonly slot: { readonly id: string; readonly x: number; readonly y: number; readonly position: string }; readonly player: Player }
+function placed(squad: Squad, catalog: readonly Player[]): Placed[] {
+  return formationSlots(squad.formation).flatMap((slot) => { const player = catalog.find((p) => p.id === squad.lineup[slot.id as keyof DraftLineup]); return player ? [{ slot, player }] : [] })
+}
+const byId = (a: Player, b: Player) => a.id.localeCompare(b.id)
+
+/** The most advanced real attacking teammate on that flank. Null when the formation leaves nobody there. */
+export function receiverFor(sector: Sector, squad: Squad, catalog: readonly Player[], protagonistId: string): Placed | null {
+  const wing = placed(squad, catalog).filter(({ slot, player }) => player.id !== protagonistId && (slot.position === 'MED' || slot.position === 'DEL') && (sector === 'LEFT' ? slot.x < 45 : slot.x > 55))
+  return wing.sort((a, b) => a.slot.y - b.slot.y || b.player.att_rating - a.player.att_rating || byId(a.player, b.player))[0] ?? null
+}
+/** Rival defender who faces that point: the rival's slots are mirrored across the width. */
+export function rivalDefenderFor(x: number, rival: Squad, catalog: readonly Player[]): Player | null {
+  const defenders = placed(rival, catalog).filter(({ slot }) => slot.position === 'DEF')
+  return defenders.sort((a, b) => Math.abs(100 - a.slot.x - x) - Math.abs(100 - b.slot.x - x) || byId(a.player, b.player))[0]?.player ?? null
+}
+export function keeperOf(squad: Squad, catalog: readonly Player[]): Player | null { return placed(squad, catalog).find(({ slot }) => slot.position === 'ARQ')?.player ?? null }
+/** Best other forward as the target of a cross. */
+export function crossTarget(squad: Squad, catalog: readonly Player[], receiverId: string): Placed | null {
+  return placed(squad, catalog).filter(({ slot, player }) => slot.position === 'DEL' && player.id !== receiverId).sort((a, b) => b.player.att_rating - a.player.att_rating || byId(a.player, b.player))[0] ?? null
+}
+
+/** Chooses the protagonist among the midfielders really on the pitch, weighted by mental rating (who reads the game). */
+export function pickProtagonist(squad: Squad, catalog: readonly Player[], random: () => number): Player | null {
+  const mids = placed(squad, catalog).filter(({ slot }) => slot.position === 'MED').map(({ player }) => player).sort(byId)
+  if (!mids.length) return null
+  const weights = mids.map((p) => Math.max(1, p.men_rating - 60) ** 2)
+  let ticket = random() * weights.reduce((a, b) => a + b, 0)
+  for (let i = 0; i < mids.length; i++) { ticket -= weights[i]; if (ticket <= 0) return mids[i] }
+  return mids[mids.length - 1]
+}
+
+/** First node. Null (the opportunity is then resolved by the ordinary block model) when no flank has a valid receiver. */
+export function planPlay(ctx: PlayContext, id: string, random: () => number): { play: PendingPlay; protagonist: Player } | null {
+  const protagonist = pickProtagonist(ctx.local, ctx.catalog, random)
+  if (!protagonist) return null
+  const options = (['LEFT', 'RIGHT'] as const).map((sector): PlayOption => {
+    const receiver = receiverFor(sector, ctx.local, ctx.catalog, protagonist.id)
+    const rival = receiver ? rivalDefenderFor(receiver.slot.x, ctx.cpu, ctx.catalog) : null
+    return { choice: sector, available: Boolean(receiver && rival), playerId: receiver?.player.id ?? null, rivalId: rival?.id ?? null }
+  })
+  if (!options.some((o) => o.available)) return null
+  return { protagonist, play: { id, node: 'DIRECTION', protagonistId: protagonist.id, receiverId: null, sector: null, options } }
+}
+
+export interface StepResult { readonly events: readonly MatchEvent[]; readonly next: PendingPlay | null }
+
+export function availableChoice(play: PendingPlay, choice: unknown): choice is PlayChoice {
+  return play.options.some((o) => o.choice === choice && o.available)
+}
+
+/** One node of the tree. All draws come from the supplied tree stream, in a fixed order. */
+export function resolvePlay(ctx: PlayContext, play: PendingPlay, choice: PlayChoice, random: () => number): StepResult {
+  const player = (id: string | null) => ctx.catalog.find((p) => p.id === id)!
+  const event = (side: MatchSide, type: MatchEvent['type'], step: PlayStep, who: Player): MatchEvent => ({ minute: ctx.minute, side, type, playerId: who.id, step })
+  const edge = playContext(ctx)
+  const option = play.options.find((o) => o.choice === choice)!
+  if (play.node === 'DIRECTION') {
+    const sector = choice as Sector
+    const passer = player(play.protagonistId); const receiver = player(option.playerId); const defender = player(option.rivalId)
+    if (random() < passChance(passer, receiver, defender, edge, ctx.strategy)) {
+      const target = crossTarget(ctx.local, ctx.catalog, receiver.id)
+      const targetDefender = target ? rivalDefenderFor(target.slot.x, ctx.cpu, ctx.catalog) : null
+      const shotDefender = rivalDefenderFor(placed(ctx.local, ctx.catalog).find((p) => p.player.id === receiver.id)!.slot.x, ctx.cpu, ctx.catalog)
+      return {
+        events: [event('local', 'pass', sector === 'LEFT' ? 'PASS_LEFT_OK' : 'PASS_RIGHT_OK', receiver)],
+        next: { id: play.id, node: 'FINISH', protagonistId: play.protagonistId, receiverId: receiver.id, sector, options: [
+          { choice: 'CROSS', available: Boolean(target && targetDefender), playerId: target?.player.id ?? null, rivalId: targetDefender?.id ?? null },
+          { choice: 'SHOOT', available: Boolean(shotDefender), playerId: receiver.id, rivalId: shotDefender?.id ?? null },
+        ] },
+      }
+    }
+    return { events: [event('cpu', 'recovery', sector === 'LEFT' ? 'PASS_LEFT_LOST' : 'PASS_RIGHT_LOST', defender)], next: null }
+  }
+  const receiver = player(play.receiverId); const keeper = keeperOf(ctx.cpu, ctx.catalog)!
+  const defender = player(option.rivalId)
+  if (choice === 'CROSS') {
+    const target = player(option.playerId)
+    if (!(random() < crossChance(receiver, target, defender, edge))) return { events: [event('cpu', 'recovery', 'CROSS_LOST', defender)], next: null }
+    const delivered = event('local', 'pass', 'CROSS_OK', receiver)
+    if (!(random() < headerOnTargetChance(target, defender))) return { events: [delivered, event('local', 'shot', 'HEADER_WIDE', target)], next: null }
+    if (random() < scoringChance(headerQuality(target), keeper, edge, HEADER_BONUS)) return { events: [delivered, event('local', 'goal', 'HEADER_GOAL', target)], next: null }
+    return { events: [delivered, event('cpu', 'save', 'HEADER_SAVED', keeper)], next: null }
+  }
+  if (random() < blockChance(receiver, defender, edge)) return { events: [event('cpu', 'recovery', 'SHOT_BLOCKED', defender)], next: null }
+  if (!(random() < shotOnTargetChance(receiver))) return { events: [event('local', 'shot', 'SHOT_WIDE', receiver)], next: null }
+  if (random() < scoringChance(shooterQuality(receiver), keeper, edge)) return { events: [event('local', 'goal', 'SHOT_GOAL', receiver)], next: null }
+  return { events: [event('cpu', 'save', 'SHOT_SAVED', keeper)], next: null }
+}

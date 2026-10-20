@@ -12,6 +12,8 @@ export interface BoardPlay {
   readonly side: MatchSide | null
   /** Only drawn as the highlighted footballer when the confirmed event names him and he is in that side's lineup. */
   readonly playerId?: string
+  /** Player the ball came from (the protagonist of an interactive play), only when a confirmed event names him. */
+  readonly fromPlayerId?: string
 }
 export type BoardFocus = 'full' | 'local' | 'cpu'
 export interface Point { readonly x: number; readonly y: number }
@@ -34,7 +36,7 @@ export function boardDots(formations: Readonly<Record<MatchSide, FormationId>>, 
 export function teamShift(play: BoardPlay, side: MatchSide): number {
   if (!play.side || play.kind === 'idle' || play.kind === 'substitution' || play.kind === 'final') return 0
   const attacking = play.kind === 'save' ? (play.side === 'local' ? 'cpu' : 'local') : play.side
-  const strength = play.kind === 'recovery' ? .04 : play.kind === 'attack' ? .08 : .12
+  const strength = play.kind === 'recovery' ? .04 : play.kind === 'attack' || play.kind === 'pass' ? .08 : .12
   return (attacking === side ? strength : -strength * .4) * TOWARD[side]
 }
 
@@ -44,7 +46,7 @@ export function ballPoint(play: BoardPlay): Point {
   const dir = TOWARD[side]
   switch (play.kind) {
     case 'recovery': return { x: .5 - dir * .1, y: .5 }
-    case 'attack': return { x: .5 + dir * .14, y: .5 }
+    case 'attack': case 'pass': return { x: .5 + dir * .14, y: .5 }
     case 'shot': return { x: .5 + dir * .34, y: .5 }
     case 'goal': return { x: dir === 1 ? .985 : .015, y: .5 }
     case 'save': return { x: side === 'local' ? .06 : .94, y: .5 } // the saving side's goalkeeper area

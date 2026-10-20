@@ -7,6 +7,8 @@ import type { MatchSide } from '../matchTypes'
 import type { Order, Outcome, Session } from './types'
 import { cpuInstruction } from './instructionPolicy'
 import type { CpuDifficulty } from '../../recruiter-duel/cpuPolicy'
+import type { Player } from '../../../types/player'
+import type { PendingPlay, PlayChoice } from './attackTree'
 
 export function currentPower(s: Session, side: MatchSide) {
   const other = side === 'local' ? 'cpu' : 'local'; const k = s.kernel
@@ -28,6 +30,14 @@ export function confirmLiveOrder(s: Session, windowId: string, side: MatchSide, 
   const human = submitDecision(current, side, decisionFor(current, side, `${windowId}:${side}`, order))
   if (!human.ok) return human
   return human.value.window!.plans.local && human.value.window!.plans.cpu ? applyWindow(human.value) : human
+}
+
+/** Choice used when the player asks to simulate the rest: the flank with the better receiver, then the shot. Documented in the confirmation text. */
+export function defaultPlayChoice(play: PendingPlay, catalog: readonly Player[]): PlayChoice {
+  const usable = play.options.filter((option) => option.available)
+  if (play.node === 'FINISH') return (usable.find((option) => option.choice === 'SHOOT') ?? usable[0]).choice
+  const rating = (id: string | null) => catalog.find((p) => p.id === id)?.overall_rating ?? -1
+  return [...usable].sort((a, b) => rating(b.playerId) - rating(a.playerId))[0].choice
 }
 
 /** Explicit opt-in only. KEEP for both sides replaces every remaining instruction, including CPU choices. */

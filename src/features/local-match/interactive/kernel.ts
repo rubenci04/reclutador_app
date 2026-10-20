@@ -7,6 +7,7 @@ import { eventInfluence } from '../../tactics/eventInfluence'
 import { NEUTRAL_SELECTION, TACTICS_VERSION, parseStrategySelection } from '../../tactics/strategies'
 import { ZERO_ADJUSTMENT, tacticalAdjustment, tacticalFeatures, type TacticalAdjustment } from '../../tactics/tacticalModel'
 import { initialCheckpoint, nextCheckpoint } from './random'
+import { ATTACK_TREE_LIMIT, ATTACK_TREE_VERSION, availableChoice, planPlay, resolvePlay, type PendingPlay, type PlayChoice, type PlayContext, type PlayLogEntry } from './attackTree'
 import { calculateTeamStrength, initiativeChance, rosterAdvantage, isValidOrganizedLineup, isValidBench, SUBSTITUTION_MINUTES, SUBSTITUTION_CHANCE, SUBSTITUTION_RULES_VERSION, type SimulationInput } from '../simulator'
 import { composeStrength, squadQuality, SQUAD_QUALITY_VERSION } from '../squadQuality'
 import { MATCH_MINUTES, MATCH_RULES_VERSION, type MatchBlock, type MatchEvent, type MatchResult, type MatchSide, type MatchStats, type MatchTeam, type TeamStrength } from '../matchTypes'
@@ -42,7 +43,7 @@ const meanAdjustment = (total: TacticalAdjustment): TacticalAdjustment => ({ att
 type Side = { team: MatchTeam; strength: TeamStrength; features: ReturnType<typeof tacticalFeatures>; unused: string[]; subbed: boolean; baseMidfield: number }
 
 /** Version-frozen block adapter. Historical batch API stays untouched as regression oracle. */
-export function initializeKernel(source: SimulationInput) {
+export function initializeKernel(source: SimulationInput, attackTree = false) {
   const input = structuredClone(source)
   if (input.rulesVersion !== MATCH_RULES_VERSION || input.catalogVersion !== 'catalog_v1') throw new Error('unsupported_match_rules')
   const local = teamFrom(input.localLineup, input.catalog, input.budget, input.formations?.local)
@@ -68,18 +69,40 @@ export function initializeKernel(source: SimulationInput) {
   const score = { local: 0, cpu: 0 }
   const random = initialCheckpoint(input.seed)
   const blocks: MatchBlock[] = []
-  return { input, local, cpu, sides, strengths, stats, score, blocks, advantage, quality, qualityTotals, effectiveTotals, adjustmentTotals, substitutionLog, selection, initialSelection: selection, nextBlock: 0, rng: { main: random, substitutions: substitutionRandom }, pendingChanges: [] as MatchEvent[], result: null as MatchResult | null }
+  return { input, local, cpu, sides, strengths, stats, score, blocks, advantage, quality, qualityTotals, effectiveTotals, adjustmentTotals, substitutionLog, selection, initialSelection: selection, nextBlock: 0, rng: { main: random, substitutions: substitutionRandom, ...(attackTree ? { tree: initialCheckpoint(`${input.seed}:tree`) } : {}) }, pendingChanges: [] as MatchEvent[], result: null as MatchResult | null,
+    ...(attackTree ? { tree: { version: ATTACK_TREE_VERSION, limit: ATTACK_TREE_LIMIT, started: 0, log: [] as PlayLogEntry[] }, partial: null as PartialBlock | null } : {}) }
 }
+/** Block in progress while an interactive play is open. Its events and counters are already confirmed; the block is not in `blocks` yet. */
+export interface PartialBlock { events: MatchEvent[]; opportunity: number; played: boolean; play: PendingPlay | null }
 export type KernelState = ReturnType<typeof initializeKernel>
 
-export function advanceKernel(current: KernelState, automatic: Readonly<Record<MatchSide, boolean>>): KernelState {
-  if (current.result || current.nextBlock >= 6) throw new Error('invalid_kernel_phase')
-  const state = structuredClone(current)
-  const { input, sides, stats, score, blocks, advantage, qualityTotals, effectiveTotals, adjustmentTotals, substitutionLog } = state
-  const selection = state.selection
+const NO_ADJUSTMENT = ZERO_ADJUSTMENT
+
+/** Effective strengths of one block. Pure: nothing is accumulated, so a play can recompute it mid-block. */
+function blockStrengths(state: KernelState, blockIndex: number) {
+  const { input, sides, advantage, selection } = state
   const extra = (key: MatchSide) => (advantage?.side === key ? advantage.bonus : 0)
   const coachExtra = (key: MatchSide, sector: 'attack' | 'defense' | 'midfield') => input.coaches?.[key]?.[sector] ?? 0
-  const random = () => { const next = nextCheckpoint(state.rng.main); state.rng.main = next.checkpoint; return next.value }
+  const adjustment: Record<MatchSide, TacticalAdjustment> = {
+    local: tacticalAdjustment(selection.local, sides.local.features, sides.cpu.features, selection.cpu, blockIndex),
+    cpu: tacticalAdjustment(selection.cpu, sides.cpu.features, sides.local.features, selection.local, blockIndex),
+  }
+  const quality = { local: 0, cpu: 0 }
+  for (const key of ['local', 'cpu'] as const) {
+    const affinity = input.formations ? formationAffinity(input.formations[key], selection[key]) : NO_ADJUSTMENT
+    adjustment[key] = { attack: adjustment[key].attack + affinity.attack, defense: adjustment[key].defense + affinity.defense, midfield: adjustment[key].midfield + affinity.midfield }
+    quality[key] = input.rosterBonus ? squadQuality(sides[key].team.players).bonus : 0
+  }
+  const effective = {
+    local: composeStrength(sides.local.strength, extra('local') + quality.local, { attack: coachExtra('local', 'attack'), defense: coachExtra('local', 'defense'), midfield: coachExtra('local', 'midfield') }, adjustment.local),
+    cpu: composeStrength(sides.cpu.strength, extra('cpu') + quality.cpu, { attack: coachExtra('cpu', 'attack'), defense: coachExtra('cpu', 'defense'), midfield: coachExtra('cpu', 'midfield') }, adjustment.cpu),
+  }
+  return { adjustment, effective, quality }
+}
+
+/** Substitutions, accumulated totals and the opening events of a block. Runs exactly once per block. */
+function beginBlock(state: KernelState, automatic: Readonly<Record<MatchSide, boolean>>): MatchEvent[] {
+  const { input, sides, qualityTotals, effectiveTotals, adjustmentTotals, substitutionLog } = state
   const blockIndex = state.nextBlock
   const minute = MATCH_MINUTES[blockIndex]
   const substitutionRandom = state.rng.substitutions ? () => { const next = nextCheckpoint(state.rng.substitutions!); state.rng.substitutions = next.checkpoint; return next.value } : null
@@ -105,32 +128,54 @@ export function advanceKernel(current: KernelState, automatic: Readonly<Record<M
     }
   }
   sides.local.baseMidfield += sides.local.strength.midfield; sides.cpu.baseMidfield += sides.cpu.strength.midfield
-  const adjustment: Record<MatchSide, TacticalAdjustment> = {
-    local: tacticalAdjustment(selection.local, sides.local.features, sides.cpu.features, selection.cpu, blockIndex),
-    cpu: tacticalAdjustment(selection.cpu, sides.cpu.features, sides.local.features, selection.local, blockIndex),
-  }
+  const { adjustment, effective, quality } = blockStrengths(state, blockIndex)
   for (const key of ['local', 'cpu'] as const) {
-    const affinity = input.formations ? formationAffinity(input.formations[key], selection[key]) : ZERO_ADJUSTMENT
-    adjustment[key] = { attack: adjustment[key].attack + affinity.attack, defense: adjustment[key].defense + affinity.defense, midfield: adjustment[key].midfield + affinity.midfield }
     for (const sector of ['attack', 'defense', 'midfield'] as const) adjustmentTotals[key][sector] += adjustment[key][sector]
+    qualityTotals[key] += quality[key]
+    for (const sector of ['attack', 'defense', 'midfield'] as const) effectiveTotals[key][sector] += effective[key][sector]
   }
-  const strengthFor = (key: MatchSide) => {
-    const qualityBonus = input.rosterBonus ? squadQuality(sides[key].team.players).bonus : 0
-    qualityTotals[key] += qualityBonus
-    return composeStrength(sides[key].strength, extra(key) + qualityBonus, { attack: coachExtra(key, 'attack'), defense: coachExtra(key, 'defense'), midfield: coachExtra(key, 'midfield') }, adjustment[key])
-  }
-  const effective = { local: strengthFor('local'), cpu: strengthFor('cpu') }
-  for (const key of ['local', 'cpu'] as const) for (const sector of ['attack', 'defense', 'midfield'] as const) effectiveTotals[key][sector] += effective[key][sector]
-  // Versioned action models: v1 has three opportunities per block, v2 four.
-  // Stored/classic simulations retain their original parameters and stream.
-  const events: MatchEvent[] = [...changes]
+  return [...changes]
+}
+
+/** Records a confirmed event of an interactive play in the same counters the batch model feeds. */
+function countEvent(state: KernelState, item: MatchEvent) {
+  const { stats, score } = state
+  if (!item.side) return
+  const other: MatchSide = item.side === 'local' ? 'cpu' : 'local'
+  if (item.type === 'shot') stats[item.side].shots++
+  if (item.type === 'goal') { stats[item.side].shots++; stats[item.side].shotsOnTarget++; score[item.side]++ }
+  if (item.type === 'save') { stats[item.side].saves++; stats[other].shots++; stats[other].shotsOnTarget++ }
+  if (item.type === 'recovery') stats[item.side].recoveries++
+}
+
+/**
+ * Plays the opportunities of the open block from `from` on. With the attack tree enabled it stops at the first eligible
+ * opportunity of the local side and leaves a pending play; the block is completed by `resolveKernelPlay`.
+ */
+function playOpportunities(state: KernelState, events: MatchEvent[], from: number) {
+  const { input, sides, stats, score, blocks } = state
+  const blockIndex = state.nextBlock
+  const minute = MATCH_MINUTES[blockIndex]
+  const { effective } = blockStrengths(state, blockIndex)
+  const random = () => { const next = nextCheckpoint(state.rng.main); state.rng.main = next.checkpoint; return next.value }
   const calibrated = input.actionModel === 'action-v3'
   const lively = input.actionModel === 'action-v2' || calibrated
-  for (let opportunity = 0; opportunity < (lively ? 4 : input.actionModel ? 3 : 1); opportunity++) {
+  const total = lively ? 4 : input.actionModel ? 3 : 1
+  for (let opportunity = from; opportunity < total; opportunity++) {
     const classicChance = initiativeChance(effective.local, effective.cpu)
     const localAttackChance = calibrated ? opportunityChances(effective.local, effective.cpu) : input.actionModel ? clamp(.5 + (classicChance - .5) * 3.5, .15, .85) : classicChance
     const side: MatchSide = random() < localAttackChance ? 'local' : 'cpu'
     const opponent: MatchSide = side === 'local' ? 'cpu' : 'local'
+    if (state.tree && state.partial && side === 'local' && !state.partial.played && state.tree.started < state.tree.limit) {
+      const treeRandom = () => { const next = nextCheckpoint(state.rng.tree!); state.rng.tree = next.checkpoint; return next.value }
+      const planned = planPlay(playContext(state, minute, effective), `play-${minute}`, treeRandom)
+      if (planned) {
+        state.tree.started++
+        state.partial.played = true; state.partial.opportunity = opportunity; state.partial.play = planned.play
+        events.push({ minute, side: 'local', type: 'attack', playerId: planned.protagonist.id, step: 'BUILD' })
+        return
+      }
+    }
     events.push(event(minute, side, 'attack', attacker(sides[side].team, random, calibrated)))
     const shootingPower = effective[side].attack + effective[side].midfield * .16
     const resistance = effective[opponent].defense + effective[opponent].midfield * .12
@@ -155,9 +200,47 @@ export function advanceKernel(current: KernelState, automatic: Readonly<Record<M
     }
   }
   if (minute === 90) events.push(event(minute, null, 'final'))
+  const selection = state.selection
+  const { adjustment } = blockStrengths(state, blockIndex)
   const narrated = events.map((item) => { const tactic = eventInfluence(item.type, item.side, selection, adjustment); return tactic ? { ...item, tactic } : item })
   blocks.push({ minute, events: narrated, score: { ...score } })
   state.nextBlock++
+  if (state.partial) state.partial = null
+}
+
+function playContext(state: KernelState, minute: MatchEvent['minute'], effective: ReturnType<typeof blockStrengths>['effective']): PlayContext {
+  const { input } = state
+  return {
+    minute, catalog: input.catalog, effective, strategy: state.selection,
+    local: { lineup: state.sides.local.team.lineup, formation: input.formations?.local ?? '4-3-3' },
+    cpu: { lineup: state.sides.cpu.team.lineup, formation: input.formations?.cpu ?? '4-3-3' },
+  }
+}
+
+export function advanceKernel(current: KernelState, automatic: Readonly<Record<MatchSide, boolean>>): KernelState {
+  if (current.result || current.nextBlock >= 6 || current.partial) throw new Error('invalid_kernel_phase')
+  const state = structuredClone(current)
+  const events = beginBlock(state, automatic)
+  if (state.tree) state.partial = { events, opportunity: 0, played: false, play: null }
+  playOpportunities(state, events, 0)
+  return state
+}
+
+/** Resolves the pending node with the player's choice (attack-tree-v1). The rest of the block continues from the next opportunity. */
+export function resolveKernelPlay(current: KernelState, id: string, choice: PlayChoice): KernelState {
+  const pending = current.partial?.play
+  if (!current.tree || !current.partial || !pending || !availableChoice(pending, choice)) throw new Error('invalid_play')
+  const state = structuredClone(current)
+  const partial = state.partial!
+  const minute = MATCH_MINUTES[state.nextBlock]
+  const { effective } = blockStrengths(state, state.nextBlock)
+  const treeRandom = () => { const next = nextCheckpoint(state.rng.tree!); state.rng.tree = next.checkpoint; return next.value }
+  const step = resolvePlay(playContext(state, minute, effective), pending, choice, treeRandom)
+  state.tree!.log.push({ id, playId: pending.id, node: pending.node, choice })
+  for (const item of step.events) { partial.events.push(item); countEvent(state, item) }
+  if (step.next) { partial.play = step.next; return state }
+  partial.play = null
+  playOpportunities(state, partial.events, partial.opportunity + 1)
   return state
 }
 

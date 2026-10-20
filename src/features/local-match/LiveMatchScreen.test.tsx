@@ -1,6 +1,6 @@
 import { webcrypto } from 'node:crypto'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen, within } from '@testing-library/react'
 import { I18nextProvider } from 'react-i18next'
 import { createI18n } from '../../i18n'
 import { audio } from '../audio/audioEngine'
@@ -11,7 +11,7 @@ import { liveSession } from './interactive/liveFixtures.test-support'
 import type { Session } from './interactive'
 import * as simulator from './simulator'
 import * as interactive from './interactive'
-import { must } from './interactive/liveFixtures.test-support'
+import { must, treeSession } from './interactive/liveFixtures.test-support'
 
 afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals() })
 const click = (name: string) => fireEvent.click(screen.getByRole('button', { name }))
@@ -221,6 +221,99 @@ describe('SIM-005R-01 audiovisual presentation', () => {
     click('Exit match'); tick(30_000); expect(entries()).toBe(0)
     fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Stay here' })); tick(FRAME_MS * 2)
     expect(entries()).toBeGreaterThan(0); expect(home).not.toHaveBeenCalled()
+  })
+})
+
+describe('SIM-005R-02 interactive attack in the live screen', { timeout: 60_000 }, () => {
+  const cards = () => screen.queryAllByRole('button').filter((b) => b.classList.contains('play-card'))
+  const panel = () => screen.queryByRole('region', { name: 'Attack: your decision' })
+  async function openTree(seed = 'tree-ui') {
+    vi.useFakeTimers()
+    const i18n = await createI18n('en'); const done = vi.fn<(session: Session) => void>()
+    render(<I18nextProvider i18n={i18n}><LiveMatchScreen origin={treeSession(seed)} versusCpu difficulty="HARD" names={{ local: 'Home', cpu: 'Away' }} closed={false} onFinished={done} onReturn={vi.fn()} /></I18nextProvider>)
+    return { done }
+  }
+  /** Runs the match choosing the first enabled card at every node; the hook can interfere (pause, speed) between steps. */
+  function playAll(hook?: (step: number) => void) {
+    for (let step = 0; step < 900 && !screen.queryByRole('button', { name: 'Replay match' }); step++) {
+      hook?.(step)
+      const open = cards().find((card) => !(card as HTMLButtonElement).disabled)
+      const confirm = screen.queryByRole('button', { name: 'Confirm decision' })
+      if (open) fireEvent.click(open); else if (confirm) fireEvent.click(confirm); else tick(100)
+    }
+    expect(screen.getByRole('button', { name: 'Replay match' })).toBeInTheDocument()
+  }
+  const untilPanel = () => { for (let step = 0; step < 900 && !panel(); step++) { const confirm = screen.queryByRole('button', { name: 'Confirm decision' }); if (confirm) fireEvent.click(confirm); else tick(100) } expect(panel()).toBeInTheDocument() }
+
+  it('stops the match at the first node with named, rated teammates, keeps score and board visible and ignores time', async () => {
+    await openTree(); untilPanel()
+    const first = panel()!
+    expect(within(first).getByRole('heading', { name: 'Where do you want to progress?' })).toHaveFocus()
+    expect(cards().map((card) => card.textContent)).toEqual([expect.stringMatching(/ALeft wingReceiver: .+ · \d+/), expect.stringMatching(/BRight wingReceiver: .+ · \d+/)])
+    expect(first).toHaveTextContent(/\(\d+\) has the ball/); expect(first).toHaveTextContent(/Marked by .+ · \d+/)
+    expect(screen.getByRole('img', { name: /Tactical board/ })).toBeInTheDocument(); expect(scoreboard()).toMatch(/Home \d+–\d+ Away/)
+    const shown = entries(); tick(60_000); expect(entries()).toBe(shown); expect(panel()).toBeInTheDocument()
+  })
+
+  it('resolves a card once, then offers cross or shot, and a double tap cannot resolve the second node', async () => {
+    const { done } = await openTree('tree-ui-two')
+    for (let guard = 0; guard < 40; guard++) {
+      untilPanel()
+      const button = cards()[0] as HTMLButtonElement
+      act(() => { button.click(); button.click() })
+      tick(1_500)
+      if (screen.queryByRole('heading', { name: /The pass found/ })) break
+    }
+    expect(screen.queryByRole('heading', { name: /The pass found/ })).toBeInTheDocument()
+    expect(cards().map((card) => card.querySelector('strong')!.textContent)).toEqual(['Send a cross', 'Go for goal'])
+    playAll(); expect(done).toHaveBeenCalledTimes(1)
+    const plays = done.mock.calls[0][0].result!.plays!
+    expect(new Set(plays.map((p) => p.id)).size).toBe(plays.length)
+    expect(plays.filter((p) => p.node === 'FINISH').length).toBeLessThanOrEqual(plays.filter((p) => p.node === 'DIRECTION').length)
+  })
+
+  it('shows the narration, score and statistics of every confirmed step and plays pass, interception and goal sounds once', async () => {
+    const play = vi.spyOn(audio, 'play').mockReturnValue(true)
+    const { done } = await openTree('tree-ui-sound')
+    fireEvent.change(screen.getByRole('combobox', { name: 'Speed' }), { target: { value: '4' } })
+    playAll((step) => { const score = shownScore(); expect(score.local + score.cpu).toBe(goalsListed()); if (step % 11 === 0) click('Pause'); if (step % 11 === 5 && screen.queryByRole('button', { name: 'Resume playback' })) click('Resume playback') })
+    const session = done.mock.calls[0][0]
+    const frames = liveFrames(session.kernel.blocks)
+    const count = (id: string) => play.mock.calls.filter((call) => call[0] === id).length
+    expect(count('pass')).toBe(frames.filter((f) => !f.events.some((e) => e.type === 'goal' || e.type === 'shot' || e.type === 'save') && f.events.some((e) => e.type === 'pass')).length)
+    expect(count('intercept')).toBe(frames.filter((f) => !f.events.some((e) => e.type === 'goal' || e.type === 'shot' || e.type === 'save') && !f.events.some((e) => e.type === 'pass') && f.events.some((e) => e.type === 'recovery' && e.step)).length)
+    expect(count('goal')).toBe(frames.filter((f) => f.events.some((e) => e.type === 'goal')).length)
+    expect(count('pass')).toBeGreaterThan(0)
+    expect(count('kickoffWhistle')).toBe(1); expect(count('finalWhistle')).toBe(1)
+    expect(screen.getAllByRole('listitem').some((item) => /Pass out|Ball out|whips|wins the ball and starts/.test(item.textContent ?? ''))).toBe(true)
+  })
+
+  it('pausing, speeding up or skipping animations never changes the match', async () => {
+    const run = async (interfere: boolean) => {
+      const { done } = await openTree('tree-ui-pause')
+      playAll(interfere ? (step) => { if (step === 3) click('Pause'); if (step === 6) click('Resume playback'); if (step === 8) fireEvent.change(screen.getByRole('combobox', { name: 'Speed' }), { target: { value: '4' } }); if (step === 12) fireEvent.click(screen.getByRole('checkbox', { name: 'Skip animations' })) } : undefined)
+      const result = JSON.stringify(done.mock.calls[0][0].result); cleanup(); vi.useRealTimers(); return result
+    }
+    expect(await run(true)).toBe(await run(false))
+  })
+
+  it('simulating the rest resolves pending and future plays with the documented default and finishes once', async () => {
+    const { done } = await openTree('tree-ui-rest'); untilPanel()
+    click('Simulate the rest')
+    expect(screen.getByRole('dialog')).toHaveTextContent('Pending attacking plays are resolved automatically')
+    fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Simulate the rest' }))
+    tick(20_000)
+    expect(done).toHaveBeenCalledTimes(1)
+    const final = done.mock.calls[0][0]
+    expect(final.result!.plays!.length).toBeGreaterThan(0); expect(final.applied.every((d) => d.order.type === 'KEEP')).toBe(true)
+  })
+
+  it('replays the registered match, plays included, without touching the engine', async () => {
+    const { done } = await openTree('tree-ui-replay'); const advance = vi.spyOn(interactive, 'advanceBlock'); const submit = vi.spyOn(interactive, 'submitPlay')
+    playAll(); const calls = [advance.mock.calls.length, submit.mock.calls.length]
+    click('Replay match'); tick(16_000)
+    expect([advance.mock.calls.length, submit.mock.calls.length]).toEqual(calls); expect(done).toHaveBeenCalledTimes(1)
+    expect(screen.getAllByRole('listitem').some((item) => /Pass out|Ball out|wins the ball and starts/.test(item.textContent ?? ''))).toBe(true)
   })
 })
 

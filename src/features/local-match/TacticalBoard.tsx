@@ -12,6 +12,8 @@ export interface TacticalBoardProps {
   readonly catalog: readonly Player[]
   readonly names: Readonly<Record<MatchSide, string>>
   readonly play: BoardPlay
+  /** Teammates the user can pick right now, drawn with the same letter as their decision card. */
+  readonly choices?: readonly { readonly playerId: string | null; readonly label: string }[]
   /** Changes whenever a new moment is revealed, so the same kind of event twice in a row still restarts the pulse. */
   readonly tick: number
   readonly focus: BoardFocus
@@ -25,22 +27,24 @@ const COLORS = { local: '#00f5d4', cpu: '#ff5d73', gold: '#ffd54a' } as const
 interface Pose { ball: Point; shift: Record<MatchSide, number>; pulse: number }
 
 /** Small Canvas 2D tactical board. Original code; it draws only what the confirmed event states. */
-export function TacticalBoard({ formations, lineups, catalog, names, play, tick, focus, speed, animate }: TacticalBoardProps) {
+export function TacticalBoard({ formations, lineups, catalog, names, play, choices = [], tick, focus, speed, animate }: TacticalBoardProps) {
   const { t } = useTranslation()
   const canvas = useRef<HTMLCanvasElement>(null)
   const dots = useMemo(() => boardDots(formations, lineups), [formations, lineups])
   const carrier = useMemo(() => dots.find((dot) => dot.side === play.side && dot.playerId === play.playerId && play.playerId !== undefined), [dots, play.side, play.playerId])
+  const from = useMemo(() => dots.find((dot) => dot.side === 'local' && play.fromPlayerId !== undefined && dot.playerId === play.fromPlayerId), [dots, play.fromPlayerId])
+  const options = useMemo(() => choices.flatMap((choice) => { const dot = dots.find((candidate) => candidate.side === 'local' && candidate.playerId === choice.playerId && choice.playerId !== null); return dot ? [{ dot, label: choice.label }] : [] }), [dots, choices])
   const carrierName = carrier ? catalog.find((player) => player.id === carrier.playerId)?.name : undefined
   const target = useMemo(() => {
     const shift = { local: teamShift(play, 'local'), cpu: teamShift(play, 'cpu') }
     const dir = play.side === 'cpu' ? -1 : 1
-    const ball = carrier && play.kind === 'attack' ? { x: carrier.home.x + shift[carrier.side] + dir * .02, y: carrier.home.y } : ballPoint(play)
+    const ball = carrier && (play.kind === 'attack' || play.kind === 'pass' || play.kind === 'recovery') ? { x: carrier.home.x + shift[carrier.side] + dir * .02, y: carrier.home.y } : ballPoint(play)
     return { ball, shift }
   }, [play, carrier])
   const pose = useRef<Pose>({ ball: { x: .5, y: .5 }, shift: { local: 0, cpu: 0 }, pulse: 0 })
   const pulsed = useRef(-1)
-  const latest = useRef({ dots, carrier, carrierName, names, focus, play, target })
-  useEffect(() => { latest.current = { dots, carrier, carrierName, names, focus, play, target } })
+  const latest = useRef({ dots, carrier, from, options, carrierName, names, focus, play, target })
+  useEffect(() => { latest.current = { dots, carrier, from, options, carrierName, names, focus, play, target } })
 
   useEffect(() => {
     const element = canvas.current
@@ -74,7 +78,7 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, tick,
     const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(() => { if (!frame) draw() })
     observer?.observe(element)
     return () => { running = false; if (frame) window.cancelAnimationFrame(frame); observer?.disconnect() }
-  }, [tick, focus, play, animate, speed, dots])
+  }, [tick, focus, play, animate, speed, dots, options])
 
   const attacker = attackingSide(play)
   return <figure className="tactical-board">
@@ -83,7 +87,7 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, tick,
   </figure>
 }
 
-function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, view: { dots: ReturnType<typeof boardDots>; carrier: BoardDot | undefined; carrierName: string | undefined; names: Readonly<Record<MatchSide, string>>; focus: BoardFocus; play: BoardPlay }) {
+function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, view: { dots: ReturnType<typeof boardDots>; carrier: BoardDot | undefined; from: BoardDot | undefined; options: readonly { dot: BoardDot; label: string }[]; carrierName: string | undefined; names: Readonly<Record<MatchSide, string>>; focus: BoardFocus; play: BoardPlay }) {
   const window_ = focusWindow(view.focus)
   const pitchW = w / (window_.to - window_.from); const pitchH = pitchW * PITCH_RATIO
   const ox = -window_.from * pitchW
@@ -109,6 +113,24 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
     ctx.beginPath(); ctx.moveTo(end, y - 9); ctx.lineTo(end + dir * 14, y); ctx.lineTo(end, y + 9); ctx.stroke()
   }
   const radius = Math.max(5, Math.min(11, pitchW * .0145))
+  const at = (dot: BoardDot) => ({ x: X(dot.home.x + pose.shift[dot.side]), y: Y(dot.home.y) })
+  // The pass that was just played: from the protagonist to whoever received it (or cut it out).
+  if (view.from && view.carrier && view.carrier !== view.from && (view.play.kind === 'pass' || view.play.kind === 'recovery')) {
+    const a = at(view.from); const b = at(view.carrier)
+    ctx.strokeStyle = view.play.kind === 'pass' ? COLORS.gold : '#ffffffaa'; ctx.lineWidth = 3; ctx.setLineDash(view.play.kind === 'pass' ? [] : [6, 6])
+    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); ctx.setLineDash([])
+  }
+  // Options on offer: the protagonist (carrier) with a thin line to each available teammate and its card letter.
+  if (view.options.length && view.carrier) {
+    const origin = at(view.carrier)
+    for (const option of view.options) {
+      const p = at(option.dot)
+      ctx.strokeStyle = '#ffffffb0'; ctx.lineWidth = 2; ctx.setLineDash([5, 5]); ctx.beginPath(); ctx.moveTo(origin.x, origin.y); ctx.lineTo(p.x, p.y); ctx.stroke(); ctx.setLineDash([])
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(p.x, p.y, radius * 1.9, 0, Math.PI * 2); ctx.stroke()
+      ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(p.x, p.y - radius * 2.9, radius * 1.1, 0, Math.PI * 2); ctx.fill()
+      ctx.fillStyle = '#0b1a10'; ctx.font = `800 ${Math.max(11, radius * 1.4)}px Inter, system-ui, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(option.label, p.x, p.y - radius * 2.9); ctx.textBaseline = 'alphabetic'
+    }
+  }
   for (const dot of view.dots) {
     const x = X(dot.home.x + pose.shift[dot.side]); const y = Y(dot.home.y)
     const marked = view.carrier?.side === dot.side && view.carrier.playerId === dot.playerId

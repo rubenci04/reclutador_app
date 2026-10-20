@@ -4,12 +4,13 @@ import { ConfirmNavigation } from '../../components/ConfirmNavigation'
 import { audio } from '../audio/audioEngine'
 import type { SoundId } from '../audio/soundEffects'
 import type { CpuDifficulty } from '../recruiter-duel/cpuPolicy'
-import { advanceBlock, checkpointSession, exportResult, inspectSession, restoreSession } from './interactive'
-import type { CheckpointAuthority, Order, Session } from './interactive'
-import { confirmLiveOrder, currentPower, keepWindow } from './interactive/liveModel'
+import { advanceBlock, checkpointSession, exportResult, inspectSession, restoreSession, submitPlay } from './interactive'
+import type { CheckpointAuthority, Order, PendingPlay, PlayChoice, Session } from './interactive'
+import { confirmLiveOrder, currentPower, defaultPlayChoice, keepWindow } from './interactive/liveModel'
 import { DecisionPanel, Handover } from './LiveDecisionPanel'
+import { PlayPanel } from './LivePlayPanel'
 import { frameFocus, frameSounds, liveFrames } from './livePresentation'
-import { EVENT_ICONS, momentumShare } from './matchFeed'
+import { EVENT_ICONS, PLAY_LETTERS, eventKey, momentumShare } from './matchFeed'
 import { MatchScreen } from './MatchScreen'
 import { MatchStatsPanel } from './MatchStatsPanel'
 import { TacticalBoard } from './TacticalBoard'
@@ -55,7 +56,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   const main = useRef<HTMLElement>(null); const narration = useRef<HTMLOListElement>(null)
   useEffect(() => { mounted.current = true; main.current?.focus(); return () => { mounted.current = false } }, [])
   const view = useMemo(() => inspectSession(session), [session])
-  const frames = useMemo(() => liveFrames(view.blocks), [view])
+  const frames = useMemo(() => liveFrames(view.blocks, view.partial), [view])
   const shownCount = Math.min(cursor, frames.length)
   const caughtUp = shownCount >= frames.length
   const shown = useMemo(() => frames.slice(0, shownCount), [frames, shownCount])
@@ -65,6 +66,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   const minute = latest?.minute ?? 0
   const finished = session.phase === 'FINISHED' && caughtUp
   const atWindow = session.phase === 'WINDOW' && caughtUp && session.window !== null
+  const atPlay = session.phase === 'PLAY' && caughtUp && view.play !== null
   const commit = (next: Session, reveal = false) => {
     current.current = next; setSession(next); setError('')
     if (reveal) setCursor(liveFrames(next.kernel.blocks).length)
@@ -75,6 +77,13 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
     const next = advanceBlock(state)
     if (next.ok) commit(next.value, reveal); else setError(next.error)
   }
+  /** A card is bound to the node it was rendered for: a second tap or a stale card can never resolve a later node. */
+  const choosePlay = (rendered: PendingPlay, choice: PlayChoice) => {
+    const state = current.current
+    if (state.phase !== 'PLAY') return
+    const next = submitPlay(state, { version: 'interactive-play-command-v1', id: `${state.sessionId}:${rendered.id}:${rendered.node}`, sessionId: state.sessionId, expectedRevision: state.revision, playId: rendered.id, node: rendered.node, choice })
+    if (next.ok) commit(next.value); else if (next.error !== 'DUPLICATE_COMMAND' && next.error !== 'WRONG_PLAY' && next.error !== 'STALE_STATE') setError(next.error)
+  }
   const nextManually = () => { if (!caughtUp) setCursor(frames.length); else advance(current.current.revision, true) }
   const wait = rest || skipAnimation ? FAST_MS : FRAME_MS / speed
   useEffect(() => {
@@ -83,6 +92,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
     let action: (() => void) | null = null
     if (cursor < frames.length) action = () => setCursor((value) => Math.min(value + 1, frames.length))
     else if (session.phase === 'RUNNABLE') action = () => advance(revision)
+    else if (session.phase === 'PLAY' && rest) action = () => { const pending = current.current.kernel.partial?.play; if (pending && current.current.revision === revision) choosePlay(pending, defaultPlayChoice(pending, origin.kernel.input.catalog)) }
     else if (session.phase === 'WINDOW' && rest) action = () => { if (current.current.revision !== revision) return; const next = keepWindow(current.current); if (next.ok) commit(next.value) }
     if (!action) return
     const timer = window.setTimeout(action, wait)
@@ -102,14 +112,16 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   const passDevice = atWindow && !versusCpu && Boolean(session.window?.plans.local) && handover !== session.window?.id
   const final = finished ? exportResult(session) : null
   const focusEvent = frameFocus(latest)
-  const play: BoardPlay = focusEvent && !finished ? { kind: focusEvent.type, side: focusEvent.side, playerId: focusEvent.playerId } : IDLE_PLAY
+  const build = [...events].reverse().find((item) => item.step === 'BUILD')
+  const play: BoardPlay = focusEvent && !finished ? { kind: focusEvent.type, side: focusEvent.side, playerId: focusEvent.playerId, ...(focusEvent.step && focusEvent.step !== 'BUILD' && build?.playerId ? { fromPlayerId: build.playerId } : {}) } : IDLE_PLAY
+  const choices = atPlay && view.play ? view.play.options.filter((option) => option.available && option.choice !== 'SHOOT').map((option) => ({ playerId: option.playerId, label: PLAY_LETTERS[option.choice] })) : []
   const goal = latest?.events.find((item) => item.type === 'goal')
   const momentum = momentumShare(events)
   const stats = finished ? view.stats : visibleStats(events)
   const catalog = origin.kernel.input.catalog
   const power = { local: currentPower(session, 'local'), cpu: currentPower(session, 'cpu') }
   const animate = !skipAnimation && !prefersReducedMotion()
-  const eventText = (item: MatchEvent) => t(`match.events.${item.type}`, { team: item.side ? names[item.side] : '', player: playerName(item, catalog) ?? '', out: catalog.find((p) => p.id === item.outPlayerId)?.name ?? '' })
+  const eventText = (item: MatchEvent) => t(eventKey(item), { team: item.side ? names[item.side] : '', player: playerName(item, catalog) ?? '', out: catalog.find((p) => p.id === item.outPlayerId)?.name ?? '' })
   const status = finished ? t('match.final') : atWindow ? t('liveDT.window', { minute }) : t('match.minute', { minute })
   const save = async () => {
     if (saving.current) return
@@ -143,13 +155,14 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
       </div>
       <div className="match-progress" aria-hidden="true"><span style={{ width: `${Math.min(100, minute / 90 * 100)}%` }} /></div>
       <div className="live-board-wrap">
-        <TacticalBoard formations={session.kernel.input.formations ?? { local: '4-3-3', cpu: '4-3-3' }} lineups={{ local: session.kernel.sides.local.team.lineup, cpu: session.kernel.sides.cpu.team.lineup }} catalog={catalog} names={names} play={play} tick={shownCount} focus={focus} speed={speed} animate={animate} />
+        <TacticalBoard formations={session.kernel.input.formations ?? { local: '4-3-3', cpu: '4-3-3' }} lineups={{ local: session.kernel.sides.local.team.lineup, cpu: session.kernel.sides.cpu.team.lineup }} catalog={catalog} names={names} play={play} choices={choices} tick={shownCount} focus={focus} speed={speed} animate={animate} />
         {goal && <div className="goal-flash" key={`goal:${shownCount}`} role="status"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27" /><path d="m30 14 14 10-5 17H21l-5-17Z" /></svg>{t('match.goalCelebration', { team: goal.side ? names[goal.side] : '' })}</div>}
         <fieldset className="board-focus"><legend>{t('board.focus')}</legend>
           {(['full', 'local', 'cpu'] as const).map((id) => <label key={id}><input type="radio" name="board-focus" checked={focus === id} onChange={() => setFocus(id)} />{id === 'full' ? t('board.full') : t('board.zone', { name: names[id] })}</label>)}
         </fieldset>
       </div>
       <p className="live-now" role="status">{finished ? t('liveDT.fullTime') : focusEvent ? <><time>{focusEvent.minute}′</time> {eventText(focusEvent)}</> : t('liveDT.kickoff')}</p>
+      {atPlay && view.play && <PlayPanel key={`${view.play.id}:${view.play.node}`} play={view.play} catalog={catalog} onChoose={(choice) => choosePlay(view.play!, choice)} />}
       {atWindow && (passDevice ? <Handover name={names.cpu} onReady={() => setHandover(session.window!.id)} /> : <DecisionPanel key={`${session.window!.id}:${side}`} session={session} side={side} name={names[side]} minute={minute} score={score} names={names} onConfirm={(order: Order) => {
         const next = confirmLiveOrder(current.current, session.window!.id, side, order, versusCpu, difficulty)
         if (next.ok) commit(next.value); else if (next.error !== 'DUPLICATE_COMMAND') setError(next.error)

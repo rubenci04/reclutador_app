@@ -6,10 +6,11 @@ import { tacticalFeatures } from '../../tactics/tacticalModel'
 import { isStrategyId } from '../../tactics/strategies'
 import { formationSlots } from '../../tactics/formations'
 import { visibleStats } from '../playback'
-import { advanceKernel, finishKernel, initializeKernel } from './kernel'
+import { advanceKernel, finishKernel, initializeKernel, resolveKernelPlay } from './kernel'
+import { availableChoice } from './attackTree'
 import { canonical, exact, exclusiveRoster, integer, jsonSafe, object, text, validInput } from './validation'
 import { validSnapshotState } from './snapshotValidation'
-import type { CheckpointAuthority, Decision, InteractiveResult, Outcome, Pair, Receipt, Rejection, Session, SessionInput, SessionOptions } from './types'
+import type { CheckpointAuthority, Decision, PlayCommand, InteractiveResult, Outcome, Pair, Receipt, Rejection, Session, SessionInput, SessionOptions } from './types'
 
 const SIDES = ['local', 'cpu'] as const
 const fail = (error: Rejection): Outcome<never> => ({ ok: false, error })
@@ -21,8 +22,8 @@ export function createSession(source: SessionInput, options: SessionOptions): Ou
   try {
     if (source.actionModel !== 'action-v3') return fail('UNSUPPORTED_VERSION')
     if (!validInput(source)) return fail('INVALID_ROSTER')
-    if (!object(options) || !jsonSafe(options) || !exact(options, ['sessionId'], ['benchMode', 'acquisition']) || !text(options.sessionId) || options.sessionId.length > 128) return fail('INVALID_PAYLOAD')
-    const kernel = initializeKernel(source)
+    if (!object(options) || !jsonSafe(options) || !exact(options, ['sessionId'], ['benchMode', 'acquisition', 'attackTree']) || options.attackTree !== undefined && (!object(options.attackTree) || !exact(options.attackTree, ['version']) || options.attackTree.version !== 'attack-tree-v1') || !text(options.sessionId) || options.sessionId.length > 128) return fail('INVALID_PAYLOAD')
+    const kernel = initializeKernel(source, options.attackTree !== undefined)
     const benchMode = options.benchMode ?? { local: source.benches ? 'auto-subs-v1' : 'none', cpu: source.benches ? 'auto-subs-v1' : 'none' }
     if (!object(benchMode) || !exact(benchMode, SIDES) || !SIDES.every((side) => ['none', 'auto-subs-v1', 'manual-v1'].includes(benchMode[side]) && (benchMode[side] !== 'none' || !source.benches?.[side].length))) return fail('INVALID_PAYLOAD')
     const ownership = { local: [...Object.values(source.localLineup), ...(source.benches?.local ?? [])] as string[], cpu: [...Object.values(source.cpuLineup), ...(source.benches?.cpu ?? [])] as string[] }
@@ -40,17 +41,44 @@ export function createSession(source: SessionInput, options: SessionOptions): Ou
 
 /** Pure public projection: confirmed blocks only, without private seeds, RNG or pending opponent plans. */
 export function inspectSession(session: Session) {
-  const stats = session.result?.result.stats ?? visibleStats(session.kernel.blocks.flatMap((block) => block.events))
-  return copy({ sessionId: session.sessionId, revision: session.revision, phase: session.phase, nextBlock: session.kernel.nextBlock, blocks: session.kernel.blocks, score: session.kernel.score, stats, lineups: { local: session.kernel.sides.local.team.lineup, cpu: session.kernel.sides.cpu.team.lineup }, window: session.window ? { id: session.window.id, applyBlock: session.window.applyBlock, ready: { local: Boolean(session.window.plans.local), cpu: Boolean(session.window.plans.cpu) } } : null })
+  const partial = session.kernel.partial ?? null
+  const stats = session.result?.result.stats ?? visibleStats([...session.kernel.blocks.flatMap((block) => block.events), ...(partial?.events ?? [])])
+  return copy({ sessionId: session.sessionId, revision: session.revision, phase: session.phase, nextBlock: session.kernel.nextBlock, blocks: session.kernel.blocks, partial: partial ? { minute: MATCH_MINUTES[session.kernel.nextBlock], events: partial.events } : null, play: partial?.play ?? null, score: session.kernel.score, stats, lineups: { local: session.kernel.sides.local.team.lineup, cpu: session.kernel.sides.cpu.team.lineup }, window: session.window ? { id: session.window.id, applyBlock: session.window.applyBlock, ready: { local: Boolean(session.window.plans.local), cpu: Boolean(session.window.plans.cpu) } } : null })
 }
 
 export function advanceBlock(session: Session): Outcome {
   if (session.phase !== 'RUNNABLE') return fail('INVALID_PHASE')
   const kernel = advanceKernel(session.kernel, { local: session.benchMode.local === 'auto-subs-v1', cpu: session.benchMode.cpu === 'auto-subs-v1' })
-  const next: Session = { ...copy(session), kernel, revision: session.revision + 1 }
-  if (kernel.nextBlock === 6) return finishSession(next)
-  if (kernel.nextBlock >= 2) return success({ ...next, phase: 'WINDOW', window: { id: `${session.sessionId}:after-${MATCH_MINUTES[kernel.nextBlock - 1]}`, applyBlock: kernel.nextBlock as 2 | 3 | 4 | 5, plans: { local: null, cpu: null } } })
-  return success(next)
+  return settle({ ...copy(session), kernel, revision: session.revision + 1 })
+}
+
+/** Where the session stands once the kernel moved: waiting for a play decision, finished, in a coaching window or runnable. */
+function settle(next: Session): Outcome {
+  const kernel = next.kernel
+  if (kernel.partial?.play) return success({ ...next, phase: 'PLAY', window: null })
+  const runnable: Session = { ...next, phase: 'RUNNABLE', window: null }
+  if (kernel.nextBlock === 6) return finishSession(runnable)
+  if (kernel.nextBlock >= 2) return success({ ...runnable, phase: 'WINDOW', window: { id: `${next.sessionId}:after-${MATCH_MINUTES[kernel.nextBlock - 1]}`, applyBlock: kernel.nextBlock as 2 | 3 | 4 | 5, plans: { local: null, cpu: null } } })
+  return success(runnable)
+}
+
+function parsePlay(raw: unknown): PlayCommand | null {
+  if (!object(raw) || !jsonSafe(raw) || !exact(raw, ['version', 'id', 'sessionId', 'expectedRevision', 'playId', 'node', 'choice']) || !text(raw.version) || !text(raw.id) || !text(raw.sessionId) || !integer(raw.expectedRevision) || !text(raw.playId) || !['DIRECTION', 'FINISH'].includes(raw.node as string) || !['LEFT', 'RIGHT', 'CROSS', 'SHOOT'].includes(raw.choice as string)) return null
+  return raw as unknown as PlayCommand
+}
+
+/** Resolves the pending node of the interactive attack. A command id can only ever resolve one node. */
+export function submitPlay(session: Session, raw: unknown): Outcome {
+  const command = parsePlay(raw)
+  if (!command) return fail('INVALID_PAYLOAD')
+  if (session.kernel.tree?.log.some((entry) => entry.id === command.id)) return fail('DUPLICATE_COMMAND')
+  const pending = session.kernel.partial?.play
+  if (session.phase !== 'PLAY' || !pending) return fail('INVALID_PHASE')
+  if (command.version !== 'interactive-play-command-v1') return fail('UNSUPPORTED_VERSION')
+  if (command.sessionId !== session.sessionId || command.playId !== pending.id || command.node !== pending.node) return fail('WRONG_PLAY')
+  if (command.expectedRevision !== session.revision) return fail('STALE_STATE')
+  if (!availableChoice(pending, command.choice)) return fail('INVALID_CHOICE')
+  try { return settle({ ...copy(session), kernel: resolveKernelPlay(session.kernel, command.id, command.choice), revision: session.revision + 1 }) } catch { return fail('INVALID_CHOICE') }
 }
 
 function parseDecision(raw: unknown): Decision | null {
@@ -141,7 +169,7 @@ export function finishSession(session: Session): Outcome {
     delete (result as { substitutions?: unknown }).substitutions
     kernel.result = result
   }
-  return success({ ...copy(session), kernel, phase: 'FINISHED', revision: session.revision + 1, result: { version: 'interactive-result-v1', kernelVersion: session.kernelVersion, decisions: copy(session.applied), substitutions: { version: 'interactive-subs-v1', modes: copy(session.benchMode), events: copy(kernel.substitutionLog) }, result: kernel.result! } })
+  return success({ ...copy(session), kernel, phase: 'FINISHED', revision: session.revision + 1, result: { version: 'interactive-result-v1', kernelVersion: session.kernelVersion, decisions: copy(session.applied), substitutions: { version: 'interactive-subs-v1', modes: copy(session.benchMode), events: copy(kernel.substitutionLog) }, result: kernel.result!, ...(kernel.tree ? { plays: copy(kernel.tree.log) } : {}) } })
 }
 
 export function exportResult(session: Session): Outcome<InteractiveResult> {

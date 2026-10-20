@@ -102,10 +102,14 @@ describe('A. human against CPU: early completion to final result', () => {
     const batch = vi.spyOn(engine, 'startDuelMatch')
     expect(screen.getByRole('radio', { name: 'Manage match' })).toBeChecked()
     click('Start match')
-    click('View next block'); click('View next block')
+    // Against the CPU the interactive attack (SIM-005R-02) may stop a block: take the first card on offer.
+    const card = () => screen.queryAllByRole('button').find((b) => b.classList.contains('play-card') && !(b as HTMLButtonElement).disabled)
+    for (let i = 0; i < 40 && !screen.queryByRole('heading', { name: 'Recruiter one’s turn' }); i++) { const open = card(); if (open) fireEvent.click(open); else click('View next block') }
     expect(screen.getByRole('heading', { name: 'Recruiter one’s turn' })).toHaveFocus()
-    for (let i = 0; i < 20 && !button('Replay match'); i++) {
+    for (let i = 0; i < 120 && !button('Replay match'); i++) {
+      const open = card()
       if (button('Confirm decision')) click('Confirm decision')
+      else if (open) fireEvent.click(open)
       else click('View next block')
     }
     expect(button('Replay match')).not.toBeNull()

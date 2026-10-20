@@ -17,14 +17,15 @@ const numericPair = (value: unknown) => pair(value) && Object.values(value as Re
 export function validSnapshotState(s: Session, initial: Session): boolean {
   try {
     const k = s.kernel; const i = initial.kernel; const n = k.nextBlock
-    if (!object(k) || !exact(k, Object.keys(i)) || !integer(n) || n > 6 || !Array.isArray(k.blocks) || k.blocks.length !== n || !['RUNNABLE', 'WINDOW', 'FINISHED'].includes(s.phase)) return false
+    if (!object(k) || !exact(k, Object.keys(i)) || !integer(n) || n > 6 || !Array.isArray(k.blocks) || k.blocks.length !== n || !['RUNNABLE', 'WINDOW', 'FINISHED', 'PLAY'].includes(s.phase)) return false
     if (s.sessionId !== initial.sessionId || !equal(s.benchMode, initial.benchMode) || !equal(s.ownership, initial.ownership) || !equal(s.options, initial.options)) return false
     for (const key of ['local', 'cpu', 'strengths', 'advantage', 'quality', 'initialSelection'] as const) if (!equal(k[key], i[key])) return false
     if (!pair(k.sides) || !pair(s.departed) || !pair(s.entered) || !pair(k.stats) || !numericPair(k.score) || !numericPair(k.qualityTotals) || !pair(k.effectiveTotals) || !pair(k.adjustmentTotals)) return false
     if (!parseStrategySelection(k.selection) || !exact(k.selection as unknown as Record<string, unknown>, ['version', 'local', 'cpu'])) return false
-    if (!object(k.rng) || !exact(k.rng, ['main', 'substitutions'])) return false
-    for (const key of ['main', 'substitutions'] as const) {
-      const rng = k.rng[key]; const original = key === 'main' ? initialCheckpoint(k.input.seed) : k.input.benches ? initialCheckpoint(`${k.input.seed}:subs`) : null
+    if (!object(k.rng) || !exact(k.rng, ['main', 'substitutions'], ['tree'])) return false
+    if ((k.tree === undefined) !== (k.rng.tree === undefined) || !validTree(s, k)) return false
+    for (const key of ['main', 'substitutions', ...(k.tree ? ['tree' as const] : [])] as const) {
+      const rng = k.rng[key]; const original = key === 'main' ? initialCheckpoint(k.input.seed) : key === 'tree' ? initialCheckpoint(`${k.input.seed}:tree`) : k.input.benches ? initialCheckpoint(`${k.input.seed}:subs`) : null
       if (!original) { if (rng !== null) return false; continue }
       if (!object(rng) || !exact(rng, ['algorithm', 'state', 'draws']) || rng.algorithm !== 'mulberry32-v1' || !integer(rng.draws) || rng.draws > 256 || !integer(rng.state) || rng.state > 0xffffffff || rng.state !== ((original.state + rng.draws * 0x6D2B79F5) >>> 0)) return false
     }
@@ -36,7 +37,7 @@ export function validSnapshotState(s: Session, initial: Session): boolean {
       if (!object(state.team) || !exact(state.team as unknown as Record<string, unknown>, ['lineup', 'players', 'spent', 'averageRating']) || state.team.spent !== i.sides[side].team.spent || state.team.averageRating !== i.sides[side].team.averageRating) return false
       if (!equal(state.team.players, DRAFT_SLOT_IDS.map((id) => k.input.catalog.find((p) => p.id === state.team.lineup[id]))) || !equal(state.strength, calculateTeamStrength(state.team)) || !equal(state.features, tacticalFeatures(state.team.lineup, k.input.catalog, k.input.formations?.[side]))) return false
       if (!Array.isArray(state.unused) || new Set(state.unused).size !== state.unused.length || state.unused.some((id) => !i.sides[side].unused.includes(id) || Object.values(state.team.lineup).includes(id))) return false
-      if (typeof state.subbed !== 'boolean' || !Number.isFinite(state.baseMidfield) || state.baseMidfield < 0 || state.baseMidfield > n * 100) return false
+      if (typeof state.subbed !== 'boolean' || !Number.isFinite(state.baseMidfield) || state.baseMidfield < 0 || state.baseMidfield > (n + (k.partial ? 1 : 0)) * 100) return false
       for (const total of [k.effectiveTotals[side], k.adjustmentTotals[side]]) if (!object(total) || !exact(total as unknown as Record<string, unknown>, ['attack', 'defense', 'midfield']) || !Object.values(total).every(Number.isFinite)) return false
       if (!object(k.stats[side]) || !exact(k.stats[side] as unknown as Record<string, unknown>, ['shots', 'shotsOnTarget', 'saves', 'recoveries', 'possession']) || !Object.values(k.stats[side]).every(integer)) return false
       const changes = k.substitutionLog.filter((e) => e.side === side)
@@ -53,17 +54,19 @@ export function validSnapshotState(s: Session, initial: Session): boolean {
     }
     const events = k.blocks.flatMap((block, index) => {
       if (!object(block) || !exact(block as unknown as Record<string, unknown>, ['minute', 'events', 'score']) || block.minute !== MATCH_MINUTES[index] || !Array.isArray(block.events) || block.events.filter((e) => e.type === 'attack').length !== 4 || !numericPair(block.score)) throw new Error('invalid_block')
-      for (const e of block.events) if (!object(e as unknown) || !exact(e as unknown as Record<string, unknown>, ['minute', 'side', 'type'], ['playerId', 'outPlayerId', 'tactic']) || e.minute !== block.minute || !['attack', 'shot', 'save', 'recovery', 'goal', 'final', 'substitution'].includes(e.type) || e.side !== null && !sides.includes(e.side) || e.playerId !== undefined && !s.ownership[e.side as MatchSide]?.includes(e.playerId)) throw new Error('invalid_event')
+      for (const e of block.events) if (!object(e as unknown) || !exact(e as unknown as Record<string, unknown>, ['minute', 'side', 'type'], ['playerId', 'outPlayerId', 'tactic', 'step']) || e.minute !== block.minute || !['attack', 'shot', 'save', 'recovery', 'goal', 'final', 'substitution', 'pass'].includes(e.type) || e.side !== null && !sides.includes(e.side) || e.playerId !== undefined && !s.ownership[e.side as MatchSide]?.includes(e.playerId)) throw new Error('invalid_event')
       return block.events
     })
+    const open = k.partial?.events ?? []
     const score = { local: 0, cpu: 0 }
     for (const block of k.blocks) { for (const e of block.events) if (e.type === 'goal' && e.side) score[e.side]++; if (!equal(block.score, score)) return false }
+    for (const e of open) if (e.type === 'goal' && e.side) score[e.side]++
     if (!equal(k.score, score)) return false
-    const stats = visibleStats(events)
+    const stats = visibleStats([...events, ...open])
     for (const side of sides) for (const key of ['shots', 'shotsOnTarget', 'saves', 'recoveries'] as const) if (k.stats[side][key] !== stats[side][key]) return false
     if (!Array.isArray(s.receipts) || s.receipts.length > 256 || !Array.isArray(s.applied) || s.applied.length > 8 || new Set(s.receipts.map((r) => r.id)).size !== s.receipts.length) return false
     if (s.applied.some((c) => !s.receipts.some((r) => r.status === 'ACCEPTED' && equal(r.command, c))) || new Set(s.applied.map((c) => c.id)).size !== s.applied.length) return false
-    const appliedCount = 2 * Math.max(0, n - 2) + (s.phase === 'RUNNABLE' && n >= 2 ? 2 : 0)
+    const appliedCount = 2 * Math.max(0, n - 2) + ((s.phase === 'RUNNABLE' || s.phase === 'PLAY') && n >= 2 ? 2 : 0)
     if (s.applied.length !== appliedCount || s.applied.some((c, index) => c.version !== 'interactive-command-v1' || c.sessionId !== s.sessionId || c.participant !== sides[index % 2] || c.applyBlock !== 2 + Math.floor(index / 2) || c.windowId !== `${s.sessionId}:after-${MATCH_MINUTES[c.applyBlock - 1]}`)) return false
     if (s.receipts.some((r) => r.status === 'ACCEPTED' && !s.applied.some((c) => equal(c, r.command)) && !sides.some((side) => equal(s.window?.plans[side], r.command)))) return false
     if (s.phase === 'WINDOW') {
@@ -71,8 +74,31 @@ export function validSnapshotState(s: Session, initial: Session): boolean {
       for (const side of sides) { const plan = s.window.plans[side]; if (plan && (!s.receipts.some((r) => r.status === 'ACCEPTED' && equal(r.command, plan)) || plan.participant !== side || plan.windowId !== s.window.id || s.applied.some((c) => c.id === plan.id))) return false }
     } else if (s.window !== null) return false
     if (s.phase === 'FINISHED') {
-      if (n !== 6 || !s.result || !k.result || s.result.version !== 'interactive-result-v1' || s.result.kernelVersion !== s.kernelVersion || !exact(s.result as unknown as Record<string, unknown>, ['version', 'kernelVersion', 'decisions', 'substitutions', 'result']) || !equal(s.result.result, k.result) || !equal(s.result.decisions, s.applied) || !equal(s.result.substitutions, { version: 'interactive-subs-v1', modes: s.benchMode, events: k.substitutionLog }) || !equal(k.result.stats, k.stats) || !equal(k.result.blocks, k.blocks) || !equal(k.result.score, k.score) || events.filter((e) => e.type === 'final').length !== 1 || k.stats.local.possession + k.stats.cpu.possession !== 100) return false
+      if (n !== 6 || !s.result || !k.result || s.result.version !== 'interactive-result-v1' || s.result.kernelVersion !== s.kernelVersion || !exact(s.result as unknown as Record<string, unknown>, ['version', 'kernelVersion', 'decisions', 'substitutions', 'result'], ['plays']) || !equal(s.result.plays, k.tree?.log) || !equal(s.result.result, k.result) || !equal(s.result.decisions, s.applied) || !equal(s.result.substitutions, { version: 'interactive-subs-v1', modes: s.benchMode, events: k.substitutionLog }) || !equal(k.result.stats, k.stats) || !equal(k.result.blocks, k.blocks) || !equal(k.result.score, k.score) || events.filter((e) => e.type === 'final').length !== 1 || k.stats.local.possession + k.stats.cpu.possession !== 100) return false
     } else if (n === 6 || s.result !== null || k.result !== null || events.some((e) => e.type === 'final')) return false
     return true
   } catch { return false }
+}
+
+const PLAY_STEPS = ['BUILD', 'PASS_LEFT_OK', 'PASS_RIGHT_OK', 'PASS_LEFT_LOST', 'PASS_RIGHT_LOST', 'CROSS_OK', 'CROSS_LOST', 'SHOT_BLOCKED', 'SHOT_WIDE', 'SHOT_SAVED', 'SHOT_GOAL', 'HEADER_WIDE', 'HEADER_SAVED', 'HEADER_GOAL']
+/** attack-tree-v1 bookkeeping: the pending play, the open block and the decision log must agree with each other. */
+function validTree(s: Session, k: Session['kernel']): boolean {
+  const n = k.nextBlock
+  if (k.tree === undefined) return k.partial === undefined && s.phase !== 'PLAY' && s.result?.plays === undefined
+  if (!object(k.tree) || !exact(k.tree as unknown as Record<string, unknown>, ['version', 'limit', 'started', 'log']) || k.tree.version !== 'attack-tree-v1' || k.tree.limit !== 3 || !integer(k.tree.started) || k.tree.started > k.tree.limit || !Array.isArray(k.tree.log) || k.tree.log.length > 6) return false
+  if (new Set(k.tree.log.map((entry) => entry.id)).size !== k.tree.log.length) return false
+  for (const entry of k.tree.log) if (!object(entry as unknown) || !exact(entry as unknown as Record<string, unknown>, ['id', 'playId', 'node', 'choice']) || typeof entry.id !== 'string' || typeof entry.playId !== 'string' || !['DIRECTION', 'FINISH'].includes(entry.node) || !['LEFT', 'RIGHT', 'CROSS', 'SHOOT'].includes(entry.choice)) return false
+  const directions = k.tree.log.filter((entry) => entry.node === 'DIRECTION').length
+  const partial = k.partial
+  if (partial === null) return s.phase !== 'PLAY' && k.tree.started === directions
+  if (!partial) return false
+  if (!object(partial as unknown) || !exact(partial as unknown as Record<string, unknown>, ['events', 'opportunity', 'played', 'play']) || !Array.isArray(partial.events) || !integer(partial.opportunity) || partial.opportunity > 3 || partial.played !== true || n > 5) return false
+  const play = partial.play
+  if (s.phase !== 'PLAY' || !play || !object(play as unknown) || !exact(play as unknown as Record<string, unknown>, ['id', 'node', 'protagonistId', 'receiverId', 'sector', 'options']) || play.id !== `play-${MATCH_MINUTES[n]}` || !['DIRECTION', 'FINISH'].includes(play.node) || !s.ownership.local.includes(play.protagonistId) || !Array.isArray(play.options) || play.options.length !== 2 || !play.options.some((o) => o.available)) return false
+  if (play.node === 'FINISH' && (!play.receiverId || !s.ownership.local.includes(play.receiverId) || !['LEFT', 'RIGHT'].includes(play.sector ?? ''))) return false
+  for (const o of play.options) if (!object(o as unknown) || !exact(o as unknown as Record<string, unknown>, ['choice', 'available', 'playerId', 'rivalId']) || typeof o.available !== 'boolean' || o.playerId !== null && !s.ownership.local.includes(o.playerId) || o.rivalId !== null && !s.ownership.cpu.includes(o.rivalId)) return false
+  const minute = MATCH_MINUTES[n]
+  for (const e of partial.events) if (!object(e as unknown) || !exact(e as unknown as Record<string, unknown>, ['minute', 'side', 'type'], ['playerId', 'outPlayerId', 'tactic', 'step']) || e.minute !== minute || e.type === 'final' || e.side !== null && !sides.includes(e.side) || e.playerId !== undefined && !s.ownership[e.side as MatchSide]?.includes(e.playerId) || e.step !== undefined && !PLAY_STEPS.includes(e.step) || e.tactic !== undefined) return false
+  if (partial.events.filter((e) => e.type === 'attack').length > 4 || k.tree.started !== directions + (play.node === 'DIRECTION' ? 1 : 0)) return false
+  return true
 }

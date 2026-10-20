@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { DRAFT_CATALOG } from '../draft/catalog'
 import type { Player } from '../../types/player'
 import { playbackFrames, visibleStats } from './playback'
-import { EVENT_ICONS, momentumShare } from './matchFeed'
+import { EVENT_ICONS, eventKey, momentumShare } from './matchFeed'
 import { MatchStatsPanel } from './MatchStatsPanel'
 import { ResultExplanation } from './ResultExplanation'
 import { probabilityExplanation } from './probabilityExplanation'
@@ -78,7 +78,7 @@ export function MatchScreen({ result, onRematch, onNewMatch, onReturn, localName
   const outcome = result.winner === 'draw' ? 'draw' : result.winner === 'local' ? 'victory' : 'defeat'
   const powers = result.effectiveStrengths ?? result.strengths
   const teamName = (side: MatchSide | null) => side === 'local' ? (localName ?? t('game.myTeam')) : (cpuName ?? t('match.cpuTeam'))
-  const eventText = (item: MatchEvent) => t(`match.events.${item.type}`, { team: teamName(item.side), player: playerName(item, catalog) ?? '', out: catalog.find((candidate) => candidate.id === item.outPlayerId)?.name ?? '' })
+  const eventText = (item: MatchEvent) => t(eventKey(item), { team: teamName(item.side), player: playerName(item, catalog) ?? '', out: catalog.find((candidate) => candidate.id === item.outPlayerId)?.name ?? '' })
   return <main id="match-main" ref={main} tabIndex={-1} className="match-screen" aria-live="polite">
     {finished && result.seriesFormat === 'home-away' && <ResultExplanation key={result.seed + ':' + replayId} result={result} name={(side) => teamName(side)} note={resultExplanationNote} />}
     <section className="match-card" aria-label={t('match.versus')}>

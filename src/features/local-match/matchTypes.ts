@@ -9,7 +9,9 @@ import type { SquadQuality, SQUAD_QUALITY_VERSION } from './squadQuality'
 export const MATCH_RULES_VERSION = 'local-match-v2' as const
 export const MATCH_MINUTES = [15, 30, 45, 60, 75, 90] as const
 export type MatchSide = 'local' | 'cpu'
-export type MatchEventType = 'attack' | 'shot' | 'save' | 'recovery' | 'goal' | 'final' | 'substitution'
+export type MatchEventType = 'attack' | 'shot' | 'save' | 'recovery' | 'goal' | 'final' | 'substitution' | 'pass'
+/** Narration detail of an interactive attack (attack-tree-v1). Absent on every historical event. */
+export type PlayStep = 'BUILD' | 'PASS_LEFT_OK' | 'PASS_RIGHT_OK' | 'PASS_LEFT_LOST' | 'PASS_RIGHT_LOST' | 'CROSS_OK' | 'CROSS_LOST' | 'SHOT_BLOCKED' | 'SHOT_WIDE' | 'SHOT_SAVED' | 'SHOT_GOAL' | 'HEADER_WIDE' | 'HEADER_SAVED' | 'HEADER_GOAL'
 
 export interface MatchTeam {
   readonly lineup: DraftLineup
@@ -43,6 +45,8 @@ export interface MatchEvent {
   readonly outPlayerId?: string
   /** Narration only: strategy whose adjustment shaped the event. Absent for NEUTRAL and for events without one. */
   readonly tactic?: StrategyId
+  /** Only events produced by the interactive attack tree. */
+  readonly step?: PlayStep
 }
 
 export interface MatchBlock {

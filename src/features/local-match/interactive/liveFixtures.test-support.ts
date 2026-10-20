@@ -21,3 +21,6 @@ export function liveInput(seed = 'sim-005'): SessionInput {
   return { catalog, localLineup: lineups.local, cpuLineup: lineups.cpu, catalogVersion: 'catalog_v1', rulesVersion: 'local-match-v2', seed, actionModel: 'action-v3', seriesFormat: 'home-away', budget: 150, formations: { local: '4-3-3', cpu: '4-3-3' }, benches, rosterBonus: true, tactics: { version: 'tactics-v1', local: 'HIGH_PRESS', cpu: 'COUNTER_ATTACK' } }
 }
 export const liveSession = (seed?: string) => must(createSession(liveInput(seed), { sessionId: 'live-fixture', benchMode: { local: 'manual-v1', cpu: 'manual-v1' }, acquisition: { local: { spent: 69, coachPaid: 1, budget: 150 }, cpu: { spent: 70, coachPaid: 0, budget: 150 } } }))
+
+/** Interactive-attack session (attack-tree-v1) against the same synthetic squads. */
+export const treeSession = (seed?: string) => must(createSession(liveInput(seed), { sessionId: "tree-fixture", benchMode: { local: "manual-v1", cpu: "manual-v1" }, acquisition: { local: { spent: 69, coachPaid: 1, budget: 150 }, cpu: { spent: 70, coachPaid: 0, budget: 150 } }, attackTree: { version: "attack-tree-v1" } }))

@@ -265,3 +265,7 @@ Validación: typecheck, lint, 831 pruebas y build ejecutados. QA visual en naveg
 
 - Estado: implementado y verificado localmente (963 pruebas); sin push/merge/deploy. Evidencia: docs/qa/SIM-005R-01.md.
 - Pendiente: escucha real del audio, playtest en dispositivo y eventos tipados para la pizarra.
+
+## SIM-005R-02 — Primera jugada ofensiva interactiva
+
+- Estado: implementado y verificado localmente (987 pruebas). Contrato `attack-tree-v1` opt-in solo contra CPU; evidencia en docs/qa/SIM-005R-02.md. Pendiente: playtest humano, audio real y más nodos.

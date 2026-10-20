@@ -246,7 +246,7 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
   /** Starts the match. Returns false when the engine refuses, so the start button can be used again. */
   const playMatch = (current: RecruiterDuelGame, first: StrategyId, second: StrategyId) => {
     if (!online && current.manualBench && matchMode === 'live') {
-      const created = createDuelSession(current, catalog, { recruiter_one: first, recruiter_two: second })
+      const created = createDuelSession(current, catalog, { recruiter_one: first, recruiter_two: second }, opponentMode === 'cpu')
       if (!created.ok) { setError(t('liveDT.error', { code: created.error })); return false }
       setLiveOrigin(created.value)
       return true
