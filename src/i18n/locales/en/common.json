@@ -281,6 +281,14 @@
     "seriesAudit": "Series record",
     "mode": "Match mode",
     "direct": "Manage match",
-    "quick": "Quick simulation"
-  }
+    "quick": "Quick simulation",
+    "moment": "Minute {{minute}}′ · {{home}} {{homeGoals}}–{{awayGoals}} {{away}}. Current strategy: {{strategy}}. Substitutions left: {{count}}.",
+    "hint": {"KEEP":"Same strategy and lineup.","STRATEGY":"Switch the tactical approach.","SUBSTITUTE":"Bring on a player from the bench."},
+    "willDo": {"KEEP":"You will keep your strategy and lineup.","STRATEGY":"You will switch to {{strategy}}.","SUBSTITUTE":"{{in}} will replace {{out}}.","pending":"Choose who comes on and who goes off."},
+    "narration": "Match commentary",
+    "kickoff": "Kick-off! The match is about to begin.",
+    "fullTime": "Full time.",
+    "powerDetail": "Team power and substitutions"
+  },
+  "board": {"label":"Tactical board: {{local}} (left goal) and {{cpu}} (right goal)","idle":"Waiting for the next move","focus":"Board view","full":"Whole pitch","zone":"{{name}} half"}
 }

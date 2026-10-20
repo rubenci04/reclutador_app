@@ -260,3 +260,8 @@ Validación: typecheck, lint, 831 pruebas y build ejecutados. QA visual en naveg
 - Implementado: confirmación con estado vigente y protección de doble clic; foco entre rondas y transiciones breves respetando movimiento reducido.
 - Presupuestos nuevos 150M/200M confirmados por el usuario; sin cambios de fórmulas, contratos ni partidas guardadas.
 - QA automatizada y límites: [informe UX-004](qa/UX-004.md). Pendiente revisión visual real a 360/390/412/768/1280 px: acceso a pestaña rechazado por política del navegador.
+
+## SIM-005R-01 — Recuperación audiovisual del partido interactivo
+
+- Estado: implementado y verificado localmente (963 pruebas); sin push/merge/deploy. Evidencia: docs/qa/SIM-005R-01.md.
+- Pendiente: escucha real del audio, playtest en dispositivo y eventos tipados para la pizarra.

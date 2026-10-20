@@ -3,16 +3,32 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { I18nextProvider } from 'react-i18next'
 import { createI18n } from '../../i18n'
-import { LiveMatchScreen } from './LiveMatchScreen'
+import { audio } from '../audio/audioEngine'
+import { FRAME_MS, LiveMatchScreen } from './LiveMatchScreen'
+import { liveFrames } from './livePresentation'
 import { LiveSeriesScreen } from './LiveSeriesScreen'
 import { liveSession } from './interactive/liveFixtures.test-support'
 import type { Session } from './interactive'
 import * as simulator from './simulator'
 import * as interactive from './interactive'
+import { must } from './interactive/liveFixtures.test-support'
 
 afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals() })
 const click = (name: string) => fireEvent.click(screen.getByRole('button', { name }))
-const blocks = () => screen.getByRole('list', { name: 'Confirmed blocks' }).children.length
+/** Entries of the commentary revealed so far. */
+const entries = () => screen.queryByRole('list', { name: 'Match commentary' })?.children.length ?? 0
+const scoreboard = () => screen.getByRole('status', { name: /Home \d+–\d+ Away/ }).getAttribute('aria-label')!
+const shownScore = () => { const m = /Home (\d+)–(\d+) Away/.exec(scoreboard())!; return { local: Number(m[1]), cpu: Number(m[2]) } }
+const goalsListed = () => screen.queryAllByRole('listitem').filter((item) => item.classList.contains('goal-event')).length
+const tick = (ms: number) => { for (let elapsed = 0; elapsed < ms; elapsed += 50) act(() => { vi.advanceTimersByTime(Math.min(50, ms - elapsed)) }) }
+function runToEnd(onStep?: (step: number) => void) {
+  for (let step = 0; step < 600 && !screen.queryByRole('button', { name: 'Replay match' }); step++) {
+    onStep?.(step)
+    const confirm = screen.queryByRole('button', { name: 'Confirm decision' })
+    if (confirm) fireEvent.click(confirm); else tick(100)
+  }
+  expect(screen.getByRole('button', { name: 'Replay match' })).toBeInTheDocument()
+}
 function finish(hot = false) {
   for (let i = 0; i < 30 && !screen.queryByRole('button', { name: 'Replay match' }); i++) {
     const confirm = screen.queryByRole('button', { name: 'Confirm decision' })
@@ -44,17 +60,19 @@ describe('SIM-005 live match controls', () => {
   it('pauses, resumes, changes speed, skips motion without skipping decisions and saves a trusted local pause', async () => {
     vi.stubGlobal('crypto', webcrypto)
     const { done } = await open()
-    click('Pause'); act(() => vi.advanceTimersByTime(20_000)); expect(blocks()).toBe(0)
+    click('Pause'); tick(20_000); expect(entries()).toBe(0); expect(scoreboard()).toContain("Minute 0'")
     click('Resume playback'); fireEvent.change(screen.getByRole('combobox', { name: 'Speed' }), { target: { value: '4' } })
-    act(() => vi.advanceTimersByTime(625)); expect(blocks()).toBe(1)
+    tick(FRAME_MS / 4); expect(scoreboard()).toContain("Minute 0'") // block confirmed, first moment not yet shown
+    tick(FRAME_MS / 4); expect(scoreboard()).toContain("Minute 15'")
     fireEvent.click(screen.getByRole('checkbox', { name: 'Skip animations' }))
-    act(() => vi.advanceTimersByTime(38)); expect(blocks()).toBe(2)
-    act(() => vi.advanceTimersByTime(20_000)); expect(blocks()).toBe(2)
+    tick(5_000); expect(scoreboard()).toContain('Decision window · 30′')
+    const shown = entries(); tick(20_000); expect(entries()).toBe(shown)
     expect(screen.getByRole('button', { name: 'View next block' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Confirm decision' })).toBeInTheDocument()
     const checkpoint = vi.spyOn(interactive, 'checkpointSession'); const restore = vi.spyOn(interactive, 'restoreSession')
     await act(async () => { click('Save local pause'); await checkpoint.mock.results[0].value })
     await act(async () => { click('Restore pause'); await restore.mock.results[0].value })
-    expect(blocks()).toBe(2)
+    expect(entries()).toBe(shown)
     click('Confirm decision')
     expect(screen.getByRole('button', { name: 'Restore pause' })).toBeDisabled()
     finish(); expect(done).toHaveBeenCalledTimes(1)
@@ -89,7 +107,7 @@ describe('SIM-005 live match controls', () => {
     click('Confirm decision')
     expect(screen.getByRole('heading', { name: 'Hand the device to Away' })).toBeInTheDocument()
     expect(screen.queryByText('Low block')).not.toBeInTheDocument()
-    expect(screen.queryByRole('radio')).not.toBeInTheDocument()
+    expect(screen.queryByRole('radio', { name: /^(Keep|Change strategy|Make a substitution)$/ })).not.toBeInTheDocument()
     click('I am Away · continue')
     expect(screen.getByRole('heading', { name: 'Away’s turn' })).toHaveFocus()
     expect(screen.queryByText('Low block')).not.toBeInTheDocument()
@@ -107,12 +125,102 @@ describe('SIM-005 live match controls', () => {
     click('Simulate the rest')
     expect(screen.getByRole('dialog')).toHaveTextContent('both teams will keep their strategy and lineup (KEEP), including the CPU')
     fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Simulate the rest' }))
-    for (let i = 0; i < 10; i++) act(() => vi.advanceTimersByTime(150))
+    tick(5_000)
     expect(done).toHaveBeenCalledTimes(1)
     expect(done.mock.calls[0][0].applied.map((d) => d.order.type)).toEqual(Array(8).fill('KEEP'))
     click('Back to home')
     fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Back to home' }))
     expect(home).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('SIM-005R-01 audiovisual presentation', () => {
+  const soundCount = (play: { mock: { calls: unknown[][] } }, id: string) => play.mock.calls.filter((call) => call[0] === id).length
+  const expectedSounds = (session: Session) => {
+    const frames = liveFrames(session.kernel.blocks)
+    return { goals: frames.filter((f) => f.events.some((e) => e.type === 'goal')).length, shots: frames.filter((f) => !f.events.some((e) => e.type === 'goal') && f.events.some((e) => e.type === 'shot' || e.type === 'save')).length }
+  }
+
+  it('whistles at kick-off, half time and full time, with every goal and shot sounding once even when paused or sped up', async () => {
+    const play = vi.spyOn(audio, 'play').mockReturnValue(true)
+    const { done } = await open()
+    expect(soundCount(play, 'kickoffWhistle')).toBe(1)
+    fireEvent.change(screen.getByRole('combobox', { name: 'Speed' }), { target: { value: '4' } })
+    runToEnd((step) => { if (step % 9 === 0) click('Pause'); if (step % 9 === 4 && screen.queryByRole('button', { name: 'Resume playback' })) click('Resume playback') })
+    const expected = expectedSounds(done.mock.calls[0][0])
+    expect(expected.goals).toBeGreaterThan(0)
+    expect(soundCount(play, 'goal')).toBe(expected.goals); expect(soundCount(play, 'shot')).toBe(expected.shots)
+    expect(soundCount(play, 'kickoffWhistle')).toBe(1); expect(soundCount(play, 'halfTimeWhistle')).toBe(1); expect(soundCount(play, 'finalWhistle')).toBe(1)
+    tick(30_000); expect(soundCount(play, 'finalWhistle')).toBe(1)
+  })
+
+  it('plays each sound once when blocks are jumped manually and none while paused', async () => {
+    const play = vi.spyOn(audio, 'play').mockReturnValue(true)
+    const { done } = await open()
+    click('Pause'); tick(30_000)
+    expect(play.mock.calls.map((call) => call[0])).toEqual(['kickoffWhistle'])
+    finish()
+    const blocksWithGoals = done.mock.calls[0][0].kernel.blocks.filter((block) => block.events.some((e) => e.type === 'goal')).length
+    expect(soundCount(play, 'goal')).toBe(blocksWithGoals); expect(soundCount(play, 'halfTimeWhistle')).toBe(1); expect(soundCount(play, 'finalWhistle')).toBe(1)
+  })
+
+  it('narrates progressively, keeps the scoreboard in step with the goals shown and records the result only after full time', async () => {
+    const { done } = await open()
+    fireEvent.change(screen.getByRole('combobox', { name: 'Speed' }), { target: { value: '4' } })
+    tick(FRAME_MS / 4); tick(FRAME_MS / 4)
+    const block = must(interactive.advanceBlock(liveSession())).kernel.blocks[0]
+    expect(entries()).toBeGreaterThan(0); expect(entries()).toBeLessThan(block.events.length)
+    runToEnd(() => {
+      const score = shownScore(); expect(score.local + score.cpu).toBe(goalsListed())
+      if (!screen.queryByRole('button', { name: 'Replay match' })) expect(done).not.toHaveBeenCalled()
+    })
+    expect(done).toHaveBeenCalledTimes(1)
+    const result = interactive.exportResult(done.mock.calls[0][0]); if (!result.ok) throw new Error(result.error)
+    expect(shownScore()).toEqual(result.value.result.score)
+    expect(screen.getByText('Full time.')).toBeInTheDocument()
+  })
+
+  it('draws the tactical board with an accessible description and zone focus', async () => {
+    await open()
+    expect(screen.getByRole('img', { name: /Tactical board: Home \(left goal\) and Away \(right goal\)/ })).toBeInTheDocument()
+    expect(document.querySelector('.tactical-caption')).toHaveTextContent('Waiting for the next move')
+    fireEvent.change(screen.getByRole('combobox', { name: 'Speed' }), { target: { value: '4' } })
+    tick(FRAME_MS / 4 * 2)
+    expect(document.querySelector('.tactical-caption')).toHaveTextContent(/(Home|Away) attacks|Waiting/)
+    expect(screen.getByRole('radio', { name: 'Whole pitch' })).toBeChecked()
+    fireEvent.click(screen.getByRole('radio', { name: 'Away half' })); expect(screen.getByRole('radio', { name: 'Away half' })).toBeChecked()
+    expect(screen.getByRole('radio', { name: 'Home half' })).not.toBeChecked()
+  })
+
+  it('shows a decision that pauses the match, keeps scoreboard and board visible and highlights the chosen option', async () => {
+    await open()
+    click('View next block'); click('View next block')
+    const panel = screen.getByRole('region', { name: 'Home’s turn' })
+    expect(within(panel).getByText(/Minute 30′ · Home \d+–\d+ Away/)).toBeInTheDocument()
+    expect(scoreboard()).toContain('Decision window · 30′'); expect(screen.getByRole('img', { name: /Tactical board/ })).toBeVisible()
+    for (const label of ['Keep', 'Change strategy', 'Make a substitution']) expect(within(panel).getByRole('radio', { name: label })).toBeInTheDocument()
+    expect(within(panel).getByRole('radio', { name: 'Keep' })).toBeChecked()
+    expect(within(panel).getByRole('status')).toHaveTextContent('You will keep your strategy and lineup.')
+    fireEvent.click(within(panel).getByRole('radio', { name: 'Change strategy' }))
+    fireEvent.change(within(panel).getByRole('combobox', { name: 'Strategy' }), { target: { value: 'LOW_BLOCK' } })
+    expect(within(panel).getByRole('status')).toHaveTextContent('You will switch to Low block.')
+    const shown = entries(); tick(60_000); expect(entries()).toBe(shown); expect(scoreboard()).toContain('Decision window · 30′')
+    click('Confirm decision'); expect(screen.queryByRole('region', { name: 'Home’s turn' })).not.toBeInTheDocument()
+  })
+
+  it('does not skip a pending decision when animations are skipped and honours reduced motion without changing the pace', async () => {
+    vi.stubGlobal('matchMedia', (query: string) => ({ matches: query.includes('reduce'), media: query, addEventListener: vi.fn(), removeEventListener: vi.fn(), addListener: vi.fn(), removeListener: vi.fn(), onchange: null, dispatchEvent: vi.fn() }))
+    await open()
+    expect(document.querySelector('main')).toHaveClass('live-no-motion')
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Skip animations' })); tick(10_000)
+    expect(screen.getByRole('button', { name: 'Confirm decision' })).toBeInTheDocument(); expect(scoreboard()).toContain('Decision window · 30′')
+  })
+
+  it('pauses while the exit dialog is open and resumes afterwards', async () => {
+    const { home } = await open()
+    click('Exit match'); tick(30_000); expect(entries()).toBe(0)
+    fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Stay here' })); tick(FRAME_MS * 2)
+    expect(entries()).toBeGreaterThan(0); expect(home).not.toHaveBeenCalled()
   })
 })
 
@@ -128,7 +236,7 @@ describe('SIM-005 live series', () => {
       if (!prepare) break
       fireEvent.click(prepare)
       fireEvent.click(screen.getByRole('radio', { name: /High press/ })); click('Confirm strategy'); click('Start match')
-      expect(blocks()).toBe(0); finish()
+      expect(entries()).toBe(0); finish()
     }
     expect(recorded).toHaveBeenCalledTimes(1)
     const textareas = screen.getAllByRole('textbox', { name: 'Versioned record' }) as HTMLTextAreaElement[]

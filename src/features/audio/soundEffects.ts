@@ -2,7 +2,7 @@
  * Original synthesised effects (Web Audio). No external audio files, so there is nothing to license or credit.
  * Every recipe schedules short oscillator and noise events against `now`; nothing keeps running after it ends.
  */
-export const SOUND_IDS = ['coinToss', 'coinLand', 'bid', 'award', 'signing', 'discard', 'diceRoll', 'goal', 'finalWhistle'] as const
+export const SOUND_IDS = ['coinToss', 'coinLand', 'bid', 'award', 'signing', 'discard', 'diceRoll', 'goal', 'finalWhistle', 'kickoffWhistle', 'halfTimeWhistle', 'shot'] as const
 export type SoundId = (typeof SOUND_IDS)[number]
 
 interface Tone { readonly type: OscillatorType; readonly from: number; readonly to?: number; readonly at: number; readonly length: number; readonly gain: number; readonly vibrato?: number }
@@ -21,6 +21,9 @@ export const RECIPES: Readonly<Record<SoundId, Recipe>> = {
     tones: [{ type: 'sawtooth', from: 440, at: 0, length: .55, gain: .1 }, { type: 'sawtooth', from: 554, at: 0, length: .55, gain: .1 }, { type: 'sawtooth', from: 659, at: .12, length: .6, gain: .1 }],
     noise: [{ at: 0, length: 1.1, gain: .45, from: 700, to: 1100, q: .7, swell: true }],
   },
+  kickoffWhistle: { tones: [{ type: 'sine', from: 2900, at: 0, length: .4, gain: .2, vibrato: 38 }] },
+  halfTimeWhistle: { tones: [{ type: 'sine', from: 2900, at: 0, length: .2, gain: .2, vibrato: 38 }, { type: 'sine', from: 2900, at: .3, length: .5, gain: .2, vibrato: 38 }] },
+  shot: { tones: [{ type: 'triangle', from: 220, to: 90, at: 0, length: .12, gain: .3 }], noise: [{ at: 0, length: .1, gain: .18, from: 1800, to: 600 }] },
   finalWhistle: { tones: [{ type: 'sine', from: 2900, at: 0, length: .22, gain: .22, vibrato: 38 }, { type: 'sine', from: 2900, at: .3, length: .22, gain: .22, vibrato: 38 }, { type: 'sine', from: 2900, at: .6, length: .55, gain: .22, vibrato: 38 }] },
 }
 

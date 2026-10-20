@@ -636,20 +636,65 @@
 .navigation-dialog .duel-actions button { min-height: 44px; }
 .navigation-dialog { animation: panel-enter 150ms ease-out; }
 @media (prefers-reduced-motion: reduce) { .navigation-dialog { animation: none; } }
-/* SIM-005: compact local live controls; motion never advances sporting decisions. */
+/* SIM-005R-01: audiovisual recovery of the interactive match. Everything is scoped to the live screen; the replay keeps its original rules. */
 .match-mode { display: flex; gap: .8rem; flex-wrap: wrap; margin-block: 1rem; border: 1px solid var(--line, #52713d); border-radius: 1rem; padding: 1rem; }
-.match-mode label, .live-decision fieldset label { display: inline-flex; align-items: center; gap: .5rem; padding: .6rem; border-radius: .6rem; cursor: pointer; }
-.match-mode label:has(input:checked), .live-decision label:has(input:checked) { background: #dbff79; color: #102215; font-weight: 800; }
-.live-match .match-scoreboard { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1rem; padding: 1rem; }
-.live-match .match-scoreboard b { font-size: clamp(2rem, 6vw, 3.5rem); font-variant-numeric: tabular-nums; }
-.live-match .match-stats { display: flex; flex-wrap: wrap; gap: .4rem 1rem; }
-.live-match .match-stats p { margin: .25rem 0; }
-.live-decision, .live-handover { border: 1px solid #85aa50; border-radius: 1rem; padding: 1rem; margin-block: 1rem; animation: live-appear .18s ease-out; }
-.live-decision fieldset { display: flex; flex-wrap: wrap; gap: .4rem; }
-.live-decision select { display: block; max-width: 100%; }
-.live-match textarea, .live-series textarea { width: 100%; max-height: 10rem; }
-.live-match .playback-controls { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
-.live-match .match-narration { max-height: 13rem; overflow: auto; }
+.match-mode label { display: inline-flex; align-items: center; gap: .5rem; padding: .6rem; border-radius: .6rem; cursor: pointer; min-height: 44px; }
+.match-mode label:has(input:checked) { background: #dbff79; color: #102215; font-weight: 800; }
+.live-match .match-heading { gap: .6rem; flex-wrap: wrap; }
+.live-match .live-title { margin: 0; flex: 1; text-align: center; font-size: 1rem; letter-spacing: 0; line-height: 1.2; }
+.live-match .match-score small { width: auto; max-width: 118px; line-height: 1.25; }
+.live-board-wrap { position: relative; padding: .6rem 1rem 0; }
+.tactical-board { margin: 0 auto; max-width: 720px; }
+.live-match .match-scoreboard small { display: block; }
+.tactical-canvas { display: block; width: 100%; aspect-ratio: 105 / 68; border: 1px solid #ffffff3d; border-radius: 10px; background: #254d32; }
+.tactical-caption { margin: .45rem 0 0; font-size: .82rem; color: #d3e4cd; text-align: center; }
+.live-board-wrap .goal-flash { position: absolute; left: 0; right: 0; top: 26%; margin-inline: auto; width: max-content; max-width: 88%; padding: .5rem 1.1rem; border: 2px solid #fbbf24; border-radius: 999px; background: #102016ec; font-size: clamp(1rem, 4.2vw, 1.6rem); box-shadow: 0 0 28px #fbbf2466; }
+.board-focus { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem; border: 0; margin: 0; padding: .5rem 0 0; }
+.board-focus legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.board-focus label { display: inline-flex; align-items: center; gap: .4rem; min-height: 40px; padding: 0 .8rem; border: 1px solid #ffffff2e; border-radius: 999px; font-size: .8rem; cursor: pointer; }
+.board-focus label:has(input:checked) { background: #d5fb76; color: #142013; font-weight: 800; }
+.board-focus label:has(input:focus-visible) { outline: 3px solid #d5fb76; outline-offset: 2px; }
+.board-focus input { accent-color: #142013; }
+.live-now { margin: .7rem 1rem; padding: .7rem .9rem; border-left: 4px solid #d5fb76; border-radius: 6px; background: #102016; font-size: .95rem; line-height: 1.45; min-height: 2.8rem; }
+.live-now time { color: #d5fb76; font-weight: 800; }
+.live-decision, .live-handover { margin: .7rem 1rem; padding: 1rem; border: 2px solid #d5fb76; border-radius: 14px; background: linear-gradient(145deg, #243e2b, #142619); box-shadow: 0 10px 30px #0006; animation: live-appear .18s ease-out; }
+.live-decision h2, .live-handover h2 { margin: 0 0 .3rem; max-width: none; font-size: 1.15rem; letter-spacing: 0; }
+.live-moment { margin: .2rem 0 .8rem; color: #c8d9c4; font-size: .85rem; line-height: 1.5; }
+.live-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; border: 0; margin: 0; padding: 0; }
+.live-options legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.live-option { display: grid; align-content: start; gap: .25rem; padding: .7rem; border: 2px solid #ffffff2e; border-radius: 12px; background: #0f2015; cursor: pointer; }
+.live-option label { display: flex; align-items: center; gap: .5rem; min-height: 28px; font-weight: 800; cursor: pointer; }
+.live-option input { width: 20px; height: 20px; accent-color: #d5fb76; }
+.live-option small { color: #aebfab; font-size: .75rem; line-height: 1.35; }
+.live-option:has(input:checked) { border-color: #d5fb76; background: #2d4a22; box-shadow: 0 0 0 3px #d5fb7633; }
+.live-option:has(input:focus-visible) { outline: 3px solid #d5fb76; outline-offset: 2px; }
+.live-option:has(input:disabled) { opacity: .5; cursor: not-allowed; }
+.live-field { display: grid; gap: .3rem; margin-top: .8rem; color: #c4d4c0; font-size: .8rem; }
+.live-field select { min-height: 44px; max-width: 100%; padding: 0 .6rem; border: 1px solid #ffffff59; border-radius: 8px; background: #0b170e; color: #fff; font-size: 1rem; }
+.live-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+.live-summary { margin: .8rem 0; padding: .6rem .8rem; border-radius: 8px; background: #0b170e; font-weight: 700; line-height: 1.4; }
+.live-summary small { display: block; margin-top: .15rem; color: #aebfab; font-weight: 400; }
+.live-confirm { width: 100%; min-height: 48px; }
+.live-match .playback-controls { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: .5rem 1rem; }
+.live-match .playback-controls button, .live-match .playback-controls select { min-height: 44px; }
+.live-match .playback-controls label { min-height: 44px; }
+.live-match .match-summary textarea, .live-series textarea { width: 100%; max-height: 10rem; }
+.live-power { margin: .6rem 1rem 1rem; }
+.live-power summary { cursor: pointer; min-height: 32px; }
 @keyframes live-appear { from { opacity: .5; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 .live-no-motion *, .live-no-motion { animation: none !important; transition: none !important; }
+@media (max-width: 600px) {
+  .live-match .match-card { overflow: clip; }
+  .live-match .match-scoreboard { position: sticky; top: 0; z-index: 5; padding-block: .5rem; background: #17291c; border-bottom: 1px solid #ffffff1a; }
+  .live-board-wrap { padding: .5rem .5rem 0; }
+  .live-now, .live-decision, .live-handover { margin-inline: .5rem; }
+  .live-decision { padding: .8rem; }
+  .live-options { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .4rem; }
+  .live-option { padding: .55rem; }
+  .live-option label { flex-direction: column; align-items: flex-start; gap: .35rem; font-size: .85rem; line-height: 1.2; }
+  .live-option small { display: none; }
+  .live-field-row { grid-template-columns: 1fr; }
+  .live-match .playback-controls { margin-inline: .5rem; }
+  .live-power { margin-inline: .5rem; }
+}
 @media (prefers-reduced-motion: reduce) { .live-decision, .live-handover { animation: none; transition: none; } }

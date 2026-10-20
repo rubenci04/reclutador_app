@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next'
 import { DRAFT_CATALOG } from '../draft/catalog'
 import type { Player } from '../../types/player'
 import { playbackFrames, visibleStats } from './playback'
+import { EVENT_ICONS, momentumShare } from './matchFeed'
+import { MatchStatsPanel } from './MatchStatsPanel'
 import { ResultExplanation } from './ResultExplanation'
 import { probabilityExplanation } from './probabilityExplanation'
 import { playerName } from './simulator'
@@ -31,16 +33,6 @@ interface MatchScreenProps {
 }
 
 function money(value: number) { return `${value}M` }
-
-const EVENT_ICONS: Readonly<Record<MatchEvent['type'], string>> = { goal: '⚽', shot: '🎯', save: '🧤', attack: '⚔', recovery: '↺', substitution: '⇄', final: '⏱' }
-const EVENT_WEIGHT: Partial<Record<MatchEvent['type'], number>> = { attack: 1, shot: 2, goal: 3 }
-/** Percentage (0-100) of the danger created so far that belongs to the local side; 50 before anything happens. */
-function momentumShare(events: readonly MatchEvent[]) {
-  let local = 0; let cpu = 0
-  for (const item of events) { const weight = EVENT_WEIGHT[item.type] ?? 0; if (item.side === 'local') local += weight; else if (item.side === 'cpu') cpu += weight }
-  return local + cpu === 0 ? 50 : Math.round((local / (local + cpu)) * 100)
-}
-function share(local: number, cpu: number) { return local + cpu === 0 ? 50 : (local / (local + cpu)) * 100 }
 
 function teamPlayers(result: MatchResult, side: MatchSide) { return result[side].players.map((player) => player.name).join(' · ') }
 
@@ -104,7 +96,7 @@ export function MatchScreen({ result, onRematch, onNewMatch, onReturn, localName
       {recentGoal && <div className="goal-flash" key={result.seed + ':' + replayId + ':' + blockIndex} role="status"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27" /><path d="m30 14 14 10-5 17H21l-5-17Z" /></svg>{t('match.goalCelebration', { team: teamName(recentGoal.side) })}</div>}
       {!finished && <div className="playback-controls" role="group" aria-label={t('navigation.playback')}><button className="secondary-action" aria-pressed={paused} onClick={() => setPaused(!paused)}>{t(paused ? 'navigation.resume' : 'navigation.pause')}</button><label>{t('navigation.speed')}<select value={speed} onChange={(event) => setSpeed(Number(event.target.value))}><option value={1}>1×</option><option value={2}>2×</option><option value={4}>4×</option></select></label></div>}
       <div className="match-progress" aria-label={t('match.progress')}><span style={{ width: `${(Math.min(blockIndex, playbackBlocks.length) / playbackBlocks.length) * 100}%` }} /></div>
-      <div className="match-layout"><section className="match-narration"><h2>{t('match.versus')}</h2>{events.length ? <ol>{events.map((item, index) => <li className={`event-${item.type}${item.type === 'goal' ? ' goal-event' : ''}`} key={`${item.minute}-${index}`}><time>{item.minute}'</time><i className="event-icon" aria-hidden="true">{EVENT_ICONS[item.type]}</i><span>{eventText(item)}</span>{item.tactic && <small className="event-tactic tactic-chip">{t('match.influence', { tactic: t(`match.tacticNotes.${item.tactic}`) })}</small>}</li>)}</ol> : <p>{t('match.minute', { minute: 0 })}</p>}</section><section className="match-stats"><h2>{t('match.statistics')}</h2>{(['shots', 'shotsOnTarget', 'saves', 'recoveries', 'possession'] as const).map((stat) => <div key={stat}><span>{displayedStats.local[stat]}{stat === 'possession' ? '%' : ''}</span><small>{t(`match.${stat === 'shotsOnTarget' ? 'onTarget' : stat}`)}</small><span>{displayedStats.cpu[stat]}{stat === 'possession' ? '%' : ''}</span><div className="stat-bar" aria-hidden="true"><i style={{ width: `${share(displayedStats.local[stat], displayedStats.cpu[stat])}%` }} /></div></div>)}</section></div>
+      <div className="match-layout"><section className="match-narration"><h2>{t('match.versus')}</h2>{events.length ? <ol>{events.map((item, index) => <li className={`event-${item.type}${item.type === 'goal' ? ' goal-event' : ''}`} key={`${item.minute}-${index}`}><time>{item.minute}'</time><i className="event-icon" aria-hidden="true">{EVENT_ICONS[item.type]}</i><span>{eventText(item)}</span>{item.tactic && <small className="event-tactic tactic-chip">{t('match.influence', { tactic: t(`match.tacticNotes.${item.tactic}`) })}</small>}</li>)}</ol> : <p>{t('match.minute', { minute: 0 })}</p>}</section><MatchStatsPanel stats={displayedStats} /></div>
       {finished && <section className="match-summary"><h2 ref={finalHeading} tabIndex={-1}>{t(`match.${outcome}`)} · {result.score.local}–{result.score.cpu}</h2><p>{teamPlayers(result, 'local')}</p><p>{teamPlayers(result, 'cpu')}</p><dl><div><dt>{t('match.attackPower')}</dt><dd>{powers.local.attack} · {powers.cpu.attack}</dd></div><div><dt>{t('match.defensePower')}</dt><dd>{powers.local.defense} · {powers.cpu.defense}</dd></div><div><dt>{t('match.midfieldControl')}</dt><dd>{powers.local.midfield} · {powers.cpu.midfield}</dd></div></dl><TacticalSummary result={result} teamName={teamName} /><div className="match-actions">{showNewMatchActions && <><button className="primary-action" title={t('navigation.rematchHint')} onClick={onRematch}>{t('match.rematch')}</button>{onNewMatch && <button className="secondary-action" onClick={onNewMatch}>{t('match.newMatch')}</button>}</>}<button className="secondary-action" onClick={() => { onReplayStart?.(); setPaused(false); setBlockIndex(0); setReplayId((value) => value + 1) }}>{t('match.replay')}</button></div></section>}
     </section>
   </main>

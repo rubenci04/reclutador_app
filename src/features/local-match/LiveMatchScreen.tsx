@@ -1,13 +1,23 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ConfirmNavigation } from '../../components/ConfirmNavigation'
-import { STRATEGY_IDS, type StrategyId } from '../tactics/strategies'
+import { audio } from '../audio/audioEngine'
+import type { SoundId } from '../audio/soundEffects'
 import type { CpuDifficulty } from '../recruiter-duel/cpuPolicy'
 import { advanceBlock, checkpointSession, exportResult, inspectSession, restoreSession } from './interactive'
 import type { CheckpointAuthority, Order, Session } from './interactive'
 import { confirmLiveOrder, currentPower, keepWindow } from './interactive/liveModel'
+import { DecisionPanel, Handover } from './LiveDecisionPanel'
+import { frameFocus, frameSounds, liveFrames } from './livePresentation'
+import { EVENT_ICONS, momentumShare } from './matchFeed'
 import { MatchScreen } from './MatchScreen'
-import type { MatchSide } from './matchTypes'
+import { MatchStatsPanel } from './MatchStatsPanel'
+import { TacticalBoard } from './TacticalBoard'
+import { TacticalSummary } from './TacticalSummary'
+import { playerName } from './simulator'
+import { visibleStats } from './playback'
+import { IDLE_PLAY, type BoardFocus, type BoardPlay } from './boardGeometry'
+import type { MatchEvent, MatchSide } from './matchTypes'
 
 interface Props {
   readonly origin: Session
@@ -19,80 +29,88 @@ interface Props {
   readonly closed: boolean
 }
 
-function Handover({ name, onReady }: { name: string; onReady: () => void }) {
-  const { t } = useTranslation()
-  const heading = useRef<HTMLHeadingElement>(null)
-  useEffect(() => { heading.current?.focus({ preventScroll: true }) }, [])
-  return <section className="live-handover" aria-label={t('liveDT.handover', { name })}><h2 ref={heading} tabIndex={-1}>{t('liveDT.handover', { name })}</h2><button className="primary-action" onClick={onReady}>{t('liveDT.ready', { name })}</button></section>
-}
+/** Wait between revealed moments at 1×. Speed and skipping only change this wait, never the sporting result. */
+export const FRAME_MS = 800
+export const FAST_MS = 40
+const prefersReducedMotion = () => typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-function DecisionControls({ session, side, name, onConfirm }: { session: Session; side: MatchSide; name: string; onConfirm: (order: Order) => void }) {
-  const { t } = useTranslation()
-  const [kind, setKind] = useState<'KEEP' | 'STRATEGY' | 'SUBSTITUTE'>('KEEP')
-  const [strategy, setStrategy] = useState<StrategyId>(session.kernel.selection[side])
-  const [incoming, setIncoming] = useState(''); const [outgoing, setOutgoing] = useState('')
-  const heading = useRef<HTMLHeadingElement>(null)
-  useEffect(() => { heading.current?.focus({ preventScroll: true }) }, [])
-  const state = session.kernel.sides[side]
-  const bench = session.kernel.input.catalog.filter((p) => state.unused.includes(p.id) && p.position !== 'ARQ' && !session.departed[side].includes(p.id))
-  const inPlayer = bench.find((p) => p.id === incoming)
-  const canSub = session.benchMode[side] === 'manual-v1' && session.entered[side].length < 3 && bench.length > 0
-  const valid = kind !== 'SUBSTITUTE' || canSub && inPlayer && state.team.players.some((p) => p.id === outgoing && p.position === inPlayer.position)
-  return <section className="live-decision" aria-label={t('liveDT.turn', { name })}>
-    <h2 tabIndex={-1} ref={heading}>{t('liveDT.turn', { name })}</h2>
-    <fieldset><legend>{t('liveDT.action')}</legend>{(['KEEP', 'STRATEGY', 'SUBSTITUTE'] as const).map((action) => <label key={action}><input type="radio" name="live-order" checked={kind === action} disabled={action === 'SUBSTITUTE' && !canSub} onChange={() => setKind(action)} />{t(`liveDT.${action}`)}</label>)}</fieldset>
-    {kind === 'STRATEGY' && <label>{t('liveDT.strategy')}<select value={strategy} onChange={(e) => setStrategy(e.target.value as StrategyId)}>{STRATEGY_IDS.map((id) => <option key={id} value={id}>{t(`tactics.strategies.${id}.name`)}</option>)}</select></label>}
-    {kind === 'SUBSTITUTE' && <div className="duel-actions"><label>{t('liveDT.in')}<select value={incoming} onChange={(e) => { setIncoming(e.target.value); setOutgoing('') }}><option value="">—</option>{bench.map((p) => <option key={p.id} value={p.id}>{p.name} · {t(`positions.${p.position}`)}</option>)}</select></label><label>{t('liveDT.out')}<select value={outgoing} onChange={(e) => setOutgoing(e.target.value)}><option value="">—</option>{state.team.players.filter((p) => p.position === inPlayer?.position).map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}</select></label></div>}
-    <p>{t('liveDT.futureOnly')}</p>
-    <button className="primary-action" disabled={!valid} onClick={() => onConfirm(kind === 'KEEP' ? { type: 'KEEP', parameters: {} } : kind === 'STRATEGY' ? { type: 'STRATEGY', parameters: { strategy } } : { type: 'SUBSTITUTE', parameters: { inId: incoming, outId: outgoing } })}>{t('liveDT.confirm')}</button>
-  </section>
-}
-
-/** Presentation schedules blocks; every sporting transition is delegated to SIM-004B. */
+/**
+ * Presentation schedules and reveals blocks that SIM-004B has already confirmed; every sporting transition is delegated to it.
+ * A confirmed block is shown one opportunity at a time, with sounds, score and board following what is on screen.
+ */
 export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinished, onReturn, closed }: Props) {
   const { t } = useTranslation()
   const [session, setSession] = useState(origin)
   const current = useRef(origin)
+  const [cursor, setCursor] = useState(0)
   const [paused, setPaused] = useState(false); const [speed, setSpeed] = useState(1)
   const [exitOpen, setExitOpen] = useState(false); const [rest, setRest] = useState(false)
   const [handover, setHandover] = useState(''); const [error, setError] = useState('')
   const [skipAnimation, setSkipAnimation] = useState(false); const [replay, setReplay] = useState(false)
+  const [focus, setFocus] = useState<BoardFocus>('full')
   const [savedRevision, setSavedRevision] = useState<number | null>(null)
   const saved = useRef<{ snapshot: string; authority: CheckpointAuthority } | null>(null)
   const saving = useRef(false); const mounted = useRef(true); const recorded = useRef(false)
-  const main = useRef<HTMLElement>(null)
+  const heard = useRef(new Set<string>())
+  const main = useRef<HTMLElement>(null); const narration = useRef<HTMLOListElement>(null)
   useEffect(() => { mounted.current = true; main.current?.focus(); return () => { mounted.current = false } }, [])
-  const commit = (next: Session) => { current.current = next; setSession(next); setError('') }
-  const advance = (revision: number) => {
+  const view = useMemo(() => inspectSession(session), [session])
+  const frames = useMemo(() => liveFrames(view.blocks), [view])
+  const shownCount = Math.min(cursor, frames.length)
+  const caughtUp = shownCount >= frames.length
+  const shown = useMemo(() => frames.slice(0, shownCount), [frames, shownCount])
+  const events = useMemo(() => shown.flatMap((frame) => frame.events), [shown])
+  const latest = shown.at(-1)
+  const score = latest?.score ?? { local: 0, cpu: 0 }
+  const minute = latest?.minute ?? 0
+  const finished = session.phase === 'FINISHED' && caughtUp
+  const atWindow = session.phase === 'WINDOW' && caughtUp && session.window !== null
+  const commit = (next: Session, reveal = false) => {
+    current.current = next; setSession(next); setError('')
+    if (reveal) setCursor(liveFrames(next.kernel.blocks).length)
+  }
+  const advance = (revision: number, reveal = false) => {
     const state = current.current
     if (state.revision !== revision || state.phase !== 'RUNNABLE') return
     const next = advanceBlock(state)
-    if (next.ok) commit(next.value); else setError(next.error)
+    if (next.ok) commit(next.value, reveal); else setError(next.error)
   }
+  const nextManually = () => { if (!caughtUp) setCursor(frames.length); else advance(current.current.revision, true) }
+  const wait = rest || skipAnimation ? FAST_MS : FRAME_MS / speed
   useEffect(() => {
-    if (paused || exitOpen || session.phase === 'FINISHED' || session.phase === 'WINDOW' && !rest) return
+    if (paused || exitOpen) return
     const revision = session.revision
-    const timer = window.setTimeout(() => {
-      if (current.current.revision !== revision) return
-      if (current.current.phase === 'RUNNABLE') {
-        const next = advanceBlock(current.current)
-        if (next.ok) { current.current = next.value; setSession(next.value) }
-      } else if (rest) {
-        const next = keepWindow(current.current)
-        if (next.ok) { current.current = next.value; setSession(next.value) }
-      }
-    }, (rest || skipAnimation ? 150 : 2500) / speed)
+    let action: (() => void) | null = null
+    if (cursor < frames.length) action = () => setCursor((value) => Math.min(value + 1, frames.length))
+    else if (session.phase === 'RUNNABLE') action = () => advance(revision)
+    else if (session.phase === 'WINDOW' && rest) action = () => { if (current.current.revision !== revision) return; const next = keepWindow(current.current); if (next.ok) commit(next.value) }
+    if (!action) return
+    const timer = window.setTimeout(action, wait)
     return () => window.clearTimeout(timer)
-  }, [paused, exitOpen, session.revision, session.phase, rest, skipAnimation, speed])
+  }, [paused, exitOpen, cursor, frames.length, session.revision, session.phase, rest, wait]) // eslint-disable-line react-hooks/exhaustive-deps
+  // Sounds follow what is on screen and go through a ledger: pausing, changing speed or jumping ahead never repeats one.
   useEffect(() => {
-    if (session.phase === 'FINISHED' && !recorded.current) { recorded.current = true; onFinished(session) }
-  }, [session, onFinished])
-  const view = inspectSession(session)
+    const play = new Set<SoundId>()
+    if (!heard.current.has('kickoff') && origin.kernel.blocks.length === 0) { heard.current.add('kickoff'); play.add('kickoffWhistle') }
+    for (const frame of shown) for (const sound of frameSounds(frame)) { const key = `${frame.key}:${sound}`; if (!heard.current.has(key)) { heard.current.add(key); play.add(sound) } }
+    for (const sound of play) audio.play(sound)
+  }, [shown]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (narration.current) narration.current.scrollTop = narration.current.scrollHeight }, [shownCount])
+  // The record and the series table only learn the result once it has been shown.
+  useEffect(() => { if (finished && !recorded.current) { recorded.current = true; onFinished(session) } }, [finished, session, onFinished])
   const side: MatchSide = !versusCpu && session.window?.plans.local ? 'cpu' : 'local'
-  const passDevice = !versusCpu && session.window?.plans.local && handover !== session.window.id
-  const final = session.phase === 'FINISHED' ? exportResult(session) : null
-  const minute = view.blocks.at(-1)?.minute ?? 0
-  const attack = view.blocks.at(-1)?.events.filter((event) => event.type === 'attack').at(-1)?.side
+  const passDevice = atWindow && !versusCpu && Boolean(session.window?.plans.local) && handover !== session.window?.id
+  const final = finished ? exportResult(session) : null
+  const focusEvent = frameFocus(latest)
+  const play: BoardPlay = focusEvent && !finished ? { kind: focusEvent.type, side: focusEvent.side, playerId: focusEvent.playerId } : IDLE_PLAY
+  const goal = latest?.events.find((item) => item.type === 'goal')
+  const momentum = momentumShare(events)
+  const stats = finished ? view.stats : visibleStats(events)
+  const catalog = origin.kernel.input.catalog
+  const power = { local: currentPower(session, 'local'), cpu: currentPower(session, 'cpu') }
+  const animate = !skipAnimation && !prefersReducedMotion()
+  const eventText = (item: MatchEvent) => t(`match.events.${item.type}`, { team: item.side ? names[item.side] : '', player: playerName(item, catalog) ?? '', out: catalog.find((p) => p.id === item.outPlayerId)?.name ?? '' })
+  const status = finished ? t('match.final') : atWindow ? t('liveDT.window', { minute }) : t('match.minute', { minute })
   const save = async () => {
     if (saving.current) return
     saving.current = true; setPaused(true)
@@ -110,33 +128,49 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
     if (!mounted.current || current.current.revision !== checkpoint.authority.revision) return
     if (restored.ok) commit(restored.value); else setError(restored.error)
   }
-  if (replay && final?.ok) return <MatchScreen result={final.value.result} catalog={origin.kernel.input.catalog} localName={names.local} cpuName={names.cpu} onReturn={() => setReplay(false)} returnLabel={t('navigation.backSummary')} exitWarning={t('liveDT.closeReplay')} onRematch={() => {}} showNewMatchActions={false} />
-  return <main id="match-main" ref={main} tabIndex={-1} className={`match-screen live-match${skipAnimation ? ' live-no-motion' : ''}`}>
+  if (replay && final?.ok) return <MatchScreen result={final.value.result} catalog={catalog} localName={names.local} cpuName={names.cpu} onReturn={() => setReplay(false)} returnLabel={t('navigation.backSummary')} exitWarning={t('liveDT.closeReplay')} onRematch={() => {}} showNewMatchActions={false} />
+  return <main id="match-main" ref={main} tabIndex={-1} className={`match-screen live-match${animate ? '' : ' live-no-motion'}`}>
     <section className="match-card" aria-label={t('liveDT.title')}>
-      <header className="match-heading"><h1>{t('liveDT.title')}</h1>{session.phase === 'FINISHED' && closed ? <button className="secondary-action" onClick={onReturn}>{t('navigation.home')}</button> : <ConfirmNavigation label={t(session.phase === 'FINISHED' ? 'navigation.home' : 'navigation.exitMatch')} message={t('navigation.seriesExitWarning')} onConfirm={onReturn} onOpenChange={setExitOpen} />}</header>
-      {passDevice ? <Handover name={names.cpu} onReady={() => setHandover(session.window!.id)} /> : <>
-        <div className="match-scoreboard" role="status"><strong>{names.local}</strong><b>{view.score.local}–{view.score.cpu}</b><strong>{names.cpu}</strong><span>{minute}′</span></div>
-        {session.phase !== 'FINISHED' && <p role="status">{session.phase === 'WINDOW' ? t('liveDT.window', { minute }) : attack ? t('series.attacking', { name: names[attack] }) : t('match.playing')}</p>}
-        <div className="team-power-grid">{(['local', 'cpu'] as const).map((id) => { const power = currentPower(session, id); return <article className="team-power-card" key={id}><h2>{names[id]}</h2><p>{t('liveDT.strategy')}: {t(`tactics.strategies.${session.kernel.selection[id]}.name`)}</p><p>{t('auctionUX.base', { value: power.base.global.toFixed(1) })}</p><p>{t('auctionUX.effective')}: <b>{power.effective.global.toFixed(1)}</b></p><p>{t('liveDT.changes', { count: session.benchMode[id] === 'manual-v1' ? Math.min(3 - session.entered[id].length, session.kernel.sides[id].unused.filter((playerId) => session.kernel.input.catalog.find((p) => p.id === playerId)?.position !== 'ARQ').length) : 0 })}</p></article> })}</div>
-        <section className="match-stats" aria-label={t('match.statistics')}>{(['shots', 'shotsOnTarget', 'saves', 'recoveries', 'possession'] as const).map((stat) => <p key={stat}>{t(`match.${stat === 'shotsOnTarget' ? 'onTarget' : stat}`)}: {view.stats.local[stat]} · {view.stats.cpu[stat]}</p>)}</section>
-        {session.phase === 'WINDOW' && !rest && <DecisionControls key={`${session.window!.id}:${side}`} session={session} side={side} name={names[side]} onConfirm={(order) => {
-          const next = confirmLiveOrder(current.current, session.window!.id, side, order, versusCpu, difficulty)
-          if (next.ok) commit(next.value); else if (next.error !== 'DUPLICATE_COMMAND') setError(next.error)
-        }} />}
-        {session.phase !== 'FINISHED' && <div className="playback-controls" role="group" aria-label={t('navigation.playback')}>
-          <button className="secondary-action" aria-pressed={paused} onClick={() => setPaused(!paused)}>{t(paused ? 'navigation.resume' : 'navigation.pause')}</button>
-          <label>{t('navigation.speed')}<select value={speed} onChange={(e) => setSpeed(Number(e.target.value))}>{[1, 2, 4].map((rate) => <option key={rate} value={rate}>{rate}×</option>)}</select></label>
-          <label><input type="checkbox" checked={skipAnimation} onChange={(e) => setSkipAnimation(e.target.checked)} />{t('liveDT.skipAnimations')}</label>
-          <button className="secondary-action" disabled={session.phase !== 'RUNNABLE'} onClick={() => advance(session.revision)}>{t('liveDT.nextBlock')}</button>
-          {!rest && !session.window?.plans.local && !session.window?.plans.cpu && <ConfirmNavigation label={t('liveDT.simulateRest')} message={t('liveDT.keepWarning')} onOpenChange={setExitOpen} onConfirm={() => { setRest(true); setPaused(false) }} />}
-          {rest && <p role="status">{t('liveDT.keepMode')}</p>}
-          <button className="secondary-action" onClick={() => { void save() }}>{t('liveDT.savePause')}</button>
-          {savedRevision !== null && <button className="secondary-action" disabled={savedRevision !== session.revision} onClick={() => { void restore() }}>{t('liveDT.restorePause')}</button>}
-        </div>}
-        <ol className="match-narration" aria-label={t('liveDT.confirmed')}>{view.blocks.map((block) => <li key={block.minute}>{block.minute}′ · {block.score.local}–{block.score.cpu}{block.events.filter((e) => e.type === 'goal' || e.type === 'substitution').map((e, i) => <span key={i}> · {t(`match.events.${e.type}`, { team: e.side ? names[e.side] : '', player: origin.kernel.input.catalog.find((p) => p.id === e.playerId)?.name ?? '', out: origin.kernel.input.catalog.find((p) => p.id === e.outPlayerId)?.name ?? '' })}</span>)}</li>)}</ol>
-      </>}
+      <header className="match-heading"><p className="eyebrow"><span />{finished ? t('match.final') : t('match.playing')}</p><h1 className="live-title">{t('liveDT.title')}</h1>{finished && closed ? <button className="secondary-action" onClick={onReturn}>{t('navigation.home')}</button> : <ConfirmNavigation label={t(finished ? 'navigation.home' : 'navigation.exitMatch')} message={t('navigation.seriesExitWarning')} onConfirm={onReturn} onOpenChange={setExitOpen} />}</header>
+      <div className="match-scoreboard">
+        <div><strong>{names.local}</strong><small>{t(`tactics.strategies.${session.kernel.selection.local}.name`)}</small><small>{t('match.globalPower', { value: power.local.effective.global.toFixed(1) })}</small></div>
+        <div className="match-score" role="status" aria-label={`${names.local} ${score.local}–${score.cpu} ${names.cpu}, ${status}`}><span>{score.local}</span><small>{status}</small><span>{score.cpu}</span></div>
+        <div><strong>{names.cpu}</strong><small>{t(`tactics.strategies.${session.kernel.selection.cpu}.name`)}</small><small>{t('match.globalPower', { value: power.cpu.effective.global.toFixed(1) })}</small></div>
+      </div>
+      <div className="momentum" role="img" aria-label={t('live.momentum', { local: momentum, cpu: 100 - momentum })}>
+        {!finished && <span className="live-chip"><i aria-hidden="true" />{t('live.inPlay')}</span>}
+        <div className="momentum-bar" aria-hidden="true"><i className="momentum-local" style={{ width: `${momentum}%` }} /></div>
+      </div>
+      <div className="match-progress" aria-hidden="true"><span style={{ width: `${Math.min(100, minute / 90 * 100)}%` }} /></div>
+      <div className="live-board-wrap">
+        <TacticalBoard formations={session.kernel.input.formations ?? { local: '4-3-3', cpu: '4-3-3' }} lineups={{ local: session.kernel.sides.local.team.lineup, cpu: session.kernel.sides.cpu.team.lineup }} catalog={catalog} names={names} play={play} tick={shownCount} focus={focus} speed={speed} animate={animate} />
+        {goal && <div className="goal-flash" key={`goal:${shownCount}`} role="status"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27" /><path d="m30 14 14 10-5 17H21l-5-17Z" /></svg>{t('match.goalCelebration', { team: goal.side ? names[goal.side] : '' })}</div>}
+        <fieldset className="board-focus"><legend>{t('board.focus')}</legend>
+          {(['full', 'local', 'cpu'] as const).map((id) => <label key={id}><input type="radio" name="board-focus" checked={focus === id} onChange={() => setFocus(id)} />{id === 'full' ? t('board.full') : t('board.zone', { name: names[id] })}</label>)}
+        </fieldset>
+      </div>
+      <p className="live-now" role="status">{finished ? t('liveDT.fullTime') : focusEvent ? <><time>{focusEvent.minute}′</time> {eventText(focusEvent)}</> : t('liveDT.kickoff')}</p>
+      {atWindow && (passDevice ? <Handover name={names.cpu} onReady={() => setHandover(session.window!.id)} /> : <DecisionPanel key={`${session.window!.id}:${side}`} session={session} side={side} name={names[side]} minute={minute} score={score} names={names} onConfirm={(order: Order) => {
+        const next = confirmLiveOrder(current.current, session.window!.id, side, order, versusCpu, difficulty)
+        if (next.ok) commit(next.value); else if (next.error !== 'DUPLICATE_COMMAND') setError(next.error)
+      }} />)}
+      {!finished && <div className="playback-controls" role="group" aria-label={t('navigation.playback')}>
+        <button className="secondary-action" aria-pressed={paused} onClick={() => setPaused(!paused)}>{t(paused ? 'navigation.resume' : 'navigation.pause')}</button>
+        <label>{t('navigation.speed')}<select value={speed} onChange={(e) => setSpeed(Number(e.target.value))}>{[1, 2, 4].map((rate) => <option key={rate} value={rate}>{rate}×</option>)}</select></label>
+        <label><input type="checkbox" checked={skipAnimation} onChange={(e) => setSkipAnimation(e.target.checked)} />{t('liveDT.skipAnimations')}</label>
+        <button className="secondary-action" disabled={caughtUp && session.phase !== 'RUNNABLE'} onClick={nextManually}>{t('liveDT.nextBlock')}</button>
+        {!rest && !session.window?.plans.local && !session.window?.plans.cpu && <ConfirmNavigation label={t('liveDT.simulateRest')} message={t('liveDT.keepWarning')} onOpenChange={setExitOpen} onConfirm={() => { setRest(true); setPaused(false) }} />}
+        <button className="secondary-action" onClick={() => { void save() }}>{t('liveDT.savePause')}</button>
+        {savedRevision !== null && <button className="secondary-action" disabled={savedRevision !== session.revision} onClick={() => { void restore() }}>{t('liveDT.restorePause')}</button>}
+        {rest && <p role="status">{t('liveDT.keepMode')}</p>}
+      </div>}
+      <div className="match-layout">
+        <section className="match-narration"><h2>{t('liveDT.narration')}</h2>{events.length ? <ol ref={narration} aria-label={t('liveDT.narration')}>{events.map((item, index) => <li className={`event-${item.type}${item.type === 'goal' ? ' goal-event' : ''}`} key={`${item.minute}-${index}`}><time>{item.minute}'</time><i className="event-icon" aria-hidden="true">{EVENT_ICONS[item.type]}</i><span>{eventText(item)}</span>{item.tactic && <small className="event-tactic tactic-chip">{t('match.influence', { tactic: t(`match.tacticNotes.${item.tactic}`) })}</small>}</li>)}</ol> : <p>{t('liveDT.kickoff')}</p>}</section>
+        <MatchStatsPanel stats={stats} />
+      </div>
+      <details className="live-power"><summary>{t('liveDT.powerDetail')}</summary><div className="team-power-grid">{(['local', 'cpu'] as const).map((id) => <article className="team-power-card" key={id}><h2>{names[id]}</h2><p>{t('liveDT.strategy')}: {t(`tactics.strategies.${session.kernel.selection[id]}.name`)}</p><p>{t('auctionUX.base', { value: power[id].base.global.toFixed(1) })}</p><p>{t('auctionUX.effective')}: <b>{power[id].effective.global.toFixed(1)}</b></p><p>{t('liveDT.changes', { count: session.benchMode[id] === 'manual-v1' ? Math.min(3 - session.entered[id].length, session.kernel.sides[id].unused.filter((playerId) => catalog.find((p) => p.id === playerId)?.position !== 'ARQ').length) : 0 })}</p></article>)}</div></details>
       {error && <p role="alert">{t('liveDT.error', { code: error })}</p>}
-      {final?.ok && <><h2>{t('match.final')} · {view.score.local}–{view.score.cpu}</h2><button className="secondary-action" onClick={() => setReplay(true)}>{t('match.replay')}</button><details><summary>{t('liveDT.audit')}</summary><p>{t('liveDT.localTrust')}</p><label>{t('liveDT.record')}<textarea readOnly value={JSON.stringify({ version: 'local-live-audit-v1', origin, final: session, result: final.value })} /></label></details></>}
+      {final?.ok && <section className="match-summary"><h2>{t('match.final')} · {score.local}–{score.cpu}</h2><TacticalSummary result={final.value.result} teamName={(id) => id ? names[id] : ''} /><div className="match-actions"><button className="secondary-action" onClick={() => setReplay(true)}>{t('match.replay')}</button></div><details><summary>{t('liveDT.audit')}</summary><p>{t('liveDT.localTrust')}</p><label>{t('liveDT.record')}<textarea readOnly value={JSON.stringify({ version: 'local-live-audit-v1', origin, final: session, result: final.value })} /></label></details></section>}
     </section>
   </main>
 }

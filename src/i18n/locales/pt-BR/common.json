@@ -281,6 +281,14 @@
     "seriesAudit": "Registro da série",
     "mode": "Modo da partida",
     "direct": "Comandar partida",
-    "quick": "Simulação rápida"
-  }
+    "quick": "Simulação rápida",
+    "moment": "Minuto {{minute}}′ · {{home}} {{homeGoals}}–{{awayGoals}} {{away}}. Estratégia atual: {{strategy}}. Substituições disponíveis: {{count}}.",
+    "hint": {"KEEP":"Mesma estratégia e mesma escalação.","STRATEGY":"Mude a abordagem tática.","SUBSTITUTE":"Coloque em campo alguém do banco."},
+    "willDo": {"KEEP":"Você vai manter sua estratégia e sua escalação.","STRATEGY":"Você vai mudar para {{strategy}}.","SUBSTITUTE":"{{in}} vai substituir {{out}}.","pending":"Escolha quem entra e quem sai."},
+    "narration": "Narração da partida",
+    "kickoff": "Bola rolando! A partida está prestes a começar.",
+    "fullTime": "Fim de jogo.",
+    "powerDetail": "Força das equipes e substituições"
+  },
+  "board": {"label":"Prancheta tática: {{local}} (gol esquerdo) e {{cpu}} (gol direito)","idle":"Aguardando a próxima jogada","focus":"Visão da prancheta","full":"Campo inteiro","zone":"Metade de {{name}}"}
 }
