@@ -14,7 +14,7 @@
 | Calibración 300 semillas emparejadas | Hecho; no acredita balance competitivo |
 | Capturas y revisión visual móvil/escritorio | Pendiente: acceso a navegador rechazado por política |
 
-Detalle: [QA SIM-005](qa/SIM-005.md). Sin push, merge, deploy ni cambios online/Supabase/catálogo; archivos ajenos conservados.
+Detalle: [QA SIM-005](qa/SIM-005.md). Entrega técnica sin push/merge/deploy ni cambios online/Supabase/catálogo; archivos ajenos conservados. Publicación posterior autorizada por el usuario: `317cbb1` en GitHub/main y Worker activo al 100 %, HTML y bundles verificados; [registro](logs/SIM-005.md).
 
 ## UX-NAV-005 — 20/10/2026
 
