@@ -2,7 +2,7 @@ import type { MatchEvent } from './matchTypes'
 import type { PlayChoice } from './interactive'
 
 /** Letter shared by a decision card and its teammate on the board. */
-export const PLAY_LETTERS: Readonly<Record<PlayChoice, string>> = { LEFT: 'A', RIGHT: 'B', CROSS: 'A', SHOOT: 'B', INTERCEPT: 'A', PRESS: 'B' }
+export const PLAY_LETTERS: Readonly<Record<PlayChoice, string>> = { LEFT: 'A', RIGHT: 'B', CROSS: 'A', SHOOT: 'B', INTERCEPT: 'A', PRESS: 'B', NEAR_POST: 'A', GOAL_CENTER: 'B', FAR_POST: 'C' }
 
 export const EVENT_ICONS: Readonly<Record<MatchEvent['type'], string>> = { goal: '⚽', shot: '🎯', save: '🧤', attack: '⚔', recovery: '↺', substitution: '⇄', final: '⏱', pass: '➜' }
 const EVENT_WEIGHT: Partial<Record<MatchEvent['type'], number>> = { attack: 1, shot: 2, goal: 3 }

@@ -724,3 +724,18 @@
 @media (max-width: 600px) { .live-play .play-cards { grid-template-columns: 1fr 1fr; gap: .5rem; } .live-play .play-card { padding: .6rem; font-size: .85rem; } .live-play .play-card span { font-size: .75rem; } }
 @media (max-width: 600px) { .live-play .play-letter { position: static; width: 1.5rem; height: 1.5rem; } .live-play .play-card strong { font-size: .9rem; } }
 .moment-history .match-layout { display: block; }
+/* SIM-005R-04: directed aerial finish, kept within the selected moment. */
+.live-header .play-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.live-header .play-card { padding: .6rem; text-align: center; justify-items: center; }
+.live-header .play-letter { position: static; width: 1.5rem; height: 1.5rem; }
+.header-target-icon { width: 100%; max-width: 120px; height: 56px; color: #cbdcb8; }
+.header-target-icon circle { fill: #ffd54a; stroke: #102016; stroke-width: 2; }
+.live-board-wrap .header-goal-flash { border-radius: 12px; border-width: 3px; background: #183425f5; box-shadow: 0 0 35px #ffd54a88; }
+@media (max-width: 600px) { .live-header .play-card { padding: .4rem .25rem; } .live-header .play-card strong { font-size: .76rem; overflow-wrap: anywhere; } .live-header .play-card span { display: none; } .header-target-icon { height: 42px; } }
+@media (max-width: 600px) {
+  .live-match .match-heading { display: grid; grid-template-columns: 1fr auto; padding: .6rem; }
+  .live-match .match-heading .eyebrow { display: none; }
+  .live-match .live-title { text-align: left; font-size: .95rem; }
+  .live-match .match-heading button { padding: .5rem; min-height: 44px; }
+  .live-match .board-focus label { padding: 0 .35rem; font-size: .65rem; gap: .2rem; min-height: 44px; }
+}

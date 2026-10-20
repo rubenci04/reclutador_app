@@ -35,6 +35,7 @@ export function confirmLiveOrder(s: Session, windowId: string, side: MatchSide, 
 /** Choice used when the player asks to simulate the rest: the flank with the better receiver, then the shot. Documented in the confirmation text. */
 export function defaultPlayChoice(play: PendingPlay, catalog: readonly Player[]): PlayChoice {
   const usable = play.options.filter((option) => option.available)
+  if (play.node === 'HEADER') return 'GOAL_CENTER'
   if (play.node === 'DEFEND') return 'INTERCEPT'
   if (play.node === 'FINISH') return (usable.find((option) => option.choice === 'SHOOT') ?? usable[0]).choice
   const rating = (id: string | null) => catalog.find((p) => p.id === id)?.overall_rating ?? -1

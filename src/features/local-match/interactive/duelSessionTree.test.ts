@@ -14,6 +14,17 @@ function teamsCompleted(): { game: RecruiterDuelGame; catalog: ReturnType<typeof
 }
 
 describe('SIM-005R-02 boundary: only the CPU duel opts in', () => {
+  it('inherits the directed-header opt-in across new CPU series without changing previous moments', () => {
+    const { game, catalog } = teamsCompleted()
+    const s = must(createDuelSession(game, catalog, { recruiter_one: 'NEUTRAL', recruiter_two: 'NEUTRAL' }, 'directed-header-v1'))
+    expect(s.options.aerial).toEqual({ version: 'directed-header-v1' })
+    expect(s.kernel.aerial).toEqual({ version: 'directed-header-v1', keeperPlan: null })
+    const second = must(nextLiveSession(s, 2, { lineups: { local: s.kernel.input.localLineup, cpu: s.kernel.input.cpuLineup }, benches: s.kernel.input.benches, formations: s.kernel.input.formations }))
+    expect(second.options.aerial).toEqual(s.options.aerial)
+    expect(second.kernel.rng.aerial).not.toEqual(s.kernel.rng.aerial)
+    const old = must(createDuelSession(game, catalog, { recruiter_one: 'NEUTRAL', recruiter_two: 'NEUTRAL' }, 'match-moments-v1'))
+    expect(old.kernel.aerial).toBeUndefined()
+  })
   it('opts new CPU games into moments while preserving the legacy opt-in and the series version', () => {
     const { game, catalog } = teamsCompleted()
     const first = must(createDuelSession(game, catalog, { recruiter_one: 'NEUTRAL', recruiter_two: 'NEUTRAL' }, 'match-moments-v1'))

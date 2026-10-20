@@ -1,10 +1,12 @@
 import { MATCH_MINUTES, type MatchSide } from '../matchTypes'
+import { formationSlots } from '../../tactics/formations'
 import { DRAFT_SLOT_IDS } from '../../draft/draftTypes'
 import { calculateTeamStrength, isValidOrganizedLineup } from '../simulator'
 import { tacticalFeatures } from '../../tactics/tacticalModel'
 import { parseStrategySelection } from '../../tactics/strategies'
 import { visibleStats } from '../playback'
 import { initialCheckpoint, nextCheckpoint } from './random'
+import { AERIAL_VERSION, HEADER_DIRECTIONS, isHeaderDirection } from './directedHeader'
 import { canonical, exact, integer, object } from './validation'
 import { createDirector, eligibleMoment, recordMoment } from './matchMoments'
 import type { Session } from './types'
@@ -23,10 +25,10 @@ export function validSnapshotState(s: Session, initial: Session): boolean {
     for (const key of ['local', 'cpu', 'strengths', 'advantage', 'quality', 'initialSelection'] as const) if (!equal(k[key], i[key])) return false
     if (!pair(k.sides) || !pair(s.departed) || !pair(s.entered) || !pair(k.stats) || !numericPair(k.score) || !numericPair(k.qualityTotals) || !pair(k.effectiveTotals) || !pair(k.adjustmentTotals)) return false
     if (!parseStrategySelection(k.selection) || !exact(k.selection as unknown as Record<string, unknown>, ['version', 'local', 'cpu'])) return false
-    if (!object(k.rng) || !exact(k.rng, ['main', 'substitutions'], ['tree', 'director'])) return false
-    if ((k.tree === undefined) !== (k.rng.tree === undefined) || !validTree(s, k) || !validDirector(s)) return false
-    for (const key of ['main', 'substitutions', ...(k.tree ? ['tree' as const] : []), ...(k.director ? ['director' as const] : [])] as const) {
-      const rng = k.rng[key]; const original = key === 'main' ? initialCheckpoint(k.input.seed) : key === 'director' ? initialCheckpoint(`${k.input.seed}:moments`) : key === 'tree' ? initialCheckpoint(`${k.input.seed}:tree`) : k.input.benches ? initialCheckpoint(`${k.input.seed}:subs`) : null
+    if (!object(k.rng) || !exact(k.rng, ['main', 'substitutions'], ['tree', 'director', 'aerial'])) return false
+    if ((k.tree === undefined) !== (k.rng.tree === undefined) || !validTree(s, k) || !validDirector(s) || !validAerial(s)) return false
+    for (const key of ['main', 'substitutions', ...(k.tree ? ['tree' as const] : []), ...(k.director ? ['director' as const] : []), ...(k.aerial ? ['aerial' as const] : [])] as const) {
+      const rng = k.rng[key]; const original = key === 'main' ? initialCheckpoint(k.input.seed) : key === 'aerial' ? initialCheckpoint(`${k.input.seed}:aerial`) : key === 'director' ? initialCheckpoint(`${k.input.seed}:moments`) : key === 'tree' ? initialCheckpoint(`${k.input.seed}:tree`) : k.input.benches ? initialCheckpoint(`${k.input.seed}:subs`) : null
       if (!original) { if (rng !== null) return false; continue }
       if (!object(rng) || !exact(rng, ['algorithm', 'state', 'draws']) || rng.algorithm !== 'mulberry32-v1' || !integer(rng.draws) || rng.draws > 256 || !integer(rng.state) || rng.state > 0xffffffff || rng.state !== ((original.state + rng.draws * 0x6D2B79F5) >>> 0)) return false
     }
@@ -55,7 +57,7 @@ export function validSnapshotState(s: Session, initial: Session): boolean {
     }
     const events = k.blocks.flatMap((block, index) => {
       if (!object(block) || !exact(block as unknown as Record<string, unknown>, ['minute', 'events', 'score']) || block.minute !== MATCH_MINUTES[index] || !Array.isArray(block.events) || block.events.filter((e) => e.type === 'attack').length !== 4 || !numericPair(block.score)) throw new Error('invalid_block')
-      for (const e of block.events) if (!object(e as unknown) || !exact(e as unknown as Record<string, unknown>, ['minute', 'side', 'type'], ['playerId', 'outPlayerId', 'tactic', 'step']) || e.minute !== block.minute || !['attack', 'shot', 'save', 'recovery', 'goal', 'final', 'substitution', 'pass'].includes(e.type) || e.side !== null && !sides.includes(e.side) || e.playerId !== undefined && !s.ownership[e.side as MatchSide]?.includes(e.playerId)) throw new Error('invalid_event')
+      for (const e of block.events) if (!object(e as unknown) || !exact(e as unknown as Record<string, unknown>, ['minute', 'side', 'type'], ['playerId', 'outPlayerId', 'tactic', 'step', ...(k.aerial ? ['aerial'] : [])]) || e.minute !== block.minute || !['attack', 'shot', 'save', 'recovery', 'goal', 'final', 'substitution', 'pass'].includes(e.type) || e.side !== null && !sides.includes(e.side) || e.playerId !== undefined && !s.ownership[e.side as MatchSide]?.includes(e.playerId)) throw new Error('invalid_event')
       return block.events
     })
     const open = k.partial?.events ?? []
@@ -75,33 +77,34 @@ export function validSnapshotState(s: Session, initial: Session): boolean {
       for (const side of sides) { const plan = s.window.plans[side]; if (plan && (!s.receipts.some((r) => r.status === 'ACCEPTED' && equal(r.command, plan)) || plan.participant !== side || plan.windowId !== s.window.id || s.applied.some((c) => c.id === plan.id))) return false }
     } else if (s.window !== null) return false
     if (s.phase === 'FINISHED') {
-      if (n !== 6 || !s.result || !k.result || s.result.version !== 'interactive-result-v1' || s.result.kernelVersion !== s.kernelVersion || !exact(s.result as unknown as Record<string, unknown>, ['version', 'kernelVersion', 'decisions', 'substitutions', 'result'], ['plays', 'moments']) || !equal(s.result.moments, k.director ? { version: k.director.version, selected: k.director.selected } : undefined) || !equal(s.result.plays, k.tree?.log) || !equal(s.result.result, k.result) || !equal(s.result.decisions, s.applied) || !equal(s.result.substitutions, { version: 'interactive-subs-v1', modes: s.benchMode, events: k.substitutionLog }) || !equal(k.result.stats, k.stats) || !equal(k.result.blocks, k.blocks) || !equal(k.result.score, k.score) || events.filter((e) => e.type === 'final').length !== 1 || k.stats.local.possession + k.stats.cpu.possession !== 100) return false
+      if (n !== 6 || !s.result || !k.result || s.result.version !== 'interactive-result-v1' || s.result.kernelVersion !== s.kernelVersion || !exact(s.result as unknown as Record<string, unknown>, ['version', 'kernelVersion', 'decisions', 'substitutions', 'result'], ['plays', 'moments', 'aerial']) || !equal(s.result.aerial, k.aerial ? { version: k.aerial.version } : undefined) || !equal(s.result.moments, k.director ? { version: k.director.version, selected: k.director.selected } : undefined) || !equal(s.result.plays, k.tree?.log) || !equal(s.result.result, k.result) || !equal(s.result.decisions, s.applied) || !equal(s.result.substitutions, { version: 'interactive-subs-v1', modes: s.benchMode, events: k.substitutionLog }) || !equal(k.result.stats, k.stats) || !equal(k.result.blocks, k.blocks) || !equal(k.result.score, k.score) || events.filter((e) => e.type === 'final').length !== 1 || k.stats.local.possession + k.stats.cpu.possession !== 100) return false
     } else if (n === 6 || s.result !== null || k.result !== null || events.some((e) => e.type === 'final')) return false
     return true
   } catch { return false }
 }
 
+const AERIAL_STEPS = ['AERIAL_CROSS', 'AERIAL_CONTEST', 'AERIAL_WON', 'AERIAL_CLEAR', 'DIRECTED_HEADER_CONTACT', 'DIRECTED_HEADER_FLIGHT', 'DIRECTED_HEADER_BLOCK', 'DIRECTED_HEADER_OVER', 'DIRECTED_HEADER_WIDE', 'DIRECTED_HEADER_GOAL', 'DIRECTED_HEADER_SAVE']
 const PLAY_STEPS = ['DEFENSE_BUILD', 'INTERCEPT_OK', 'PRESS_OK', 'PRESS_BEATEN', 'CPU_RETAIN', 'DEFENSE_BLOCK', 'CPU_WIDE', 'CPU_GOAL', 'DEFENSE_SAVE', 'BUILD', 'PASS_LEFT_OK', 'PASS_RIGHT_OK', 'PASS_LEFT_LOST', 'PASS_RIGHT_LOST', 'CROSS_OK', 'CROSS_LOST', 'SHOT_BLOCKED', 'SHOT_WIDE', 'SHOT_SAVED', 'SHOT_GOAL', 'HEADER_WIDE', 'HEADER_SAVED', 'HEADER_GOAL']
 /** attack-tree-v1 bookkeeping: the pending play, the open block and the decision log must agree with each other. */
 function validTree(s: Session, k: Session['kernel']): boolean {
   const n = k.nextBlock
   if (k.tree === undefined) return k.partial === undefined && s.phase !== 'PLAY' && s.result?.plays === undefined
-  if (!object(k.tree) || !exact(k.tree as unknown as Record<string, unknown>, ['version', 'limit', 'started', 'log']) || k.tree.version !== 'attack-tree-v1' || k.tree.limit !== 3 || !integer(k.tree.started) || k.tree.started > k.tree.limit || !Array.isArray(k.tree.log) || k.tree.log.length > 6) return false
+  if (!object(k.tree) || !exact(k.tree as unknown as Record<string, unknown>, ['version', 'limit', 'started', 'log']) || k.tree.version !== 'attack-tree-v1' || k.tree.limit !== 3 || !integer(k.tree.started) || k.tree.started > k.tree.limit || !Array.isArray(k.tree.log) || k.tree.log.length > (k.aerial ? 9 : 6)) return false
   if (new Set(k.tree.log.map((entry) => entry.id)).size !== k.tree.log.length) return false
-  for (const entry of k.tree.log) if (!object(entry as unknown) || !exact(entry as unknown as Record<string, unknown>, ['id', 'playId', 'node', 'choice']) || typeof entry.id !== 'string' || typeof entry.playId !== 'string' || !['DIRECTION', 'FINISH', ...(k.director ? ['DEFEND'] : [])].includes(entry.node) || !['LEFT', 'RIGHT', 'CROSS', 'SHOOT', ...(k.director ? ['INTERCEPT', 'PRESS'] : [])].includes(entry.choice)) return false
+  for (const entry of k.tree.log) if (!object(entry as unknown) || !exact(entry as unknown as Record<string, unknown>, ['id', 'playId', 'node', 'choice']) || typeof entry.id !== 'string' || typeof entry.playId !== 'string' || !['DIRECTION', 'FINISH', ...(k.director ? ['DEFEND'] : []), ...(k.aerial ? ['HEADER'] : [])].includes(entry.node) || !['LEFT', 'RIGHT', 'CROSS', 'SHOOT', ...(k.director ? ['INTERCEPT', 'PRESS'] : []), ...(k.aerial ? HEADER_DIRECTIONS : [])].includes(entry.choice)) return false
   const directions = k.tree.log.filter((entry) => entry.node === 'DIRECTION' || entry.node === 'DEFEND').length
   const partial = k.partial
   if (partial === null) return s.phase !== 'PLAY' && k.tree.started === directions
   if (!partial) return false
   if (!object(partial as unknown) || !exact(partial as unknown as Record<string, unknown>, ['events', 'opportunity', 'played', 'play']) || !Array.isArray(partial.events) || !integer(partial.opportunity) || partial.opportunity > 3 || partial.played !== true || n > 5) return false
   const play = partial.play
-  if (s.phase !== 'PLAY' || !play || !object(play as unknown) || !exact(play as unknown as Record<string, unknown>, ['id', 'node', 'protagonistId', 'receiverId', 'sector', 'options'], k.director ? ['attackerId'] : []) || play.id !== `play-${MATCH_MINUTES[n]}` || !['DIRECTION', 'FINISH', ...(k.director ? ['DEFEND'] : [])].includes(play.node) || !s.ownership.local.includes(play.protagonistId) || !Array.isArray(play.options) || play.options.length !== 2 || !play.options.some((o) => o.available)) return false
+  if (s.phase !== 'PLAY' || !play || !object(play as unknown) || !exact(play as unknown as Record<string, unknown>, ['id', 'node', 'protagonistId', 'receiverId', 'sector', 'options'], [...(k.director ? ['attackerId'] : []), ...(k.aerial ? ['aerial'] : [])]) || play.id !== `play-${MATCH_MINUTES[n]}` || !['DIRECTION', 'FINISH', ...(k.director ? ['DEFEND'] : []), ...(k.aerial ? ['HEADER'] : [])].includes(play.node) || !s.ownership.local.includes(play.protagonistId) || !Array.isArray(play.options) || play.options.length !== (play.node === 'HEADER' ? 3 : 2) || !play.options.some((o) => o.available)) return false
   if (play.node === 'DEFEND' && (!play.attackerId || !s.ownership.cpu.includes(play.attackerId) || play.receiverId !== null || play.sector !== null || !play.options.every((o, i) => o.available && o.choice === ['INTERCEPT', 'PRESS'][i] && o.playerId === play.protagonistId && o.rivalId === play.attackerId))) return false
   if (play.node === 'FINISH' && (!play.receiverId || !s.ownership.local.includes(play.receiverId) || !['LEFT', 'RIGHT'].includes(play.sector ?? ''))) return false
   for (const o of play.options) if (!object(o as unknown) || !exact(o as unknown as Record<string, unknown>, ['choice', 'available', 'playerId', 'rivalId']) || typeof o.available !== 'boolean' || o.playerId !== null && !s.ownership.local.includes(o.playerId) || o.rivalId !== null && !s.ownership.cpu.includes(o.rivalId)) return false
   const minute = MATCH_MINUTES[n]
-  for (const e of partial.events) if (!object(e as unknown) || !exact(e as unknown as Record<string, unknown>, ['minute', 'side', 'type'], ['playerId', 'outPlayerId', 'tactic', 'step']) || e.minute !== minute || e.type === 'final' || e.side !== null && !sides.includes(e.side) || e.playerId !== undefined && !s.ownership[e.side as MatchSide]?.includes(e.playerId) || e.step !== undefined && !PLAY_STEPS.includes(e.step) || e.tactic !== undefined) return false
-  if (partial.events.filter((e) => e.type === 'attack').length > 4 || k.tree.started !== directions + (play.node === 'FINISH' ? 0 : 1)) return false
+  for (const e of partial.events) if (!object(e as unknown) || !exact(e as unknown as Record<string, unknown>, ['minute', 'side', 'type'], ['playerId', 'outPlayerId', 'tactic', 'step', ...(k.aerial ? ['aerial'] : [])]) || e.minute !== minute || e.type === 'final' || e.side !== null && !sides.includes(e.side) || e.playerId !== undefined && !s.ownership[e.side as MatchSide]?.includes(e.playerId) || e.step !== undefined && ![...PLAY_STEPS, ...(k.aerial ? AERIAL_STEPS : [])].includes(e.step) || e.tactic !== undefined) return false
+  if (partial.events.filter((e) => e.type === 'attack').length > 4 || k.tree.started !== directions + (play.node === 'FINISH' || play.node === 'HEADER' ? 0 : 1)) return false
   return true
 }
 
@@ -121,4 +124,61 @@ function validDirector(s: Session): boolean {
     recordMoment(expected, selection, random)
   }
   return equal(d, expected) && equal(k.rng.director, rng)
+}
+
+function validAerial(s: Session): boolean {
+  const k = s.kernel; const state = k.aerial
+  if (!state) return !s.options.aerial && k.rng.aerial === undefined && s.result?.aerial === undefined
+  if (!s.options.aerial || !k.director || !object(state) || !exact(state as unknown as Record<string, unknown>, ['version', 'keeperPlan']) || state.version !== AERIAL_VERSION) return false
+  const pending = k.partial?.play
+  if ((pending?.node === 'HEADER') !== (state.keeperPlan !== null) || state.keeperPlan !== null && !isHeaderDirection(state.keeperPlan)) return false
+  const all = [...k.blocks.flatMap((b) => b.events), ...(k.partial?.events ?? [])]
+  let draws = 0
+  let cursor = initialCheckpoint(`${k.input.seed}:aerial`)
+  const consume = (n: number) => { let value = 0; for (let i = 0; i < n; i++) { const next = nextCheckpoint(cursor); cursor = next.checkpoint; value = next.value; draws++ } return value }
+  let stage = 'IDLE'; let plan: string | null = null; let actors: unknown = null
+  for (const entry of k.tree!.log) {
+    const allowed: readonly string[] = entry.node === 'HEADER' ? HEADER_DIRECTIONS : entry.node === 'DIRECTION' ? ['LEFT', 'RIGHT'] : entry.node === 'FINISH' ? ['CROSS', 'SHOOT'] : ['INTERCEPT', 'PRESS']
+    if (!allowed.includes(entry.choice) || k.tree!.log.filter((e) => e.playId === entry.playId && e.node === entry.node).length !== 1) return false
+  }
+  for (const e of all) {
+    if (!e.aerial) { if (AERIAL_STEPS.includes(e.step ?? '')) return false; continue }
+    const a = e.aerial
+    if (!AERIAL_STEPS.includes(e.step ?? '') || !object(a) || !exact(a as unknown as Record<string, unknown>, ['version', 'crosserId', 'targetId', 'defenderId', 'sector'], ['direction', 'keeperDirection']) || a.version !== AERIAL_VERSION || !s.ownership.local.includes(a.crosserId) || !s.ownership.local.includes(a.targetId) || a.crosserId === a.targetId || !s.ownership.cpu.includes(a.defenderId) || !['LEFT', 'RIGHT'].includes(a.sector)) return false
+    if (a.direction !== undefined && !isHeaderDirection(a.direction) || a.keeperDirection !== undefined && !isHeaderDirection(a.keeperDirection)) return false
+    if (e.step?.startsWith('AERIAL_') && (a.direction !== undefined || a.keeperDirection !== undefined)) return false
+    if (e.step?.startsWith('DIRECTED_') && (!isHeaderDirection(a.direction) || e.step !== 'DIRECTED_HEADER_CONTACT' && !isHeaderDirection(a.keeperDirection))) return false
+    const base = { version: a.version, crosserId: a.crosserId, targetId: a.targetId, defenderId: a.defenderId, sector: a.sector }
+    if (e.step === 'AERIAL_CROSS') {
+      if (stage !== 'IDLE' || !k.tree!.log.some((c) => c.playId === `play-${e.minute}` && c.node === 'FINISH' && c.choice === 'CROSS')) return false
+      actors = base; stage = 'DELIVERY'; consume(1)
+    } else {
+      if (!equal(base, actors)) return false
+      if (e.step === 'AERIAL_CONTEST' && stage === 'DELIVERY') { stage = 'DUEL'; consume(1) }
+      else if (e.step === 'AERIAL_WON' && stage === 'DUEL') { stage = 'AWAIT_HEADER'; plan = HEADER_DIRECTIONS[Math.floor(consume(1) * 3)] }
+      else if (e.step === 'AERIAL_CLEAR' && ['DELIVERY', 'DUEL'].includes(stage)) stage = 'IDLE'
+      else if (e.step === 'DIRECTED_HEADER_CONTACT' && stage === 'AWAIT_HEADER') {
+        if (a.keeperDirection !== undefined || !k.tree!.log.some((c) => c.playId === `play-${e.minute}` && c.node === 'HEADER' && c.choice === a.direction)) return false
+        stage = 'CONTACT'
+      } else if (e.step === 'DIRECTED_HEADER_FLIGHT' && stage === 'CONTACT') stage = 'FLIGHT'
+      else if (e.step === 'DIRECTED_HEADER_BLOCK' && stage === 'CONTACT') { stage = 'IDLE'; consume(1) }
+      else if (['DIRECTED_HEADER_OVER', 'DIRECTED_HEADER_WIDE', 'DIRECTED_HEADER_GOAL', 'DIRECTED_HEADER_SAVE'].includes(e.step!) && stage === 'FLIGHT') { stage = 'IDLE'; consume(3) }
+      else return false
+      if (a.keeperDirection !== undefined && a.keeperDirection !== plan) return false
+    }
+    const recovering = e.step === 'AERIAL_CLEAR' || e.step === 'DIRECTED_HEADER_BLOCK'
+    const saved = e.step === 'DIRECTED_HEADER_SAVE'
+    const expectedPlayer = e.step === 'AERIAL_CROSS' ? a.crosserId : recovering ? a.defenderId : saved ? k.input.catalog.find((p) => p.id === e.playerId && p.position === 'ARQ')?.id : a.targetId
+    const expectedType = recovering ? 'recovery' : saved ? 'save' : e.step === 'DIRECTED_HEADER_GOAL' ? 'goal' : ['DIRECTED_HEADER_WIDE', 'DIRECTED_HEADER_OVER'].includes(e.step!) ? 'shot' : 'pass'
+    if (!expectedPlayer || e.playerId !== expectedPlayer || e.type !== expectedType || e.side !== (recovering || saved ? 'cpu' : 'local')) return false
+  }
+  if (k.rng.aerial?.draws !== draws || !equal(k.rng.aerial, cursor) || stage !== (pending?.node === 'HEADER' ? 'AWAIT_HEADER' : 'IDLE')) return false
+  if (pending?.node === 'HEADER') {
+    const a = pending.aerial
+    if (!a || pending.receiverId !== a.targetId || pending.sector !== a.sector || !pending.options.every((o, i) => o.choice === HEADER_DIRECTIONS[i] && o.available && o.playerId === a.targetId && o.rivalId === a.defenderId)) return false
+    const last = k.partial!.events.at(-1)
+    if (last?.step !== 'AERIAL_WON' || !equal(a, last.aerial) || !k.tree!.log.some((e) => e.playId === pending.id && e.node === 'FINISH' && e.choice === 'CROSS')) return false
+    if (state.keeperPlan !== plan || !formationSlots(k.input.formations?.local).some((slot) => slot.position === 'DEL' && k.sides.local.team.lineup[slot.id] === a.targetId)) return false
+  } else if (pending?.aerial !== undefined) return false
+  return true
 }

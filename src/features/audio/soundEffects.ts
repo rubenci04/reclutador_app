@@ -2,7 +2,7 @@
  * Original synthesised effects (Web Audio). No external audio files, so there is nothing to license or credit.
  * Every recipe schedules short oscillator and noise events against `now`; nothing keeps running after it ends.
  */
-export const SOUND_IDS = ['coinToss', 'coinLand', 'bid', 'award', 'signing', 'discard', 'diceRoll', 'goal', 'finalWhistle', 'kickoffWhistle', 'halfTimeWhistle', 'shot', 'pass', 'intercept'] as const
+export const SOUND_IDS = ['coinToss', 'coinLand', 'bid', 'award', 'signing', 'discard', 'diceRoll', 'goal', 'finalWhistle', 'kickoffWhistle', 'halfTimeWhistle', 'shot', 'pass', 'intercept', 'cross', 'header'] as const
 export type SoundId = (typeof SOUND_IDS)[number]
 
 interface Tone { readonly type: OscillatorType; readonly from: number; readonly to?: number; readonly at: number; readonly length: number; readonly gain: number; readonly vibrato?: number }
@@ -25,6 +25,8 @@ export const RECIPES: Readonly<Record<SoundId, Recipe>> = {
   halfTimeWhistle: { tones: [{ type: 'sine', from: 2900, at: 0, length: .2, gain: .2, vibrato: 38 }, { type: 'sine', from: 2900, at: .3, length: .5, gain: .2, vibrato: 38 }] },
   shot: { tones: [{ type: 'triangle', from: 220, to: 90, at: 0, length: .12, gain: .3 }], noise: [{ at: 0, length: .1, gain: .18, from: 1800, to: 600 }] },
   pass: { tones: [{ type: 'triangle', from: 480, to: 300, at: 0, length: .07, gain: .22 }], noise: [{ at: 0, length: .05, gain: .1, from: 2400, to: 1200 }] },
+  cross: { tones: [{ type: 'triangle', from: 380, to: 640, at: 0, length: .18, gain: .22 }], noise: [{ at: .04, length: .30, gain: .10, from: 900, to: 2800 }] },
+  header: { tones: [{ type: 'sine', from: 175, to: 85, at: 0, length: .12, gain: .30 }], noise: [{ at: 0, length: .055, gain: .14, from: 800, to: 300 }] },
   intercept: { tones: [{ type: 'square', from: 260, to: 150, at: 0, length: .1, gain: .12 }], noise: [{ at: 0, length: .12, gain: .16, from: 1500, to: 400 }] },
   finalWhistle: { tones: [{ type: 'sine', from: 2900, at: 0, length: .22, gain: .22, vibrato: 38 }, { type: 'sine', from: 2900, at: .3, length: .22, gain: .22, vibrato: 38 }, { type: 'sine', from: 2900, at: .6, length: .55, gain: .22, vibrato: 38 }] },
 }

@@ -44,7 +44,9 @@ export function liveFrames(blocks: readonly MatchBlock[], open: OpenBlock | null
 /** Sounds a revealed frame triggers. The caller keeps a ledger keyed by frame so pause, speed or replay never repeat them. */
 export function frameSounds(frame: LiveFrame): readonly SoundId[] {
   const sounds: SoundId[] = []
-  if (frame.events.some((item) => item.type === 'goal')) sounds.push('goal')
+  if (frame.events.some((item) => item.step === 'AERIAL_CROSS')) sounds.push('cross')
+  else if (frame.events.some((item) => item.step === 'DIRECTED_HEADER_CONTACT')) sounds.push('header')
+  else if (frame.events.some((item) => item.type === 'goal')) sounds.push('goal')
   else if (frame.events.some((item) => item.type === 'shot' || item.type === 'save')) sounds.push('shot')
   else if (frame.events.some((item) => item.type === 'pass')) sounds.push('pass')
   else if (frame.events.some((item) => item.type === 'recovery' && item.step)) sounds.push('intercept')

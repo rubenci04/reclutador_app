@@ -1,5 +1,13 @@
 # Plan de pruebas
 
+## SIM-005R-04 — Centro y cabezazo dirigido
+
+- Extensión opt-in sobre momentos: envío válido/despejado, duelo ganado/perdido, atacante sin puesto válido y HEADER sólo tras victoria. Ningún draw de definición antes de aceptar dirección.
+- Tres destinos orientados desde el atacante, todos los desenlaces, cotas sin garantías, Monte Carlo de calidad/arquero, perfiles que invierten primer/segundo palo.
+- 240 semillas × cinco políticas; frecuencia, 24 oportunidades, goles y estadísticas por eventos. Determinismo, replay, restore por nodo y snapshots alterados rechazados.
+- 600 sesiones antiguas comparadas contra huellas de 10f406b y checkpoints generados por esa versión; golden históricos sin actualizar.
+- UI es-AR/en/pt-BR: foco, tres arcos, pausa, velocidad, doble clic, reduced-motion y audio único por frame. Cuatro comandos; QA real y límites audiovisuales en qa/SIM-005R-04.md.
+
 ## SIM-005R-03 — Momentos destacados
 
 - Medir 240 semillas × interceptar/presionar/attack-tree-v1/lote: frecuencia, minutos, alternancia, protagonistas, desenlaces, goles y recuperación. Separar calibración sintética de balance humano.

@@ -3,6 +3,7 @@ import type { DraftLineup } from '../../draft/draftTypes'
 import { formationSlots, type FormationId } from '../../tactics/formations'
 import type { StrategyId } from '../../tactics/strategies'
 import type { MatchEvent, MatchSide, PlayStep, TeamStrength } from '../matchTypes'
+import type { AerialAction } from './directedHeader'
 
 /**
  * attack-tree-v1: the first interactive attack. One eligible opportunity of the local side (against the CPU) is played as
@@ -25,8 +26,8 @@ export const ATTACK_TREE_LIMIT = 3
 const HEADER_BONUS = .06
 
 export type Sector = 'LEFT' | 'RIGHT'
-export type PlayChoice = 'LEFT' | 'RIGHT' | 'CROSS' | 'SHOOT' | 'INTERCEPT' | 'PRESS'
-export type PlayNode = 'DIRECTION' | 'FINISH' | 'DEFEND'
+export type PlayChoice = 'LEFT' | 'RIGHT' | 'CROSS' | 'SHOOT' | 'INTERCEPT' | 'PRESS' | 'NEAR_POST' | 'GOAL_CENTER' | 'FAR_POST'
+export type PlayNode = 'DIRECTION' | 'FINISH' | 'DEFEND' | 'HEADER'
 export interface PlayOption { readonly choice: PlayChoice; readonly available: boolean; readonly playerId: string | null; readonly rivalId: string | null }
 export interface PendingPlay {
   readonly id: string
@@ -37,6 +38,7 @@ export interface PendingPlay {
   readonly sector: Sector | null
   readonly options: readonly PlayOption[]
   readonly attackerId?: string
+  readonly aerial?: AerialAction
 }
 export interface PlayLogEntry { readonly id: string; readonly playId: string; readonly node: PlayNode; readonly choice: PlayChoice }
 

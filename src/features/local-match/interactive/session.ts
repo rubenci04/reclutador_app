@@ -22,9 +22,10 @@ export function createSession(source: SessionInput, options: SessionOptions): Ou
   try {
     if (source.actionModel !== 'action-v3') return fail('UNSUPPORTED_VERSION')
     if (!validInput(source)) return fail('INVALID_ROSTER')
-    if (!object(options) || !jsonSafe(options) || !exact(options, ['sessionId'], ['benchMode', 'acquisition', 'attackTree', 'moments']) || options.attackTree !== undefined && (!object(options.attackTree) || !exact(options.attackTree, ['version']) || options.attackTree.version !== 'attack-tree-v1') || !text(options.sessionId) || options.sessionId.length > 128) return fail('INVALID_PAYLOAD')
+    if (!object(options) || !jsonSafe(options) || !exact(options, ['sessionId'], ['benchMode', 'acquisition', 'attackTree', 'moments', 'aerial']) || options.attackTree !== undefined && (!object(options.attackTree) || !exact(options.attackTree, ['version']) || options.attackTree.version !== 'attack-tree-v1') || !text(options.sessionId) || options.sessionId.length > 128) return fail('INVALID_PAYLOAD')
     if (options.moments !== undefined && (options.attackTree !== undefined || !object(options.moments) || !exact(options.moments, ['version']) || options.moments.version !== 'match-moments-v1')) return fail('INVALID_PAYLOAD')
-    const kernel = initializeKernel(source, options.moments ? 'match-moments-v1' : options.attackTree !== undefined)
+    if (options.aerial !== undefined && (!options.moments || !object(options.aerial) || !exact(options.aerial, ['version']) || options.aerial.version !== 'directed-header-v1')) return fail('INVALID_PAYLOAD')
+    const kernel = initializeKernel(source, options.moments ? 'match-moments-v1' : options.attackTree !== undefined, options.aerial !== undefined)
     const benchMode = options.benchMode ?? { local: source.benches ? 'auto-subs-v1' : 'none', cpu: source.benches ? 'auto-subs-v1' : 'none' }
     if (!object(benchMode) || !exact(benchMode, SIDES) || !SIDES.every((side) => ['none', 'auto-subs-v1', 'manual-v1'].includes(benchMode[side]) && (benchMode[side] !== 'none' || !source.benches?.[side].length))) return fail('INVALID_PAYLOAD')
     const ownership = { local: [...Object.values(source.localLineup), ...(source.benches?.local ?? [])] as string[], cpu: [...Object.values(source.cpuLineup), ...(source.benches?.cpu ?? [])] as string[] }
@@ -64,7 +65,7 @@ function settle(next: Session): Outcome {
 }
 
 function parsePlay(raw: unknown): PlayCommand | null {
-  if (!object(raw) || !jsonSafe(raw) || !exact(raw, ['version', 'id', 'sessionId', 'expectedRevision', 'playId', 'node', 'choice']) || !text(raw.version) || !text(raw.id) || !text(raw.sessionId) || !integer(raw.expectedRevision) || !text(raw.playId) || !['DIRECTION', 'FINISH', 'DEFEND'].includes(raw.node as string) || !['LEFT', 'RIGHT', 'CROSS', 'SHOOT', 'INTERCEPT', 'PRESS'].includes(raw.choice as string)) return null
+  if (!object(raw) || !jsonSafe(raw) || !exact(raw, ['version', 'id', 'sessionId', 'expectedRevision', 'playId', 'node', 'choice']) || !text(raw.version) || !text(raw.id) || !text(raw.sessionId) || !integer(raw.expectedRevision) || !text(raw.playId) || !['DIRECTION', 'FINISH', 'DEFEND', 'HEADER'].includes(raw.node as string) || !['LEFT', 'RIGHT', 'CROSS', 'SHOOT', 'INTERCEPT', 'PRESS', 'NEAR_POST', 'GOAL_CENTER', 'FAR_POST'].includes(raw.choice as string)) return null
   return raw as unknown as PlayCommand
 }
 
@@ -170,7 +171,7 @@ export function finishSession(session: Session): Outcome {
     delete (result as { substitutions?: unknown }).substitutions
     kernel.result = result
   }
-  return success({ ...copy(session), kernel, phase: 'FINISHED', revision: session.revision + 1, result: { version: 'interactive-result-v1', kernelVersion: session.kernelVersion, decisions: copy(session.applied), substitutions: { version: 'interactive-subs-v1', modes: copy(session.benchMode), events: copy(kernel.substitutionLog) }, result: kernel.result!, ...(kernel.tree ? { plays: copy(kernel.tree.log) } : {}), ...(kernel.director ? { moments: { version: kernel.director.version, selected: copy(kernel.director.selected) } } : {}) } })
+  return success({ ...copy(session), kernel, phase: 'FINISHED', revision: session.revision + 1, result: { version: 'interactive-result-v1', kernelVersion: session.kernelVersion, decisions: copy(session.applied), substitutions: { version: 'interactive-subs-v1', modes: copy(session.benchMode), events: copy(kernel.substitutionLog) }, result: kernel.result!, ...(kernel.tree ? { plays: copy(kernel.tree.log) } : {}), ...(kernel.aerial ? { aerial: { version: kernel.aerial.version } } : {}), ...(kernel.director ? { moments: { version: kernel.director.version, selected: copy(kernel.director.selected) } } : {}) } })
 }
 
 export function exportResult(session: Session): Outcome<InteractiveResult> {

@@ -1,5 +1,9 @@
 # Roadmap
 
+## SIM-005R-04 — 20/10/2026
+
+Extensión opt-in directed-header-v1 sobre Momentos Destacados: centro y disputa previos, tres direcciones de cabezazo sin resultado precalculado, Canvas aéreo y RNG propio. Conserva 24 ocasiones, frecuencia y 600 sesiones completas de la base anterior. Capturas reales de elección 390/412/768/1280; secuencia de movimiento/desenlaces bloqueada posteriormente por Work settings y audio sin escucha real. [QA y límites](qa/SIM-005R-04.md). Sin publicación ni familias posteriores.
+
 ## SIM-005R-03 — 20/10/2026
 
 Momentos Destacados V1 implementados localmente: director determinista, ataque y defensa sólo contra CPU, Canvas con movimiento individual y decisiones breves en tres idiomas. Media 2,44 momentos en 240 semillas por política; compatibilidad histórica conservada. QA real a 390/412/768/1280; escucha y playtest humano pendientes. [Fórmulas, evidencia y límites](qa/SIM-005R-03.md). Sin publicación ni familias posteriores.

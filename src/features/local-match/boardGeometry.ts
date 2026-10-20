@@ -1,6 +1,7 @@
 import { formationSlots, type FormationId } from '../tactics/formations'
 import type { DraftLineup } from '../draft/draftTypes'
-import type { MatchEventType, MatchSide } from './matchTypes'
+import type { AerialEvent } from './interactive/directedHeader'
+import type { MatchEventType, MatchSide, PlayStep } from './matchTypes'
 
 /**
  * The only thing the board knows about the action. Today it comes from one confirmed event; a future typed event
@@ -15,6 +16,8 @@ export interface BoardPlay {
   /** Player the ball came from (the protagonist of an interactive play), only when a confirmed event names him. */
   readonly fromPlayerId?: string
   readonly defenderId?: string
+  readonly aerial?: AerialEvent
+  readonly step?: PlayStep
 }
 export type BoardFocus = 'full' | 'local' | 'cpu'
 export interface Point { readonly x: number; readonly y: number }

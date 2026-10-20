@@ -1,5 +1,18 @@
 # Tablero de tareas
 
+## SIM-005R-04 — 20/10/2026
+
+| Entrega | Estado |
+| --- | --- |
+| Centro → disputa → HEADER → resolución, extensión opt-in | Implementado; resultado de cabezazo pendiente hasta elegir |
+| Primer palo / centro / segundo palo, Canvas y tres idiomas | Implementado; efectos Web Audio locales |
+| Checkpoint/replay, 24 ocasiones y modos anteriores | Pruebas y 600 huellas del commit 10f406b; golden intactos |
+| Calibración 240 semillas × cinco políticas | Hecha; 2,375 momentos por partido; no acredita balance humano |
+| QA visual elección 390/412/768/1280 | Ejecutada y capturada |
+| Secuencia real de movimiento, atajada/gol/desviado y escucha | Pendiente: navegador local deshabilitado al continuar; audio no escuchado |
+
+[Contratos, controles, fórmulas y límites](qa/SIM-005R-04.md). Sin push/merge/deploy ni ampliación a otras familias.
+
 ## SIM-005R-03 — 20/10/2026
 
 | Entrega | Estado |

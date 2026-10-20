@@ -14,6 +14,8 @@ import { MATCH_MINUTES, MATCH_RULES_VERSION, type MatchBlock, type MatchEvent, t
 
 import { createDirector, eligibleMoment, recordMoment, planDefense, resolveDefense, type MomentDirector } from './matchMoments'
 
+import { AERIAL_VERSION, isHeaderDirection, sendDirectedCross, resolveDirectedHeader, type AerialState } from './directedHeader'
+
 const clamp = (value: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, value))
 
 function teamFrom(lineup: DraftLineup, catalog: readonly Player[], budget?: number, formation?: FormationId): MatchTeam {
@@ -45,7 +47,7 @@ const meanAdjustment = (total: TacticalAdjustment): TacticalAdjustment => ({ att
 type Side = { team: MatchTeam; strength: TeamStrength; features: ReturnType<typeof tacticalFeatures>; unused: string[]; subbed: boolean; baseMidfield: number }
 
 /** Version-frozen block adapter. Historical batch API stays untouched as regression oracle. */
-export function initializeKernel(source: SimulationInput, attackTree: boolean | 'match-moments-v1' = false) {
+export function initializeKernel(source: SimulationInput, attackTree: boolean | 'match-moments-v1' = false, aerial = false) {
   const input = structuredClone(source)
   if (input.rulesVersion !== MATCH_RULES_VERSION || input.catalogVersion !== 'catalog_v1') throw new Error('unsupported_match_rules')
   const local = teamFrom(input.localLineup, input.catalog, input.budget, input.formations?.local)
@@ -74,8 +76,9 @@ export function initializeKernel(source: SimulationInput, attackTree: boolean | 
   let directorRng = initialCheckpoint(`${input.seed}:moments`)
   const policyRandom = () => { const next = nextCheckpoint(directorRng); directorRng = next.checkpoint; return next.value }
   const director = attackTree === 'match-moments-v1' ? createDirector(policyRandom) : undefined
-  return { input, local, cpu, sides, strengths, stats, score, blocks, advantage, quality, qualityTotals, effectiveTotals, adjustmentTotals, substitutionLog, selection, initialSelection: selection, nextBlock: 0, rng: { main: random, substitutions: substitutionRandom, ...(attackTree ? { tree: initialCheckpoint(`${input.seed}:tree`) } : {}), ...(director ? { director: directorRng } : {}) }, pendingChanges: [] as MatchEvent[], result: null as MatchResult | null,
+  return { input, local, cpu, sides, strengths, stats, score, blocks, advantage, quality, qualityTotals, effectiveTotals, adjustmentTotals, substitutionLog, selection, initialSelection: selection, nextBlock: 0, rng: { main: random, substitutions: substitutionRandom, ...(attackTree ? { tree: initialCheckpoint(`${input.seed}:tree`) } : {}), ...(director ? { director: directorRng } : {}), ...(aerial ? { aerial: initialCheckpoint(`${input.seed}:aerial`) } : {}) }, pendingChanges: [] as MatchEvent[], result: null as MatchResult | null,
     ...(director ? { director: director as MomentDirector } : {}),
+    ...(aerial ? { aerial: { version: AERIAL_VERSION, keeperPlan: null } as AerialState } : {}),
     ...(attackTree ? { tree: { version: ATTACK_TREE_VERSION, limit: ATTACK_TREE_LIMIT, started: 0, log: [] as PlayLogEntry[] }, partial: null as PartialBlock | null } : {}) }
 }
 /** Block in progress while an interactive play is open. Its events and counters are already confirmed; the block is not in `blocks` yet. */
@@ -244,7 +247,14 @@ export function resolveKernelPlay(current: KernelState, id: string, choice: Play
   const minute = MATCH_MINUTES[state.nextBlock]
   const { effective } = blockStrengths(state, state.nextBlock)
   const treeRandom = () => { const next = nextCheckpoint(state.rng.tree!); state.rng.tree = next.checkpoint; return next.value }
-  const step = (pending.node === 'DEFEND' ? resolveDefense : resolvePlay)(playContext(state, minute, effective), pending, choice, treeRandom)
+  const ctx = playContext(state, minute, effective)
+  const aerialRandom = () => { const next = nextCheckpoint(state.rng.aerial!); state.rng.aerial = next.checkpoint; return next.value }
+  let step
+  if (state.aerial && pending.node === 'FINISH' && choice === 'CROSS') {
+    const sent = sendDirectedCross(ctx, pending, aerialRandom); state.aerial.keeperPlan = sent.keeperPlan; step = sent
+  } else if (state.aerial && pending.node === 'HEADER' && isHeaderDirection(choice) && state.aerial.keeperPlan) {
+    step = resolveDirectedHeader(ctx, pending, choice, state.aerial.keeperPlan, aerialRandom); state.aerial.keeperPlan = null
+  } else step = (pending.node === 'DEFEND' ? resolveDefense : resolvePlay)(ctx, pending, choice, treeRandom)
   state.tree!.log.push({ id, playId: pending.id, node: pending.node, choice })
   for (const item of step.events) { partial.events.push(item); countEvent(state, item) }
   if (step.next) { partial.play = step.next; return state }

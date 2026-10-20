@@ -33,6 +33,7 @@ export interface SessionOptions {
   readonly acquisition?: Pair<{ readonly spent: number; readonly coachPaid: number; readonly budget: number }>
   /** Opt-in interactive attack for the local side (attack-tree-v1). Absent: the session behaves exactly as before. */
   readonly moments?: { readonly version: 'match-moments-v1' }
+  readonly aerial?: { readonly version: 'directed-header-v1' }
   readonly attackTree?: { readonly version: 'attack-tree-v1' }
 }
 /** One decision of the interactive attack. `id` is unique per session: a repeated id is a duplicate, never a second resolution. */
@@ -53,6 +54,7 @@ export interface InteractiveResult {
   readonly result: MatchResult
   /** attack-tree-v1 sessions only: every play decision, in order. */
   readonly plays?: readonly PlayLogEntry[]
+  readonly aerial?: { readonly version: 'directed-header-v1' }
   readonly moments?: { readonly version: 'match-moments-v1'; readonly selected: readonly MomentSelection[] }
 }
 export interface Session {

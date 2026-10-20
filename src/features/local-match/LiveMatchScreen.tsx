@@ -9,6 +9,7 @@ import type { CheckpointAuthority, Order, PendingPlay, PlayChoice, Session } fro
 import { confirmLiveOrder, currentPower, defaultPlayChoice, keepWindow } from './interactive/liveModel'
 import { DecisionPanel, Handover } from './LiveDecisionPanel'
 import { PlayPanel } from './LivePlayPanel'
+import { aerialBeatDuration } from './aerialGeometry'
 import { frameFocus, frameSounds, liveFrames } from './livePresentation'
 import { EVENT_ICONS, PLAY_LETTERS, eventKey, momentumShare } from './matchFeed'
 import { MatchScreen } from './MatchScreen'
@@ -85,7 +86,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
     if (next.ok) commit(next.value); else if (next.error !== 'DUPLICATE_COMMAND' && next.error !== 'WRONG_PLAY' && next.error !== 'STALE_STATE') setError(next.error)
   }
   const nextManually = () => { if (!caughtUp) setCursor(frames.length); else advance(current.current.revision, true) }
-  const wait = rest || skipAnimation ? FAST_MS : FRAME_MS / speed
+  const wait = rest || skipAnimation ? FAST_MS : (latest?.events.some((e) => e.aerial) ? aerialBeatDuration(frameFocus(latest)?.step) : FRAME_MS) / speed
   useEffect(() => {
     if (paused || exitOpen) return
     const revision = session.revision
@@ -113,8 +114,8 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   const final = finished ? exportResult(session) : null
   const focusEvent = frameFocus(latest)
   const source = [...events].reverse().find((item) => item !== focusEvent && item.playerId && (item.type === 'attack' || item.type === 'pass') && item.minute === focusEvent?.minute)
-  const play: BoardPlay = focusEvent && !finished ? { kind: focusEvent.type, side: focusEvent.side, playerId: focusEvent.playerId, ...(focusEvent.step && !['BUILD', 'DEFENSE_BUILD'].includes(focusEvent.step) && source?.playerId ? { fromPlayerId: source.playerId } : {}), ...(atPlay && view.play ? { defenderId: view.play.node === 'DEFEND' ? view.play.protagonistId : view.play.options.find((o) => o.available)?.rivalId ?? undefined } : {}) } : IDLE_PLAY
-  const choices = atPlay && view.play && view.play.node !== 'DEFEND' ? view.play.options.filter((option) => option.available && option.choice !== 'SHOOT').map((option) => ({ playerId: option.playerId, label: PLAY_LETTERS[option.choice] })) : []
+  const play: BoardPlay = focusEvent && !finished ? { kind: focusEvent.type, side: focusEvent.side, playerId: focusEvent.playerId, aerial: focusEvent.aerial, step: focusEvent.step, ...(focusEvent.step && !['BUILD', 'DEFENSE_BUILD'].includes(focusEvent.step) && source?.playerId ? { fromPlayerId: source.playerId } : {}), ...(atPlay && view.play ? { defenderId: view.play.node === 'DEFEND' ? view.play.protagonistId : view.play.options.find((o) => o.available)?.rivalId ?? undefined } : {}) } : IDLE_PLAY
+  const choices = atPlay && view.play && view.play.node !== 'DEFEND' && view.play.node !== 'HEADER' ? view.play.options.filter((option) => option.available && option.choice !== 'SHOOT').map((option) => ({ playerId: option.playerId, label: PLAY_LETTERS[option.choice] })) : []
   const goal = latest?.events.find((item) => item.type === 'goal')
   const momentum = momentumShare(events)
   const stats = finished ? view.stats : visibleStats(events)
@@ -157,7 +158,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
       <div className="live-board-wrap">
         <TacticalBoard formations={session.kernel.input.formations ?? { local: '4-3-3', cpu: '4-3-3' }} lineups={{ local: session.kernel.sides.local.team.lineup, cpu: session.kernel.sides.cpu.team.lineup }} catalog={catalog} names={names} play={play} choices={choices} tick={shownCount} focus={focus} speed={speed} animate={animate} />
         {focusEvent?.type === 'recovery' && focusEvent.step && <div className="recovery-flash" key={`recovery:${shownCount}`} role="status">{t('moments.recovered')}</div>}
-        {goal && <div className="goal-flash" key={`goal:${shownCount}`} role="status"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27" /><path d="m30 14 14 10-5 17H21l-5-17Z" /></svg>{t('match.goalCelebration', { team: goal.side ? names[goal.side] : '' })}</div>}
+        {goal && <div className={`goal-flash${goal.aerial ? ' header-goal-flash' : ''}`} key={`goal:${shownCount}`} role="status"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27" /><path d="m30 14 14 10-5 17H21l-5-17Z" /></svg>{t(goal.aerial ? 'aerial.goalCelebration' : 'match.goalCelebration', { team: goal.side ? names[goal.side] : '' })}</div>}
         <fieldset className="board-focus"><legend>{t('board.focus')}</legend>
           {(['full', 'local', 'cpu'] as const).map((id) => <label key={id}><input type="radio" name="board-focus" checked={focus === id} onChange={() => setFocus(id)} />{id === 'full' ? t('board.full') : t('board.zone', { name: names[id] })}</label>)}
         </fieldset>
