@@ -1,5 +1,9 @@
 # Tablero de tareas
 
+## SIM-004B — 20/10/2026
+
+API incremental v3, ventanas bilaterales, instrucciones y checkpoints implementados sin integrar UI ni autoridad online. Motor histórico y golden conservados; 168 comparaciones reales sin diferencias completas. Contrato/API y controles: [SIM-004B](qa/SIM-004B.md). SIM-005, backend interactivo y despliegue pendientes de encargos explícitos.
+
 ## SIM-004A — 20/10/2026
 
 Diseño incremental y prueba aislada de continuidad RNG: [ADR-0018](decisions/ADR-0018-interactive-match.md), [QA y límites](qa/SIM-004A.md). Cuatro ventanas propuestas, 24 golden históricos y reanudación RNG probada. Motor productivo intacto. SIM-004B pendiente de encargo: extracción/equivalencia completa, decisiones e integración; autoridad online requiere trabajo posterior explícito.

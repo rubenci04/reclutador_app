@@ -2,6 +2,8 @@
 
 Fecha: 20/10/2026. Estado: diseño propuesto y prueba aislada de viabilidad; integración productiva pendiente de SIM-004B. Base auditada: `44a05da`. No sustituye ADR-0016/0017 ni modifica versiones vigentes.
 
+Actualización SIM-004B: API de dominio implementada sin conexión a UI/online. Contratos definitivos compilados en `local-match/interactive/types.ts`; ver [QA y decisiones concretas](../qa/SIM-004B.md). El oráculo batch histórico permanece intacto, separado del kernel incremental bajo pruebas de paridad. Los comandos repetidos se rechazan con DUPLICATE_COMMAND y el recibo original se recupera por `receiptFor`; un futuro transporte puede devolverlo como acuse idempotente. Restore exige metadatos SHA-256 de autoridad, separados del snapshot recibido. El registro manual/mixto tiene sobre propio interactive-subs-v1. El boceto original siguiente se conserva como antecedente, no como contrato ejecutable final.
+
 ## 1. Sistema observado y dependencias
 
 `simulateMatch` (`local-match/simulator.ts`) es puro respecto de sus entradas, pero hoy ejecuta seis iteraciones completas en una sola llamada. `MATCH_RULES_VERSION` es `local-match-v2`; `actionModel` distingue clásico (ausente), v1, v2 y v3. Estos identificadores no son intercambiables. `MATCH_MINUTES` contiene 15/30/45/60/75/90. El modelo clásico genera una oportunidad por bloque, v1 tres, v2/v3 cuatro. Son marcadores lógicos, no timestamps por segundo.

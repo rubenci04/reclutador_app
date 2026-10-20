@@ -1,0 +1,8 @@
+
+ RUN  v5.0.5 C:/Users/rea_0/Documents/ChatGPT/Fútbol Draft
+
+
+ Test Files  2 passed (2)
+      Tests  34 passed (34)
+   Start at  13:01:32
+   Duration  4.87s (tests 48%, environment 33%, setup 8%, transform 7%, import 4%)

@@ -1,5 +1,12 @@
 # Plan de pruebas
 
+## SIM-004B — 20/10/2026
+
+- Paridad completa con motor histórico: nueve formaciones, sin/con subs, kernel de cuatro modelos y 168 parejas de catorce colecciones; golden A sin modificar.
+- Pausas tras 30/45/60/75, JSON parcial/final, planes recibidos parcialmente, digest oficial y corrupción, estadísticas conservadas, prefijos inmutables, finalización única.
+- Táctica y cambios manuales sin RNG extra, tres cambios/exclusividad/línea/sin reentrada; rechazos estructurados y duplicados, actor/ventana/revisión, proyección sin futuro ni seed.
+- Ejecutar typecheck/lint/test/build. Mantener UI, RPC y servicios fuera del alcance; registrar límites de autoridad futura en qa/SIM-004B.md.
+
 ## SIM-004A — 20/10/2026
 
 - Comprobar continuidad bit a bit del RNG al serializar/restaurar, streams principal/subs independientes, cero y wraparound, snapshots inválidos rechazados.
