@@ -36,7 +36,7 @@ export function TeamProgressBoard({ game, catalog, names }: Props) {
           <TeamPitchBoard game={game} participant={participant} catalog={catalog} />
           <ul className="team-missing">{(['ARQ', 'DEF', 'MED', 'DEL'] as const).map((position) => {
             const progress = positionProgress(team, position)
-            return <li key={position}>{t(progress.remaining ? 'teamProgress.missing' : 'teamProgress.full', { position: t(`positions.${position}`), ...progress })}</li>
+            return <li key={position} aria-label={t('hud.positionLabel', { position: t(`positions.${position}`), filled: progress.filled, capacity: progress.capacity })}><span aria-hidden="true">{position} {progress.filled}/{progress.capacity}</span></li>
           })}</ul>
         </article>
       })}

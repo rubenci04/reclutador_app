@@ -221,7 +221,14 @@ Validación: typecheck, lint, 831 pruebas y build ejecutados. QA visual en naveg
 | Categorías distintas: dos sorteos en vivo e independientes en la misma pantalla (jugador/CPU o dos personas) | Hecho (local): src/features/recruiter-duel/dualDraft.ts + DualDraftScreen; fichar a precio base o descartar (3 por equipo); sin descartes la carta es obligatoria; la CPU decide sola. Salas online siguen con el armado inmediato |
 | Nombres comunes de jugadores (fullName intacto) | Hecho: scripts/standardize-player-names.mjs, 429 nombres; revisar excepciones |
 | Técnicos: una sola referencia y año, sin enlaces de fuente | Hecho |
-| Presupuesto 120M actuales / 150M leyendas | Hecho (defaultBudgetForMode) |
-| Poder global grande en HUD y paneles de equipo | Hecho (PowerBadge; con once incompleto muestra nivel medio) |
+| Presupuesto 120M actuales / 150M leyendas | Reemplazado en UX-004 por 150M actuales / 200M leyendas, confirmación explícita del usuario; partidas históricas conservadas |
+| Poder global grande en HUD y paneles de equipo | UX-004: se elimina el duplicado del HUD; poder base/efectivo y sectores en panel posterior |
 | Suplentes por defecto | El mercado ya se abre tras el técnico si queda dinero; con 120M queda más saldo. No se añadieron suplentes obligatorios |
 | Análisis del resultado en tarjeta comparativa | Hecho; el detalle largo queda en «Ver detalle» |
+
+## UX-004 — 20/10/2026
+
+- Implementado: HUD compacto, cupos/gasto y descartes desplegables, reserva junto a oferta, canchas conservadas y poder base/efectivo separado con arquero informativo.
+- Implementado: confirmación con estado vigente y protección de doble clic; foco entre rondas y transiciones breves respetando movimiento reducido.
+- Presupuestos nuevos 150M/200M confirmados por el usuario; sin cambios de fórmulas, contratos ni partidas guardadas.
+- QA automatizada y límites: [informe UX-004](qa/UX-004.md). Pendiente revisión visual real a 360/390/412/768/1280 px: acceso a pestaña rechazado por política del navegador.

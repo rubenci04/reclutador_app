@@ -101,4 +101,4 @@ export function preflightMatchConfig(catalog: readonly Player[], config: MatchCo
 
 /** Raw form state of the pre-toss screen (text as typed); `MatchConfig` is derived from it. */
 export interface SetupDraft { readonly mode: 'classic' | 'custom'; readonly nameOne: string; readonly nameTwo: string; readonly budgetText: string; readonly substitutes: boolean; readonly coaches: boolean; readonly coachReserve?: number }
-export const DEFAULT_SETUP_DRAFT: SetupDraft = { mode: 'classic', nameOne: '', nameTwo: '', budgetText: String(CLASSIC_CONFIG.budget), substitutes: false, coaches: true, coachReserve: COACH_MAX_PRICE }
+export const DEFAULT_SETUP_DRAFT: SetupDraft = { mode: 'classic', nameOne: '', nameTwo: '', budgetText: '150', substitutes: false, coaches: true, coachReserve: COACH_MAX_PRICE }

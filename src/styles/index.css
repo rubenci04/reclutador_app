@@ -609,3 +609,24 @@
 .teams-completed .coach-card { transition: transform var(--motion-base) var(--motion-ease), box-shadow var(--motion-base) var(--motion-ease); }
 .teams-completed .coach-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px #0005; }
 @media (prefers-reduced-motion: reduce) { .teams-completed .coach-market, .teams-completed .substitute-market, .teams-completed .lineup-organizer { animation: none; } .teams-completed .coach-card { transition: none; } .teams-completed .coach-card:hover { transform: none; } }
+.auction-hud .hud-panel { min-width: 0; padding: 10px; }
+.auction-hud .hud-money { margin: 8px 0 4px; }
+.auction-hud .hud-signed { display: block; margin: 4px 0; font-size: 13px; font-weight: 800; }
+.hud-details summary, .hud-discard-details summary, .power-details summary, .power-comparison summary { cursor: pointer; min-height: 32px; align-content: center; }
+.hud-details .hud-positions { display: flex; flex-wrap: wrap; }
+.team-progress .team-missing { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; list-style: none; padding: 8px 0; }
+.power-base { color: #c9dfbf; font-weight: 700; }
+.power-goalkeeper { font-size: 13px; }
+.bid-panel .duel-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.bid-panel .blockable, .bid-panel .duel-actions button { width: 100%; min-height: 48px; }
+.hud-active .hud-turn { animation: ux-turn 220ms ease-out; }
+.cpu-status, .draft-alert { animation: panel-enter 180ms ease-out; }
+@keyframes ux-turn { from { transform: scale(.92); opacity: .6; } to { transform: scale(1); opacity: 1; } }
+@media(max-width:640px) {
+  .auction-hud { position: relative; top: auto; }
+  .auction-hud .hud-signed { display: block; }
+  .auction-hud .hud-panel { padding: 8px; }
+  .hud-details summary { font-size: 11px; }
+  .bid-panel { scroll-margin-top: 12px; }
+}
+@media(prefers-reduced-motion:reduce) { .hud-active .hud-turn, .cpu-status, .draft-alert { animation: none; } }

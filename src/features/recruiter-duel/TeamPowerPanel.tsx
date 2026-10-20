@@ -11,7 +11,7 @@ interface Props {
   readonly names: Readonly<Record<RecruiterId, string>>
 }
 
-const SECTORS = ['attack', 'defense', 'midfield'] as const
+const SECTORS = ['attack', 'midfield', 'defense'] as const
 
 /** After the scouting: the global power of each eleven (with its coach) and every level reference, large and first. */
 export function TeamPowerPanel({ game, catalog, sides, names }: Props) {
@@ -23,15 +23,17 @@ export function TeamPowerPanel({ game, catalog, sides, names }: Props) {
     <h2>{t('power.title')}</h2>
     <div className="team-power-grid">{powers.map(({ side, power }) => power && <article key={side} className={best === side ? 'team-power-card is-best' : 'team-power-card'}>
       <h3>{names[side]}{best === side && <small> · {t('power.leader')}</small>}</h3>
-      <p className="power-global" aria-label={t('power.globalLabel', { value: power.total.global.toFixed(1) })}><span>{t('power.global')}</span><strong>{power.total.global.toFixed(1)}</strong></p>
+      <p className="power-global" aria-label={t('power.globalLabel', { value: power.total.global.toFixed(1) })}><span>{t('auctionUX.effective')}</span><strong>{power.total.global.toFixed(1)}</strong></p>
       <ul className="power-sectors">{SECTORS.map((sector) => <li key={sector}><span>{t(`power.${sector}`)}</span><div className="power-bar" aria-hidden="true"><i style={{ width: `${Math.min(100, power.total[sector])}%` }} /></div><b>{Math.round(power.total[sector])}{power.coachBonus[sector] > 0 && <small> (+{power.coachBonus[sector].toFixed(1)})</small>}</b></li>)}</ul>
-      <p>{t('power.level', { tier: power.tier, rating: power.averageRating.toFixed(1) })}</p>
+      <p className="power-base">{t('auctionUX.base', { value: power.base.global.toFixed(1) })}</p>
+      <p className="power-goalkeeper">{(() => { const keeper = catalog.find((p) => p.id === game.teams[side].lineup.GK); return keeper ? t('auctionUX.keeper', { name: keeper.name, rating: keeper.overall_rating }) : null })()}</p>
+      <details className="power-details"><summary>{t('auctionUX.bonuses')}</summary><p>{t('power.level', { tier: power.tier, rating: power.averageRating.toFixed(1) })}</p>
       <p>{t('power.composition', { counts: SQUAD_TIERS.map((tier) => `${tier}: ${power.quality.counts[tier]}`).join(' · '), bonus: power.quality.bonus.toFixed(2) })}</p>
       <p>{t('power.rosterBonus', { bonus: power.rosterBonus.toFixed(1) })}</p>
-      <p>{power.coach ? t('power.coach', { coach: `${power.coach.name} ${power.coach.surname}`, tier: power.coach.tier }) : t('power.noCoach')}</p>
+      <p>{power.coach ? t('power.coach', { coach: `${power.coach.name} ${power.coach.surname}`, tier: power.coach.tier }) : t('power.noCoach')}</p></details>
     </article>)}</div>
-    {powers.length === 2 && powers[0].power && powers[1].power && <HeadToHead left={{ name: names[powers[0].side], power: powers[0].power }} right={{ name: names[powers[1].side], power: powers[1].power }} />}
-    <p>{t('power.contextNote')}</p>
+    <details className="power-comparison"><summary>{t('h2h.title')}</summary>{powers.length === 2 && powers[0].power && powers[1].power && <HeadToHead left={{ name: names[powers[0].side], power: powers[0].power }} right={{ name: names[powers[1].side], power: powers[1].power }} />}
+    <p>{t('power.contextNote')}</p></details>
   </section>
 }
 

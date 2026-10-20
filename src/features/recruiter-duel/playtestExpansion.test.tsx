@@ -43,7 +43,7 @@ describe('playtest expansion', () => {
     const initial = buildInitialDuel({ host: 'Ana', guest: 'Beto' }, 'SPAIN_LEGENDS', 'ARGENTINA_CURRENT')
     expect(initial.phase).toBe('LOBBY')
     expect(initial.coachMode).toBe('SPAIN_LEGENDS')
-    expect(initial.config?.budget).toBe(150)
+    expect(initial.config?.budget).toBe(200)
     expect(initial.categoryPair).toEqual({ recruiter_one: 'SPAIN_LEGENDS', recruiter_two: 'ARGENTINA_CURRENT' })
     const tossed = startCoinToss(initial, 'heads')
     if (!tossed.ok) throw new Error(tossed.error)
