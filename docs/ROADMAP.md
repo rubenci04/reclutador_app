@@ -1,5 +1,9 @@
 # Roadmap
 
+## SIM-005R-03 — 20/10/2026
+
+Momentos Destacados V1 implementados localmente: director determinista, ataque y defensa sólo contra CPU, Canvas con movimiento individual y decisiones breves en tres idiomas. Media 2,44 momentos en 240 semillas por política; compatibilidad histórica conservada. QA real a 390/412/768/1280; escucha y playtest humano pendientes. [Fórmulas, evidencia y límites](qa/SIM-005R-03.md). Sin publicación ni familias posteriores.
+
 ## SIM-005 — 20/10/2026
 
 Integración incremental local CPU/hot-seat sobre SIM-004B: modo dirigir destacado y alternativa rápida, decisiones de estrategia/cambios en cuatro ventanas, política CPU determinista, privacidad por entrega de dispositivo y series con auditoría versionada. No se cambian reglas históricas ni se habilita online interactivo. Pausa local sin recuperación tras recarga; balance con humanos y QA visual real pendientes. [QA y calibración](qa/SIM-005.md).

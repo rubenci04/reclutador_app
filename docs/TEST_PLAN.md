@@ -1,5 +1,12 @@
 # Plan de pruebas
 
+## SIM-005R-03 — Momentos destacados
+
+- Medir 240 semillas × interceptar/presionar/attack-tree-v1/lote: frecuencia, minutos, alternancia, protagonistas, desenlaces, goles y recuperación. Separar calibración sintética de balance humano.
+- Verificar 24 oportunidades, estadísticas y marcador por eventos, replay de decisiones, determinismo y restauración de cada fase; rechazar duplicados, revisión antigua y director manipulado. Conservar golden históricos sin actualizarlos.
+- Comprobar defensa en tres idiomas con foco y doble clic; opciones sin garantías, mejora por atributos y perfiles que invierten la preferencia inicial.
+- QA real 390/412/768/1280 y capturas de conducción, pase, intercepción y desenlace; audio y fluidez humana se registran separadamente. Ejecutar los cuatro comandos. Evidencia y límites en qa/SIM-005R-03.md.
+
 ## SIM-005 — 20/10/2026
 
 - Completar CPU y hot-seat con la API incremental real, preservando gasto de adquisición/técnico, reserva y banco. Comprobar inicio sin bloques/resultados futuros.

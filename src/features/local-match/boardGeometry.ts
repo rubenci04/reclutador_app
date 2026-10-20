@@ -14,6 +14,7 @@ export interface BoardPlay {
   readonly playerId?: string
   /** Player the ball came from (the protagonist of an interactive play), only when a confirmed event names him. */
   readonly fromPlayerId?: string
+  readonly defenderId?: string
 }
 export type BoardFocus = 'full' | 'local' | 'cpu'
 export interface Point { readonly x: number; readonly y: number }
@@ -47,7 +48,8 @@ export function ballPoint(play: BoardPlay): Point {
   switch (play.kind) {
     case 'recovery': return { x: .5 - dir * .1, y: .5 }
     case 'attack': case 'pass': return { x: .5 + dir * .14, y: .5 }
-    case 'shot': return { x: .5 + dir * .34, y: .5 }
+    // `shot` is the engine's off-target outcome; goals/saves have their own confirmed events.
+    case 'shot': return { x: dir === 1 ? .97 : .03, y: .16 }
     case 'goal': return { x: dir === 1 ? .985 : .015, y: .5 }
     case 'save': return { x: side === 'local' ? .06 : .94, y: .5 } // the saving side's goalkeeper area
     default: return { x: .5, y: .5 }

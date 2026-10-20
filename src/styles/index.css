@@ -713,3 +713,14 @@
 .play-letter { position: absolute; left: .8rem; top: .8rem; display: grid; place-items: center; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: #fff; color: #0b1a10; font-weight: 900; }
 @media (max-width: 600px) { .live-play { margin-inline: .5rem; padding: .8rem; } .play-cards { grid-template-columns: 1fr; } .play-card { min-height: 72px; } }
 @media (prefers-reduced-motion: reduce) { .live-play { animation: none; } .play-card { transition: none; } .play-card:hover:not(:disabled) { transform: none; } }
+
+/* SIM-005R-03: the pitch and the current decision lead; detail stays available. */
+.moment-history, .moment-detail { margin: .7rem 1rem; }
+.moment-history > summary, .moment-detail > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; color: #d2e7d8; }
+.recovery-flash { position: absolute; top: 8%; left: 50%; transform: translateX(-50%); padding: .6rem 1rem; border-radius: 12px; background: #00f5d4; color: #09261e; font-weight: 800; pointer-events: none; }
+.live-play .play-card { min-height: 78px; }
+.live-play .play-card small { display: none; }
+.live-play .moment-detail { margin: .3rem 0 0; font-size: .85rem; }
+@media (max-width: 600px) { .live-play .play-cards { grid-template-columns: 1fr 1fr; gap: .5rem; } .live-play .play-card { padding: .6rem; font-size: .85rem; } .live-play .play-card span { font-size: .75rem; } }
+@media (max-width: 600px) { .live-play .play-letter { position: static; width: 1.5rem; height: 1.5rem; } .live-play .play-card strong { font-size: .9rem; } }
+.moment-history .match-layout { display: block; }

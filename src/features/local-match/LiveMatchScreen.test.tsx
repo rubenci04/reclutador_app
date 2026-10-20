@@ -7,7 +7,7 @@ import { audio } from '../audio/audioEngine'
 import { FRAME_MS, LiveMatchScreen } from './LiveMatchScreen'
 import { liveFrames } from './livePresentation'
 import { LiveSeriesScreen } from './LiveSeriesScreen'
-import { liveSession } from './interactive/liveFixtures.test-support'
+import { liveInput, liveSession } from './interactive/liveFixtures.test-support'
 import type { Session } from './interactive'
 import * as simulator from './simulator'
 import * as interactive from './interactive'
@@ -46,6 +46,31 @@ async function open(hot = false, language: 'en' | 'es-AR' | 'pt-BR' = 'en') {
 }
 
 describe('SIM-005 live match controls', () => {
+  it.each(['en', 'es-AR', 'pt-BR'] as const)('pauses at a localized defensive moment and resolves the choice exactly once: %s', async (lang) => {
+    vi.useFakeTimers()
+    const i18n = await createI18n(lang)
+    let s = must(interactive.createSession(liveInput('restore-moments'), { sessionId: 'defense-ui', moments: { version: 'match-moments-v1' } }))
+    while (!(s.phase === 'PLAY' && s.kernel.partial!.play!.node === 'DEFEND')) {
+      if (s.phase === 'PLAY') {
+        const p = s.kernel.partial!.play!
+        s = must(interactive.submitPlay(s, { version: 'interactive-play-command-v1', id: `${p.id}:${p.node}`, sessionId: s.sessionId, expectedRevision: s.revision, playId: p.id, node: p.node, choice: p.options.find((o) => o.available)!.choice }))
+      } else if (s.phase === 'WINDOW') {
+        for (const side of ['local', 'cpu'] as const) s = must(interactive.submitDecision(s, side, interactive.decisionFor(s, side, `${s.window!.id}:${side}`, { type: 'KEEP', parameters: {} })))
+        s = must(interactive.applyWindow(s))
+      } else s = must(interactive.advanceBlock(s))
+    }
+    const spy = vi.spyOn(interactive, 'submitPlay')
+    render(<I18nextProvider i18n={i18n}><LiveMatchScreen origin={s} versusCpu difficulty="NORMAL" names={{ local: 'Home', cpu: 'Away' }} closed={false} onFinished={vi.fn()} onReturn={vi.fn()} /></I18nextProvider>)
+    click(i18n.t('liveDT.nextBlock'))
+    const panel = screen.getByRole('region', { name: i18n.t('moments.label') })
+    expect(within(panel).getByRole('heading')).toHaveFocus()
+    tick(60000); expect(spy).not.toHaveBeenCalled()
+    const button = within(panel).getByRole('button', { name: new RegExp(i18n.t('play.choice.INTERCEPT')) })
+    act(() => { button.click(); button.click() })
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(screen.queryByRole('region', { name: i18n.t('moments.label') })).toBeNull()
+  })
+
   it.each(['en', 'es-AR', 'pt-BR'] as const)('localizes controls and focuses each decision without stealing select focus: %s', async (lang) => {
     const { i18n } = await open(false, lang)
     expect(screen.getByRole('heading', { name: i18n.t('liveDT.title') })).toBeInTheDocument()
@@ -248,9 +273,9 @@ describe('SIM-005R-02 interactive attack in the live screen', { timeout: 60_000 
   it('stops the match at the first node with named, rated teammates, keeps score and board visible and ignores time', async () => {
     await openTree(); untilPanel()
     const first = panel()!
-    expect(within(first).getByRole('heading', { name: 'Where do you want to progress?' })).toHaveFocus()
+    expect(within(first).getByRole('heading', { name: 'Space out wide!' })).toHaveFocus()
     expect(cards().map((card) => card.textContent)).toEqual([expect.stringMatching(/ALeft wingReceiver: .+ · \d+/), expect.stringMatching(/BRight wingReceiver: .+ · \d+/)])
-    expect(first).toHaveTextContent(/\(\d+\) has the ball/); expect(first).toHaveTextContent(/Marked by .+ · \d+/)
+    expect(first).toHaveTextContent(/live_local_/); expect(first).toHaveTextContent(/Defence \d+/)
     expect(screen.getByRole('img', { name: /Tactical board/ })).toBeInTheDocument(); expect(scoreboard()).toMatch(/Home \d+–\d+ Away/)
     const shown = entries(); tick(60_000); expect(entries()).toBe(shown); expect(panel()).toBeInTheDocument()
   })
@@ -262,9 +287,9 @@ describe('SIM-005R-02 interactive attack in the live screen', { timeout: 60_000 
       const button = cards()[0] as HTMLButtonElement
       act(() => { button.click(); button.click() })
       tick(1_500)
-      if (screen.queryByRole('heading', { name: /The pass found/ })) break
+      if (screen.queryByRole('heading', { name: /reaches the box!/ })) break
     }
-    expect(screen.queryByRole('heading', { name: /The pass found/ })).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: /reaches the box!/ })).toBeInTheDocument()
     expect(cards().map((card) => card.querySelector('strong')!.textContent)).toEqual(['Send a cross', 'Go for goal'])
     playAll(); expect(done).toHaveBeenCalledTimes(1)
     const plays = done.mock.calls[0][0].result!.plays!

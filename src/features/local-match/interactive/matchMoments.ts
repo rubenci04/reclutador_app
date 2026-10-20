@@ -1,0 +1,61 @@
+import type { MatchEvent, MatchSide } from '../matchTypes'
+import { formationSlots } from '../../tactics/formations'
+import type { Player } from '../../../types/player'
+import { blockChance, keeperOf, receiverQuality, scoringChance, shooterQuality, shotOnTargetChance, type PendingPlay, type PlayChoice, type PlayContext, type StepResult } from './attackTree'
+
+export const MOMENTS_VERSION = 'match-moments-v1' as const
+export interface MomentSelection { readonly opportunity: number; readonly side: MatchSide; readonly protagonistId: string }
+export interface MomentDirector {
+  version: typeof MOMENTS_VERSION
+  target: number
+  nextEligible: number
+  nextSide: MatchSide
+  selected: MomentSelection[]
+}
+/** No sporting draws or future events. Only a private policy stream is consulted. */
+export function createDirector(random: () => number): MomentDirector {
+  return { version: MOMENTS_VERSION, target: random() < .65 ? 3 : 2, nextEligible: 2 + Math.floor(random() * 5), nextSide: random() < .5 ? 'local' : 'cpu', selected: [] }
+}
+export function eligibleMoment(d: MomentDirector, opportunity: number, side: MatchSide) {
+  return d.selected.length < d.target && opportunity >= d.nextEligible && side === d.nextSide
+}
+export function recordMoment(d: MomentDirector, selection: MomentSelection, random: () => number) {
+  d.selected.push(selection)
+  d.nextEligible = selection.opportunity + 7 + Math.floor(random() * 3)
+  d.nextSide = selection.side === 'local' ? 'cpu' : 'local'
+}
+const clamp = (n: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, n))
+/** Estimates, not biographical skills: interception favours reading/defence; pressure favours physical strength. */
+export function defenseChance(defender: Player, attacker: Player, choice: PlayChoice, ctx: PlayContext) {
+  const quality = choice === 'INTERCEPT' ? .5 * defender.def_rating + .3 * defender.men_rating + .2 * defender.overall_rating
+    : .35 * defender.def_rating + .45 * defender.phy_rating + .2 * defender.overall_rating
+  // Strategy/coach/formation are already in effective strengths: no second bonus.
+  const edge = clamp((ctx.effective.local.defense - ctx.effective.cpu.attack) * .004 + (ctx.effective.local.midfield - ctx.effective.cpu.midfield) * .002, -.08, .08)
+  return clamp(.46 + (quality - receiverQuality(attacker)) * .009 + edge, .18, .78)
+}
+export function planDefense(ctx: PlayContext, id: string, random: () => number, excluded: readonly string[]): { play: PendingPlay; protagonist: Player } | null {
+  const onPitch = (side: MatchSide, positions: readonly string[]) => formationSlots(ctx[side].formation).flatMap((slot) => {
+    const p = ctx.catalog.find((p) => p.id === ctx[side].lineup[slot.id]); return p && positions.includes(slot.position) ? [p] : []
+  }).sort((a, b) => a.id.localeCompare(b.id))
+  const defenders = onPitch('local', ['DEF', 'MED']); const attackers = onPitch('cpu', ['MED', 'DEL'])
+  const fresh = defenders.filter((p) => !excluded.includes(p.id)); const pool = fresh.length ? fresh : defenders
+  if (!pool.length || !attackers.length) return null
+  const defender = pool[Math.floor(random() * pool.length)]; const attacker = attackers[Math.floor(random() * attackers.length)]
+  return { protagonist: attacker, play: { id, node: 'DEFEND', protagonistId: defender.id, attackerId: attacker.id, receiverId: null, sector: null,
+    options: (['INTERCEPT', 'PRESS'] as const).map((choice) => ({ choice, available: true, playerId: defender.id, rivalId: attacker.id })) } }
+}
+export function resolveDefense(ctx: PlayContext, play: PendingPlay, choice: PlayChoice, random: () => number): StepResult {
+  const defender = ctx.catalog.find((p) => p.id === play.protagonistId)!
+  const attacker = ctx.catalog.find((p) => p.id === play.attackerId)!
+  const keeper = keeperOf(ctx.local, ctx.catalog)!
+  const event = (side: MatchSide, type: MatchEvent['type'], step: MatchEvent['step'], who: Player): MatchEvent => ({ minute: ctx.minute, side, type, step, playerId: who.id })
+  if (random() < defenseChance(defender, attacker, choice, ctx)) return { events: [event('local', 'recovery', choice === 'INTERCEPT' ? 'INTERCEPT_OK' : 'PRESS_OK', defender)], next: null }
+  const events = [event('cpu', 'pass', choice === 'PRESS' ? 'PRESS_BEATEN' : 'CPU_RETAIN', attacker)]
+  // A failed press leaves a clearer chance; an unsuccessful interception can still delay the attacker.
+  const edge = clamp((ctx.effective.cpu.attack - ctx.effective.local.defense) * .003, -.08, .08)
+  if (random() < blockChance(attacker, defender, edge) + (choice === 'INTERCEPT' ? .08 : 0)) events.push(event('local', 'recovery', 'DEFENSE_BLOCK', defender))
+  else if (random() >= shotOnTargetChance(attacker)) events.push(event('cpu', 'shot', 'CPU_WIDE', attacker))
+  else if (random() < scoringChance(shooterQuality(attacker), keeper, edge, choice === 'PRESS' ? .04 : 0)) events.push(event('cpu', 'goal', 'CPU_GOAL', attacker))
+  else events.push(event('local', 'save', 'DEFENSE_SAVE', keeper))
+  return { events, next: null }
+}

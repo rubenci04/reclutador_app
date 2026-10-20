@@ -1,5 +1,19 @@
 # Tablero de tareas
 
+## SIM-005R-03 — 20/10/2026
+
+| Entrega | Estado |
+| --- | --- |
+| Director match-moments-v1 sobre ocasiones reales, RNG propio y alternancia | Implementado; 2,44 momentos/partido en 240 semillas |
+| Ataque reutilizado y defensa interceptar/presionar | Implementado, sólo CPU; cinco atributos y fuerza efectiva sin doble bonus |
+| Checkpoint, resultado versionado y replay; históricos/golden | Cubiertos sin actualizar golden |
+| Canvas: conducción, presión, pase, recepción, recuperación, remate/arquero | Implementado; secuencia capturada con eventos reales |
+| Panel breve, detalle e historial desplegables | es-AR/en/pt-BR, accesibilidad incluida |
+| QA real 390/412/768/1280 | Ejecutada mediante arnés temporal retirado |
+| Audio escuchado y playtest humano de equilibrio | Pendientes; pruebas automatizadas no los sustituyen |
+
+[Informe completo y controles](qa/SIM-005R-03.md). Entrega local; sin push/merge/deploy ni avance a otras familias.
+
 ## SIM-005 — 20/10/2026
 
 | Entrega | Estado |

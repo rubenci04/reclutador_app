@@ -12,6 +12,8 @@ import { calculateTeamStrength, initiativeChance, rosterAdvantage, isValidOrgani
 import { composeStrength, squadQuality, SQUAD_QUALITY_VERSION } from '../squadQuality'
 import { MATCH_MINUTES, MATCH_RULES_VERSION, type MatchBlock, type MatchEvent, type MatchResult, type MatchSide, type MatchStats, type MatchTeam, type TeamStrength } from '../matchTypes'
 
+import { createDirector, eligibleMoment, recordMoment, planDefense, resolveDefense, type MomentDirector } from './matchMoments'
+
 const clamp = (value: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, value))
 
 function teamFrom(lineup: DraftLineup, catalog: readonly Player[], budget?: number, formation?: FormationId): MatchTeam {
@@ -43,7 +45,7 @@ const meanAdjustment = (total: TacticalAdjustment): TacticalAdjustment => ({ att
 type Side = { team: MatchTeam; strength: TeamStrength; features: ReturnType<typeof tacticalFeatures>; unused: string[]; subbed: boolean; baseMidfield: number }
 
 /** Version-frozen block adapter. Historical batch API stays untouched as regression oracle. */
-export function initializeKernel(source: SimulationInput, attackTree = false) {
+export function initializeKernel(source: SimulationInput, attackTree: boolean | 'match-moments-v1' = false) {
   const input = structuredClone(source)
   if (input.rulesVersion !== MATCH_RULES_VERSION || input.catalogVersion !== 'catalog_v1') throw new Error('unsupported_match_rules')
   const local = teamFrom(input.localLineup, input.catalog, input.budget, input.formations?.local)
@@ -69,7 +71,11 @@ export function initializeKernel(source: SimulationInput, attackTree = false) {
   const score = { local: 0, cpu: 0 }
   const random = initialCheckpoint(input.seed)
   const blocks: MatchBlock[] = []
-  return { input, local, cpu, sides, strengths, stats, score, blocks, advantage, quality, qualityTotals, effectiveTotals, adjustmentTotals, substitutionLog, selection, initialSelection: selection, nextBlock: 0, rng: { main: random, substitutions: substitutionRandom, ...(attackTree ? { tree: initialCheckpoint(`${input.seed}:tree`) } : {}) }, pendingChanges: [] as MatchEvent[], result: null as MatchResult | null,
+  let directorRng = initialCheckpoint(`${input.seed}:moments`)
+  const policyRandom = () => { const next = nextCheckpoint(directorRng); directorRng = next.checkpoint; return next.value }
+  const director = attackTree === 'match-moments-v1' ? createDirector(policyRandom) : undefined
+  return { input, local, cpu, sides, strengths, stats, score, blocks, advantage, quality, qualityTotals, effectiveTotals, adjustmentTotals, substitutionLog, selection, initialSelection: selection, nextBlock: 0, rng: { main: random, substitutions: substitutionRandom, ...(attackTree ? { tree: initialCheckpoint(`${input.seed}:tree`) } : {}), ...(director ? { director: directorRng } : {}) }, pendingChanges: [] as MatchEvent[], result: null as MatchResult | null,
+    ...(director ? { director: director as MomentDirector } : {}),
     ...(attackTree ? { tree: { version: ATTACK_TREE_VERSION, limit: ATTACK_TREE_LIMIT, started: 0, log: [] as PlayLogEntry[] }, partial: null as PartialBlock | null } : {}) }
 }
 /** Block in progress while an interactive play is open. Its events and counters are already confirmed; the block is not in `blocks` yet. */
@@ -166,13 +172,16 @@ function playOpportunities(state: KernelState, events: MatchEvent[], from: numbe
     const localAttackChance = calibrated ? opportunityChances(effective.local, effective.cpu) : input.actionModel ? clamp(.5 + (classicChance - .5) * 3.5, .15, .85) : classicChance
     const side: MatchSide = random() < localAttackChance ? 'local' : 'cpu'
     const opponent: MatchSide = side === 'local' ? 'cpu' : 'local'
-    if (state.tree && state.partial && side === 'local' && !state.partial.played && state.tree.started < state.tree.limit) {
+    if (state.tree && state.partial && !state.partial.played && (state.director ? eligibleMoment(state.director, blockIndex * 4 + opportunity, side) : side === 'local' && state.tree.started < state.tree.limit)) {
       const treeRandom = () => { const next = nextCheckpoint(state.rng.tree!); state.rng.tree = next.checkpoint; return next.value }
-      const planned = planPlay(playContext(state, minute, effective), `play-${minute}`, treeRandom)
+      const ctx = playContext(state, minute, effective)
+      const excluded = state.director?.selected.map((s) => s.protagonistId) ?? []
+      const planned = side === 'cpu' ? planDefense(ctx, `play-${minute}`, treeRandom, excluded) : planPlay(ctx, `play-${minute}`, treeRandom, excluded)
       if (planned) {
+        if (state.director) recordMoment(state.director, { opportunity: blockIndex * 4 + opportunity, side, protagonistId: planned.play.protagonistId }, () => { const next = nextCheckpoint(state.rng.director!); state.rng.director = next.checkpoint; return next.value })
         state.tree.started++
         state.partial.played = true; state.partial.opportunity = opportunity; state.partial.play = planned.play
-        events.push({ minute, side: 'local', type: 'attack', playerId: planned.protagonist.id, step: 'BUILD' })
+        events.push({ minute, side, type: 'attack', playerId: planned.protagonist.id, step: side === 'cpu' ? 'DEFENSE_BUILD' : 'BUILD' })
         return
       }
     }
@@ -211,7 +220,7 @@ function playOpportunities(state: KernelState, events: MatchEvent[], from: numbe
 function playContext(state: KernelState, minute: MatchEvent['minute'], effective: ReturnType<typeof blockStrengths>['effective']): PlayContext {
   const { input } = state
   return {
-    minute, catalog: input.catalog, effective, strategy: state.selection,
+    minute, catalog: input.catalog, effective, strategy: state.selection, ...(state.director ? { effectiveOnly: true } : {}),
     local: { lineup: state.sides.local.team.lineup, formation: input.formations?.local ?? '4-3-3' },
     cpu: { lineup: state.sides.cpu.team.lineup, formation: input.formations?.cpu ?? '4-3-3' },
   }
@@ -235,7 +244,7 @@ export function resolveKernelPlay(current: KernelState, id: string, choice: Play
   const minute = MATCH_MINUTES[state.nextBlock]
   const { effective } = blockStrengths(state, state.nextBlock)
   const treeRandom = () => { const next = nextCheckpoint(state.rng.tree!); state.rng.tree = next.checkpoint; return next.value }
-  const step = resolvePlay(playContext(state, minute, effective), pending, choice, treeRandom)
+  const step = (pending.node === 'DEFEND' ? resolveDefense : resolvePlay)(playContext(state, minute, effective), pending, choice, treeRandom)
   state.tree!.log.push({ id, playId: pending.id, node: pending.node, choice })
   for (const item of step.events) { partial.events.push(item); countEvent(state, item) }
   if (step.next) { partial.play = step.next; return state }

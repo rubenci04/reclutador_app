@@ -3,6 +3,7 @@ import type { SimulationInput } from '../simulator'
 import type { StrategyId } from '../../tactics/strategies'
 import type { KernelState } from './kernel'
 import type { PlayChoice, PlayLogEntry, PlayNode } from './attackTree'
+import type { MomentSelection } from './matchMoments'
 
 export type Pair<T> = Readonly<Record<MatchSide, T>>
 export type BenchMode = 'none' | 'auto-subs-v1' | 'manual-v1'
@@ -31,6 +32,7 @@ export interface SessionOptions {
   /** Trusted acquisition ledger, not provided by a remote player's command. Omitted: base-price local fixture. */
   readonly acquisition?: Pair<{ readonly spent: number; readonly coachPaid: number; readonly budget: number }>
   /** Opt-in interactive attack for the local side (attack-tree-v1). Absent: the session behaves exactly as before. */
+  readonly moments?: { readonly version: 'match-moments-v1' }
   readonly attackTree?: { readonly version: 'attack-tree-v1' }
 }
 /** One decision of the interactive attack. `id` is unique per session: a repeated id is a duplicate, never a second resolution. */
@@ -51,6 +53,7 @@ export interface InteractiveResult {
   readonly result: MatchResult
   /** attack-tree-v1 sessions only: every play decision, in order. */
   readonly plays?: readonly PlayLogEntry[]
+  readonly moments?: { readonly version: 'match-moments-v1'; readonly selected: readonly MomentSelection[] }
 }
 export interface Session {
   readonly schemaVersion: 'interactive-session-v1'

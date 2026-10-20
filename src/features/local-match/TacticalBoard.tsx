@@ -24,7 +24,7 @@ export interface TacticalBoardProps {
 
 const PITCH_RATIO = 68 / 105
 const COLORS = { local: '#00f5d4', cpu: '#ff5d73', gold: '#ffd54a' } as const
-interface Pose { ball: Point; shift: Record<MatchSide, number>; pulse: number }
+interface Pose { players: Record<string, Point>; ball: Point; shift: Record<MatchSide, number>; pulse: number }
 
 /** Small Canvas 2D tactical board. Original code; it draws only what the confirmed event states. */
 export function TacticalBoard({ formations, lineups, catalog, names, play, choices = [], tick, focus, speed, animate }: TacticalBoardProps) {
@@ -32,16 +32,31 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
   const canvas = useRef<HTMLCanvasElement>(null)
   const dots = useMemo(() => boardDots(formations, lineups), [formations, lineups])
   const carrier = useMemo(() => dots.find((dot) => dot.side === play.side && dot.playerId === play.playerId && play.playerId !== undefined), [dots, play.side, play.playerId])
-  const from = useMemo(() => dots.find((dot) => dot.side === 'local' && play.fromPlayerId !== undefined && dot.playerId === play.fromPlayerId), [dots, play.fromPlayerId])
+  const from = useMemo(() => dots.find((dot) => play.fromPlayerId !== undefined && dot.playerId === play.fromPlayerId), [dots, play.fromPlayerId])
   const options = useMemo(() => choices.flatMap((choice) => { const dot = dots.find((candidate) => candidate.side === 'local' && candidate.playerId === choice.playerId && choice.playerId !== null); return dot ? [{ dot, label: choice.label }] : [] }), [dots, choices])
   const carrierName = carrier ? catalog.find((player) => player.id === carrier.playerId)?.name : undefined
   const target = useMemo(() => {
     const shift = { local: teamShift(play, 'local'), cpu: teamShift(play, 'cpu') }
     const dir = play.side === 'cpu' ? -1 : 1
-    const ball = carrier && (play.kind === 'attack' || play.kind === 'pass' || play.kind === 'recovery') ? { x: carrier.home.x + shift[carrier.side] + dir * .02, y: carrier.home.y } : ballPoint(play)
-    return { ball, shift }
-  }, [play, carrier])
-  const pose = useRef<Pose>({ ball: { x: .5, y: .5 }, shift: { local: 0, cpu: 0 }, pulse: 0 })
+    let ball = carrier && (play.kind === 'attack' || play.kind === 'pass' || play.kind === 'recovery') ? { x: carrier.home.x + shift[carrier.side] + dir * .02, y: carrier.home.y } : ballPoint(play)
+    const players: Record<string, Point> = {}
+    for (const dot of dots) players[dot.slotId + dot.side] = { x: dot.home.x + shift[dot.side], y: dot.home.y }
+    if (carrier) {
+      const key = carrier.slotId + carrier.side
+      const carry = play.kind === 'attack' || play.kind === 'pass' ? dir * .10 : 0
+      players[key] = { x: Math.max(.08, Math.min(.92, players[key].x + carry)), y: players[key].y }
+      if (play.kind === 'attack' || play.kind === 'pass' || play.kind === 'recovery') { ball = { x: players[key].x + dir * .018, y: players[key].y } }
+      const defender = dots.find((d) => d.playerId && d.playerId === play.defenderId)
+      if (defender) players[defender.slotId + defender.side] = { x: players[key].x + dir * .06, y: players[key].y + .035 }
+    }
+    if (['shot', 'goal', 'save'].includes(play.kind)) {
+      const defending = play.kind === 'save' ? play.side : play.side === 'local' ? 'cpu' : 'local'
+      const keeper = dots.find((d) => d.side === defending && d.slotId === 'GK')
+      if (keeper) players[keeper.slotId + keeper.side] = { x: defending === 'local' ? .055 : .945, y: ball.y + .035 }
+    }
+    return { ball, shift, players }
+  }, [play, carrier, dots])
+  const pose = useRef<Pose>({ players: {}, ball: { x: .5, y: .5 }, shift: { local: 0, cpu: 0 }, pulse: 0 })
   const pulsed = useRef(-1)
   const latest = useRef({ dots, carrier, from, options, carrierName, names, focus, play, target })
   useEffect(() => { latest.current = { dots, carrier, from, options, carrierName, names, focus, play, target } })
@@ -67,11 +82,15 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
       const dt = last ? Math.min(.1, (time - last) / 1000) : .016; last = time
       const k = animate ? 1 - Math.exp(-dt * 7 * speed) : 1
       state.ball = { x: state.ball.x + (goal.ball.x - state.ball.x) * k, y: state.ball.y + (goal.ball.y - state.ball.y) * k }
+      for (const [key, point] of Object.entries(goal.players)) {
+        const prior = state.players[key] ?? latest.current.dots.find((d) => d.slotId + d.side === key)?.home ?? point
+        state.players[key] = { x: prior.x + (point.x - prior.x) * k, y: prior.y + (point.y - prior.y) * k }
+      }
       for (const side of ['local', 'cpu'] as const) state.shift[side] += (goal.shift[side] - state.shift[side]) * k
       state.pulse = animate ? Math.max(0, state.pulse - dt * 1.4 * speed) : 0
       draw()
-      const settled = Math.abs(goal.ball.x - state.ball.x) < .001 && Math.abs(goal.ball.y - state.ball.y) < .001 && state.pulse === 0 && ['local', 'cpu'].every((side) => Math.abs(goal.shift[side as MatchSide] - state.shift[side as MatchSide]) < .001)
-      if (settled) { state.ball = goal.ball; state.shift = { ...goal.shift }; draw(); frame = 0; return }
+      const settled = Math.abs(goal.ball.x - state.ball.x) < .001 && Math.abs(goal.ball.y - state.ball.y) < .001 && Object.entries(goal.players).every(([key, p]) => Math.abs(state.players[key].x - p.x) < .001 && Math.abs(state.players[key].y - p.y) < .001) && state.pulse === 0 && ['local', 'cpu'].every((side) => Math.abs(goal.shift[side as MatchSide] - state.shift[side as MatchSide]) < .001)
+      if (settled) { state.ball = goal.ball; state.players = { ...goal.players }; state.shift = { ...goal.shift }; draw(); frame = 0; return }
       frame = window.requestAnimationFrame(step)
     }
     frame = window.requestAnimationFrame(step)
@@ -113,12 +132,12 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
     ctx.beginPath(); ctx.moveTo(end, y - 9); ctx.lineTo(end + dir * 14, y); ctx.lineTo(end, y + 9); ctx.stroke()
   }
   const radius = Math.max(5, Math.min(11, pitchW * .0145))
-  const at = (dot: BoardDot) => ({ x: X(dot.home.x + pose.shift[dot.side]), y: Y(dot.home.y) })
+  const at = (dot: BoardDot) => { const p = pose.players[dot.slotId + dot.side] ?? dot.home; return { x: X(p.x), y: Y(p.y) } }
   // The pass that was just played: from the protagonist to whoever received it (or cut it out).
   if (view.from && view.carrier && view.carrier !== view.from && (view.play.kind === 'pass' || view.play.kind === 'recovery')) {
-    const a = at(view.from); const b = at(view.carrier)
+    const a = at(view.from)
     ctx.strokeStyle = view.play.kind === 'pass' ? COLORS.gold : '#ffffffaa'; ctx.lineWidth = 3; ctx.setLineDash(view.play.kind === 'pass' ? [] : [6, 6])
-    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); ctx.setLineDash([])
+    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(X(pose.ball.x), Y(pose.ball.y)); ctx.stroke(); ctx.setLineDash([])
   }
   // Options on offer: the protagonist (carrier) with a thin line to each available teammate and its card letter.
   if (view.options.length && view.carrier) {
@@ -132,8 +151,9 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
     }
   }
   for (const dot of view.dots) {
-    const x = X(dot.home.x + pose.shift[dot.side]); const y = Y(dot.home.y)
+    const { x, y } = at(dot)
     const marked = view.carrier?.side === dot.side && view.carrier.playerId === dot.playerId
+    if (dot.playerId && dot.playerId === view.play.defenderId) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, radius * 1.8, 0, Math.PI * 2); ctx.stroke() }
     if (marked) { ctx.fillStyle = COLORS.gold + '55'; ctx.beginPath(); ctx.arc(x, y, radius * 2.2, 0, Math.PI * 2); ctx.fill() }
     ctx.fillStyle = COLORS[dot.side]; ctx.strokeStyle = marked ? COLORS.gold : '#0b1a10'; ctx.lineWidth = marked ? 3 : 1.5
     ctx.beginPath(); ctx.arc(x, y, marked ? radius * 1.25 : radius, 0, Math.PI * 2); ctx.fill(); ctx.stroke()

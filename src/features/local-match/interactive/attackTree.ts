@@ -25,8 +25,8 @@ export const ATTACK_TREE_LIMIT = 3
 const HEADER_BONUS = .06
 
 export type Sector = 'LEFT' | 'RIGHT'
-export type PlayChoice = 'LEFT' | 'RIGHT' | 'CROSS' | 'SHOOT'
-export type PlayNode = 'DIRECTION' | 'FINISH'
+export type PlayChoice = 'LEFT' | 'RIGHT' | 'CROSS' | 'SHOOT' | 'INTERCEPT' | 'PRESS'
+export type PlayNode = 'DIRECTION' | 'FINISH' | 'DEFEND'
 export interface PlayOption { readonly choice: PlayChoice; readonly available: boolean; readonly playerId: string | null; readonly rivalId: string | null }
 export interface PendingPlay {
   readonly id: string
@@ -36,6 +36,7 @@ export interface PendingPlay {
   readonly receiverId: string | null
   readonly sector: Sector | null
   readonly options: readonly PlayOption[]
+  readonly attackerId?: string
 }
 export interface PlayLogEntry { readonly id: string; readonly playId: string; readonly node: PlayNode; readonly choice: PlayChoice }
 
@@ -47,6 +48,7 @@ export interface PlayContext {
   readonly cpu: Squad
   readonly effective: Readonly<Record<MatchSide, TeamStrength>>
   readonly strategy: Readonly<Record<MatchSide, StrategyId>>
+  readonly effectiveOnly?: boolean
 }
 
 const clamp = (value: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, value))
@@ -108,8 +110,9 @@ export function pickProtagonist(squad: Squad, catalog: readonly Player[], random
 }
 
 /** First node. Null (the opportunity is then resolved by the ordinary block model) when no flank has a valid receiver. */
-export function planPlay(ctx: PlayContext, id: string, random: () => number): { play: PendingPlay; protagonist: Player } | null {
-  const protagonist = pickProtagonist(ctx.local, ctx.catalog, random)
+export function planPlay(ctx: PlayContext, id: string, random: () => number, excluded: readonly string[] = []): { play: PendingPlay; protagonist: Player } | null {
+  const fresh = ctx.catalog.filter((p) => !excluded.includes(p.id))
+  const protagonist = pickProtagonist(ctx.local, fresh, random) ?? pickProtagonist(ctx.local, ctx.catalog, random)
   if (!protagonist) return null
   const options = (['LEFT', 'RIGHT'] as const).map((sector): PlayOption => {
     const receiver = receiverFor(sector, ctx.local, ctx.catalog, protagonist.id)
@@ -135,7 +138,7 @@ export function resolvePlay(ctx: PlayContext, play: PendingPlay, choice: PlayCho
   if (play.node === 'DIRECTION') {
     const sector = choice as Sector
     const passer = player(play.protagonistId); const receiver = player(option.playerId); const defender = player(option.rivalId)
-    if (random() < passChance(passer, receiver, defender, edge, ctx.strategy)) {
+    if (random() < passChance(passer, receiver, defender, edge, ctx.effectiveOnly ? { local: 'NEUTRAL', cpu: 'NEUTRAL' } : ctx.strategy)) {
       const target = crossTarget(ctx.local, ctx.catalog, receiver.id)
       const targetDefender = target ? rivalDefenderFor(target.slot.x, ctx.cpu, ctx.catalog) : null
       const shotDefender = rivalDefenderFor(placed(ctx.local, ctx.catalog).find((p) => p.player.id === receiver.id)!.slot.x, ctx.cpu, ctx.catalog)

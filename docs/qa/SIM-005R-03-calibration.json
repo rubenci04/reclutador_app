@@ -1,0 +1,134 @@
+{
+  "version": "match-moments-v1",
+  "seeds": 240,
+  "note": "Synthetic squads, KEEP coaching windows, left pass then shoot; paired seeds, not identical sporting draws after different choices. No competitive balance claim.",
+  "policies": {
+    "INTERCEPT": {
+      "matches": 240,
+      "moments": 586,
+      "attack": 298,
+      "defense": 288,
+      "goals": 1150,
+      "repeated": 0,
+      "transitions": 346,
+      "alternations": 346,
+      "recoveries": 163,
+      "byMinute": {
+        "15": 61,
+        "30": 156,
+        "45": 60,
+        "60": 144,
+        "75": 67,
+        "90": 98
+      },
+      "outcomes": {
+        "PASS_LEFT_OK": 235,
+        "SHOT_GOAL": 63,
+        "CPU_RETAIN": 171,
+        "DEFENSE_BLOCK": 46,
+        "SHOT_SAVED": 87,
+        "PASS_LEFT_LOST": 63,
+        "CPU_GOAL": 41,
+        "INTERCEPT_OK": 117,
+        "SHOT_BLOCKED": 30,
+        "DEFENSE_SAVE": 53,
+        "SHOT_WIDE": 55,
+        "CPU_WIDE": 31
+      },
+      "counts": {
+        "2": 134,
+        "3": 106
+      },
+      "momentsPerMatch": 2.441666666666667,
+      "goalsPerMatch": 4.791666666666667
+    },
+    "PRESS": {
+      "matches": 240,
+      "moments": 586,
+      "attack": 298,
+      "defense": 288,
+      "goals": 1161,
+      "repeated": 0,
+      "transitions": 346,
+      "alternations": 346,
+      "recoveries": 148,
+      "byMinute": {
+        "15": 61,
+        "30": 156,
+        "45": 60,
+        "60": 144,
+        "75": 67,
+        "90": 98
+      },
+      "outcomes": {
+        "PASS_LEFT_OK": 233,
+        "SHOT_GOAL": 64,
+        "PRESS_BEATEN": 170,
+        "DEFENSE_BLOCK": 30,
+        "SHOT_SAVED": 89,
+        "PASS_LEFT_LOST": 65,
+        "CPU_GOAL": 51,
+        "PRESS_OK": 118,
+        "DEFENSE_SAVE": 57,
+        "SHOT_WIDE": 52,
+        "CPU_WIDE": 32,
+        "SHOT_BLOCKED": 28
+      },
+      "counts": {
+        "2": 134,
+        "3": 106
+      },
+      "momentsPerMatch": 2.441666666666667,
+      "goalsPerMatch": 4.8375
+    },
+    "legacy": {
+      "matches": 240,
+      "moments": 720,
+      "attack": 720,
+      "defense": 0,
+      "goals": 1110,
+      "repeated": 0,
+      "transitions": 0,
+      "alternations": 0,
+      "recoveries": 0,
+      "byMinute": {
+        "15": 220,
+        "30": 230,
+        "45": 228,
+        "60": 38,
+        "75": 4
+      },
+      "outcomes": {
+        "PASS_LEFT_OK": 563,
+        "SHOT_GOAL": 165,
+        "PASS_LEFT_LOST": 157,
+        "SHOT_WIDE": 127,
+        "SHOT_SAVED": 204,
+        "SHOT_BLOCKED": 67
+      },
+      "counts": {
+        "3": 240
+      },
+      "momentsPerMatch": 3,
+      "goalsPerMatch": 4.625
+    },
+    "batch": {
+      "matches": 240,
+      "moments": 0,
+      "attack": 0,
+      "defense": 0,
+      "goals": 1140,
+      "repeated": 0,
+      "transitions": 0,
+      "alternations": 0,
+      "recoveries": 0,
+      "byMinute": {},
+      "outcomes": {},
+      "counts": {
+        "0": 240
+      },
+      "momentsPerMatch": 0,
+      "goalsPerMatch": 4.75
+    }
+  }
+}

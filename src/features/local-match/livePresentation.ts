@@ -26,7 +26,7 @@ export function liveFrames(blocks: readonly MatchBlock[], open: OpenBlock | null
     const groups: MatchEvent[][] = [[]]
     let hasAttack = false
     for (const item of block.events) {
-      const startsStep = item.step !== undefined && item.step !== 'BUILD'
+      const startsStep = item.step !== undefined && item.step !== 'BUILD' && item.step !== 'DEFENSE_BUILD'
       if (item.type === 'attack' && hasAttack || startsStep && groups[groups.length - 1].length) groups.push([])
       if (item.type === 'attack') hasAttack = true
       groups[groups.length - 1].push(item)

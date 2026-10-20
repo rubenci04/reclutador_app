@@ -11,7 +11,7 @@ export const MATCH_MINUTES = [15, 30, 45, 60, 75, 90] as const
 export type MatchSide = 'local' | 'cpu'
 export type MatchEventType = 'attack' | 'shot' | 'save' | 'recovery' | 'goal' | 'final' | 'substitution' | 'pass'
 /** Narration detail of an interactive attack (attack-tree-v1). Absent on every historical event. */
-export type PlayStep = 'BUILD' | 'PASS_LEFT_OK' | 'PASS_RIGHT_OK' | 'PASS_LEFT_LOST' | 'PASS_RIGHT_LOST' | 'CROSS_OK' | 'CROSS_LOST' | 'SHOT_BLOCKED' | 'SHOT_WIDE' | 'SHOT_SAVED' | 'SHOT_GOAL' | 'HEADER_WIDE' | 'HEADER_SAVED' | 'HEADER_GOAL'
+export type PlayStep = 'DEFENSE_BUILD' | 'INTERCEPT_OK' | 'PRESS_OK' | 'PRESS_BEATEN' | 'CPU_RETAIN' | 'DEFENSE_BLOCK' | 'CPU_WIDE' | 'CPU_GOAL' | 'DEFENSE_SAVE' | 'BUILD' | 'PASS_LEFT_OK' | 'PASS_RIGHT_OK' | 'PASS_LEFT_LOST' | 'PASS_RIGHT_LOST' | 'CROSS_OK' | 'CROSS_LOST' | 'SHOT_BLOCKED' | 'SHOT_WIDE' | 'SHOT_SAVED' | 'SHOT_GOAL' | 'HEADER_WIDE' | 'HEADER_SAVED' | 'HEADER_GOAL'
 
 export interface MatchTeam {
   readonly lineup: DraftLineup

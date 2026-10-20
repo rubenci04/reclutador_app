@@ -112,9 +112,9 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   const passDevice = atWindow && !versusCpu && Boolean(session.window?.plans.local) && handover !== session.window?.id
   const final = finished ? exportResult(session) : null
   const focusEvent = frameFocus(latest)
-  const build = [...events].reverse().find((item) => item.step === 'BUILD')
-  const play: BoardPlay = focusEvent && !finished ? { kind: focusEvent.type, side: focusEvent.side, playerId: focusEvent.playerId, ...(focusEvent.step && focusEvent.step !== 'BUILD' && build?.playerId ? { fromPlayerId: build.playerId } : {}) } : IDLE_PLAY
-  const choices = atPlay && view.play ? view.play.options.filter((option) => option.available && option.choice !== 'SHOOT').map((option) => ({ playerId: option.playerId, label: PLAY_LETTERS[option.choice] })) : []
+  const source = [...events].reverse().find((item) => item !== focusEvent && item.playerId && (item.type === 'attack' || item.type === 'pass') && item.minute === focusEvent?.minute)
+  const play: BoardPlay = focusEvent && !finished ? { kind: focusEvent.type, side: focusEvent.side, playerId: focusEvent.playerId, ...(focusEvent.step && !['BUILD', 'DEFENSE_BUILD'].includes(focusEvent.step) && source?.playerId ? { fromPlayerId: source.playerId } : {}), ...(atPlay && view.play ? { defenderId: view.play.node === 'DEFEND' ? view.play.protagonistId : view.play.options.find((o) => o.available)?.rivalId ?? undefined } : {}) } : IDLE_PLAY
+  const choices = atPlay && view.play && view.play.node !== 'DEFEND' ? view.play.options.filter((option) => option.available && option.choice !== 'SHOOT').map((option) => ({ playerId: option.playerId, label: PLAY_LETTERS[option.choice] })) : []
   const goal = latest?.events.find((item) => item.type === 'goal')
   const momentum = momentumShare(events)
   const stats = finished ? view.stats : visibleStats(events)
@@ -156,6 +156,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
       <div className="match-progress" aria-hidden="true"><span style={{ width: `${Math.min(100, minute / 90 * 100)}%` }} /></div>
       <div className="live-board-wrap">
         <TacticalBoard formations={session.kernel.input.formations ?? { local: '4-3-3', cpu: '4-3-3' }} lineups={{ local: session.kernel.sides.local.team.lineup, cpu: session.kernel.sides.cpu.team.lineup }} catalog={catalog} names={names} play={play} choices={choices} tick={shownCount} focus={focus} speed={speed} animate={animate} />
+        {focusEvent?.type === 'recovery' && focusEvent.step && <div className="recovery-flash" key={`recovery:${shownCount}`} role="status">{t('moments.recovered')}</div>}
         {goal && <div className="goal-flash" key={`goal:${shownCount}`} role="status"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27" /><path d="m30 14 14 10-5 17H21l-5-17Z" /></svg>{t('match.goalCelebration', { team: goal.side ? names[goal.side] : '' })}</div>}
         <fieldset className="board-focus"><legend>{t('board.focus')}</legend>
           {(['full', 'local', 'cpu'] as const).map((id) => <label key={id}><input type="radio" name="board-focus" checked={focus === id} onChange={() => setFocus(id)} />{id === 'full' ? t('board.full') : t('board.zone', { name: names[id] })}</label>)}
@@ -177,10 +178,10 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
         {savedRevision !== null && <button className="secondary-action" disabled={savedRevision !== session.revision} onClick={() => { void restore() }}>{t('liveDT.restorePause')}</button>}
         {rest && <p role="status">{t('liveDT.keepMode')}</p>}
       </div>}
-      <div className="match-layout">
+      <details className="moment-history"><summary>{t('moments.history')}</summary><div className="match-layout">
         <section className="match-narration"><h2>{t('liveDT.narration')}</h2>{events.length ? <ol ref={narration} aria-label={t('liveDT.narration')}>{events.map((item, index) => <li className={`event-${item.type}${item.type === 'goal' ? ' goal-event' : ''}`} key={`${item.minute}-${index}`}><time>{item.minute}'</time><i className="event-icon" aria-hidden="true">{EVENT_ICONS[item.type]}</i><span>{eventText(item)}</span>{item.tactic && <small className="event-tactic tactic-chip">{t('match.influence', { tactic: t(`match.tacticNotes.${item.tactic}`) })}</small>}</li>)}</ol> : <p>{t('liveDT.kickoff')}</p>}</section>
-        <MatchStatsPanel stats={stats} />
-      </div>
+      </div></details>
+      <MatchStatsPanel stats={stats} />
       <details className="live-power"><summary>{t('liveDT.powerDetail')}</summary><div className="team-power-grid">{(['local', 'cpu'] as const).map((id) => <article className="team-power-card" key={id}><h2>{names[id]}</h2><p>{t('liveDT.strategy')}: {t(`tactics.strategies.${session.kernel.selection[id]}.name`)}</p><p>{t('auctionUX.base', { value: power[id].base.global.toFixed(1) })}</p><p>{t('auctionUX.effective')}: <b>{power[id].effective.global.toFixed(1)}</b></p><p>{t('liveDT.changes', { count: session.benchMode[id] === 'manual-v1' ? Math.min(3 - session.entered[id].length, session.kernel.sides[id].unused.filter((playerId) => catalog.find((p) => p.id === playerId)?.position !== 'ARQ').length) : 0 })}</p></article>)}</div></details>
       {error && <p role="alert">{t('liveDT.error', { code: error })}</p>}
       {final?.ok && <section className="match-summary"><h2>{t('match.final')} · {score.local}–{score.cpu}</h2><TacticalSummary result={final.value.result} teamName={(id) => id ? names[id] : ''} /><div className="match-actions"><button className="secondary-action" onClick={() => setReplay(true)}>{t('match.replay')}</button></div><details><summary>{t('liveDT.audit')}</summary><p>{t('liveDT.localTrust')}</p><label>{t('liveDT.record')}<textarea readOnly value={JSON.stringify({ version: 'local-live-audit-v1', origin, final: session, result: final.value })} /></label></details></section>}

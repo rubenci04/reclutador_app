@@ -14,6 +14,16 @@ function teamsCompleted(): { game: RecruiterDuelGame; catalog: ReturnType<typeof
 }
 
 describe('SIM-005R-02 boundary: only the CPU duel opts in', () => {
+  it('opts new CPU games into moments while preserving the legacy opt-in and the series version', () => {
+    const { game, catalog } = teamsCompleted()
+    const first = must(createDuelSession(game, catalog, { recruiter_one: 'NEUTRAL', recruiter_two: 'NEUTRAL' }, 'match-moments-v1'))
+    expect(first.options.moments).toEqual({ version: 'match-moments-v1' })
+    expect(first.options.attackTree).toBeUndefined()
+    const second = must(nextLiveSession(first, 2, { lineups: { local: first.kernel.input.localLineup, cpu: first.kernel.input.cpuLineup }, benches: first.kernel.input.benches, formations: first.kernel.input.formations }))
+    expect(second.options.moments).toEqual(first.options.moments)
+    expect(second.kernel.director!.selected).toEqual([])
+    expect(second.kernel.rng.director).not.toEqual(first.kernel.rng.director)
+  })
   it('enables attack-tree-v1 for a CPU duel, keeps it in later games of the series and leaves hot-seat on the previous flow', () => {
     const { game, catalog } = teamsCompleted(); const strategies = { recruiter_one: 'HIGH_PRESS', recruiter_two: 'LOW_BLOCK' } as const
     const cpu = must(createDuelSession(game, catalog, strategies, true))
