@@ -599,3 +599,9 @@
   .entry-flow button, .entry-flow summary { min-height: 44px; }
   .entry-flow { overflow-wrap: anywhere; }
 }
+.lineup-organizer details > summary, .coach-help > summary, .coach-details > summary { cursor: pointer; min-height: 44px; align-content: center; font-weight: 700; }
+.lineup-organizer .bench-swap { margin: 12px 0; padding: 10px 12px; }
+.coach-details { width: 100%; font-size: 12px; }
+.coach-details > span, .coach-details small { display: block; }
+.coach-help { margin: 10px 0; }
+.coach-grid .coach-card > .primary-action { min-height: 44px; margin-top: auto; }

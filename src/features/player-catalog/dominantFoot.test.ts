@@ -77,7 +77,11 @@ describe('DATA-FOOT-001 metadata import', () => {
     for (const sample of baseline.simulations) {
       let fixture = fixtures.get(sample.mode)
       if (!fixture) {
-        const catalog = catalogForMode(sample.mode as ThemedModeId)
+        // This fixture measures DATA-FOOT-001 against its original source balance.
+        // The later, explicit Argentina editorial edition is tested separately.
+        const catalog = sample.mode === 'ARGENTINA_CURRENT'
+          ? LEAGUE_PLAYERS.filter((p) => p.id.startsWith('import_arg_') && p.category === 'contemporary')
+          : catalogForMode(sample.mode as ThemedModeId)
         const used = new Set<string>()
         const lineup = () => Object.fromEntries(DRAFT_SLOTS.map((slot) => {
           const player = catalog.filter((p) => p.position === slot.position && !used.has(p.id)).sort((a, b) => a.price - b.price || a.id.localeCompare(b.id))[0]

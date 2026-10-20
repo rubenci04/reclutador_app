@@ -110,7 +110,8 @@ describe('single-player auction interface', () => {
       if (expected.phase === 'NEXT_ROUND') expected = get(revealNextAuctionRound(expected))
     }
     expect(checkedFull).toBe(true); expect(checkedOneDefender).toBe(true)
-    expect(screen.getAllByText('11/11')).toHaveLength(2)
+    expect(screen.getByRole('button', { name: 'Confirm eleven' })).toBeEnabled()
+    expect(document.querySelector('#team-progress')).toBeNull()
     expect(screen.queryByRole('button', { name: 'Start match' })).not.toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Confirm eleven' }))
     expect(screen.queryByRole('radiogroup')).not.toBeInTheDocument()

@@ -30,29 +30,33 @@ export function CoachMarket({ game, participant, name, locked, onHire, onDecline
     <article className="coach-card coach-hired-card" data-tier={hired.tier} data-focus={hired.focus}>
       <CoachPortrait coach={hired} />
       <strong>{label(hired)}</strong>
-      <span>{t(`coach.status.${hired.status}`)}</span>
-      <CoachReferenceDetails coach={hired} />
-      <p>{t('coach.hired', { coach: label(hired), team: hired.team, price: hired.price, ...effectText(hired) })}</p>
+      <span>{t('coach.cardLevel', { tier: hired.tier, focus: t(`coach.focus.${hired.focus}`), price: hired.price })}</span>
+      <details className="coach-details"><summary>{t('squad.coachDetails')}</summary>
+        <span>{t(`coach.status.${hired.status}`)}</span><CoachReferenceDetails coach={hired} />
+        <p>{t('coach.hired', { coach: label(hired), team: hired.team, price: hired.price, ...effectText(hired) })}</p>
+      </details>
     </article>
   </section>
   if (!market.length) return null
   return <section className="coach-market" aria-label={t('coach.title', { name })}>
     <h3>{t('coach.title', { name })}</h3>
-    <p className="market-left">{t('coach.left', { amount: left, count: coachOffersFor(game, participant).length })}</p>
+    <p className="market-left">{t('squad.coachBudget', { amount: left })}</p>
     {locked ? <p>{t('coach.closed')}</p> : <>
       <div className="market-options coach-grid">{coachOffersFor(game, participant).map((coach) => <article key={coach.id} className="coach-card" data-tier={coach.tier} data-focus={coach.focus}>
         <CoachPortrait coach={coach} />
         <strong>{label(coach)}</strong>
-        <span>{t(`coach.status.${coach.status}`)} · {coach.deathYear ? t('coach.lifespan', { birth: coach.birthYear, death: coach.deathYear, age: coachAge(coach) }) : t('coach.referenceAge', { year: COACH_AS_OF_YEAR, age: coachAge(coach) })}</span>
-        <CoachReferenceDetails coach={coach} />
+
         <span>{t('coach.cardLevel', { tier: coach.tier, focus: t(`coach.focus.${coach.focus}`), price: coach.price })}</span>
-        <small>{t('coach.cardEffect', effectText(coach))}</small>
-        <button className="primary-action" disabled={!market.some((c) => c.id === coach.id)} onClick={() => onHire(coach.id)}>{t('coach.hireCard', { name: label(coach), price: coach.price })}</button>
+        <details className="coach-details"><summary>{t('squad.coachDetails')}</summary>
+          <span>{t(`coach.status.${coach.status}`)} · {coach.deathYear ? t('coach.lifespan', { birth: coach.birthYear, death: coach.deathYear, age: coachAge(coach) }) : t('coach.referenceAge', { year: COACH_AS_OF_YEAR, age: coachAge(coach) })}</span>
+          <CoachReferenceDetails coach={coach} /><small>{t('coach.cardEffect', effectText(coach))}</small>
+        </details>
+        <button className="primary-action" disabled={!market.some((c) => c.id === coach.id)} aria-label={t('coach.hireCard', { name: label(coach), price: coach.price })} onClick={() => onHire(coach.id)}>{t('squad.hire', { price: coach.price })}</button>
       </article>)}</div>
-      <p className="market-hint">{t('coach.affinityHint')}</p>
+      <details className="coach-help"><summary>{t('squad.coachHelp')}</summary><p className="market-hint">{t('coach.affinityHint')}</p>
       <p className="market-hint">{t('coach.contextHint')}</p>
-      <button className="secondary-action" onClick={onDecline}>{t('coach.decline')}</button>
-      <p className="market-hint">{t('coach.hint')}</p>
+
+      <p className="market-hint">{t('coach.hint')}</p></details><button className="secondary-action" onClick={onDecline}>{t('coach.decline')}</button>
     </>}
   </section>
 }

@@ -75,15 +75,15 @@ export function LineupOrganizer({ game, participant, name, catalog, confirmed, l
   }
   return <section className="lineup-organizer" aria-labelledby={`lineup-title-${participant}`}>
     <h2 id={`lineup-title-${participant}`}>{t('lineup.turn', { participant: name })}</h2>
-    {onFormationChange && <div className="formation-selector"><label>{t('playtest.formation')}<select disabled={confirmed || locked} value={team.formation ?? '4-3-3'} onChange={(e) => { onFormationChange(e.target.value as FormationId); setSelected(null); setSelectedBench(null); setBenchTarget({}) }}>{FORMATION_IDS.map((id) => <option key={id} value={id} disabled={!organizeFormation(owned, id, catalog)}>{id}</option>)}</select></label><p>{t('playtest.formationHelp')}</p><FormationGuide /></div>}
-    <p>{t(editing ? 'lineup.instructions' : bench.length > 0 && onBenchSwap ? 'rosterUX.benchHint' : 'lineup.reviewHint')}</p>
-    {!confirmed && <button className={editing ? 'primary-action' : 'secondary-action'} aria-pressed={editing} onClick={() => { setEditing(!editing); setSelected(null); setSelectedBench(null); setMessage(null) }}>{t(editing ? 'lineup.editModeOn' : 'lineup.editMode')}</button>}
+    {onFormationChange && <div className="formation-selector"><label>{t('playtest.formation')}<select disabled={confirmed || locked} value={team.formation ?? '4-3-3'} onChange={(e) => { onFormationChange(e.target.value as FormationId); setSelected(null); setSelectedBench(null); setBenchTarget({}) }}>{FORMATION_IDS.map((id) => <option key={id} value={id} disabled={!organizeFormation(owned, id, catalog)}>{id}</option>)}</select></label><details><summary>{t('squad.formationHelp')}</summary><p>{t('playtest.formationHelp')}</p><FormationGuide /></details></div>}
+    <p>{t(editing ? 'squad.editHint' : bench.length > 0 && onBenchSwap ? 'squad.benchHint' : 'squad.reviewHint')}</p>
+    {!confirmed && !(bench.length > 0 && onBenchSwap) && <button className={editing ? 'primary-action' : 'secondary-action'} aria-pressed={editing} onClick={() => { setEditing(!editing); setSelected(null); setSelectedBench(null); setMessage(null) }}>{t(editing ? 'lineup.editModeOn' : 'lineup.editMode')}</button>}
     {editing && !confirmed && <>
       {selected && <p className="lineup-selected" role="status">{t('lineup.selectedBanner', { player: playerName(selected), role: roleLabel(selected) })}</p>}
       <p className="lineup-legend">{t('lineup.dragHint')} <span><i className="apt apt-NATURAL" />{t('lineup.legend.NATURAL')}</span> <span><i className="apt apt-ADAPTED" />{t('lineup.legend.ADAPTED')}</span> <span><i className="apt apt-UNKNOWN" />{t('lineup.legend.UNKNOWN')}</span></p>
     </>}
-    {!confirmed && !locked && onBenchSwap && bench.length > 0 && <div className="bench-swap" role="group" aria-label={t('lineup.benchSwap.title')}>
-      <h3>{t('lineup.benchSwap.title')}</h3><p>{t('lineup.benchSwap.hint')}</p>{game.manualBench && <p>{t('playtest.manualBench')}</p>}
+    {!confirmed && !locked && onBenchSwap && bench.length > 0 && <details className="bench-swap"><summary>{t('squad.listChanges')}</summary><div role="group" aria-label={t('lineup.benchSwap.title')}>
+      <p>{t('squad.manualBench')}</p>
       {bench.map(({ index, place, player }) => {
         const options = slots.filter((slot) => slot.position === place.position)
         const target = benchTarget[index] ?? options[0]?.id
@@ -91,7 +91,7 @@ export function LineupOrganizer({ game, participant, name, catalog, confirmed, l
           <label>{t('lineup.benchSwap.replace')}<select value={target} onChange={(event) => setBenchTarget({ ...benchTarget, [index]: event.target.value })}>{options.map((slot) => <option key={slot.id} value={slot.id}>{roleLabel(slot.id)} · {catalog.find((candidate) => candidate.id === game.teams[participant].lineup[slot.id])?.name}</option>)}</select></label>
           <button className="secondary-action" onClick={() => swapBench(index, target as FormationRole)}>{t('lineup.benchSwap.action')}</button></div>
       })}
-    </div>}
+    </div></details>}
     <TeamPitchBoard game={game} participant={participant} catalog={catalog} organize={(editing || bench.length > 0 && onBenchSwap) && !confirmed && !locked ? { selectedSlot: selected, selectedBench, onPick: pick, onDrop: drop, onBenchPick: onBenchSwap ? pickBench : undefined, onBenchDrop: onBenchSwap ? swapBench : undefined } : undefined} />
     <p role={message?.kind === 'error' ? 'alert' : 'status'} className={message?.kind === 'error' ? 'draft-alert' : undefined}>{message?.text}</p>
     {confirmed

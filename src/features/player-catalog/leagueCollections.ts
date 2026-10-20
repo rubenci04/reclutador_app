@@ -6,6 +6,7 @@ import type { ThemedModeId } from '../themed-modes/modeTypes'
 import { calculatePlayerPrice } from './calculatePlayerPrice'
 import { playerIdentityKey } from './playerIdentity'
 import { isDominantFoot } from './dominantFoot'
+import { balanceArgentinaCurrent } from './argentinaCurrentBalance'
 
 /** Source OVR is editorial input, not an independently verified current-club claim.
  * The existing economy accepts 75–99. Values below 75 retain their source value
@@ -56,8 +57,10 @@ const globalLegends = LEAGUE_PLAYERS.filter((p) => p.category === 'legend').filt
   return !duplicate
 })
 const scopedPlayers = new Map(Object.entries(modes).map(([id, scope]) => [id, LEAGUE_PLAYERS.filter((player) => sourceById.get(player.id)!.league === scope[0] && player.category === scope[1])]))
+const argentinaCurrent = scopedPlayers.get('ARGENTINA_CURRENT')!.map((player) => balanceArgentinaCurrent(player, sourceById.get(player.id)!.sourceRank))
 export function importedPlayersForMode(id: ThemedModeId): readonly Player[] | undefined {
   if (id === 'LEGENDS_ONLY') return globalLegends
+  if (id === 'ARGENTINA_CURRENT') return argentinaCurrent
   return scopedPlayers.get(id)
 }
 

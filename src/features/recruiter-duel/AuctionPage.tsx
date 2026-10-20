@@ -441,7 +441,7 @@ export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps)
           </section>
         })()}
       </>}
-      {game && <><TeamProgressBoard game={game} catalog={catalog} names={names} /><details className="draw-replay"><summary>{t('draw.export')}</summary><p>{t('draw.explanation')}</p><label>{t('draw.context')}<textarea readOnly value={JSON.stringify({ seed: game.seed, context: game.drawContext, ...(game.categoryPair ? { categoryPair: game.categoryPair } : {}), ...(game.config ? { config: game.config } : {}) })} /></label></details></>}
+      {game && <>{game.phase !== 'TEAMS_COMPLETED' && <TeamProgressBoard game={game} catalog={catalog} names={names} />}<details className="draw-replay"><summary>{t('draw.export')}</summary><p>{t('draw.explanation')}</p><label>{t('draw.context')}<textarea readOnly value={JSON.stringify({ seed: game.seed, context: game.drawContext, ...(game.categoryPair ? { categoryPair: game.categoryPair } : {}), ...(game.config ? { config: game.config } : {}) })} /></label></details></>}
       <NoticeToasts notices={notices} onDismiss={dismiss} />
       {storageWarning && <p role="status">{t('draw.storageWarning')}</p>}
       <VisualCredits />

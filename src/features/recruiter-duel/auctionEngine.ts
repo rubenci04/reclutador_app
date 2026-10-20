@@ -286,7 +286,19 @@ export const revealDiscardReplacement = (game: RecruiterDuelGame): AuctionTransi
 
 export function nextAuctionRound(game: RecruiterDuelGame, catalog: readonly Player[]): AuctionTransition {
   if (game.phase !== 'ROUND_RESULT') return { ok: false, error: 'invalid_transition' }
-  if (game.roundIndex < game.rounds.length - 1) return transition(game, { phase: 'NEXT_ROUND', roundIndex: game.roundIndex + 1, lastAward: null })
+  if (game.roundIndex < game.rounds.length - 1) {
+    const from = game.roundIndex + 1
+    const needsStarter = (position: Player['position']) => [FIRST, SECOND].some((side) => DRAFT_SLOTS.some((slot) => slot.position === position && !game.teams[side].lineup[slot.id]))
+    const startersPending = POSITIONS.some(needsStarter)
+    const eligible = (round: AuctionRound) => startersPending ? needsStarter(round.position) : [FIRST, SECOND].some((side) => teamHasSpace(game.teams[side], round.position))
+    const index = game.rounds.findIndex((round, i) => i >= from && eligible(round))
+    if (index < 0) return { ok: false, error: 'teams_invalid' }
+    // Move a pending card, never invent a signing, consume RNG or discard a card.
+    // Exact remaining quotas and the feasibility search are independent of order.
+    const rounds = [...game.rounds]
+    ;[rounds[from], rounds[index]] = [rounds[index], rounds[from]]
+    return transition(game, { phase: 'NEXT_ROUND', roundIndex: from, rounds, lastAward: null })
+  }
   const valid = [FIRST, SECOND].every((participant) => {
     const summary = summarizeDraft(game.teams[participant].lineup, catalog, budgetOf(game))
     const team = game.teams[participant]

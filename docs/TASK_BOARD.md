@@ -1,5 +1,10 @@
 # Tablero de tareas
 
+## ARG-UX-FIX — 20/10/2026
+
+Balance argentino actual, prioridad de posiciones titulares pendientes y once/técnicos compactos implementados. 884 pruebas aprobadas; QA y pendientes en qa/ARG-UX-FIX.md.
+
+
 ## Entrada simplificada — 20/10/2026
 
 | ID | Actividad | Estado |
