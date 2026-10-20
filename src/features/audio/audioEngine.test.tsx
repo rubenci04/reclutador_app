@@ -46,6 +46,18 @@ describe('audio preferences', () => {
 })
 
 describe('audio engine', () => {
+  it('unlocks on a gesture, coalesces resume attempts and never queues the missed effect', async () => {
+    const { context, raw, started } = fakeContext('suspended')
+    let resume!: () => void
+    raw.resume.mockImplementation(() => new Promise<void>((resolve) => { resume = () => { raw.state = 'running'; resolve() } }))
+    const engine = createAudioEngine({ storage: () => memoryStorage(), createContext: () => context })
+    const first = engine.unlock(); const second = engine.unlock()
+    expect(raw.resume).toHaveBeenCalledTimes(1)
+    expect(engine.play('cross')).toBe(false); expect(started).toHaveLength(0)
+    resume(); expect(await first).toBe(true); expect(await second).toBe(true)
+    expect(started).toHaveLength(0)
+    expect(engine.play('cross')).toBe(true); expect(started.length).toBeGreaterThan(0)
+  })
   it('has a recipe for every sound and creates no context before the first play', () => {
     expect(SOUND_IDS).toEqual(['coinToss', 'coinLand', 'bid', 'award', 'signing', 'discard', 'diceRoll', 'goal', 'finalWhistle', 'kickoffWhistle', 'halfTimeWhistle', 'shot', 'pass', 'intercept', 'cross', 'header'])
     for (const id of SOUND_IDS) expect(RECIPES[id].tones.length + (RECIPES[id].noise?.length ?? 0)).toBeGreaterThan(0)

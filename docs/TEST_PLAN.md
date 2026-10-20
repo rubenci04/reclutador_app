@@ -1,5 +1,13 @@
 # Plan de pruebas
 
+## SIM-005R-04B — Continuidad y validación audiovisual
+
+- Regresión añadida: pose inicial/final entre fases, balón en conducción/liberación, salto/separación, arquero tras contacto y desenlace sin gol anticipado; geometría y RAF simulado no acreditan fluidez real.
+- Pausa detiene Canvas y reloj; velocidad/foco conservan progreso; omitir/reduced-motion no omiten decisiones. Respuesta inmediata al cabezazo.
+- Audio: desbloqueo y resume agrupado, efectos suspendidos sin cola, centro sincronizado con liberación y sin duplicados al pausar/cambiar velocidad; sin pases ficticios en disputa/vuelo.
+- Cuatro controles ejecutados: 1.021 pruebas aprobadas. Golden intactos. Diagnóstico independiente con seis onces reales y 20.000 semillas por política, sin calibración.
+- Pendiente humano: 390/412/768/1280, nueve fases grabadas, gol/atajada/desviado/despeje, tres direcciones, escucha completa, controles, idiomas y accesibilidad. Navegador bloqueado por Work settings. Utilidad y pasos en [QA](qa/SIM-005R-04B.md).
+
 ## SIM-005R-04 — Centro y cabezazo dirigido
 
 - Extensión opt-in sobre momentos: envío válido/despejado, duelo ganado/perdido, atacante sin puesto válido y HEADER sólo tras victoria. Ningún draw de definición antes de aceptar dirección.

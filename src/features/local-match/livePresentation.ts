@@ -46,6 +46,8 @@ export function frameSounds(frame: LiveFrame): readonly SoundId[] {
   const sounds: SoundId[] = []
   if (frame.events.some((item) => item.step === 'AERIAL_CROSS')) sounds.push('cross')
   else if (frame.events.some((item) => item.step === 'DIRECTED_HEADER_CONTACT')) sounds.push('header')
+  // Contest/win/flight are visual phases, not extra contacts with the ball.
+  else if (frame.events.some((item) => item.aerial && item.type === 'pass')) return sounds
   else if (frame.events.some((item) => item.type === 'goal')) sounds.push('goal')
   else if (frame.events.some((item) => item.type === 'shot' || item.type === 'save')) sounds.push('shot')
   else if (frame.events.some((item) => item.type === 'pass')) sounds.push('pass')
@@ -54,6 +56,9 @@ export function frameSounds(frame: LiveFrame): readonly SoundId[] {
   if (frame.lastOfBlock && frame.minute === 90) sounds.push('finalWhistle')
   return sounds
 }
+
+/** Cross audio follows release after the short run-up; no delayed sounds are queued after a skipped beat. */
+export const frameSoundOffset = (sound: SoundId) => sound === 'cross' ? 250 : 0
 
 /** The most important event of a frame decides what the board shows. Null before anything is revealed. */
 export function frameFocus(frame: LiveFrame | undefined): MatchEvent | null {

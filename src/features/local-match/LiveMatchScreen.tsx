@@ -10,7 +10,7 @@ import { confirmLiveOrder, currentPower, defaultPlayChoice, keepWindow } from '.
 import { DecisionPanel, Handover } from './LiveDecisionPanel'
 import { PlayPanel } from './LivePlayPanel'
 import { aerialBeatDuration } from './aerialGeometry'
-import { frameFocus, frameSounds, liveFrames } from './livePresentation'
+import { frameFocus, frameSoundOffset, frameSounds, liveFrames } from './livePresentation'
 import { EVENT_ICONS, PLAY_LETTERS, eventKey, momentumShare } from './matchFeed'
 import { MatchScreen } from './MatchScreen'
 import { MatchStatsPanel } from './MatchStatsPanel'
@@ -54,6 +54,8 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   const saved = useRef<{ snapshot: string; authority: CheckpointAuthority } | null>(null)
   const saving = useRef(false); const mounted = useRef(true); const recorded = useRef(false)
   const heard = useRef(new Set<string>())
+  const audioCursor = useRef(0)
+  const beatClock = useRef({ cursor: -1, elapsed: 0 })
   const main = useRef<HTMLElement>(null); const narration = useRef<HTMLOListElement>(null)
   useEffect(() => { mounted.current = true; main.current?.focus(); return () => { mounted.current = false } }, [])
   const view = useMemo(() => inspectSession(session), [session])
@@ -83,12 +85,18 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
     const state = current.current
     if (state.phase !== 'PLAY') return
     const next = submitPlay(state, { version: 'interactive-play-command-v1', id: `${state.sessionId}:${rendered.id}:${rendered.node}`, sessionId: state.sessionId, expectedRevision: state.revision, playId: rendered.id, node: rendered.node, choice })
-    if (next.ok) commit(next.value); else if (next.error !== 'DUPLICATE_COMMAND' && next.error !== 'WRONG_PLAY' && next.error !== 'STALE_STATE') setError(next.error)
+    if (next.ok) {
+      commit(next.value)
+      // Reveal the first confirmed response immediately; later beats keep their normal duration.
+      setCursor((value) => Math.min(value + 1, liveFrames(next.value.kernel.blocks, next.value.kernel.partial ? { minute: next.value.kernel.partial.events[0].minute, events: next.value.kernel.partial.events } : null).length))
+    } else if (next.error !== 'DUPLICATE_COMMAND' && next.error !== 'WRONG_PLAY' && next.error !== 'STALE_STATE') setError(next.error)
   }
   const nextManually = () => { if (!caughtUp) setCursor(frames.length); else advance(current.current.revision, true) }
   const wait = rest || skipAnimation ? FAST_MS : (latest?.events.some((e) => e.aerial) ? aerialBeatDuration(frameFocus(latest)?.step) : FRAME_MS) / speed
   useEffect(() => {
+    if (beatClock.current.cursor !== cursor) beatClock.current = { cursor, elapsed: 0 }
     if (paused || exitOpen) return
+    const started = Date.now()
     const revision = session.revision
     let action: (() => void) | null = null
     if (cursor < frames.length) action = () => setCursor((value) => Math.min(value + 1, frames.length))
@@ -96,16 +104,27 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
     else if (session.phase === 'PLAY' && rest) action = () => { const pending = current.current.kernel.partial?.play; if (pending && current.current.revision === revision) choosePlay(pending, defaultPlayChoice(pending, origin.kernel.input.catalog)) }
     else if (session.phase === 'WINDOW' && rest) action = () => { if (current.current.revision !== revision) return; const next = keepWindow(current.current); if (next.ok) commit(next.value) }
     if (!action) return
-    const timer = window.setTimeout(action, wait)
-    return () => window.clearTimeout(timer)
-  }, [paused, exitOpen, cursor, frames.length, session.revision, session.phase, rest, wait]) // eslint-disable-line react-hooks/exhaustive-deps
+    const timer = window.setTimeout(action, rest || skipAnimation ? wait : Math.max(0, wait - beatClock.current.elapsed / speed))
+    return () => { window.clearTimeout(timer); if (beatClock.current.cursor === cursor) beatClock.current.elapsed += (Date.now() - started) * speed }
+  }, [paused, exitOpen, cursor, frames.length, session.revision, session.phase, rest, wait, speed, skipAnimation]) // eslint-disable-line react-hooks/exhaustive-deps
   // Sounds follow what is on screen and go through a ledger: pausing, changing speed or jumping ahead never repeats one.
   useEffect(() => {
+    // Explicit manual reveals still sound while paused; the clock alone reveals nothing.
+    if (exitOpen || paused && audioCursor.current === shownCount) return
+    audioCursor.current = shownCount
+    const timers: number[] = []
     const play = new Set<SoundId>()
     if (!heard.current.has('kickoff') && origin.kernel.blocks.length === 0) { heard.current.add('kickoff'); play.add('kickoffWhistle') }
-    for (const frame of shown) for (const sound of frameSounds(frame)) { const key = `${frame.key}:${sound}`; if (!heard.current.has(key)) { heard.current.add(key); play.add(sound) } }
+    for (const frame of shown) for (const sound of frameSounds(frame)) {
+      const key = `${frame.key}:${sound}`
+      if (heard.current.has(key)) continue
+      const delay = frame === latest && !paused && !skipAnimation && !rest && !prefersReducedMotion() ? Math.max(0, frameSoundOffset(sound) - beatClock.current.elapsed) / speed : 0
+      if (delay > 0) timers.push(window.setTimeout(() => { if (!heard.current.has(key)) { heard.current.add(key); audio.play(sound) } }, delay))
+      else { heard.current.add(key); play.add(sound) }
+    }
     for (const sound of play) audio.play(sound)
-  }, [shown]) // eslint-disable-line react-hooks/exhaustive-deps
+    return () => timers.forEach(window.clearTimeout)
+  }, [shown, paused, exitOpen, speed, skipAnimation, rest]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (narration.current) narration.current.scrollTop = narration.current.scrollHeight }, [shownCount])
   // The record and the series table only learn the result once it has been shown.
   useEffect(() => { if (finished && !recorded.current) { recorded.current = true; onFinished(session) } }, [finished, session, onFinished])
@@ -142,7 +161,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
     if (restored.ok) commit(restored.value); else setError(restored.error)
   }
   if (replay && final?.ok) return <MatchScreen result={final.value.result} catalog={catalog} localName={names.local} cpuName={names.cpu} onReturn={() => setReplay(false)} returnLabel={t('navigation.backSummary')} exitWarning={t('liveDT.closeReplay')} onRematch={() => {}} showNewMatchActions={false} />
-  return <main id="match-main" ref={main} tabIndex={-1} className={`match-screen live-match${animate ? '' : ' live-no-motion'}`}>
+  return <main id="match-main" ref={main} tabIndex={-1} onPointerDownCapture={() => { void audio.unlock() }} onKeyDownCapture={() => { void audio.unlock() }} className={`match-screen live-match${animate ? '' : ' live-no-motion'}`}>
     <section className="match-card" aria-label={t('liveDT.title')}>
       <header className="match-heading"><p className="eyebrow"><span />{finished ? t('match.final') : t('match.playing')}</p><h1 className="live-title">{t('liveDT.title')}</h1>{finished && closed ? <button className="secondary-action" onClick={onReturn}>{t('navigation.home')}</button> : <ConfirmNavigation label={t(finished ? 'navigation.home' : 'navigation.exitMatch')} message={t('navigation.seriesExitWarning')} onConfirm={onReturn} onOpenChange={setExitOpen} />}</header>
       <div className="match-scoreboard">
@@ -156,7 +175,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
       </div>
       <div className="match-progress" aria-hidden="true"><span style={{ width: `${Math.min(100, minute / 90 * 100)}%` }} /></div>
       <div className="live-board-wrap">
-        <TacticalBoard formations={session.kernel.input.formations ?? { local: '4-3-3', cpu: '4-3-3' }} lineups={{ local: session.kernel.sides.local.team.lineup, cpu: session.kernel.sides.cpu.team.lineup }} catalog={catalog} names={names} play={play} choices={choices} tick={shownCount} focus={focus} speed={speed} animate={animate} />
+        <TacticalBoard formations={session.kernel.input.formations ?? { local: '4-3-3', cpu: '4-3-3' }} lineups={{ local: session.kernel.sides.local.team.lineup, cpu: session.kernel.sides.cpu.team.lineup }} catalog={catalog} names={names} play={play} choices={choices} tick={shownCount} focus={focus} speed={speed} animate={animate} paused={paused || exitOpen} />
         {focusEvent?.type === 'recovery' && focusEvent.step && <div className="recovery-flash" key={`recovery:${shownCount}`} role="status">{t('moments.recovered')}</div>}
         {goal && <div className={`goal-flash${goal.aerial ? ' header-goal-flash' : ''}`} key={`goal:${shownCount}`} role="status"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27" /><path d="m30 14 14 10-5 17H21l-5-17Z" /></svg>{t(goal.aerial ? 'aerial.goalCelebration' : 'match.goalCelebration', { team: goal.side ? names[goal.side] : '' })}</div>}
         <fieldset className="board-focus"><legend>{t('board.focus')}</legend>

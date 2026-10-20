@@ -1,0 +1,35 @@
+{
+  "scenario": "physical_forward",
+  "cases": [
+    {
+      "ending": "DIRECTED_HEADER_OVER",
+      "seed": "aerial-playtest-1",
+      "playId": "play-15",
+      "direction": "NEAR_POST"
+    },
+    {
+      "ending": "DIRECTED_HEADER_SAVE",
+      "seed": "aerial-playtest-1",
+      "playId": "play-75",
+      "direction": "NEAR_POST"
+    },
+    {
+      "ending": "DIRECTED_HEADER_GOAL",
+      "seed": "aerial-playtest-1",
+      "playId": "play-15",
+      "direction": "GOAL_CENTER"
+    },
+    {
+      "ending": "AERIAL_CLEAR",
+      "seed": "aerial-playtest-2",
+      "playId": "play-90",
+      "direction": "NEAR_POST"
+    },
+    {
+      "ending": "DIRECTED_HEADER_WIDE",
+      "seed": "aerial-playtest-11",
+      "playId": "play-30",
+      "direction": "NEAR_POST"
+    }
+  ]
+}

@@ -20,8 +20,7 @@ export function readAudioPreferences(storage: StorageLike | undefined): AudioPre
 }
 
 /**
- * Small sound engine. The AudioContext is created lazily on the first `play`, which only happens after a user action,
- * and a context the browser keeps suspended (autoplay policy) simply skips the sound instead of queueing it.
+ * AudioContext is unlocked by a real user gesture. Effects requested while suspended are dropped, never queued late.
  */
 export function createAudioEngine(dependencies: EngineDependencies = {}) {
   const getStorage = dependencies.storage ?? (() => { try { return window.localStorage } catch { return undefined } })
@@ -32,6 +31,7 @@ export function createAudioEngine(dependencies: EngineDependencies = {}) {
   let preferences = readAudioPreferences(getStorage())
   let context: AudioContext | undefined
   let master: GainNode | undefined
+  let resuming: Promise<boolean> | undefined
   const listeners = new Set<() => void>()
   const ensure = () => {
     if (context) return context
@@ -41,7 +41,20 @@ export function createAudioEngine(dependencies: EngineDependencies = {}) {
     } catch { context = undefined }
     return context
   }
+  const unlock = (): Promise<boolean> => {
+    if (!preferences.enabled || preferences.volume <= 0) return Promise.resolve(false)
+    const ready = ensure()
+    if (!ready) return Promise.resolve(false)
+    if (ready.state === 'running') return Promise.resolve(true)
+    if (ready.state !== 'suspended') return Promise.resolve(false)
+    if (!resuming) {
+      try { resuming = ready.resume().then(() => ready.state === 'running', () => false).finally(() => { resuming = undefined }) }
+      catch { return Promise.resolve(false) }
+    }
+    return resuming
+  }
   return {
+    unlock,
     getPreferences: () => preferences,
     subscribe(listener: () => void) { listeners.add(listener); return () => { listeners.delete(listener) } },
     setPreferences(patch: Partial<AudioPreferences>) {
@@ -55,7 +68,7 @@ export function createAudioEngine(dependencies: EngineDependencies = {}) {
       if (!preferences.enabled || preferences.volume <= 0) return false
       const ready = ensure()
       if (!ready || !master) return false
-      if (ready.state === 'suspended') { void ready.resume().catch(() => undefined); return false }
+      if (ready.state === 'suspended') { void unlock(); return false }
       if (ready.state !== 'running') return false
       scheduleSound(ready, master, id, ready.currentTime + .005)
       return true

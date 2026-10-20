@@ -1,5 +1,9 @@
 # Roadmap
 
+## SIM-005R-04B — 20/10/2026
+
+Pulido local de continuidad aérea, pausa/velocidades y sincronización/desbloqueo de audio, sin modificar contratos, RNG ni probabilidades. Diagnóstico de seis perfiles reales: existen centros competitivos sin justificar un aumento global. 1.021 pruebas aprobadas. Work settings bloqueó el navegador: movimiento y escucha real pendientes; preparada utilidad local con semillas para cinco desenlaces. [QA y procedimiento](qa/SIM-005R-04B.md). Sin publicación ni fases posteriores.
+
 ## SIM-005R-04 — 20/10/2026
 
 Extensión opt-in directed-header-v1 sobre Momentos Destacados: centro y disputa previos, tres direcciones de cabezazo sin resultado precalculado, Canvas aéreo y RNG propio. Conserva 24 ocasiones, frecuencia y 600 sesiones completas de la base anterior. Capturas reales de elección 390/412/768/1280; secuencia de movimiento/desenlaces bloqueada posteriormente por Work settings y audio sin escucha real. [QA y límites](qa/SIM-005R-04.md). Sin publicación ni familias posteriores.

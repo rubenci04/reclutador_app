@@ -1,5 +1,19 @@
 # Tablero de tareas
 
+## SIM-005R-04B — 20/10/2026
+
+| Entrega | Estado |
+| --- | --- |
+| Continuidad aérea, conducción, salto, arquero y desenlace confirmado | Corregido en presentación; pruebas geométricas y Canvas simulado aprobadas |
+| Pausa, 1×/2×/4×, foco y respuesta a elección | Corregido; conserva progreso y decisiones |
+| Audio único, centro en liberación, desbloqueo por gesto | Verificado con mocks; escucha real pendiente |
+| Balance de seis perfiles reales sin calibración | Ejecutado: 480.000 oportunidades condicionales; centros competitivos en algunos perfiles |
+| Movimiento real, video/fotogramas y cuatro tamaños | Pendiente: navegador bloqueado por Work settings; sin eludirlo |
+| Playtest local reproducible | Preparado con motor real y cinco desenlaces; pendiente uso humano |
+| Controles y entrega local | Typecheck/lint, 1.021 pruebas y build aprobados; sin push/merge/deploy |
+
+[Informe y límites](qa/SIM-005R-04B.md). Trabajo detenido tras esta entrega; no se inicia otra familia.
+
 ## SIM-005R-04 — 20/10/2026
 
 | Entrega | Estado |

@@ -9,12 +9,12 @@ import { keepWindow } from './interactive/liveModel'
 import { liveInput, must } from './interactive/liveFixtures.test-support'
 
 afterEach(() => { cleanup(); vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals() })
-function pendingHeader() {
+function pendingHeader(node: 'HEADER' | 'FINISH' = 'HEADER') {
   let s = must(api.createSession(liveInput('aerial-restore-0'), { sessionId: 'header-ui', moments: { version: 'match-moments-v1' }, aerial: { version: 'directed-header-v1' } }))
   for (let n = 0; n < 100; n++) {
     if (s.phase === 'PLAY') {
       const p = s.kernel.partial!.play!
-      if (p.node === 'HEADER') return s
+      if (p.node === node) return s
       const choice = p.node === 'DEFEND' ? 'INTERCEPT' : p.node === 'FINISH' ? p.options.find((o) => o.choice === 'CROSS' && o.available)?.choice ?? 'SHOOT' : p.options.find((o) => o.available)!.choice
       s = must(api.submitPlay(s, { version: 'interactive-play-command-v1', id: `${p.id}:${p.node}`, sessionId: s.sessionId, expectedRevision: s.revision, playId: p.id, node: p.node, choice }))
     } else s = must(s.phase === 'WINDOW' ? keepWindow(s) : api.advanceBlock(s))
@@ -22,14 +22,42 @@ function pendingHeader() {
   throw new Error('missing_header_fixture')
 }
 const tick = (ms: number) => { for (let n = 0; n < ms; n += 50) act(() => { vi.advanceTimersByTime(Math.min(50, ms - n)) }) }
-async function open(language: 'es-AR' | 'en' | 'pt-BR') {
-  vi.useFakeTimers(); const i18n = await createI18n(language); const origin = pendingHeader()
+async function open(language: 'es-AR' | 'en' | 'pt-BR', node: 'HEADER' | 'FINISH' = 'HEADER') {
+  vi.useFakeTimers(); const i18n = await createI18n(language); const origin = pendingHeader(node)
   const ui = render(<I18nextProvider i18n={i18n}><LiveMatchScreen origin={origin} versusCpu difficulty="NORMAL" names={{ local: 'Home', cpu: 'Away' }} closed={false} onFinished={vi.fn()} onReturn={vi.fn()} /></I18nextProvider>)
   fireEvent.click(screen.getByRole('button', { name: i18n.t('liveDT.nextBlock') }))
   return { i18n, origin, ui }
 }
 
 describe('directed header presentation', () => {
+  it('reveals a chosen header immediately and preserves the remaining beat duration through pause and speed changes', async () => {
+    await open('en')
+    fireEvent.click(screen.getByRole('button', { name: /Goal centre/ }))
+    const now = () => document.querySelector('.live-now')!.textContent!
+    expect(now()).toMatch(/heads it!/)
+    tick(100); fireEvent.click(screen.getByRole('button', { name: 'Pause' })); tick(4000)
+    expect(now()).toMatch(/heads it!/)
+    fireEvent.change(screen.getByRole('combobox', { name: 'Speed' }), { target: { value: '2' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Resume playback' }))
+    tick(100); expect(now()).toMatch(/heads it!/)
+    tick(25); expect(now()).toMatch(/flies towards goal/)
+  })
+
+  it('schedules cross sound at release, cancels it on pause and resumes it once at the remaining offset', async () => {
+    const play = vi.spyOn(audio, 'play').mockReturnValue(true)
+    await open('en', 'FINISH')
+    fireEvent.click(screen.getByRole('button', { name: /Send a cross/ }))
+    const count = () => play.mock.calls.filter(([id]) => id === 'cross').length
+    expect(count()).toBe(0)
+    tick(100); fireEvent.click(screen.getByRole('button', { name: 'Pause' })); tick(1000)
+    expect(count()).toBe(0)
+    fireEvent.change(screen.getByRole('combobox', { name: 'Speed' }), { target: { value: '2' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Resume playback' }))
+    tick(50); expect(count()).toBe(0)
+    tick(25); expect(count()).toBe(1)
+    tick(2000); expect(count()).toBe(1)
+  })
+
   it.each(['es-AR', 'en', 'pt-BR'] as const)('offers three localized goal targets, focuses the question and only accepts one tap: %s', async (language) => {
     const { i18n, origin } = await open(language)
     const panel = screen.getByRole('region', { name: i18n.t('aerial.label') })

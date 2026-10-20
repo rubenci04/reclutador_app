@@ -1,0 +1,793 @@
+{
+  "baseCommit": "1969cd8",
+  "version": "directed-header-v1 unchanged",
+  "note": "Diagnostic script, not a test. GLOBAL_CURRENT real catalog records, editorial ratings as stored. 20,000 seeds per policy, conditional on FINISH reached. Disjoint 4-3-3 elevens; 150M current-player budget, legal disjoint lineups validated by createSession. Same draws sampled per policy for comparison, no sporting changes. WIDE_PLAY vs LOW_BLOCK and existing roster bonuses via currentPower. No coach hired. Expected rates computed from unchanged production probability functions.",
+  "results": [
+    {
+      "name": "balanced",
+      "spent": {
+        "local": 54,
+        "cpu": 55
+      },
+      "actors": {
+        "crosser": {
+          "id": "import_bra_bra_act_givanildo_vieira_de_sousa",
+          "name": "Hulk",
+          "ATT": 85,
+          "DEF": 57,
+          "PHY": 79,
+          "MEN": 81,
+          "OVR": 82
+        },
+        "target": {
+          "id": "import_bra_bra_act_gabriel_barbosa_almeida",
+          "name": "Gabigol",
+          "ATT": 86,
+          "DEF": 58,
+          "PHY": 80,
+          "MEN": 82,
+          "OVR": 83
+        },
+        "aerialDefender": {
+          "id": "import_bra_bra_act_leonardo_ortiz",
+          "name": "Léo Ortiz",
+          "ATT": 65,
+          "DEF": 85,
+          "PHY": 80,
+          "MEN": 82,
+          "OVR": 83
+        },
+        "shotDefender": {
+          "id": "import_esp_esp_act_daniel_vivian_moreno",
+          "name": "Dani Vivian",
+          "ATT": 65,
+          "DEF": 85,
+          "PHY": 80,
+          "MEN": 82,
+          "OVR": 83
+        },
+        "keeper": {
+          "id": "import_bra_bra_act_agustin_daniel_rossi",
+          "name": "Agustín Rossi",
+          "ATT": 48,
+          "DEF": 86,
+          "PHY": 80,
+          "MEN": 82,
+          "OVR": 83
+        }
+      },
+      "lineups": {
+        "local": {
+          "LW": "import_bra_bra_act_givanildo_vieira_de_sousa",
+          "ST": "import_bra_bra_act_gabriel_barbosa_almeida",
+          "RW": "plr_048",
+          "LCM": "import_bra_bra_act_danilo_dos_santos_de_oliveira",
+          "CDM": "import_bra_bra_act_gerson_santos_da_silva",
+          "RCM": "import_bra_bra_act_jorge_andres_carrascal_guardo",
+          "LB": "import_eng_epl_act_052",
+          "LCB": "import_eng_epl_act_055",
+          "RCB": "import_eng_epl_act_057",
+          "RB": "import_eng_epl_act_058",
+          "GK": "import_eng_epl_act_048"
+        },
+        "cpu": {
+          "GK": "import_bra_bra_act_agustin_daniel_rossi",
+          "LCB": "import_bra_bra_act_leonardo_ortiz",
+          "RCB": "import_eng_epl_act_051",
+          "LW": "import_bra_bra_act_jose_manuel_lopez",
+          "ST": "import_bra_bra_act_vitor_hugo_roque_ferreira",
+          "RW": "import_eng_epl_act_050",
+          "LCM": "import_bra_bra_act_jorge_luiz_frello_filho",
+          "CDM": "import_eng_epl_act_047",
+          "RCM": "import_eng_epl_act_049",
+          "LB": "import_esp_esp_act_aymeric_jean_louis_gerard_alphonse_laporte",
+          "RB": "import_esp_esp_act_daniel_vivian_moreno"
+        }
+      },
+      "effective": {
+        "local": {
+          "attack": 82.61809027777778,
+          "defense": 80.62,
+          "midfield": 79.72,
+          "global": 81
+        },
+        "cpu": {
+          "attack": 74.72,
+          "defense": 85.48444444444445,
+          "midfield": 79.42,
+          "global": 79.9
+        }
+      },
+      "edge": -0.007399062500000014,
+      "policies": {
+        "SHOOT": {
+          "seeds": 20000,
+          "goals": 5166,
+          "headers": 0,
+          "cleared": 0,
+          "rate": 0.2583,
+          "expectedRate": 0.2612717998249092
+        },
+        "NEAR_POST": {
+          "seeds": 20000,
+          "goals": 3285,
+          "headers": 12427,
+          "cleared": 7573,
+          "rate": 0.16425,
+          "expectedRate": 0.16457601287854137
+        },
+        "GOAL_CENTER": {
+          "seeds": 20000,
+          "goals": 2684,
+          "headers": 12427,
+          "cleared": 7573,
+          "rate": 0.1342,
+          "expectedRate": 0.13563164122293445
+        },
+        "FAR_POST": {
+          "seeds": 20000,
+          "goals": 3863,
+          "headers": 12427,
+          "cleared": 7573,
+          "rate": 0.19315,
+          "expectedRate": 0.19280262699495712
+        }
+      }
+    },
+    {
+      "name": "physical_forward",
+      "spent": {
+        "local": 67,
+        "cpu": 55
+      },
+      "actors": {
+        "crosser": {
+          "id": "import_bra_bra_act_givanildo_vieira_de_sousa",
+          "name": "Hulk",
+          "ATT": 85,
+          "DEF": 57,
+          "PHY": 79,
+          "MEN": 81,
+          "OVR": 82
+        },
+        "target": {
+          "id": "plr_091",
+          "name": "Erling Haaland",
+          "ATT": 98,
+          "DEF": 42,
+          "PHY": 97,
+          "MEN": 91,
+          "OVR": 95
+        },
+        "aerialDefender": {
+          "id": "import_bra_bra_act_leonardo_ortiz",
+          "name": "Léo Ortiz",
+          "ATT": 65,
+          "DEF": 85,
+          "PHY": 80,
+          "MEN": 82,
+          "OVR": 83
+        },
+        "shotDefender": {
+          "id": "import_esp_esp_act_daniel_vivian_moreno",
+          "name": "Dani Vivian",
+          "ATT": 65,
+          "DEF": 85,
+          "PHY": 80,
+          "MEN": 82,
+          "OVR": 83
+        },
+        "keeper": {
+          "id": "import_bra_bra_act_agustin_daniel_rossi",
+          "name": "Agustín Rossi",
+          "ATT": 48,
+          "DEF": 86,
+          "PHY": 80,
+          "MEN": 82,
+          "OVR": 83
+        }
+      },
+      "lineups": {
+        "local": {
+          "LW": "import_bra_bra_act_givanildo_vieira_de_sousa",
+          "ST": "plr_091",
+          "RW": "import_bra_bra_act_gabriel_barbosa_almeida",
+          "LCM": "import_bra_bra_act_danilo_dos_santos_de_oliveira",
+          "CDM": "import_bra_bra_act_gerson_santos_da_silva",
+          "RCM": "import_bra_bra_act_jorge_andres_carrascal_guardo",
+          "LB": "import_eng_epl_act_052",
+          "LCB": "import_eng_epl_act_055",
+          "RCB": "import_eng_epl_act_057",
+          "RB": "import_eng_epl_act_058",
+          "GK": "import_eng_epl_act_048"
+        },
+        "cpu": {
+          "GK": "import_bra_bra_act_agustin_daniel_rossi",
+          "LCB": "import_bra_bra_act_leonardo_ortiz",
+          "RCB": "import_eng_epl_act_051",
+          "LW": "import_bra_bra_act_jose_manuel_lopez",
+          "ST": "import_bra_bra_act_vitor_hugo_roque_ferreira",
+          "RW": "import_eng_epl_act_050",
+          "LCM": "import_bra_bra_act_jorge_luiz_frello_filho",
+          "CDM": "import_eng_epl_act_047",
+          "RCM": "import_eng_epl_act_049",
+          "LB": "import_esp_esp_act_aymeric_jean_louis_gerard_alphonse_laporte",
+          "RB": "import_esp_esp_act_daniel_vivian_moreno"
+        }
+      },
+      "effective": {
+        "local": {
+          "attack": 85.72666666666667,
+          "defense": 81.60000000000001,
+          "midfield": 80.7,
+          "global": 82.7
+        },
+        "cpu": {
+          "attack": 74.72,
+          "defense": 85.48444444444445,
+          "midfield": 79.42,
+          "global": 79.9
+        }
+      },
+      "edge": 0.005846666666666679,
+      "policies": {
+        "SHOOT": {
+          "seeds": 20000,
+          "goals": 5393,
+          "headers": 0,
+          "cleared": 0,
+          "rate": 0.26965,
+          "expectedRate": 0.2675657091598089
+        },
+        "NEAR_POST": {
+          "seeds": 20000,
+          "goals": 5232,
+          "headers": 14357,
+          "cleared": 5643,
+          "rate": 0.2616,
+          "expectedRate": 0.2621432348783957
+        },
+        "GOAL_CENTER": {
+          "seeds": 20000,
+          "goals": 4376,
+          "headers": 14357,
+          "cleared": 5643,
+          "rate": 0.2188,
+          "expectedRate": 0.21963699152423172
+        },
+        "FAR_POST": {
+          "seeds": 20000,
+          "goals": 5620,
+          "headers": 14357,
+          "cleared": 5643,
+          "rate": 0.281,
+          "expectedRate": 0.28126234476968914
+        }
+      }
+    },
+    {
+      "name": "technical_forward",
+      "spent": {
+        "local": 74,
+        "cpu": 55
+      },
+      "actors": {
+        "crosser": {
+          "id": "import_bra_bra_act_givanildo_vieira_de_sousa",
+          "name": "Hulk",
+          "ATT": 85,
+          "DEF": 57,
+          "PHY": 79,
+          "MEN": 81,
+          "OVR": 82
+        },
+        "target": {
+          "id": "plr_038",
+          "name": "Lionel Messi",
+          "ATT": 99,
+          "DEF": 40,
+          "PHY": 83,
+          "MEN": 99,
+          "OVR": 99
+        },
+        "aerialDefender": {
+          "id": "import_bra_bra_act_leonardo_ortiz",
+          "name": "Léo Ortiz",
+          "ATT": 65,
+          "DEF": 85,
+          "PHY": 80,
+          "MEN": 82,
+          "OVR": 83
+        },
+        "shotDefender": {
+          "id": "import_esp_esp_act_daniel_vivian_moreno",
+          "name": "Dani Vivian",
+          "ATT": 65,
+          "DEF": 85,
+          "PHY": 80,
+          "MEN": 82,
+          "OVR": 83
+        },
+        "keeper": {
+          "id": "import_bra_bra_act_agustin_daniel_rossi",
+          "name": "Agustín Rossi",
+          "ATT": 48,
+          "DEF": 86,
+          "PHY": 80,
+          "MEN": 82,
+          "OVR": 83
+        }
+      },
+      "lineups": {
+        "local": {
+          "LW": "import_bra_bra_act_givanildo_vieira_de_sousa",
+          "ST": "plr_038",
+          "RW": "import_bra_bra_act_gabriel_barbosa_almeida",
+          "LCM": "import_bra_bra_act_danilo_dos_santos_de_oliveira",
+          "CDM": "import_bra_bra_act_gerson_santos_da_silva",
+          "RCM": "import_bra_bra_act_jorge_andres_carrascal_guardo",
+          "LB": "import_eng_epl_act_052",
+          "LCB": "import_eng_epl_act_055",
+          "RCB": "import_eng_epl_act_057",
+          "RB": "import_eng_epl_act_058",
+          "GK": "import_eng_epl_act_048"
+        },
+        "cpu": {
+          "GK": "import_bra_bra_act_agustin_daniel_rossi",
+          "LCB": "import_bra_bra_act_leonardo_ortiz",
+          "RCB": "import_eng_epl_act_051",
+          "LW": "import_bra_bra_act_jose_manuel_lopez",
+          "ST": "import_bra_bra_act_vitor_hugo_roque_ferreira",
+          "RW": "import_eng_epl_act_050",
+          "LCM": "import_bra_bra_act_jorge_luiz_frello_filho",
+          "CDM": "import_eng_epl_act_047",
+          "RCM": "import_eng_epl_act_049",
+          "LB": "import_esp_esp_act_aymeric_jean_louis_gerard_alphonse_laporte",
+          "RB": "import_esp_esp_act_daniel_vivian_moreno"
+        }
+      },
+      "effective": {
+        "local": {
+          "attack": 87.12666666666667,
+          "defense": 82,
+          "midfield": 81.1,
+          "global": 83.4
+        },
+        "cpu": {
+          "attack": 74.72,
+          "defense": 85.48444444444445,
+          "midfield": 79.42,
+          "global": 79.9
+        }
+      },
+      "edge": 0.011646666666666618,
+      "policies": {
+        "SHOOT": {
+          "seeds": 20000,
+          "goals": 5482,
+          "headers": 0,
+          "cleared": 0,
+          "rate": 0.2741,
+          "expectedRate": 0.2703424678288755
+        },
+        "NEAR_POST": {
+          "seeds": 20000,
+          "goals": 4671,
+          "headers": 14307,
+          "cleared": 5693,
+          "rate": 0.23355,
+          "expectedRate": 0.23588111705676063
+        },
+        "GOAL_CENTER": {
+          "seeds": 20000,
+          "goals": 4208,
+          "headers": 14307,
+          "cleared": 5693,
+          "rate": 0.2104,
+          "expectedRate": 0.2134517212056742
+        },
+        "FAR_POST": {
+          "seeds": 20000,
+          "goals": 5938,
+          "headers": 14307,
+          "cleared": 5693,
+          "rate": 0.2969,
+          "expectedRate": 0.2992778820092368
+        }
+      }
+    },
+    {
+      "name": "high_quality_wing",
+      "spent": {
+        "local": 88,
+        "cpu": 55
+      },
+      "actors": {
+        "crosser": {
+          "id": "plr_038",
+          "name": "Lionel Messi",
+          "ATT": 99,
+          "DEF": 40,
+          "PHY": 83,
+          "MEN": 99,
+          "OVR": 99
+        },
+        "target": {
+          "id": "plr_091",
+          "name": "Erling Haaland",
+          "ATT": 98,
+          "DEF": 42,
+          "PHY": 97,
+          "MEN": 91,
+          "OVR": 95
+        },
+        "aerialDefender": {
+          "id": "import_bra_bra_act_leonardo_ortiz",
+          "name": "Léo Ortiz",
+          "ATT": 65,
+          "DEF": 85,
+          "PHY": 80,
+          "MEN": 82,
+          "OVR": 83
+        },
+        "shotDefender": {
+          "id": "import_esp_esp_act_daniel_vivian_moreno",
+          "name": "Dani Vivian",
+          "ATT": 65,
+          "DEF": 85,
+          "PHY": 80,
+          "MEN": 82,
+          "OVR": 83
+        },
+        "keeper": {
+          "id": "import_bra_bra_act_agustin_daniel_rossi",
+          "name": "Agustín Rossi",
+          "ATT": 48,
+          "DEF": 86,
+          "PHY": 80,
+          "MEN": 82,
+          "OVR": 83
+        }
+      },
+      "lineups": {
+        "local": {
+          "LW": "plr_038",
+          "ST": "plr_091",
+          "RW": "import_bra_bra_act_gabriel_barbosa_almeida",
+          "LCM": "import_bra_bra_act_danilo_dos_santos_de_oliveira",
+          "CDM": "import_bra_bra_act_gerson_santos_da_silva",
+          "RCM": "import_bra_bra_act_jorge_andres_carrascal_guardo",
+          "LB": "import_eng_epl_act_052",
+          "LCB": "import_eng_epl_act_055",
+          "RCB": "import_eng_epl_act_057",
+          "RB": "import_eng_epl_act_058",
+          "GK": "import_eng_epl_act_048"
+        },
+        "cpu": {
+          "GK": "import_bra_bra_act_agustin_daniel_rossi",
+          "LCB": "import_bra_bra_act_leonardo_ortiz",
+          "RCB": "import_eng_epl_act_051",
+          "LW": "import_bra_bra_act_jose_manuel_lopez",
+          "ST": "import_bra_bra_act_vitor_hugo_roque_ferreira",
+          "RW": "import_eng_epl_act_050",
+          "LCM": "import_bra_bra_act_jorge_luiz_frello_filho",
+          "CDM": "import_eng_epl_act_047",
+          "RCM": "import_eng_epl_act_049",
+          "LB": "import_esp_esp_act_aymeric_jean_louis_gerard_alphonse_laporte",
+          "RB": "import_esp_esp_act_daniel_vivian_moreno"
+        }
+      },
+      "effective": {
+        "local": {
+          "attack": 91.50673611111111,
+          "defense": 81.58000000000001,
+          "midfield": 81.68,
+          "global": 84.9
+        },
+        "cpu": {
+          "attack": 74.72,
+          "defense": 85.48444444444445,
+          "midfield": 79.42,
+          "global": 79.9
+        }
+      },
+      "edge": 0.027106875000000002,
+      "policies": {
+        "SHOOT": {
+          "seeds": 20000,
+          "goals": 7731,
+          "headers": 0,
+          "cleared": 0,
+          "rate": 0.38655,
+          "expectedRate": 0.3872621851641423
+        },
+        "NEAR_POST": {
+          "seeds": 20000,
+          "goals": 6113,
+          "headers": 15967,
+          "cleared": 4033,
+          "rate": 0.30565,
+          "expectedRate": 0.3040614981933086
+        },
+        "GOAL_CENTER": {
+          "seeds": 20000,
+          "goals": 5162,
+          "headers": 15967,
+          "cleared": 4033,
+          "rate": 0.2581,
+          "expectedRate": 0.2558892364647034
+        },
+        "FAR_POST": {
+          "seeds": 20000,
+          "goals": 6481,
+          "headers": 15967,
+          "cleared": 4033,
+          "rate": 0.32405,
+          "expectedRate": 0.3255815210255166
+        }
+      }
+    },
+    {
+      "name": "superior_aerial_defender",
+      "spent": {
+        "local": 67,
+        "cpu": 65
+      },
+      "actors": {
+        "crosser": {
+          "id": "import_bra_bra_act_givanildo_vieira_de_sousa",
+          "name": "Hulk",
+          "ATT": 85,
+          "DEF": 57,
+          "PHY": 79,
+          "MEN": 81,
+          "OVR": 82
+        },
+        "target": {
+          "id": "plr_091",
+          "name": "Erling Haaland",
+          "ATT": 98,
+          "DEF": 42,
+          "PHY": 97,
+          "MEN": 91,
+          "OVR": 95
+        },
+        "aerialDefender": {
+          "id": "plr_008",
+          "name": "Virgil van Dijk",
+          "ATT": 66,
+          "DEF": 95,
+          "PHY": 94,
+          "MEN": 93,
+          "OVR": 93
+        },
+        "shotDefender": {
+          "id": "import_eng_epl_act_058",
+          "name": "Ronald Araújo",
+          "ATT": 65,
+          "DEF": 85,
+          "PHY": 80,
+          "MEN": 82,
+          "OVR": 83
+        },
+        "keeper": {
+          "id": "import_bra_bra_act_agustin_daniel_rossi",
+          "name": "Agustín Rossi",
+          "ATT": 48,
+          "DEF": 86,
+          "PHY": 80,
+          "MEN": 82,
+          "OVR": 83
+        }
+      },
+      "lineups": {
+        "local": {
+          "LW": "import_bra_bra_act_givanildo_vieira_de_sousa",
+          "ST": "plr_091",
+          "RW": "import_bra_bra_act_gabriel_barbosa_almeida",
+          "LCM": "import_bra_bra_act_danilo_dos_santos_de_oliveira",
+          "CDM": "import_bra_bra_act_gerson_santos_da_silva",
+          "RCM": "import_bra_bra_act_jorge_andres_carrascal_guardo",
+          "LB": "import_bra_bra_act_leonardo_ortiz",
+          "LCB": "import_eng_epl_act_051",
+          "RCB": "import_eng_epl_act_052",
+          "RB": "import_eng_epl_act_055",
+          "GK": "import_eng_epl_act_048"
+        },
+        "cpu": {
+          "GK": "import_bra_bra_act_agustin_daniel_rossi",
+          "LCB": "plr_008",
+          "RCB": "plr_117",
+          "LW": "import_bra_bra_act_jose_manuel_lopez",
+          "ST": "import_bra_bra_act_vitor_hugo_roque_ferreira",
+          "RW": "import_eng_epl_act_050",
+          "LCM": "import_bra_bra_act_jorge_luiz_frello_filho",
+          "CDM": "import_eng_epl_act_047",
+          "RCM": "import_eng_epl_act_049",
+          "LB": "import_eng_epl_act_057",
+          "RB": "import_eng_epl_act_058"
+        }
+      },
+      "effective": {
+        "local": {
+          "attack": 85.12666666666667,
+          "defense": 81,
+          "midfield": 80.1,
+          "global": 82.1
+        },
+        "cpu": {
+          "attack": 75.9,
+          "defense": 87.31444444444445,
+          "midfield": 79.60000000000001,
+          "global": 80.9
+        }
+      },
+      "edge": -0.0045633333333334036,
+      "policies": {
+        "SHOOT": {
+          "seeds": 20000,
+          "goals": 5143,
+          "headers": 0,
+          "cleared": 0,
+          "rate": 0.25715,
+          "expectedRate": 0.26261368099095883
+        },
+        "NEAR_POST": {
+          "seeds": 20000,
+          "goals": 4070,
+          "headers": 12173,
+          "cleared": 7827,
+          "rate": 0.2035,
+          "expectedRate": 0.19682526889269703
+        },
+        "GOAL_CENTER": {
+          "seeds": 20000,
+          "goals": 3309,
+          "headers": 12173,
+          "cleared": 7827,
+          "rate": 0.16545,
+          "expectedRate": 0.16357849689261209
+        },
+        "FAR_POST": {
+          "seeds": 20000,
+          "goals": 4369,
+          "headers": 12173,
+          "cleared": 7827,
+          "rate": 0.21845,
+          "expectedRate": 0.21177430924510962
+        }
+      }
+    },
+    {
+      "name": "superior_keeper",
+      "spent": {
+        "local": 67,
+        "cpu": 65
+      },
+      "actors": {
+        "crosser": {
+          "id": "import_bra_bra_act_givanildo_vieira_de_sousa",
+          "name": "Hulk",
+          "ATT": 85,
+          "DEF": 57,
+          "PHY": 79,
+          "MEN": 81,
+          "OVR": 82
+        },
+        "target": {
+          "id": "plr_091",
+          "name": "Erling Haaland",
+          "ATT": 98,
+          "DEF": 42,
+          "PHY": 97,
+          "MEN": 91,
+          "OVR": 95
+        },
+        "aerialDefender": {
+          "id": "import_bra_bra_act_leonardo_ortiz",
+          "name": "Léo Ortiz",
+          "ATT": 65,
+          "DEF": 85,
+          "PHY": 80,
+          "MEN": 82,
+          "OVR": 83
+        },
+        "shotDefender": {
+          "id": "import_esp_esp_act_daniel_vivian_moreno",
+          "name": "Dani Vivian",
+          "ATT": 65,
+          "DEF": 85,
+          "PHY": 80,
+          "MEN": 82,
+          "OVR": 83
+        },
+        "keeper": {
+          "id": "plr_002",
+          "name": "Thibaut Courtois",
+          "ATT": 40,
+          "DEF": 96,
+          "PHY": 88,
+          "MEN": 92,
+          "OVR": 93
+        }
+      },
+      "lineups": {
+        "local": {
+          "LW": "import_bra_bra_act_givanildo_vieira_de_sousa",
+          "ST": "plr_091",
+          "RW": "import_bra_bra_act_gabriel_barbosa_almeida",
+          "LCM": "import_bra_bra_act_danilo_dos_santos_de_oliveira",
+          "CDM": "import_bra_bra_act_gerson_santos_da_silva",
+          "RCM": "import_bra_bra_act_jorge_andres_carrascal_guardo",
+          "LB": "import_eng_epl_act_052",
+          "LCB": "import_eng_epl_act_055",
+          "RCB": "import_eng_epl_act_057",
+          "RB": "import_eng_epl_act_058",
+          "GK": "import_bra_bra_act_agustin_daniel_rossi"
+        },
+        "cpu": {
+          "GK": "plr_002",
+          "LCB": "import_bra_bra_act_leonardo_ortiz",
+          "RCB": "import_eng_epl_act_051",
+          "LW": "import_bra_bra_act_jose_manuel_lopez",
+          "ST": "import_bra_bra_act_vitor_hugo_roque_ferreira",
+          "RW": "import_eng_epl_act_050",
+          "LCM": "import_bra_bra_act_jorge_luiz_frello_filho",
+          "CDM": "import_eng_epl_act_047",
+          "RCM": "import_eng_epl_act_049",
+          "LB": "import_esp_esp_act_aymeric_jean_louis_gerard_alphonse_laporte",
+          "RB": "import_esp_esp_act_daniel_vivian_moreno"
+        }
+      },
+      "effective": {
+        "local": {
+          "attack": 85.12666666666667,
+          "defense": 81,
+          "midfield": 80.1,
+          "global": 82.1
+        },
+        "cpu": {
+          "attack": 75.4,
+          "defense": 90.03111111111112,
+          "midfield": 81.10000000000001,
+          "global": 82.2
+        }
+      },
+      "edge": -0.018713333333333408,
+      "policies": {
+        "SHOOT": {
+          "seeds": 20000,
+          "goals": 4315,
+          "headers": 0,
+          "cleared": 0,
+          "rate": 0.21575,
+          "expectedRate": 0.2180525264440755
+        },
+        "NEAR_POST": {
+          "seeds": 20000,
+          "goals": 4153,
+          "headers": 13573,
+          "cleared": 6427,
+          "rate": 0.20765,
+          "expectedRate": 0.21261712145727552
+        },
+        "GOAL_CENTER": {
+          "seeds": 20000,
+          "goals": 3376,
+          "headers": 13573,
+          "cleared": 6427,
+          "rate": 0.1688,
+          "expectedRate": 0.17078174690329803
+        },
+        "FAR_POST": {
+          "seeds": 20000,
+          "goals": 4632,
+          "headers": 13573,
+          "cleared": 6427,
+          "rate": 0.2316,
+          "expectedRate": 0.23434966857985792
+        }
+      }
+    }
+  ]
+}

@@ -22,14 +22,15 @@ export interface TacticalBoardProps {
   readonly speed: number
   /** False under reduced motion or when the user asked to skip animations: the board snaps to each moment. */
   readonly animate: boolean
+  readonly paused?: boolean
 }
 
 const PITCH_RATIO = 68 / 105
 const COLORS = { local: '#00f5d4', cpu: '#ff5d73', gold: '#ffd54a' } as const
-interface Pose { progress: number; height: number; jump: number; players: Record<string, Point>; ball: Point; shift: Record<MatchSide, number>; pulse: number }
+interface Pose { start?: Parameters<typeof aerialScene>[3]; progress: number; height: number; jump: number; players: Record<string, Point>; ball: Point; shift: Record<MatchSide, number>; pulse: number }
 
 /** Small Canvas 2D tactical board. Original code; it draws only what the confirmed event states. */
-export function TacticalBoard({ formations, lineups, catalog, names, play, choices = [], tick, focus, speed, animate }: TacticalBoardProps) {
+export function TacticalBoard({ formations, lineups, catalog, names, play, choices = [], tick, focus, speed, animate, paused = false }: TacticalBoardProps) {
   const { t } = useTranslation()
   const canvas = useRef<HTMLCanvasElement>(null)
   const dots = useMemo(() => boardDots(formations, lineups), [formations, lineups])
@@ -60,6 +61,8 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
   }, [play, carrier, dots])
   const pose = useRef<Pose>({ progress: 0, height: 0, jump: 0, players: {}, ball: { x: .5, y: .5 }, shift: { local: 0, cpu: 0 }, pulse: 0 })
   const pulsed = useRef(-1)
+  const elapsed = useRef(0)
+  const aerialStart = useRef<Parameters<typeof aerialScene>[3]>(undefined)
   const latest = useRef({ dots, carrier, from, options, carrierName, names, focus, play, target })
   useEffect(() => { latest.current = { dots, carrier, from, options, carrierName, names, focus, play, target } })
 
@@ -67,8 +70,14 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
     const element = canvas.current
     const context = element?.getContext?.('2d') ?? null
     if (!element || !context) return
-    let frame = 0; let last = 0; let elapsed = 0; let running = true
-    if (pulsed.current !== tick) { pulsed.current = tick; pose.current.pulse = 1 }
+    let frame = 0; let last: number | undefined; let running = true
+    if (pulsed.current !== tick) {
+      pulsed.current = tick; pose.current.pulse = 1; elapsed.current = 0
+      // Preserve the previous confirmed pose when a new aerial beat starts.
+      const actors = Object.fromEntries(dots.flatMap((dot) => dot.playerId ? [[dot.playerId, pose.current.players[dot.slotId + dot.side] ?? dot.home]] : []))
+      aerialStart.current = { ball: pose.current.ball, height: pose.current.height, jump: pose.current.jump, players: actors, keeper: actors[dots.find((d) => d.side === 'cpu' && d.slotId === 'GK')?.playerId ?? ''] ?? { x: .96, y: .5 } }
+      pose.current.start = aerialStart.current
+    }
     const draw = () => {
       const box = element.getBoundingClientRect()
       const width = Math.max(240, box.width || element.clientWidth || 640)
@@ -81,7 +90,8 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
     const step = (time: number) => {
       if (!running) return
       const state = pose.current; const goal = latest.current.target
-      const dt = last ? Math.min(.1, (time - last) / 1000) : .016; last = time
+      const dt = last === undefined ? 0 : Math.min(.1, (time - last) / 1000); last = time
+      if (paused && animate) { draw(); frame = 0; return }
       const k = animate ? 1 - Math.exp(-dt * 7 * speed) : 1
       state.ball = { x: state.ball.x + (goal.ball.x - state.ball.x) * k, y: state.ball.y + (goal.ball.y - state.ball.y) * k }
       for (const [key, point] of Object.entries(goal.players)) {
@@ -91,10 +101,10 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
       for (const side of ['local', 'cpu'] as const) state.shift[side] += (goal.shift[side] - state.shift[side]) * k
       state.pulse = animate ? Math.max(0, state.pulse - dt * 1.4 * speed) : 0
       const action = latest.current.play
-      state.progress = animate ? Math.min(1, elapsed / aerialBeatDuration(action.step)) : 1
-      elapsed += dt * 1000 * speed
+      elapsed.current += dt * 1000 * speed
+      state.progress = animate ? Math.min(1, elapsed.current / aerialBeatDuration(action.step)) : 1
       if (action.aerial && action.step) {
-        const scene = aerialScene(action.aerial, action.step, state.progress)
+        const scene = aerialScene(action.aerial, action.step, state.progress, aerialStart.current)
         state.ball = scene.ball; state.height = scene.height; state.jump = scene.jump
         for (const dot of latest.current.dots) {
           if (dot.playerId && scene.players[dot.playerId]) state.players[dot.slotId + dot.side] = scene.players[dot.playerId]
@@ -111,7 +121,7 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
     const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(() => { if (!frame) draw() })
     observer?.observe(element)
     return () => { running = false; if (frame) window.cancelAnimationFrame(frame); observer?.disconnect() }
-  }, [tick, focus, play, animate, speed, dots, options])
+  }, [tick, focus, play, animate, speed, dots, options, paused])
 
   const attacker = attackingSide(play)
   return <figure className="tactical-board">
@@ -158,7 +168,7 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
   if (view.play.aerial && view.play.step && ['AERIAL_CROSS', 'DIRECTED_HEADER_FLIGHT'].includes(view.play.step)) {
     ctx.strokeStyle = '#ffd54ab0'; ctx.lineWidth = 2; ctx.beginPath()
     for (let i = 0; i <= 24; i++) {
-      const scene = aerialScene(view.play.aerial, view.play.step, pose.progress * i / 24)
+      const scene = aerialScene(view.play.aerial, view.play.step, pose.progress * i / 24, pose.start)
       const x = X(scene.ball.x); const y = Y(scene.ball.y) - scene.height * pitchH
       if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y)
     }
