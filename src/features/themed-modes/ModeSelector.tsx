@@ -17,8 +17,11 @@ export function ModeSelector({ selected, onChange }: ModeSelectorProps) {
   const { t } = useTranslation()
   const [openGroup, setOpenGroup] = useState<CategoryGroupId | null>(null)
   const heading = useRef<HTMLHeadingElement>(null)
-  const navigated = useRef(false)
-  useEffect(() => { if (navigated.current) heading.current?.focus(); navigated.current = true }, [openGroup])
+  const previousGroup = useRef(openGroup)
+  useEffect(() => {
+    if (previousGroup.current !== openGroup) heading.current?.focus()
+    previousGroup.current = openGroup
+  }, [openGroup])
   const group = CATEGORY_GROUPS.find((item) => item.id === openGroup)
   const selectedInTree = CATEGORY_GROUPS.some((item) => (item.modes as readonly ThemedModeId[]).includes(selected))
   const selectedName = selectedInTree ? t(`categoryTree.options.${selected}`) : t(`modes.items.${THEMED_MODES.find((m) => m.id === selected)?.translationKey}.name`)
@@ -34,11 +37,11 @@ export function ModeSelector({ selected, onChange }: ModeSelectorProps) {
     const enabled = playable && diagnostic.availability === 'available'
     const state = enabled ? t('modes.available') : playable ? t(`modes.status.${diagnostic.reason}`) : t('modes.status.foundation')
     const visual = MODE_VISUALS[mode.id]
-    return <button key={mode.id} className={`mode-card ${selected === mode.id ? 'is-selected' : ''}`} style={{ '--mode-accent': visual.accent } as CSSProperties} aria-pressed={selected === mode.id} disabled={!enabled} onClick={() => onChange(mode.id)}><VariantIcon legend={visual.legend} /><strong>{t(`categoryTree.options.${id}`)}</strong><span>{t(`modes.items.${mode.translationKey}.description`)}</span><small className={`mode-state ${enabled ? 'is-ready' : 'is-pending'}`}>{diagnostic.eligibleCount} · {state} · {defaultBudgetForMode(id)}M</small></button>
+    return <button key={mode.id} className={`mode-card ${selected === mode.id ? 'is-selected' : ''}`} style={{ '--mode-accent': visual.accent } as CSSProperties} aria-pressed={selected === mode.id} disabled={!enabled} onClick={() => onChange(mode.id)}><VariantIcon legend={visual.legend} /><strong>{t(`categoryTree.options.${id}`)}</strong><small className={`mode-state ${enabled ? 'is-ready' : 'is-pending'}`}>{diagnostic.eligibleCount} · {state} · {defaultBudgetForMode(id)}M</small></button>
   }
   return <section className="mode-selector" aria-labelledby="mode-title">
     <div><p className="eyebrow"><span />{t('modes.label')}</p><h2 id="mode-title" ref={heading} tabIndex={-1}>{group ? t(`categoryTree.groups.${group.id}`) : t('categoryTree.title')}</h2></div>
-    <p className="market-hint">{t('playtest.poolHelp')}</p><p className="category-selection" role="status">{t('categoryTree.selected', { name: selectedName })}</p>
+    <details className="collection-help"><summary>{t('entry.collectionHelp')}</summary><p>{t('playtest.poolHelp')}</p></details><p className="category-selection" role="status">{t('categoryTree.selected', { name: selectedName })}</p>
     {group ? <>
       <button className="secondary-action category-back" onClick={() => setOpenGroup(null)}>{t('categoryTree.back')}</button>
       <p className="market-hint">{t(group.id === 'europe' || group.id === 'latinAmerica' ? 'categoryTree.nationalityHelp' : 'categoryTree.editionHelp')}</p>

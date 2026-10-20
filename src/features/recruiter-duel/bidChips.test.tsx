@@ -14,6 +14,8 @@ describe('quick bid chips', () => {
     vi.useFakeTimers()
     const i18n = await createI18n('en')
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
+    fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.local') }))
+    fireEvent.click(screen.getByText(i18n.t('entry.customize')))
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
     act(() => vi.advanceTimersByTime(COIN_TOSS_MS))

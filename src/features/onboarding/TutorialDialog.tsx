@@ -24,7 +24,7 @@ export function TutorialDialog({ onClose }: Props) {
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Escape') { event.stopPropagation(); onClose(); return }
     if (event.key !== 'Tab' || !root.current) return
-    const items = Array.from(root.current.querySelectorAll<HTMLElement>('button:not([disabled]), input:not([disabled])'))
+    const items = Array.from(root.current.querySelectorAll<HTMLElement>('button:not([disabled]), input:not([disabled]), summary'))
     if (!items.length) return
     const first = items[0]; const end = items[items.length - 1]
     if (event.shiftKey && (document.activeElement === first || document.activeElement === heading.current)) { event.preventDefault(); end.focus() }
@@ -36,8 +36,8 @@ export function TutorialDialog({ onClose }: Props) {
       <p className="eyebrow"><span />{t('tutorial.progress', { current: index + 1, total: TUTORIAL_STEPS.length })}</p>
       <h2 id="tutorial-title" tabIndex={-1} ref={heading}>{t(`tutorial.steps.${step}.title`)}</h2>
       <p className="tutorial-body">{t(`tutorial.steps.${step}.body`)}</p>
-      {step === 'keys' && <ul className="tutorial-keys">{TUTORIAL_KEYS.map((key) => <li key={key}>{t(`tutorial.keys.${key}`)}</li>)}</ul>}
-      {last && <label className="tutorial-hints"><input type="checkbox" checked={prefs.hints} onChange={(event) => helpStore.setHints(event.target.checked)} /> {t('tutorial.showHints')}</label>}
+      {step === 'keys' && <details><summary>{t('entry.keyboard')}</summary><ul className="tutorial-keys">{TUTORIAL_KEYS.map((key) => <li key={key}>{t(`tutorial.keys.${key}`)}</li>)}</ul></details>}
+      <label className="tutorial-hints"><input type="checkbox" checked={prefs.hints} onChange={(event) => helpStore.setHints(event.target.checked)} /> {t('tutorial.showHints')}</label>
       <div className="duel-actions">
         {index > 0 && <button className="secondary-action" onClick={() => setIndex(index - 1)}>{t('tutorial.previous')}</button>}
         {!last && <button className="primary-action" onClick={() => setIndex(index + 1)}>{t('tutorial.next')}</button>}

@@ -2,7 +2,7 @@ import { DRAFT_CATALOG } from '../draft/catalog'
 import { createCrossCategoryDraw, crossCategoryCatalog, finishDualDraft } from './crossCategoryDraw'
 import { cpuAct, createDualDraft, discardCard, dualComplete, isSideComplete, signCard, type DualDraft } from './dualDraft'
 import { DualDraftScreen } from './DualDraftScreen'
-import { useCallback, useEffect, useMemo, useState, type SetStateAction } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LanguageSelector } from '../../components/LanguageSelector'
 import { AudioControls } from '../audio/AudioControls'
@@ -67,6 +67,10 @@ const RECRUITER_IDS = ['recruiter_one', 'recruiter_two'] as const
 export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps) {
   const { t } = useTranslation()
   const categoryLabel = (id: ThemedModeId) => t(id === 'ARGENTINA_CLUBS' ? 'modes.items.argentinaClubs.name' : 'categoryTree.options.' + id)
+  const [entryChosen, setEntryChosen] = useState(false)
+  const entryHeading = useRef<HTMLHeadingElement>(null)
+  const entryNavigated = useRef(false)
+  useEffect(() => { if (entryNavigated.current) entryHeading.current?.focus(); entryNavigated.current = true }, [entryChosen])
   const [opponentMode, setOpponentMode] = useState<'hotseat' | 'cpu'>('hotseat')
   const [strategy, setStrategy] = useState<CpuStrategy>('BALANCED')
   const [difficulty, setDifficulty] = useState<CpuDifficulty>('NORMAL')
@@ -334,8 +338,36 @@ export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps)
     <header className="draft-header"><a className="brand" href="#duel-main" aria-label={PRODUCT.name}><span className="brand-emblem">R</span><span>{PRODUCT.name}</span></a><AudioControls /><LanguageSelector /></header>
     <main id="duel-main" className="duel-page">
       {game && <section className="active-category-banner" aria-label={t('rosterUX.category')}><span>{t('rosterUX.category')}</span><strong>{categoryLabel(game.categoryPair?.recruiter_one ?? game.coachMode ?? mode)}</strong>{game.categoryPair && <small>{names.recruiter_two} · {categoryLabel(game.categoryPair.recruiter_two)}</small>}</section>}
-      {!game && <section className="duel-intro"><p className="eyebrow"><span />{t('duel.eyebrow')}</p><h1>{t('duel.title')}</h1><p>{t('duel.subtitle')}</p><label>{t('cpu.opponent')}<select value={opponentMode} onChange={(event) => setOpponentMode(event.target.value as 'hotseat' | 'cpu')}><option value="hotseat">{t('cpu.hotseat')}</option><option value="cpu">{t('cpu.versus')}</option></select></label>{opponentMode === 'cpu' && <><label>{t('cpu.strategy')}<select value={strategy} onChange={(event) => setStrategy(event.target.value as CpuStrategy)}>{CPU_STRATEGIES.map((item) => <option key={item} value={item}>{t('cpu.profiles.' + item)}</option>)}</select></label><label>{t('cpu.difficulty')}<select value={difficulty} onChange={(event) => setDifficulty(event.target.value as CpuDifficulty)}>{CPU_DIFFICULTIES.map((item) => <option key={item} value={item}>{t('cpu.difficulties.' + item)}</option>)}</select></label><p>{t('cpu.difficultyHint')}</p><label>{t('cpu.pause')}<input type="number" min={0} max={3000} step={50} value={pauseMs} onChange={(event) => setPauseMs(Math.max(0, Math.min(3000, Number(event.target.value))))} /></label></>}<MatchSetupPanel classicBudget={classicConfig.budget} draft={setup} onChange={setSetup} versusCpu={opponentMode === 'cpu'} preflight={setupPreflight} /><ModeSelector selected={mode} onChange={setMode} /><label>{t('playtest.opponentCategory')}<select value={secondCategory} onChange={(e) => setSecondCategory(e.target.value as ThemedModeId | 'same')}><option value="same">{t('playtest.sameCategory')}</option>{[...PLAYABLE_MODES].filter((id) => id !== 'ARGENTINA_CLUBS').map((id) => <option key={id} value={id}>{t('categoryTree.options.' + id)}</option>)}</select></label>{secondCategory !== 'same' && secondCategory !== mode && <p>{t('playtest.mixedHelp')}</p>}<HistoryPanel /><details className="draw-replay"><summary>{t('draw.reproduce')}</summary><p>{t('draw.explanation')}</p><label>{t('draw.context')}<textarea value={replayText} onChange={(event) => setReplayText(event.target.value)} /></label><button className="secondary-action" onClick={reproduce}>{t('draw.reproduce')}</button></details><div className="duel-actions">{onOnline && <button className="secondary-action" onClick={onOnline}>{t('online.menu')}</button>}<button className="primary-action" disabled={!canStart} onClick={start}>{t('duel.start')}</button><button className="secondary-action" onClick={onDraftFree}>{t('duel.freeDraft')}</button></div></section>}
-      {(() => { const topic = helpTopicForPhase(game?.phase); return topic && !(game && ['SIMULATING', 'MATCH_RESULT', 'DISCARD_RESULT', 'COIN_TOSS', 'NEXT_ROUND'].includes(game.phase)) ? <HelpTip topic={topic} /> : null })()}
+      {!game && <section className="duel-intro entry-flow">
+        <p className="eyebrow"><span />{t('entry.eyebrow')}</p><h1>{t('duel.title')}</h1>
+        {!entryChosen ? <>
+          <h2 ref={entryHeading} tabIndex={-1}>{t('entry.chooseRival')}</h2>
+          <div className="entry-rivals">
+            <button className="primary-action" onClick={() => { setOpponentMode('cpu'); setEntryChosen(true) }}>{t('entry.cpu')}</button>
+            {onOnline && <button className="secondary-action" onClick={onOnline}>{t('entry.online')}</button>}
+            <button className="secondary-action" onClick={() => { setOpponentMode('hotseat'); setEntryChosen(true) }}>{t('entry.local')}</button>
+          </div>
+          <p className="entry-caption">{t('entry.intro')}</p>
+        </> : <>
+          <button className="secondary-action" onClick={() => setEntryChosen(false)}>{t('entry.back')}</button>
+          <h2 ref={entryHeading} tabIndex={-1}>{t(opponentMode === 'cpu' ? 'entry.cpu' : 'entry.local')}</h2>
+          <div className="entry-start">
+            <p>{t('categoryTree.selected', { name: categoryLabel(mode) })}</p>
+            <p>{t('entry.defaults', { budget: config.budget, reserve: config.coaches ? config.coachReserve : 0 })}</p>
+            <button className="primary-action" disabled={!canStart} onClick={start}>{t('duel.start')}</button>
+          </div>
+          <ModeSelector selected={mode} onChange={setMode} />
+          <details className="entry-options"><summary>{t('entry.customize')}</summary>
+            <label>{t('cpu.opponent')}<select value={opponentMode} onChange={(event) => setOpponentMode(event.target.value as 'hotseat' | 'cpu')}><option value="hotseat">{t('cpu.hotseat')}</option><option value="cpu">{t('cpu.versus')}</option></select></label>
+            {opponentMode === 'cpu' && <><label>{t('cpu.strategy')}<select value={strategy} onChange={(event) => setStrategy(event.target.value as CpuStrategy)}>{CPU_STRATEGIES.map((item) => <option key={item} value={item}>{t('cpu.profiles.' + item)}</option>)}</select></label><label>{t('cpu.difficulty')}<select value={difficulty} onChange={(event) => setDifficulty(event.target.value as CpuDifficulty)}>{CPU_DIFFICULTIES.map((item) => <option key={item} value={item}>{t('cpu.difficulties.' + item)}</option>)}</select></label><p>{t('cpu.difficultyHint')}</p><label>{t('cpu.pause')}<input type="number" min={0} max={3000} step={50} value={pauseMs} onChange={(event) => setPauseMs(Math.max(0, Math.min(3000, Number(event.target.value))))} /></label></>}
+            <MatchSetupPanel classicBudget={classicConfig.budget} draft={setup} onChange={setSetup} versusCpu={opponentMode === 'cpu'} preflight={setupPreflight} />
+            <label>{t('playtest.opponentCategory')}<select value={secondCategory} onChange={(e) => setSecondCategory(e.target.value as ThemedModeId | 'same')}><option value="same">{t('playtest.sameCategory')}</option>{[...PLAYABLE_MODES].filter((id) => id !== 'ARGENTINA_CLUBS').map((id) => <option key={id} value={id}>{t('categoryTree.options.' + id)}</option>)}</select></label>{secondCategory !== 'same' && secondCategory !== mode && <p>{t('playtest.mixedHelp')}</p>}
+          </details>
+        </>}
+        <button className="secondary-action entry-free" onClick={onDraftFree}>{t('duel.freeDraft')}</button>
+        <details className="entry-options"><summary>{t('entry.more')}</summary><HistoryPanel /><details className="draw-replay"><summary>{t('draw.reproduce')}</summary><p>{t('draw.explanation')}</p><label>{t('draw.context')}<textarea value={replayText} onChange={(event) => setReplayText(event.target.value)} /></label><button className="secondary-action" onClick={reproduce}>{t('draw.reproduce')}</button></details></details>
+      </section>}
+      {(() => { const topic = helpTopicForPhase(game?.phase); return game && topic && !(game && ['SIMULATING', 'MATCH_RESULT', 'DISCARD_RESULT', 'COIN_TOSS', 'NEXT_ROUND'].includes(game.phase)) ? <HelpTip topic={topic} /> : null })()}
       {online && online.connection !== 'connected' && <p className="auction-banner auction-banner-blocked" role="status">{t('online.connection.' + online.connection)}</p>}
       {game && <AbandonGame versusCpu={opponentMode === 'cpu'} names={names} onAbandon={abandon} onlySide={online?.mySide} />}
       {game && !game.categoryPair && !hud && <p className="discard-counter" role="status">{t('discards.available', { count: game.discardsRemaining })}{game.discardsRemaining === 0 && <span> · {t('discards.exhausted')}</span>}</p>}

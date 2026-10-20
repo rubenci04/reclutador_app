@@ -39,6 +39,8 @@ async function startGame(versusCpu: boolean) {
   vi.useFakeTimers()
   const i18n = await createI18n('en')
   render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
+  fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.local') }))
+  fireEvent.click(screen.getByText(i18n.t('entry.customize')))
   if (versusCpu) fireEvent.change(screen.getByLabelText('Opponent'), { target: { value: 'cpu' } })
   fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
   fireEvent.click(screen.getByRole('button', { name: 'Heads' }))

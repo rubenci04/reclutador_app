@@ -44,6 +44,8 @@ describe('coin flow in the duel', () => {
     vi.useFakeTimers()
     const i18n = await createI18n('en')
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
+    fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.local') }))
+    fireEvent.click(screen.getByText(i18n.t('entry.customize')))
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
   }
   it('shows both faces before choosing, then lands on exactly the stored side', async () => {
@@ -89,6 +91,8 @@ describe('auction sounds', () => {
     vi.useFakeTimers()
     const i18n = await createI18n('en')
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
+    fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.local') }))
+    fireEvent.click(screen.getByText(i18n.t('entry.customize')))
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     expect(play).not.toHaveBeenCalled()
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))

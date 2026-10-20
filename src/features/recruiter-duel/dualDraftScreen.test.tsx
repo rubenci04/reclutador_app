@@ -14,6 +14,8 @@ describe('live draw screen for two categories', () => {
     vi.useFakeTimers()
     const i18n = await createI18n('en')
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
+    fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.local') }))
+    fireEvent.click(screen.getByText(i18n.t('entry.customize')))
     fireEvent.change(screen.getByLabelText('Opponent'), { target: { value: 'cpu' } })
     fireEvent.change(screen.getByLabelText('Second team category'), { target: { value: 'EUROPE_CURRENT' } })
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
@@ -33,6 +35,8 @@ describe('live draw screen for two categories', () => {
   it('lets two people draw independently on the same screen (hot-seat)', async () => {
     const i18n = await createI18n('en')
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
+    fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.local') }))
+    fireEvent.click(screen.getByText(i18n.t('entry.customize')))
     fireEvent.change(screen.getByLabelText('Second team category'), { target: { value: 'EUROPE_CURRENT' } })
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     expect(screen.getAllByRole('button', { name: /^Sign for \d+M$/ })).toHaveLength(2)

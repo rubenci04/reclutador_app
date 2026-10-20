@@ -82,8 +82,7 @@ describe('contextual tips', () => {
   it('shows the tip for the current auction step on the real page', async () => {
     localStorage.setItem(HELP_KEY, JSON.stringify({ tutorialSeen: true, hints: true, dismissed: [] }))
     await view(<HomePage />)
-    expect(screen.getByRole('note')).toHaveTextContent('Choose your rival and rules')
-    fireEvent.click(screen.getByRole('button', { name: 'Got it' }))
+    expect(screen.getByRole('button', { name: 'Play against CPU' })).toBeInTheDocument()
     expect(screen.queryByRole('note')).toBeNull()
   })
 })

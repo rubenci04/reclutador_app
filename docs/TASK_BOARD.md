@@ -1,5 +1,11 @@
 # Tablero de tareas
 
+## Entrada simplificada — 20/10/2026
+
+| ID | Actividad | Estado |
+|---|---|---|
+| UX-003 | Rival primero, clásico directo, configuración progresiva y tutorial breve | Implementada en es-AR/en/pt-BR. 879 pruebas aprobadas; typecheck/lint/build correctos. Navegador real a 360/390/412/768/1280 px; evidencia y límites en qa/UX-003.md. Sin cambios a motores, datos o sincronización |
+
 ## Pie dominante — 20/10/2026
 
 | ID | Actividad | Estado |

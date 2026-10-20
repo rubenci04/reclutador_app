@@ -255,6 +255,8 @@ describe('setup with substitutes', () => {
     const { AuctionPage } = await import('./AuctionPage')
     const i18n = await createI18n('en')
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
+    fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.local') }))
+    fireEvent.click(screen.getByText(i18n.t('entry.customize')))
     expect(screen.queryByRole('checkbox', { name: /Three substitutes per team/ })).not.toBeInTheDocument()
     fireEvent.click(screen.getByRole('radio', { name: /Custom/ }))
     const toggle = screen.getByRole('checkbox', { name: /Three substitutes per team/ })

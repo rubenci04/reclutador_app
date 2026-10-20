@@ -52,7 +52,7 @@ export function MatchSetupPanel({ draft, onChange, versusCpu, preflight, classic
           : t(`setup.preflight.${preflight.reason}`, { min: BUDGET_LIMITS.min, max: BUDGET_LIMITS.max, step: BUDGET_LIMITS.step, minimum: preflight.minimumPerTeam ?? 0 })}
       </p>
     </>}
-    <section className="setup-summary" aria-label={t('setup.summary')}>
+    <details className="setup-summary"><summary>{t('entry.rules')}</summary>
       <h3>{t('setup.summary')}</h3>
       <ul>
         <li>{t('setup.rules.budget', { amount: draft.mode === 'custom' && isValidBudget(budget) ? budget : classicBudget })}</li>
@@ -61,6 +61,6 @@ export function MatchSetupPanel({ draft, onChange, versusCpu, preflight, classic
         <li>{t('setup.rules.discards')}</li>
         {draft.coaches && <li>{t('coach.reserveSummary', { amount: draft.coachReserve ?? COACH_MAX_PRICE })}</li>}
       </ul>
-    </section>
+    </details>
   </fieldset>
 }

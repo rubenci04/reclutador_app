@@ -106,6 +106,8 @@ describe('setup screen', () => {
   const open = async (language: 'en' | 'es-AR' | 'pt-BR' = 'en') => {
     const i18n = await createI18n(language)
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
+    fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.local') }))
+    fireEvent.click(screen.getByText(i18n.t('entry.customize')))
     return i18n
   }
 

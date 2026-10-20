@@ -7,5 +7,5 @@ const TOPIC_FOR_PHASE: Readonly<Record<string, HelpTopic | undefined>> = {
 /** No game yet means the setup screen. */
 export const helpTopicForPhase = (phase: string | null | undefined): HelpTopic | undefined => (phase ? TOPIC_FOR_PHASE[phase] : 'setup')
 
-export const TUTORIAL_STEPS = ['goal', 'auction', 'budget', 'lineup', 'match', 'keys'] as const
+export const TUTORIAL_STEPS = ['goal', 'auction', 'keys'] as const
 export const TUTORIAL_KEYS = ['move', 'activate', 'bid', 'close', 'drag'] as const

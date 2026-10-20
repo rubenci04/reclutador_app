@@ -69,6 +69,8 @@ describe('mode selection in the page', () => {
     vi.useFakeTimers()
     const i18n = await createI18n('en')
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
+    fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.local') }))
+    fireEvent.click(screen.getByText(i18n.t('entry.customize')))
     expect(screen.getByRole('button', { name: /^Global/ })).not.toBeDisabled()
     fireEvent.click(screen.getByRole('button', { name: /^Argentine league/ }))
     fireEvent.click(screen.getByRole('button', { name: label }))
