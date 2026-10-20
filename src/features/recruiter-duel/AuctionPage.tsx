@@ -64,7 +64,7 @@ function replayConfig(text: string): MatchConfig {
 }
 const RECRUITER_IDS = ['recruiter_one', 'recruiter_two'] as const
 
-export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps) {
+export function AuctionPage({ onOnline, online }: AuctionPageProps) {
   const { t } = useTranslation()
   const categoryLabel = (id: ThemedModeId) => t(id === 'ARGENTINA_CLUBS' ? 'modes.items.argentinaClubs.name' : 'categoryTree.options.' + id)
   const [entryChosen, setEntryChosen] = useState(false)
@@ -73,7 +73,7 @@ export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps)
   useEffect(() => { if (entryNavigated.current) entryHeading.current?.focus(); entryNavigated.current = true }, [entryChosen])
   const [opponentMode, setOpponentMode] = useState<'hotseat' | 'cpu'>('hotseat')
   const [strategy, setStrategy] = useState<CpuStrategy>('BALANCED')
-  const [difficulty, setDifficulty] = useState<CpuDifficulty>('NORMAL')
+  const [difficulty, setDifficulty] = useState<CpuDifficulty>('HARD')
   const [pauseMs, setPauseMs] = useState(650)
   const [replayText, setReplayText] = useState('')
   const [storageWarning, setStorageWarning] = useState(false)
@@ -216,7 +216,7 @@ export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps)
   const auctionHudPhase = game !== null && ['REVEAL_PLAYER', 'BIDDING', 'DISCARD_RESULT', 'ROUND_RESULT', 'NEXT_ROUND'].includes(game.phase)
   const hud = useMemo(() => game && auctionHudPhase ? buildHudModel(game, catalog) : null, [game, auctionHudPhase, catalog])
   const cpuLineup = game?.teams.recruiter_two.lineup
-  const cpuStrategy = useMemo(() => opponentMode === 'cpu' && game?.phase === 'TEAMS_COMPLETED' && cpuLineup ? selectCpuStrategy(cpuLineup, catalog, game.seed) : undefined, [opponentMode, game, cpuLineup, catalog])
+  const cpuStrategy = useMemo(() => opponentMode === 'cpu' && game?.phase === 'TEAMS_COMPLETED' && cpuLineup ? selectCpuStrategy(cpuLineup, catalog, game.seed, difficulty) : undefined, [opponentMode, game, cpuLineup, catalog, difficulty])
   const recordDuel = (id: string, outcome: HistoryOutcome, score: { recruiter_one: number; recruiter_two: number } | null, abandonedBy: 'recruiter_one' | 'recruiter_two' | null) => {
     matchHistory.record({ id, at: new Date().toISOString(), mode: gameMode, opponent: opponentMode, names: { recruiter_one: names.recruiter_one, recruiter_two: names.recruiter_two }, outcome, score, abandonedBy })
   }
@@ -364,7 +364,7 @@ export function AuctionPage({ onDraftFree, onOnline, online }: AuctionPageProps)
             <label>{t('playtest.opponentCategory')}<select value={secondCategory} onChange={(e) => setSecondCategory(e.target.value as ThemedModeId | 'same')}><option value="same">{t('playtest.sameCategory')}</option>{[...PLAYABLE_MODES].filter((id) => id !== 'ARGENTINA_CLUBS').map((id) => <option key={id} value={id}>{t('categoryTree.options.' + id)}</option>)}</select></label>{secondCategory !== 'same' && secondCategory !== mode && <p>{t('playtest.mixedHelp')}</p>}
           </details>
         </>}
-        <button className="secondary-action entry-free" onClick={onDraftFree}>{t('duel.freeDraft')}</button>
+
         <details className="entry-options"><summary>{t('entry.more')}</summary><HistoryPanel /><details className="draw-replay"><summary>{t('draw.reproduce')}</summary><p>{t('draw.explanation')}</p><label>{t('draw.context')}<textarea value={replayText} onChange={(event) => setReplayText(event.target.value)} /></label><button className="secondary-action" onClick={reproduce}>{t('draw.reproduce')}</button></details></details>
       </section>}
       {(() => { const topic = helpTopicForPhase(game?.phase); return game && topic && !(game && ['SIMULATING', 'MATCH_RESULT', 'DISCARD_RESULT', 'COIN_TOSS', 'NEXT_ROUND'].includes(game.phase)) ? <HelpTip topic={topic} /> : null })()}

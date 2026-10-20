@@ -72,8 +72,7 @@ describe('initial interface', () => {
     expect(localStorage.getItem(LANGUAGE_KEY)).toBe('pt-BR')
     expect((await createI18n()).language).toBe('pt-BR')
     await userEvent.selectOptions(selector, 'es-AR')
-    await userEvent.click(screen.getByRole('button', { name: /Ir al Draft Libre/ }))
-    expect(screen.getByRole('button', { name: /Abrir catálogo/ })).toBeEnabled()
+    expect(screen.queryByRole('button', { name: /Ir al Draft Libre/ })).toBeNull()
   })
   it('shows translated storage failure without preventing a language change', async () => {
     const instance = await createI18n()

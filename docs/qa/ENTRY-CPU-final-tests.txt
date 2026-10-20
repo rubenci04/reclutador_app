@@ -1,0 +1,15 @@
+
+> draft-legends@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.5 C:/Users/rea_0/Documents/ChatGPT/Fútbol Draft
+
+
+ Test Files  81 passed (81)
+      Tests  885 passed (885)
+   Start at  00:50:07
+   Duration  99.37s (tests 72%, environment 19%, import 4%, setup 4%, transform 2%)
+
+    Isolate  81 workers spawned · ~1.90s startup each (spawn + environment, per file)
+             at least ~12.11s faster with isolate: false — reuses workers across files instead of one per file

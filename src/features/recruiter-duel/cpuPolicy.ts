@@ -57,7 +57,9 @@ export function privateValuation(context: CpuPublicContext, strategy: CpuStrateg
   const opportunityCap = (budget - team.spent) / Math.max(1, slotsLeft) * profile.risk + Math.max(0, quality) + 2
   const availablePeers = context.publicCatalog.filter((candidate) => candidate.position === player.position && !unavailable.has(candidate.id))
   const strongerPeers = availablePeers.filter((candidate) => candidate.overall_rating >= player.overall_rating).length
-  const scouting = difficulty === 'HARD' ? Math.max(0, quality) * .4 + (squadTier(player) === 'S+' ? 1.5 : 0) + (strongerPeers < open(player.position) ? 1 : 0) : difficulty === 'EASY' ? -1.5 : 0
+  const percentile = availablePeers.length ? availablePeers.filter((p) => p.overall_rating < player.overall_rating).length / availablePeers.length : 0
+  const comparativeValue = difficulty === 'HARD' ? Math.max(0, percentile - .45) * 7 : 0
+  const scouting = comparativeValue + (difficulty === 'HARD' ? Math.max(0, quality) * .6 + (squadTier(player) === 'S+' ? 1.5 : 0) + (strongerPeers < open(player.position) ? 1 : 0) : difficulty === 'EASY' ? -1.5 : 0)
   return Math.max(0, Math.floor(Math.min(budgetCap, opportunityCap + scouting, player.price + quality + profile.premium + preference + need + scouting)))
 }
 

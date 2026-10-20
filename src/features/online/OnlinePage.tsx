@@ -212,7 +212,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
     <main className="online-main">
       <button className="secondary-action" onClick={onBack} disabled={busy}>{t('online.back')}</button>
       <p className="eyebrow">{t('online.eyebrow')}</p><h1>{t('online.title')}</h1>
-      <p>{t('online.sessionNotice')}</p>
+      <details className="entry-options"><summary>{t('entry.rules')}</summary><p>{t('online.sessionNotice')}</p></details>
       {error && <p role="alert">{t('online.errors.' + error)}{error === 'NOT_CONFIGURED' && import.meta.env.DEV && <><br />{t('online.configHelp')}</>}</p>}
       {retry && <button className="primary-action" disabled={busy} onClick={() => { void run(retry) }}>{t('online.retry')}</button>}
       {closedNotice && !room && <p className="auction-banner auction-banner-blocked" role="status"><strong>{t('online.roomClosed')}</strong></p>}
@@ -222,7 +222,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
         <input id="online-name" autoComplete="nickname" value={name} onChange={e => setName(e.target.value)} />
         <label htmlFor="online-room-name">{t('online.roomName')}</label>
         <input id="online-room-name" autoComplete="off" maxLength={24} value={roomName} onChange={e => setRoomName(e.target.value)} placeholder={t('online.roomNameHint')} />
-        <p>{t('online.classic')}</p><p>{t('online.scope')}</p>
+        <details className="entry-options"><summary>{t('setup.summary')}</summary><p>{t('online.classic')}</p><p>{t('online.scope')}</p></details>
         <button className="primary-action" disabled={!gateway || !userId || busy || !!retry} onClick={() => { const id = crypto.randomUUID(); void run(() => gateway!.create(name,id,roomName)) }}>{t('online.create')}</button>
         <label htmlFor="online-code">{t('online.code')}</label>
         <input id="online-code" autoComplete="off" value={code} onChange={e => setCode(inviteFromText(e.target.value))} /><p className="online-hint">{t('online.codeHint')}</p>

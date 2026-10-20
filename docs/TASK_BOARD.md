@@ -1,5 +1,10 @@
 # Tablero de tareas
 
+## ENTRY-CPU — 20/10/2026
+
+Inicio de tres rivales sin Draft Libre y CPU difícil reforzada implementados; reglas online progresivas. Ver qa/ENTRY-CPU.md. QA visual bloqueada por Work settings.
+
+
 ## ARG-UX-FIX — 20/10/2026
 
 Balance argentino actual, prioridad de posiciones titulares pendientes y once/técnicos compactos implementados. 884 pruebas aprobadas; QA y pendientes en qa/ARG-UX-FIX.md.

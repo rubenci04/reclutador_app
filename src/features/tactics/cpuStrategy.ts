@@ -23,8 +23,13 @@ export function strategyFit(features: TacticalFeatures): Readonly<Record<Strateg
  * CPU strategy, fixed from its own organised eleven and a seed. The signature deliberately has no access to the
  * human's strategy, so the choice is made before (and without) knowing it. The seeded draw is separate from the match seed.
  */
-export function selectCpuStrategy(lineup: DraftLineup, catalog: readonly Player[], seed: string): StrategyId {
+export function selectCpuStrategy(lineup: DraftLineup, catalog: readonly Player[], seed: string, difficulty: 'EASY' | 'NORMAL' | 'HARD' = 'NORMAL'): StrategyId {
   const fit = strategyFit(tacticalFeatures(lineup, catalog))
+  if (difficulty === 'HARD') {
+    const best = Math.max(...STRATEGY_IDS.map((id) => fit[id]))
+    const candidates = STRATEGY_IDS.filter((id) => fit[id] >= best - .015)
+    return candidates[Math.floor(createSeededRandom(`${seed}:cpu-strategy`)() * candidates.length)]
+  }
   const weights = STRATEGY_IDS.map((id) => BASE_WEIGHT + fit[id])
   const total = weights.reduce((sum, weight) => sum + weight, 0)
   let roll = createSeededRandom(`${seed}:cpu-strategy`)() * total
