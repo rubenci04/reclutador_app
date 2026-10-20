@@ -1,5 +1,11 @@
 # Tablero de tareas
 
+## Pie dominante — 20/10/2026
+
+| ID | Actividad | Estado |
+|---|---|---|
+| DATA-FOOT-001 | Integrar pie dominante como metadata, contrato compatible, ficha localizada y auditoría | Completa: 1.200 claves exactas; RIGHT/LEFT/BOTH 914/275/11; 875 pruebas aprobadas, cinco comandos requeridos correctos. 240 simulaciones anteriores conservadas, sin cambiar motores/roles. Revisión factual externa del adjunto pendiente. Ver qa/DATA-FOOT-001.md y logs/DATA-FOOT-001.md |
+
 ## Cartas y banco — 19/10/2026
 
 Categoría visible durante subasta, períodos por club para 600 leyendas importadas, tarjetas de técnicos con nacionalidad/trayectorias y 100 fotos, banco intercambiable desde la cancha, contraste y animaciones implementados. 824 pruebas aprobadas. Dos técnicos sin foto reutilizable encontrada; QA visual en navegador impedida por Work. Ver qa/REFERENCE-CARDS-UX.md y logs/REFERENCE-CARDS-UX-2026-10-19.md. Push solicitado sobre codex/current-club-audit; despliegue separado.

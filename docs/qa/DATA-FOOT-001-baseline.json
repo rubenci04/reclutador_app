@@ -1,0 +1,1447 @@
+{
+  "base": "aef35f3",
+  "playersHash": "55830d9381bf396364675e44bbe44b6b53c1672bd74a31d3f258e3fd62b6f81a",
+  "provenanceHash": "e09817ec4bdd4bc24b356a855ba099b204cff1f0c1134532f9bd9cc47d68734e",
+  "simulations": [
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:0",
+      "hash": "62a8a3e70ce361cf3486d801162a2519684eb7834cc7874f296a23157166fc1f"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:1",
+      "hash": "84df0d7980f8df1c88d0a5fe072af663447a8a4e6ba68137fbc4103663c3dce0"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:2",
+      "hash": "eef4a4995d8d56a2e410a727ad76972a6cbbacbdf2b17fca8384342c9252d329"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:3",
+      "hash": "c1e0afdf71978d9558667122268fafb05f4e86d8a45f596a17f54362c3f60590"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:4",
+      "hash": "f1ac440cfef932b3297ff978464a2547cd2eaf0b0fe3b0c486ebea467063f775"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:5",
+      "hash": "dfe50dc3178ad2dffc0e741e611d666cdc442b096ab0718baa2b9b66f08274df"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:6",
+      "hash": "a1653026aa19e5ced071c8ee321f7fbf3fc8c7883cbdd6e3b237450f5bd7e40c"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:7",
+      "hash": "46cc5857be204c8b93e246e8422dbe4c97e5a5572711f4954c2eba57b59a169e"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:8",
+      "hash": "aa0c9863d0d3e967d8a48e88cf48a9dc83165a5deb5144d85d722dc26f0e31be"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:9",
+      "hash": "4ff9d79c140f659425a952c5d2bc0f966c4e153c02616e39fc1fb09d32745f6d"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "936ccac5c7ca5ace656c14ddc77934a66405ddd8735d53d88856e57c4811c6ea"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "4f6cb7ae4f9edc9ff79943aa8e8d84d73b2c96dd1865a0a6f13e15dce254ff0f"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "d81c2f1fb69518a77dfa47c2f3265c047450ea7f6619fd7424dd2d93be382829"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "5b43f94421b7536db8c9d9ccd9a2943a02c3b0f44faf2f9867c12bcb6e25ad71"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "7a039901d82fe13df1025c8918cf7ab94b1d5b10bc18527fc9738b54ca4d318d"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "e7b18ea3a434aa9308bcfa44cf04a5c9eb83667076414c561eaa277e08c907aa"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "be60b8d7846a4926d8e23ee5bd5dc99e674ccb780e85c3f5f66ac96146aa9094"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "15090c14600bb94d1f571aae94ed29fbca57e87d3ce4e861afbde0d119e6e72f"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "5a355ff610aca77a39b8257270c89b73eacf73fc4f024745d79427f259438eca"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "a2905d052f78c59bacbb69c4a01cb0a74fa88e6ad010bd1b3a42a10a0f064f00"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "b1b98ddb9fd11e4654e74cd211c07a5c16b69e8f95050ff9b14137ba5db7b353"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "768b16c27e7fcd3ca5faf7c980dcecea19b58b944f23efee6cbcca7625e1a032"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "bc5a00ab5ea94bec5731053b22fcde18c90489e0108a57bebfd75b9d21b9ab8e"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "48cc05805261dca2beaa79052196690a355db451abae3b84605c14ac9c9f89c2"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "ce9cbb3ec9fa3d90ed5df39389fe8cb8b15b6ef89e6778abe4c8b0c48cc21320"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "9a32be9ef86d4f64e2e71f370944e8cf4d6eba897cb5dad3c6a78b65514f4cf6"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "93d483e0141be6e9980e23482dc65b081d4c4c2fd87e706921a835d8acecead9"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "fd3913d26ad5e6b24d6f9eae1c50faa082ec17de758c49bb92d1ddff99aba8e2"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "fda4737b43462201447cd1b6169f30e48ca1ee836f857f23e595be874ae1b234"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "ccea5239722438b27a7b2791c86b64d6dd6b43963780cec65bdbc62f9c39531a"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "ab3631da41016c841d5ba425897f0808a41497bcb24508a920e3b5e9cf8421b1"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "5fb4a37c7c4a07611a14e2b742d328f05ce11a5d93d6b01c378a4e425d1172a7"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "4ad770de6ed74010b99bb0dabae6d5ecacaa396a39ddb16aa651a24ce11d12f5"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "813725b80c8bfd5daa2dad1e24da70c238833dc0fed458d68545ae3ca3148cd7"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "65bb67c6675864b030dec42f7ff91e8574e1017010203703c7aa8a91e860f957"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "204e7ab35d12a172589dba22212344363e1c2e3af97257f8fc1fd92942d85255"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "48a71d334278aabeb753c1d47fddc232e0c4a2e0e98a17f3b8354f146d50ea32"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "e6733ad1b38b2325802819f68ccc0923eda9114992303c424e6e4f5f1e5366ef"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "16ed0f63f29bee33f0a47b3150ee35bfa0b9013d0260ac6b0b15257156781231"
+    },
+    {
+      "mode": "GLOBAL_CLASSIC",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "8c80e09ce34730a6e2d7b3d86c2239f5a9d97de59f10601320fbb13fd9bbd755"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:0",
+      "hash": "b294eb7ab2c3bebcd76ba8f186bcd8faf7466ea4c19566a6f6be373d67ee78ff"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:1",
+      "hash": "cd95c16344e0f371e70913b3b2e85c94b41917f427d715fd537b670869d3cffb"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:2",
+      "hash": "c235554d20c20f1a84f85086725fe32f74eb7e1fe96440fa6d73b43e9e120ad3"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:3",
+      "hash": "cd32559fd7cd22b710a0c92547140a0146c7bb3e1fc12c4d4e34628a4f8e08c4"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:4",
+      "hash": "1c2b794f81c0d1d4502d8c1fd5051329eb932ef2dfbd86add06252de25ae57fe"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:5",
+      "hash": "e2aa5f68dea95a20de0a1a671e142103bac60bd5ca3712b057a13db0babc7e3f"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:6",
+      "hash": "ecdff07e1fe9f1b916a1f31f4c05f63bebf2242bb2f062c0b058603d032baaa9"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:7",
+      "hash": "6dd6b3755967de58261b8bcd4f87cf98ccf360ab4c3a5085306375257b433258"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:8",
+      "hash": "a685d36a3e3d3aa64249c7d076163c79df835012ae86043562d6b4c2cde3c773"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:9",
+      "hash": "7044dfbe2dae994e9545d172770a77a82304335dc8d4e9e5b37efcc4473ced87"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "3996ac276bfadb508566dabd7be67a3e773932b6166337e75783d2d14f50b325"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "a3a370b0dc07f57f6026cb5af23d14801540afa562a9818593e4e993ecde4f41"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "e4ad1f4ca30f9b749dbbc8ac01c90235c0c56b830efa4e888c6b1ed5c881a2da"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "b86fbf336bc50acdd172f2c1901fa34457cc6e3d76269fa49e5c566f283f0015"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "cbb6ba241f86b09d335692101fbf44e1ac28f3001ca8c114693f91afe48d7983"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "7dbc795891f2680c5feeb05c2fd2f9427bb022d307fa11f37356031164e9fc93"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "bb4c2a528ba5073af9b18b6341c062f6e6368b9abcc99aba84edbdcac7fe22b2"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "b1c782f6bd05e16118e79c183612d37306ea4b4dd660d0dff1d670eb0ed0e938"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "423a53d8e0e088ab443729e74e5390bb14bc6dc4bdcf4aa9b009270dc91a895a"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "78ff04ca2beda9a87ae863cf6ca40c0f6208ad249eaee36efc5a5379b6c733e1"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "5e71173f5c2ef7abef1365d12befdb6c0882afe4c6d996980c2382be1dacf391"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "73f2ed99c3eb13632e37573a897f8a1676bf7ccaed93b1df44b67a4bb9afe57c"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "bff0557877d5df80e48d6db9a8e8f4ac2203df0dd4f67f4c0a9422bd5f62f7ba"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "8a95ba302506ce7ee7a6e1f93688d103c579e100bf064e80ca6ba02588d7a7b6"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "c479c6389e065db92ea5bf7fd0153fd97a2a5bf04b904d054a236c8e5bfd6a59"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "88321d452d08d7e34fc282d4e567c60425e66bde4b028c23c36bbfb4df87c136"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "cdbbb7937a0359d86c3ae5631a18a1dd1a134835e14dc8ee8f8f9101ee85b9e8"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "dfe7e695ad2660c9629e71b308e29296bb489b2e200afcf08caa12b758059e83"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "78b7db03a45b6740059fe0ca922629acfa9211af3432094f1286e10a4e774174"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "86a50251687a862aadba8bbdd440667e7eb6a78b7a0c02bf9ab1408d1a0eef0f"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "b20328ea233471ff0f442786c284e8961799cb2a7d7df64508681cbaa5e6cbb2"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "795e04bb4a755d13f28d95785f8c2f4f5c153235c81fb806b9e674635b8eeea9"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "74763c3cb2d2001edc4830c38d21fc8727a1aad0880dd0f12fcafdccc516ab07"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "9901cfb9e12c40305e035dd3d1c5aaae58c4daf1929365234215237179b16835"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "23086146cc4a7f62dde963ade025e07d1d4a1b4eac3d884dd277bfec6748e9ac"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "ae1dc58dabfbe1d69652a0b054ebafc9c262a657032b7715cde587d55eb6516f"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "836b557d00579307196080e757eeb922fdd0704678d118b62d0fb1b456e742f2"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "68eb4de1d9da4728da553390d1ee76080842fbf8567469551684c1373b8f7685"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "a8463ac496eb10242e169b8e1f57f42d63cb63582619d4b174469c7610b0b0f0"
+    },
+    {
+      "mode": "LEGENDS_ONLY",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "7f0767f64bd9493564c8c8a9298a6645fbd370388e3ad9aebc0f6b848c71cecd"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:0",
+      "hash": "d2a78504c6f77a6dd27646042c98207fb936422eaf5a98b251d8c9c063006b02"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:1",
+      "hash": "bd4b4225ce87d998fa7e7bf0196b774f8e930a4ba67c033692b6b55ea8ecaef9"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:2",
+      "hash": "153dab9ec43a5f24ee6af2d27b7387f5fa36fd68c82e1fb729da1e94792a9a98"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:3",
+      "hash": "359a7fe810ca94ff091fe2dfd074c210382933c0011e975b60b66949afcd8b59"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:4",
+      "hash": "b0f2929c7c6ae6f6891f5bdb094161e92dad561691e2a866e72e6c65ec8be569"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:5",
+      "hash": "5f49f0fb48123e40fef9a185f4b6a24dccf450d220e7c6305a64cebf1788be6b"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:6",
+      "hash": "0cc8a124b2d9b11e2347d7f41debd1ab06b3c6b4f4c0d2e56402b2d4e841661b"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:7",
+      "hash": "e7ed91c614162060ccefebfb020b2185249462285649b52ddbf1c2dad738682f"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:8",
+      "hash": "0ed553aec20e4f4cfdea54cea035e5a5872f3f2e1db8982a37b8a67a2760f932"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:9",
+      "hash": "1b6eadefd045829c3abc8c53379dc50eb498f593647431bfd77b50cece69b5d2"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "16b7febb69e675eb4ba7f4b7806352ce39b18d5aaad264d42cb4a0420affd1f6"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "536dcde3ca4a7786187099853fdb0a58163235ee8b43eb5f347c45267825be17"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "21509f33721c1484a87ae2ea084bf25ca49e94b20c3dd7eef92553eff14387ed"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "44852c6665d4fa4b48965ec475d4af96a6dbbb3dfb80ccf604b41b726c539a2b"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "d0b1cef484fc75de16c1a581eaa2644bcaf5d7672a8f20d0949fc9e4ec54cb19"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "9d22fe9e1a03471ed84b735efc8254150290346eab4eb29c4c7da23cb6c0bfff"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "c69c99f86efaae706a61825250f4b7952c9c63ed5351148ae65940a46f07c50e"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "d51932ae560f33c03cf2075edcbdc164f25544a40ee6a1d31411346862a09edf"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "ab8d17580e030f5f28e00d58f2dc0dd906f36a998f804369af71789474d75327"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "ac52289596f32d40af94b25b0786fb89a6147766e18e6087e17e7db73a69d556"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "c2fb0b0abd02c432bf1faa2d1d7d631d96ea34b1e61128189c8ca293e2655b4b"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "0bd23b12b63a4255fa3ba494b3aeaf68d110487ec26f0721366ca11870aabe7f"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "5c73337c96b58864e6c6fb2ad4db4dff507f247d3a1acd8fd5651aa8e420eeff"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "ffbb5362b7c6121c192289e5708383c8a31198cf1a308634eb4b4bf703d9075c"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "ac3e2d73ab6235f269ea4f058263488dc1e5388a6419badf4b367ee4cf6717df"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "e555ff8b192176011bd3453e117ecb87f547b6f5a878f478f6ada82ee0fcd1db"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "278c27d94f9981eef43b2d83d2d284ccecc27d4d7507c6018ffa4c38f0d302e3"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "c48b6bead710f76324ffeb2d1218be11e815436e9af5c9a7f6e27ab96e710bb4"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "c810fb0e6f5efc34fb28e4b66bc9ab18d558d4c7ff909c8ee9bca987b37e798d"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "6e3ad6091e29d8d624648067374575c7d9adb78d9aa3fd80d8bf45f93fae6518"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "8bd9c3a9f933075f747f66653b29c5f90b9a69ad8a6f1a8e7a3cde2a313f0821"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "1ef30fd1fa6d30b5b3bceee4ab17c6246cb7adb62d2fccf35218e1a9c5a91192"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "2ce3dbb9ff18f8fbc49cba5fedcfd9a130c5bb2097fb5d9c852b82fe8bb6fcca"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "52290542ff263b3aa61249b72d1b13dff5694f8601aee3a5a99e1f31373b4da1"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "30c8dbd904f8257319c24c391bc3a7b20aed4c43e7c5720aec541d2f659a6469"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "b3702283112529b6397e476fddee6678c702ccba7ecec5ac51da53af3a2a37cb"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "9720321cec33b309083f942e2a3bf41ca6425f3c0c33f16dc101f4bdace3406f"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "7e988c5b52b38c69640cec91dd5824d321c080e85e66966a5e2cbe1f242e8c4b"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "7ab1925ee9c18899e8c70184bd1297b9f8fba6bfde3c45abdad433cb8a6a9ac4"
+    },
+    {
+      "mode": "ARGENTINA_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "823c9ae3efdfebbb1d51d4fe1056d13616cd9a93a62551622cfdbb6f5689ef82"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:0",
+      "hash": "77bd2929b3f32c7963f95d4fd6bd794a72eb81a07122e29c322297a5dabd473f"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:1",
+      "hash": "9510d5816268bd1664a67091d46a1e74bec4442ca33199f00fe02157096492be"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:2",
+      "hash": "f56f888ad33b465fb6fa65b6f5b415269dae59e565564c2429464b9e40eab1fc"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:3",
+      "hash": "6372af12512218d79288eabb4fa6e771e44ad033f57441f0a049c6c75c6c2991"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:4",
+      "hash": "69da630ab78ee29616a7bb7531a6d9e67cad30de0e914801d9f12ac48d2bdcc0"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:5",
+      "hash": "07071b6dc377fbc375d61de11d173929f83ee2c59d30b44186eae62b03d681b9"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:6",
+      "hash": "19610ed377e6f69202d8fa94e2cc12aba282f4730f0baa516f24a2a0d5ecee1a"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:7",
+      "hash": "54635913742bd59c4c4e65576117cf97e6c5d64a9531887ca95494b633a953b8"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:8",
+      "hash": "56a513297a17b0f46c1aa16b5935c1fc629eedf27209b789a25cc50ff8482347"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:9",
+      "hash": "50ce24b10c662ee517c81a8295d23772ae698d6fdc45518a8c4eb6e967348c4d"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "543018b5533d523beaa8fd7ce5b2405fb5cc82626595534868c8280fa1216613"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "da6640869e3fef0893513cf2771fb25154da2ca19addae13805128d2ef673aed"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "1966cdb6ef81608f3c1cb4701ff5e63bf24faff1e0e6a58ffbc9e88b6286cc22"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "b2a773d3505ad09f5e30cbd4661a9c9cdda3fc4699e3eaa63cc0b31c4c9bbdf5"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "23ed8bf480b96e703eb0ae6f87a965dfe4e3be73d63ff7c53303701f5f7464e0"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "88bca7d8244c944d80868ba9bacbce76e6e459674bed683d549464acc8e52046"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "148a4edb69fa1a09b3ec65ad7ede9cb827ddb6791028eea7c832f9752f01c605"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "9817f76465ceb1cef83a693d867f8a6ada81cf8c2077062547a614ec7abd311b"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "057604a055405fb98d933faff42a87c65fe1c577304aec2c44772ae6b3146904"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "fc609bf8d804416bf8b338aa31ddf29bd4f139b9f06e0c5069f818e16e59b9d8"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "88bc3b501563eee40f6d76ef633b0b6aae2c9aa409740feb32c94ca5f257e44e"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "4c181f14f20ed2a8236228d7635144434d998c463d792df2da906bbd371b15ba"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "609a121990e2099eb9da27b2cddbc19c297d7494dae48270aae4d2851ad0af81"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "7e5eb42c7309127cc863787f0f93fe71cf67b1662483c1c6b7e976a258bf9064"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "0c7578651ea2ea1ffff377cab2af07e81418e97f7930f46d2ae9c1168a7b1293"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "c53296679a45a873d2135c460e95df0a35f7749360333f2451c0b8928a8cde1f"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "3a3e8275741cc91db66252e4674d45f9dc09f97ba80ff01a40132248fd8e754b"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "e20407f7c6a1301f71aede41399a45e405f236a06a5bbb95e938d385f80968dd"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "c3430e30cb43452c4c3a9878e0fbae76c36a901013cc855c5e69a1a5a926696c"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "060fd95089011a0166ea822805736fedbcda1e571b1197e955220f735699dbaa"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "4c516782a234f5856877ba0bd9b9d6cf28177cd795b1d8cf2504036818c5dc57"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "1b548a38efe8cd104b28011b20540301f609b18dbff1aa638697295507e7b6aa"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "2a748badac03c41ba75185dbd3e188c24574e99f62dd75dc75c749005074762f"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "49438fb4ef93255a2ffb6bdcd227b0c8f5eb29428da75d93d39e8644c490f486"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "14f2b6afe740cb75bcdbf264a2935805e72b68b81c154b658f1f71ab636efce3"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "42f024ee0b2694dd03e1cc23c539515ecda5f5151822551a8c3aaa86ffcaa7d1"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "d471070439025fdb8910dc0f957241f25aa6e7615a4cd7b7a7005b59ef3f91d1"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "689a6519a7fecd4bdd0bff20a0701d6ba1c94fcf330030b56a584f6cfd0e69ca"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "d20c16da7f533b12eb430dfbe5925aae23e77c30363d4459aefe69c29365ed86"
+    },
+    {
+      "mode": "ENGLAND_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "eb8e90fe2d703309fac489caf4180915c73f82014296004024b0d8e0ce576d07"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:0",
+      "hash": "1703c1c83566ece7c1cf767cb29ac6f9aedbb5eb2f78f958c82e0a3e77bddec8"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:1",
+      "hash": "2943fccdddaba0f183cfc4d30e2019d85797d671ae7b21f55103b469fc71a274"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:2",
+      "hash": "388bb72375c0f80751f8d8a4aa135bfc8b03dba79d48feb251df3a5f78f05754"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:3",
+      "hash": "46910cd76af8f8f1df50fe7628588301bb5d03e4997edf16c63b613565ec0ad7"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:4",
+      "hash": "b5e706a5a20a99a53df11c6a5ad76c4974527e6dbe69a1f0b0f78a0bd80dd692"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:5",
+      "hash": "b1e0f43a4070f9494725b9fca0f32b0383d4e515093266dd59fcb61ab4d30cb4"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:6",
+      "hash": "8008976b2d3d7b0afccbf768d9b0f01c54e29291ad92b0a41d28673e68a5bc8a"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:7",
+      "hash": "7285e747ed7342374aa931f7458876fc27fa317841934641cd6315debe73af8f"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:8",
+      "hash": "200b8435c388b91a43879d67109c14d2531aba886a20ee4032fb53bf43295602"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:9",
+      "hash": "eef9e76f7cbc801e148b7b9e273cb15258de2a4370ca54d565d6eaf967887bec"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "6926eca03574bb8eb21085cbfcc1a6be91f8e115824c0d82723ef68e6d74835e"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "24ec6a8bb97ed4e78f9667ebb3cc0c406b9790440f5b1b9f197a2d4d63a99fd9"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "be595baf0cd7b2e7c92b6c9d0d8929bb0cb9b7e067b3af1fb1ef70f691903b8a"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "b3b2d6c23a810914cc00b1a2aa295dcc8520a521a70d166630e47ea216104229"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "f1ba3d48e3a59abe3ba7c768b9936503e060ffdaff7a188f51bbb8c2a7a909c1"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "e6649c933b24ae511f60bddc144dd8878a889b2464ab4a8bf5a7782bf662e3a6"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "e888325654bbdb869563ef017399cb7563bb3e259e01bd241e7ba0862cf2b8cd"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "59802b5d3c7d5f79d7946f1bbdea9103b49e3ebea95b54100b54350c785b9c1b"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "3fa9025851420b526b99eb22db195ae113e8cdd80f376dac9ed154812651da8c"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "9f36c0d4ba30b5f133b154fa9c5c8e47700da030eb50aa8b8d33a3786a75e3f2"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "2d33ed6a8df8c5f8d4f7de71ffd3bc2e9674acfa0ac6a5ed0833d947fefb99e0"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "48801065b0ae202b782d335bd9b15c232e490f4e1c961ef35c22d37c79160e7e"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "6e979d86a38d099fb90f686f02c5bc1fb8cd5b6779eee449b0cf99362e9548e9"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "ec9078d498c208ced8d15f5eda0370694706313947e8bf1d2fdc8320e53632ec"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "55257b6d2143d7205a7329574a9f310e95f4b49b8f72bea896ba5eb73af72235"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "6563d61f90f7140442cf3ef03a9e6d3ae82e131c1143c324b87f227febcde896"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "12bddd15f86a285808376f5c2e754fe861451c5ffd2afcb6bfd0fc83e27df4a7"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "53e38663c9d17c5332df66a6d62eb38d7a6321f505c08c68e6f9f7dbad6a0cf1"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "19c40b013c95f09179ac17567ebd9e73e2af3254987178c8e31c1074fb23b138"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "411c3c1f53b7a59d5086814191dff01763dfe5123f0d75ae7a2e93db07def114"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "1e137f2633a9b70a820908bfd1b269c2b8055f39832a93ab34371efd9ebc0f69"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "11536dcd56ca88aaa7fb99acaeb5a99bbade7cbff68d7a23bfc25802f8c732d3"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "7f9ba88096ea15bf57ee190f99fdd97db6bbaa9b45eb325337768f23310083f5"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "e3337bd653e52a708320b1268c766015e40ec904bea09d6eede24ea597b9db49"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "0a921eb5706460ee43697bf0d06a65305740e0b1afd76f6fa67cbbf19a84c350"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "19ff7b401d8adcabb1921d2e8cd67137ceb66ffe29efbc9f44d50c227bfc9923"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "f188b0d92277370b7c5444be3d5723c98151b52661bec29d12f3459d2ecb90a5"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "0caa47415d3bb86963fcfafd5f32d39b0571a158a19b56759b95547ca1de92a9"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "81dfea60cc45445423680937d8336d2e03abd5677a7f5732bec1d3771634a5b2"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "f9aa3c7dc4b0858dd3805dcef1667156e150044909e02090a999cacab96c89f7"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:0",
+      "hash": "bd921350fa52e0b5347d375a8faaf3d120781c2b268ad9bb438b36cefe9499a3"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:1",
+      "hash": "0b3d6e8c930f84b7d9dd73ee357f00a8607accb5b7f629765dfb72fd9acd8ec0"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:2",
+      "hash": "36c0a6077080e1cb2f4e4b64d2b9f4a2d15ebb546df550c8d110d4769aab2c02"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:3",
+      "hash": "f7c405e9f140aae65aced48941f8f3585976c574ae7fbe007550de2de9e492a6"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:4",
+      "hash": "b7110001d798bb4143ce9137167dcdf93ae938659d6b9e4cadceb0f9d28996f0"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:5",
+      "hash": "31ce018778f88e5bf3a9edcc8b05cbf3fa5a07cf9222298b51d68d612426c038"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:6",
+      "hash": "81667dd0aecd9ae9b92a72b2357618b21b8588822a0fa698cbf4063b32e96a6a"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:7",
+      "hash": "f26210743fc2277a9fe01b025370121b6bf91408b3563a8216d8cb087fc3088b"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:8",
+      "hash": "088cafb9a9ceda9d2c45e477e0c0602a1080ef6d7118e2fb3f92eb947735805d"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": null,
+      "seed": "DATA-FOOT-001:9",
+      "hash": "8b7c2f2c3582b1d72d834984c5f1ea95a984fd266b368e54eb8e907cc50cf49f"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "1a9a3ee22a105c41dc94259c2df55cda2d92c9861459887478c9a2ad512023ca"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "1583652b33a26e19e55ab22e91a7c59af1009f20d5ef20a4377ba87fd44fffcb"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "7226f51a2d6d1dd02da2b415c8ab3483e5c7e332cf005bb116a545e0f5124452"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "84c4a7ffa62768349c239b3b27cd382e4ba0999a30833bdac9a755823c35a80d"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "478d0bdd15dc02258b083c384fca29c8d93ca1396ce1dc52b36e7fd3962348df"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "5963760d379f07527077848a4167fe38d747cd4f5b4998d9610be14f35a54a8b"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "ba2bf6d0359013ed44cf7c1144fa07906a92e834fe42e33856aded6efcc47de4"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "e7a10e183d6125bc14bb9333a8dc7a32d2b1428198cf2e2d6cf8fc85422c2ae7"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "3d6af9bcadc3d3a2217e5270c2980b387db47be0405b7d41306fa075c9526943"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v1",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "f225f57c1bc8634f3c8f95cbf8defb198b541a0bc7a9f9a389cf6c46db77feb6"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "efb355068e89a223c56b2adc5717a8edfd95ed1d5a57ce8d9fa52f02c76608e5"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "1fe0142ddc28bc992ed14ab3e7441194b35a040e77a95d23195dbd57723bbc86"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "60999efb0bcb2c390bdd1e48329682014b0fd19e3c3b2c4d8e619a1012dd35e7"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "3c2acf3911723cb6aa965c92cbd29985fd284607c020afd02d746a3861b3d3dc"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "b5796abdd8b472bc80cc83848c42633b1e8b97990643b2483dfda53aa1ae9aef"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "ca738ba493522a5d9a7c782ee41a6cf0326d3e3621fc93c5671ce1d4a4fd0d66"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "b87862bab80a045d824d7cddc9c6bda77d02ca6c73dcf93e162752b8f867e5ec"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "7a0114a6438fea35ce2a6c42328d8b4d49cbcf1b6ada41c14f80081620229cdb"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "3007446b2dfcd391fb690fdf0ba712c858d641e32759601dec16f1a0f84ea07c"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v2",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "b69592a56cc1e85211c9cf4a125188b8c26fff1152d2327b387eae15f0deb319"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:0",
+      "hash": "80b3412559302029ba18c4627be4d8c68bb50e38da56cc2eae4ba015c972409c"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:1",
+      "hash": "36d06965e04e096fc4edbc88ac49eeccec13bc0cbe35000be46d669e01cc7297"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:2",
+      "hash": "2b08f947c914dd5c14b9a24b3f1099c845fd4ca1a1abb090df89b0c89089d12a"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:3",
+      "hash": "df8a7265516a80d4d5f6b48950af7bab25497c141c40227d3ee9fc6417788780"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:4",
+      "hash": "5ce683c6d4eb26af205b0f7d4ed98ace05025f5fd69fc1508c2f029f346a5805"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:5",
+      "hash": "13ea9b1296badd050244275a782f59b264d15644b43a5e58b9cb88ef7c69d288"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:6",
+      "hash": "937fc21a255eccb025c989ef6a8ff253d6083e761050f34b1e23d0d59d3fd596"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:7",
+      "hash": "1386452e4f2b43e3b91eb944bf853dc6a2a49d9a96722ff2732bf0a3a2f7d43e"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:8",
+      "hash": "8db7733fdbb428932fb31a55187d9f2949cb5ef40e0913def3e65ed60d335b7b"
+    },
+    {
+      "mode": "SPAIN_LEAGUE",
+      "actionModel": "action-v3",
+      "seed": "DATA-FOOT-001:9",
+      "hash": "c2097d35106f9e9c3c759203bf1a81b9f612f41fbe537f39e7d6fb0af82113d8"
+    }
+  ]
+}

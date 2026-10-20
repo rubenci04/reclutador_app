@@ -4,7 +4,7 @@ Vigente desde CODEX-003A, actualizado en CODEX-003C · DL-F02-DATA-002. `catalog
 
 ## Diccionario de datos
 
-`Player` representa una sola versión del mejor período deportivo de una persona. Todas las propiedades son obligatorias y readonly en TypeScript. La entrada externa se recibe como unknown y se valida en runtime.
+`Player` representa una sola versión del mejor período deportivo de una persona. Las propiedades son readonly en TypeScript y obligatorias salvo `dominantFoot`, opcional desde DATA-FOOT-001. La entrada externa se recibe como unknown y se valida en runtime.
 
 | Campo | Tipo | Regla |
 |---|---|---|
@@ -22,8 +22,19 @@ Vigente desde CODEX-003A, actualizado en CODEX-003C · DL-F02-DATA-002. `catalog
 | phy_rating | number | Entero finito de 40 a 99; capacidad física |
 | men_rating | number | Entero finito de 40 a 99; mentalidad y lectura del juego |
 | price | number | Millones enteros; exactamente el resultado de calculatePlayerPrice(overall_rating) |
+| dominantFoot | DominantFoot (opcional) | Metadata: RIGHT, LEFT, BOTH o UNKNOWN. Ausente en registros legacy equivale a UNKNOWN; nunca se presume RIGHT |
 
 No se almacena tier: getPlayerTier lo deriva de overall_rating. `price` es un campo obligatorio materializado para el futuro intercambio de datos, pero nunca una decisión manual. La validación recalcula y compara. Las propiedades extra se ignoran para validación; no deben usarse como fuente de reglas, ni como un tier alternativo. No hay dependencia de React, del navegador ni de traducciones en el dominio.
+
+### Pie dominante — DATA-FOOT-001
+
+`DominantFoot = 'RIGHT' | 'LEFT' | 'BOTH' | 'UNKNOWN'`. Equivalencias de importación: Diestro → RIGHT, Zurdo → LEFT, Ambidiestro → BOTH, Sin información → UNKNOWN. `validatePlayer` acepta omisión/undefined para compatibilidad y rechaza cualquier valor explícito no canónico, incluido null, con `invalid_dominant_foot`. La ficha usa el dato del registro y presenta UNKNOWN como información sin verificar. No recupera ni infiere un pie por nombre, posición o ID de una partida guardada.
+
+Las 1.200 versiones importadas incorporan el campo en `src/data/league-collections/players.json`; se transmite a `LEAGUE_PLAYERS` y a sus selecciones existentes de Global/ligas. Se cruza exclusivamente por `(league, sourceId)`, sin completar otras identidades o ediciones legacy por semejanza. Los Global que conservan una versión legacy sin el campo muestran UNKNOWN. No se modifica la selección de representantes ni se fusionan versiones.
+
+Este campo no interviene en OVR, atributos, precio, roles, formaciones, táctica, probabilidades ni RNG. `catalog_v1`, persistencia y versiones de simulación se conservan. Los 87 OVR de fuente inferiores a 75 mantienen exactamente el piso de juego ya existente; no se recalculan por pie. `ROLE_PROFILES` continúa vacío. Los códigos de referencias de Brasil/España siguen siendo códigos aportados, sin acreditarse como URLs ni evidencia verificada. Importar el pie no constituye una auditoría factual externa.
+
+`npm run catalog` audita el adjunto JSON, la identidad SHA256 del Excel, el cruce completo, conteos y conservación de procedencia contra la base aef35f3. `node scripts/audit-dominant-foot.mjs --write` reproduce exclusivamente la incorporación del campo tras validar el conjunto completo. `python scripts/audit-foot-workbook.py` contrasta en lectura las filas y hojas del Excel con el JSON. La auditoría histórica `catalog:audit` conserva su alcance separado de catalog_v1 parcial. Evidencia y limitaciones: [DATA-FOOT-001](qa/DATA-FOOT-001.md).
 
 ## Posiciones, formación y niveles
 
@@ -95,7 +106,7 @@ CatalogValidation contiene mode (partial/complete), status (approved/invalid/pen
 
 Duplicados: IDs exactos y nombre normalizado (Unicode NFD, sin diacríticos, puntuación o espacios; minúsculas), incluso entre clubes/épocas diferentes. Desde CODEX-003B, identityAliases.json relaciona también nombres deportivos, abreviaturas y variantes completas revisadas de los 150 futbolistas con su ID permanente. playerIdentityKey usa esa identidad común para detectar colisiones; validatePlayer emite identity_mismatch si un alias conocido se intenta asignar a otro ID.
 
-El registro es explícito y finito: no se infieren personas por apellido, club, parecido textual ni nacionalidad. Se rechaza una definición de alias vacía o asignada a dos IDs para exigir desambiguación editorial. Nombres desconocidos mantienen el control de normalización y requieren revisión humana antes de entrar al catálogo. No se agregan campos al contrato Player ni se cambian los nombres de exhibición. Los alias de cada lote se incorporan junto con sus fuentes/revisión, manteniendo los IDs existentes.
+El registro es explícito y finito: no se infieren personas por apellido, club, parecido textual ni nacionalidad. Se rechaza una definición de alias vacía o asignada a dos IDs para exigir desambiguación editorial. Nombres desconocidos mantienen el control de normalización y requieren revisión humana antes de entrar al catálogo. El mecanismo de alias no agrega campos al contrato Player ni cambia los nombres de exhibición. Los alias de cada lote se incorporan junto con sus fuentes/revisión, manteniendo los IDs existentes.
 
 ## Identificadores, migración y versionado
 

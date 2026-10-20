@@ -2,6 +2,7 @@ import { ATTRIBUTE_RANGE, CONTEMPORARY_PERIOD, EXPECTED_PLAYER_IDS, NATIONALITY_
 import { POSITIONS } from '../../types/football'
 import { ERAS, PLAYER_CATEGORIES, type Player, type PlayerValidation, type ValidationIssue } from '../../types/player'
 import { calculatePlayerPrice } from './calculatePlayerPrice'
+import { isDominantFoot } from './dominantFoot'
 import { normalizePlayerName, resolvePlayerIdentity } from './playerIdentity'
 export { normalizePlayerName } from './playerIdentity'
 
@@ -17,6 +18,9 @@ export function validatePlayer(input: unknown, allowedIds: readonly string[] = E
   }
   const record = input as Record<string, unknown>
   const issues: ValidationIssue[] = []
+  if (record.dominantFoot !== undefined && !isDominantFoot(record.dominantFoot)) {
+    issues.push({ code: 'invalid_dominant_foot', field: 'dominantFoot', actual: record.dominantFoot })
+  }
   for (const field of REQUIRED_FIELDS) {
     if (!Object.hasOwn(record, field) || record[field] === undefined || record[field] === null) {
       issues.push({ code: 'missing_field', field })

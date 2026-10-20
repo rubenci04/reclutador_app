@@ -6,6 +6,8 @@ export const PLAYER_TIERS = ['S', 'A', 'B', 'C', 'D'] as const
 export type PlayerTier = (typeof PLAYER_TIERS)[number]
 export const PLAYER_CATEGORIES = ['contemporary', 'legend'] as const
 export type PlayerCategory = (typeof PLAYER_CATEGORIES)[number]
+export const DOMINANT_FEET = ['RIGHT', 'LEFT', 'BOTH', 'UNKNOWN'] as const
+export type DominantFoot = (typeof DOMINANT_FEET)[number]
 export type BatchId = `B0${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}` | 'B10'
 
 /** Editorial peak-period version of one footballer. Prices are integer millions. */
@@ -24,6 +26,8 @@ export interface Player {
   readonly phy_rating: number
   readonly men_rating: number
   readonly price: number
+  /** Informational only. Omission in legacy records means UNKNOWN. */
+  readonly dominantFoot?: DominantFoot
 }
 
 export interface PlayerCatalog {
@@ -44,7 +48,7 @@ export type ValidationCode =
   | 'invalid_category' | 'invalid_reference_year' | 'era_mismatch' | 'category_year_mismatch'
   | 'category_distribution' | 'category_position_distribution' | 'batch_category'
   | 'invalid_manifest' | 'batch_state_mismatch' | 'unexpected_batch'
-  | 'identity_mismatch'
+  | 'identity_mismatch' | 'invalid_dominant_foot'
 
 /** Machine-readable diagnostics. UI consumers must translate codes before display. */
 export interface ValidationIssue {

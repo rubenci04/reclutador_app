@@ -13,6 +13,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "catalog:audit": "node scripts/audit-catalog.cjs",
+    "catalog": "node scripts/audit-dominant-foot.mjs",
     "preview": "vite preview --host 127.0.0.1"
   },
   "dependencies": {

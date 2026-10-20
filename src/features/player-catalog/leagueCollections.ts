@@ -5,6 +5,7 @@ import type { Position } from '../../types/football'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
 import { calculatePlayerPrice } from './calculatePlayerPrice'
 import { playerIdentityKey } from './playerIdentity'
+import { isDominantFoot } from './dominantFoot'
 
 /** Source OVR is editorial input, not an independently verified current-club claim.
  * The existing economy accepts 75–99. Values below 75 retain their source value
@@ -13,6 +14,7 @@ import { playerIdentityKey } from './playerIdentity'
  */
 export const LEAGUE_PROVENANCE = rows
 export const LEAGUE_PLAYERS: readonly Player[] = rows.map((row) => {
+  if (!isDominantFoot(row.dominantFoot)) throw new Error(`invalid_imported_dominant_foot:${row.league}:${row.sourceId}`)
   const rating = Math.max(75, Math.min(99, row.sourceRating))
   const position = row.position as Position
   const bounded = (offset: number) => Math.max(40, Math.min(99, rating + offset))
@@ -25,6 +27,7 @@ export const LEAGUE_PLAYERS: readonly Player[] = rows.map((row) => {
     att_rating: bounded(position === 'DEL' ? 3 : position === 'MED' ? 0 : position === 'DEF' ? -18 : -35),
     def_rating: bounded(position === 'ARQ' ? 3 : position === 'DEF' ? 2 : position === 'MED' ? -8 : -25),
     phy_rating: bounded(-3), men_rating: bounded(-1), price: calculatePlayerPrice(rating),
+    dominantFoot: row.dominantFoot,
   }
 })
 
