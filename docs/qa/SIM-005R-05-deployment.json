@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-21",
+  "implementationCommit": "76d23cd",
+  "worker": "reclutador-app",
+  "version": "9d03e991-e554-4e5b-bf9e-3644ed73aaf1",
+  "url": "https://reclutador-app.rea-04.workers.dev/",
+  "verifiedAtUtc": "2026-10-21T03:11:57.005Z",
+  "checks": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "bytes": 630,
+      "sha256": "8596e5d9d626853e1374c30ea9c4801eb38b69418271993061fd5a7ae3921041",
+      "expectedSha256": "8596e5d9d626853e1374c30ea9c4801eb38b69418271993061fd5a7ae3921041",
+      "matches": true
+    },
+    {
+      "path": "assets/AuctionPage-2au2BIUW.js",
+      "status": 200,
+      "bytes": 2022757,
+      "sha256": "3be14ec5a34784b83fd1cbadeaef5aeb36dae8625f5d0adf6166b2ed1a121753",
+      "expectedSha256": "3be14ec5a34784b83fd1cbadeaef5aeb36dae8625f5d0adf6166b2ed1a121753",
+      "matches": true
+    },
+    {
+      "path": "assets/index-B0pFFLmC.js",
+      "status": 200,
+      "bytes": 230215,
+      "sha256": "cc590b91d9a9d5991d2e8325bc32c3b818c2cc98a66d5b13d26880cb536d2b11",
+      "expectedSha256": "cc590b91d9a9d5991d2e8325bc32c3b818c2cc98a66d5b13d26880cb536d2b11",
+      "matches": true
+    },
+    {
+      "path": "assets/index-C910sb6Z.css",
+      "status": 200,
+      "bytes": 96641,
+      "sha256": "2ad3594f643c96192eb9a46ae6bafb8bfaa3c38d20ce0369b9e1a0d16ac05ee5",
+      "expectedSha256": "2ad3594f643c96192eb9a46ae6bafb8bfaa3c38d20ce0369b9e1a0d16ac05ee5",
+      "matches": true
+    },
+    {
+      "path": "assets/OnlinePage-BNof-H4L.js",
+      "status": 200,
+      "bytes": 235905,
+      "sha256": "c4b7baf3f8f64fc7afe27dd78f11dc21082fc8769df4d786186eb119cb49f2fc",
+      "expectedSha256": "c4b7baf3f8f64fc7afe27dd78f11dc21082fc8769df4d786186eb119cb49f2fc",
+      "matches": true
+    },
+    {
+      "path": "assets/OnlinePage-ieYY5d5L.css",
+      "status": 200,
+      "bytes": 1146,
+      "sha256": "8ff45b3ec344d580150e21b57e36ba059926be7034abb65c30f62f34c71696c7",
+      "expectedSha256": "8ff45b3ec344d580150e21b57e36ba059926be7034abb65c30f62f34c71696c7",
+      "matches": true
+    }
+  ],
+  "note": "HTTP and SHA-256 verification only; no browser visual QA, listening or online E2E. Push to codex/sim-005 only; main unchanged after automatic approval review rejected its inclusion."
+}

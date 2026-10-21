@@ -1,5 +1,11 @@
 # Despliegue: producción actual y antecedentes
 
+## Publicación SIM-005R-05 — 21/10/2026
+
+Última verificación de esta entrega: **76d23cd**, Worker existente **reclutador-app**, https://reclutador-app.rea-04.workers.dev/. Versión **9d03e991-e554-4e5b-bf9e-3644ed73aaf1** al 100%, etiqueta 76d23cd. Build, dry-run y deploy con Wrangler 4.151.3, `--keep-vars --no-autoconfig`, sin cambios de bindings, secretos ni migraciones.
+
+Push autorizado realizado a `origin/codex/sim-005`; `main` quedó sin cambios porque la revisión automática rechazó incluir la rama predeterminada sin autorización explícita. El Worker se publicó directamente, sin depender de un push a main ni configurar despliegue automático. HTTP 200 y SHA-256 de HTML y cinco bundles coinciden con dist. [Registro y límites](logs/SIM-005R-05.md), [evidencia](qa/SIM-005R-05-deployment.json). No acredita QA visual ni E2E online. Las secciones siguientes son antecedentes históricos.
+
 ## Producción verificada — 19/10/2026
 
 - URL usada por el usuario: https://reclutador-app.rea-04.workers.dev/.

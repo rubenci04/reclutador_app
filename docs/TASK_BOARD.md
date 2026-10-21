@@ -13,7 +13,7 @@
 | Idiomas, teclado, foco y controles | Pruebas en es-AR/en/pt-BR; Canvas/audio y reduced-motion conservados |
 | Controles finales | Typecheck/lint/build, 1.046 pruebas en 100 archivos y dry-run aprobados |
 | QA visual real | Pendiente: navegador deshabilitado por Work settings; sin eludirlo |
-| Push y despliegue solicitados | Ver [registro](logs/SIM-005R-05.md) y [QA](qa/SIM-005R-05.md) para el estado verificado |
+| Push y despliegue solicitados | 76d23cd en origin/codex/sim-005; Worker activo al 100%, HTTP/SHA-256 verificados. Main sin cambios tras rechazo de revisión automática. [Registro](logs/SIM-005R-05.md) |
 
 ## SIM-005R-04B — 20/10/2026
 
