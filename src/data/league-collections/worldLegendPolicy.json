@@ -1,0 +1,1977 @@
+{
+  "version": "world-legends-v1",
+  "policy": "Closed editorial nominations from supplied Spain, England and Italy historical rankings, plus five explicitly named exceptional regional candidates. League membership, nationality, rank and OVR alone never grant WORLD. Excluded candidates remain in league/regional editions. Representative precedence SPAIN then ENGLAND then ITALY fixes a source edition without modifying its OVR. No count target. Unresolved nominations remain pending, never synthesized.",
+  "representativeLeaguePrecedence": [
+    "ESP",
+    "ENG",
+    "ITA"
+  ],
+  "approved": [
+    {
+      "name": "Cristiano Ronaldo",
+      "editionId": "import_esp_esp_leg_cristiano_ronaldo_dos_santos_aveiro",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 2,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Lionel Messi",
+      "editionId": "import_esp_esp_leg_lionel_andres_messi_cuccittini",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 1,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Diego Maradona",
+      "editionId": "import_esp_esp_leg_diego_armando_maradona",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 3,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Alfredo Di Stéfano",
+      "editionId": "import_esp_esp_leg_alfredo_stefano_di_stefano_laulhe",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 4,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Zinédine Zidane",
+      "editionId": "import_esp_esp_leg_zinedine_yazid_zidane",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 10,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Johan Cruyff",
+      "editionId": "import_esp_esp_leg_hendrik_johannes_cruijff",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 5,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Ferenc Puskás",
+      "editionId": "import_esp_esp_leg_ferenc_puskas",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 7,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Ronaldo Nazário",
+      "editionId": "import_ita_leg_006",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 6,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Ronaldinho",
+      "editionId": "import_esp_esp_leg_ronaldo_de_assis_moreira",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 9,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Rivaldo",
+      "editionId": "import_esp_esp_leg_rivaldo_vitor_borba_ferreira",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 21,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Roberto Carlos",
+      "editionId": "import_esp_esp_leg_roberto_carlos_da_silva_rocha",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 35,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Iker Casillas",
+      "editionId": "import_esp_esp_leg_iker_casillas_fernandez",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 28,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Sergio Ramos",
+      "editionId": "import_esp_esp_leg_sergio_ramos_garcia",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 40,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Xavi",
+      "editionId": "import_esp_esp_leg_xavier_hernandez_creus",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 14,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Andrés Iniesta",
+      "editionId": "import_esp_esp_leg_andres_iniesta_lujan",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 11,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Luka Modrić",
+      "editionId": "import_esp_esp_leg_luka_modric",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 13,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Karim Benzema",
+      "editionId": "import_esp_esp_leg_karim_mostafa_benzema",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 15,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Luis Suárez",
+      "editionId": "import_esp_esp_leg_luis_alberto_suarez_diaz",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 12,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Luis Suárez Miramontes",
+      "editionId": "import_esp_esp_leg_luis_suarez_miramontes",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 16,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Sergio Busquets",
+      "editionId": "import_esp_esp_leg_sergio_busquets_burgos",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 39,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Carles Puyol",
+      "editionId": "import_esp_esp_leg_carles_puyol_saforcada",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 47,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Raúl",
+      "editionId": "import_esp_esp_leg_raul_gonzalez_blanco",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 33,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Paco Gento",
+      "editionId": "import_esp_esp_leg_francisco_gento_lopez",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 31,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Emilio Butragueño",
+      "editionId": "import_esp_esp_leg_emilio_butragueno_santos",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 62,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Hugo Sánchez",
+      "editionId": "import_esp_esp_leg_hugo_sanchez_marquez",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 27,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Fernando Hierro",
+      "editionId": "import_esp_esp_leg_fernando_ruiz_hierro",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 63,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "David Villa",
+      "editionId": "import_esp_esp_leg_david_villa_sanchez",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 49,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Fernando Torres",
+      "editionId": "import_esp_esp_leg_fernando_jose_torres_sanz",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 51,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Xabi Alonso",
+      "editionId": "import_esp_esp_leg_xabier_alonso_olano",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 74,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "David Silva",
+      "editionId": "import_esp_esp_leg_david_josue_jimenez_silva",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 48,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "David Beckham",
+      "editionId": "import_esp_esp_leg_david_robert_joseph_beckham",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 58,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Michael Laudrup",
+      "editionId": "import_esp_esp_leg_michael_laudrup",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 19,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Dani Alves",
+      "editionId": "import_esp_esp_leg_daniel_alves_da_silva",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 24,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Samuel Eto'o",
+      "editionId": "import_esp_esp_leg_samuel_eto_o_fils",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 37,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Kaká",
+      "editionId": "import_esp_esp_leg_ricardo_izecson_dos_santos_leite",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 29,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Thierry Henry",
+      "editionId": "import_esp_esp_leg_thierry_daniel_henry",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 23,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Dennis Bergkamp",
+      "editionId": "import_eng_epl_ley_015",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 15,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Éric Cantona",
+      "editionId": "import_eng_epl_ley_028",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 28,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "George Best",
+      "editionId": "import_eng_epl_ley_004",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 4,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Bobby Charlton",
+      "editionId": "import_eng_epl_ley_005",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 5,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Bobby Moore",
+      "editionId": "import_eng_epl_ley_010",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 10,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Gordon Banks",
+      "editionId": "import_eng_epl_ley_035",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 35,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Kenny Dalglish",
+      "editionId": "import_eng_epl_ley_011",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 11,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Kevin Keegan",
+      "editionId": "import_eng_epl_ley_038",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 38,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Ian Rush",
+      "editionId": "import_eng_epl_ley_036",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 36,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Graeme Souness",
+      "editionId": "import_eng_epl_ley_060",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 60,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Steven Gerrard",
+      "editionId": "import_eng_epl_ley_027",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 27,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Frank Lampard",
+      "editionId": "import_eng_epl_ley_016",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 16,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Paul Scholes",
+      "editionId": "import_eng_epl_ley_020",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 20,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Ryan Giggs",
+      "editionId": "import_eng_epl_ley_025",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 25,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Wayne Rooney",
+      "editionId": "import_eng_epl_ley_013",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 13,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Alan Shearer",
+      "editionId": "import_eng_epl_ley_003",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 3,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Gary Lineker",
+      "editionId": "import_esp_esp_leg_gary_winston_lineker",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 82,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Michael Owen",
+      "editionId": "import_eng_epl_ley_086",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 86,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Peter Schmeichel",
+      "editionId": "import_eng_epl_ley_021",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 21,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Edwin van der Sar",
+      "editionId": "import_eng_epl_ley_056",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 56,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Petr Čech",
+      "editionId": "import_eng_epl_ley_042",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 42,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "John Terry",
+      "editionId": "import_eng_epl_ley_018",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 18,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Rio Ferdinand",
+      "editionId": "import_eng_epl_ley_022",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 22,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Tony Adams",
+      "editionId": "import_eng_epl_ley_069",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 69,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Ashley Cole",
+      "editionId": "import_eng_epl_ley_029",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 29,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Patrick Vieira",
+      "editionId": "import_eng_epl_ley_019",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 19,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Roy Keane",
+      "editionId": "import_eng_epl_ley_024",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 24,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Didier Drogba",
+      "editionId": "import_eng_epl_ley_032",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 32,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Yaya Touré",
+      "editionId": "import_eng_epl_ley_046",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 46,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Sergio Agüero",
+      "editionId": "import_esp_esp_leg_sergio_leonel_aguero_del_castillo",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 38,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Kevin De Bruyne",
+      "editionId": "import_eng_epl_ley_007",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 7,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Mohamed Salah",
+      "editionId": "import_eng_epl_ley_009",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 9,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Sadio Mané",
+      "editionId": "import_eng_epl_ley_067",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 67,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Harry Kane",
+      "editionId": "import_eng_epl_ley_017",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 17,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Gareth Bale",
+      "editionId": "import_esp_esp_leg_gareth_frank_bale",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 52,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Paul Gascoigne",
+      "editionId": "import_eng_epl_ley_089",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 89,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Glenn Hoddle",
+      "editionId": "import_eng_epl_ley_138",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 138,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Bryan Robson",
+      "editionId": "import_eng_epl_ley_051",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 51,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Jürgen Klinsmann",
+      "editionId": "import_eng_epl_ley_114",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 114,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Marcel Desailly",
+      "editionId": "import_eng_epl_ley_119",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 119,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Ruud Gullit",
+      "editionId": "import_eng_epl_ley_129",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 129,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "John Charles",
+      "editionId": "import_eng_epl_ley_037",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 37,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Paolo Maldini",
+      "editionId": "import_ita_leg_002",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 2,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Michel Platini",
+      "editionId": "import_ita_leg_003",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 3,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Marco van Basten",
+      "editionId": "import_ita_leg_004",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 4,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Franco Baresi",
+      "editionId": "import_ita_leg_005",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 5,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Gianluigi Buffon",
+      "editionId": "import_ita_leg_007",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 7,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Giuseppe Meazza",
+      "editionId": "import_ita_leg_008",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 8,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Roberto Baggio",
+      "editionId": "import_ita_leg_009",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 9,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Francesco Totti",
+      "editionId": "import_ita_leg_012",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 12,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Alessandro Del Piero",
+      "editionId": "import_ita_leg_013",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 13,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Andrea Pirlo",
+      "editionId": "import_ita_leg_014",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 14,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Alessandro Nesta",
+      "editionId": "import_ita_leg_015",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 15,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Dino Zoff",
+      "editionId": "import_ita_leg_016",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 16,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Gianni Rivera",
+      "editionId": "import_ita_leg_017",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 17,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Giacinto Facchetti",
+      "editionId": "import_ita_leg_018",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 18,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Gaetano Scirea",
+      "editionId": "import_ita_leg_019",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 19,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Lothar Matthäus",
+      "editionId": "import_ita_leg_022",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 22,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Gabriel Batistuta",
+      "editionId": "import_ita_leg_023",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 23,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Gunnar Nordahl",
+      "editionId": "import_ita_leg_024",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 24,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Silvio Piola",
+      "editionId": "import_ita_leg_025",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 25,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Javier Zanetti",
+      "editionId": "import_ita_leg_026",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 26,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Fabio Cannavaro",
+      "editionId": "import_esp_esp_leg_fabio_cannavaro",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 25,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Zico",
+      "editionId": "import_ita_leg_028",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 28,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Gigi Riva",
+      "editionId": "import_ita_leg_029",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 29,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Andriy Shevchenko",
+      "editionId": "import_ita_leg_030",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 30,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Zlatan Ibrahimović",
+      "editionId": "import_esp_esp_leg_zlatan_ibrahimovic",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 43,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Sandro Mazzola",
+      "editionId": "import_ita_leg_032",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 32,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Valentino Mazzola",
+      "editionId": "import_ita_leg_033",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 33,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Omar Sívori",
+      "editionId": "import_ita_leg_034",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 34,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Frank Rijkaard",
+      "editionId": "import_ita_leg_035",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 35,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Pavel Nedvěd",
+      "editionId": "import_ita_leg_036",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 36,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Lilian Thuram",
+      "editionId": "import_ita_leg_037",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 37,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Clarence Seedorf",
+      "editionId": "import_ita_leg_038",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 38,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Juan Alberto Schiaffino",
+      "editionId": "import_ita_leg_039",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 39,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Giorgio Chiellini",
+      "editionId": "import_ita_leg_041",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 41,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Christian Vieri",
+      "editionId": "import_ita_leg_042",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 42,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Gennaro Gattuso",
+      "editionId": "import_ita_leg_043",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 43,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Cafu",
+      "editionId": "import_ita_leg_045",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 45,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Giuseppe Bergomi",
+      "editionId": "import_ita_leg_046",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 46,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Paolo Rossi",
+      "editionId": "import_ita_leg_047",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 47,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Claudio Gentile",
+      "editionId": "import_ita_leg_048",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 48,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Marco Tardelli",
+      "editionId": "import_ita_leg_049",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 49,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Antonio Cabrini",
+      "editionId": "import_ita_leg_050",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 50,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Roberto Mancini",
+      "editionId": "import_ita_leg_051",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 51,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Gianluca Vialli",
+      "editionId": "import_ita_leg_052",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 52,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Hernán Crespo",
+      "editionId": "import_ita_leg_053",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 53,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Filippo Inzaghi",
+      "editionId": "import_ita_leg_054",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 54,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "David Trezeguet",
+      "editionId": "import_ita_leg_055",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 55,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Roberto Donadoni",
+      "editionId": "import_ita_leg_058",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 58,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Dejan Savićević",
+      "editionId": "import_ita_leg_059",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 59,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Zvonimir Boban",
+      "editionId": "import_ita_leg_060",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 60,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "George Weah",
+      "editionId": "import_ita_leg_061",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 61,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Nils Liedholm",
+      "editionId": "import_ita_leg_063",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 63,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "José Altafini",
+      "editionId": "import_ita_leg_064",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 64,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Edgar Davids",
+      "editionId": "import_ita_leg_069",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 69,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Didier Deschamps",
+      "editionId": "import_ita_leg_070",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 70,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Leonardo Bonucci",
+      "editionId": "import_ita_leg_072",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 72,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Walter Samuel",
+      "editionId": "import_ita_leg_074",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 74,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Esteban Cambiasso",
+      "editionId": "import_ita_leg_075",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 75,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Wesley Sneijder",
+      "editionId": "import_ita_leg_076",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 76,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Diego Milito",
+      "editionId": "import_ita_leg_078",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 78,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Maicon",
+      "editionId": "import_ita_leg_079",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 79,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Júlio César",
+      "editionId": "import_ita_leg_080",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 80,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Walter Zenga",
+      "editionId": "import_ita_leg_081",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 81,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Gianluca Pagliuca",
+      "editionId": "import_ita_leg_082",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 82,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Angelo Peruzzi",
+      "editionId": "import_ita_leg_083",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 83,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Francesco Toldo",
+      "editionId": "import_ita_leg_084",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 84,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Dida",
+      "editionId": "import_ita_leg_086",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 86,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Karl-Heinz Rummenigge",
+      "editionId": "import_ita_leg_094",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 94,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Andreas Brehme",
+      "editionId": "import_ita_leg_095",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 95,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Alessandro Altobelli",
+      "editionId": "import_ita_leg_097",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 97,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Tarcisio Burgnich",
+      "editionId": "import_ita_leg_100",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 100,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Daniele De Rossi",
+      "editionId": "import_ita_leg_110",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 110,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Bruno Conti",
+      "editionId": "import_ita_leg_111",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 111,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Aldair",
+      "editionId": "import_ita_leg_114",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 114,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Edin Džeko",
+      "editionId": "import_ita_leg_120",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 120,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Careca",
+      "editionId": "import_ita_leg_121",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 121,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Edinson Cavani",
+      "editionId": "import_eng_epl_ley_104",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 104,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Gonzalo Higuaín",
+      "editionId": "import_ita_leg_125",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 125,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Ruud Krol",
+      "editionId": "import_ita_leg_129",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 129,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Rui Costa",
+      "editionId": "import_ita_leg_133",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 133,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Daniel Passarella",
+      "editionId": "import_ita_leg_135",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 135,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Gianfranco Zola",
+      "editionId": "import_eng_epl_ley_079",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 79,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Juan Sebastián Verón",
+      "editionId": "import_ita_leg_142",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 142,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Miroslav Klose",
+      "editionId": "import_ita_leg_151",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 151,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Zbigniew Boniek",
+      "editionId": "import_ita_leg_167",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 167,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Arturo Vidal",
+      "editionId": "import_ita_leg_175",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 175,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Carlos Tevez",
+      "editionId": "import_eng_epl_ley_072",
+      "sourceFile": "base_datos_300_jugadores_premier_league_2026.txt",
+      "sourceRank": 72,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Thiago Silva",
+      "editionId": "import_ita_leg_192",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 192,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Enzo Francescoli",
+      "editionId": "import_ita_leg_194",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 194,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Preben Elkjær",
+      "editionId": "import_ita_leg_200",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 200,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Paulo Roberto Falcão",
+      "editionId": "import_ita_leg_044",
+      "sourceFile": "ranking_serie_a_2026_top_200_actuales_y_200_leyendas.txt",
+      "sourceRank": 44,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Romário",
+      "editionId": "import_esp_esp_leg_romario_de_souza_faria",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 8,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Neymar",
+      "editionId": "import_esp_esp_leg_neymar_da_silva_santos_junior",
+      "sourceFile": "Espana_150_actuales_150_historicos_2026.txt",
+      "sourceRank": 20,
+      "classification": [
+        "LEAGUE",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION"
+    },
+    {
+      "name": "Manuel Neuer",
+      "editionId": "edition_neuer_legend",
+      "sourceFile": "Ranking global de futbolistas 2026_ Sudamérica + México y Europa, actualidad y leyendas.txt",
+      "sourceRank": 53,
+      "classification": [
+        "REGIONAL",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_EUROPEAN_REGIONAL_EXCEPTION"
+    },
+    {
+      "name": "Pelé",
+      "editionId": "import_bra_bra_leg_edson_arantes_do_nascimento",
+      "sourceFile": "Brasil_150_actuales_150_leyendas.txt",
+      "sourceRank": 1,
+      "classification": [
+        "LEAGUE",
+        "REGIONAL",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_REGIONAL_EXCEPTION",
+      "regionalSource": "Ranking global de futbolistas 2026_ Sudamérica + México y Europa, actualidad y leyendas.txt",
+      "regionalHistoricalRank": 2
+    },
+    {
+      "name": "Garrincha",
+      "editionId": "import_bra_bra_leg_manuel_francisco_dos_santos",
+      "sourceFile": "Brasil_150_actuales_150_leyendas.txt",
+      "sourceRank": 2,
+      "classification": [
+        "LEAGUE",
+        "REGIONAL",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_REGIONAL_EXCEPTION",
+      "regionalSource": "Ranking global de futbolistas 2026_ Sudamérica + México y Europa, actualidad y leyendas.txt",
+      "regionalHistoricalRank": 6
+    },
+    {
+      "name": "Didi",
+      "editionId": "import_bra_bra_leg_valdir_pereira",
+      "sourceFile": "Brasil_150_actuales_150_leyendas.txt",
+      "sourceRank": 7,
+      "classification": [
+        "LEAGUE",
+        "REGIONAL",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_REGIONAL_EXCEPTION",
+      "regionalSource": "Ranking global de futbolistas 2026_ Sudamérica + México y Europa, actualidad y leyendas.txt",
+      "regionalHistoricalRank": 15
+    },
+    {
+      "name": "Rivellino",
+      "editionId": "import_bra_bra_leg_roberto_rivellino",
+      "sourceFile": "Brasil_150_actuales_150_leyendas.txt",
+      "sourceRank": 18,
+      "classification": [
+        "LEAGUE",
+        "REGIONAL",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_REGIONAL_EXCEPTION",
+      "regionalSource": "Ranking global de futbolistas 2026_ Sudamérica + México y Europa, actualidad y leyendas.txt",
+      "regionalHistoricalRank": 20
+    },
+    {
+      "name": "Sócrates",
+      "editionId": "import_bra_bra_leg_socrates_brasileiro_sampaio_de_souza_vieira_de_oliveira",
+      "sourceFile": "Brasil_150_actuales_150_leyendas.txt",
+      "sourceRank": 20,
+      "classification": [
+        "LEAGUE",
+        "REGIONAL",
+        "WORLD"
+      ],
+      "reason": "EXPLICIT_REGIONAL_EXCEPTION",
+      "regionalSource": "Ranking global de futbolistas 2026_ Sudamérica + México y Europa, actualidad y leyendas.txt",
+      "regionalHistoricalRank": 21
+    }
+  ],
+  "unresolvedNames": [
+    "Virgil van Dijk",
+    "Rafael Márquez"
+  ]
+}

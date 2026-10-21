@@ -31,7 +31,7 @@ export function modeSource(id: ThemedModeId): ModeCatalog {
   return id === 'ARGENTINA_CLUBS' || id === 'ARGENTINA_LEGENDS' || id === 'ARGENTINA_CURRENT' ? { players: ARGENTINA_PLAYERS, metadata: ARGENTINA_METADATA, allowedIds: ARGENTINA_PLAYERS.map((player) => player.id) } : { players: DRAFT_CATALOG, metadata: EMPTY_METADATA }
 }
 
-/** Players a game of this mode draws from. Global draws from 300 distinct current identities. */
+/** Eligible category pool; deterministic draws select their own cards independently of pool size. */
 export function catalogForMode(id: ThemedModeId): readonly Player[] {
   if (id === 'GLOBAL_CLASSIC') return GLOBAL_CURRENT
   if (id === 'LEGENDS_ONLY') return GLOBAL_LEGENDS

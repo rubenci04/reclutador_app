@@ -17,6 +17,7 @@ import { useAuctionSounds } from './useAuctionSounds'
 import { PRODUCT } from '../../config/product'
 import { defaultBudgetForMode } from '../player-catalog/leagueCollections'
 import { catalogForMode, PLAYABLE_MODES } from '../themed-modes/modeCatalog'
+import { recordedCollection, RECORDED_COLLECTIONS } from '../player-catalog/recordedCollections'
 import { DRAFT_SLOTS } from '../draft/draftTypes'
 import { MatchScreen } from '../local-match/MatchScreen'
 import { MatchSeriesScreen } from '../local-match/MatchSeriesScreen'
@@ -59,7 +60,7 @@ import type { OnlineDuelBinding } from './onlineBinding'
 import { OnlineTeamsStage } from './OnlineTeamsStage'
 import { WinCelebration } from './WinCelebration'
 
-interface AuctionPageProps { readonly onDraftFree: () => void; readonly onOnline?: () => void; /** Plays the shared game of an online room instead of a local one. */ readonly online?: OnlineDuelBinding }
+interface AuctionPageProps { readonly onDraftFree: () => void; readonly onOnline?: () => void; readonly teamName?: string; readonly onEditName?: () => void; readonly nameStorageWarning?: boolean; /** Plays the shared game of an online room instead of a local one. */ readonly online?: OnlineDuelBinding }
 /** Presentation time of the toss; the result is already stored when it starts. */
 export const COIN_TOSS_MS = 1500
 /** The exported context may carry the match configuration; anything invalid falls back to the classic rules. */
@@ -68,7 +69,7 @@ function replayConfig(text: string): MatchConfig {
 }
 const RECRUITER_IDS = ['recruiter_one', 'recruiter_two'] as const
 
-export function AuctionPage({ onOnline, online }: AuctionPageProps) {
+export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorageWarning = false }: AuctionPageProps) {
   const { t } = useTranslation()
   const categoryLabel = (id: ThemedModeId) => t(id === 'ARGENTINA_CLUBS' ? 'modes.items.argentinaClubs.name' : 'categoryTree.options.' + id)
   const [entryChosen, setEntryChosen] = useState(false)
@@ -104,7 +105,7 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
     if (value === null) return onlineExit?.()
     onlineSubmit((current) => (typeof value === 'function' ? value(current) : value) ?? current)
   }, [onlineSubmit, onlineExit])
-  const catalog = useMemo(() => game && (game.legacyCatalog || online && !game.manualBench) ? DRAFT_CATALOG : game?.categoryPair ? crossCategoryCatalog(game.categoryPair.recruiter_one, game.categoryPair.recruiter_two) : catalogForMode(game ? game.coachMode ?? gameMode : mode), [game, gameMode, mode, online])
+  const catalog = useMemo(() => game && (game.legacyCatalog || online && !game.manualBench) ? DRAFT_CATALOG : recordedCollection(game?.drawContext?.catalogKey) ?? (game?.categoryPair ? crossCategoryCatalog(game.categoryPair.recruiter_one, game.categoryPair.recruiter_two) : catalogForMode(game ? game.coachMode ?? gameMode : mode)), [game, gameMode, mode, online])
   const playerById = (id: string) => catalog.find((player) => player.id === id)!
   const [error, setError] = useState<string | null>(null)
   const [autoFailedSeed, setAutoFailedSeed] = useState<string | null>(null)
@@ -170,8 +171,9 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
       if (!created.ok) return setError(t('draw.invalidReplay'))
       setMode('GLOBAL_CLASSIC'); setGameMode('GLOBAL_CLASSIC'); setSecondCategory('same'); setGame({ ...created.game, legacyCatalog: true }); setError(null); return
     }
-    const replayMode = [...PLAYABLE_MODES].find((candidate) => parseReplay(replayText, catalogForMode(candidate)))
-    const replayCatalog = replayMode ? catalogForMode(replayMode) : null
+    const prior = RECORDED_COLLECTIONS.find(row => parseReplay(replayText, row.players))
+    const replayMode = prior?.mode ?? [...PLAYABLE_MODES].find((candidate) => parseReplay(replayText, catalogForMode(candidate)))
+    const replayCatalog = prior?.players ?? (replayMode ? catalogForMode(replayMode) : null)
     const replay = replayCatalog ? parseReplay(replayText, replayCatalog) : null
     if (!replayMode || !replayCatalog || !replay) return setError(t('draw.invalidReplay'))
     const created = createRecruiterDuel(replayCatalog, replay.seed, replay.context, replayConfig(replayText))
@@ -316,8 +318,8 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
     return () => window.clearTimeout(timer)
   }, [mustSkip, skipper, game?.roundIndex, catalog, setGame])
   const blockedKey = game ? [game.seed, game.roundIndex, game.activeParticipant, game.currentBid?.amount ?? 0].join(':') : ''
-  const { notices, push, dismiss } = useAuctionNotices(game, catalog, { recruiter_one: game?.config?.names.recruiter_one ?? t('duel.recruiters.recruiter_one'), recruiter_two: game?.config?.names.recruiter_two ?? (opponentMode === 'cpu' ? 'CPU' : t('duel.recruiters.recruiter_two')) }, blockedMessage && availability && !['INVALID_OFFER'].includes(availability.bid.reason ?? '') ? { key: blockedKey, message: blockedMessage } : null)
-  const names = { recruiter_one: game?.config?.names.recruiter_one ?? t('duel.recruiters.recruiter_one'), recruiter_two: game?.config?.names.recruiter_two ?? (opponentMode === 'cpu' ? 'CPU' : t('duel.recruiters.recruiter_two')) }
+  const { notices, push, dismiss } = useAuctionNotices(game, catalog, { recruiter_one: (!online ? teamName : undefined) ?? game?.config?.names.recruiter_one ?? t('duel.recruiters.recruiter_one'), recruiter_two: game?.config?.names.recruiter_two ?? (opponentMode === 'cpu' ? 'CPU' : t('duel.recruiters.recruiter_two')) }, blockedMessage && availability && !['INVALID_OFFER'].includes(availability.bid.reason ?? '') ? { key: blockedKey, message: blockedMessage } : null)
+  const names = { recruiter_one: (!online ? teamName : undefined) ?? game?.config?.names.recruiter_one ?? t('duel.recruiters.recruiter_one'), recruiter_two: game?.config?.names.recruiter_two ?? (opponentMode === 'cpu' ? 'CPU' : t('duel.recruiters.recruiter_two')) }
 
   const dualFirst = dual?.first; const dualSecond = dual?.second
   const dualCatalog = useMemo(() => dualFirst && dualSecond ? crossCategoryCatalog(dualFirst, dualSecond) : [], [dualFirst, dualSecond])
@@ -345,7 +347,7 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
     setGame({ ...created.game, coachMode: dual.first, manualBench: true }); setDual(null); setError(null)
   }
   if (dual && !game) {
-    const dualNames = { recruiter_one: dual.draft.config.names.recruiter_one ?? t('duel.recruiters.recruiter_one'), recruiter_two: dual.draft.config.names.recruiter_two ?? (dual.vsCpu ? 'CPU' : t('duel.recruiters.recruiter_two')) }
+    const dualNames = { recruiter_one: teamName ?? dual.draft.config.names.recruiter_one ?? t('duel.recruiters.recruiter_one'), recruiter_two: dual.draft.config.names.recruiter_two ?? (dual.vsCpu ? 'CPU' : t('duel.recruiters.recruiter_two')) }
     return <div className="draft-app duel-shell"><header className="draft-header"><a className="brand" href="#duel-main" aria-label={PRODUCT.name}><span className="brand-emblem">R</span><span>{PRODUCT.name}</span></a><AudioControls /><LanguageSelector /></header>
       <main id="duel-main" className="duel-page">
         <DualDraftScreen draft={dual.draft} catalog={dualCatalog} names={dualNames} categoryLabel={(id) => categoryLabel(id as ThemedModeId)} humans={dual.vsCpu ? ['recruiter_one'] : ['recruiter_one', 'recruiter_two']}
@@ -364,6 +366,9 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
       {game && <section className="active-category-banner" aria-label={t('rosterUX.category')}><span>{t('rosterUX.category')}</span><strong>{categoryLabel(game.categoryPair?.recruiter_one ?? game.coachMode ?? mode)}</strong>{game.categoryPair && <small>{names.recruiter_two} · {categoryLabel(game.categoryPair.recruiter_two)}</small>}</section>}
       {!game && <section className="duel-intro entry-flow">
         <p className="eyebrow"><span />{t('entry.eyebrow')}</p><h1>{t('duel.title')}</h1>
+        {teamName && !online && <div className="team-name-home"><strong>{teamName}</strong><button className="secondary-action" onClick={onEditName}>{t('teamName.edit')}</button></div>}
+        {nameStorageWarning && <p role="status">{t('teamName.storageWarning')}</p>}
+        <p className="entry-caption">{t('entry.intro')}</p>
         {!entryChosen ? <>
           <h2 ref={entryHeading} tabIndex={-1}>{t('entry.chooseRival')}</h2>
           <div className="entry-rivals">
@@ -371,7 +376,7 @@ export function AuctionPage({ onOnline, online }: AuctionPageProps) {
             {onOnline && <button className="secondary-action" onClick={onOnline}>{t('entry.online')}</button>}
             <button className="secondary-action" onClick={() => { setOpponentMode('hotseat'); setEntryChosen(true) }}>{t('entry.local')}</button>
           </div>
-          <p className="entry-caption">{t('entry.intro')}</p>
+
         </> : <>
           <button className="secondary-action" onClick={() => setEntryChosen(false)}>{t('entry.back')}</button>
           <h2 ref={entryHeading} tabIndex={-1}>{t(opponentMode === 'cpu' ? 'entry.cpu' : 'entry.local')}</h2>

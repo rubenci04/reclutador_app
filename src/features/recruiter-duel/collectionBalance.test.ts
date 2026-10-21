@@ -8,11 +8,11 @@ import { createDrawContext } from './drawHistory'
 import { CLASSIC_CONFIG } from './matchConfig'
 
 describe('collection size and draw rarity', () => {
-  it('keeps all fourteen editions between 150 and 300, preserving players outside the playable cut', () => {
+  it('keeps all sixteen editions playable without an artificial upper cap', () => {
     const counts = CATEGORY_GROUPS.flatMap((g) => g.modes).map((mode) => {
       const players = catalogForMode(mode)
       expect(players.length, mode).toBeGreaterThanOrEqual(150)
-      expect(players.length, mode).toBeLessThanOrEqual(300)
+      expect(new Set(players.map(p => p.id)).size).toBe(players.length)
       return { mode, count: players.length, stars: players.filter((p) => p.overall_rating >= 98).length, positions: Object.fromEntries(['ARQ', 'DEF', 'MED', 'DEL'].map((pos) => [pos, players.filter((p) => p.position === pos).length])) }
     })
     writeFileSync('docs/qa/COLLECTION-SIZES.json', JSON.stringify(counts, null, 2) + '\n')

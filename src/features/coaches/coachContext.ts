@@ -38,7 +38,7 @@ export function coachesForMode(mode?: ThemedModeId): readonly Coach[] {
   else if (mode?.startsWith('SOUTH_AMERICA')) pool = COACH_CATALOG.filter((c) => LATIN_AMERICAN_ASSOCIATIONS.has(c.nationality) && (c.status === 'LEGEND') === Boolean(legend))
   else if (mode?.startsWith('EUROPE_')) pool = COACH_CATALOG.filter((c) => EUROPEAN_NATIONALITIES.has(c.nationality) && (c.status === 'LEGEND') === Boolean(legend))
   else if (legend) pool = COACH_CATALOG.filter((c) => c.status === 'LEGEND' && (c.tier === 'S' || c.tier === 'A'))
-  else if (mode === 'GLOBAL_CLASSIC') pool = COACH_CATALOG.filter((c) => c.status === 'ACTIVE')
+  else if (mode === 'GLOBAL_CLASSIC' || mode === 'ITALY_CURRENT') pool = COACH_CATALOG.filter((c) => c.status === 'ACTIVE')
   return pool.map((coach) => {
     const refs = REFERENCES[coach.surname]
     // In the Spanish legend edition, the Spanish affiliation is primary.

@@ -15,8 +15,8 @@
       "priorityAwards": 2972,
       "cpuSpent": 74114,
       "humanSpent": 74447,
-      "wins": 285,
-      "draws": 432,
+      "wins": 289,
+      "draws": 428,
       "losses": 283
     },
     {
@@ -29,8 +29,8 @@
       "cpuSpent": 80933,
       "humanSpent": 77439,
       "wins": 286,
-      "draws": 450,
-      "losses": 264
+      "draws": 449,
+      "losses": 265
     },
     {
       "strategy": "AGGRESSIVE",
@@ -41,9 +41,9 @@
       "priorityAwards": 52,
       "cpuSpent": 88021,
       "humanSpent": 80516,
-      "wins": 296,
+      "wins": 298,
       "draws": 413,
-      "losses": 291
+      "losses": 289
     }
   ]
 }

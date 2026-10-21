@@ -24,8 +24,8 @@
       "cpuPlayerSpent": 75.23333333333333,
       "cpuMeanRating": 84.03333333333333,
       "wins": 11,
-      "draws": 11,
-      "losses": 8
+      "draws": 12,
+      "losses": 7
     },
     {
       "difficulty": "EASY",
@@ -35,8 +35,8 @@
       "passes": 402,
       "cpuPlayerSpent": 84.73333333333333,
       "cpuMeanRating": 83.83333333333333,
-      "wins": 10,
-      "draws": 13,
+      "wins": 9,
+      "draws": 14,
       "losses": 7
     },
     {
@@ -48,8 +48,8 @@
       "cpuPlayerSpent": 72.66666666666667,
       "cpuMeanRating": 84.06666666666666,
       "wins": 10,
-      "draws": 13,
-      "losses": 7
+      "draws": 12,
+      "losses": 8
     },
     {
       "difficulty": "NORMAL",
@@ -71,44 +71,44 @@
       "passes": 336,
       "cpuPlayerSpent": 88.16666666666667,
       "cpuMeanRating": 83.7,
-      "wins": 10,
-      "draws": 13,
+      "wins": 11,
+      "draws": 12,
       "losses": 7
     },
     {
       "difficulty": "HARD",
       "strategy": "CONSERVATIVE",
       "games": 30,
-      "bids": 225,
-      "passes": 606,
-      "cpuPlayerSpent": 74.73333333333333,
-      "cpuMeanRating": 84.33333333333333,
-      "wins": 10,
+      "bids": 314,
+      "passes": 561,
+      "cpuPlayerSpent": 83.36666666666666,
+      "cpuMeanRating": 85.13333333333334,
+      "wins": 11,
       "draws": 12,
-      "losses": 8
+      "losses": 7
     },
     {
       "difficulty": "HARD",
       "strategy": "BALANCED",
       "games": 30,
-      "bids": 555,
-      "passes": 400,
-      "cpuPlayerSpent": 85.16666666666667,
-      "cpuMeanRating": 85.13333333333334,
+      "bids": 568,
+      "passes": 405,
+      "cpuPlayerSpent": 90.9,
+      "cpuMeanRating": 85.33333333333333,
       "wins": 11,
-      "draws": 13,
-      "losses": 6
+      "draws": 12,
+      "losses": 7
     },
     {
       "difficulty": "HARD",
       "strategy": "AGGRESSIVE",
       "games": 30,
-      "bids": 547,
-      "passes": 331,
-      "cpuPlayerSpent": 90.5,
-      "cpuMeanRating": 84,
-      "wins": 11,
-      "draws": 12,
+      "bids": 548,
+      "passes": 330,
+      "cpuPlayerSpent": 91.56666666666666,
+      "cpuMeanRating": 84.03333333333333,
+      "wins": 9,
+      "draws": 14,
       "losses": 7
     }
   ]

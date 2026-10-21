@@ -17,9 +17,9 @@
       "pairs": 12,
       "mismatches": 0,
       "goals": 59,
-      "wins": 6,
-      "draws": 2,
-      "digest": "2d533510341208406e3bd8645e9dac5c3ed69d87bf33a70ffbaaef011fd705a8"
+      "wins": 7,
+      "draws": 1,
+      "digest": "58bebe7b8911400ae3972107b51dc61e264da1cd0ca49cb1f381d8284e89a026"
     },
     {
       "mode": "ARGENTINA_CURRENT",
@@ -76,6 +76,24 @@
       "digest": "92ae10b2b38df7129b0ec28473ef078b568c28cef8f9ea41d0fb3073fa46abc7"
     },
     {
+      "mode": "ITALY_CURRENT",
+      "pairs": 12,
+      "mismatches": 0,
+      "goals": 55,
+      "wins": 12,
+      "draws": 0,
+      "digest": "a36abcda995ae3bebac275a7b25008ae06a525a4f117e191ac7e34e5f538cb3e"
+    },
+    {
+      "mode": "ITALY_LEGENDS",
+      "pairs": 12,
+      "mismatches": 0,
+      "goals": 53,
+      "wins": 10,
+      "draws": 1,
+      "digest": "114ba7142ce29615094fdde60b8b1931001d8a53bda2c15d2543479a0431c73d"
+    },
+    {
       "mode": "BRAZIL_CURRENT",
       "pairs": 12,
       "mismatches": 0,
@@ -97,10 +115,10 @@
       "mode": "SOUTH_AMERICA_CURRENT",
       "pairs": 12,
       "mismatches": 0,
-      "goals": 62,
+      "goals": 60,
       "wins": 12,
       "draws": 0,
-      "digest": "896e8b569ef3e37b4f7bfebbdcbb9ebed2b1462080185e4ab94a8704818e3c5c"
+      "digest": "fbce01264a107bc58369252df2df090801d6c89039d787a0e194dff7350793c5"
     },
     {
       "mode": "SOUTH_AMERICA_LEGENDS",
@@ -115,19 +133,19 @@
       "mode": "EUROPE_CURRENT",
       "pairs": 12,
       "mismatches": 0,
-      "goals": 75,
+      "goals": 68,
       "wins": 12,
       "draws": 0,
-      "digest": "b3b2676cfbfbf1408b4e7fd07f8f6298af3770d0386db461ab5d5763f733313b"
+      "digest": "5a22aff5b45999f3f494c6dd917e021f7ddee97c5e7d29ad1fbfae3041b9e46f"
     },
     {
       "mode": "EUROPE_LEGENDS",
       "pairs": 12,
       "mismatches": 0,
-      "goals": 49,
-      "wins": 9,
-      "draws": 2,
-      "digest": "9762a6079c178b535e00fa020c0120b8fc702e83b7aafb2a97b52253e5dc4931"
+      "goals": 47,
+      "wins": 8,
+      "draws": 3,
+      "digest": "dbf977a79747501edbb49f2a384f88eb5b0f28ebcaf55a119567d165bf12bbc1"
     }
   ]
 }

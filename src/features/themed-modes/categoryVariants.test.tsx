@@ -26,14 +26,14 @@ describe('current and legend category variants', () => {
     fireEvent.click(screen.getByRole('button', { name: /^Europe/ }))
     expect(onChange).not.toHaveBeenCalled()
     fireEvent.click(screen.getByRole('button', { name: 'Back to categories' }))
-    expect(screen.getAllByRole('button')).toHaveLength(7)
+    expect(screen.getAllByRole('button')).toHaveLength(8)
     expect(screen.getByRole('status')).toHaveTextContent('Argentine league current players 2026')
     fireEvent.click(screen.getByRole('button', { name: /^Argentine league/ }))
     expect(screen.getByRole('button', { name: /^Argentine league current players 2026/ })).toHaveAttribute('aria-pressed', 'true')
     expect(onChange).not.toHaveBeenCalled()
   })
   it('keeps the two original catalogs intact and enables the supplied league editions', () => {
-    expect(catalogForMode('GLOBAL_CLASSIC')).toHaveLength(300)
+    expect(catalogForMode('GLOBAL_CLASSIC').length).toBeGreaterThan(300)
     expect(catalogForMode('ARGENTINA_CLUBS')).toEqual(ARGENTINA_PLAYERS)
     const legends = catalogForMode('ARGENTINA_LEGENDS')
     expect(legends).toHaveLength(150)
@@ -51,6 +51,7 @@ describe('current and legend category variants', () => {
     ['ARGENTINA_CURRENT', 'ARGENTINA_LEGENDS', { countryCode: 'ARG' }],
     ['BRAZIL_CURRENT', 'BRAZIL_LEGENDS', { leagueId: 'bra_serie_a' }],
     ['SPAIN_LEAGUE', 'SPAIN_LEGENDS', { leagueId: 'esp_la_liga' }],
+    ['ITALY_CURRENT', 'ITALY_LEGENDS', { leagueId: 'ita_serie_a' }],
     ['ENGLAND_LEAGUE', 'ENGLAND_LEGENDS', { leagueId: 'eng_premier_league' }],
   ] as const)('%s / %s require verified league careers and separate versions, regardless of nationality', (current, legends, career) => {
     const players = [player('plr_001', 'contemporary', 'JPN'), player('plr_002', 'legend', 'JPN'), player('plr_003', 'legend')]
@@ -74,7 +75,7 @@ describe('current and legend category variants', () => {
     expect(eligiblePlayers(players, definition('EUROPE_LEGENDS'), metadata)).toEqual([players[3]])
   })
 
-  it.each(['es-AR', 'en', 'pt-BR'] as const)('translates the seven categories and their editions in %s', async (language) => {
+  it.each(['es-AR', 'en', 'pt-BR'] as const)('translates the eight categories and their editions in %s', async (language) => {
     const i18n = await createI18n(language)
     expect(THEMED_MODES.map((mode) => mode.id).sort()).toEqual([...THEMED_MODE_IDS].sort())
     expect(new Set(THEMED_MODES.map((mode) => mode.id)).size).toBe(THEMED_MODE_IDS.length)
@@ -83,7 +84,7 @@ describe('current and legend category variants', () => {
     }
     const onChange = vi.fn()
     render(<I18nextProvider i18n={i18n}><ModeSelector selected="GLOBAL_CLASSIC" onChange={onChange} /></I18nextProvider>)
-    expect(screen.getAllByRole('button')).toHaveLength(7)
+    expect(screen.getAllByRole('button')).toHaveLength(8)
     for (const group of CATEGORY_GROUPS) {
       fireEvent.click(screen.getByRole('button', { name: new RegExp('^' + i18n.t('categoryTree.groups.' + group.id)) }))
       expect(screen.getByRole('heading', { name: i18n.t('categoryTree.groups.' + group.id) })).toHaveFocus()
@@ -95,6 +96,6 @@ describe('current and legend category variants', () => {
       }
       fireEvent.click(screen.getByRole('button', { name: i18n.t('categoryTree.back') }))
     }
-    expect(onChange).toHaveBeenCalledTimes(14)
+    expect(onChange).toHaveBeenCalledTimes(16)
   })
 })

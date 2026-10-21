@@ -742,3 +742,13 @@
   .live-match .match-heading button { padding: .5rem; min-height: 44px; }
   .live-match .board-focus label { padding: 0 .35rem; font-size: .65rem; gap: .2rem; min-height: 44px; }
 }
+
+/* DATA-ITA-001: first local entry and compact welcome hierarchy. */
+.team-name-screen { max-width: 40rem; margin: 3rem auto; padding: 1rem; }
+.team-name-screen form { display: grid; gap: 1rem; padding: clamp(1.25rem, 4vw, 2.5rem); }
+.team-name-screen h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); line-height: 1.12; overflow-wrap: anywhere; }
+.team-name-screen input { width: 100%; min-width: 0; box-sizing: border-box; font: inherit; padding: .8rem; border: 1px solid var(--line, #607080); border-radius: .6rem; color: inherit; background: var(--surface, #111c2a); }
+.team-name-home { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .6rem 1rem; margin: .5rem 0; }
+.team-name-home strong { overflow-wrap: anywhere; max-width: 100%; }
+.entry-caption { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 750; line-height: 1.15; color: var(--text, #f0f4f8); max-width: 30ch; margin: .9rem auto 1.15rem; text-wrap: balance; }
+@media (max-width: 540px) { .team-name-screen { margin: 1rem auto; } .entry-caption { font-size: 1.45rem; margin: .7rem auto .9rem; } }

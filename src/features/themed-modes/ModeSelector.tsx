@@ -30,7 +30,7 @@ export function ModeSelector({ selected, onChange }: ModeSelectorProps) {
     const source = modeSource(mode.id)
     // These collections are explicitly supplied by the user; their scope is editorial,
     // not a claim of independently verified career metadata.
-    const imported = IMPORTED_MODE_IDS.includes(mode.id) || REGIONAL_MODE_IDS.includes(mode.id)
+    const imported = mode.id === 'GLOBAL_CLASSIC' || IMPORTED_MODE_IDS.includes(mode.id) || REGIONAL_MODE_IDS.includes(mode.id)
     const viable = imported && preflightMatchConfig(source.players, { ...CLASSIC_CONFIG, budget: defaultBudgetForMode(mode.id), coaches: true, coachReserve: 8 }).ok
     const diagnostic = imported ? { eligibleCount: source.players.length, availability: viable ? 'available' : 'over_budget', reason: viable ? 'ready' : 'budget' } : evaluateMode(source.players, mode, source.metadata, source.allowedIds).diagnostic
     const playable = PLAYABLE_MODES.has(mode.id)

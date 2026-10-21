@@ -21,6 +21,8 @@ export const THEMED_MODES: readonly ThemedModeDefinition[] = [
   { id: 'SPAIN_LEGENDS', translationKey: 'spainLegends', rule: { leagueId: 'esp_la_liga', category: 'legend' } },
   { id: 'ENGLAND_LEAGUE', translationKey: 'englandLeague', rule: { leagueId: 'eng_premier_league', category: 'contemporary' } },
   { id: 'ENGLAND_LEGENDS', translationKey: 'englandLegends', rule: { leagueId: 'eng_premier_league', category: 'legend' } },
+  { id: 'ITALY_CURRENT', translationKey: 'italyCurrent', rule: { leagueId: 'ita_serie_a', category: 'contemporary' } },
+  { id: 'ITALY_LEGENDS', translationKey: 'italyLegends', rule: { leagueId: 'ita_serie_a', category: 'legend' } },
   { id: 'SOUTH_AMERICA_CURRENT', translationKey: 'southAmericaCurrent', rule: { nationalityRegion: 'LATIN_AMERICA', category: 'contemporary' } },
   { id: 'SOUTH_AMERICA_LEGENDS', translationKey: 'southAmericaLegends', rule: { nationalityRegion: 'LATIN_AMERICA', category: 'legend' } },
   { id: 'EUROPE_CURRENT', translationKey: 'europeCurrent', rule: { nationalityRegion: 'EUROPE', category: 'contemporary' } },

@@ -22,7 +22,7 @@ export function validContext(value: unknown, catalog: readonly Player[]): value 
 }
 export function parseReplay(text: string, catalog: readonly Player[]): DrawReplay | null {
   try {
-    if (text.length > 250_000) return null
+    if (text.length > catalogKey(catalog).length * 2 + 20_000) return null
     const value = JSON.parse(text) as DrawReplay
     return typeof value?.seed === 'string' && value.seed.length > 0 && value.seed.length <= 256 && validContext(value.context, catalog) ? value : null
   } catch { return null }
@@ -34,7 +34,7 @@ export function readDrawHistory(storage: Pick<Storage, 'getItem'>, catalog: read
   try {
     const raw = storage.getItem(key)
     if (!raw) return { history: empty, warning: false }
-    if (raw.length > 1_250_000) return { history: empty, warning: true }
+    if (raw.length > (catalogKey(catalog).length * 2 + 20_000) * 5) return { history: empty, warning: true }
     const value = JSON.parse(raw) as DrawHistory
     if (value?.version !== 1 || !Array.isArray(value.games) || value.games.length > 5 || value.games.some((game) => !parseReplay(JSON.stringify(game), catalog))) return { history: empty, warning: true }
     return { history: value, warning: false }

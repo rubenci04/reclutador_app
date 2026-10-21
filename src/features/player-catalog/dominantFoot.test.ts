@@ -5,6 +5,7 @@ import baseline from '../../../docs/qa/DATA-FOOT-001-baseline.json'
 import { DOMINANT_FEET, type Player } from '../../types/player'
 import { dominantFoot } from './dominantFoot'
 import { LEAGUE_PLAYERS, LEAGUE_PROVENANCE, IMPORTED_MODE_IDS } from './leagueCollections'
+import { RECORDED_COLLECTIONS } from './recordedCollections'
 import { catalogForMode } from '../themed-modes/modeCatalog'
 import { validatePlayer } from './validatePlayer'
 import { ROLE_PROFILES } from '../tactics/roleProfiles'
@@ -13,6 +14,8 @@ import { MATCH_RULES_VERSION } from '../local-match/matchTypes'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
 import { DRAFT_SLOTS, type DraftLineup } from '../draft/draftTypes'
 
+const originalProvenance = LEAGUE_PROVENANCE.filter(p => p.league !== 'ITA')
+const originalPlayers = LEAGUE_PLAYERS.filter(p => !p.id.startsWith('import_ita_'))
 const stripFoot = (value: unknown) => JSON.stringify(value, (key, value: unknown) => key === 'dominantFoot' ? undefined : value)
 const hash = (value: unknown) => createHash('sha256').update(stripFoot(value)).digest('hex')
 const key = (row: { league: string; sourceId: string }) => JSON.stringify([row.league, row.sourceId])
@@ -20,8 +23,8 @@ const key = (row: { league: string; sourceId: string }) => JSON.stringify([row.l
 describe('DATA-FOOT-001 metadata import', () => {
   it('matches exactly 1,200 unique origin keys and original labels without name matching', () => {
     expect(input.records).toHaveLength(1200)
-    expect(LEAGUE_PROVENANCE).toHaveLength(1200)
-    const sources = new Map(LEAGUE_PROVENANCE.map((row) => [key(row), row]))
+    expect(originalProvenance).toHaveLength(1200)
+    const sources = new Map(originalProvenance.map((row) => [key(row), row]))
     expect(sources.size).toBe(1200)
     expect(new Set(input.records.map(key)).size).toBe(1200)
     const labels: Record<string, string> = { Diestro: 'RIGHT', Zurdo: 'LEFT', Ambidiestro: 'BOTH', 'Sin información': 'UNKNOWN' }
@@ -34,13 +37,13 @@ describe('DATA-FOOT-001 metadata import', () => {
       expect(source.sourceRating).toBe(record.sourceRating)
       expect(LEAGUE_PLAYERS.find((player) => player.id === source.id)?.dominantFoot).toBe(record.dominantFoot)
     }
-    expect(Object.fromEntries(DOMINANT_FEET.map((foot) => [foot, LEAGUE_PLAYERS.filter((p) => p.dominantFoot === foot).length]))).toEqual({ RIGHT: 914, LEFT: 275, BOTH: 11, UNKNOWN: 0 })
+    expect(Object.fromEntries(DOMINANT_FEET.map((foot) => [foot, originalPlayers.filter((p) => p.dominantFoot === foot).length]))).toEqual({ RIGHT: 914, LEFT: 275, BOTH: 11, UNKNOWN: 0 })
     for (const league of ['ARG', 'ENG', 'BRA', 'ESP']) expect(LEAGUE_PROVENANCE.filter((p) => p.league === league)).toHaveLength(300)
   })
 
   it('preserves every original field, including id, OVR, price, position and source codes', () => {
-    expect(hash(LEAGUE_PROVENANCE)).toBe(baseline.provenanceHash)
-    expect(hash(LEAGUE_PLAYERS)).toBe(baseline.playersHash)
+    expect(hash(originalProvenance)).toBe(baseline.provenanceHash)
+    expect(hash(originalPlayers)).toBe(baseline.playersHash)
     const lowRatings = LEAGUE_PROVENANCE.filter((p) => p.sourceRating < 75)
     expect(lowRatings).toHaveLength(87)
     for (const row of lowRatings) expect(LEAGUE_PLAYERS.find((p) => p.id === row.id)?.overall_rating).toBe(75)
@@ -81,7 +84,7 @@ describe('DATA-FOOT-001 metadata import', () => {
         // The later, explicit Argentina editorial edition is tested separately.
         const catalog = sample.mode === 'ARGENTINA_CURRENT'
           ? LEAGUE_PLAYERS.filter((p) => p.id.startsWith('import_arg_') && p.category === 'contemporary')
-          : catalogForMode(sample.mode as ThemedModeId)
+          : RECORDED_COLLECTIONS.find(row => row.mode === sample.mode)?.players ?? catalogForMode(sample.mode as ThemedModeId)
         const used = new Set<string>()
         const lineup = () => Object.fromEntries(DRAFT_SLOTS.map((slot) => {
           const player = catalog.filter((p) => p.position === slot.position && !used.has(p.id)).sort((a, b) => a.price - b.price || a.id.localeCompare(b.id))[0]

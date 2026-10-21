@@ -20,9 +20,9 @@ import { PRODUCT } from '../../config/product'
 
 function money(value: number) { return `${value}M` }
 
-interface DraftPageProps { readonly onDuel?: () => void }
+interface DraftPageProps { readonly onDuel?: () => void; readonly teamName?: string }
 
-export function DraftPage({ onDuel }: DraftPageProps) {
+export function DraftPage({ onDuel, teamName }: DraftPageProps) {
   const { t } = useTranslation()
   const lineup = useDraftStore((state) => state.lineup)
   const confirmed = useDraftStore((state) => state.confirmed)
@@ -51,7 +51,7 @@ export function DraftPage({ onDuel }: DraftPageProps) {
     setMatchError(false)
     setMatchResult(simulateMatch({ seriesFormat: 'home-away' as const, actionModel: 'action-v3', localLineup: lineup, cpuLineup: cpu.team.lineup, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed }))
   }
-  if (matchResult) return <div className="draft-app"><header className="draft-header"><a className="brand" href="#match-main" aria-label={PRODUCT.name}><span className="brand-emblem">ER</span><span>{PRODUCT.name}</span></a><div className="header-actions"><AudioControls /><LanguageSelector /></div></header><MatchSeriesScreen key={matchResult.seed} result={matchResult} onRematch={startCpuMatch} onNewMatch={() => { reset(); setMatchResult(null) }} onReturn={() => { setMatchResult(null); if (onDuel) onDuel(); else window.location.assign('/') }} /></div>
+  if (matchResult) return <div className="draft-app"><header className="draft-header"><a className="brand" href="#match-main" aria-label={PRODUCT.name}><span className="brand-emblem">ER</span><span>{PRODUCT.name}</span></a><div className="header-actions"><AudioControls /><LanguageSelector /></div></header><MatchSeriesScreen localName={teamName} key={matchResult.seed} result={matchResult} onRematch={startCpuMatch} onNewMatch={() => { reset(); setMatchResult(null) }} onReturn={() => { setMatchResult(null); if (onDuel) onDuel(); else window.location.assign('/') }} /></div>
   return <div className="draft-app">
     <a href="#draft-main" className="skip-link">{t('home.skip')}</a>
     <header className="draft-header"><a className="brand" href="#draft-main" aria-label={PRODUCT.name}><span className="brand-emblem">ER</span><span>{PRODUCT.name}</span></a><div className="header-actions">{onDuel && <button className="header-mode" onClick={onDuel}>{t('duel.backToDuel')}</button>}<AudioControls /><LanguageSelector /></div></header>
@@ -63,7 +63,7 @@ export function DraftPage({ onDuel }: DraftPageProps) {
       {message && <div className="draft-alert" role="alert">{t(`draft.messages.${message}`)}<button onClick={clearMessage}>×</button></div>}
       <section className="draft-workspace" aria-label={t('game.myTeam')}>
         <aside className="draft-summary"><p className="eyebrow"><span />{t('draft.formation')}</p><h2>{t('game.myTeam')}</h2><div className="budget-amount"><small>{t('game.budget')}</small><strong>{money(DRAFT_BUDGET_MILLIONS)}</strong></div><dl className="summary-stats"><div><dt>{t('draft.selected')}</dt><dd>{summary.selectedCount}/11</dd></div><div><dt>{t('draft.spent')}</dt><dd>{money(summary.spent)}</dd></div><div><dt>{t('draft.remaining')}</dt><dd>{money(summary.remaining)}</dd></div><div><dt>{t('draft.minimumToFinish')}</dt><dd>{summary.minimumCompletionCost === null ? '—' : money(summary.minimumCompletionCost)}</dd></div></dl><p className={`viability ${summary.canCompleteWithinBudget ? 'is-good' : ''}`}>{summary.canCompleteWithinBudget ? t('draft.viability') : t('draft.messages.impossibleBudget')}</p><div className="draft-actions"><button className="primary-action" disabled={!summary.canConfirm} title={!summary.canConfirm ? t('draft.confirmDisabled') : undefined} onClick={confirm}>{t('draft.confirm')}</button><button className="secondary-action" onClick={reset}>{t('draft.reset')}</button></div></aside>
-        <div className="pitch-area"><div className="pitch-heading"><span>{t('game.myTeam')}</span><span>{t('draft.formation')}</span></div><DraftPitch lineup={lineup} onChoose={setSelectedSlot} onRemove={removePlayer} /></div>
+        <div className="pitch-area"><div className="pitch-heading"><span>{teamName ?? t('game.myTeam')}</span><span>{t('draft.formation')}</span></div><DraftPitch lineup={lineup} onChoose={setSelectedSlot} onRemove={removePlayer} /></div>
       </section>
       {confirmed && <section className="confirmation-card" aria-live="polite"><div><p className="eyebrow"><span />{t('draft.confirmTitle')}</p><h2>{summary.selectedPlayers.map((player) => player.name).join(' · ')}</h2><p>{t('draft.average')}: <b>{summary.averageRating}</b> · {t('draft.tiers')}: S {tierCount('S')} / A {tierCount('A')} / B {tierCount('B')} / C {tierCount('C')} / D {tierCount('D')}</p></div><div className="confirmation-actions"><button className="primary-action" onClick={startCpuMatch}>{t('match.playCpu')}</button><button className="secondary-action" onClick={edit}>{t('draft.edit')}</button></div></section>}
     </main>

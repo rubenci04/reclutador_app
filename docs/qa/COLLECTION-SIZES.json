@@ -1,24 +1,24 @@
 [
   {
     "mode": "GLOBAL_CLASSIC",
-    "count": 300,
+    "count": 882,
     "stars": 2,
     "positions": {
-      "ARQ": 29,
-      "DEF": 81,
-      "MED": 104,
-      "DEL": 86
+      "ARQ": 88,
+      "DEF": 244,
+      "MED": 304,
+      "DEL": 246
     }
   },
   {
     "mode": "LEGENDS_ONLY",
-    "count": 300,
+    "count": 177,
     "stars": 4,
     "positions": {
-      "ARQ": 29,
-      "DEF": 50,
-      "MED": 91,
-      "DEL": 130
+      "ARQ": 14,
+      "DEF": 33,
+      "MED": 61,
+      "DEL": 69
     }
   },
   {
@@ -88,6 +88,28 @@
     }
   },
   {
+    "mode": "ITALY_CURRENT",
+    "count": 200,
+    "stars": 0,
+    "positions": {
+      "ARQ": 18,
+      "DEF": 62,
+      "MED": 70,
+      "DEL": 50
+    }
+  },
+  {
+    "mode": "ITALY_LEGENDS",
+    "count": 200,
+    "stars": 1,
+    "positions": {
+      "ARQ": 16,
+      "DEF": 41,
+      "MED": 62,
+      "DEL": 81
+    }
+  },
+  {
     "mode": "BRAZIL_CURRENT",
     "count": 150,
     "stars": 0,
@@ -111,46 +133,46 @@
   },
   {
     "mode": "SOUTH_AMERICA_CURRENT",
-    "count": 300,
+    "count": 393,
     "stars": 1,
     "positions": {
-      "ARQ": 35,
-      "DEF": 75,
-      "MED": 100,
-      "DEL": 90
+      "ARQ": 40,
+      "DEF": 106,
+      "MED": 130,
+      "DEL": 117
     }
   },
   {
     "mode": "SOUTH_AMERICA_LEGENDS",
-    "count": 300,
+    "count": 333,
     "stars": 3,
     "positions": {
-      "ARQ": 28,
-      "DEF": 60,
-      "MED": 89,
-      "DEL": 123
+      "ARQ": 29,
+      "DEF": 69,
+      "MED": 100,
+      "DEL": 135
     }
   },
   {
     "mode": "EUROPE_CURRENT",
-    "count": 246,
+    "count": 397,
     "stars": 1,
     "positions": {
-      "ARQ": 26,
-      "DEF": 72,
-      "MED": 90,
-      "DEL": 58
+      "ARQ": 42,
+      "DEF": 118,
+      "MED": 145,
+      "DEL": 92
     }
   },
   {
     "mode": "EUROPE_LEGENDS",
-    "count": 222,
-    "stars": 1,
+    "count": 361,
+    "stars": 0,
     "positions": {
-      "ARQ": 20,
-      "DEF": 39,
-      "MED": 74,
-      "DEL": 89
+      "ARQ": 34,
+      "DEF": 66,
+      "MED": 116,
+      "DEL": 145
     }
   }
 ]

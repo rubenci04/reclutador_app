@@ -57,6 +57,9 @@ describe('first-visit tutorial', () => {
   })
   it('opens on the real home page for a new visitor', async () => {
     await view(<HomePage />)
+    expect(screen.queryByRole('dialog')).toBeNull()
+    fireEvent.change(screen.getByRole('textbox', { name: 'Your team name' }), { target: { value: 'Academia' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Continue' }))
     expect(screen.getByRole('dialog')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'How to play' })).toBeInTheDocument()
   })
@@ -80,6 +83,7 @@ describe('contextual tips', () => {
     expect(await screen.findAllByRole('note')).toHaveLength(2)
   })
   it('shows the tip for the current auction step on the real page', async () => {
+    localStorage.setItem('reclutador.team-name.v1', 'Academia')
     localStorage.setItem(HELP_KEY, JSON.stringify({ tutorialSeen: true, hints: true, dismissed: [] }))
     await view(<HomePage />)
     expect(screen.getByRole('button', { name: 'Play against CPU' })).toBeInTheDocument()

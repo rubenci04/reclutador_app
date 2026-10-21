@@ -22,7 +22,7 @@ describe('Argentine football mode', () => {
     expect(result.diagnostic.availability).toBe('available')
     expect(result.diagnostic.cpuCompatible).toBe(true)
     expect(result.players).toHaveLength(200)
-    expect(catalogForMode('GLOBAL_CLASSIC')).toHaveLength(300)
+    expect(catalogForMode('GLOBAL_CLASSIC').length).toBeGreaterThan(300)
     expect(catalogForMode('ARGENTINA_CLUBS')).toHaveLength(200)
     expect(PLAYABLE_MODES.has('ARGENTINA_CURRENT')).toBe(true)
   })

@@ -272,7 +272,7 @@ describe('single-player auction interface', () => {
     expect(screen.getByRole('img', { name: 'Illustration of Lionel Messi wearing reference club colours' })).toBeInTheDocument()
   })
   it('offers CPU profiles, pauses its action and leaves the human controls available afterwards', async () => {
-    vi.useFakeTimers()
+    vi.useFakeTimers(); vi.spyOn(drawHistory, 'newDrawSeed').mockReturnValue('cpu-seed-001') // fixed seed: first nominee is one the BALANCED CPU bids on
     const i18n = await createI18n('en')
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
     fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.local') }))

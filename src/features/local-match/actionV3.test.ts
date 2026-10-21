@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { writeFileSync } from 'node:fs'
 import { DRAFT_SLOTS, type DraftLineup } from '../draft/draftTypes'
-import { GLOBAL_CURRENT, ALL_GLOBAL_LEGENDS } from '../player-catalog/globalCollection'
-import { LEAGUE_PLAYERS } from '../player-catalog/leagueCollections'
+import { MASTER_CATALOG } from '../player-catalog/globalCollection'
+import originalIds from '../../test/fixtures/preItalyCalibrationIds.json'
 import { COACH_CATALOG } from '../coaches/coachCatalog'
 import { coachEffect } from '../coaches/coachRules'
 import { MATCH_RULES_VERSION } from './matchTypes'
@@ -10,7 +10,8 @@ import { simulateMatch, type SimulationInput } from './simulator'
 import { opportunityChances, finishingChance } from './probabilityModel'
 import { playbackFrames } from './playback'
 
-const catalog = [...GLOBAL_CURRENT, ...ALL_GLOBAL_LEGENDS, ...LEAGUE_PLAYERS].filter((p, i, all) => all.findIndex((q) => q.id === p.id) === i)
+// Freeze the original reported matchup; changing collection membership is not a recalibration.
+const catalog = originalIds.map(id => MASTER_CATALOG.find(p => p.id === id)!)
 const lineupFor = (names: readonly string[]): DraftLineup => {
   const players = names.map((name) => { const p = catalog.find((p) => p.name === name); if (!p) throw new Error(name); return p })
   const used = new Set<string>()

@@ -50,9 +50,9 @@ describe('playtest expansion', () => {
     const opened = revealCoinToss(tossed.game)
     expect(opened.ok && opened.game.phase).toBe('TEAMS_COMPLETED')
   })
-  it('offers 300 distinct current people, including active world legends in both editions and nationality regions', () => {
-    expect(GLOBAL_CURRENT).toHaveLength(300)
-    expect(new Set(GLOBAL_CURRENT.map(personKey)).size).toBe(300)
+  it('offers the complete distinct current pool, including active world legends in both editions and nationality regions', () => {
+    expect(GLOBAL_CURRENT.length).toBeGreaterThan(300)
+    expect(new Set(GLOBAL_CURRENT.map(personKey)).size).toBe(GLOBAL_CURRENT.length)
     for (const surname of ['Messi', 'Cristiano', 'Neuer']) {
       expect(GLOBAL_CURRENT.some((p) => p.name.includes(surname))).toBe(true)
       expect(catalogForMode('LEGENDS_ONLY').some((p) => p.name.includes(surname))).toBe(true)

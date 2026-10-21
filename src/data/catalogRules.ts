@@ -34,7 +34,7 @@ export const NATIONALITY_CODES = [
   'ARG', 'BRA', 'URU', 'CHI', 'COL', 'PAR', 'ECU', 'PER', 'VEN', 'MEX', 'USA', 'CAN',
   'ENG', 'SCO', 'WAL', 'NED', 'GER', 'FRA', 'ESP', 'ITA', 'POR', 'BEL', 'CRO', 'POL',
   'SWE', 'DEN', 'NOR', 'JPN', 'KOR', 'AUS', 'SEN', 'CMR', 'CIV', 'GHA', 'NGA', 'EGY', 'MAR', 'ALG',
-  'SUI', 'ISL', 'CRC',
+  'SUI', 'ISL', 'CRC', 'KVX', 'UKR', 'GNB', 'EQG', 'MKD', 'LBR',
   'SVN', 'AUT', 'BIH', 'PAN', 'TUN', 'IRN',
   'KSA', 'QAT',
   'ARM', 'BUL', 'COD', 'CZE', 'GAB', 'GEO', 'GUI', 'GRE', 'HUN', 'IRL', 'MLI', 'MNE', 'NIR', 'NZL', 'ROU', 'RSA', 'SRB', 'SVK', 'TGO', 'TRI', 'TUR', 'UZB',

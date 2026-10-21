@@ -1,0 +1,28 @@
+import { readFileSync, writeFileSync } from 'node:fs'
+// Explicit editorial nomination list, not an OVR/rank threshold. Adding a league never approves its entire pool.
+const europeanNames = `Cristiano Ronaldo|Lionel Messi|Diego Maradona|Alfredo Di Stéfano|Zinedine Zidane|Johan Cruyff|Ferenc Puskás|Ronaldo Nazário|Ronaldo|Ronaldinho|Rivaldo|Roberto Carlos|Iker Casillas|Sergio Ramos|Xavi|Andrés Iniesta|Luka Modrić|Karim Benzema|Luis Suárez|Luis Suárez Miramontes|Sergio Busquets|Carles Puyol|Raúl|Paco Gento|Emilio Butragueño|Hugo Sánchez|Fernando Hierro|David Villa|Fernando Torres|Xabi Alonso|David Silva|David Beckham|Michael Laudrup|Dani Alves|Samuel Eto'o|Kaká|Thierry Henry|Dennis Bergkamp|Eric Cantona|George Best|Bobby Charlton|Bobby Moore|Gordon Banks|Kenny Dalglish|Kevin Keegan|Ian Rush|Graeme Souness|Steven Gerrard|Frank Lampard|Paul Scholes|Ryan Giggs|Wayne Rooney|Alan Shearer|Gary Lineker|Michael Owen|Peter Schmeichel|Edwin van der Sar|Petr Čech|John Terry|Rio Ferdinand|Tony Adams|Ashley Cole|Patrick Vieira|Roy Keane|Didier Drogba|Yaya Touré|Sergio Agüero|Kevin De Bruyne|Mohamed Salah|Sadio Mané|Virgil van Dijk|Harry Kane|Gareth Bale|Paul Gascoigne|Glenn Hoddle|Bryan Robson|Jürgen Klinsmann|Marcel Desailly|Ruud Gullit|John Charles|Paolo Maldini|Michel Platini|Marco van Basten|Franco Baresi|Gianluigi Buffon|Giuseppe Meazza|Roberto Baggio|Francesco Totti|Alessandro Del Piero|Andrea Pirlo|Alessandro Nesta|Dino Zoff|Gianni Rivera|Giacinto Facchetti|Gaetano Scirea|Lothar Matthäus|Gabriel Batistuta|Gunnar Nordahl|Silvio Piola|Javier Zanetti|Fabio Cannavaro|Zico|Gigi Riva|Andriy Shevchenko|Zlatan Ibrahimović|Sandro Mazzola|Valentino Mazzola|Omar Sívori|Frank Rijkaard|Pavel Nedvěd|Lilian Thuram|Clarence Seedorf|Juan Alberto Schiaffino|Giorgio Chiellini|Christian Vieri|Gennaro Gattuso|Cafu|Giuseppe Bergomi|Paolo Rossi|Claudio Gentile|Marco Tardelli|Antonio Cabrini|Roberto Mancini|Gianluca Vialli|Hernán Crespo|Filippo Inzaghi|David Trezeguet|Roberto Donadoni|Dejan Savićević|Zvonimir Boban|George Weah|Nils Liedholm|José Altafini|Edgar Davids|Didier Deschamps|Leonardo Bonucci|Walter Samuel|Esteban Cambiasso|Wesley Sneijder|Diego Milito|Maicon|Júlio César|Walter Zenga|Gianluca Pagliuca|Angelo Peruzzi|Francesco Toldo|Dida|Karl-Heinz Rummenigge|Andreas Brehme|Alessandro Altobelli|Tarcisio Burgnich|Daniele De Rossi|Bruno Conti|Aldair|Edin Džeko|Careca|Edinson Cavani|Gonzalo Higuaín|Ruud Krol|Rui Costa|Daniel Passarella|Gianfranco Zola|Juan Sebastián Verón|Miroslav Klose|Zbigniew Boniek|Michael Laudrup|Arturo Vidal|Carlos Tévez|Thiago Silva|Enzo Francescoli|Preben Elkjær|Paulo Roberto Falcão|Rafael Márquez|Romário|Neymar`.split('|')
+// These exceptional non-European representatives are explicitly supported by the supplied regional historical ranking.
+const exceptions = { 'Pelé': 2, 'Garrincha': 6, 'Didi': 15, 'Rivellino': 20, 'Sócrates': 21 }
+const file = 'src/data/league-collections/worldLegendPolicy.json'
+const rows = [...JSON.parse(readFileSync('src/data/league-collections/players.json', 'utf8')), ...JSON.parse(readFileSync('src/data/league-collections/italy.json', 'utf8'))]
+const normalize = (s) => s.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().replace(/[^a-z0-9]/g, '')
+const order = { ESP: 0, ENG: 1, ITA: 2 }
+const approved = [], unresolvedNames = []
+for (const name of [...new Set(europeanNames)]) {
+  const candidates = rows.filter((r) => r.category === 'legend' && r.league in order && (normalize(r.name) === normalize(name) || normalize(r.fullName) === normalize(name)))
+  // 'Ronaldo' alone must not select a namesake; the explicit Italian Nazário entry is available.
+  if (name === 'Ronaldo') continue
+  candidates.sort((a, b) => order[a.league] - order[b.league] || a.sourceRank - b.sourceRank)
+  if (!candidates.length) { unresolvedNames.push(name); continue }
+  const row = candidates[0]
+  if (approved.some((r) => r.editionId === row.id)) continue
+  approved.push({ name: row.name, editionId: row.id, sourceFile: row.sourceFile, sourceRank: row.sourceRank, classification: ['LEAGUE', 'WORLD'], reason: 'EXPLICIT_INTERNATIONAL_HISTORICAL_SELECTION' })
+}
+approved.push({ name: 'Manuel Neuer', editionId: 'edition_neuer_legend', sourceFile: 'Ranking global de futbolistas 2026_ Sudamérica + México y Europa, actualidad y leyendas.txt', sourceRank: 53, classification: ['REGIONAL', 'WORLD'], reason: 'EXPLICIT_EUROPEAN_REGIONAL_EXCEPTION' })
+for (const [name, regionalHistoricalRank] of Object.entries(exceptions)) {
+  const row = rows.find((r) => r.category === 'legend' && r.name === name && ['BRA', 'ARG'].includes(r.league))
+  if (!row) throw Error(`missing_exception:${name}`)
+  approved.push({ name, editionId: row.id, sourceFile: row.sourceFile, sourceRank: row.sourceRank, classification: ['LEAGUE', 'REGIONAL', 'WORLD'], reason: 'EXPLICIT_REGIONAL_EXCEPTION', regionalSource: 'Ranking global de futbolistas 2026_ Sudamérica + México y Europa, actualidad y leyendas.txt', regionalHistoricalRank })
+}
+writeFileSync(file, JSON.stringify({ version: 'world-legends-v1', policy: 'Closed editorial nominations from supplied Spain, England and Italy historical rankings, plus five explicitly named exceptional regional candidates. League membership, nationality, rank and OVR alone never grant WORLD. Excluded candidates remain in league/regional editions. Representative precedence SPAIN then ENGLAND then ITALY fixes a source edition without modifying its OVR. No count target. Unresolved nominations remain pending, never synthesized.', representativeLeaguePrecedence: ['ESP', 'ENG', 'ITA'], approved, unresolvedNames }, null, 2) + '\n')
+console.log(JSON.stringify({ approved: approved.length, unresolvedNames }))
