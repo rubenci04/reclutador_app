@@ -13,7 +13,9 @@ import { swapWithinLine, type LineupSwapError } from '../tactics/lineupOrdering'
 import type { FormationRole } from '../tactics/roles'
 import { suggestLineup } from '../tactics/roleProfiles'
 import { TACTICS_VERSION, isStrategyId, type StrategyId } from '../tactics/strategies'
-import { validContext, type DrawContext } from './drawHistory'
+import { usesRarity, validContext, type DrawContext } from './drawHistory'
+import { CLUB_SPREAD_POLICY, clubRepeats, spreadClubs } from './clubSpread'
+import { canonicalClubKey } from '../player-catalog/clubKey'
 import { CLASSIC_CONFIG, SUBSTITUTE_POSITIONS, preflightMatchConfig, rosterComposition, type MatchConfig } from './matchConfig'
 import type { AuctionActionError, AuctionCreation, AuctionRound, AuctionTransition, AwardReason, CoinSide, RecruiterDuelGame, RecruiterId, RecruiterTeam, RoundAward } from './auctionTypes'
 
@@ -98,6 +100,9 @@ function shaveToShare(selected: AuctionRound[], catalog: readonly Player[], cap:
   }
 }
 
+/** Canonical club of a round's card (registry id with reviewed aliases), never a free-text name comparison. */
+const clubOfRound = (catalog: readonly Player[]) => { const byId = new Map(catalog.map((player) => [player.id, canonicalClubKey(player.club_tag)] as const)); return (round: AuctionRound) => byId.get(round.playerId)! }
+
 function createRounds(catalog: readonly Player[], seed: string, context: DrawContext | undefined, relaxation: number, config: MatchConfig, baseShare: number): AuctionRound[] | null {
   const random = createSeededRandom(`${seed}:pool`)
   const composition = rosterComposition(config)
@@ -108,16 +113,27 @@ function createRounds(catalog: readonly Player[], seed: string, context: DrawCon
     const strength = relaxation * Math.min(1, Math.max(0, (eligible.length - required[position]) / required[position]))
     const options = context ? eligible.sort((a, b) => a.id.localeCompare(b.id)).map((player) => {
       const appearances = context.recent.filter((draw) => draw.includes(player.id)).length
-      const weight = (context.policy === 'rarity-v2' && player.overall_rating >= 98 ? .25 : 1) / (1 + 2 * strength * appearances)
+      const weight = (usesRarity(context.policy) && player.overall_rating >= 98 ? .25 : 1) / (1 + 2 * strength * appearances)
       return { player, key: -Math.log(Math.max(Number.MIN_VALUE, random())) / weight }
     }).sort((a, b) => a.key - b.key || a.player.id.localeCompare(b.player.id)).slice(0, required[position]).map(({ player }) => player)
       : shuffleSeeded(eligible, random).slice(0, required[position])
     if (options.length !== required[position]) return null
     selected.push(...options.map((candidate) => ({ position, playerId: candidate.id })))
   }
-  shaveToShare(selected, catalog, Math.floor(baseShare * 2 * config.budget), random, context?.policy === 'rarity-v2')
+  shaveToShare(selected, catalog, Math.floor(baseShare * 2 * config.budget), random, usesRarity(context?.policy))
   const ordered = shuffleSeeded(selected, random)
-  return canFinishRounds(ordered, 0, { recruiter_one: emptyTeam(config), recruiter_two: emptyTeam(config) }, playerMap(catalog), config.budget - coachReserveFor(config)) ? ordered : null
+  const viable = (order: readonly AuctionRound[]) => canFinishRounds(order, 0, { recruiter_one: emptyTeam(config), recruiter_two: emptyTeam(config) }, playerMap(catalog), config.budget - coachReserveFor(config))
+  if (context?.policy !== CLUB_SPREAD_POLICY) return viable(ordered) ? ordered : null
+  // club-spread-v3: same cards, same prices; only the presentation order changes, and only to an economically viable one.
+  const club = clubOfRound(catalog)
+  let best: { order: readonly AuctionRound[]; repeats: number } | null = null
+  for (let variant = 0; variant < 6 && (best === null || best.repeats > 0); variant++) {
+    const shuffled = variant === 0 ? ordered : shuffleSeeded(selected, createSeededRandom(`${seed}:clubs:${variant}`))
+    const spread = spreadClubs(shuffled, club)
+    if (viable(spread.order) && (best === null || spread.repeats < best.repeats)) best = { order: spread.order, repeats: spread.repeats }
+  }
+  if (best) return [...best.order]
+  return viable(ordered) ? ordered : null
 }
 
 /** Builds the unique cards of the duel: 22 in the classic mode (2 ARQ, 8 DEF, 6 MED, 6 DEL), 28 with substitutes. */
@@ -127,10 +143,10 @@ export function createRecruiterDuel(catalog: readonly Player[], seed: string, co
   if (new Set(catalog.map((player) => player.id)).size !== catalog.length || (context && !validContext(context, catalog))) return { ok: false, error: 'auction_pool_unavailable' }
   for (let attempt = 0; attempt < 48; attempt++) {
     const relaxation = attempt < 16 ? 1 : attempt < 32 ? .5 : 0
-    const shares = context?.policy === 'rarity-v2' ? [.85, .925, 1] : DRAW_BASE_SHARE
+    const shares = usesRarity(context?.policy) ? [.85, .925, 1] : DRAW_BASE_SHARE
     const rounds = createRounds(catalog, `${seed}:attempt:${attempt}`, context, relaxation, config, shares[Math.min(2, Math.floor(attempt / 16))])
     if (!rounds) continue
-    return { ok: true, game: { seed, ...(config === CLASSIC_CONFIG ? {} : { config }), ...(context ? { drawContext: structuredClone(context) } : {}), drawDiagnostics: { attempts: attempt + 1, relaxation, smallPoolPositions: POSITIONS.filter((position) => catalog.filter((player) => player.position === position).length < 4 * rosterComposition(config)[position]) }, phase: 'LOBBY', rounds, roundIndex: 0, discardsRemaining: 3, discardedPlayerIds: [], lastDiscard: null, coinCall: null, coinResult: null, coinTossWinner: null, openingOrder: [], teams: { recruiter_one: emptyTeam(config), recruiter_two: emptyTeam(config) }, activeParticipant: null, currentBid: null, passedParticipants: [], lastAward: null, record: [], matchResult: null } }
+    return { ok: true, game: { seed, ...(config === CLASSIC_CONFIG ? {} : { config }), ...(context ? { drawContext: structuredClone(context) } : {}), drawDiagnostics: { attempts: attempt + 1, relaxation, ...(context?.policy === CLUB_SPREAD_POLICY ? { clubRepeats: clubRepeats(rounds, clubOfRound(catalog)) } : {}), smallPoolPositions: POSITIONS.filter((position) => catalog.filter((player) => player.position === position).length < 4 * rosterComposition(config)[position]) }, phase: 'LOBBY', rounds, roundIndex: 0, discardsRemaining: 3, discardedPlayerIds: [], lastDiscard: null, coinCall: null, coinResult: null, coinTossWinner: null, openingOrder: [], teams: { recruiter_one: emptyTeam(config), recruiter_two: emptyTeam(config) }, activeParticipant: null, currentBid: null, passedParticipants: [], lastAward: null, record: [], matchResult: null } }
   }
   return { ok: false, error: 'auction_pool_unavailable' }
 }
@@ -149,6 +165,11 @@ export function discardReplacement(game: RecruiterDuelGame, catalog: readonly Pl
     return { player, key: -Math.log(Math.max(Number.MIN_VALUE, random())) * (1 + 2 * appearances) * Math.max(.5, player.price / 8) }
   }).sort((a, b) => a.key - b.key || a.player.id.localeCompare(b.player.id))
   const map = playerMap(catalog)
+  if (game.drawContext?.policy === CLUB_SPREAD_POLICY) {
+    // club-spread-v3: prefer a replacement whose club differs from the cards next to it (stable: ties keep the seeded order).
+    const club = clubOfRound(catalog); const neighbours = [game.rounds[game.roundIndex - 1], game.rounds[game.roundIndex + 1]].flatMap((entry) => entry ? [club(entry)] : [])
+    candidates.sort((a, b) => Number(neighbours.includes(canonicalClubKey(a.player.club_tag))) - Number(neighbours.includes(canonicalClubKey(b.player.club_tag))))
+  }
   for (const { player } of candidates) {
     const replacement = { position: round.position, playerId: player.id }
     const rounds = game.rounds.map((entry, index) => index === game.roundIndex ? replacement : entry)

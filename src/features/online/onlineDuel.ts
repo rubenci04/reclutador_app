@@ -3,7 +3,7 @@ import { GLOBAL_CURRENT } from '../player-catalog/globalCollection'
 import { DRAFT_CATALOG } from '../draft/catalog'
 import { createRecruiterDuel } from '../recruiter-duel/auctionEngine'
 import type { RecruiterDuelGame, RecruiterId } from '../recruiter-duel/auctionTypes'
-import { createDrawContext, newDrawSeed } from '../recruiter-duel/drawHistory'
+import { CURRENT_DRAW_POLICY, createDrawContext, newDrawSeed } from '../recruiter-duel/drawHistory'
 import { CLASSIC_CONFIG } from '../recruiter-duel/matchConfig'
 import type { HistoryEntry, HistoryOutcome } from '../history/matchHistory'
 import { resolveSeries } from '../local-match/matchSeries'
@@ -22,7 +22,7 @@ export const slimDuel = (game: RecruiterDuelGame): RecruiterDuelGame => ({ ...ga
 export function buildInitialDuel(names: { readonly host: string; readonly guest: string }, first: ThemedModeId = 'GLOBAL_CLASSIC', second: ThemedModeId = first): RecruiterDuelGame {
   const config = { ...CLASSIC_CONFIG, budget: Math.max(defaultBudgetForMode(first), defaultBudgetForMode(second)), coaches: true, coachReserve: COACH_MAX_PRICE, coachMarket: COACH_MARKET_V2, names: { recruiter_one: names.host, recruiter_two: names.guest } }
   const catalog = catalogForMode(first); const seed = newDrawSeed()
-  const created = first !== second ? createCrossCategoryDraw(first, second, seed, config) : createRecruiterDuel(catalog, seed, createDrawContext(catalog, [], 'rarity-v2'), config)
+  const created = first !== second ? createCrossCategoryDraw(first, second, seed, config) : createRecruiterDuel(catalog, seed, createDrawContext(catalog, [], CURRENT_DRAW_POLICY), config)
   if (!created.ok) throw new Error(created.error)
   return slimDuel({ ...created.game, phase: 'LOBBY', coachMode: first, manualBench: true })
 }

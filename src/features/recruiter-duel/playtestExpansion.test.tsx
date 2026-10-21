@@ -59,7 +59,8 @@ describe('playtest expansion', () => {
     }
     for (const mode of ['EUROPE_CURRENT', 'EUROPE_LEGENDS'] as const) {
       expect(catalogForMode(mode).some((p) => p.name.includes('Cristiano'))).toBe(true)
-      expect(catalogForMode(mode).some((p) => p.name.includes('Neuer'))).toBe(true)
+      // europe-top-150-v1: Europe Actualidad is the editorial 2026 Top 150, which does not rank Neuer; his legend edition stays in Europe Leyendas.
+      if (mode === 'EUROPE_LEGENDS') expect(catalogForMode(mode).some((p) => p.name.includes('Neuer'))).toBe(true)
       expect(catalogForMode(mode).some((p) => p.name.includes('Messi'))).toBe(false)
     }
   })

@@ -177,13 +177,13 @@
   },
   {
     "mode": "EUROPE_CURRENT",
-    "count": 366,
+    "count": 150,
     "stars": 1,
     "positions": {
-      "ARQ": 38,
-      "DEF": 113,
-      "MED": 127,
-      "DEL": 88
+      "ARQ": 13,
+      "DEF": 41,
+      "MED": 62,
+      "DEL": 34
     }
   },
   {

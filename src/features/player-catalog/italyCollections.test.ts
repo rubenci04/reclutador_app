@@ -51,7 +51,8 @@ describe('DATA-ITA-001 collections', () => {
   })
   it('grows all regional pools by association independently of league and retains every eligible identity', () => {
     for (const [mode, scope, category] of [
-      ['EUROPE_CURRENT', EUROPEAN_NATIONALITIES, 'contemporary'], ['EUROPE_LEGENDS', EUROPEAN_NATIONALITIES, 'legend'],
+      // EUROPE_CURRENT is the editorial Top 150 since europe-top-150-v1 (see europeTop150.test.ts).
+      ['EUROPE_LEGENDS', EUROPEAN_NATIONALITIES, 'legend'],
       ['SOUTH_AMERICA_CURRENT', LATIN_AMERICAN_ASSOCIATIONS, 'contemporary'], ['SOUTH_AMERICA_LEGENDS', LATIN_AMERICAN_ASSOCIATIONS, 'legend'],
     ] as const) {
       const players = catalogForMode(mode), keys = new Set(players.map(personKey))

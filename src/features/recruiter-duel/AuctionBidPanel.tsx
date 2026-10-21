@@ -26,15 +26,13 @@ interface Props {
   readonly assignmentSpecial: boolean
   readonly onBid: () => void
   readonly onPass: () => void
-  readonly onBlockedBid: () => void
-  readonly onBlockedPass: () => void
 }
 
 /**
  * Active bid phase organised around three things: the footballer in play, the offer and balance, and the two main buttons.
  * The engine stays the source of truth: every figure and every enabled state comes from `availability`.
  */
-export function AuctionBidPanel({ game, side, footballer, names, availability, offer, minimum, onOffer, blockedMessage, progress, hud, passLabel, assignment, assignmentSpecial, onBid, onPass, onBlockedBid, onBlockedPass }: Props) {
+export function AuctionBidPanel({ game, side, footballer, names, availability, offer, minimum, onOffer, blockedMessage, progress, hud, passLabel, assignment, assignmentSpecial, onBid, onPass }: Props) {
   const { t } = useTranslation()
   const rival = names[side === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one']
   const blocked = availability?.bid.reason
@@ -72,8 +70,8 @@ export function AuctionBidPanel({ game, side, footballer, names, availability, o
     <label className="bid-amount">{t('duel.offerAmount')}<input type="number" min={game.currentBid ? game.currentBid.amount + 1 : footballer.price} max={availability?.maximum} value={Number.isNaN(offer) ? '' : offer} onChange={(event) => onOffer(event.target.value === '' ? NaN : Number(event.target.value))} /></label>
     <p id="auction-action-reason" className="sr-only" role="status">{availability?.bid.reason ? t('auctionActions.blocks.' + availability.bid.reason) : t('auctionActions.available')}</p>
     <div className="duel-actions bid-actions">
-      <span className="blockable" onClick={onBlockedBid}><button className="primary-action bid-primary" aria-describedby="auction-action-reason position-capacity" disabled={!availability?.bid.enabled} onClick={onBid}>{t('duel.bid')}</button></span>
-      <span className="blockable" onClick={onBlockedPass}><button className="secondary-action bid-pass" aria-describedby="auction-assignment" disabled={!availability?.pass.enabled} onClick={onPass}>{passLabel}</button></span>
+      <span className="blockable"><button className="primary-action bid-primary" aria-describedby="auction-action-reason position-capacity" disabled={!availability?.bid.enabled} onClick={onBid}>{t('duel.bid')}</button></span>
+      <span className="blockable"><button className="secondary-action bid-pass" aria-describedby="auction-assignment" disabled={!availability?.pass.enabled} onClick={onPass}>{passLabel}</button></span>
     </div>
     {assignmentSpecial && <div className="assignment-notice-slot">{assignment}</div>}
     <details className="bid-details"><summary>{t('auctionFocus.moreInfo')}</summary>

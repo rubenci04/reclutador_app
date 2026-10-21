@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import type { Notice } from './useAuctionNotices'
+import type { Notice } from './useToasts'
 
 /** Messages about what just happened or why something is not allowed. Warnings are announced assertively. */
 export function NoticeToasts({ notices, onDismiss }: { readonly notices: readonly Notice[]; readonly onDismiss: (id: number) => void }) {

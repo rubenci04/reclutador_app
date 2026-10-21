@@ -777,3 +777,10 @@
 @media(prefers-reduced-motion:reduce){.bid-figures.has-bid .figure-current{animation:none}}
 @media(max-width:520px){.bid-figures{grid-template-columns:repeat(2,minmax(0,1fr))}.auction-player-bar{grid-template-columns:auto minmax(0,1fr)}.bar-meta{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center}.bid-panel .bid-actions{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.bid-figures{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}.bid-figures>div{padding:4px 2px}.bid-figures dt{font-size:.58rem}.bid-figures dd{font-size:.95rem}.bid-figures small{font-size:.58rem}.auction-player-bar{grid-template-columns:auto minmax(0,1fr) auto;gap:8px;padding:6px 8px}.bar-meta{grid-column:auto;display:grid;justify-items:end}.bar-avatar{width:40px;height:48px}.bar-identity strong{font-size:.95rem}.bid-panel .bid-chips{gap:4px}.bid-panel .bid-chip{padding:6px 8px}.bid-amount{margin:4px 0}.bid-panel .risk-meter{margin:4px 0}.bid-turn .team-turn-name{margin:.05rem 0}}
+
+/* UX-DRAW-007 */
+.app-credit{padding:18px 16px 26px;text-align:center;color:#9fb3a3;font-size:.78rem;overflow-wrap:anywhere}.app-credit small{font-size:inherit}
+.live-market{display:grid;gap:2px;margin:8px 0;padding:8px 12px;border:1px solid #d5fb7640;border-radius:10px;background:#0f1d17cc}.live-market-title{margin:0;font-size:.68rem;letter-spacing:.12em;color:#d5fb76;font-weight:800}
+.live-market-headline{margin:0;min-height:2.6em;display:flex;align-items:center;font-size:.95rem;font-weight:700;overflow-wrap:anywhere;animation:play-enter .25s ease-out}.live-market-headline.live-auto{color:#9ad8ff}.live-market-headline.live-outbid{color:#ffb347}.live-market-headline.live-award{color:#f4dc63}
+.live-market-history{font-size:.82rem}.live-market-history summary{cursor:pointer;color:#c6d5bd}.live-market-history ol{margin:6px 0 0;padding-left:18px;display:grid;gap:3px}
+@media(prefers-reduced-motion:reduce){.live-market-headline{animation:none}}

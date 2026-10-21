@@ -59,7 +59,7 @@ export interface RecruiterDuelGame {
   readonly coachMode?: ThemedModeId
   readonly seed: string
   readonly drawContext?: DrawContext
-  readonly drawDiagnostics?: { readonly attempts: number; readonly relaxation: number; readonly smallPoolPositions: readonly Player['position'][] }
+  readonly drawDiagnostics?: { readonly attempts: number; readonly relaxation: number; readonly smallPoolPositions: readonly Player['position'][]; /** club-spread-v3: unavoidable consecutive same-club pairs (0 when a clash-free order exists). */ readonly clubRepeats?: number }
   readonly phase: AuctionPhase
   readonly rounds: readonly AuctionRound[]
   readonly roundIndex: number
