@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react'
+import { cornerBeatDuration, cornerScene } from './cornerGeometry'
 import { useTranslation } from 'react-i18next'
 import type { DraftLineup } from '../draft/draftTypes'
 import type { FormationId } from '../tactics/formations'
@@ -27,7 +28,7 @@ export interface TacticalBoardProps {
 
 const PITCH_RATIO = 68 / 105
 const COLORS = { local: '#00f5d4', cpu: '#ff5d73', gold: '#ffd54a' } as const
-interface Pose { start?: Parameters<typeof aerialScene>[3]; progress: number; height: number; jump: number; players: Record<string, Point>; ball: Point; shift: Record<MatchSide, number>; pulse: number }
+interface Pose { camera: { from: number; to: number }; start?: Parameters<typeof aerialScene>[3]; progress: number; height: number; jump: number; players: Record<string, Point>; ball: Point; shift: Record<MatchSide, number>; pulse: number }
 
 /** Small Canvas 2D tactical board. Original code; it draws only what the confirmed event states. */
 export function TacticalBoard({ formations, lineups, catalog, names, play, choices = [], tick, focus, speed, animate, paused = false }: TacticalBoardProps) {
@@ -47,7 +48,7 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
     if (carrier) {
       const key = carrier.slotId + carrier.side
       const carry = play.kind === 'attack' || play.kind === 'pass' ? dir * .10 : 0
-      players[key] = { x: Math.max(.08, Math.min(.92, players[key].x + carry)), y: players[key].y }
+      players[key] = { x: Math.max(.08, Math.min(.92, players[key].x + carry)), y: players[key].y + (play.variant === undefined ? 0 : (play.variant - 1) * .025) }
       if (play.kind === 'attack' || play.kind === 'pass' || play.kind === 'recovery') { ball = { x: players[key].x + dir * .018, y: players[key].y } }
       const defender = dots.find((d) => d.playerId && d.playerId === play.defenderId)
       if (defender) players[defender.slotId + defender.side] = { x: players[key].x + dir * .06, y: players[key].y + .035 }
@@ -59,7 +60,7 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
     }
     return { ball, shift, players }
   }, [play, carrier, dots])
-  const pose = useRef<Pose>({ progress: 0, height: 0, jump: 0, players: {}, ball: { x: .5, y: .5 }, shift: { local: 0, cpu: 0 }, pulse: 0 })
+  const pose = useRef<Pose>({ camera: { from: 0, to: 1 }, progress: 0, height: 0, jump: 0, players: {}, ball: { x: .5, y: .5 }, shift: { local: 0, cpu: 0 }, pulse: 0 })
   const pulsed = useRef(-1)
   const elapsed = useRef(0)
   const aerialStart = useRef<Parameters<typeof aerialScene>[3]>(undefined)
@@ -75,7 +76,7 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
       pulsed.current = tick; pose.current.pulse = 1; elapsed.current = 0
       // Preserve the previous confirmed pose when a new aerial beat starts.
       const actors = Object.fromEntries(dots.flatMap((dot) => dot.playerId ? [[dot.playerId, pose.current.players[dot.slotId + dot.side] ?? dot.home]] : []))
-      aerialStart.current = { ball: pose.current.ball, height: pose.current.height, jump: pose.current.jump, players: actors, keeper: actors[dots.find((d) => d.side === 'cpu' && d.slotId === 'GK')?.playerId ?? ''] ?? { x: .96, y: .5 } }
+      aerialStart.current = { ball: pose.current.ball, height: pose.current.height, jump: pose.current.jump, players: actors, keeper: actors[dots.find((d) => d.side === (play.corner?.awardedTo === 'cpu' ? 'local' : 'cpu') && d.slotId === 'GK')?.playerId ?? ''] ?? { x: play.corner?.awardedTo === 'cpu' ? .04 : .96, y: .5 } }
       pose.current.start = aerialStart.current
     }
     const draw = () => {
@@ -93,6 +94,8 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
       const dt = last === undefined ? 0 : Math.min(.1, (time - last) / 1000); last = time
       if (paused && animate) { draw(); frame = 0; return }
       const k = animate ? 1 - Math.exp(-dt * 7 * speed) : 1
+      const camera = focusWindow(latest.current.focus)
+      state.camera.from += (camera.from - state.camera.from) * k; state.camera.to += (camera.to - state.camera.to) * k
       state.ball = { x: state.ball.x + (goal.ball.x - state.ball.x) * k, y: state.ball.y + (goal.ball.y - state.ball.y) * k }
       for (const [key, point] of Object.entries(goal.players)) {
         const prior = state.players[key] ?? latest.current.dots.find((d) => d.slotId + d.side === key)?.home ?? point
@@ -102,19 +105,19 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
       state.pulse = animate ? Math.max(0, state.pulse - dt * 1.4 * speed) : 0
       const action = latest.current.play
       elapsed.current += dt * 1000 * speed
-      state.progress = animate ? Math.min(1, elapsed.current / aerialBeatDuration(action.step)) : 1
-      if (action.aerial && action.step) {
-        const scene = aerialScene(action.aerial, action.step, state.progress, aerialStart.current)
+      state.progress = animate ? Math.min(1, elapsed.current / (action.corner ? cornerBeatDuration(action.step) : aerialBeatDuration(action.step))) : 1
+      if ((action.aerial || action.corner) && action.step) {
+        const scene = action.corner ? cornerScene(action.corner, action.step, state.progress, aerialStart.current) : aerialScene(action.aerial!, action.step, state.progress, aerialStart.current)
         state.ball = scene.ball; state.height = scene.height; state.jump = scene.jump
         for (const dot of latest.current.dots) {
           if (dot.playerId && scene.players[dot.playerId]) state.players[dot.slotId + dot.side] = scene.players[dot.playerId]
-          if (dot.side === 'cpu' && dot.slotId === 'GK') state.players[dot.slotId + dot.side] = scene.keeper
+          if (dot.side === (action.corner?.awardedTo === 'cpu' ? 'local' : 'cpu') && dot.slotId === 'GK') state.players[dot.slotId + dot.side] = scene.keeper
         }
       } else { state.height = 0; state.jump = 0 }
       draw()
-      if (action.aerial && state.progress >= 1) { frame = 0; return }
+      if ((action.aerial || action.corner) && state.progress >= 1) { frame = 0; return }
       const settled = Math.abs(goal.ball.x - state.ball.x) < .001 && Math.abs(goal.ball.y - state.ball.y) < .001 && Object.entries(goal.players).every(([key, p]) => Math.abs(state.players[key].x - p.x) < .001 && Math.abs(state.players[key].y - p.y) < .001) && state.pulse === 0 && ['local', 'cpu'].every((side) => Math.abs(goal.shift[side as MatchSide] - state.shift[side as MatchSide]) < .001)
-      if (settled && !action.aerial) { state.ball = goal.ball; state.players = { ...goal.players }; state.shift = { ...goal.shift }; draw(); frame = 0; return }
+      if (settled && !action.aerial && !action.corner) { state.ball = goal.ball; state.players = { ...goal.players }; state.shift = { ...goal.shift }; draw(); frame = 0; return }
       frame = window.requestAnimationFrame(step)
     }
     frame = window.requestAnimationFrame(step)
@@ -131,10 +134,12 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
 }
 
 function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, view: { dots: ReturnType<typeof boardDots>; carrier: BoardDot | undefined; from: BoardDot | undefined; options: readonly { dot: BoardDot; label: string }[]; carrierName: string | undefined; names: Readonly<Record<MatchSide, string>>; focus: BoardFocus; play: BoardPlay }) {
-  const window_ = focusWindow(view.focus)
+  const aerialActors = view.play.aerial ?? (view.play.corner ? { ...view.play.corner, defenderId: view.play.corner.markerId ?? view.play.corner.defenderId } : undefined)
+  const window_ = view.play.corner ? pose.camera : focusWindow(view.focus)
   const pitchW = w / (window_.to - window_.from); const pitchH = pitchW * PITCH_RATIO
   const ox = -window_.from * pitchW
-  const oy = view.focus === 'full' ? 0 : Math.min(0, Math.max(h - pitchH, h / 2 - pose.ball.y * pitchH))
+  const pan = Math.min(0, Math.max(h - pitchH, h / 2 - pose.ball.y * pitchH))
+  const oy = view.play.corner ? pan * Math.min(1, (1 - window_.to + window_.from) / .45) : view.focus === 'full' ? 0 : pan
   const X = (u: number) => ox + u * pitchW; const Y = (v: number) => oy + v * pitchH
   ctx.clearRect(0, 0, w, h)
   ctx.save(); ctx.beginPath(); ctx.rect(0, 0, w, h); ctx.clip()
@@ -158,17 +163,17 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
     ctx.beginPath(); ctx.moveTo(end, y - 9); ctx.lineTo(end + dir * 14, y); ctx.lineTo(end, y + 9); ctx.stroke()
   }
   const radius = Math.max(5, Math.min(11, pitchW * .0145))
-  const at = (dot: BoardDot) => { const p = pose.players[dot.slotId + dot.side] ?? dot.home; const jumping = view.play.aerial && (dot.playerId === view.play.aerial.targetId || dot.playerId === view.play.aerial.defenderId); return { x: X(p.x), y: Y(p.y) - (jumping ? pose.jump * pitchH : 0) } }
+  const at = (dot: BoardDot) => { const p = pose.players[dot.slotId + dot.side] ?? dot.home; const jumping = aerialActors && (dot.playerId === aerialActors.targetId || dot.playerId === aerialActors.defenderId); return { x: X(p.x), y: Y(p.y) - (jumping ? pose.jump * pitchH : 0) } }
   // The pass that was just played: from the protagonist to whoever received it (or cut it out).
-  if (!view.play.aerial && view.from && view.carrier && view.carrier !== view.from && (view.play.kind === 'pass' || view.play.kind === 'recovery')) {
+  if (!view.play.aerial && !view.play.corner && view.from && view.carrier && view.carrier !== view.from && (view.play.kind === 'pass' || view.play.kind === 'recovery')) {
     const a = at(view.from)
     ctx.strokeStyle = view.play.kind === 'pass' ? COLORS.gold : '#ffffffaa'; ctx.lineWidth = 3; ctx.setLineDash(view.play.kind === 'pass' ? [] : [6, 6])
     ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(X(pose.ball.x), Y(pose.ball.y)); ctx.stroke(); ctx.setLineDash([])
   }
-  if (view.play.aerial && view.play.step && ['AERIAL_CROSS', 'DIRECTED_HEADER_FLIGHT'].includes(view.play.step)) {
+  if (aerialActors && view.play.step && ['AERIAL_CROSS', 'DIRECTED_HEADER_FLIGHT', 'CORNER_DELIVERY', 'CORNER_FLIGHT', 'CORNER_SHORT_PASS'].includes(view.play.step)) {
     ctx.strokeStyle = '#ffd54ab0'; ctx.lineWidth = 2; ctx.beginPath()
     for (let i = 0; i <= 24; i++) {
-      const scene = aerialScene(view.play.aerial, view.play.step, pose.progress * i / 24, pose.start)
+      const scene = view.play.corner ? cornerScene(view.play.corner, view.play.step, pose.progress * i / 24, pose.start) : aerialScene(view.play.aerial!, view.play.step, pose.progress * i / 24, pose.start)
       const x = X(scene.ball.x); const y = Y(scene.ball.y) - scene.height * pitchH
       if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y)
     }
@@ -187,7 +192,7 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
   }
   for (const dot of view.dots) {
     const { x, y } = at(dot)
-    if (view.play.aerial && pose.jump > 0 && (dot.playerId === view.play.aerial.targetId || dot.playerId === view.play.aerial.defenderId)) {
+    if (aerialActors && pose.jump > 0 && (dot.playerId === aerialActors.targetId || dot.playerId === aerialActors.defenderId)) {
       ctx.fillStyle = '#0009'; ctx.beginPath(); ctx.ellipse(x, y + pose.jump * pitchH + radius, radius * 1.2, radius * .35, 0, 0, Math.PI * 2); ctx.fill()
     }
     const marked = view.carrier?.side === dot.side && view.carrier.playerId === dot.playerId
@@ -202,17 +207,17 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
       ctx.strokeText(view.carrierName, labelX, y - radius * 2.3); ctx.fillText(view.carrierName, labelX, y - radius * 2.3)
     }
   }
-  if (view.play.aerial && view.play.step === 'AERIAL_WON') {
+  if (view.play.aerial && view.play.step === 'AERIAL_WON' || view.play.corner?.awardedTo === 'local' && view.play.step === 'CORNER_WON') {
     for (const [i, direction] of HEADER_DIRECTIONS.entries()) {
-      const point = headerGoalPoint(view.play.aerial.sector, direction)
+      const point = headerGoalPoint(aerialActors!.sector, direction)
       ctx.fillStyle = COLORS.gold; ctx.beginPath(); ctx.arc(X(point.x - .035), Y(point.y), radius * .9, 0, Math.PI * 2); ctx.fill()
       ctx.font = '800 11px system-ui'; ctx.fillStyle = '#102016'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(['A', 'B', 'C'][i], X(point.x - .035), Y(point.y)); ctx.textBaseline = 'alphabetic'
     }
   }
   const bx = X(pose.ball.x); const groundY = Y(pose.ball.y); const by = groundY - pose.height * pitchH
-  if (view.play.aerial) {
+  if (aerialActors) {
     ctx.fillStyle = '#0008'; ctx.beginPath(); ctx.ellipse(bx, groundY + 3, radius * .8, radius * .3, 0, 0, Math.PI * 2); ctx.fill()
-    if (view.play.step === 'DIRECTED_HEADER_CONTACT') { ctx.strokeStyle = COLORS.gold; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(bx, by, radius * (1.4 + pose.progress), 0, Math.PI * 2); ctx.stroke() }
+    if (view.play.step === 'DIRECTED_HEADER_CONTACT' || view.play.step === 'CORNER_CONTACT') { ctx.strokeStyle = COLORS.gold; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(bx, by, radius * (1.4 + pose.progress), 0, Math.PI * 2); ctx.stroke() }
   }
   if (pose.pulse > 0 && view.play.kind === 'goal') { ctx.strokeStyle = COLORS.gold; ctx.lineWidth = 4; ctx.globalAlpha = pose.pulse; ctx.beginPath(); ctx.arc(bx, by, radius * (1.5 + (1 - pose.pulse) * 5), 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = 1 }
   ctx.fillStyle = '#fff'; ctx.strokeStyle = '#0b1a10'; ctx.lineWidth = 2

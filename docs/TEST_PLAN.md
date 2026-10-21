@@ -234,3 +234,10 @@ CPU estratégica local implementada como opción junto a hot-seat. Perfiles CONS
 - Verificar formación/posición real, conservación de gasto/propiedad, ausencia de sustituciones automáticas nuevas y continuidad de formaciones entre encuentros.
 - Comprobar guías, fuentes, rol y avatar en tres idiomas, y nueva partida/revancha. Probar categorías distintas y elegibilidad de técnicos/suplentes; online con PostgreSQL local, sin afirmar dos navegadores reales.
 - Ejecutar typecheck, lint, test y build. Revisar imágenes descargadas; QA visual del sitio y escucha real deben registrarse por separado.
+
+## SIM-005R-06
+
+- Verificar causa anterior a CORNER_AWARDED, actores vigentes, marcadores de ambos palos, 24 ataques, estadísticas/marcador, corto acotado y dirección fresca tras ganar disputa.
+- Verificar plan CPU anterior a MAN_MARK/ZONE, duelo OVR puro, cobertura por atributos, replay/restauración por nodo/ventana/final; rechazar decisiones stale/duplicadas y snapshots manipulados. Única consulta estratégica en entretiempo.
+- Ejecutar cuatro controles obligatorios. Calibrar con node scripts/calibrate-corners.mjs (240 semillas × 7 políticas × 3 perfiles); comparar fuentes anteriores con node scripts/check-corners-compatibility.mjs sin actualizar golden.
+- Secuencias reales a 390/412/768/1280, continuidad de jugadores/pelota, arquero/dirección oculta, pausa/velocidad/omitir/reduced-motion, teclado, idiomas y escucha sin doble contacto. Reproductor/semillas: [QA](qa/SIM-005R-06.md). DOM/curvas no acreditan movimiento/audio; navegador bloqueado deja esas verificaciones pendientes.

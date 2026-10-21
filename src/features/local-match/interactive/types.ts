@@ -36,6 +36,7 @@ export interface SessionOptions {
   readonly moments?: { readonly version: 'match-moments-v1' }
   readonly aerial?: { readonly version: 'directed-header-v1' }
   readonly attackTree?: { readonly version: 'attack-tree-v1' }
+  readonly corners?: { readonly version: 'corners-v1' }
   /** New matches only: halftime tactics, optional substitutions and OVR direct duels. */
   readonly matchRules?: { readonly version: 'halftime-ovr-v1' }
 }
@@ -57,6 +58,7 @@ export interface InteractiveResult {
   readonly result: MatchResult
   /** attack-tree-v1 sessions only: every play decision, in order. */
   readonly plays?: readonly PlayLogEntry[]
+  readonly corners?: { readonly version: 'corners-v1'; readonly families: readonly ('OPEN_PLAY' | 'CORNER')[] }
   readonly aerial?: { readonly version: 'directed-header-v1' }
   readonly matchRules?: { readonly version: 'halftime-ovr-v1' }
   readonly moments?: { readonly version: 'match-moments-v1'; readonly selected: readonly MomentSelection[] }

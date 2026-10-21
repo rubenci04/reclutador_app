@@ -1,6 +1,7 @@
 import { formationSlots, type FormationId } from '../tactics/formations'
 import type { DraftLineup } from '../draft/draftTypes'
 import type { AerialEvent } from './interactive/directedHeader'
+import type { CornerEvent } from './interactive/corners'
 import type { MatchEventType, MatchSide, PlayStep } from './matchTypes'
 
 /**
@@ -18,6 +19,8 @@ export interface BoardPlay {
   readonly defenderId?: string
   readonly aerial?: AerialEvent
   readonly step?: PlayStep
+  readonly corner?: CornerEvent
+  readonly variant?: number
 }
 export type BoardFocus = 'full' | 'local' | 'cpu'
 export interface Point { readonly x: number; readonly y: number }
@@ -65,6 +68,7 @@ export function focusWindow(focus: BoardFocus): { readonly from: number; readonl
 }
 
 export function attackingSide(play: BoardPlay): MatchSide | null {
+  if (play.corner) return ['CORNER_CLEAR', 'CORNER_EXIT', 'CORNER_BLOCK', 'CORNER_SAVE'].includes(play.step ?? '') ? null : play.corner.awardedTo
   if (!play.side || play.kind === 'idle' || play.kind === 'substitution' || play.kind === 'final') return null
   return play.kind === 'save' ? (play.side === 'local' ? 'cpu' : 'local') : play.side
 }

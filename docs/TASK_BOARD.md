@@ -325,3 +325,10 @@ Validación: typecheck, lint, 831 pruebas y build ejecutados. QA visual en naveg
 ## SIM-005R-02 — Primera jugada ofensiva interactiva
 
 - Estado: implementado y verificado localmente (987 pruebas). Contrato `attack-tree-v1` opt-in solo contra CPU; evidencia en docs/qa/SIM-005R-02.md. Pendiente: playtest humano, audio real y más nodos.
+
+## SIM-005R-06 — Córners y variedad audiovisual
+
+- Implementado localmente: corners-v1 contra CPU, primer/segundo/corto, hombre/zona, 24 oportunidades, eventos/checkpoint estrictos y tres idiomas; sin nuevas consultas estratégicas.
+- Ejecutado: 5.040 partidos de calibración, 240 sesiones históricas idénticas y 12 checkpoints anteriores restaurados. [Informe](qa/SIM-005R-06.md). Corto desfavorable en dos perfiles; zona depende del perfil. Balance competitivo no acreditado.
+- QA visual parcial: DOM a 1280 antes de corrección del foco; luego navegador deshabilitado por Work settings. Pendientes secuencias reales a 390/412/768/1280 y escucha. Reproductor de ocho casos documentado.
+- Cierre: commit local, sin push/merge/deploy. No iniciar otras familias.

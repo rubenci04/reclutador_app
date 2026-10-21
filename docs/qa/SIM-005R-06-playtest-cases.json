@@ -1,0 +1,93 @@
+{
+  "version": "corners-v1",
+  "cases": [
+    {
+      "id": "clearance",
+      "profile": "real_balanced",
+      "seed": "corner-calibration:real_balanced:1",
+      "playId": "play-15",
+      "side": "cpu",
+      "attack": "CORNER_NEAR",
+      "defense": "MAN_MARK",
+      "direction": "FAR_POST",
+      "ending": "CORNER_CLEAR"
+    },
+    {
+      "id": "offensive_goal",
+      "profile": "real_balanced",
+      "seed": "corner-calibration:real_balanced:4",
+      "playId": "play-30",
+      "side": "local",
+      "attack": "CORNER_NEAR",
+      "defense": "MAN_MARK",
+      "direction": "FAR_POST",
+      "ending": "CORNER_GOAL"
+    },
+    {
+      "id": "defensive_exit",
+      "profile": "real_balanced",
+      "seed": "corner-calibration:real_balanced:6",
+      "playId": "play-75",
+      "side": "cpu",
+      "attack": "CORNER_NEAR",
+      "defense": "MAN_MARK",
+      "direction": "FAR_POST",
+      "ending": "CORNER_EXIT"
+    },
+    {
+      "id": "defensive_save",
+      "profile": "real_balanced",
+      "seed": "corner-calibration:real_balanced:18",
+      "playId": "play-30",
+      "side": "cpu",
+      "attack": "CORNER_NEAR",
+      "defense": "MAN_MARK",
+      "direction": "FAR_POST",
+      "ending": "CORNER_SAVE"
+    },
+    {
+      "id": "defensive_goal",
+      "profile": "real_balanced",
+      "seed": "corner-calibration:real_balanced:24",
+      "playId": "play-75",
+      "side": "cpu",
+      "attack": "CORNER_NEAR",
+      "defense": "MAN_MARK",
+      "direction": "FAR_POST",
+      "ending": "CORNER_GOAL"
+    },
+    {
+      "id": "offensive_save",
+      "profile": "real_balanced",
+      "seed": "corner-calibration:real_balanced:31",
+      "playId": "play-30",
+      "side": "local",
+      "attack": "CORNER_NEAR",
+      "defense": "MAN_MARK",
+      "direction": "FAR_POST",
+      "ending": "CORNER_SAVE"
+    },
+    {
+      "id": "offensive_far_header",
+      "profile": "real_balanced",
+      "seed": "corner-calibration:real_balanced:4",
+      "playId": "play-30",
+      "side": "local",
+      "attack": "CORNER_FAR",
+      "defense": "MAN_MARK",
+      "direction": "FAR_POST",
+      "ending": "CORNER_GOAL"
+    },
+    {
+      "id": "offensive_short",
+      "profile": "real_balanced",
+      "seed": "corner-calibration:real_balanced:4",
+      "playId": "play-30",
+      "side": "local",
+      "attack": "CORNER_SHORT",
+      "defense": "MAN_MARK",
+      "direction": "FAR_POST",
+      "ending": "CORNER_SAVE"
+    }
+  ]
+}

@@ -44,10 +44,14 @@ export function liveFrames(blocks: readonly MatchBlock[], open: OpenBlock | null
 /** Sounds a revealed frame triggers. The caller keeps a ledger keyed by frame so pause, speed or replay never repeat them. */
 export function frameSounds(frame: LiveFrame): readonly SoundId[] {
   const sounds: SoundId[] = []
-  if (frame.events.some((item) => item.step === 'AERIAL_CROSS')) sounds.push('cross')
+  if (frame.events.some((item) => item.step === 'CORNER_DELIVERY')) sounds.push('cross')
+  else if (frame.events.some((item) => item.step === 'CORNER_CONTACT')) sounds.push('header')
+  else if (frame.events.some((item) => item.step === 'CORNER_SHOT')) sounds.push('shot')
+  else if (frame.events.some((item) => item.step === 'AERIAL_CROSS')) sounds.push('cross')
   else if (frame.events.some((item) => item.step === 'DIRECTED_HEADER_CONTACT')) sounds.push('header')
   // Contest/win/flight are visual phases, not extra contacts with the ball.
   else if (frame.events.some((item) => item.aerial && item.type === 'pass')) return sounds
+  else if (frame.events.some((item) => item.corner && ['CORNER_FLIGHT', 'CORNER_SHORT_ADVANCE'].includes(item.step ?? ''))) { /* No extra contact; retain block-ending whistles. */ }
   else if (frame.events.some((item) => item.type === 'goal')) sounds.push('goal')
   else if (frame.events.some((item) => item.type === 'shot' || item.type === 'save')) sounds.push('shot')
   else if (frame.events.some((item) => item.type === 'pass' && item.step !== 'CARRY_OK')) sounds.push('pass')
@@ -63,7 +67,7 @@ export const frameSoundOffset = (sound: SoundId) => sound === 'cross' ? 250 : 0
 /** The most important event of a frame decides what the board shows. Null before anything is revealed. */
 export function frameFocus(frame: LiveFrame | undefined): MatchEvent | null {
   if (!frame) return null
-  const priority = ['goal', 'save', 'shot', 'pass', 'attack', 'recovery'] as const
+  const priority = ['goal', 'save', 'shot', 'corner', 'pass', 'attack', 'recovery'] as const
   for (const type of priority) { const found = frame.events.find((item) => item.type === type); if (found) return found }
   return null
 }

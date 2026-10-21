@@ -109,3 +109,7 @@ Implementación del pedido del usuario: capa squad-quality-v1 para duelos, poder
 ## Playtest ampliado — 19/10/2026
 
 Implementadas las categorías de 150–300, el ajuste medible action-v3, rareza S+ sin eliminación económica sistemática, suplentes manuales, nueve formaciones con afinidad, guías de etapas, serie de dos más tercero, sorteos de categorías distintas y presentación con personajes/fotos. ADR-0017 reemplaza las reglas nuevas de series de ADR-0014; se conserva el comportamiento antiguo versionado. La cobertura completa de biografías/fotos y la revisión visual real siguen distinguidas de la implementación técnica.
+
+## SIM-005R-06 — Entrega local
+
+Familia corners-v1 implementada en nuevos partidos dirigidos contra CPU con tres envíos, dos defensas y cabezazo dirigido, sin aumentar interrupciones ni oportunidades. Relato normal variado desde hechos confirmados. Compatibilidad y calibración ejecutadas; [QA y límites](qa/SIM-005R-06.md). Pendiente revisión visual completa/audio humano; sin publicación ni otras pelotas paradas, hot-seat u online.

@@ -1,0 +1,16 @@
+
+> draft-legends@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.5 C:/Users/rea_0/Documents/ChatGPT/Fútbol Draft
+
+
+ Test Files  103 passed (103)
+      Tests  1076 passed (1076)
+   Start at  01:11:32
+   Duration  89.68s (tests 63%, environment 25%, setup 6%, import 4%, transform 1%)
+
+Environment  jsdom was created 103 times · 194.63s total, 25% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
