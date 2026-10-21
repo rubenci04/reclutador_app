@@ -22,10 +22,11 @@ export function createSession(source: SessionInput, options: SessionOptions): Ou
   try {
     if (source.actionModel !== 'action-v3') return fail('UNSUPPORTED_VERSION')
     if (!validInput(source)) return fail('INVALID_ROSTER')
-    if (!object(options) || !jsonSafe(options) || !exact(options, ['sessionId'], ['benchMode', 'acquisition', 'attackTree', 'moments', 'aerial']) || options.attackTree !== undefined && (!object(options.attackTree) || !exact(options.attackTree, ['version']) || options.attackTree.version !== 'attack-tree-v1') || !text(options.sessionId) || options.sessionId.length > 128) return fail('INVALID_PAYLOAD')
+    if (!object(options) || !jsonSafe(options) || !exact(options, ['sessionId'], ['benchMode', 'acquisition', 'attackTree', 'moments', 'aerial', 'matchRules']) || options.attackTree !== undefined && (!object(options.attackTree) || !exact(options.attackTree, ['version']) || options.attackTree.version !== 'attack-tree-v1') || !text(options.sessionId) || options.sessionId.length > 128) return fail('INVALID_PAYLOAD')
+    if (options.matchRules !== undefined && (!object(options.matchRules) || !exact(options.matchRules, ['version']) || options.matchRules.version !== 'halftime-ovr-v1' || options.attackTree !== undefined || options.moments && !options.aerial)) return fail('INVALID_PAYLOAD')
     if (options.moments !== undefined && (options.attackTree !== undefined || !object(options.moments) || !exact(options.moments, ['version']) || options.moments.version !== 'match-moments-v1')) return fail('INVALID_PAYLOAD')
     if (options.aerial !== undefined && (!options.moments || !object(options.aerial) || !exact(options.aerial, ['version']) || options.aerial.version !== 'directed-header-v1')) return fail('INVALID_PAYLOAD')
-    const kernel = initializeKernel(source, options.moments ? 'match-moments-v1' : options.attackTree !== undefined, options.aerial !== undefined)
+    const kernel = initializeKernel(source, options.moments ? 'match-moments-v1' : options.attackTree !== undefined, options.aerial !== undefined, options.matchRules !== undefined)
     const benchMode = options.benchMode ?? { local: source.benches ? 'auto-subs-v1' : 'none', cpu: source.benches ? 'auto-subs-v1' : 'none' }
     if (!object(benchMode) || !exact(benchMode, SIDES) || !SIDES.every((side) => ['none', 'auto-subs-v1', 'manual-v1'].includes(benchMode[side]) && (benchMode[side] !== 'none' || !source.benches?.[side].length))) return fail('INVALID_PAYLOAD')
     const ownership = { local: [...Object.values(source.localLineup), ...(source.benches?.local ?? [])] as string[], cpu: [...Object.values(source.cpuLineup), ...(source.benches?.cpu ?? [])] as string[] }
@@ -86,6 +87,8 @@ export function submitPlay(session: Session, raw: unknown): Outcome {
 function parseDecision(raw: unknown): Decision | null {
   if (!object(raw) || !jsonSafe(raw) || !exact(raw, ['version', 'id', 'sessionId', 'participant', 'expectedRevision', 'windowId', 'applyBlock', 'order']) || !text(raw.version) || !text(raw.id) || !text(raw.sessionId) || !text(raw.windowId) || !integer(raw.expectedRevision) || !SIDES.includes(raw.participant as MatchSide) || !integer(raw.applyBlock) || !object(raw.order) || !exact(raw.order, ['type', 'parameters']) || !object(raw.order.parameters)) return null
   const order = raw.order
+  const parameters = order.parameters as Record<string, unknown>
+  if (order.type === 'HALFTIME' && exact(parameters, ['strategy', 'substitution']) && (parameters.substitution === null || object(parameters.substitution) && exact(parameters.substitution, ['inId', 'outId']))) return raw as unknown as Decision
   if (order.type === 'KEEP' && exact(order.parameters as Record<string, unknown>, []) || order.type === 'STRATEGY' && exact(order.parameters as Record<string, unknown>, ['strategy']) || order.type === 'SUBSTITUTE' && exact(order.parameters as Record<string, unknown>, ['outId', 'inId']) || order.type === 'POSTURE' && exact(order.parameters as Record<string, unknown>, ['direction'])) return raw as unknown as Decision
   return null
 }
@@ -95,8 +98,9 @@ export function receiptFor(session: Session, id: string): Receipt | null {
 }
 
 function substitutionValid(session: Session, command: Decision): boolean {
-  if (command.order.type !== 'SUBSTITUTE') return false
-  const side = command.participant; const { inId, outId } = command.order.parameters
+  const substitution = command.order.type === 'SUBSTITUTE' ? command.order.parameters : command.order.type === 'HALFTIME' ? command.order.parameters.substitution : null
+  if (!substitution) return false
+  const side = command.participant; const { inId, outId } = substitution
   if (!text(inId) || !text(outId) || session.benchMode[side] !== 'manual-v1' || session.entered[side].length >= 3 || session.entered[side].includes(inId) || session.departed[side].includes(inId)) return false
   const state = session.kernel.sides[side]
   const player = session.kernel.input.catalog.find((p) => p.id === inId)
@@ -122,6 +126,10 @@ export function submitDecision(session: Session, authenticatedSide: MatchSide, r
   if (session.window.plans[command.participant]) return reject('ALREADY_SUBMITTED')
   if (command.expectedRevision !== session.revision) return reject('STALE_STATE')
   if (command.order.type === 'POSTURE') return reject('UNSUPPORTED_ORDER')
+  if (command.order.type === 'HALFTIME' && (!session.options.matchRules || command.applyBlock !== 3)) return reject('UNSUPPORTED_ORDER')
+  if (session.options.matchRules && command.order.type === 'STRATEGY' && command.applyBlock !== 3) return reject('UNSUPPORTED_ORDER')
+  if (command.order.type === 'HALFTIME' && !isStrategyId(command.order.parameters.strategy)) return reject('INVALID_STRATEGY')
+  if (command.order.type === 'HALFTIME' && command.order.parameters.substitution && !substitutionValid(session, command)) return reject('INVALID_SUBSTITUTION')
   if (command.order.type === 'STRATEGY' && !isStrategyId(command.order.parameters.strategy)) return reject('INVALID_STRATEGY')
   if (command.order.type === 'SUBSTITUTE' && !substitutionValid(session, command)) return reject('INVALID_SUBSTITUTION')
   const receipt: Receipt = { id: command.id, command: copy(command), revision: session.revision + 1, status: 'ACCEPTED' }
@@ -138,7 +146,11 @@ export function applyWindow(session: Session): Outcome {
   for (const side of SIDES) {
     const command = next.window!.plans[side]!
     if (applied.some((d) => d.id === command.id)) return fail('DUPLICATE_COMMAND')
-    const order = command.order
+    let order = command.order
+    if (order.type === 'HALFTIME') {
+      next.kernel.selection = { ...next.kernel.selection, [side]: order.parameters.strategy }
+      order = order.parameters.substitution ? { type: 'SUBSTITUTE', parameters: order.parameters.substitution } : { type: 'KEEP', parameters: {} }
+    }
     if (order.type === 'STRATEGY') next.kernel.selection = { ...next.kernel.selection, [side]: order.parameters.strategy }
     if (order.type === 'SUBSTITUTE') {
       if (!substitutionValid(next, command)) return fail('INVALID_SUBSTITUTION')
@@ -171,7 +183,7 @@ export function finishSession(session: Session): Outcome {
     delete (result as { substitutions?: unknown }).substitutions
     kernel.result = result
   }
-  return success({ ...copy(session), kernel, phase: 'FINISHED', revision: session.revision + 1, result: { version: 'interactive-result-v1', kernelVersion: session.kernelVersion, decisions: copy(session.applied), substitutions: { version: 'interactive-subs-v1', modes: copy(session.benchMode), events: copy(kernel.substitutionLog) }, result: kernel.result!, ...(kernel.tree ? { plays: copy(kernel.tree.log) } : {}), ...(kernel.aerial ? { aerial: { version: kernel.aerial.version } } : {}), ...(kernel.director ? { moments: { version: kernel.director.version, selected: copy(kernel.director.selected) } } : {}) } })
+  return success({ ...copy(session), kernel, phase: 'FINISHED', revision: session.revision + 1, result: { version: 'interactive-result-v1', kernelVersion: session.kernelVersion, decisions: copy(session.applied), substitutions: { version: 'interactive-subs-v1', modes: copy(session.benchMode), events: copy(kernel.substitutionLog) }, result: kernel.result!, ...(session.options.matchRules ? { matchRules: copy(session.options.matchRules) } : {}), ...(kernel.tree ? { plays: copy(kernel.tree.log) } : {}), ...(kernel.aerial ? { aerial: { version: kernel.aerial.version } } : {}), ...(kernel.director ? { moments: { version: kernel.director.version, selected: copy(kernel.director.selected) } } : {}) } })
 }
 
 export function exportResult(session: Session): Outcome<InteractiveResult> {

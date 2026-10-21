@@ -4,6 +4,7 @@ import { formationSlots, type FormationId } from '../../tactics/formations'
 import type { StrategyId } from '../../tactics/strategies'
 import type { MatchEvent, MatchSide, PlayStep, TeamStrength } from '../matchTypes'
 import type { AerialAction } from './directedHeader'
+import { defenderDuelChance } from './individualDuels'
 
 /**
  * attack-tree-v1: the first interactive attack. One eligible opportunity of the local side (against the CPU) is played as
@@ -51,6 +52,7 @@ export interface PlayContext {
   readonly effective: Readonly<Record<MatchSide, TeamStrength>>
   readonly strategy: Readonly<Record<MatchSide, StrategyId>>
   readonly effectiveOnly?: boolean
+  readonly duels?: 'ovr-duels-v1'
 }
 
 const clamp = (value: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, value))
@@ -141,11 +143,13 @@ export function resolvePlay(ctx: PlayContext, play: PendingPlay, choice: PlayCho
     const sector = choice as Sector
     const passer = player(play.protagonistId); const receiver = player(option.playerId); const defender = player(option.rivalId)
     if (random() < passChance(passer, receiver, defender, edge, ctx.effectiveOnly ? { local: 'NEUTRAL', cpu: 'NEUTRAL' } : ctx.strategy)) {
+      // Delivery is not a 1v1. Once received, the winger must beat the actual marker to advance.
+      if (ctx.duels && random() < defenderDuelChance(receiver.overall_rating, defender.overall_rating)) return { events: [event('local', 'pass', sector === 'LEFT' ? 'PASS_LEFT_OK' : 'PASS_RIGHT_OK', receiver), event('cpu', 'recovery', 'CARRY_LOST', defender)], next: null }
       const target = crossTarget(ctx.local, ctx.catalog, receiver.id)
       const targetDefender = target ? rivalDefenderFor(target.slot.x, ctx.cpu, ctx.catalog) : null
       const shotDefender = rivalDefenderFor(placed(ctx.local, ctx.catalog).find((p) => p.player.id === receiver.id)!.slot.x, ctx.cpu, ctx.catalog)
       return {
-        events: [event('local', 'pass', sector === 'LEFT' ? 'PASS_LEFT_OK' : 'PASS_RIGHT_OK', receiver)],
+        events: [event('local', 'pass', sector === 'LEFT' ? 'PASS_LEFT_OK' : 'PASS_RIGHT_OK', receiver), ...(ctx.duels ? [event('local', 'pass', 'CARRY_OK', receiver)] : [])],
         next: { id: play.id, node: 'FINISH', protagonistId: play.protagonistId, receiverId: receiver.id, sector, options: [
           { choice: 'CROSS', available: Boolean(target && targetDefender), playerId: target?.player.id ?? null, rivalId: targetDefender?.id ?? null },
           { choice: 'SHOOT', available: Boolean(shotDefender), playerId: receiver.id, rivalId: shotDefender?.id ?? null },

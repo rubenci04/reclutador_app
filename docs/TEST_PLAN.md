@@ -1,5 +1,16 @@
 # Plan de pruebas
 
+## SIM-005R-05 — Entretiempo y duelos OVR
+
+- Opt-in separado: sin preguntas tácticas en 30/60/75; ocho decisiones internas aplicadas, KEEP trazable fuera del entretiempo, cambio sólo desde el segundo tiempo y prefijos confirmados intactos.
+- Una orden HALFTIME puede incluir estrategia y sustitución; rechazo atómico de combinaciones inválidas, sin RNG extra. Sustituciones opcionales en ventanas restantes, solicitudes bilaterales hot-seat sin descartar la segunda y límite existente de tres.
+- CPU determinista con plantel propio y marcador público; sin plan humano privado ni hechos futuros. Serie con nueva elección inicial/entretiempo por encuentro.
+- Checkpoint/restauración/replay de cada nodo, ventana y final; discriminante deportivo fijado y selección consistente con decisiones. Compatibilidad histórica y golden sin actualizar.
+- Logística central: paridad, monotonía, simetría, cotas, errores numéricos y conexión real de conducción/defensa/aéreo. Siete pares mínimos ×100.000 muestras, tolerancia absoluta 0,007 (>4 errores estándar en el peor caso).
+- Calibración independiente: cinco perfiles ×300 semillas ×dos versiones =3.000 partidos; 24 oportunidades, eventos/marcador coherentes, recuperaciones, centros, cabezazos y goles. Datos en qa/SIM-005R-05-calibration.json.
+- DOM en tres idiomas: foco, mantener con un toque, sustitución opcional, orden combinada, pausa/velocidad/omitir sin duplicación e integración subasta→estrategias→partido. Ejecutar los cuatro controles y registrar sus resultados en [QA](qa/SIM-005R-05.md).
+- Pendiente visual 390/412/768/1280 y escucha real: Work settings bloqueó el navegador. Publicación HTTP/asset no sustituye playtest.
+
 ## SIM-005R-04B — Continuidad y validación audiovisual
 
 - Regresión añadida: pose inicial/final entre fases, balón en conducción/liberación, salto/separación, arquero tras contacto y desenlace sin gol anticipado; geometría y RAF simulado no acreditan fluidez real.

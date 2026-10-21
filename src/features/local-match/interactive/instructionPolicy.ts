@@ -40,6 +40,7 @@ export function makeInstructionPolicy(own: OwnSquad, difficulty: CpuDifficulty):
 /** Adapter intentionally copies own data only; policy view is projected, never a private snapshot. */
 export function cpuInstruction(session: Session, difficulty: CpuDifficulty): Order {
   const side = session.kernel.sides.cpu
-  const policy = makeInstructionPolicy({ lineup: side.team.lineup, players: side.team.players, bench: session.kernel.input.catalog.filter((p) => side.unused.includes(p.id)), formation: session.kernel.input.formations?.cpu ?? '4-3-3', strategy: session.kernel.selection.cpu, changesLeft: 3 - session.entered.cpu.length }, difficulty)
+  if (session.options.matchRules && session.window?.applyBlock !== 3) return { type: 'KEEP', parameters: {} }
+  const policy = makeInstructionPolicy({ lineup: side.team.lineup, players: side.team.players, bench: session.options.matchRules ? [] : session.kernel.input.catalog.filter((p) => side.unused.includes(p.id)), formation: session.kernel.input.formations?.cpu ?? '4-3-3', strategy: session.kernel.selection.cpu, changesLeft: 3 - session.entered.cpu.length }, difficulty)
   return policy(inspectSession(session), { participant: 'cpu', seed: session.kernel.input.seed, cursor: session.kernel.nextBlock, availableBench: side.unused }).order
 }

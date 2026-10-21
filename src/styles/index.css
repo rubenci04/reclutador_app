@@ -675,6 +675,9 @@
 .live-summary { margin: .8rem 0; padding: .6rem .8rem; border-radius: 8px; background: #0b170e; font-weight: 700; line-height: 1.4; }
 .live-summary small { display: block; margin-top: .15rem; color: #aebfab; font-weight: 400; }
 .live-confirm { width: 100%; min-height: 48px; }
+.halftime-card > label { display: flex; gap: .6rem; align-items: center; min-height: 44px; margin-block: .4rem; }
+.halftime-card > label.live-field { display: grid; }
+.halftime-card .halftime-stats { color: #d5fb76; font-size: .85rem; }
 .live-match .playback-controls { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: .5rem 1rem; }
 .live-match .playback-controls button, .live-match .playback-controls select { min-height: 44px; }
 .live-match .playback-controls label { min-height: 44px; }

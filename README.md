@@ -1,6 +1,8 @@
 # Reclutador
 
-SIM-005: los duelos locales nuevos permiten **Dirigir partido** contra CPU o en hot-seat, con decisiones a los 30/45/60/75 minutos, estrategias y cambios manuales. **Simulación rápida** conserva el flujo automático existente. Online e históricos mantienen su comportamiento. [Contratos, pruebas y limitaciones](docs/qa/SIM-005.md).
+SIM-005R-05: en encuentros locales nuevos de **Dirigir partido**, la estrategia se elige antes de jugar y se consulta una única vez en el **entretiempo**. Los suplentes siguen disponibles mediante solicitud opcional para la próxima pausa. Los duelos individuales usan la extensión opt-in `halftime-ovr-v1`: igualdad de OVR significa 50% en el duelo directo. **Simulación rápida**, online y sesiones históricas conservan sus reglas. [Fórmula, calibración y límites](docs/qa/SIM-005R-05.md).
+
+Antecedente SIM-005: abrió cuatro ventanas internas a los 30/45/60/75 minutos. Se conservan para trazabilidad y sustituciones; la nueva presentación resuelve KEEP automáticamente fuera del entretiempo si no se solicitó un cambio. [Contrato histórico](docs/qa/SIM-005.md).
 
 Actualización de playtest 19/10: action-v3, 150–300 jugadores por edición, Global actual 300, leyendas activas en ambas ediciones, suplentes manuales, nueve formaciones, ida/vuelta con tercero de desempate, categorías distintas y guías por etapa. Ver [ADR-0017](docs/decisions/ADR-0017.md) y [validación y límites](docs/qa/PLAYTEST-EXPANSION.md).
 

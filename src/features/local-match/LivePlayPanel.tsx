@@ -5,7 +5,7 @@ import type { PendingPlay, PlayChoice } from './interactive'
 import { PLAY_LETTERS } from './matchFeed'
 
 /** One interactive node as two big cards: no forms, one tap resolves it. */
-export function PlayPanel({ play, catalog, onChoose }: { readonly play: PendingPlay; readonly catalog: readonly Player[]; readonly onChoose: (choice: PlayChoice) => void }) {
+export function PlayPanel({ play, catalog, onChoose, ovrDuels = false }: { readonly play: PendingPlay; readonly catalog: readonly Player[]; readonly onChoose: (choice: PlayChoice) => void; readonly ovrDuels?: boolean }) {
   const { t } = useTranslation()
   const card = useRef<HTMLElement>(null); const heading = useRef<HTMLHeadingElement>(null)
   useEffect(() => { heading.current?.focus({ preventScroll: true }); card.current?.scrollIntoView?.({ block: 'nearest' }) }, [play.id, play.node])
@@ -28,6 +28,6 @@ export function PlayPanel({ play, catalog, onChoose }: { readonly play: PendingP
         </button>
       })}
     </div>
-    <details className="moment-detail"><summary>{t('moments.detail')}</summary><p>{t(play.node === 'HEADER' ? 'aerial.detailHint' : 'moments.attributes')}</p>{[...new Set([play.protagonistId, play.receiverId, ...play.options.flatMap((o) => [o.playerId, o.rivalId])])].flatMap((id) => { const p = player(id); return p ? <p key={p.id}>{p.name} · {t('moments.ratings', { overall: p.overall_rating, attack: p.att_rating, defense: p.def_rating, physical: p.phy_rating, mental: p.men_rating })}</p> : [] })}</details>
+    <details className="moment-detail"><summary>{t('moments.detail')}</summary><p>{t(ovrDuels ? 'halftime.duels' : play.node === 'HEADER' ? 'aerial.detailHint' : 'moments.attributes')}</p>{[...new Set([play.protagonistId, play.receiverId, ...play.options.flatMap((o) => [o.playerId, o.rivalId])])].flatMap((id) => { const p = player(id); return p ? <p key={p.id}>{p.name} · {t('moments.ratings', { overall: p.overall_rating, attack: p.att_rating, defense: p.def_rating, physical: p.phy_rating, mental: p.men_rating })}</p> : [] })}</details>
   </section>
 }

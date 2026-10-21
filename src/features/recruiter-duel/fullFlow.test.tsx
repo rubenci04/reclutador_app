@@ -104,11 +104,12 @@ describe('A. human against CPU: early completion to final result', () => {
     click('Start match')
     // Against the CPU the interactive attack (SIM-005R-02) may stop a block: take the first card on offer.
     const card = () => screen.queryAllByRole('button').find((b) => b.classList.contains('play-card') && !(b as HTMLButtonElement).disabled)
-    for (let i = 0; i < 40 && !screen.queryByRole('heading', { name: 'Recruiter one’s turn' }); i++) { const open = card(); if (open) fireEvent.click(open); else click('View next block') }
-    expect(screen.getByRole('heading', { name: 'Recruiter one’s turn' })).toHaveFocus()
+    for (let i = 0; i < 60 && !screen.queryByRole('heading', { name: 'HALF-TIME · Recruiter one' }); i++) { const open = card(); if (open) fireEvent.click(open); else if (button('View next block')?.hasAttribute('disabled')) act(() => vi.advanceTimersByTime(800)); else click('View next block') }
+    expect(screen.getByRole('heading', { name: 'HALF-TIME · Recruiter one' })).toHaveFocus()
     for (let i = 0; i < 120 && !button('Replay match'); i++) {
       const open = card()
-      if (button('Confirm decision')) click('Confirm decision')
+      if (button('Keep strategy and start second half')) click('Keep strategy and start second half')
+      else if (button('View next block')?.hasAttribute('disabled') && !open) act(() => vi.advanceTimersByTime(800))
       else if (open) fireEvent.click(open)
       else click('View next block')
     }

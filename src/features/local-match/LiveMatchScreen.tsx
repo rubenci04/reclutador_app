@@ -6,8 +6,9 @@ import type { SoundId } from '../audio/soundEffects'
 import type { CpuDifficulty } from '../recruiter-duel/cpuPolicy'
 import { advanceBlock, checkpointSession, exportResult, inspectSession, restoreSession, submitPlay } from './interactive'
 import type { CheckpointAuthority, Order, PendingPlay, PlayChoice, Session } from './interactive'
-import { confirmLiveOrder, currentPower, defaultPlayChoice, keepWindow } from './interactive/liveModel'
+import { confirmLiveOrder, currentPower, defaultPlayChoice, keepWindow, resolveQuietWindow } from './interactive/liveModel'
 import { DecisionPanel, Handover } from './LiveDecisionPanel'
+import { HalftimePanel } from './HalftimePanel'
 import { PlayPanel } from './LivePlayPanel'
 import { aerialBeatDuration } from './aerialGeometry'
 import { frameFocus, frameSoundOffset, frameSounds, liveFrames } from './livePresentation'
@@ -50,6 +51,9 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   const [handover, setHandover] = useState(''); const [error, setError] = useState('')
   const [skipAnimation, setSkipAnimation] = useState(false); const [replay, setReplay] = useState(false)
   const [focus, setFocus] = useState<BoardFocus>('full')
+  const [subRequests, setSubRequests] = useState<Record<MatchSide, boolean>>({ local: false, cpu: false })
+  const subRequested = subRequests.local || subRequests.cpu
+  const [halftimeConfirmed, setHalftimeConfirmed] = useState(false)
   const [savedRevision, setSavedRevision] = useState<number | null>(null)
   const saved = useRef<{ snapshot: string; authority: CheckpointAuthority } | null>(null)
   const saving = useRef(false); const mounted = useRef(true); const recorded = useRef(false)
@@ -58,6 +62,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   const beatClock = useRef({ cursor: -1, elapsed: 0 })
   const main = useRef<HTMLElement>(null); const narration = useRef<HTMLOListElement>(null)
   useEffect(() => { mounted.current = true; main.current?.focus(); return () => { mounted.current = false } }, [])
+  useEffect(() => { if (!halftimeConfirmed) return; const timer = window.setTimeout(() => setHalftimeConfirmed(false), 3000); return () => window.clearTimeout(timer) }, [halftimeConfirmed])
   const view = useMemo(() => inspectSession(session), [session])
   const frames = useMemo(() => liveFrames(view.blocks, view.partial), [view])
   const shownCount = Math.min(cursor, frames.length)
@@ -69,6 +74,8 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   const minute = latest?.minute ?? 0
   const finished = session.phase === 'FINISHED' && caughtUp
   const atWindow = session.phase === 'WINDOW' && caughtUp && session.window !== null
+  const halftimeRules = Boolean(session.options.matchRules)
+  const quietWindow = halftimeRules && session.window !== null && session.window.applyBlock !== 3
   const atPlay = session.phase === 'PLAY' && caughtUp && view.play !== null
   const commit = (next: Session, reveal = false) => {
     current.current = next; setSession(next); setError('')
@@ -103,10 +110,11 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
     else if (session.phase === 'RUNNABLE') action = () => advance(revision)
     else if (session.phase === 'PLAY' && rest) action = () => { const pending = current.current.kernel.partial?.play; if (pending && current.current.revision === revision) choosePlay(pending, defaultPlayChoice(pending, origin.kernel.input.catalog)) }
     else if (session.phase === 'WINDOW' && rest) action = () => { if (current.current.revision !== revision) return; const next = keepWindow(current.current); if (next.ok) commit(next.value) }
+    else if (session.phase === 'WINDOW' && quietWindow && !subRequested) action = () => { if (current.current.revision !== revision) return; const next = resolveQuietWindow(current.current); if (next.ok) commit(next.value) }
     if (!action) return
     const timer = window.setTimeout(action, rest || skipAnimation ? wait : Math.max(0, wait - beatClock.current.elapsed / speed))
     return () => { window.clearTimeout(timer); if (beatClock.current.cursor === cursor) beatClock.current.elapsed += (Date.now() - started) * speed }
-  }, [paused, exitOpen, cursor, frames.length, session.revision, session.phase, rest, wait, speed, skipAnimation]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [paused, exitOpen, cursor, frames.length, session.revision, session.phase, rest, wait, speed, skipAnimation, quietWindow, subRequested]) // eslint-disable-line react-hooks/exhaustive-deps
   // Sounds follow what is on screen and go through a ledger: pausing, changing speed or jumping ahead never repeats one.
   useEffect(() => {
     // Explicit manual reveals still sound while paused; the clock alone reveals nothing.
@@ -128,7 +136,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   useEffect(() => { if (narration.current) narration.current.scrollTop = narration.current.scrollHeight }, [shownCount])
   // The record and the series table only learn the result once it has been shown.
   useEffect(() => { if (finished && !recorded.current) { recorded.current = true; onFinished(session) } }, [finished, session, onFinished])
-  const side: MatchSide = !versusCpu && session.window?.plans.local ? 'cpu' : 'local'
+  const side: MatchSide = quietWindow && subRequested ? subRequests.local && !session.window?.plans.local ? 'local' : 'cpu' : !versusCpu && session.window?.plans.local ? 'cpu' : 'local'
   const passDevice = atWindow && !versusCpu && Boolean(session.window?.plans.local) && handover !== session.window?.id
   const final = finished ? exportResult(session) : null
   const focusEvent = frameFocus(latest)
@@ -142,7 +150,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   const power = { local: currentPower(session, 'local'), cpu: currentPower(session, 'cpu') }
   const animate = !skipAnimation && !prefersReducedMotion()
   const eventText = (item: MatchEvent) => t(eventKey(item), { team: item.side ? names[item.side] : '', player: playerName(item, catalog) ?? '', out: catalog.find((p) => p.id === item.outPlayerId)?.name ?? '' })
-  const status = finished ? t('match.final') : atWindow ? t('liveDT.window', { minute }) : t('match.minute', { minute })
+  const status = finished ? t('match.final') : atWindow && !quietWindow ? t(halftimeRules ? 'halftime.title' : 'liveDT.window', { minute }) : t('match.minute', { minute })
   const save = async () => {
     if (saving.current) return
     saving.current = true; setPaused(true)
@@ -183,12 +191,20 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
         </fieldset>
       </div>
       <p className="live-now" role="status">{finished ? t('liveDT.fullTime') : focusEvent ? <><time>{focusEvent.minute}′</time> {eventText(focusEvent)}</> : t('liveDT.kickoff')}</p>
-      {atPlay && view.play && <PlayPanel key={`${view.play.id}:${view.play.node}`} play={view.play} catalog={catalog} onChoose={(choice) => choosePlay(view.play!, choice)} />}
-      {atWindow && (passDevice ? <Handover name={names.cpu} onReady={() => setHandover(session.window!.id)} /> : <DecisionPanel key={`${session.window!.id}:${side}`} session={session} side={side} name={names[side]} minute={minute} score={score} names={names} onConfirm={(order: Order) => {
+      {atPlay && view.play && <PlayPanel key={`${view.play.id}:${view.play.node}`} play={view.play} catalog={catalog} ovrDuels={halftimeRules} onChoose={(choice) => choosePlay(view.play!, choice)} />}
+      {halftimeConfirmed && <p role="status">{t('halftime.confirmed')}</p>}
+      {atWindow && halftimeRules && (!quietWindow || subRequested) && (passDevice ? <Handover name={names.cpu} onReady={() => setHandover(session.window!.id)} /> : <HalftimePanel key={`${session.window!.id}:${side}`} session={session} side={side} name={names[side]} halftime={!quietWindow} onConfirm={(order) => {
+        const other = side === 'local' ? 'cpu' : 'local'
+        const next = quietWindow ? resolveQuietWindow(current.current, { side, order }, subRequests[other] && !current.current.window?.plans[other] ? other : undefined) : confirmLiveOrder(current.current, session.window!.id, side, order, versusCpu, difficulty)
+        if (next.ok) { commit(next.value); setSubRequests((previous) => next.value.phase === 'RUNNABLE' ? { local: false, cpu: false } : { ...previous, [side]: false }); if (!quietWindow && next.value.phase === 'RUNNABLE') setHalftimeConfirmed(true) } else if (next.error !== 'DUPLICATE_COMMAND') setError(next.error)
+      }} />)}
+      {atWindow && !halftimeRules && (passDevice ? <Handover name={names.cpu} onReady={() => setHandover(session.window!.id)} /> : <DecisionPanel key={`${session.window!.id}:${side}`} session={session} side={side} name={names[side]} minute={minute} score={score} names={names} onConfirm={(order: Order) => {
         const next = confirmLiveOrder(current.current, session.window!.id, side, order, versusCpu, difficulty)
         if (next.ok) commit(next.value); else if (next.error !== 'DUPLICATE_COMMAND') setError(next.error)
       }} />)}
       {!finished && <div className="playback-controls" role="group" aria-label={t('navigation.playback')}>
+        {halftimeRules && (session.kernel.nextBlock < 5 || session.phase === 'WINDOW' && session.kernel.nextBlock === 5) && (versusCpu ? ['local'] as const : ['local', 'cpu'] as const).map((participant) => <button key={participant} className="secondary-action" aria-pressed={subRequests[participant]} disabled={Boolean(session.window?.plans[participant]) || !session.kernel.sides[participant].unused.some((id) => catalog.find((p) => p.id === id)?.position !== 'ARQ') || session.entered[participant].length >= 3} onClick={() => setSubRequests((previous) => ({ ...previous, [participant]: !previous[participant] }))}>{t('halftime.requestSub', { name: names[participant] })}</button>)}
+        {subRequested && <small role="status">{t('halftime.subQueued')}</small>}
         <button className="secondary-action" aria-pressed={paused} onClick={() => setPaused(!paused)}>{t(paused ? 'navigation.resume' : 'navigation.pause')}</button>
         <label>{t('navigation.speed')}<select value={speed} onChange={(e) => setSpeed(Number(e.target.value))}>{[1, 2, 4].map((rate) => <option key={rate} value={rate}>{rate}×</option>)}</select></label>
         <label><input type="checkbox" checked={skipAnimation} onChange={(e) => setSkipAnimation(e.target.checked)} />{t('liveDT.skipAnimations')}</label>

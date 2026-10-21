@@ -47,7 +47,7 @@ const meanAdjustment = (total: TacticalAdjustment): TacticalAdjustment => ({ att
 type Side = { team: MatchTeam; strength: TeamStrength; features: ReturnType<typeof tacticalFeatures>; unused: string[]; subbed: boolean; baseMidfield: number }
 
 /** Version-frozen block adapter. Historical batch API stays untouched as regression oracle. */
-export function initializeKernel(source: SimulationInput, attackTree: boolean | 'match-moments-v1' = false, aerial = false) {
+export function initializeKernel(source: SimulationInput, attackTree: boolean | 'match-moments-v1' = false, aerial = false, duels = false) {
   const input = structuredClone(source)
   if (input.rulesVersion !== MATCH_RULES_VERSION || input.catalogVersion !== 'catalog_v1') throw new Error('unsupported_match_rules')
   const local = teamFrom(input.localLineup, input.catalog, input.budget, input.formations?.local)
@@ -77,6 +77,7 @@ export function initializeKernel(source: SimulationInput, attackTree: boolean | 
   const policyRandom = () => { const next = nextCheckpoint(directorRng); directorRng = next.checkpoint; return next.value }
   const director = attackTree === 'match-moments-v1' ? createDirector(policyRandom) : undefined
   return { input, local, cpu, sides, strengths, stats, score, blocks, advantage, quality, qualityTotals, effectiveTotals, adjustmentTotals, substitutionLog, selection, initialSelection: selection, nextBlock: 0, rng: { main: random, substitutions: substitutionRandom, ...(attackTree ? { tree: initialCheckpoint(`${input.seed}:tree`) } : {}), ...(director ? { director: directorRng } : {}), ...(aerial ? { aerial: initialCheckpoint(`${input.seed}:aerial`) } : {}) }, pendingChanges: [] as MatchEvent[], result: null as MatchResult | null,
+    ...(duels ? { duels: 'ovr-duels-v1' as const } : {}),
     ...(director ? { director: director as MomentDirector } : {}),
     ...(aerial ? { aerial: { version: AERIAL_VERSION, keeperPlan: null } as AerialState } : {}),
     ...(attackTree ? { tree: { version: ATTACK_TREE_VERSION, limit: ATTACK_TREE_LIMIT, started: 0, log: [] as PlayLogEntry[] }, partial: null as PartialBlock | null } : {}) }
@@ -223,7 +224,7 @@ function playOpportunities(state: KernelState, events: MatchEvent[], from: numbe
 function playContext(state: KernelState, minute: MatchEvent['minute'], effective: ReturnType<typeof blockStrengths>['effective']): PlayContext {
   const { input } = state
   return {
-    minute, catalog: input.catalog, effective, strategy: state.selection, ...(state.director ? { effectiveOnly: true } : {}),
+    minute, catalog: input.catalog, effective, strategy: state.selection, ...(state.director ? { effectiveOnly: true } : {}), ...(state.duels ? { duels: state.duels } : {}),
     local: { lineup: state.sides.local.team.lineup, formation: input.formations?.local ?? '4-3-3' },
     cpu: { lineup: state.sides.cpu.team.lineup, formation: input.formations?.cpu ?? '4-3-3' },
   }

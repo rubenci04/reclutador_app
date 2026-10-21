@@ -54,6 +54,21 @@ export function keepWindow(s: Session): Outcome {
   return applyWindow(current)
 }
 
+/** Non-halftime windows remain auditable. Only an explicitly requested substitution can replace KEEP. */
+export function resolveQuietWindow(s: Session, requested?: { readonly side: MatchSide; readonly order: Order }, deferSide?: MatchSide): Outcome {
+  if (!s.options.matchRules || !s.window || s.window.applyBlock === 3 || requested && !['KEEP', 'SUBSTITUTE'].includes(requested.order.type) || deferSide !== undefined && deferSide === requested?.side) return { ok: false, error: 'INVALID_PHASE' }
+  if (requested && s.window.plans[requested.side]) return { ok: false, error: 'DUPLICATE_COMMAND' }
+  let current = s
+  for (const side of ['local', 'cpu'] as const) {
+    if (current.window!.plans[side] || side === deferSide) continue
+    const order: Order = requested?.side === side ? requested.order : { type: 'KEEP', parameters: {} }
+    const next = submitDecision(current, side, decisionFor(current, side, `${s.window.id}:${side}:${requested?.side === side ? 'optional' : 'auto-keep'}`, order))
+    if (!next.ok) return next
+    current = next.value
+  }
+  return current.window!.plans.local && current.window!.plans.cpu ? applyWindow(current) : { ok: true, value: current }
+}
+
 export function nextLiveSession(first: Session, index: number, setup: SeriesSetup) {
   return createSession({ ...first.kernel.input, actionModel: 'action-v3', seed: `${first.kernel.input.seed}:series:${index}`, localLineup: setup.lineups.local, cpuLineup: setup.lineups.cpu, benches: setup.benches, formations: setup.formations, tactics: setup.tactics ? { version: 'tactics-v1', ...setup.tactics } : undefined }, { ...first.options, sessionId: `${first.sessionId}:series:${index}` })
 }

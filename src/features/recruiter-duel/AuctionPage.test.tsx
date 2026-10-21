@@ -150,7 +150,11 @@ describe('single-player auction interface', () => {
       expect(batch).not.toHaveBeenCalled()
       fireEvent.click(screen.getByRole('button', { name: 'View next block' }))
       fireEvent.click(screen.getByRole('button', { name: 'View next block' }))
-      expect(screen.getByRole('heading', { name: 'Recruiter one’s turn' })).toHaveFocus()
+      expect(screen.queryByRole('heading', { name: 'Recruiter one’s turn' })).not.toBeInTheDocument()
+      expect(screen.queryByText(i18n.t('halftime.question'))).not.toBeInTheDocument()
+      act(() => vi.advanceTimersByTime(800)) // the internal after-30 window is recorded as KEEP
+      fireEvent.click(screen.getByRole('button', { name: 'View next block' }))
+      expect(screen.getByRole('heading', { name: 'HALF-TIME · Recruiter one' })).toHaveFocus()
       return
     }
     fireEvent.click(screen.getByRole('radio', { name: 'Quick simulation' }))

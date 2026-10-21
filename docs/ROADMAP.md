@@ -1,5 +1,9 @@
 # Roadmap
 
+## SIM-005R-05 — 21/10/2026
+
+Extensión opt-in `halftime-ovr-v1` para nuevos encuentros locales dirigidos: estrategia inicial, una consulta en el entretiempo, KEEP trazable en ventanas restantes y suplentes opcionales. Orden HALFTIME combina una estrategia y una sustitución sin ampliar el banco; hot-seat conserva solicitudes de ambos lados en una misma pausa. Duelo OVR logístico central, paridad 50%, pendiente 0,08 y límites 5–95%, separado de pase/definición. Calibración de 700.000 duelos y 3.000 partidos; se registra la reducción de centros/cabezazos sin compensación oculta. [QA y compatibilidad](qa/SIM-005R-05.md). Push y despliegue autorizados expresamente en este encargo; publicación registrada al completarse. Sin otras familias.
+
 ## SIM-005R-04B — 20/10/2026
 
 Pulido local de continuidad aérea, pausa/velocidades y sincronización/desbloqueo de audio, sin modificar contratos, RNG ni probabilidades. Diagnóstico de seis perfiles reales: existen centros competitivos sin justificar un aumento global. 1.021 pruebas aprobadas. Work settings bloqueó el navegador: movimiento y escucha real pendientes; preparada utilidad local con semillas para cinco desenlaces. [QA y procedimiento](qa/SIM-005R-04B.md). Sin publicación ni fases posteriores.

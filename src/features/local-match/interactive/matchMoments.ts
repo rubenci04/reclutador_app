@@ -1,6 +1,7 @@
 import type { MatchEvent, MatchSide } from '../matchTypes'
 import { formationSlots } from '../../tactics/formations'
 import type { Player } from '../../../types/player'
+import { defenderDuelChance } from './individualDuels'
 import { blockChance, keeperOf, receiverQuality, scoringChance, shooterQuality, shotOnTargetChance, type PendingPlay, type PlayChoice, type PlayContext, type StepResult } from './attackTree'
 
 export const MOMENTS_VERSION = 'match-moments-v1' as const
@@ -27,6 +28,7 @@ export function recordMoment(d: MomentDirector, selection: MomentSelection, rand
 const clamp = (n: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, n))
 /** Estimates, not biographical skills: interception favours reading/defence; pressure favours physical strength. */
 export function defenseChance(defender: Player, attacker: Player, choice: PlayChoice, ctx: PlayContext) {
+  if (ctx.duels) return defenderDuelChance(attacker.overall_rating, defender.overall_rating)
   const quality = choice === 'INTERCEPT' ? .5 * defender.def_rating + .3 * defender.men_rating + .2 * defender.overall_rating
     : .35 * defender.def_rating + .45 * defender.phy_rating + .2 * defender.overall_rating
   // Strategy/coach/formation are already in effective strengths: no second bonus.

@@ -50,7 +50,7 @@ export function frameSounds(frame: LiveFrame): readonly SoundId[] {
   else if (frame.events.some((item) => item.aerial && item.type === 'pass')) return sounds
   else if (frame.events.some((item) => item.type === 'goal')) sounds.push('goal')
   else if (frame.events.some((item) => item.type === 'shot' || item.type === 'save')) sounds.push('shot')
-  else if (frame.events.some((item) => item.type === 'pass')) sounds.push('pass')
+  else if (frame.events.some((item) => item.type === 'pass' && item.step !== 'CARRY_OK')) sounds.push('pass')
   else if (frame.events.some((item) => item.type === 'recovery' && item.step)) sounds.push('intercept')
   if (frame.lastOfBlock && frame.minute === 45) sounds.push('halfTimeWhistle')
   if (frame.lastOfBlock && frame.minute === 90) sounds.push('finalWhistle')

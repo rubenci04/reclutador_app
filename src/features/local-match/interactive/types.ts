@@ -12,6 +12,7 @@ export type Order =
   | { readonly type: 'STRATEGY'; readonly parameters: { readonly strategy: StrategyId } }
   | { readonly type: 'SUBSTITUTE'; readonly parameters: { readonly outId: string; readonly inId: string } }
   | { readonly type: 'POSTURE'; readonly parameters: { readonly direction: 'ATTACK' | 'DEFEND' } }
+  | { readonly type: 'HALFTIME'; readonly parameters: { readonly strategy: StrategyId; readonly substitution: { readonly outId: string; readonly inId: string } | null } }
 export interface Decision {
   readonly version: 'interactive-command-v1'
   readonly id: string
@@ -35,6 +36,8 @@ export interface SessionOptions {
   readonly moments?: { readonly version: 'match-moments-v1' }
   readonly aerial?: { readonly version: 'directed-header-v1' }
   readonly attackTree?: { readonly version: 'attack-tree-v1' }
+  /** New matches only: halftime tactics, optional substitutions and OVR direct duels. */
+  readonly matchRules?: { readonly version: 'halftime-ovr-v1' }
 }
 /** One decision of the interactive attack. `id` is unique per session: a repeated id is a duplicate, never a second resolution. */
 export interface PlayCommand {
@@ -55,6 +58,7 @@ export interface InteractiveResult {
   /** attack-tree-v1 sessions only: every play decision, in order. */
   readonly plays?: readonly PlayLogEntry[]
   readonly aerial?: { readonly version: 'directed-header-v1' }
+  readonly matchRules?: { readonly version: 'halftime-ovr-v1' }
   readonly moments?: { readonly version: 'match-moments-v1'; readonly selected: readonly MomentSelection[] }
 }
 export interface Session {

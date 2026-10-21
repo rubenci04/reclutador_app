@@ -1,4 +1,5 @@
 import type { Player } from '../../../types/player'
+import { defenderDuelChance } from './individualDuels'
 import { formationSlots } from '../../tactics/formations'
 import type { MatchEvent, MatchSide, PlayStep } from '../matchTypes'
 import { crosserQuality, defenderQuality, keeperOf, keeperQuality, playContext, type PendingPlay, type PlayContext, type Sector, type StepResult } from './attackTree'
@@ -60,7 +61,8 @@ export function sendDirectedCross(ctx: PlayContext, play: PendingPlay, random: (
   const edge = playContext(ctx)
   if (random() >= deliveryChance(crosser, defender, edge)) return { events: [...events, event(ctx, action, 'cpu', 'recovery', 'AERIAL_CLEAR', defender.id)], next: null, keeperPlan: null }
   events.push(event(ctx, action, 'local', 'pass', 'AERIAL_CONTEST', target.id))
-  if (random() >= aerialDuelChance(target, defender, edge)) return { events: [...events, event(ctx, action, 'cpu', 'recovery', 'AERIAL_CLEAR', defender.id)], next: null, keeperPlan: null }
+  const winDuel = ctx.duels ? 1 - defenderDuelChance(target.overall_rating, defender.overall_rating) : aerialDuelChance(target, defender, edge)
+  if (random() >= winDuel) return { events: [...events, event(ctx, action, 'cpu', 'recovery', 'AERIAL_CLEAR', defender.id)], next: null, keeperPlan: null }
   events.push(event(ctx, action, 'local', 'pass', 'AERIAL_WON', target.id))
   const keeperPlan = HEADER_DIRECTIONS[Math.floor(random() * HEADER_DIRECTIONS.length)]
   return { events, keeperPlan, next: { id: play.id, node: 'HEADER', protagonistId: play.protagonistId, receiverId: target.id, sector: play.sector, aerial: action,
