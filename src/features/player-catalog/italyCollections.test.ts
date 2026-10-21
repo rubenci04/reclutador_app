@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
 import italian from '../../data/league-collections/italy.json'
+import mexico from '../../data/league-collections/mexico.json'
 import aliases from '../../data/league-collections/italyIdentityAliases.json'
 import { LEAGUE_PLAYERS } from './leagueCollections'
 import { ALL_CURRENT, GLOBAL_LEGENDS, MASTER_CATALOG, personKey, WORLD_LEGEND_POLICY } from './globalCollection'
@@ -28,8 +29,9 @@ describe('DATA-ITA-001 collections', () => {
       expect(player.category).toBe(index < 200 ? 'contemporary' : 'legend')
       expect(row.sourceClubPeriod).toBe(index < 200 ? null : cells[7])
     }
-    expect(catalogForMode('ITALY_CURRENT')).toHaveLength(200)
-    expect(catalogForMode('ITALY_LEGENDS')).toHaveLength(200)
+    // Master source keeps 200 rows per edition; new games use only the first 150 editorial positions.
+    expect(catalogForMode('ITALY_CURRENT')).toHaveLength(150)
+    expect(catalogForMode('ITALY_LEGENDS')).toHaveLength(150)
   })
   it('merges reviewed editions while preserving namesakes and source OVRs', () => {
     for (const group of aliases) expect(new Set(group.map(id => personKey(MASTER_CATALOG.find(p => p.id === id)!))).size).toBe(1)
@@ -55,7 +57,7 @@ describe('DATA-ITA-001 collections', () => {
       const players = catalogForMode(mode), keys = new Set(players.map(personKey))
       expect(players.length).toBeGreaterThanOrEqual(300)
       expect(keys.size).toBe(players.length)
-      for (const row of italian.filter(p => scope.has(p.nationality) && p.category === category)) expect(keys.has(personKey(LEAGUE_PLAYERS.find(p => p.id === row.id)!)), row.name).toBe(true)
+      for (const row of [...italian, ...mexico].filter(p => p.sourceRank <= 150 && scope.has(p.nationality) && p.category === category)) expect(keys.has(personKey(LEAGUE_PLAYERS.find(p => p.id === row.id)!)), row.name).toBe(true)
     }
     expect(catalogForMode('GLOBAL_CLASSIC')).toEqual(expect.arrayContaining([...ALL_CURRENT]))
   })

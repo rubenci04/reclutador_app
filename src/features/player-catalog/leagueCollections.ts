@@ -1,5 +1,6 @@
 import rows from '../../data/league-collections/players.json'
 import italianRows from '../../data/league-collections/italy.json'
+import mexicanRows from '../../data/league-collections/mexico.json'
 import type { Player } from '../../types/player'
 import type { Position } from '../../types/football'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
@@ -13,7 +14,7 @@ import { balanceArgentinaCurrent } from './argentinaCurrentBalance'
  * design estimates by position, not researched individual attributes.
  */
 export type LeagueSource = Omit<typeof rows[number], 'sourceUrl'> & { readonly sourceUrl: string | null } & Partial<Pick<typeof italianRows[number], 'abbreviation' | 'sourceNationality' | 'sourceFoot' | 'sourceClassification' | 'sourceClubPeriod' | 'sourceLine' | 'sourceSha256'>>
-export const LEAGUE_PROVENANCE: readonly LeagueSource[] = [...rows, ...italianRows]
+export const LEAGUE_PROVENANCE: readonly LeagueSource[] = [...rows, ...italianRows, ...mexicanRows]
 export const LEAGUE_PLAYERS: readonly Player[] = LEAGUE_PROVENANCE.map((row) => {
   if (!isDominantFoot(row.dominantFoot)) throw new Error(`invalid_imported_dominant_foot:${row.league}:${row.sourceId}`)
   const rating = Math.max(75, Math.min(99, row.sourceRating))
@@ -38,11 +39,17 @@ const modes: Partial<Record<ThemedModeId, readonly [string, Player['category']]>
   SPAIN_LEAGUE: ['ESP', 'contemporary'], SPAIN_LEGENDS: ['ESP', 'legend'],
   ENGLAND_LEAGUE: ['ENG', 'contemporary'], ENGLAND_LEGENDS: ['ENG', 'legend'],
   ITALY_CURRENT: ['ITA', 'contemporary'], ITALY_LEGENDS: ['ITA', 'legend'],
+  MEXICO_CURRENT: ['MEX', 'contemporary'], MEXICO_LEGENDS: ['MEX', 'legend'],
 }
 export const IMPORTED_MODE_IDS = [...Object.keys(modes), 'LEGENDS_ONLY'] as ThemedModeId[]
 export const defaultBudgetForMode = (id: ThemedModeId) => id.includes('LEGENDS') || id === 'LEGENDS_ONLY' ? 200 : 150
 const sourceById = new Map(LEAGUE_PROVENANCE.map((row) => [row.id, row]))
-const scopedPlayers = new Map(Object.entries(modes).map(([id, scope]) => [id, LEAGUE_PLAYERS.filter((player) => sourceById.get(player.id)!.league === scope[0] && player.category === scope[1])]))
+/** Master sources keep every supplied row (Italy supplies 200 per edition). New games draw only from each league's first ELIGIBLE_TOP_RANK editorial positions. */
+export const ELIGIBLE_TOP_RANK = 150
+export const isEligibleEdition = (id: string) => (sourceById.get(id)?.sourceRank ?? 0) <= ELIGIBLE_TOP_RANK
+/** Eligible catalogue: master rows filtered by sourceRank, never by OVR. */
+export const ELIGIBLE_LEAGUE_PLAYERS: readonly Player[] = LEAGUE_PLAYERS.filter((player) => isEligibleEdition(player.id))
+const scopedPlayers = new Map(Object.entries(modes).map(([id, scope]) => [id, ELIGIBLE_LEAGUE_PLAYERS.filter((player) => sourceById.get(player.id)!.league === scope[0] && player.category === scope[1])]))
 const argentinaCurrent = scopedPlayers.get('ARGENTINA_CURRENT')!.map((player) => balanceArgentinaCurrent(player, sourceById.get(player.id)!.sourceRank))
 export function importedPlayersForMode(id: ThemedModeId): readonly Player[] | undefined {
   if (id === 'ARGENTINA_CURRENT') return argentinaCurrent

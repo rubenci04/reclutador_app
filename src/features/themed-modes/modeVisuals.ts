@@ -25,6 +25,7 @@ export const MODE_VISUALS: Readonly<Record<ThemedModeId, ModeVisual>> = {
   SPAIN_LEAGUE: single('ESP', '#ffc400', false), SPAIN_LEGENDS: single('ESP', '#ffc400', true),
   ENGLAND_LEAGUE: single('ENG', '#ce1124', false), ENGLAND_LEGENDS: single('ENG', '#ce1124', true),
   ITALY_CURRENT: single('ITA', '#009246', false), ITALY_LEGENDS: single('ITA', '#009246', true),
+  MEXICO_CURRENT: single('MEX', '#006847', false), MEXICO_LEGENDS: single('MEX', '#006847', true),
   SOUTH_AMERICA: map('south-america', SOUTH_AMERICA_FLAGS, '#fbbf24', false), SOUTH_AMERICA_CURRENT: map('south-america', SOUTH_AMERICA_FLAGS, '#fbbf24', false), SOUTH_AMERICA_LEGENDS: map('south-america', SOUTH_AMERICA_FLAGS, '#fbbf24', true),
   COPA_AMERICA_EDITION: map('south-america', SOUTH_AMERICA_FLAGS, '#fbbf24', false),
   EUROPE_CURRENT: map('europe', EUROPE_FLAGS, '#2563eb', false), EUROPE_LEGENDS: map('europe', EUROPE_FLAGS, '#2563eb', true), EUROPEAN_LEAGUE: map('europe', EUROPE_FLAGS, '#2563eb', false),
@@ -32,6 +33,6 @@ export const MODE_VISUALS: Readonly<Record<ThemedModeId, ModeVisual>> = {
 }
 
 const GROUP_MODE: Readonly<Record<CategoryGroupId, ThemedModeId>> = {
-  global: 'GLOBAL_CLASSIC', argentina: 'ARGENTINA_CURRENT', england: 'ENGLAND_LEAGUE', spain: 'SPAIN_LEAGUE', italy: 'ITALY_CURRENT', brazil: 'BRAZIL_CURRENT', latinAmerica: 'SOUTH_AMERICA_CURRENT', europe: 'EUROPE_CURRENT',
+  global: 'GLOBAL_CLASSIC', argentina: 'ARGENTINA_CURRENT', england: 'ENGLAND_LEAGUE', spain: 'SPAIN_LEAGUE', italy: 'ITALY_CURRENT', mexico: 'MEXICO_CURRENT', brazil: 'BRAZIL_CURRENT', latinAmerica: 'SOUTH_AMERICA_CURRENT', europe: 'EUROPE_CURRENT',
 }
 export const groupVisual = (id: CategoryGroupId): ModeVisual => MODE_VISUALS[GROUP_MODE[id]]

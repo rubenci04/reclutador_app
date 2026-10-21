@@ -1,0 +1,433 @@
+======================================================================================================================
+RANKING INTEGRAL DE LA PRIMERA DIVISIÓN DE MÉXICO (LIGA MX) 2026: TOP 150 ACTUALIDAD Y TOP 150 LEYENDAS
+======================================================================================================================
+
+ALCANCE Y METODOLOGÍA
+----------------------------------------------------------------------------------------------------------------------
+Este informe presenta dos rankings independientes de 150 futbolistas masculinos cada uno (300 nombres en total)
+dedicados íntegramente a la Primera División del fútbol profesional mexicano (Liga BBVA MX):
+
+  1. Liga MX — Top 150 Mejores Futbolistas de la Actualidad (Temporada 2026-27 / Apertura 2026, corte octubre 2026)
+  2. Liga MX — Top 150 Grandes Leyendas Históricas (con su club emblema en México y período exacto de actividad)
+
+ESTRUCTURA DE DATOS POR FUTBOLISTA:
+Siguiendo el mismo estándar técnico del informe anterior y el formato de valoración de videojuegos de fútbol
+(EA SPORTS FC / eFootball), cada registro contiene:
+  - Puesto (#): Posición del 001 al 150 dentro de su respectivo listado.
+  - Nombre conocido: Nombre deportivo más habitual con el que se identifica al futbolista (evitando nombres
+    legales extensos y priorizando el nombre o apodo futbolístico consagrado).
+  - Nombre abreviado: Denominación corta de camiseta, transmisión o carta de videojuego.
+  - Nacionalidad: País de representación oficial FIFA.
+  - Posición: Demarcación principal y secundaria con siglas tácticas (POR, DFC, LD, LI, CAD, CAI, MCD, MC,
+    MCO, MD, MI, ED, EI, SD, DC).
+  - Pie dominante: Derecho, Izquierdo o Ambidiestro.
+  - Club (Actual o Emblema): En el ranking de actualidad, el club de los 18 participantes del Torneo Apertura
+    2026 en el que milita; en el ranking de leyendas, la institución mexicana donde forjó su máximo legado.
+  - Período activo (exclusivo para Leyendas): Rango estricto de año inicial a año final (AAAA-AAAA) en su
+    etapa principal dentro de dicho club emblema.
+  - Valoración (OVR): Puntuación general sobre 100 al estilo FIFA / EA SPORTS FC (escala de 76 a 84 para los
+    150 jugadores activos en la Liga MX 2026-27, y escala Icono/Leyenda de 88 a 96 para los 150 históricos).
+
+FECHA DE CORTE Y CONTEXTO DE LA LIGA MX (OCTUBRE DE 2026):
+La fotografía de actualidad toma como fecha de corte el 21 de octubre de 2026, en plena recta final de la fase
+regular del Torneo Apertura 2026 (temporada 2026-27 de la Liga BBVA MX, que marca además el retorno histórico
+del Atlante a Primera División en lugar del Mazatlán FC). El ranking pondera el bicampeonato de liga del Toluca
+(Clausura 2025 y Apertura 2025) junto a sus títulos de la Copa de Campeones de la Concacaf 2026 y la Leagues
+Cup 2026, el décimo título de liga conquistado por Cruz Azul en el Clausura 2026 (y el Campeón de Campeones
+2026), los premios del Balón de Oro de la Liga MX (encabezados por Paulinho, João Pedro, Alexis Vega, Nahuel
+Guzmán, Kevin Mier, Érik Lira, Marcel Ruiz, Nicolás Castro y Willer Ditta) y el liderato goleador de Salomón
+Rondón en el Apertura 2026.
+
+PONDERACIÓN EDITORIAL:
+  - Para Actualidad (2026-27): Rendimiento individual en el año futbolístico 2025-26 y Torneo Apertura 2026 (40%);
+    desempeño en Liguillas, Copa de Campeones de la Concacaf y Leagues Cup (25%); distinciones del Balón de Oro
+    de la Liga MX y lideratos estadísticos de goles/asistencias/porterías imbatidas (20%); peso táctico y
+    regularidad (10%); valoración de referencia en simuladores de fútbol (5%).
+  - Para Leyendas Históricas: Pico futbolístico y dominio en la Primera División de México (30%); longevidad,
+    récords de goles o presencias y títulos de Liga MX (25%); impacto decisivo en Liguillas y torneos
+    internacionales con clubes mexicanos (20%); arraigo e identidad en su club emblema (15%); huella histórica
+    y reconocimiento en el Balón de Oro / Salón de la Fama del Fútbol (10%).
+
+DISTRIBUCIÓN POSICIONAL VERIFICADA:
+Ambos listados superan ampliamente el mínimo solicitado de 5-6 arqueros y mantienen proporción completa en
+todas las líneas del campo:
+  - Top 150 Actualidad (Apertura 2026):
+      * Arqueros (POR): 15 jugadores
+      * Defensores y Laterales (DFC/LD/LI/CAD/CAI): 42 jugadores
+      * Mediocampistas y Mediapuntas (MCD/MC/MCO/MD/MI): 50 jugadores
+      * Delanteros y Extremos (DC/SD/ED/EI): 43 jugadores
+  - Top 150 Leyendas Históricas:
+      * Arqueros (POR): 17 jugadores
+      * Defensores y Laterales (DFC/LD/LI/CAD/CAI): 23 jugadores
+      * Mediocampistas y Mediapuntas (MCD/MC/MCO/MD/MI): 40 jugadores
+      * Delanteros y Extremos (DC/SD/ED/EI): 70 jugadores
+
+
+======================================================================================================================
+PARTE 1: LIGA MX — LOS 150 MEJORES FUTBOLISTAS DE LA ACTUALIDAD (APERTURA 2026 / TEMPORADA 2026-27)
+======================================================================================================================
+
+El primer lugar del fútbol mexicano actual corresponde al portugués Paulinho (Toluca, OVR 84), tricampeón de
+goleo, Balón de Oro de la Liga MX y figura determinante en el bicampeonato de liga y el doblete internacional
+(Concachampions y Leagues Cup 2026) de los Diablos Rojos. Le siguen Salomón Rondón (líder de goleo del Apertura
+2026 con Pachuca), Juan Brunetta y Ángel Correa (Tigres UANL), Alexis Vega y Marcel Ruiz (Toluca), Henry Martín,
+Luis Malagón, Alejandro Zendejas y Raphael Veiga (Club América), y la columna vertebral del Cruz Azul campeón
+del Clausura 2026 (Kevin Mier, Érik Lira, Carlos Rodríguez y Willer Ditta), junto a figuras como Keylor Navas
+y César Huerta en Pumas UNAM, Lucas Ocampos en Monterrey y Roberto Alvarado y Luis Romo en Guadalajara.
+
+----------------------------------------------------------------------------------------------------------------------
+#    | NOMBRE CONOCIDO          | ABREV.         | NACIONALIDAD    | POSICIÓN                               | PIE DOM.    | CLUB ACTUAL       | OVR
+----------------------------------------------------------------------------------------------------------------------
+001  | Paulinho                 | Paulinho       | Portugal        | Delantero centro (DC)                  | Izquierdo   | Toluca            | 84 
+002  | Salomón Rondón           | Rondón         | Venezuela       | Delantero centro (DC)                  | Derecho     | Pachuca           | 83 
+003  | Juan Brunetta            | Brunetta       | Argentina       | Mediapunta / Interior (MCO/MC)         | Derecho     | Tigres UANL       | 83 
+004  | Alexis Vega              | A. Vega        | México          | Extremo izq. / Mediapunta (EI/MCO)     | Derecho     | Toluca            | 83 
+005  | Ángel Correa             | Á. Correa      | Argentina       | Segundo delantero / Extremo (SD/ED)    | Derecho     | Tigres UANL       | 83 
+006  | Henry Martín             | H. Martín      | México          | Delantero centro (DC)                  | Derecho     | Club América      | 82 
+007  | Luis Malagón             | Malagón        | México          | Arquero (POR)                          | Derecho     | Club América      | 82 
+008  | Kevin Mier               | K. Mier        | Colombia        | Arquero (POR)                          | Derecho     | Cruz Azul         | 82 
+009  | Érik Lira                | E. Lira        | México          | Mediocentro def. / Central (MCD/DFC)   | Derecho     | Cruz Azul         | 82 
+010  | Marcel Ruiz              | M. Ruiz        | México          | Mediocentro (MC/MCD)                   | Derecho     | Toluca            | 82 
+011  | Carlos Rodríguez         | C. Rodríguez   | México          | Mediocentro organizador (MC)           | Derecho     | Cruz Azul         | 82 
+012  | Alejandro Zendejas       | Zendejas       | Estados Unidos  | Extremo derecho / Mediapunta (ED/MCO)  | Izquierdo   | Club América      | 82 
+013  | Raphael Veiga            | R. Veiga       | Brasil          | Mediapunta (MCO)                       | Izquierdo   | Club América      | 82 
+014  | Lucas Ocampos            | Ocampos        | Argentina       | Extremo izquierdo / derecho (EI/ED)    | Derecho     | Monterrey         | 82 
+015  | Keylor Navas             | K. Navas       | Costa Rica      | Arquero (POR)                          | Derecho     | Pumas UNAM        | 82 
+016  | César Huerta             | Chino Huerta   | México          | Extremo izquierdo (EI)                 | Derecho     | Pumas UNAM        | 81 
+017  | Roberto Alvarado         | Piojo Alvarado | México          | Mediapunta / Extremo der. (MCO/ED)     | Izquierdo   | Guadalajara       | 81 
+018  | Luis Romo                | L. Romo        | México          | Mediocentro / Pivote (MC/MCD)          | Derecho     | Guadalajara       | 81 
+019  | João Pedro               | João Pedro     | Italia          | Delantero / Segundo del. (DC/SD)       | Derecho     | Atlético San Luis | 81 
+020  | Oussama Idrissi          | Idrissi        | Marruecos       | Extremo izquierdo (EI)                 | Derecho     | Pachuca           | 81 
+021  | Fernando Gorriarán       | Gorriarán      | Uruguay         | Mediocentro (MC)                       | Derecho     | Tigres UANL       | 81 
+022  | Nicolás Castro           | N. Castro      | Argentina       | Mediapunta / Interior (MCO/MC)         | Izquierdo   | Toluca            | 81 
+023  | Helinho                  | Helinho        | Brasil          | Extremo derecho (ED)                   | Izquierdo   | Toluca            | 81 
+024  | Willer Ditta             | W. Ditta       | Colombia        | Defensa central (DFC)                  | Derecho     | Cruz Azul         | 81 
+025  | Camilo Vargas            | C. Vargas      | Colombia        | Arquero (POR)                          | Derecho     | Atlas             | 81 
+026  | Nahuel Guzmán            | N. Guzmán      | Argentina       | Arquero (POR)                          | Derecho     | Tigres UANL       | 80 
+027  | Raúl Rangel              | Tala Rangel    | México          | Arquero (POR)                          | Derecho     | Guadalajara       | 80 
+028  | Jesús Orozco             | Chiquete       | México          | Defensa central / Lateral izq. (DFC/LI) | Izquierdo   | Cruz Azul         | 80 
+029  | Gonzalo Piovi            | Piovi          | Argentina       | Defensa central (DFC)                  | Izquierdo   | Cruz Azul         | 80 
+030  | Carlos Rotondi           | Rotondi        | Argentina       | Carrilero / Extremo izquierdo (CAI/EI) | Izquierdo   | Cruz Azul         | 80 
+031  | José Paradela            | Paradela       | Argentina       | Mediapunta / Interior (MCO/MC)         | Izquierdo   | Cruz Azul         | 80 
+032  | Agustín Palavecino       | Palavecino     | Argentina       | Mediocentro (MC/MCO)                   | Derecho     | Cruz Azul         | 80 
+033  | Gabriel Fernández        | Toro Fernández | Uruguay         | Delantero centro (DC)                  | Derecho     | Cruz Azul         | 80 
+034  | Nicolás Ibáñez           | N. Ibáñez      | Argentina       | Delantero centro (DC)                  | Derecho     | Cruz Azul         | 79 
+035  | Brian Rodríguez          | B. Rodríguez   | Uruguay         | Extremo izquierdo (EI)                 | Derecho     | Club América      | 80 
+036  | Érick Sánchez            | Chiquito       | México          | Mediocentro / Mediapunta (MC/MCO)      | Derecho     | Club América      | 80 
+037  | Israel Reyes             | I. Reyes       | México          | Defensa central / Lateral der. (DFC/LD) | Derecho     | Club América      | 80 
+038  | Ramón Juárez             | R. Juárez      | México          | Defensa central (DFC)                  | Derecho     | Club América      | 79 
+039  | Kevin Álvarez            | K. Álvarez     | México          | Lateral derecho (LD)                   | Derecho     | Club América      | 79 
+040  | Miguel Borja             | M. Borja       | Colombia        | Delantero centro (DC)                  | Derecho     | Club América      | 79 
+041  | Jesús Gallardo           | J. Gallardo    | México          | Lateral / Carrilero izquierdo (LI/CAI) | Izquierdo   | Toluca            | 80 
+042  | Luan Garcia              | Luan           | Brasil          | Defensa central (DFC)                  | Derecho     | Toluca            | 80 
+043  | Federico Pereira         | F. Pereira     | Uruguay         | Defensa central / Lateral der. (DFC/LD) | Derecho     | Toluca            | 80 
+044  | Federico Viñas           | Viñas          | Uruguay         | Delantero centro (DC)                  | Izquierdo   | Toluca            | 80 
+045  | Jesús Angulo             | Canelo Angulo  | México          | Mediapunta / Interior (MCO/MC)         | Izquierdo   | Toluca            | 79 
+046  | Diego Rossi              | D. Rossi       | Uruguay         | Segundo delantero / Extremo (SD/EI)    | Derecho     | Monterrey         | 80 
+047  | Óliver Torres            | Ó. Torres      | España          | Mediocentro organizador (MC/MCO)       | Derecho     | Monterrey         | 80 
+048  | Orbelín Pineda           | Orbelín        | México          | Mediapunta / Interior (MCO/MC)         | Derecho     | Monterrey         | 80 
+049  | Luca Orellano            | Orellano       | Argentina       | Extremo derecho / Carrilero (ED/CAD)   | Izquierdo   | Monterrey         | 79 
+050  | Gerardo Arteaga          | Arteaga        | México          | Lateral izquierdo (LI)                 | Izquierdo   | Monterrey         | 79 
+051  | Víctor Guzmán            | Toro Guzmán    | México          | Defensa central (DFC)                  | Derecho     | Monterrey         | 79 
+052  | Esteban Andrada          | Andrada        | Argentina       | Arquero (POR)                          | Derecho     | Monterrey         | 79 
+053  | Hugo Cuypers             | Cuypers        | Bélgica         | Delantero centro (DC)                  | Derecho     | Monterrey         | 79 
+054  | Joaquim                  | Joaquim        | Brasil          | Defensa central (DFC)                  | Derecho     | Tigres UANL       | 80 
+055  | Jesús Alberto Angulo     | J. Angulo      | México          | Lateral izq. / Defensa central (LI/DFC) | Izquierdo   | Tigres UANL       | 79 
+056  | Diego Lainez             | D. Lainez      | México          | Extremo derecho / izquierdo (ED/EI)    | Izquierdo   | Tigres UANL       | 79 
+057  | Rodrigo Aguirre          | R. Aguirre     | Uruguay         | Delantero centro (DC)                  | Izquierdo   | Tigres UANL       | 79 
+058  | Armando González         | Hormiga        | México          | Delantero centro (DC)                  | Derecho     | Guadalajara       | 79 
+059  | Bryan González           | Cotorro        | México          | Lateral / Carrilero izquierdo (LI/CAI) | Izquierdo   | Guadalajara       | 79 
+060  | Efraín Álvarez           | E. Álvarez     | México          | Mediapunta / Extremo der. (MCO/ED)     | Izquierdo   | Guadalajara       | 79 
+061  | Adalberto Carrasquilla   | Carrasquilla   | Panamá          | Mediocentro (MC)                       | Derecho     | Pumas UNAM        | 80 
+062  | Juninho Vieira           | Juninho        | Brasil          | Delantero centro (DC)                  | Derecho     | Pumas UNAM        | 79 
+063  | Robert Morales           | R. Morales     | Paraguay        | Delantero centro / Extremo (DC/ED)     | Derecho     | Pumas UNAM        | 79 
+064  | Rubén Duarte             | R. Duarte      | España          | Defensa central / Lateral izq. (DFC/LI) | Izquierdo   | Pumas UNAM        | 79 
+065  | Gilberto Mora            | G. Mora        | México          | Mediapunta / Interior (MCO/MC)         | Derecho     | Tijuana           | 79 
+066  | Pedro Vite               | P. Vite        | Ecuador         | Mediocentro / Mediapunta (MC/MCO)      | Izquierdo   | Pumas UNAM        | 78 
+067  | Nathan Silva             | Nathan         | Brasil          | Defensa central (DFC)                  | Derecho     | Pumas UNAM        | 78 
+068  | Sebastián Córdova        | S. Córdova     | México          | Mediapunta (MCO)                       | Ambidiestro | Pumas UNAM        | 78 
+069  | Uriel Antuna             | Antuna         | México          | Extremo derecho (ED)                   | Derecho     | Pumas UNAM        | 78 
+070  | Álvaro Angulo            | Á. Angulo      | Colombia        | Lateral izquierdo (LI)                 | Izquierdo   | Pumas UNAM        | 77 
+071  | Ángel Sepúlveda          | Sepúlveda      | México          | Delantero centro (DC)                  | Derecho     | Guadalajara       | 78 
+072  | Ricardo Marín            | R. Marín       | México          | Delantero centro (DC)                  | Derecho     | Guadalajara       | 78 
+073  | Erick Gutiérrez          | Guti           | México          | Mediocentro (MC)                       | Izquierdo   | Guadalajara       | 78 
+074  | Richard Ledezma          | Ledezma        | Estados Unidos  | Mediocentro / Mediapunta (MC/MCO)      | Derecho     | Guadalajara       | 78 
+075  | Brian Gutiérrez          | B. Gutiérrez   | México          | Mediapunta (MCO)                       | Derecho     | Guadalajara       | 78 
+076  | Hugo Camberos            | Camberos       | México          | Extremo derecho (ED)                   | Derecho     | Guadalajara       | 77 
+077  | Cristian Borja           | C. Borja       | Colombia        | Lateral izquierdo (LI)                 | Izquierdo   | Club América      | 78 
+078  | Santiago Bueno           | S. Bueno       | Uruguay         | Defensa central (DFC)                  | Derecho     | Club América      | 78 
+079  | Alan Cervantes           | A. Cervantes   | México          | Mediocentro defensivo (MCD)            | Derecho     | Club América      | 78 
+080  | Rodolfo Cota             | Cota           | México          | Arquero (POR)                          | Derecho     | Club América      | 77 
+081  | Alan Mozo                | A. Mozo        | México          | Lateral derecho (LD)                   | Derecho     | Cruz Azul         | 78 
+082  | Omar Campos              | O. Campos      | México          | Lateral izquierdo (LI)                 | Izquierdo   | Cruz Azul         | 78 
+083  | Andrés Montaño           | A. Montaño     | México          | Mediocentro / Mediapunta (MC/MCO)      | Izquierdo   | Cruz Azul         | 78 
+084  | Jeremy Márquez           | J. Márquez     | México          | Mediocentro (MC)                       | Derecho     | Cruz Azul         | 78 
+085  | Luka Romero              | L. Romero      | Argentina       | Extremo derecho / Mediapunta (ED/MCO)  | Izquierdo   | Cruz Azul         | 77 
+086  | Bruno Méndez             | B. Méndez      | Uruguay         | Defensa central (DFC)                  | Derecho     | Toluca            | 78 
+087  | Santiago Simón           | S. Simón       | Argentina       | Carrilero / Volante derecho (CAD/MD)   | Derecho     | Toluca            | 78 
+088  | Franco Romero            | F. Romero      | Argentina       | Mediocentro defensivo (MCD)            | Derecho     | Toluca            | 78 
+089  | Luis García              | L. García      | México          | Arquero (POR)                          | Derecho     | Toluca            | 77 
+090  | Ozziel Herrera           | O. Herrera     | México          | Extremo izquierdo / derecho (EI/ED)    | Derecho     | Tigres UANL       | 78 
+091  | Rômulo                   | Rômulo         | Brasil          | Mediocentro defensivo (MCD)            | Derecho     | Tigres UANL       | 78 
+092  | César Araújo             | C. Araújo      | Uruguay         | Mediocentro defensivo (MCD)            | Derecho     | Tigres UANL       | 78 
+093  | Alan Franco              | A. Franco      | Argentina       | Defensa central (DFC)                  | Derecho     | Tigres UANL       | 78 
+094  | Marco Farfan             | Farfan         | Estados Unidos  | Lateral izquierdo (LI)                 | Izquierdo   | Tigres UANL       | 77 
+095  | Jorge Rodríguez          | Corcho         | Argentina       | Mediocentro defensivo (MCD)            | Derecho     | Monterrey         | 78 
+096  | Fidel Ambríz             | F. Ambríz      | México          | Mediocentro defensivo (MCD)            | Derecho     | Monterrey         | 78 
+097  | Jesús Manuel Corona      | Tecatito       | México          | Extremo derecho / izquierdo (ED/EI)    | Ambidiestro | Monterrey         | 78 
+098  | Stefan Medina            | S. Medina      | Colombia        | Lateral der. / Defensa central (LD/DFC) | Derecho     | Monterrey         | 78 
+099  | Iker Fimbres             | Fimbres        | México          | Mediocentro (MC)                       | Derecho     | Monterrey         | 77 
+100  | Carlos Moreno            | C. Moreno      | México          | Arquero (POR)                          | Derecho     | Pachuca           | 78 
+101  | Sergio Barreto           | S. Barreto     | Argentina       | Defensa central (DFC)                  | Derecho     | Pachuca           | 78 
+102  | Eduardo Bauermann        | Bauermann      | Brasil          | Defensa central (DFC)                  | Derecho     | Pachuca           | 78 
+103  | Rodolfo Pizarro          | R. Pizarro     | México          | Mediapunta (MCO)                       | Derecho     | Pachuca           | 78 
+104  | Christian Rivera         | C. Rivera      | Colombia        | Mediocentro defensivo (MCD)            | Derecho     | Pachuca           | 78 
+105  | Alan Bautista            | A. Bautista    | México          | Mediocentro / Mediapunta (MC/MCO)      | Derecho     | Pachuca           | 77 
+106  | Nicolás Vallejo          | N. Vallejo     | Argentina       | Extremo derecho / izquierdo (ED/EI)    | Derecho     | Pachuca           | 77 
+107  | Rodrigo Echeverría       | Echeverría     | Chile           | Mediocentro defensivo (MCD)            | Derecho     | Club León         | 79 
+108  | Diber Cambindo           | Cambindo       | Colombia        | Delantero centro (DC)                  | Derecho     | Club León         | 79 
+109  | Ismael Díaz              | I. Díaz        | Panamá          | Extremo izquierdo / Delantero (EI/DC)  | Derecho     | Club León         | 78 
+110  | Fernando Beltrán         | Nene Beltrán   | México          | Mediocentro (MC)                       | Derecho     | Club León         | 78 
+111  | Jhohan Romaña            | Romaña         | Colombia        | Defensa central (DFC)                  | Derecho     | Club León         | 78 
+112  | Sebastián Vegas          | S. Vegas       | Chile           | Defensa central / Lateral izq. (DFC/LI) | Izquierdo   | Club León         | 77 
+113  | Jordi Cortizo            | Cortizo        | México          | Mediapunta / Extremo der. (MCO/ED)     | Izquierdo   | Club León         | 77 
+114  | Óscar García             | Ó. García      | México          | Arquero (POR)                          | Derecho     | Club León         | 77 
+115  | Aldo Rocha               | A. Rocha       | México          | Mediocentro defensivo (MCD)            | Derecho     | Atlas             | 78 
+116  | Kevin Zenón              | K. Zenón       | Argentina       | Volante / Extremo izquierdo (MI/EI)    | Izquierdo   | Atlas             | 78 
+117  | Jorge Sánchez            | J. Sánchez     | México          | Lateral derecho (LD)                   | Derecho     | Atlas             | 78 
+118  | Adonis Frías             | A. Frías       | Argentina       | Defensa central (DFC)                  | Derecho     | Atlas             | 78 
+119  | Elías Montiel            | E. Montiel     | México          | Mediocentro (MC)                       | Derecho     | Atlas             | 77 
+120  | Alfonso González         | Ponchito       | México          | Mediapunta / Interior (MCO/MC)         | Izquierdo   | Atlas             | 77 
+121  | Carlos Acevedo           | C. Acevedo     | México          | Arquero (POR)                          | Derecho     | Santos Laguna     | 79 
+122  | Ezequiel Bullaude        | Bullaude       | Argentina       | Mediapunta (MCO)                       | Derecho     | Santos Laguna     | 78 
+123  | Tahiel Jiménez           | T. Jiménez     | México          | Delantero centro (DC)                  | Derecho     | Santos Laguna     | 77 
+124  | Mauricio Cuevas          | M. Cuevas      | Estados Unidos  | Lateral derecho (LD)                   | Derecho     | Santos Laguna     | 77 
+125  | Bruno Amione             | Amione         | Argentina       | Defensa central (DFC)                  | Izquierdo   | Santos Laguna     | 77 
+126  | Ignacio Rivero           | I. Rivero      | Uruguay         | Mediocentro / Carrilero der. (MC/CAD)  | Derecho     | Tijuana           | 78 
+127  | Unai Bilbao              | U. Bilbao      | España          | Defensa central (DFC)                  | Izquierdo   | Tijuana           | 78 
+128  | José Antonio Rodríguez   | Toño Rodríguez | México          | Arquero (POR)                          | Derecho     | Tijuana           | 78 
+129  | Ramiro Árciga            | R. Árciga      | México          | Mediapunta / Extremo (MCO/EI)          | Derecho     | Tijuana           | 77 
+130  | Jackson Porozo           | Porozo         | Ecuador         | Defensa central (DFC)                  | Derecho     | Tijuana           | 77 
+131  | Sébastien Salles-Lamonge | Salles-Lamonge | Francia         | Mediocentro / Mediapunta (MC/MCO)      | Derecho     | Atlético San Luis | 78 
+132  | Andrés Sánchez           | A. Sánchez     | México          | Arquero (POR)                          | Derecho     | Atlético San Luis | 77 
+133  | Jesús Medina             | J. Medina      | Paraguay        | Extremo derecho / Mediapunta (ED/MCO)  | Izquierdo   | Atlético San Luis | 77 
+134  | Lucas Esteves            | L. Esteves     | Brasil          | Lateral izquierdo (LI)                 | Izquierdo   | Atlético San Luis | 77 
+135  | Julián Carranza          | J. Carranza    | Argentina       | Delantero centro (DC)                  | Derecho     | Necaxa            | 79 
+136  | Lorenzo Faravelli        | Faravelli      | Argentina       | Mediocentro (MC)                       | Derecho     | Necaxa            | 78 
+137  | Alexis Peña              | A. Peña        | México          | Defensa central (DFC)                  | Derecho     | Necaxa            | 77 
+138  | Agustín Oliveros         | A. Oliveros    | Uruguay         | Defensa central / Lateral izq. (DFC/LI) | Izquierdo   | Necaxa            | 77 
+139  | Santiago Homenchenko     | Homenchenko    | Uruguay         | Mediocentro defensivo (MCD)            | Izquierdo   | Querétaro         | 78 
+140  | Guillermo Allison        | G. Allison     | México          | Arquero (POR)                          | Derecho     | Querétaro         | 77 
+141  | Lucas Abascia            | Abascia        | Argentina       | Defensa central (DFC)                  | Derecho     | Querétaro         | 77 
+142  | Mateo Coronel            | M. Coronel     | Argentina       | Delantero / Segundo del. (DC/SD)       | Derecho     | Querétaro         | 77 
+143  | Jhojan Julio             | J. Julio       | Ecuador         | Mediapunta / Extremo izq. (MCO/EI)     | Derecho     | Atlante           | 78 
+144  | Aarón Quirós             | A. Quirós      | Argentina       | Defensa central (DFC)                  | Izquierdo   | Atlante           | 77 
+145  | Eugenio Pizzuto          | Pizzuto        | México          | Mediocentro (MC/MCD)                   | Izquierdo   | Atlante           | 76 
+146  | Juan Pablo Vargas        | J. P. Vargas   | Costa Rica      | Defensa central (DFC)                  | Izquierdo   | Puebla            | 77 
+147  | Kevin Velasco            | K. Velasco     | Colombia        | Extremo izquierdo / derecho (EI/ED)    | Izquierdo   | Puebla            | 77 
+148  | Heriberto Jurado         | H. Jurado      | México          | Extremo izquierdo (EI)                 | Izquierdo   | Puebla            | 76 
+149  | Óscar Estupiñán          | Ó. Estupiñán   | Colombia        | Delantero centro (DC)                  | Izquierdo   | FC Juárez         | 78 
+150  | José Luis Rodríguez      | Puma Rodríguez | Panamá          | Extremo izquierdo (EI)                 | Izquierdo   | FC Juárez         | 77 
+----------------------------------------------------------------------------------------------------------------------
+
+LECTURA DEL RANKING DE ACTUALIDAD (LIGA MX):
+Los puestos 001 al 025 (OVR 81 a 84) agrupan a la élite absoluta del campeonato mexicano: ganadores del Balón
+de Oro de la Liga MX, seleccionados internacionales y líderes de goleo o asistencias. Del puesto 026 al 085
+(OVR 78 a 80) se sitúan los titulares estructurales de los clubes protagonistas (Toluca, Cruz Azul, América,
+Tigres UANL, Monterrey, Guadalajara, Pumas UNAM y Pachuca). Del puesto 086 al 150 (OVR 76 a 79) se integran
+los referentes de los 18 clubes de la primera división y las jóvenes revelaciones mexicanas de 2026 (como
+Gilberto Mora, Armando González, Bryan González, Brian Gutiérrez, Tahiel Jiménez, Elías Montiel, Hugo Camberos
+e Iker Fimbres).
+
+
+======================================================================================================================
+PARTE 2: LIGA MX — LAS 150 GRANDES LEYENDAS HISTÓRICAS DE LA PRIMERA DIVISIÓN DE MÉXICO
+======================================================================================================================
+
+En el panteón histórico de la liga mexicana, el brasileño Cabinho (Pumas UNAM, 1974-1979, OVR 96) y el
+paraguayo José Saturnino Cardozo (Toluca, 1995-2005, OVR 96) comparten la cima estadística y competitiva:
+Cabinho es el máximo goleador histórico absoluto de la Primera División (312 goles y 8 títulos de goleo),
+mientras que Cardozo protagonizó la era más dominante en torneos cortos (249 goles en liga, récord histórico
+de 29 goles en una fase regular y 43 tantos en Liguillas para dar cuatro títulos al Toluca). Inmediatamente
+detrás aparecen Carlos Hermosillo (Cruz Azul), Cuauhtémoc Blanco y Carlos Reinoso (Club América), Hugo Sánchez
+(Pumas UNAM), André-Pierre Gignac (Tigres UANL), Jared Borgetti (Santos Laguna), Miguel Marín (Cruz Azul),
+Salvador Reyes (Guadalajara), Horacio Casarín (Atlante), Álex Aguinaga (Necaxa), Benjamín Galindo (Guadalajara)
+y los míticos arqueros Antonio 'Tota' Carbajal (León) y Jorge Campos (Pumas UNAM).
+
+NOTA SOBRE EL PERÍODO DE ACTIVIDAD: Tal como fue solicitado, la columna 'AÑOS CLUB' registra única y
+exclusivamente el período de año inicial a año final (AAAA-AAAA) correspondiente a su ciclo en el club emblema.
+
+----------------------------------------------------------------------------------------------------------------------
+#    | LEYENDA (NOMBRE)         | ABREV.         | NACIONALIDAD    | POSICIÓN                               | PIE DOM.    | CLUB EMBLEMA      | AÑOS CLUB | OVR
+----------------------------------------------------------------------------------------------------------------------
+001  | Cabinho                  | Cabinho        | Brasil          | Delantero centro (DC)                  | Ambidiestro | Pumas UNAM        | 1974-1979 | 96 
+002  | José Saturnino Cardozo   | Cardozo        | Paraguay        | Delantero centro (DC)                  | Derecho     | Toluca            | 1995-2005 | 96 
+003  | Carlos Hermosillo        | Hermosillo     | México          | Delantero centro (DC)                  | Derecho     | Cruz Azul         | 1991-1998 | 95 
+004  | Cuauhtémoc Blanco        | C. Blanco      | México          | Mediapunta / Segundo del. (MCO/SD)     | Derecho     | Club América      | 1992-2007 | 95 
+005  | Hugo Sánchez             | Hugo Sánchez   | México          | Delantero centro (DC)                  | Izquierdo   | Pumas UNAM        | 1976-1981 | 95 
+006  | Carlos Reinoso           | Reinoso        | Chile           | Mediocentro organizador (MCO/MC)       | Derecho     | Club América      | 1970-1979 | 95 
+007  | André-Pierre Gignac      | Gignac         | Francia         | Delantero centro (DC)                  | Derecho     | Tigres UANL       | 2015-2026 | 95 
+008  | Jared Borgetti           | Borgetti       | México          | Delantero centro (DC)                  | Derecho     | Santos Laguna     | 1996-2004 | 94 
+009  | Miguel Marín             | Gato Marín     | Argentina       | Arquero (POR)                          | Derecho     | Cruz Azul         | 1971-1981 | 94 
+010  | Salvador Reyes           | Chava Reyes    | México          | Delantero / Mediapunta (DC/SD)         | Derecho     | Guadalajara       | 1952-1967 | 94 
+011  | Horacio Casarín          | Casarín        | México          | Delantero centro (DC)                  | Derecho     | Atlante           | 1942-1948 | 94 
+012  | Álex Aguinaga            | Aguinaga       | Ecuador         | Mediapunta / Mediocentro (MCO/MC)      | Ambidiestro | Necaxa            | 1989-2003 | 94 
+013  | Benjamín Galindo         | Galindo        | México          | Mediocentro / Mediapunta (MC/MCO)      | Ambidiestro | Guadalajara       | 1986-1994 | 94 
+014  | Antonio Carbajal         | Tota Carbajal  | México          | Arquero (POR)                          | Derecho     | Club León         | 1950-1966 | 94 
+015  | Jorge Campos             | J. Campos      | México          | Arquero / Delantero (POR/DC)           | Derecho     | Pumas UNAM        | 1988-1995 | 94 
+016  | Adalberto López          | Dumbo López    | México          | Delantero centro (DC)                  | Derecho     | Club León         | 1946-1950 | 93 
+017  | Humberto Suazo           | Chupete Suazo  | Chile           | Delantero / Segundo del. (DC/SD)       | Derecho     | Monterrey         | 2007-2014 | 93 
+018  | Sinha                    | Sinha          | México          | Mediapunta (MCO)                       | Derecho     | Toluca            | 1999-2014 | 93 
+019  | Tomás Boy                | Tomás Boy      | México          | Mediapunta / Mediocentro (MCO/MC)      | Derecho     | Tigres UANL       | 1975-1988 | 93 
+020  | Zague                    | Zague          | México          | Delantero / Extremo izq. (DC/EI)       | Izquierdo   | Club América      | 1985-1996 | 93 
+021  | Claudio Suárez           | C. Suárez      | México          | Defensa central (DFC)                  | Derecho     | Pumas UNAM        | 1988-1996 | 93 
+022  | Cristóbal Ortega         | C. Ortega      | México          | Mediocentro (MC/MCD)                   | Derecho     | Club América      | 1974-1992 | 93 
+023  | Alfredo Tena             | Capitán Furia  | México          | Defensa central (DFC)                  | Derecho     | Club América      | 1974-1991 | 93 
+024  | Enrique Borja            | E. Borja       | México          | Delantero centro (DC)                  | Derecho     | Club América      | 1969-1977 | 93 
+025  | Héctor Zelada            | Zelada         | Argentina       | Arquero (POR)                          | Derecho     | Club América      | 1979-1987 | 93 
+026  | Oswaldo Sánchez          | O. Sánchez     | México          | Arquero (POR)                          | Derecho     | Guadalajara       | 1999-2006 | 92 
+027  | Miguel Calero            | Calero         | Colombia        | Arquero (POR)                          | Derecho     | Pachuca           | 2000-2011 | 92 
+028  | Óscar Pérez              | Conejo Pérez   | México          | Arquero (POR)                          | Derecho     | Cruz Azul         | 1993-2008 | 92 
+029  | Isidro Lángara           | Lángara        | España          | Delantero centro (DC)                  | Derecho     | Real Club España  | 1943-1946 | 93 
+030  | Rafael Márquez           | Rafa Márquez   | México          | Defensa central / Pivote (DFC/MCD)     | Derecho     | Atlas             | 1996-1999 | 93 
+031  | Osvaldo Castro           | Pata Bendita   | Chile           | Delantero centro (DC)                  | Izquierdo   | Club América      | 1971-1975 | 92 
+032  | Ricardo Ferretti         | Tuca Ferretti  | Brasil          | Mediocentro / Mediapunta (MC/MCO)      | Derecho     | Pumas UNAM        | 1978-1985 | 92 
+033  | Oribe Peralta            | O. Peralta     | México          | Delantero centro (DC)                  | Derecho     | Santos Laguna     | 2006-2014 | 92 
+034  | Christian Benítez        | Chucho Benítez | Ecuador         | Delantero centro (DC)                  | Derecho     | Santos Laguna     | 2007-2011 | 92 
+035  | Rodrigo Ruiz             | Pony Ruiz      | Chile           | Extremo derecho / Mediapunta (ED/MCO)  | Derecho     | Santos Laguna     | 2000-2006 | 92 
+036  | Rogelio Funes Mori       | Funes Mori     | México          | Delantero centro (DC)                  | Derecho     | Monterrey         | 2015-2023 | 91 
+037  | Alberto García Aspe      | García Aspe    | México          | Mediocentro / Interior (MC)            | Izquierdo   | Necaxa            | 1991-1997 | 92 
+038  | Ricardo Peláez           | R. Peláez      | México          | Delantero centro (DC)                  | Derecho     | Necaxa            | 1987-1997 | 91 
+039  | Ivo Basay                | Basay          | Chile           | Delantero centro (DC)                  | Derecho     | Necaxa            | 1990-1995 | 91 
+040  | Antônio Carlos Santos    | A. C. Santos   | Brasil          | Mediapunta (MCO)                       | Derecho     | Club América      | 1987-1992 | 92 
+041  | Pável Pardo              | P. Pardo       | México          | Mediocentro defensivo (MCD)            | Derecho     | Club América      | 1999-2006 | 91 
+042  | Salvador Cabañas         | Cabañas        | Paraguay        | Delantero centro (DC)                  | Ambidiestro | Club América      | 2006-2010 | 91 
+043  | Fabián Estay             | F. Estay       | Chile           | Mediapunta / Volante (MCO/MD)          | Derecho     | Toluca            | 1996-2001 | 91 
+044  | Vicente Pereda           | Diablo Mayor   | México          | Delantero centro (DC)                  | Derecho     | Toluca            | 1960-1976 | 91 
+045  | Hernán Cristante         | Cristante      | Argentina       | Arquero (POR)                          | Derecho     | Toluca            | 1998-2010 | 91 
+046  | Paulo da Silva           | P. da Silva    | Paraguay        | Defensa central (DFC)                  | Derecho     | Toluca            | 2003-2009 | 91 
+047  | Horacio López Salgado    | López Salgado  | México          | Delantero centro (DC)                  | Derecho     | Cruz Azul         | 1971-1982 | 91 
+048  | Fernando Bustos          | F. Bustos      | México          | Extremo / Mediapunta (ED/MCO)          | Izquierdo   | Cruz Azul         | 1963-1976 | 92 
+049  | Javier Guzmán            | Kalimán Guzmán | México          | Defensa central (DFC)                  | Derecho     | Cruz Azul         | 1969-1978 | 91 
+050  | Alberto Quintano         | Quintano       | Chile           | Defensa central (DFC)                  | Izquierdo   | Cruz Azul         | 1971-1977 | 91 
+051  | Ignacio Flores           | Nacho Flores   | México          | Lateral derecho (LD)                   | Derecho     | Cruz Azul         | 1972-1990 | 91 
+052  | Christian Giménez        | Chaco Giménez  | México          | Mediapunta (MCO)                       | Derecho     | Cruz Azul         | 2010-2017 | 91 
+053  | Guillermo Sepúlveda      | Tigre Sepúlveda | México          | Defensa central (DFC)                  | Derecho     | Guadalajara       | 1952-1966 | 92 
+054  | José Villegas            | Jamaicón       | México          | Lateral izquierdo / Central (LI/DFC)   | Izquierdo   | Guadalajara       | 1952-1972 | 91 
+055  | Sabás Ponce              | S. Ponce       | México          | Mediocentro organizador (MC/MCO)       | Derecho     | Guadalajara       | 1956-1973 | 91 
+056  | Jaime Gómez              | Tubo Gómez     | México          | Arquero (POR)                          | Derecho     | Guadalajara       | 1950-1964 | 91 
+057  | Fernando Quirarte        | Sheriff Quirarte | México          | Defensa central (DFC)                  | Derecho     | Guadalajara       | 1973-1987 | 91 
+058  | Omar Bravo               | O. Bravo       | México          | Delantero centro (DC)                  | Derecho     | Guadalajara       | 2001-2008 | 91 
+059  | Ramón Ramírez            | R. Ramírez     | México          | Volante izquierdo / Mediocentro (MI/MC) | Izquierdo   | Guadalajara       | 1994-1998 | 91 
+060  | Ramón Morales            | Ramoncito      | México          | Volante izquierdo (MI)                 | Izquierdo   | Guadalajara       | 1999-2010 | 90 
+061  | Manuel Negrete           | M. Negrete     | México          | Mediapunta / Interior (MCO/MC)         | Izquierdo   | Pumas UNAM        | 1979-1986 | 91 
+062  | Luis García Postigo      | Luis García    | México          | Delantero / Segundo del. (DC/SD)       | Derecho     | Pumas UNAM        | 1986-1991 | 91 
+063  | Darío Verón              | D. Verón       | Paraguay        | Defensa central (DFC)                  | Derecho     | Pumas UNAM        | 2003-2017 | 91 
+064  | Miguel España            | M. España      | México          | Mediocentro defensivo (MCD)            | Derecho     | Pumas UNAM        | 1983-1994 | 90 
+065  | Arturo Vázquez Ayala     | Gonini         | México          | Lateral izquierdo / Central (LI/DFC)   | Izquierdo   | Pumas UNAM        | 1970-1979 | 90 
+066  | Juan José Muñante        | Cobra Muñante  | Perú            | Extremo derecho (ED)                   | Derecho     | Pumas UNAM        | 1973-1980 | 91 
+067  | Gerónimo Barbadillo      | Patrulla       | Perú            | Extremo derecho / Mediapunta (ED/MCO)  | Derecho     | Tigres UANL       | 1975-1982 | 91 
+068  | Walter Gaitán            | Chueco Gaitán  | Argentina       | Mediapunta (MCO)                       | Izquierdo   | Tigres UANL       | 2002-2007 | 91 
+069  | Lucas Lobos              | L. Lobos       | Argentina       | Mediapunta (MCO)                       | Derecho     | Tigres UANL       | 2008-2014 | 91 
+070  | Damián Álvarez           | Enano Álvarez  | México          | Extremo izquierdo (EI)                 | Izquierdo   | Tigres UANL       | 2010-2017 | 90 
+071  | Mauro Boselli            | Boselli        | Argentina       | Delantero centro (DC)                  | Derecho     | Club León         | 2013-2018 | 91 
+072  | Luis Montes              | Chapito Montes | México          | Mediapunta / Interior (MCO/MC)         | Izquierdo   | Club León         | 2011-2023 | 90 
+073  | Tita                     | Tita           | Brasil          | Mediapunta / Delantero (MCO/SD)        | Derecho     | Club León         | 1990-1994 | 91 
+074  | Gabriel Caballero        | G. Caballero   | México          | Mediocentro / Volante der. (MC/MD)     | Derecho     | Pachuca           | 1998-2002 | 90 
+075  | Jorge Aravena            | Mortero Aravena | Chile           | Mediapunta / Interior (MCO/MC)         | Izquierdo   | Puebla            | 1988-1991 | 91 
+076  | Carlos Poblete           | Búfalo Poblete | Chile           | Delantero centro (DC)                  | Derecho     | Puebla            | 1986-1992 | 90 
+077  | Pablo Larios             | Larios         | México          | Arquero (POR)                          | Derecho     | Puebla            | 1989-1994 | 91 
+078  | Adolfo Ríos              | A. Ríos        | México          | Arquero (POR)                          | Derecho     | Club América      | 1999-2004 | 90 
+079  | Ignacio Calderón         | Cuate Calderón | México          | Arquero (POR)                          | Derecho     | Guadalajara       | 1962-1974 | 90 
+080  | Nicolás Navarro          | N. Navarro     | México          | Arquero (POR)                          | Derecho     | Necaxa            | 1983-1997 | 90 
+081  | Federico Vilar           | F. Vilar       | Argentina       | Arquero (POR)                          | Derecho     | Atlante           | 2003-2010 | 89 
+082  | José de Jesús Corona     | Chuy Corona    | México          | Arquero (POR)                          | Derecho     | Cruz Azul         | 2009-2023 | 90 
+083  | Moisés Muñoz             | M. Muñoz       | México          | Arquero (POR)                          | Derecho     | Club América      | 2012-2016 | 89 
+084  | Carlos Eloir Perucci     | Perucci        | Brasil          | Delantero centro (DC)                  | Derecho     | Atlético Español  | 1972-1977 | 90 
+085  | Sergio Lira              | S. Lira        | México          | Delantero centro (DC)                  | Derecho     | Tampico Madero    | 1982-1990 | 90 
+086  | Ricardo Brandon          | Brandon        | Uruguay         | Delantero centro (DC)                  | Derecho     | Atlético Español  | 1971-1976 | 89 
+087  | Daniel Guzmán            | Travieso Guzmán | México          | Delantero centro (DC)                  | Derecho     | Atlante           | 1991-1993 | 89 
+088  | Luis Gabriel Rey         | Canguro Rey    | Colombia        | Delantero centro (DC)                  | Izquierdo   | Atlante           | 2003-2004 | 89 
+089  | Sebastián González       | Chamagol       | Chile           | Delantero centro (DC)                  | Derecho     | Atlante           | 2002-2005 | 89 
+090  | Félix Fernández          | F. Fernández   | México          | Arquero (POR)                          | Derecho     | Atlante           | 1989-1998 | 88 
+091  | Marco Antonio Figueroa   | Fantasma       | Chile           | Delantero centro (DC)                  | Derecho     | Morelia           | 1986-1990 | 90 
+092  | Raúl Ruidíaz             | Ruidíaz        | Perú            | Delantero centro (DC)                  | Derecho     | Morelia           | 2016-2018 | 89 
+093  | Carlos Adrián Morales    | C. Morales     | México          | Lateral / Volante izquierdo (LI/MI)    | Izquierdo   | Morelia           | 1998-2004 | 89 
+094  | Darío Franco             | D. Franco      | Argentina       | Defensa central / Mediocentro (DFC/MCD) | Derecho     | Morelia           | 1998-2004 | 89 
+095  | Claudinho                | Claudinho      | Brasil          | Delantero centro (DC)                  | Derecho     | Morelia           | 1997-2000 | 88 
+096  | Daniel Ludueña           | Hachita        | Argentina       | Mediapunta (MCO)                       | Derecho     | Santos Laguna     | 2007-2012 | 90 
+097  | Matías Vuoso             | Toro Vuoso     | México          | Delantero centro (DC)                  | Derecho     | Santos Laguna     | 2003-2006 | 89 
+098  | Juan Pablo Rodríguez     | Chato Rodríguez | México          | Mediocentro defensivo (MCD)            | Derecho     | Santos Laguna     | 2007-2014 | 89 
+099  | Héctor Adomaitis         | Ruso Adomaitis | Argentina       | Mediapunta / Mediocentro (MCO/MC)      | Derecho     | Santos Laguna     | 1993-1997 | 89 
+100  | Darwin Quintero          | D. Quintero    | Colombia        | Segundo delantero / Extremo (SD/ED)    | Derecho     | Santos Laguna     | 2009-2014 | 88 
+101  | Jesús Arellano           | Cabrito Arellano | México          | Extremo / Volante derecho (ED/MD)      | Derecho     | Monterrey         | 2000-2011 | 90 
+102  | Guillermo Franco         | Guille Franco  | México          | Delantero centro (DC)                  | Derecho     | Monterrey         | 2002-2005 | 90 
+103  | José María Basanta       | Basanta        | Argentina       | Defensa central (DFC)                  | Izquierdo   | Monterrey         | 2008-2014 | 89 
+104  | Luis Ernesto Pérez       | Lucho Pérez    | México          | Mediocentro (MC)                       | Derecho     | Monterrey         | 2003-2012 | 89 
+105  | Aldo de Nigris           | A. de Nigris   | México          | Delantero centro (DC)                  | Derecho     | Monterrey         | 2009-2013 | 89 
+106  | Dorlan Pabón             | Pabón          | Colombia        | Segundo delantero / Extremo (SD/ED)    | Derecho     | Monterrey         | 2014-2021 | 89 
+107  | Francisco Javier Cruz    | Abuelo Cruz    | México          | Delantero / Extremo der. (DC/ED)       | Derecho     | Monterrey         | 1984-1988 | 89 
+108  | Bahía                    | Bahía          | Brasil          | Delantero centro (DC)                  | Derecho     | Monterrey         | 1984-1992 | 88 
+109  | Magdaleno Cano           | M. Cano        | México          | Defensa central / Lateral (DFC/LD)     | Derecho     | Monterrey         | 1967-1982 | 88 
+110  | Osvaldo Batocletti       | Bato           | Argentina       | Defensa central (DFC)                  | Derecho     | Tigres UANL       | 1977-1984 | 89 
+111  | Juninho                  | A. Juninho     | Brasil          | Defensa central (DFC)                  | Derecho     | Tigres UANL       | 2010-2018 | 89 
+112  | Hugo Ayala               | H. Ayala       | México          | Defensa central (DFC)                  | Derecho     | Tigres UANL       | 2010-2022 | 89 
+113  | Claudio Núñez            | Diablo Núñez   | Chile           | Delantero / Segundo del. (DC/SD)       | Derecho     | Tigres UANL       | 1996-2001 | 88 
+114  | Guido Pizarro            | Conde Pizarro  | Argentina       | Mediocentro defensivo (MCD)            | Derecho     | Tigres UANL       | 2013-2017 | 89 
+115  | Javier Aquino            | J. Aquino      | México          | Extremo / Lateral izquierdo (EI/LI)    | Derecho     | Tigres UANL       | 2015-2025 | 88 
+116  | Andrés Chitiva           | Chitiva        | Colombia        | Extremo / Volante izquierdo (EI/MI)    | Derecho     | Pachuca           | 2001-2008 | 89 
+117  | Franco Jara              | F. Jara        | Argentina       | Delantero centro (DC)                  | Derecho     | Pachuca           | 2015-2020 | 88 
+118  | Pablo Hernán Gómez       | P. H. Gómez    | Argentina       | Mediapunta / Extremo (MCO/EI)          | Izquierdo   | Pachuca           | 1999-2001 | 88 
+119  | Luis Estrada             | Chino Estrada  | México          | Delantero centro (DC)                  | Derecho     | Club León         | 1964-1973 | 89 
+120  | Marcos Aurelio           | M. Aurelio     | Argentina       | Interior / Mediapunta (MCO/MC)         | Derecho     | Club León         | 1944-1948 | 89 
+121  | Roberto Salomone         | Salomone       | Argentina       | Delantero centro (DC)                  | Derecho     | Club León         | 1971-1977 | 89 
+122  | Ángel Mena               | Á. Mena        | Ecuador         | Extremo derecho / Mediapunta (ED/MCO)  | Izquierdo   | Club León         | 2019-2024 | 88 
+123  | Luis Pirata Fuente       | Pirata Fuente  | México          | Interior / Mediapunta (MCO/MC)         | Derecho     | Veracruz          | 1943-1952 | 91 
+124  | Jorge Comas              | J. Comas       | Argentina       | Delantero / Extremo izq. (DC/EI)       | Izquierdo   | Veracruz          | 1986-1994 | 89 
+125  | Julio Ayllón             | Aparicio       | Perú            | Delantero centro (DC)                  | Derecho     | Veracruz          | 1949-1950 | 88 
+126  | Carlos Lara              | Charro Lara    | Argentina       | Delantero centro (DC)                  | Derecho     | Zacatepec         | 1956-1962 | 89 
+127  | Héctor Hernández         | Chale Hernández | México          | Delantero / Interior (DC/SD)           | Derecho     | Oro               | 1953-1958 | 89 
+128  | Amaury Epaminondas       | Epaminondas    | Brasil          | Delantero centro (DC)                  | Derecho     | Oro               | 1962-1966 | 89 
+129  | Hugo Kiese               | H. Kiese       | Paraguay        | Mediapunta / Delantero (MCO/SD)        | Derecho     | Tecos UAG         | 1978-1986 | 89 
+130  | Osmar Donizete           | Donizete       | Brasil          | Segundo delantero / Extremo (SD/ED)    | Derecho     | Tecos UAG         | 1990-1995 | 89 
+131  | Antonio Mohamed          | Turco Mohamed  | Argentina       | Mediapunta / Segundo del. (MCO/SD)     | Derecho     | Toros Neza        | 1993-1998 | 89 
+132  | Emilio Butragueño        | Butragueño     | España          | Segundo delantero / Delantero (SD/DC)  | Derecho     | Celaya            | 1995-1998 | 90 
+133  | Ronaldinho               | Ronaldinho     | Brasil          | Mediapunta (MCO)                       | Derecho     | Querétaro         | 2014-2015 | 90 
+134  | Víctor Ruiz              | V. Ruiz        | México          | Mediocentro / Volante izq. (MC/MI)     | Izquierdo   | Toluca            | 1996-2001 | 89 
+135  | Carlos María Morales     | Tanque Morales | Uruguay         | Delantero centro (DC)                  | Derecho     | Toluca            | 1995-1997 | 89 
+136  | Héctor Mancilla          | Mancilla       | Chile           | Delantero centro (DC)                  | Derecho     | Toluca            | 2008-2010 | 89 
+137  | Marcelino Bernal         | M. Bernal      | México          | Mediocentro (MC)                       | Derecho     | Toluca            | 1991-1997 | 89 
+138  | Salvador Carmona         | S. Carmona     | México          | Lateral derecho (LD)                   | Derecho     | Toluca            | 1993-2000 | 88 
+139  | Rubens Sambueza          | Sambueza       | Argentina       | Mediapunta / Extremo izq. (MCO/EI)     | Izquierdo   | Club América      | 2012-2016 | 90 
+140  | Claudio López            | Piojo López    | Argentina       | Segundo delantero / Extremo (SD/EI)    | Izquierdo   | Club América      | 2004-2006 | 90 
+141  | François Omam-Biyik      | Omam-Biyik     | Camerún         | Delantero centro (DC)                  | Derecho     | Club América      | 1994-1997 | 90 
+142  | Kalusha Bwalya           | Kalusha        | Zambia          | Extremo izq. / Mediapunta (EI/MCO)     | Izquierdo   | Club América      | 1994-1997 | 89 
+143  | Daniel Brailovsky        | Ruso Brailovsky | Argentina       | Mediapunta (MCO)                       | Derecho     | Club América      | 1982-1985 | 90 
+144  | Duilio Davino            | D. Davino      | México          | Defensa central (DFC)                  | Derecho     | Club América      | 1997-2007 | 89 
+145  | Paul Aguilar             | P. Aguilar     | México          | Lateral derecho (LD)                   | Derecho     | Club América      | 2011-2020 | 88 
+146  | Octavio Muciño           | Centavo Muciño | México          | Delantero centro (DC)                  | Derecho     | Cruz Azul         | 1969-1973 | 90 
+147  | Eladio Vera              | E. Vera        | Paraguay        | Extremo izq. / Delantero (EI/DC)       | Izquierdo   | Cruz Azul         | 1971-1977 | 89 
+148  | Héctor Pulido            | H. Pulido      | México          | Mediocentro (MC)                       | Derecho     | Cruz Azul         | 1963-1977 | 89 
+149  | Juan Reynoso             | J. Reynoso     | Perú            | Defensa central (DFC)                  | Derecho     | Cruz Azul         | 1994-2002 | 89 
+150  | Francisco Palencia       | Gatillero      | México          | Segundo delantero / Extremo (SD/ED)    | Derecho     | Cruz Azul         | 1994-2001 | 89 
+----------------------------------------------------------------------------------------------------------------------
+
+LECTURA COMPARATIVA Y SÍNTESIS HISTÓRICA:
+1. El peso del club emblema en futbolistas multitrayectoria: En el fútbol mexicano es habitual que grandes
+   leyendas hayan brillado en más de una institución (por ejemplo, Cabinho en Pumas UNAM y Atlante; Carlos
+   Hermosillo en Cruz Azul y América; Benjamín Galindo en Guadalajara, Santos y Cruz Azul; Oswaldo Sánchez en
+   Guadalajara y Santos; o Luis García en Pumas UNAM y América). En cada caso se ha asignado el club donde
+   alcanzó su mayor pico histórico, títulos o registros goleadores, indicando estrictamente el rango de años
+   (AAAA-AAAA) de su etapa principal en dicha institución.
+2. Representación histórica de clubes tradicionales y desaparecidos: Además de los 'Cuatro Grandes' (Club
+   América, Guadalajara, Cruz Azul y Pumas UNAM) y las potencias contemporáneas (Toluca, Tigres UANL,
+   Monterrey, Santos Laguna, León y Pachuca), el ranking de 150 leyendas preserva la memoria de clubes
+   históricos como Necaxa, Atlante, Puebla, Atlas, Morelia, Veracruz, Real Club España, Oro, Zacatepec,
+   Tecos UAG, Atlético Español, Tampico Madero, Toros Neza, Celaya y Querétaro.
+
+FUENTES Y REFERENCIAS DE CONTROL:
+- Liga BBVA MX — Registros oficiales de plantillas y estadísticas Apertura 2026 / Clausura 2026 (ligamx.net)
+- Federación Mexicana de Fútbol (FMF) — Historial oficial del Balón de Oro 1974-2026 (fmf.mx)
+- Salón de la Fama del Fútbol Internacional (Pachuca) — Investidos del fútbol mexicano (https://www.google.com/search?q=salondelafamadelfutbol.com)
+- RSSSF México — Listados históricos de goleadores, campeones y presencias en Primera División (rsssf.org)
+======================================================================================================================

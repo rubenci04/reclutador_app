@@ -16,13 +16,19 @@ export function PlayerClubDetails({ player, asOfDate = CLUB_AUDIT_AS_OF }: { rea
   const periods = playerCareerReferences(player)
   if (suppliedClub && details) {
     const status = /^retirado(?:\s*\(Leyenda\))?$/i.test(details.sourceStatus) ? 'RETIRED' : /^(activo|ativo|active)/i.test(details.sourceStatus) || /Messi|Cristiano/.test(player.name) ? 'ACTIVE' : 'UNKNOWN'
-    return <span className="player-club-details"><ClubBadge clubId={player.club_tag} />
-      <span>{t(`playerClubs.status.${status}`)} · {t('playtest.edition', { edition: t(`catalog.categories.${player.category}`) })}</span>
+    const editorialPeriod = details.sourceClubPeriod?.replace('-', '–')
+    return <span className="player-club-details player-reference">
+      <span className="club-detail-label">{t('collections.referenceLabel')}</span>
+      <ClubBadge clubId={player.club_tag} fallbackName={suppliedClub} />
+      {editorialPeriod && <span className="club-period">{editorialPeriod}</span>}
+      <span>{status !== 'UNKNOWN' && <>{t(`playerClubs.status.${status}`)} · </>}{t('playtest.edition', { edition: t(`catalog.categories.${player.category}`) })}</span>
       <small>{t('collections.editorial')}</small>
-      {details.sourceUrl ? <a href={details.sourceUrl} target="_blank" rel="noreferrer">{t('playerClubs.source')}</a> : <small>{t('playtest.sourceFile', { file: details.sourceFile })}</small>}
-      {periods.length ? periods.map((period) => <a key={`${period.club}-${period.from}-${period.to}`} href={period.url} target="_blank" rel="noreferrer">{period.club} · {period.from}–{period.to ?? t('playtest.present')}</a>) : player.category === 'legend' && <small>{t('playtest.periodUnknown')}</small>}
+      {details.sourceUrl && <a href={details.sourceUrl} target="_blank" rel="noreferrer">{t('playerClubs.source')}</a>}
+      {periods.map((period) => <a key={`${period.club}-${period.from}-${period.to}`} href={period.url} target="_blank" rel="noreferrer">{period.club} · {period.from}–{period.to ?? t('playtest.present')}</a>)}
+      {player.category === 'legend' && !editorialPeriod && !periods.length && <small>{t('playtest.periodUnknown')}</small>}
     </span>
   }
+
   return <span className="player-club-details">
     <span className="club-detail-row"><span className="club-detail-label">{t('playerClubs.current')}</span>
       {verified && snapshot.careerStatus === 'ACTIVE' && snapshot.currentClubId ? <ClubBadge clubId={snapshot.currentClubId} /> : <span className="club-career-status">{t(`playerClubs.status.${verified ? snapshot.careerStatus : 'UNKNOWN'}`)}</span>}

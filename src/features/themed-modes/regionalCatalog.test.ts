@@ -12,10 +12,10 @@ import { THEMED_MODES } from './modes'
 import { coachesForMode } from '../coaches/coachContext'
 
 describe('category tree and nationality collections', () => {
-  it('has eight categories, two editions each and no mixed legacy league in the visible tree', () => {
-    expect(CATEGORY_GROUPS.map((g) => g.id)).toEqual(['global', 'argentina', 'england', 'spain', 'italy', 'brazil', 'latinAmerica', 'europe'])
+  it('has nine categories, two editions each and no mixed legacy league in the visible tree', () => {
+    expect(CATEGORY_GROUPS.map((g) => g.id)).toEqual(['global', 'argentina', 'england', 'spain', 'italy', 'mexico', 'brazil', 'latinAmerica', 'europe'])
     expect(CATEGORY_GROUPS.every((g) => g.modes.length === 2)).toBe(true)
-    expect(new Set(CATEGORY_GROUPS.flatMap((g) => [...g.modes])).size).toBe(16)
+    expect(new Set(CATEGORY_GROUPS.flatMap((g) => [...g.modes])).size).toBe(18)
     expect(CATEGORY_GROUPS.flatMap((g) => [...g.modes])).not.toContain('ARGENTINA_CLUBS')
     expect(catalogForMode('ARGENTINA_CLUBS')).toHaveLength(200)
   })

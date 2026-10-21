@@ -26,7 +26,7 @@ describe('current and legend category variants', () => {
     fireEvent.click(screen.getByRole('button', { name: /^Europe/ }))
     expect(onChange).not.toHaveBeenCalled()
     fireEvent.click(screen.getByRole('button', { name: 'Back to categories' }))
-    expect(screen.getAllByRole('button')).toHaveLength(8)
+    expect(screen.getAllByRole('button')).toHaveLength(9)
     expect(screen.getByRole('status')).toHaveTextContent('Argentine league current players 2026')
     fireEvent.click(screen.getByRole('button', { name: /^Argentine league/ }))
     expect(screen.getByRole('button', { name: /^Argentine league current players 2026/ })).toHaveAttribute('aria-pressed', 'true')
@@ -75,7 +75,7 @@ describe('current and legend category variants', () => {
     expect(eligiblePlayers(players, definition('EUROPE_LEGENDS'), metadata)).toEqual([players[3]])
   })
 
-  it.each(['es-AR', 'en', 'pt-BR'] as const)('translates the eight categories and their editions in %s', async (language) => {
+  it.each(['es-AR', 'en', 'pt-BR'] as const)('translates the nine categories and their editions in %s', async (language) => {
     const i18n = await createI18n(language)
     expect(THEMED_MODES.map((mode) => mode.id).sort()).toEqual([...THEMED_MODE_IDS].sort())
     expect(new Set(THEMED_MODES.map((mode) => mode.id)).size).toBe(THEMED_MODE_IDS.length)
@@ -84,7 +84,7 @@ describe('current and legend category variants', () => {
     }
     const onChange = vi.fn()
     render(<I18nextProvider i18n={i18n}><ModeSelector selected="GLOBAL_CLASSIC" onChange={onChange} /></I18nextProvider>)
-    expect(screen.getAllByRole('button')).toHaveLength(8)
+    expect(screen.getAllByRole('button')).toHaveLength(9)
     for (const group of CATEGORY_GROUPS) {
       fireEvent.click(screen.getByRole('button', { name: new RegExp('^' + i18n.t('categoryTree.groups.' + group.id)) }))
       expect(screen.getByRole('heading', { name: i18n.t('categoryTree.groups.' + group.id) })).toHaveFocus()
@@ -96,6 +96,6 @@ describe('current and legend category variants', () => {
       }
       fireEvent.click(screen.getByRole('button', { name: i18n.t('categoryTree.back') }))
     }
-    expect(onChange).toHaveBeenCalledTimes(16)
+    expect(onChange).toHaveBeenCalledTimes(18)
   })
 })

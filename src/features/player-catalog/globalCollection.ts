@@ -1,5 +1,5 @@
 import { DRAFT_CATALOG } from '../draft/catalog'
-import { LEAGUE_PLAYERS } from './leagueCollections'
+import { ELIGIBLE_LEAGUE_PLAYERS, isEligibleEdition, LEAGUE_PLAYERS } from './leagueCollections'
 import { collectionPersonKey, distinctCollection } from './collectionIdentity'
 import worldPolicy from '../../data/league-collections/worldLegendPolicy.json'
 import type { Player } from '../../types/player'
@@ -13,9 +13,9 @@ export const NEUER_LEGEND: Player = { ...neuer, id: 'edition_neuer_legend', cate
 export const MASTER_CATALOG: readonly Player[] = [...DRAFT_CATALOG, ...LEAGUE_PLAYERS, NEUER_LEGEND]
 const retired = new Set(DRAFT_CATALOG.filter((p) => capturePlayerClubs(p).careerStatus === 'RETIRED').map(personKey))
 /** Highest supplied current OVR, stable id tie-break. No source edition is modified. */
-export const ALL_CURRENT = distinctCollection(MASTER_CATALOG.filter((p) => p.category === 'contemporary' && !retired.has(personKey(p))).sort((a, b) => b.overall_rating - a.overall_rating || a.id.localeCompare(b.id)))
+export const ALL_CURRENT = distinctCollection(MASTER_CATALOG.filter((p) => p.category === 'contemporary' && isEligibleEdition(p.id) && !retired.has(personKey(p))).sort((a, b) => b.overall_rating - a.overall_rating || a.id.localeCompare(b.id)))
 /** Local/league legends remain eligible regionally, independently of WORLD nominations. */
-export const ALL_LEGENDS = distinctCollection([...LEAGUE_PLAYERS.filter((p) => p.category === 'legend'), NEUER_LEGEND])
+export const ALL_LEGENDS = distinctCollection([...ELIGIBLE_LEAGUE_PLAYERS.filter((p) => p.category === 'legend'), NEUER_LEGEND])
 export const WORLD_LEGEND_POLICY = worldPolicy
 const source = new Map(MASTER_CATALOG.map((p) => [p.id, p]))
 export const ALL_GLOBAL_LEGENDS = distinctCollection(worldPolicy.approved.map((entry) => {

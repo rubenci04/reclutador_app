@@ -24,10 +24,10 @@ describe('supplied league collections', () => {
     expect(matheuzinhos).toHaveLength(2)
     expect(new Set(matheuzinhos.map((p) => p.id)).size).toBe(2)
   })
-  it('imports all 1,600 rows with valid positions, game ratings, prices, provenance and no photos', () => {
-    expect(LEAGUE_PLAYERS).toHaveLength(1600)
+  it('imports all 1,900 rows with valid positions, game ratings, prices, provenance and no photos', () => {
+    expect(LEAGUE_PLAYERS).toHaveLength(1900)
     const ids = LEAGUE_PLAYERS.map((p) => p.id)
-    expect(new Set(ids).size).toBe(1600)
+    expect(new Set(ids).size).toBe(1900)
     const issues = LEAGUE_PLAYERS.flatMap((p) => { const result = validatePlayer(p, ids); return result.valid ? [] : [{ id: p.id, issues: result.issues }] })
     expect(issues).toEqual([])
     expect(LEAGUE_PLAYERS.every((p) => approvedPhoto(p.id) === undefined)).toBe(true)
@@ -36,7 +36,7 @@ describe('supplied league collections', () => {
   it.each(IMPORTED_MODE_IDS)('%s supports affordable exclusive teams and simulation', (mode) => {
     const catalog = catalogForMode(mode)
     expect(catalog.length).toBeGreaterThanOrEqual(150)
-    if (mode !== 'LEGENDS_ONLY') expect(catalog).toHaveLength(mode.startsWith('ITALY') ? 200 : 150)
+    if (mode !== 'LEGENDS_ONLY') expect(catalog).toHaveLength(150)
     const config = { ...CLASSIC_CONFIG, budget: defaultBudgetForMode(mode), coaches: true, coachReserve: 8 }
     expect(preflightMatchConfig(catalog, config), mode).toMatchObject({ ok: true })
     for (let index = 0; index < 5; index++) {

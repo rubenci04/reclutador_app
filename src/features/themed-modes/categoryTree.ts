@@ -6,6 +6,7 @@ export const CATEGORY_GROUPS = [
   { id: 'england', modes: ['ENGLAND_LEAGUE', 'ENGLAND_LEGENDS'] },
   { id: 'spain', modes: ['SPAIN_LEAGUE', 'SPAIN_LEGENDS'] },
   { id: 'italy', modes: ['ITALY_CURRENT', 'ITALY_LEGENDS'] },
+  { id: 'mexico', modes: ['MEXICO_CURRENT', 'MEXICO_LEGENDS'] },
   { id: 'brazil', modes: ['BRAZIL_CURRENT', 'BRAZIL_LEGENDS'] },
   { id: 'latinAmerica', modes: ['SOUTH_AMERICA_CURRENT', 'SOUTH_AMERICA_LEGENDS'] },
   { id: 'europe', modes: ['EUROPE_CURRENT', 'EUROPE_LEGENDS'] },

@@ -1,9 +1,9 @@
 {
   "mode": "SPAIN_LEGENDS",
-  "draws": 160,
-  "baselineStars": 33,
-  "rareStars": 9,
-  "theoreticalUniformStars": 47.43529411764706,
+  "draws": 480,
+  "baselineStars": 120,
+  "rareStars": 26,
+  "theoreticalUniformStars": 142.30588235294118,
   "uniquePlayers": 150,
-  "distinctDraws": 160
+  "distinctDraws": 480
 }

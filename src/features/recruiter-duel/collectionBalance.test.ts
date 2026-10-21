@@ -17,13 +17,15 @@ describe('collection size and draw rarity', () => {
     })
     writeFileSync('docs/qa/COLLECTION-SIZES.json', JSON.stringify(counts, null, 2) + '\n')
   })
+  // A larger sample keeps the rare-star ratio statistically stable now that the global pool is larger (few S+ editions).
+  const DRAWS = 480
   it.each(['GLOBAL_CLASSIC', 'LEGENDS_ONLY', 'SPAIN_LEGENDS'] as const)('%s keeps S+ rare but obtainable while maintaining seeded variety and exclusive positions', (mode) => {
     const catalog = catalogForMode(mode)
     const byId = new Map(catalog.map((p) => [p.id, p]))
     const config = { ...CLASSIC_CONFIG, budget: defaultBudgetForMode(mode), coaches: true, coachReserve: 8 }
     let baselineStars = 0; let rareStars = 0
     const unique = new Set<string>(); const signatures = new Set<string>()
-    for (let i = 0; i < 160; i++) {
+    for (let i = 0; i < DRAWS; i++) {
       for (const policy of [undefined, 'rarity-v2'] as const) {
         const result = createRecruiterDuel(catalog, `rarity:${mode}:${i}`, createDrawContext(catalog, [], policy), config)
         expect(result.ok).toBe(true)
@@ -38,15 +40,15 @@ describe('collection size and draw rarity', () => {
         } else baselineStars += stars
       }
     }
-    const theoreticalUniformStars = 160 * (['ARQ', 'DEF', 'MED', 'DEL'] as const).reduce((sum, pos, i) => sum + [2, 8, 6, 6][i] * catalog.filter((p) => p.position === pos && p.overall_rating >= 98).length / catalog.filter((p) => p.position === pos).length, 0)
-    const report = { mode, draws: 160, baselineStars, rareStars, theoreticalUniformStars, uniquePlayers: unique.size, distinctDraws: signatures.size }
+    const theoreticalUniformStars = DRAWS * (['ARQ', 'DEF', 'MED', 'DEL'] as const).reduce((sum, pos, i) => sum + [2, 8, 6, 6][i] * catalog.filter((p) => p.position === pos && p.overall_rating >= 98).length / catalog.filter((p) => p.position === pos).length, 0)
+    const report = { mode, draws: DRAWS, baselineStars, rareStars, theoreticalUniformStars, uniquePlayers: unique.size, distinctDraws: signatures.size }
     console.info('rarity-v2', JSON.stringify(report))
     writeFileSync(`docs/qa/RARITY-${mode}.json`, JSON.stringify(report, null, 2) + '\n')
     // Old economy often eliminated every star. Rarity must not make them impossible.
     expect(rareStars).toBeGreaterThan(0)
     expect(rareStars).toBeLessThan(theoreticalUniformStars * .65)
-    expect(rareStars / 160).toBeLessThan(.15)
+    expect(rareStars / DRAWS).toBeLessThan(.15)
     expect(unique.size).toBeGreaterThan(catalog.length * .65)
-    expect(signatures.size).toBe(160)
-  }, 30000)
+    expect(signatures.size).toBe(DRAWS)
+  }, 90000)
 })

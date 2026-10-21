@@ -1,13 +1,13 @@
 [
   {
     "mode": "GLOBAL_CLASSIC",
-    "count": 882,
+    "count": 981,
     "stars": 2,
     "positions": {
-      "ARQ": 88,
-      "DEF": 244,
-      "MED": 304,
-      "DEL": 246
+      "ARQ": 96,
+      "DEF": 277,
+      "MED": 331,
+      "DEL": 277
     }
   },
   {
@@ -89,24 +89,46 @@
   },
   {
     "mode": "ITALY_CURRENT",
-    "count": 200,
+    "count": 150,
     "stars": 0,
     "positions": {
-      "ARQ": 18,
-      "DEF": 62,
-      "MED": 70,
-      "DEL": 50
+      "ARQ": 12,
+      "DEF": 51,
+      "MED": 48,
+      "DEL": 39
     }
   },
   {
     "mode": "ITALY_LEGENDS",
-    "count": 200,
+    "count": 150,
     "stars": 1,
     "positions": {
       "ARQ": 16,
-      "DEF": 41,
-      "MED": 62,
-      "DEL": 81
+      "DEF": 31,
+      "MED": 44,
+      "DEL": 59
+    }
+  },
+  {
+    "mode": "MEXICO_CURRENT",
+    "count": 150,
+    "stars": 0,
+    "positions": {
+      "ARQ": 15,
+      "DEF": 43,
+      "MED": 50,
+      "DEL": 42
+    }
+  },
+  {
+    "mode": "MEXICO_LEGENDS",
+    "count": 150,
+    "stars": 0,
+    "positions": {
+      "ARQ": 17,
+      "DEF": 23,
+      "MED": 40,
+      "DEL": 70
     }
   },
   {
@@ -133,46 +155,46 @@
   },
   {
     "mode": "SOUTH_AMERICA_CURRENT",
-    "count": 393,
+    "count": 525,
     "stars": 1,
     "positions": {
-      "ARQ": 40,
-      "DEF": 106,
-      "MED": 130,
-      "DEL": 117
+      "ARQ": 53,
+      "DEF": 143,
+      "MED": 176,
+      "DEL": 153
     }
   },
   {
     "mode": "SOUTH_AMERICA_LEGENDS",
-    "count": 333,
+    "count": 467,
     "stars": 3,
     "positions": {
-      "ARQ": 29,
-      "DEF": 69,
-      "MED": 100,
-      "DEL": 135
+      "ARQ": 46,
+      "DEF": 88,
+      "MED": 138,
+      "DEL": 195
     }
   },
   {
     "mode": "EUROPE_CURRENT",
-    "count": 397,
+    "count": 366,
     "stars": 1,
     "positions": {
-      "ARQ": 42,
-      "DEF": 118,
-      "MED": 145,
-      "DEL": 92
+      "ARQ": 38,
+      "DEF": 113,
+      "MED": 127,
+      "DEL": 88
     }
   },
   {
     "mode": "EUROPE_LEGENDS",
-    "count": 361,
+    "count": 327,
     "stars": 0,
     "positions": {
       "ARQ": 34,
-      "DEF": 66,
-      "MED": 116,
-      "DEL": 145
+      "DEF": 61,
+      "MED": 103,
+      "DEL": 129
     }
   }
 ]

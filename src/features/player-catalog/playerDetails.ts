@@ -7,6 +7,12 @@ import { referenceCareers, referenceTeamKey } from './referenceCareers'
 const byId = new Map(LEAGUE_PROVENANCE.map((p) => [p.id, p]))
 export const importedDetails = (id: string) => byId.get(id)
 export const specificPosition = (player: Player) => byId.get(player.id)?.sourcePosition
+/** Tactical codes of the supplied position, e.g. 'Mediapunta / Interior (MCO/MC)' -> ['MCO', 'MC']; plain codes ('ED') pass through. The original text stays in the provenance. */
+export function specificRoleCodes(player: Player): readonly string[] {
+  const source = specificPosition(player)
+  if (!source) return []
+  return (source.match(/\(([^)]+)\)/)?.[1] ?? source).split('/').map((code) => code.trim()).filter(Boolean)
+}
 export const playerCareerReferences = (player: Player) => {
   const reference = importedDetails(player.id)?.club ?? getClubIdentity(player.club_tag)?.name ?? player.club_tag
   const imported = referenceCareers(player.id, reference)

@@ -752,3 +752,5 @@
 .team-name-home strong { overflow-wrap: anywhere; max-width: 100%; }
 .entry-caption { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 750; line-height: 1.15; color: var(--text, #f0f4f8); max-width: 30ch; margin: .9rem auto 1.15rem; text-wrap: balance; }
 @media (max-width: 540px) { .team-name-screen { margin: 1rem auto; } .entry-caption { font-size: 1.45rem; margin: .7rem auto .9rem; } }
+.foot-icon{display:inline-flex;vertical-align:middle;margin-inline-end:4px}.foot-icon svg{width:22px;height:20px}.foot-on{fill:#d5fb76}.foot-off{fill:#ffffff3d}
+.player-facts{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:4px 0}.player-facts .club-period{color:#c6d5bd}.player-reference{display:grid;gap:3px}

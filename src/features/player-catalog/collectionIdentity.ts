@@ -1,12 +1,13 @@
 import { LEAGUE_PROVENANCE } from './leagueCollections'
 import oldAliases from '../../data/league-collections/identityAliases.json'
 import italianAliases from '../../data/league-collections/italyIdentityAliases.json'
+import mexicanAliases from '../../data/league-collections/mexicoIdentityAliases.json'
 import { playerIdentityKey, resolvePlayerIdentity } from './playerIdentity'
 import type { Player } from '../../types/player'
 const source = new Map(LEAGUE_PROVENANCE.map((r) => [r.id, r]))
 const parent = new Map<string, string>()
 const root = (id: string): string => { const next = parent.get(id); return next && next !== id ? root(next) : id }
-for (const group of [...oldAliases, ...italianAliases]) for (const id of group) parent.set(root(id), root(group[0]))
+for (const group of [...oldAliases, ...italianAliases, ...mexicanAliases]) for (const id of group) parent.set(root(id), root(group[0]))
 const groups = new Map<string, string[]>()
 for (const id of parent.keys()) { const key = root(id); groups.set(key, [...(groups.get(key) ?? []), id]) }
 const reviewed = new Map<string, string>()

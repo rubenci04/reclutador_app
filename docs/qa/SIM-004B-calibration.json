@@ -94,6 +94,24 @@
       "digest": "114ba7142ce29615094fdde60b8b1931001d8a53bda2c15d2543479a0431c73d"
     },
     {
+      "mode": "MEXICO_CURRENT",
+      "pairs": 12,
+      "mismatches": 0,
+      "goals": 49,
+      "wins": 8,
+      "draws": 2,
+      "digest": "57df2b0a46916a8f6db29b154671315fc13c212cd6d02c4416c39bd375209a68"
+    },
+    {
+      "mode": "MEXICO_LEGENDS",
+      "pairs": 12,
+      "mismatches": 0,
+      "goals": 39,
+      "wins": 8,
+      "draws": 1,
+      "digest": "967a3e7c1a075feeaac6e039e23eed9a3c4586976e0e5d68129261f8ab79e337"
+    },
+    {
       "mode": "BRAZIL_CURRENT",
       "pairs": 12,
       "mismatches": 0,
@@ -127,7 +145,7 @@
       "goals": 47,
       "wins": 7,
       "draws": 5,
-      "digest": "91b770d53c3e4b433a09a9fefe366459333c5dd13fc196d03aa5ead102f443f6"
+      "digest": "9eb4de83ea3b3c691f51e47b97102e6367c56857b579fdf06a04ef14319d9a7c"
     },
     {
       "mode": "EUROPE_CURRENT",
