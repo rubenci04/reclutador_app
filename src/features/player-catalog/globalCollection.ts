@@ -1,5 +1,5 @@
 import { DRAFT_CATALOG } from '../draft/catalog'
-import { ELIGIBLE_LEAGUE_PLAYERS, isEligibleEdition, LEAGUE_PLAYERS } from './leagueCollections'
+import { ELIGIBLE_LEAGUE_PLAYERS, isEligibleEdition, LEAGUE_PLAYERS, WORLD_EDITIONS, WORLD_EDITION_PREFIX, worldEditionId } from './leagueCollections'
 import { collectionPersonKey, distinctCollection } from './collectionIdentity'
 import worldPolicy from '../../data/league-collections/worldLegendPolicy.json'
 import type { Player } from '../../types/player'
@@ -9,8 +9,11 @@ export const personKey = collectionPersonKey
 // Explicit historical edition; active career status and edition category are independent.
 const neuer = DRAFT_CATALOG.find((p) => p.name === 'Manuel Neuer')!
 export const NEUER_LEGEND: Player = { ...neuer, id: 'edition_neuer_legend', category: 'legend', reference_year: 2014, era: '2010s' }
+/** World editions keep the source OVR of league legends whose league edition is rebalanced; only the nominated ones are needed. */
+const nominated = new Set(worldPolicy.approved.map((entry) => entry.editionId))
+export const WORLD_LEGEND_EDITIONS = WORLD_EDITIONS.filter((p) => nominated.has(p.id.slice(WORLD_EDITION_PREFIX.length)))
 /** Master editions stay available to saved games even when new category rules exclude them. */
-export const MASTER_CATALOG: readonly Player[] = [...DRAFT_CATALOG, ...LEAGUE_PLAYERS, NEUER_LEGEND]
+export const MASTER_CATALOG: readonly Player[] = [...DRAFT_CATALOG, ...LEAGUE_PLAYERS, NEUER_LEGEND, ...WORLD_LEGEND_EDITIONS]
 const retired = new Set(DRAFT_CATALOG.filter((p) => capturePlayerClubs(p).careerStatus === 'RETIRED').map(personKey))
 /** Highest supplied current OVR, stable id tie-break. No source edition is modified. */
 export const ALL_CURRENT = distinctCollection(MASTER_CATALOG.filter((p) => p.category === 'contemporary' && isEligibleEdition(p.id) && !retired.has(personKey(p))).sort((a, b) => b.overall_rating - a.overall_rating || a.id.localeCompare(b.id)))
@@ -19,7 +22,7 @@ export const ALL_LEGENDS = distinctCollection([...ELIGIBLE_LEAGUE_PLAYERS.filter
 export const WORLD_LEGEND_POLICY = worldPolicy
 const source = new Map(MASTER_CATALOG.map((p) => [p.id, p]))
 export const ALL_GLOBAL_LEGENDS = distinctCollection(worldPolicy.approved.map((entry) => {
-  const p = source.get(entry.editionId)
+  const p = source.get(worldEditionId(entry.editionId)) ?? source.get(entry.editionId)
   if (!p || p.category !== 'legend') throw Error(`invalid_world_legend_edition:${entry.editionId}`)
   return p
 }))

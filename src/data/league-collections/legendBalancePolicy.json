@@ -1,0 +1,19 @@
+{
+  "version": "legend-balance-v1",
+  "scope": "New games only. Source OVRs are never edited; the effective edition is a versioned layer.",
+  "method": "Editions at or below `knee` keep their OVR. Above it, players are ordered by (source OVR desc, sourceRank asc) and distributed over knee+1..cap with a geometric quota (`ratio` = how many times larger each lower slot is than the one above). Listed exceptions take `exceptionOvr` and leave the pool.",
+  "modes": {
+    "ARGENTINA_LEGENDS": { "league": "ARG", "knee": 90, "cap": 92, "ratio": 4, "exceptionOvr": 93 },
+    "BRAZIL_LEGENDS": { "league": "BRA", "knee": 90, "cap": 92, "ratio": 4, "exceptionOvr": 93 },
+    "MEXICO_LEGENDS": { "league": "MEX", "knee": 86, "cap": 90, "ratio": 2, "exceptionOvr": null }
+  },
+  "exceptions": [
+    { "id": "import_arg_ley_001", "name": "Diego Maradona", "reason": "Single most recognised Argentine figure" },
+    { "id": "import_arg_ley_002", "name": "Alfredo Di Stéfano", "reason": "Editorial exception: pre-eminent historical Argentine" },
+    { "id": "import_bra_bra_leg_edson_arantes_do_nascimento", "name": "Pelé", "reason": "Single most recognised Brazilian figure" },
+    { "id": "import_bra_bra_leg_manuel_francisco_dos_santos", "name": "Garrincha", "reason": "Editorial exception: all-time Brazilian great" },
+    { "id": "import_bra_bra_leg_ronaldo_luis_nazario_de_lima", "name": "Ronaldo", "reason": "Editorial exception: all-time Brazilian great" },
+    { "id": "import_bra_bra_leg_romario_de_souza_faria", "name": "Romário", "reason": "Editorial exception: all-time Brazilian great" },
+    { "id": "import_bra_bra_leg_arthur_antunes_coimbra", "name": "Zico", "reason": "Editorial exception: all-time Brazilian great" }
+  ]
+}

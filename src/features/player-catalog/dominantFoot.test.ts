@@ -70,7 +70,7 @@ describe('DATA-FOOT-001 metadata import', () => {
     const imported = new Map(LEAGUE_PLAYERS.map((p) => [p.id, p]))
     expect(catalog.some((p) => imported.has(p.id))).toBe(true)
     for (const player of catalog) {
-      const source = imported.get(player.id)
+      const source = imported.get(player.id.replace(/^world_/, ''))
       expect(dominantFoot(player)).toBe(source?.dominantFoot ?? 'UNKNOWN')
     }
   })

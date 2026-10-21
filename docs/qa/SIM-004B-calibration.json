@@ -4,24 +4,6 @@
   "mismatches": 0,
   "report": [
     {
-      "mode": "GLOBAL_CLASSIC",
-      "pairs": 12,
-      "mismatches": 0,
-      "goals": 57,
-      "wins": 11,
-      "draws": 1,
-      "digest": "808cd0495940894302247194a60f845d33c21c0f7549c7936bfb67d935fbf123"
-    },
-    {
-      "mode": "LEGENDS_ONLY",
-      "pairs": 12,
-      "mismatches": 0,
-      "goals": 59,
-      "wins": 7,
-      "draws": 1,
-      "digest": "58bebe7b8911400ae3972107b51dc61e264da1cd0ca49cb1f381d8284e89a026"
-    },
-    {
       "mode": "ARGENTINA_CURRENT",
       "pairs": 12,
       "mismatches": 0,
@@ -34,28 +16,46 @@
       "mode": "ARGENTINA_LEGENDS",
       "pairs": 12,
       "mismatches": 0,
-      "goals": 61,
+      "goals": 50,
+      "wins": 6,
+      "draws": 2,
+      "digest": "7e0ee294d5773fda560f9b0c918bc5cf8308ae4329c657cb910f4e6269c06922"
+    },
+    {
+      "mode": "BRAZIL_CURRENT",
+      "pairs": 12,
+      "mismatches": 0,
+      "goals": 57,
       "wins": 10,
-      "draws": 0,
-      "digest": "10b8f3d57eaa97ac508ca8c508773426338f776c37402e1eb044621d1e1ebd07"
+      "draws": 2,
+      "digest": "2d56347a9805260945fd958ff946e62acd18c2c5f9b9cc3a11032b6e6da25a15"
     },
     {
-      "mode": "ENGLAND_LEAGUE",
+      "mode": "BRAZIL_LEGENDS",
       "pairs": 12,
       "mismatches": 0,
-      "goals": 51,
-      "wins": 12,
-      "draws": 0,
-      "digest": "e214ac3620d68349a84fd839dd6ffd0662c13f03c433937a3ee2044f36461d35"
+      "goals": 45,
+      "wins": 6,
+      "draws": 3,
+      "digest": "32b568447712a503501370cd6492b97334a00919eb2297336ae514d39c23f60a"
     },
     {
-      "mode": "ENGLAND_LEGENDS",
+      "mode": "MEXICO_CURRENT",
       "pairs": 12,
       "mismatches": 0,
-      "goals": 48,
-      "wins": 11,
-      "draws": 1,
-      "digest": "21c0d0127a30f08903f24091aacd9c0e94d6c81a8edf3d3efb5a96c33d7aaaaa"
+      "goals": 49,
+      "wins": 8,
+      "draws": 2,
+      "digest": "57df2b0a46916a8f6db29b154671315fc13c212cd6d02c4416c39bd375209a68"
+    },
+    {
+      "mode": "MEXICO_LEGENDS",
+      "pairs": 12,
+      "mismatches": 0,
+      "goals": 40,
+      "wins": 4,
+      "draws": 2,
+      "digest": "bed852917a870f6ba26099d7f583e801a783ce750f117f7dae4e6f0d35f423d7"
     },
     {
       "mode": "SPAIN_LEAGUE",
@@ -76,6 +76,24 @@
       "digest": "92ae10b2b38df7129b0ec28473ef078b568c28cef8f9ea41d0fb3073fa46abc7"
     },
     {
+      "mode": "ENGLAND_LEAGUE",
+      "pairs": 12,
+      "mismatches": 0,
+      "goals": 51,
+      "wins": 12,
+      "draws": 0,
+      "digest": "e214ac3620d68349a84fd839dd6ffd0662c13f03c433937a3ee2044f36461d35"
+    },
+    {
+      "mode": "ENGLAND_LEGENDS",
+      "pairs": 12,
+      "mismatches": 0,
+      "goals": 48,
+      "wins": 11,
+      "draws": 1,
+      "digest": "21c0d0127a30f08903f24091aacd9c0e94d6c81a8edf3d3efb5a96c33d7aaaaa"
+    },
+    {
       "mode": "ITALY_CURRENT",
       "pairs": 12,
       "mismatches": 0,
@@ -94,40 +112,22 @@
       "digest": "114ba7142ce29615094fdde60b8b1931001d8a53bda2c15d2543479a0431c73d"
     },
     {
-      "mode": "MEXICO_CURRENT",
-      "pairs": 12,
-      "mismatches": 0,
-      "goals": 49,
-      "wins": 8,
-      "draws": 2,
-      "digest": "57df2b0a46916a8f6db29b154671315fc13c212cd6d02c4416c39bd375209a68"
-    },
-    {
-      "mode": "MEXICO_LEGENDS",
-      "pairs": 12,
-      "mismatches": 0,
-      "goals": 39,
-      "wins": 8,
-      "draws": 1,
-      "digest": "967a3e7c1a075feeaac6e039e23eed9a3c4586976e0e5d68129261f8ab79e337"
-    },
-    {
-      "mode": "BRAZIL_CURRENT",
+      "mode": "GLOBAL_CLASSIC",
       "pairs": 12,
       "mismatches": 0,
       "goals": 57,
-      "wins": 10,
-      "draws": 2,
-      "digest": "2d56347a9805260945fd958ff946e62acd18c2c5f9b9cc3a11032b6e6da25a15"
+      "wins": 11,
+      "draws": 1,
+      "digest": "808cd0495940894302247194a60f845d33c21c0f7549c7936bfb67d935fbf123"
     },
     {
-      "mode": "BRAZIL_LEGENDS",
+      "mode": "LEGENDS_ONLY",
       "pairs": 12,
       "mismatches": 0,
-      "goals": 52,
-      "wins": 4,
-      "draws": 6,
-      "digest": "9e723f22dc1825d56c5108376268d567ce4883f56cac6b2fd116fb48a2ff0eb0"
+      "goals": 59,
+      "wins": 7,
+      "draws": 1,
+      "digest": "c8a73bb71bb66dcf9292ec2ef87bc2930e3286f04cad5047c2ada062163d5623"
     },
     {
       "mode": "SOUTH_AMERICA_CURRENT",

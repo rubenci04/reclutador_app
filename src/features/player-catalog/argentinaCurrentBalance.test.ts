@@ -21,5 +21,5 @@ it('balances the 150 current Argentine players with explicit choices and varied 
     expect(validatePlayer(player, players.map((p) => p.id)).valid).toBe(true)
   }
   expect(LEAGUE_PROVENANCE.find((p) => p.id === 'import_arg_act_002')?.sourceRating).toBe(81)
-  expect(importedPlayersForMode('ARGENTINA_LEGENDS')!.every((p) => LEAGUE_PLAYERS.includes(p))).toBe(true)
+  expect(importedPlayersForMode('ARGENTINA_LEGENDS')!.every((p) => LEAGUE_PLAYERS.some((base) => base.id === p.id))).toBe(true)
 })

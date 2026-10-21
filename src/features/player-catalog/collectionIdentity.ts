@@ -17,6 +17,8 @@ for (const [key, ids] of groups) {
 }
 /** Full identities and explicit edition aliases only. Never match a surname or merge the two Édersons. */
 export function collectionPersonKey(player: Player): string {
+  // A world edition is the same person as its league edition.
+  if (player.id.startsWith('world_')) return collectionPersonKey({ ...player, id: player.id.slice(6) })
   // The supplied Atalanta midfielder is a different person from Ederson Moraes.
   if (player.id === 'import_ita_act_017') return 'person:ederson-atalanta-midfielder'
   const alias = reviewed.get(player.id)

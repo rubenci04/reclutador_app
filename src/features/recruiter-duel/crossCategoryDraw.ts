@@ -1,4 +1,5 @@
 import { catalogForMode } from '../themed-modes/modeCatalog'
+import { isBalancedLegendMode } from '../player-catalog/legendBalance'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
 import { generateCpuTeam } from '../local-match/cpuTeam'
 import { createSeededRandom } from '../local-match/seededRandom'
@@ -12,7 +13,9 @@ import type { Player } from '../../types/player'
 import { dualComplete, sideLineup, type DualDraft } from './dualDraft'
 
 export function crossCategoryCatalog(first: ThemedModeId, second: ThemedModeId) {
-  return [...new Map([...catalogForMode(first), ...catalogForMode(second)].map((p) => [p.id, p])).values()]
+  // Same id in both pools: the rebalanced legend edition (legend-balance-v1) wins, so it is never replaced by the source OVR.
+  const ordered = [first, second].sort((a, b) => Number(isBalancedLegendMode(a)) - Number(isBalancedLegendMode(b)))
+  return [...new Map(ordered.flatMap((mode) => catalogForMode(mode)).map((p) => [p.id, p])).values()]
 }
 
 interface FinishedTeam { readonly lineup: DraftLineup; readonly spent: number; readonly players: readonly Player[] }

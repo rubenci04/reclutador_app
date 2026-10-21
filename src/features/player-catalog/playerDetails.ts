@@ -5,8 +5,8 @@ import { normalizePlayerName, resolvePlayerIdentity } from './playerIdentity'
 import { getClubIdentity } from './clubRegistry'
 import { referenceCareers, referenceTeamKey } from './referenceCareers'
 const byId = new Map(LEAGUE_PROVENANCE.map((p) => [p.id, p]))
-export const importedDetails = (id: string) => byId.get(id)
-export const specificPosition = (player: Player) => byId.get(player.id)?.sourcePosition
+export const importedDetails = (id: string) => byId.get(id.replace(/^world_/, ''))
+export const specificPosition = (player: Player) => importedDetails(player.id)?.sourcePosition
 /** Tactical codes of the supplied position, e.g. 'Mediapunta / Interior (MCO/MC)' -> ['MCO', 'MC']; plain codes ('ED') pass through. The original text stays in the provenance. */
 export function specificRoleCodes(player: Player): readonly string[] {
   const source = specificPosition(player)
@@ -15,7 +15,7 @@ export function specificRoleCodes(player: Player): readonly string[] {
 }
 export const playerCareerReferences = (player: Player) => {
   const reference = importedDetails(player.id)?.club ?? getClubIdentity(player.club_tag)?.name ?? player.club_tag
-  const imported = referenceCareers(player.id, reference)
+  const imported = referenceCareers(player.id.replace(/^world_/, ''), reference)
   if (imported.length) return imported
   const identity = resolvePlayerIdentity(player.name)
   const fullName = importedDetails(player.id)?.fullName ?? player.name

@@ -15,6 +15,8 @@ export interface ClubVisual {
 
 /** Editorial: loosely follows how each club usually dresses, as original geometry (no licensed kits or crests). */
 const CLUB_PATTERNS: Readonly<Record<string, KitPattern>> = {
+  // Liga MX (DATA-VIS-002): editorial colour layouts, not official kits.
+  club_america: 'plain', guadalajara: 'stripes', cruz_azul: 'plain', toluca: 'plain', pumas_unam: 'vband', tigres_uanl: 'plain', monterrey: 'stripes', atlas: 'halves', santos_laguna: 'stripes', club_leon: 'plain', necaxa: 'hband', atletico_san_luis: 'stripes', tijuana: 'stripes', queretaro: 'stripes', atlante: 'halves', puebla: 'sash', fc_juarez: 'stripes', real_club_espana: 'plain', atletico_espanol: 'hoops', tampico_madero: 'halves', morelia: 'hoops', veracruz: 'plain', zacatepec: 'plain', oro: 'hoops', tecos_uag: 'plain', toros_neza: 'stripes', celaya: 'halves', pachuca: 'sash',
   barcelona: 'stripes', ac_milan: 'stripes', inter_milan: 'stripes', juventus: 'stripes', atletico_madrid: 'stripes', real_betis: 'stripes', athletic_club: 'stripes', real_sociedad: 'stripes',
   racing_club: 'stripes', estudiantes_la_plata: 'stripes', san_lorenzo: 'stripes', brighton_hove_albion: 'stripes', psv_eindhoven: 'stripes', lens: 'stripes', fenerbahce: 'stripes',
   besiktas: 'stripes', porto: 'stripes', botafogo: 'stripes', gremio: 'stripes', fluminense: 'stripes', crystal_palace: 'stripes', bournemouth: 'stripes', newcastle_united: 'stripes', argentina: 'stripes',
@@ -95,6 +97,37 @@ export const clubVisuals: Readonly<Record<string, ClubVisual | undefined>> = Obj
   ['wolverhampton_wanderers', 'Wolverhampton Wanderers', '#E8AF2F', '#151515'],
 ].map(([id, name, primary, secondary]) => [id, { id, name, primary, secondary, contrast: '#88949E', variant: 'duo' as const }]))
 
+/** Liga MX clubs (DATA-VIS-002). Kept apart from `clubVisuals`, which mirrors the draft catalogue exactly. */
+export const mexicanClubVisuals: Readonly<Record<string, ClubVisual | undefined>> = Object.fromEntries([
+  ['club_america', 'Club América', '#F6C90E', '#14306B'],
+  ['guadalajara', 'Guadalajara', '#C8102E', '#FFFFFF'],
+  ['cruz_azul', 'Cruz Azul', '#1F4E9C', '#FFFFFF'],
+  ['toluca', 'Toluca', '#C8102E', '#FFFFFF'],
+  ['pumas_unam', 'Pumas UNAM', '#12306B', '#C9A227'],
+  ['tigres_uanl', 'Tigres UANL', '#F5B400', '#0B3A8C'],
+  ['monterrey', 'Monterrey', '#12306B', '#FFFFFF'],
+  ['atlas', 'Atlas', '#C8102E', '#151515'],
+  ['santos_laguna', 'Santos Laguna', '#2E8B57', '#FFFFFF'],
+  ['club_leon', 'Club León', '#1E7B3A', '#FFFFFF'],
+  ['necaxa', 'Necaxa', '#C8102E', '#FFFFFF'],
+  ['atletico_san_luis', 'Atlético San Luis', '#F2C200', '#0B3A8C'],
+  ['tijuana', 'Tijuana', '#C8102E', '#151515'],
+  ['queretaro', 'Querétaro', '#1B4FA3', '#151515'],
+  ['atlante', 'Atlante', '#C8102E', '#0B3A8C'],
+  ['puebla', 'Puebla', '#FFFFFF', '#1B4FA3'],
+  ['fc_juarez', 'FC Juárez', '#3E9B4F', '#151515'],
+  ['real_club_espana', 'Real Club España', '#B3162A', '#F2C200'],
+  ['atletico_espanol', 'Atlético Español', '#C8102E', '#FFFFFF'],
+  ['tampico_madero', 'Tampico Madero', '#2B7FD0', '#FFFFFF'],
+  ['morelia', 'Morelia', '#E8A200', '#B3001B'],
+  ['veracruz', 'Veracruz', '#D9262E', '#FFFFFF'],
+  ['zacatepec', 'Zacatepec', '#FFFFFF', '#E8A200'],
+  ['oro', 'Oro', '#F2C200', '#1B4FA3'],
+  ['tecos_uag', 'Tecos UAG', '#B3162A', '#FFFFFF'],
+  ['toros_neza', 'Toros Neza', '#C8102E', '#151515'],
+  ['celaya', 'Celaya', '#F2C200', '#C8102E'],
+].map(([id, name, primary, secondary]) => [id, { id, name, primary, secondary, contrast: '#88949E', variant: 'duo' as const }]))
+
 export const neutralClubVisual: ClubVisual = { id: 'neutral', name: '', primary: '#38434D', secondary: '#B6C0C8', contrast: '#88949E', variant: 'duo' }
 
 export function getClubVisual(id: string): ClubVisual {
@@ -120,6 +153,7 @@ function baseClubVisual(id: string): ClubVisual {
     real_betis: ['#268257','#ffffff'], real_sociedad: ['#2662a3','#ffffff'], villarreal: ['#f3d53d','#23427b'], valencia: ['#fafafa','#161616'], athletic_club: ['#ce2b35','#ffffff'], osasuna: ['#c62636','#1e315f'], celta_de_vigo: ['#8ac9e7','#ffffff'], deportivo_alaves: ['#244b91','#ffffff'], elche: ['#ffffff','#27834c'], levante: ['#20427c','#c02d3d'], malaga: ['#7bb9df','#ffffff'], real_oviedo: ['#234d9a','#ffffff'],
   }
   if (Object.hasOwn(clubVisuals, key) && clubVisuals[key]) return clubVisuals[key]!
+  if (Object.hasOwn(mexicanClubVisuals, key) && mexicanClubVisuals[key]) return mexicanClubVisuals[key]!
   const colors = extra[key]
   if (Object.hasOwn(extra, key) && colors) return { id, name: '', primary: colors[0], secondary: colors[1], contrast: '#88949E', variant: 'duo' }
   return Object.hasOwn(clubVisuals, key) && clubVisuals[key] ? clubVisuals[key]! : neutralClubVisual

@@ -1,27 +1,5 @@
 [
   {
-    "mode": "GLOBAL_CLASSIC",
-    "count": 981,
-    "stars": 2,
-    "positions": {
-      "ARQ": 96,
-      "DEF": 277,
-      "MED": 331,
-      "DEL": 277
-    }
-  },
-  {
-    "mode": "LEGENDS_ONLY",
-    "count": 177,
-    "stars": 4,
-    "positions": {
-      "ARQ": 14,
-      "DEF": 33,
-      "MED": 61,
-      "DEL": 69
-    }
-  },
-  {
     "mode": "ARGENTINA_CURRENT",
     "count": 150,
     "stars": 0,
@@ -35,11 +13,77 @@
   {
     "mode": "ARGENTINA_LEGENDS",
     "count": 150,
-    "stars": 1,
+    "stars": 0,
     "positions": {
       "ARQ": 8,
       "DEF": 28,
       "MED": 46,
+      "DEL": 68
+    }
+  },
+  {
+    "mode": "BRAZIL_CURRENT",
+    "count": 150,
+    "stars": 0,
+    "positions": {
+      "ARQ": 15,
+      "DEF": 30,
+      "MED": 54,
+      "DEL": 51
+    }
+  },
+  {
+    "mode": "BRAZIL_LEGENDS",
+    "count": 150,
+    "stars": 0,
+    "positions": {
+      "ARQ": 19,
+      "DEF": 32,
+      "MED": 48,
+      "DEL": 51
+    }
+  },
+  {
+    "mode": "MEXICO_CURRENT",
+    "count": 150,
+    "stars": 0,
+    "positions": {
+      "ARQ": 15,
+      "DEF": 43,
+      "MED": 50,
+      "DEL": 42
+    }
+  },
+  {
+    "mode": "MEXICO_LEGENDS",
+    "count": 150,
+    "stars": 0,
+    "positions": {
+      "ARQ": 17,
+      "DEF": 23,
+      "MED": 40,
+      "DEL": 70
+    }
+  },
+  {
+    "mode": "SPAIN_LEAGUE",
+    "count": 150,
+    "stars": 0,
+    "positions": {
+      "ARQ": 15,
+      "DEF": 37,
+      "MED": 50,
+      "DEL": 48
+    }
+  },
+  {
+    "mode": "SPAIN_LEGENDS",
+    "count": 150,
+    "stars": 3,
+    "positions": {
+      "ARQ": 7,
+      "DEF": 25,
+      "MED": 50,
       "DEL": 68
     }
   },
@@ -66,28 +110,6 @@
     }
   },
   {
-    "mode": "SPAIN_LEAGUE",
-    "count": 150,
-    "stars": 0,
-    "positions": {
-      "ARQ": 15,
-      "DEF": 37,
-      "MED": 50,
-      "DEL": 48
-    }
-  },
-  {
-    "mode": "SPAIN_LEGENDS",
-    "count": 150,
-    "stars": 3,
-    "positions": {
-      "ARQ": 7,
-      "DEF": 25,
-      "MED": 50,
-      "DEL": 68
-    }
-  },
-  {
     "mode": "ITALY_CURRENT",
     "count": 150,
     "stars": 0,
@@ -110,47 +132,25 @@
     }
   },
   {
-    "mode": "MEXICO_CURRENT",
-    "count": 150,
-    "stars": 0,
+    "mode": "GLOBAL_CLASSIC",
+    "count": 981,
+    "stars": 2,
     "positions": {
-      "ARQ": 15,
-      "DEF": 43,
-      "MED": 50,
-      "DEL": 42
+      "ARQ": 96,
+      "DEF": 277,
+      "MED": 331,
+      "DEL": 277
     }
   },
   {
-    "mode": "MEXICO_LEGENDS",
-    "count": 150,
-    "stars": 0,
+    "mode": "LEGENDS_ONLY",
+    "count": 177,
+    "stars": 4,
     "positions": {
-      "ARQ": 17,
-      "DEF": 23,
-      "MED": 40,
-      "DEL": 70
-    }
-  },
-  {
-    "mode": "BRAZIL_CURRENT",
-    "count": 150,
-    "stars": 0,
-    "positions": {
-      "ARQ": 15,
-      "DEF": 30,
-      "MED": 54,
-      "DEL": 51
-    }
-  },
-  {
-    "mode": "BRAZIL_LEGENDS",
-    "count": 150,
-    "stars": 1,
-    "positions": {
-      "ARQ": 19,
-      "DEF": 32,
-      "MED": 48,
-      "DEL": 51
+      "ARQ": 14,
+      "DEF": 33,
+      "MED": 61,
+      "DEL": 69
     }
   },
   {
