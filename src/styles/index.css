@@ -758,3 +758,22 @@
 .coach-stats{display:flex;gap:6px;margin:0;padding:0;list-style:none}.coach-stats li{display:grid;justify-items:center;min-width:48px;padding:4px 6px;border:1px solid #ffffff30;border-radius:8px;background:#ffffff0d}.coach-stats b{color:#d5fb76}.coach-stats small{font-size:11px;opacity:.8}
 .coach-grid-six .coach-reference-details{display:grid;gap:2px}.coach-grid-six .coach-photo,.coach-grid-six .coach-emblem{margin-inline:0}
 @media(max-width:900px){.coach-grid-six{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.coach-grid-six{grid-template-columns:1fr}}
+/* UX-AUCTION-006 */
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.auction-player-bar{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 10px;margin:0 0 8px;border-radius:10px;background:#0f1d17f2;border:1px solid #d5fb7655;box-shadow:0 6px 14px #0006}
+.bar-avatar{position:relative;display:block;width:46px;height:56px;border-radius:8px;overflow:hidden;background:#173126}.bar-avatar img,.bar-avatar svg{width:100%;height:100%;object-fit:cover;object-position:50% 10%}.bar-avatar b{position:absolute;left:2px;top:2px;padding:0 5px;border-radius:5px;background:#0b1a13e8;color:#f4dc63;font-size:.95rem}
+.bar-identity{display:grid;gap:2px;min-width:0}.bar-identity strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:1.05rem}.bar-club{opacity:.85}
+.bar-meta{display:grid;justify-items:end;gap:2px;font-size:.78rem}
+.bid-turn .team-turn-name{font-size:clamp(1.3rem,5vw,1.8rem);margin:.15rem 0;color:var(--turn-accent,#d5fb76);overflow-wrap:anywhere}.team-status{margin:0 0 6px;color:#dbe8d7}.team-needs{color:#f4dc63}
+.bid-figures{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:8px 0}.bid-figures>div{padding:6px;border-radius:8px;background:#ffffff0d;border:1px solid #ffffff22;text-align:center;min-width:0}
+.bid-figures dt{font-size:.68rem;text-transform:uppercase;opacity:.8}.bid-figures dd{margin:0;font-weight:800;font-size:1.15rem}.bid-figures small{display:block;font-size:.65rem;opacity:.75;font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.figure-max dd{color:#d5fb76}.bid-figures.has-bid .figure-current{border-color:var(--turn-accent,#d5fb76);animation:play-enter .3s ease-out}
+.bid-amount{display:grid;gap:4px;margin:8px 0}.bid-amount input{min-height:44px;font-size:1.1rem}
+.bid-panel .bid-actions{grid-template-columns:1.6fr 1fr}.bid-primary{min-height:56px!important;font-size:1.15rem;font-weight:900;box-shadow:0 0 0 2px #d5fb7655,0 8px 20px #d5fb7633}.bid-pass{min-height:56px!important}
+.bid-details{margin-top:10px;font-size:.88rem}.bid-details summary{cursor:pointer;color:#e2faab}.bid-details ul{margin:6px 0;padding-left:18px}
+.hud-panel header strong{font-size:1rem}.hud-recruiter_one header strong{font-size:1.1rem;font-weight:900;color:var(--hud-colour,#fff)}
+.team-name-home{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:8px 0}.team-name-home strong{font-size:clamp(1.5rem,6vw,2.2rem);font-weight:900;line-height:1.1;overflow-wrap:anywhere;color:#d5fb76}
+.cpu-signings{margin:10px 0;padding:8px 12px;border:1px solid #ffffff2a;border-radius:10px}.cpu-signings summary{cursor:pointer;font-weight:700}
+@media(prefers-reduced-motion:reduce){.bid-figures.has-bid .figure-current{animation:none}}
+@media(max-width:520px){.bid-figures{grid-template-columns:repeat(2,minmax(0,1fr))}.auction-player-bar{grid-template-columns:auto minmax(0,1fr)}.bar-meta{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center}.bid-panel .bid-actions{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.bid-figures{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}.bid-figures>div{padding:4px 2px}.bid-figures dt{font-size:.58rem}.bid-figures dd{font-size:.95rem}.bid-figures small{font-size:.58rem}.auction-player-bar{grid-template-columns:auto minmax(0,1fr) auto;gap:8px;padding:6px 8px}.bar-meta{grid-column:auto;display:grid;justify-items:end}.bar-avatar{width:40px;height:48px}.bar-identity strong{font-size:.95rem}.bid-panel .bid-chips{gap:4px}.bid-panel .bid-chip{padding:6px 8px}.bid-amount{margin:4px 0}.bid-panel .risk-meter{margin:4px 0}.bid-turn .team-turn-name{margin:.05rem 0}}
