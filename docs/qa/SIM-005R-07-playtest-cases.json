@@ -1,0 +1,209 @@
+{
+  "version": "free-kicks-v1",
+  "cases": [
+    {
+      "id": "offensive_foul",
+      "profile": "real_balanced",
+      "seed": "free-kick-calibration:real_balanced:1",
+      "playId": "play-15",
+      "side": "local",
+      "zone": "CENTRAL_OUTSIDE",
+      "policy": {
+        "id": "FK_LEFT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "ending": "FK_SAVE"
+    },
+    {
+      "id": "fk_wall",
+      "profile": "real_balanced",
+      "seed": "free-kick-calibration:real_balanced:1",
+      "playId": "play-15",
+      "side": "local",
+      "zone": "CENTRAL_OUTSIDE",
+      "policy": {
+        "id": "FK_LEFT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "ending": "FK_SAVE"
+    },
+    {
+      "id": "fk_shot",
+      "profile": "real_balanced",
+      "seed": "free-kick-calibration:real_balanced:1",
+      "playId": "play-15",
+      "side": "local",
+      "zone": "CENTRAL_OUTSIDE",
+      "policy": {
+        "id": "FK_LEFT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "ending": "FK_SAVE"
+    },
+    {
+      "id": "fk_save",
+      "profile": "real_balanced",
+      "seed": "free-kick-calibration:real_balanced:1",
+      "playId": "play-15",
+      "side": "local",
+      "zone": "CENTRAL_OUTSIDE",
+      "policy": {
+        "id": "FK_LEFT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "ending": "FK_SAVE"
+    },
+    {
+      "id": "fk_cross",
+      "profile": "real_balanced",
+      "seed": "free-kick-calibration:real_balanced:1",
+      "playId": "play-75",
+      "side": "local",
+      "zone": "DEEP_OUTSIDE",
+      "policy": {
+        "id": "FK_LEFT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "ending": "FK_CLEAR"
+    },
+    {
+      "id": "defensive_foul",
+      "profile": "real_balanced",
+      "seed": "free-kick-calibration:real_balanced:2",
+      "playId": "play-30",
+      "side": "cpu",
+      "zone": "CENTRAL_OUTSIDE",
+      "policy": {
+        "id": "FK_LEFT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "ending": "FK_BLOCK"
+    },
+    {
+      "id": "fk_block",
+      "profile": "real_balanced",
+      "seed": "free-kick-calibration:real_balanced:2",
+      "playId": "play-30",
+      "side": "cpu",
+      "zone": "CENTRAL_OUTSIDE",
+      "policy": {
+        "id": "FK_LEFT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "ending": "FK_BLOCK"
+    },
+    {
+      "id": "fk_goal",
+      "profile": "real_balanced",
+      "seed": "free-kick-calibration:real_balanced:3",
+      "playId": "play-30",
+      "side": "local",
+      "zone": "CENTRAL_OUTSIDE",
+      "policy": {
+        "id": "FK_LEFT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "ending": "FK_GOAL"
+    },
+    {
+      "id": "fk_short",
+      "profile": "real_balanced",
+      "seed": "free-kick-calibration:real_balanced:4",
+      "playId": "play-60",
+      "side": "cpu",
+      "zone": "WIDE_OUTSIDE",
+      "policy": {
+        "id": "FK_LEFT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "ending": "FK_CLEAR"
+    },
+    {
+      "id": "fk_header_contact",
+      "profile": "real_balanced",
+      "seed": "free-kick-calibration:real_balanced:5",
+      "playId": "play-90",
+      "side": "cpu",
+      "zone": "DEEP_OUTSIDE",
+      "policy": {
+        "id": "FK_LEFT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "ending": "FK_GOAL"
+    },
+    {
+      "id": "fk_wide",
+      "profile": "real_balanced",
+      "seed": "free-kick-calibration:real_balanced:7",
+      "playId": "play-30",
+      "side": "cpu",
+      "zone": "CENTRAL_OUTSIDE",
+      "policy": {
+        "id": "FK_LEFT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "ending": "FK_WIDE"
+    },
+    {
+      "id": "fk_over",
+      "profile": "real_balanced",
+      "seed": "free-kick-calibration:real_balanced:31",
+      "playId": "play-60",
+      "side": "cpu",
+      "zone": "CENTRAL_OUTSIDE",
+      "policy": {
+        "id": "FK_LEFT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "ending": "FK_OVER"
+    }
+  ]
+}

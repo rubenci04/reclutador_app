@@ -15,6 +15,7 @@ import { MATCH_MINUTES, MATCH_RULES_VERSION, type MatchBlock, type MatchEvent, t
 import { createDirector, eligibleMoment, recordMoment, planDefense, resolveDefense, type MomentDirector } from './matchMoments'
 
 import { AERIAL_VERSION, isHeaderDirection, sendDirectedCross, resolveDirectedHeader, type AerialState } from './directedHeader'
+import { FREE_KICKS_VERSION, contactEligibleChance, planFreeKick, resolveFreeKick, type FreeKickState } from './freeKicks'
 import { CORNERS_VERSION, cornerFamilyChance, planCorner, resolveCorner, type CornerState } from './corners'
 
 const clamp = (value: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, value))
@@ -48,7 +49,7 @@ const meanAdjustment = (total: TacticalAdjustment): TacticalAdjustment => ({ att
 type Side = { team: MatchTeam; strength: TeamStrength; features: ReturnType<typeof tacticalFeatures>; unused: string[]; subbed: boolean; baseMidfield: number }
 
 /** Version-frozen block adapter. Historical batch API stays untouched as regression oracle. */
-export function initializeKernel(source: SimulationInput, attackTree: boolean | 'match-moments-v1' = false, aerial = false, duels = false, corners = false) {
+export function initializeKernel(source: SimulationInput, attackTree: boolean | 'match-moments-v1' = false, aerial = false, duels = false, corners = false, freeKicks = false) {
   const input = structuredClone(source)
   if (input.rulesVersion !== MATCH_RULES_VERSION || input.catalogVersion !== 'catalog_v1') throw new Error('unsupported_match_rules')
   const local = teamFrom(input.localLineup, input.catalog, input.budget, input.formations?.local)
@@ -78,6 +79,7 @@ export function initializeKernel(source: SimulationInput, attackTree: boolean | 
   const policyRandom = () => { const next = nextCheckpoint(directorRng); directorRng = next.checkpoint; return next.value }
   const director = attackTree === 'match-moments-v1' ? createDirector(policyRandom) : undefined
   return { input, local, cpu, sides, strengths, stats, score, blocks, advantage, quality, qualityTotals, effectiveTotals, adjustmentTotals, substitutionLog, selection, initialSelection: selection, nextBlock: 0, rng: { main: random, substitutions: substitutionRandom, ...(attackTree ? { tree: initialCheckpoint(`${input.seed}:tree`) } : {}), ...(director ? { director: directorRng } : {}), ...(aerial ? { aerial: initialCheckpoint(`${input.seed}:aerial`) } : {}) }, pendingChanges: [] as MatchEvent[], result: null as MatchResult | null,
+    ...(freeKicks ? { freeKicks: { version: FREE_KICKS_VERSION, plan: null, families: [] } as FreeKickState, freeKickRng: initialCheckpoint(`${input.seed}:free-kicks`), freeKickPolicyRng: initialCheckpoint(`${input.seed}:free-kick-policy`) } : {}),
     ...(corners ? { corners: { version: CORNERS_VERSION, plan: null, families: [] } as CornerState, cornerRng: initialCheckpoint(`${input.seed}:corners`), cornerPolicyRng: initialCheckpoint(`${input.seed}:corner-policy`) } : {}),
     ...(duels ? { duels: 'ovr-duels-v1' as const } : {}),
     ...(director ? { director: director as MomentDirector } : {}),
@@ -184,20 +186,32 @@ function playOpportunities(state: KernelState, events: MatchEvent[], from: numbe
       const excluded = state.director?.selected.map((s) => s.protagonistId) ?? []
       let planned = side === 'cpu' ? planDefense(ctx, `play-${minute}`, treeRandom, excluded) : planPlay(ctx, `play-${minute}`, treeRandom, excluded)
       let cornerEvents: readonly MatchEvent[] = []
+      let freeKickEvents: readonly MatchEvent[] = []
+      if (planned && state.freeKicks) {
+        const policy = nextCheckpoint(state.freeKickPolicyRng!); state.freeKickPolicyRng = policy.checkpoint
+        if (policy.value < contactEligibleChance(state.freeKicks.families.at(-1))) {
+          const contact = planFreeKick(ctx, side, 'play-' + minute, () => { const next = nextCheckpoint(state.freeKickRng!); state.freeKickRng = next.checkpoint; return next.value })
+          if (contact) {
+            freeKickEvents = contact.events
+            if (contact.play && contact.plan) { planned = { play: contact.play, protagonist: ctx.catalog.find((p) => p.id === (side === 'local' ? contact.play!.freeKick!.kickerId : contact.play!.freeKick!.targetId))! }; state.freeKicks.plan = contact.plan }
+          }
+        }
+      }
       if (planned && state.corners) {
         const policy = nextCheckpoint(state.cornerPolicyRng!); state.cornerPolicyRng = policy.checkpoint
-        if (policy.value < cornerFamilyChance(state.corners.families.at(-1))) {
+        if (!planned.play.freeKick && policy.value < cornerFamilyChance(state.corners.families.at(-1))) {
           const corner = planCorner(ctx, side, `play-${minute}`, () => { const next = nextCheckpoint(state.cornerRng!); state.cornerRng = next.checkpoint; return next.value }, excluded)
           if (corner) { planned = corner; cornerEvents = corner.events; state.corners.plan = corner.plan }
         }
         state.corners.families.push(cornerEvents.length ? 'CORNER' : 'OPEN_PLAY')
       }
       if (planned) {
+        state.freeKicks?.families.push(planned.play.freeKick ? 'FREE_KICK' : cornerEvents.length ? 'CORNER' : 'OPEN_PLAY')
         if (state.director) recordMoment(state.director, { opportunity: blockIndex * 4 + opportunity, side, protagonistId: planned.play.protagonistId }, () => { const next = nextCheckpoint(state.rng.director!); state.rng.director = next.checkpoint; return next.value })
         state.tree.started++
         state.partial.played = true; state.partial.opportunity = opportunity; state.partial.play = planned.play
         events.push({ minute, side, type: 'attack', playerId: planned.protagonist.id, step: side === 'cpu' ? 'DEFENSE_BUILD' : 'BUILD' })
-        for (const item of cornerEvents) { events.push(item); countEvent(state, item) }
+        for (const item of [...freeKickEvents, ...cornerEvents]) { events.push(item); countEvent(state, item) }
         return
       }
     }
@@ -263,7 +277,10 @@ export function resolveKernelPlay(current: KernelState, id: string, choice: Play
   const ctx = playContext(state, minute, effective)
   const aerialRandom = () => { const next = nextCheckpoint(state.rng.aerial!); state.rng.aerial = next.checkpoint; return next.value }
   let step
-  if (pending.corner && state.corners?.plan) {
+  if (pending.freeKick && state.freeKicks?.plan) {
+    step = resolveFreeKick(ctx, pending, choice, state.freeKicks.plan, () => { const next = nextCheckpoint(state.freeKickRng!); state.freeKickRng = next.checkpoint; return next.value })
+    if (!step.next) state.freeKicks.plan = null
+  } else if (pending.corner && state.corners?.plan) {
     step = resolveCorner(ctx, pending, choice, state.corners.plan, () => { const next = nextCheckpoint(state.cornerRng!); state.cornerRng = next.checkpoint; return next.value })
     if (!step.next) state.corners.plan = null
   } else if (state.aerial && pending.node === 'FINISH' && choice === 'CROSS') {

@@ -59,7 +59,7 @@ describe('audio engine', () => {
     expect(engine.play('cross')).toBe(true); expect(started.length).toBeGreaterThan(0)
   })
   it('has a recipe for every sound and creates no context before the first play', () => {
-    expect(SOUND_IDS).toEqual(['coinToss', 'coinLand', 'bid', 'award', 'signing', 'discard', 'diceRoll', 'goal', 'finalWhistle', 'kickoffWhistle', 'halfTimeWhistle', 'shot', 'pass', 'intercept', 'cross', 'header'])
+    expect(SOUND_IDS).toEqual(['coinToss', 'coinLand', 'bid', 'award', 'signing', 'discard', 'diceRoll', 'goal', 'finalWhistle', 'kickoffWhistle', 'halfTimeWhistle', 'shot', 'pass', 'intercept', 'cross', 'header', 'foulContact', 'wallBlock', 'keeperSave'])
     for (const id of SOUND_IDS) expect(RECIPES[id].tones.length + (RECIPES[id].noise?.length ?? 0)).toBeGreaterThan(0)
     const createContext = vi.fn(() => undefined)
     createAudioEngine({ storage: () => memoryStorage(), createContext })

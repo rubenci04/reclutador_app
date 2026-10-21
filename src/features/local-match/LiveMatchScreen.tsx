@@ -10,6 +10,7 @@ import { confirmLiveOrder, currentPower, defaultPlayChoice, keepWindow, resolveQ
 import { DecisionPanel, Handover } from './LiveDecisionPanel'
 import { HalftimePanel } from './HalftimePanel'
 import { PlayPanel } from './LivePlayPanel'
+import { freeKickBeatDuration } from './freeKickGeometry'
 import { cornerBeatDuration } from './cornerGeometry'
 import { aerialBeatDuration } from './aerialGeometry'
 import { frameFocus, frameSoundOffset, frameSounds, liveFrames } from './livePresentation'
@@ -100,7 +101,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
     } else if (next.error !== 'DUPLICATE_COMMAND' && next.error !== 'WRONG_PLAY' && next.error !== 'STALE_STATE') setError(next.error)
   }
   const nextManually = () => { if (!caughtUp) setCursor(frames.length); else advance(current.current.revision, true) }
-  const wait = rest || skipAnimation ? FAST_MS : (latest?.events.some((e) => e.corner) ? cornerBeatDuration(frameFocus(latest)?.step) : latest?.events.some((e) => e.aerial) ? aerialBeatDuration(frameFocus(latest)?.step) : FRAME_MS) / speed
+  const wait = rest || skipAnimation ? FAST_MS : (latest?.events.some((e) => e.freeKick) ? freeKickBeatDuration(frameFocus(latest)?.step) : latest?.events.some((e) => e.corner) ? cornerBeatDuration(frameFocus(latest)?.step) : latest?.events.some((e) => e.aerial) ? aerialBeatDuration(frameFocus(latest)?.step) : FRAME_MS) / speed
   useEffect(() => {
     if (beatClock.current.cursor !== cursor) beatClock.current = { cursor, elapsed: 0 }
     if (paused || exitOpen) return
@@ -142,7 +143,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   const final = finished ? exportResult(session) : null
   const focusEvent = frameFocus(latest)
   const source = [...events].reverse().find((item) => item !== focusEvent && item.playerId && (item.type === 'attack' || item.type === 'pass') && item.minute === focusEvent?.minute)
-  const play: BoardPlay = focusEvent && !finished ? { kind: focusEvent.type, side: focusEvent.side, playerId: focusEvent.playerId, aerial: focusEvent.aerial, corner: focusEvent.corner, ...(session.options.corners && !focusEvent.step ? { variant: eventVariant(focusEvent) } : {}), step: focusEvent.step, ...(focusEvent.step && !['BUILD', 'DEFENSE_BUILD'].includes(focusEvent.step) && source?.playerId ? { fromPlayerId: source.playerId } : {}), ...(focusEvent.corner ? { defenderId: focusEvent.corner.markerId ?? focusEvent.corner.defenderId } : atPlay && view.play ? { defenderId: view.play.node === 'DEFEND' ? view.play.protagonistId : view.play.options.find((o) => o.available)?.rivalId ?? undefined } : {}) } : IDLE_PLAY
+  const play: BoardPlay = focusEvent && !finished ? { kind: focusEvent.type, side: focusEvent.side, playerId: focusEvent.playerId, aerial: focusEvent.aerial, corner: focusEvent.corner, freeKick: focusEvent.freeKick, ...(session.options.corners && !focusEvent.step ? { variant: eventVariant(focusEvent) } : {}), step: focusEvent.step, ...(focusEvent.step && !['BUILD', 'DEFENSE_BUILD'].includes(focusEvent.step) && source?.playerId ? { fromPlayerId: source.playerId } : {}), ...(focusEvent.corner ? { defenderId: focusEvent.corner.markerId ?? focusEvent.corner.defenderId } : atPlay && view.play ? { defenderId: view.play.node === 'DEFEND' ? view.play.protagonistId : view.play.options.find((o) => o.available)?.rivalId ?? undefined } : {}) } : IDLE_PLAY
   const choices = atPlay && view.play && (view.play.node === 'DIRECTION' || view.play.node === 'FINISH') ? view.play.options.filter((option) => option.available && option.choice !== 'SHOOT').map((option) => ({ playerId: option.playerId, label: PLAY_LETTERS[option.choice] })) : []
   const goal = latest?.events.find((item) => item.type === 'goal')
   const momentum = momentumShare(events)
@@ -184,11 +185,12 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
       </div>
       <div className="match-progress" aria-hidden="true"><span style={{ width: `${Math.min(100, minute / 90 * 100)}%` }} /></div>
       <div className="live-board-wrap">
-        <TacticalBoard formations={session.kernel.input.formations ?? { local: '4-3-3', cpu: '4-3-3' }} lineups={{ local: session.kernel.sides.local.team.lineup, cpu: session.kernel.sides.cpu.team.lineup }} catalog={catalog} names={names} play={play} choices={choices} tick={shownCount} focus={play.corner ? play.corner.awardedTo === 'local' ? 'cpu' : 'local' : focus} speed={speed} animate={animate} paused={paused || exitOpen} />
+        <TacticalBoard formations={session.kernel.input.formations ?? { local: '4-3-3', cpu: '4-3-3' }} lineups={{ local: session.kernel.sides.local.team.lineup, cpu: session.kernel.sides.cpu.team.lineup }} catalog={catalog} names={names} play={play} choices={choices} tick={shownCount} focus={play.freeKick ? play.freeKick.awardedTo === 'local' ? 'cpu' : 'local' : play.corner ? play.corner.awardedTo === 'local' ? 'cpu' : 'local' : focus} speed={speed} animate={animate} paused={paused || exitOpen} />
         {focusEvent?.type === 'recovery' && focusEvent.step && <div className="recovery-flash" key={`recovery:${shownCount}`} role="status">{t('moments.recovered')}</div>}
         {goal && <div className={`goal-flash${goal.aerial ? ' header-goal-flash' : ''}`} key={`goal:${shownCount}`} role="status"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27" /><path d="m30 14 14 10-5 17H21l-5-17Z" /></svg>{t(goal.aerial || goal.corner && goal.corner.delivery !== 'CORNER_SHORT' ? 'aerial.goalCelebration' : 'match.goalCelebration', { team: goal.side ? names[goal.side] : '' })}</div>}
+        {play.freeKick && <small className="corner-camera-note">{t('freeKick.camera')}</small>}
         {play.corner && <small className="corner-camera-note">{t('corner.camera')}</small>}
-        <fieldset className="board-focus" disabled={Boolean(play.corner)}><legend>{t('board.focus')}</legend>
+        <fieldset className="board-focus" disabled={Boolean(play.corner || play.freeKick)}><legend>{t('board.focus')}</legend>
           {(['full', 'local', 'cpu'] as const).map((id) => <label key={id}><input type="radio" name="board-focus" checked={focus === id} onChange={() => setFocus(id)} />{id === 'full' ? t('board.full') : t('board.zone', { name: names[id] })}</label>)}
         </fieldset>
       </div>
@@ -211,7 +213,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
         <label>{t('navigation.speed')}<select value={speed} onChange={(e) => setSpeed(Number(e.target.value))}>{[1, 2, 4].map((rate) => <option key={rate} value={rate}>{rate}×</option>)}</select></label>
         <label><input type="checkbox" checked={skipAnimation} onChange={(e) => setSkipAnimation(e.target.checked)} />{t('liveDT.skipAnimations')}</label>
         <button className="secondary-action" disabled={caughtUp && session.phase !== 'RUNNABLE'} onClick={nextManually}>{t('liveDT.nextBlock')}</button>
-        {!rest && !session.window?.plans.local && !session.window?.plans.cpu && <ConfirmNavigation label={t('liveDT.simulateRest')} message={t(session.options.corners ? 'corner.keepWarning' : 'liveDT.keepWarning')} onOpenChange={setExitOpen} onConfirm={() => { setRest(true); setPaused(false) }} />}
+        {!rest && !session.window?.plans.local && !session.window?.plans.cpu && <ConfirmNavigation label={t('liveDT.simulateRest')} message={t(session.options.freeKicks ? 'freeKick.keepWarning' : session.options.corners ? 'corner.keepWarning' : 'liveDT.keepWarning')} onOpenChange={setExitOpen} onConfirm={() => { setRest(true); setPaused(false) }} />}
         <button className="secondary-action" onClick={() => { void save() }}>{t('liveDT.savePause')}</button>
         {savedRevision !== null && <button className="secondary-action" disabled={savedRevision !== session.revision} onClick={() => { void restore() }}>{t('liveDT.restorePause')}</button>}
         {rest && <p role="status">{t('liveDT.keepMode')}</p>}

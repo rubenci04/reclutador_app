@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react'
+import { freeKickBeatDuration, freeKickScene } from './freeKickGeometry'
 import { cornerBeatDuration, cornerScene } from './cornerGeometry'
 import { useTranslation } from 'react-i18next'
 import type { DraftLineup } from '../draft/draftTypes'
@@ -76,7 +77,7 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
       pulsed.current = tick; pose.current.pulse = 1; elapsed.current = 0
       // Preserve the previous confirmed pose when a new aerial beat starts.
       const actors = Object.fromEntries(dots.flatMap((dot) => dot.playerId ? [[dot.playerId, pose.current.players[dot.slotId + dot.side] ?? dot.home]] : []))
-      aerialStart.current = { ball: pose.current.ball, height: pose.current.height, jump: pose.current.jump, players: actors, keeper: actors[dots.find((d) => d.side === (play.corner?.awardedTo === 'cpu' ? 'local' : 'cpu') && d.slotId === 'GK')?.playerId ?? ''] ?? { x: play.corner?.awardedTo === 'cpu' ? .04 : .96, y: .5 } }
+      aerialStart.current = { ball: pose.current.ball, height: pose.current.height, jump: pose.current.jump, players: actors, keeper: actors[dots.find((d) => d.side === ((play.freeKick ?? play.corner)?.awardedTo === 'cpu' ? 'local' : 'cpu') && d.slotId === 'GK')?.playerId ?? ''] ?? { x: (play.freeKick ?? play.corner)?.awardedTo === 'cpu' ? .04 : .96, y: .5 } }
       pose.current.start = aerialStart.current
     }
     const draw = () => {
@@ -105,19 +106,19 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
       state.pulse = animate ? Math.max(0, state.pulse - dt * 1.4 * speed) : 0
       const action = latest.current.play
       elapsed.current += dt * 1000 * speed
-      state.progress = animate ? Math.min(1, elapsed.current / (action.corner ? cornerBeatDuration(action.step) : aerialBeatDuration(action.step))) : 1
-      if ((action.aerial || action.corner) && action.step) {
-        const scene = action.corner ? cornerScene(action.corner, action.step, state.progress, aerialStart.current) : aerialScene(action.aerial!, action.step, state.progress, aerialStart.current)
+      state.progress = animate ? Math.min(1, elapsed.current / (action.freeKick ? freeKickBeatDuration(action.step) : action.corner ? cornerBeatDuration(action.step) : aerialBeatDuration(action.step))) : 1
+      if ((action.aerial || action.corner || action.freeKick) && action.step) {
+        const scene = action.freeKick ? freeKickScene(action.freeKick, action.step, state.progress, aerialStart.current) : action.corner ? cornerScene(action.corner, action.step, state.progress, aerialStart.current) : aerialScene(action.aerial!, action.step, state.progress, aerialStart.current)
         state.ball = scene.ball; state.height = scene.height; state.jump = scene.jump
         for (const dot of latest.current.dots) {
           if (dot.playerId && scene.players[dot.playerId]) state.players[dot.slotId + dot.side] = scene.players[dot.playerId]
-          if (dot.side === (action.corner?.awardedTo === 'cpu' ? 'local' : 'cpu') && dot.slotId === 'GK') state.players[dot.slotId + dot.side] = scene.keeper
+          if (dot.side === ((action.freeKick ?? action.corner)?.awardedTo === 'cpu' ? 'local' : 'cpu') && dot.slotId === 'GK') state.players[dot.slotId + dot.side] = scene.keeper
         }
       } else { state.height = 0; state.jump = 0 }
       draw()
-      if ((action.aerial || action.corner) && state.progress >= 1) { frame = 0; return }
+      if ((action.aerial || action.corner || action.freeKick) && state.progress >= 1) { frame = 0; return }
       const settled = Math.abs(goal.ball.x - state.ball.x) < .001 && Math.abs(goal.ball.y - state.ball.y) < .001 && Object.entries(goal.players).every(([key, p]) => Math.abs(state.players[key].x - p.x) < .001 && Math.abs(state.players[key].y - p.y) < .001) && state.pulse === 0 && ['local', 'cpu'].every((side) => Math.abs(goal.shift[side as MatchSide] - state.shift[side as MatchSide]) < .001)
-      if (settled && !action.aerial && !action.corner) { state.ball = goal.ball; state.players = { ...goal.players }; state.shift = { ...goal.shift }; draw(); frame = 0; return }
+      if (settled && !action.aerial && !action.corner && !action.freeKick) { state.ball = goal.ball; state.players = { ...goal.players }; state.shift = { ...goal.shift }; draw(); frame = 0; return }
       frame = window.requestAnimationFrame(step)
     }
     frame = window.requestAnimationFrame(step)
@@ -129,17 +130,17 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
   const attacker = attackingSide(play)
   return <figure className="tactical-board">
     <canvas ref={canvas} className="tactical-canvas" role="img" aria-label={t('board.label', { local: names.local, cpu: names.cpu })} />
-    <figcaption className="tactical-caption">{attacker ? t('series.attacking', { name: names[attacker] }) : t('board.idle')}{carrierName && <> · <b>{carrierName}</b></>}</figcaption>
+    <figcaption className="tactical-caption">{attacker ? t('series.attacking', { name: names[attacker] }) : t('board.idle')}{carrierName && (!play.freeKick || carrier?.side === attacker) && <> · <b>{carrierName}</b></>}</figcaption>
   </figure>
 }
 
 function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, view: { dots: ReturnType<typeof boardDots>; carrier: BoardDot | undefined; from: BoardDot | undefined; options: readonly { dot: BoardDot; label: string }[]; carrierName: string | undefined; names: Readonly<Record<MatchSide, string>>; focus: BoardFocus; play: BoardPlay }) {
   const aerialActors = view.play.aerial ?? (view.play.corner ? { ...view.play.corner, defenderId: view.play.corner.markerId ?? view.play.corner.defenderId } : undefined)
-  const window_ = view.play.corner ? pose.camera : focusWindow(view.focus)
+  const window_ = (view.play.corner || view.play.freeKick) ? pose.camera : focusWindow(view.focus)
   const pitchW = w / (window_.to - window_.from); const pitchH = pitchW * PITCH_RATIO
   const ox = -window_.from * pitchW
   const pan = Math.min(0, Math.max(h - pitchH, h / 2 - pose.ball.y * pitchH))
-  const oy = view.play.corner ? pan * Math.min(1, (1 - window_.to + window_.from) / .45) : view.focus === 'full' ? 0 : pan
+  const oy = (view.play.corner || view.play.freeKick) ? pan * Math.min(1, (1 - window_.to + window_.from) / .45) : view.focus === 'full' ? 0 : pan
   const X = (u: number) => ox + u * pitchW; const Y = (v: number) => oy + v * pitchH
   ctx.clearRect(0, 0, w, h)
   ctx.save(); ctx.beginPath(); ctx.rect(0, 0, w, h); ctx.clip()
@@ -156,24 +157,24 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
   for (const x of [.005, .985]) { ctx.strokeStyle = '#ffffffaa'; ctx.lineWidth = 2; ctx.strokeRect(X(x), Y(.40), pitchW * .01, pitchH * .20) }
   // Direction of the attack: a quiet chevron strip toward the goal under pressure.
   const attacker = attackingSide(view.play)
-  if (attacker) {
+  if (attacker && !view.play.freeKick) {
     const dir = attacker === 'local' ? 1 : -1; const y = Y(.5); const start = X(.5 + dir * .06); const end = X(.5 + dir * .4)
     ctx.strokeStyle = COLORS[attacker] + 'aa'; ctx.lineWidth = 3; ctx.setLineDash([10, 8])
     ctx.beginPath(); ctx.moveTo(start, y); ctx.lineTo(end, y); ctx.stroke(); ctx.setLineDash([])
     ctx.beginPath(); ctx.moveTo(end, y - 9); ctx.lineTo(end + dir * 14, y); ctx.lineTo(end, y + 9); ctx.stroke()
   }
   const radius = Math.max(5, Math.min(11, pitchW * .0145))
-  const at = (dot: BoardDot) => { const p = pose.players[dot.slotId + dot.side] ?? dot.home; const jumping = aerialActors && (dot.playerId === aerialActors.targetId || dot.playerId === aerialActors.defenderId); return { x: X(p.x), y: Y(p.y) - (jumping ? pose.jump * pitchH : 0) } }
+  const at = (dot: BoardDot) => { const p = pose.players[dot.slotId + dot.side] ?? dot.home; const jumping = view.play.freeKick ? (view.play.step === 'FK_WALL' || view.play.step === 'FK_SHOT' ? view.play.freeKick.wallIds.includes(dot.playerId ?? '') : dot.playerId === view.play.freeKick.targetId || dot.playerId === view.play.freeKick.defenderId) : aerialActors && (dot.playerId === aerialActors.targetId || dot.playerId === aerialActors.defenderId); return { x: X(p.x), y: Y(p.y) - (jumping ? pose.jump * pitchH : 0) } }
   // The pass that was just played: from the protagonist to whoever received it (or cut it out).
-  if (!view.play.aerial && !view.play.corner && view.from && view.carrier && view.carrier !== view.from && (view.play.kind === 'pass' || view.play.kind === 'recovery')) {
+  if (!view.play.aerial && !view.play.corner && !view.play.freeKick && view.from && view.carrier && view.carrier !== view.from && (view.play.kind === 'pass' || view.play.kind === 'recovery')) {
     const a = at(view.from)
     ctx.strokeStyle = view.play.kind === 'pass' ? COLORS.gold : '#ffffffaa'; ctx.lineWidth = 3; ctx.setLineDash(view.play.kind === 'pass' ? [] : [6, 6])
     ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(X(pose.ball.x), Y(pose.ball.y)); ctx.stroke(); ctx.setLineDash([])
   }
-  if (aerialActors && view.play.step && ['AERIAL_CROSS', 'DIRECTED_HEADER_FLIGHT', 'CORNER_DELIVERY', 'CORNER_FLIGHT', 'CORNER_SHORT_PASS'].includes(view.play.step)) {
+  if ((aerialActors || view.play.freeKick) && view.play.step && ['FK_CROSS', 'FK_FLIGHT', 'FK_SHORT', 'AERIAL_CROSS', 'DIRECTED_HEADER_FLIGHT', 'CORNER_DELIVERY', 'CORNER_FLIGHT', 'CORNER_SHORT_PASS'].includes(view.play.step)) {
     ctx.strokeStyle = '#ffd54ab0'; ctx.lineWidth = 2; ctx.beginPath()
     for (let i = 0; i <= 24; i++) {
-      const scene = view.play.corner ? cornerScene(view.play.corner, view.play.step, pose.progress * i / 24, pose.start) : aerialScene(view.play.aerial!, view.play.step, pose.progress * i / 24, pose.start)
+      const scene = view.play.freeKick ? freeKickScene(view.play.freeKick, view.play.step, pose.progress * i / 24, pose.start) : view.play.corner ? cornerScene(view.play.corner, view.play.step, pose.progress * i / 24, pose.start) : aerialScene(view.play.aerial!, view.play.step, pose.progress * i / 24, pose.start)
       const x = X(scene.ball.x); const y = Y(scene.ball.y) - scene.height * pitchH
       if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y)
     }
@@ -214,8 +215,17 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
       ctx.font = '800 11px system-ui'; ctx.fillStyle = '#102016'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(['A', 'B', 'C'][i], X(point.x - .035), Y(point.y)); ctx.textBaseline = 'alphabetic'
     }
   }
+  if (view.play.freeKick && view.play.step === 'FK_FOUL') {
+    const a = view.play.freeKick, flip = a.awardedTo === 'cpu';
+    const rx = X(flip ? .34 : .66), ry = Y(flip ? .38 : .62), direction = flip ? -1 : 1;
+    ctx.fillStyle = '#ffe45e'; ctx.beginPath(); ctx.arc(rx, ry, radius, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#ffe45e'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(rx, ry); ctx.lineTo(rx + direction * radius * 3, ry - radius * 2); ctx.stroke();
+  }
+  if (view.play.freeKick?.awardedTo === 'local' && view.play.step === 'FK_SETUP' && view.play.freeKick.zone === 'CENTRAL_OUTSIDE') {
+    for (const [index, y] of [.43, .50, .57].entries()) { ctx.fillStyle = COLORS.gold; ctx.beginPath(); ctx.arc(X(.965), Y(y), radius, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#102016'; ctx.font = '800 11px system-ui'; ctx.textAlign = 'center'; ctx.fillText(['A', 'B', 'C'][index], X(.965), Y(y) + 4) }
+  }
   const bx = X(pose.ball.x); const groundY = Y(pose.ball.y); const by = groundY - pose.height * pitchH
-  if (aerialActors) {
+  if (aerialActors || view.play.freeKick) {
     ctx.fillStyle = '#0008'; ctx.beginPath(); ctx.ellipse(bx, groundY + 3, radius * .8, radius * .3, 0, 0, Math.PI * 2); ctx.fill()
     if (view.play.step === 'DIRECTED_HEADER_CONTACT' || view.play.step === 'CORNER_CONTACT') { ctx.strokeStyle = COLORS.gold; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(bx, by, radius * (1.4 + pose.progress), 0, Math.PI * 2); ctx.stroke() }
   }

@@ -2,7 +2,7 @@ import type { MatchEvent } from './matchTypes'
 import type { PlayChoice } from './interactive'
 
 /** Letter shared by a decision card and its teammate on the board. */
-export const PLAY_LETTERS: Readonly<Record<PlayChoice, string>> = { CORNER_NEAR: 'A', CORNER_FAR: 'B', CORNER_SHORT: 'C', MAN_MARK: 'A', ZONE: 'B', LEFT: 'A', RIGHT: 'B', CROSS: 'A', SHOOT: 'B', INTERCEPT: 'A', PRESS: 'B', NEAR_POST: 'A', GOAL_CENTER: 'B', FAR_POST: 'C' }
+export const PLAY_LETTERS: Readonly<Record<PlayChoice, string>> = { FK_LEFT: 'A', FK_CENTER: 'B', FK_RIGHT: 'C', FK_CROSS: 'A', FK_SHORT: 'B', WALL_JUMP: 'A', WALL_HOLD: 'B', CORNER_NEAR: 'A', CORNER_FAR: 'B', CORNER_SHORT: 'C', MAN_MARK: 'A', ZONE: 'B', LEFT: 'A', RIGHT: 'B', CROSS: 'A', SHOOT: 'B', INTERCEPT: 'A', PRESS: 'B', NEAR_POST: 'A', GOAL_CENTER: 'B', FAR_POST: 'C' }
 
 export const EVENT_ICONS: Readonly<Record<MatchEvent['type'], string>> = { corner: '⚑', goal: '⚽', shot: '🎯', save: '🧤', attack: '⚔', recovery: '↺', substitution: '⇄', final: '⏱', pass: '➜' }
 const EVENT_WEIGHT: Partial<Record<MatchEvent['type'], number>> = { attack: 1, shot: 2, goal: 3 }

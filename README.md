@@ -91,3 +91,7 @@ Los duelos incorporan calidad del once por niveles S+/S/A/B/C/D, bonus de plante
 ## SIM-005R-06 — Córners locales contra CPU
 
 Nuevos partidos dirigidos incorporan córners ofensivos/defensivos opt-in, cabezazo dirigido y variedad de relato/pizarra. Se preservan 24 oportunidades y frecuencia del director; estrategia sólo al inicio y entretiempo. [QA, calibración y reproducción humana](docs/qa/SIM-005R-06.md). Revisión visual completa y escucha pendientes por bloqueo de navegador en Work settings. Entrega local sin publicación.
+
+## SIM-005R-07 — Tiros libres locales contra CPU
+
+Extensión free-kicks-v1: falta con causa, tres destinos directos, centro/corto y barrera defensiva. Mantiene 24 oportunidades y máximo del director. [Implementación, calibración y QA](docs/qa/SIM-005R-07.md). Publicación y límites en docs/logs/SIM-005R-07.md.

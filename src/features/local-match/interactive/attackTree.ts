@@ -3,6 +3,7 @@ import type { DraftLineup } from '../../draft/draftTypes'
 import { formationSlots, type FormationId } from '../../tactics/formations'
 import type { StrategyId } from '../../tactics/strategies'
 import type { MatchEvent, MatchSide, PlayStep, TeamStrength } from '../matchTypes'
+import type { FreeKickEvent } from './freeKicks'
 import type { CornerEvent } from './corners'
 import type { AerialAction } from './directedHeader'
 import { defenderDuelChance } from './individualDuels'
@@ -28,8 +29,8 @@ export const ATTACK_TREE_LIMIT = 3
 const HEADER_BONUS = .06
 
 export type Sector = 'LEFT' | 'RIGHT'
-export type PlayChoice = 'CORNER_NEAR' | 'CORNER_FAR' | 'CORNER_SHORT' | 'MAN_MARK' | 'ZONE' | 'LEFT' | 'RIGHT' | 'CROSS' | 'SHOOT' | 'INTERCEPT' | 'PRESS' | 'NEAR_POST' | 'GOAL_CENTER' | 'FAR_POST'
-export type PlayNode = 'CORNER_ATTACK' | 'CORNER_DEFEND' | 'CORNER_HEADER' | 'DIRECTION' | 'FINISH' | 'DEFEND' | 'HEADER'
+export type PlayChoice = 'FK_LEFT' | 'FK_CENTER' | 'FK_RIGHT' | 'FK_CROSS' | 'FK_SHORT' | 'WALL_JUMP' | 'WALL_HOLD' | 'CORNER_NEAR' | 'CORNER_FAR' | 'CORNER_SHORT' | 'MAN_MARK' | 'ZONE' | 'LEFT' | 'RIGHT' | 'CROSS' | 'SHOOT' | 'INTERCEPT' | 'PRESS' | 'NEAR_POST' | 'GOAL_CENTER' | 'FAR_POST'
+export type PlayNode = 'FK_ATTACK' | 'FK_DEFEND' | 'FK_HEADER' | 'CORNER_ATTACK' | 'CORNER_DEFEND' | 'CORNER_HEADER' | 'DIRECTION' | 'FINISH' | 'DEFEND' | 'HEADER'
 export interface PlayOption { readonly choice: PlayChoice; readonly available: boolean; readonly playerId: string | null; readonly rivalId: string | null }
 export interface PendingPlay {
   readonly id: string
@@ -41,6 +42,7 @@ export interface PendingPlay {
   readonly options: readonly PlayOption[]
   readonly attackerId?: string
   readonly aerial?: AerialAction
+  readonly freeKick?: FreeKickEvent
   readonly corner?: CornerEvent
 }
 export interface PlayLogEntry { readonly id: string; readonly playId: string; readonly node: PlayNode; readonly choice: PlayChoice }

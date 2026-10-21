@@ -44,7 +44,18 @@ export function liveFrames(blocks: readonly MatchBlock[], open: OpenBlock | null
 /** Sounds a revealed frame triggers. The caller keeps a ledger keyed by frame so pause, speed or replay never repeat them. */
 export function frameSounds(frame: LiveFrame): readonly SoundId[] {
   const sounds: SoundId[] = []
-  if (frame.events.some((item) => item.step === 'CORNER_DELIVERY')) sounds.push('cross')
+  const fk = frame.events.find((item) => item.freeKick)
+  if (fk) {
+    if (fk.step === 'FK_FOUL') sounds.push('foulContact')
+    else if (fk.step === 'FK_SHOT') sounds.push('shot')
+    else if (fk.step === 'FK_HEADER_CONTACT') sounds.push('header')
+    else if (fk.step === 'FK_CROSS') sounds.push('cross')
+    else if (fk.step === 'FK_SHORT') sounds.push('pass')
+    else if (fk.step === 'FK_BLOCK') sounds.push('wallBlock')
+    else if (fk.step === 'FK_SAVE') sounds.push('keeperSave')
+    else if (fk.step === 'FK_GOAL') sounds.push('goal')
+    else if (fk.step === 'FK_CLEAR') sounds.push('intercept')
+  } else if (frame.events.some((item) => item.step === 'CORNER_DELIVERY')) sounds.push('cross')
   else if (frame.events.some((item) => item.step === 'CORNER_CONTACT')) sounds.push('header')
   else if (frame.events.some((item) => item.step === 'CORNER_SHOT')) sounds.push('shot')
   else if (frame.events.some((item) => item.step === 'AERIAL_CROSS')) sounds.push('cross')

@@ -1,0 +1,1232 @@
+{
+  "baseCommit": "64b9ac2",
+  "version": "free-kicks-v1",
+  "matches": 5040,
+  "method": "3 profiles × (6 execution/defense policies + R06 baseline) × 240 seeds. Legal real GLOBAL_CURRENT elevens and explicit synthetic equal-OVR readers from R06. Same seeds, normal CROSS, FAR_POST headers, KEEP windows. Different sporting paths may change later main draws; not a perfect counterfactual. Block counts follow existing recovery semantics and do not add fictitious shots. No probability retuning.",
+  "results": [
+    {
+      "profile": "real_balanced",
+      "policy": {
+        "id": "R06-baseline",
+        "enabled": false
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 584,
+        "opportunities": 5760,
+        "contacts": 0,
+        "legal": 0,
+        "beaten": 0,
+        "fouls": 0,
+        "freeKicks": 0,
+        "offensive": 0,
+        "defensive": 0,
+        "direct": 0,
+        "indirect": 0,
+        "shots": 4210,
+        "shotsOnTarget": 2982,
+        "saves": 2151,
+        "goals": 831,
+        "recoveries": 1759,
+        "kickShots": 0,
+        "kickGoals": 0,
+        "kickSaves": 0,
+        "blocks": 0,
+        "headers": 0,
+        "crosses": 0,
+        "short": 0,
+        "repeatedFamilies": 143,
+        "familyTransitions": 344
+      },
+      "options": {},
+      "outcomes": {},
+      "perMatch": {
+        "moments": 2.433333333333333,
+        "goals": 3.4625,
+        "fouls": 0,
+        "shots": 17.541666666666668,
+        "freeKicks": 0
+      }
+    },
+    {
+      "profile": "real_balanced",
+      "policy": {
+        "id": "FK_LEFT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 584,
+        "opportunities": 5760,
+        "contacts": 444,
+        "legal": 237,
+        "beaten": 73,
+        "fouls": 134,
+        "freeKicks": 134,
+        "offensive": 74,
+        "defensive": 60,
+        "direct": 69,
+        "indirect": 65,
+        "shots": 4251,
+        "shotsOnTarget": 3021,
+        "saves": 2171,
+        "goals": 850,
+        "recoveries": 1684,
+        "kickShots": 81,
+        "kickGoals": 25,
+        "kickSaves": 35,
+        "blocks": 18,
+        "headers": 26,
+        "crosses": 51,
+        "short": 14,
+        "repeatedFamilies": 87,
+        "familyTransitions": 344
+      },
+      "options": {
+        "FK_LEFT": 38,
+        "FK_CROSS": 36,
+        "WALL_JUMP": 31,
+        "MAN_MARK": 29,
+        "FAR_POST": 17
+      },
+      "outcomes": {
+        "FK_SAVE": 35,
+        "FK_CLEAR": 35,
+        "FK_BLOCK": 18,
+        "FK_GOAL": 25,
+        "FK_WIDE": 8,
+        "FK_OVER": 13
+      },
+      "perMatch": {
+        "moments": 2.433333333333333,
+        "goals": 3.5416666666666665,
+        "fouls": 0.5583333333333333,
+        "shots": 17.7125,
+        "freeKicks": 0.5583333333333333
+      }
+    },
+    {
+      "profile": "real_balanced",
+      "policy": {
+        "id": "FK_LEFT/WALL_HOLD",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_HOLD",
+        "indirect": "FK_CROSS",
+        "coverage": "ZONE"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 584,
+        "opportunities": 5760,
+        "contacts": 444,
+        "legal": 237,
+        "beaten": 73,
+        "fouls": 134,
+        "freeKicks": 134,
+        "offensive": 74,
+        "defensive": 60,
+        "direct": 69,
+        "indirect": 65,
+        "shots": 4256,
+        "shotsOnTarget": 3026,
+        "saves": 2174,
+        "goals": 852,
+        "recoveries": 1679,
+        "kickShots": 86,
+        "kickGoals": 27,
+        "kickSaves": 38,
+        "blocks": 14,
+        "headers": 27,
+        "crosses": 51,
+        "short": 14,
+        "repeatedFamilies": 87,
+        "familyTransitions": 344
+      },
+      "options": {
+        "FK_LEFT": 38,
+        "FK_CROSS": 36,
+        "WALL_HOLD": 31,
+        "ZONE": 29,
+        "FAR_POST": 17
+      },
+      "outcomes": {
+        "FK_SAVE": 38,
+        "FK_CLEAR": 34,
+        "FK_GOAL": 27,
+        "FK_WIDE": 8,
+        "FK_BLOCK": 14,
+        "FK_OVER": 13
+      },
+      "perMatch": {
+        "moments": 2.433333333333333,
+        "goals": 3.55,
+        "fouls": 0.5583333333333333,
+        "shots": 17.733333333333334,
+        "freeKicks": 0.5583333333333333
+      }
+    },
+    {
+      "profile": "real_balanced",
+      "policy": {
+        "id": "FK_CENTER/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_CENTER",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_SHORT",
+        "coverage": "MAN_MARK"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 584,
+        "opportunities": 5760,
+        "contacts": 445,
+        "legal": 236,
+        "beaten": 74,
+        "fouls": 135,
+        "freeKicks": 135,
+        "offensive": 74,
+        "defensive": 61,
+        "direct": 71,
+        "indirect": 64,
+        "shots": 4254,
+        "shotsOnTarget": 3026,
+        "saves": 2176,
+        "goals": 850,
+        "recoveries": 1680,
+        "kickShots": 85,
+        "kickGoals": 25,
+        "kickSaves": 40,
+        "blocks": 17,
+        "headers": 9,
+        "crosses": 15,
+        "short": 49,
+        "repeatedFamilies": 89,
+        "familyTransitions": 344
+      },
+      "options": {
+        "FK_CENTER": 38,
+        "FK_SHORT": 36,
+        "WALL_JUMP": 33,
+        "MAN_MARK": 28
+      },
+      "outcomes": {
+        "FK_SAVE": 40,
+        "FK_CLEAR": 33,
+        "FK_BLOCK": 17,
+        "FK_GOAL": 25,
+        "FK_WIDE": 7,
+        "FK_OVER": 13
+      },
+      "perMatch": {
+        "moments": 2.433333333333333,
+        "goals": 3.5416666666666665,
+        "fouls": 0.5625,
+        "shots": 17.725,
+        "freeKicks": 0.5625
+      }
+    },
+    {
+      "profile": "real_balanced",
+      "policy": {
+        "id": "FK_CENTER/WALL_HOLD",
+        "enabled": true,
+        "aim": "FK_CENTER",
+        "wall": "WALL_HOLD",
+        "indirect": "FK_SHORT",
+        "coverage": "ZONE"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 584,
+        "opportunities": 5760,
+        "contacts": 445,
+        "legal": 236,
+        "beaten": 74,
+        "fouls": 135,
+        "freeKicks": 135,
+        "offensive": 74,
+        "defensive": 61,
+        "direct": 71,
+        "indirect": 64,
+        "shots": 4259,
+        "shotsOnTarget": 3031,
+        "saves": 2179,
+        "goals": 852,
+        "recoveries": 1675,
+        "kickShots": 90,
+        "kickGoals": 27,
+        "kickSaves": 43,
+        "blocks": 13,
+        "headers": 10,
+        "crosses": 15,
+        "short": 49,
+        "repeatedFamilies": 89,
+        "familyTransitions": 344
+      },
+      "options": {
+        "FK_CENTER": 38,
+        "FK_SHORT": 36,
+        "WALL_HOLD": 33,
+        "ZONE": 28
+      },
+      "outcomes": {
+        "FK_SAVE": 43,
+        "FK_CLEAR": 32,
+        "FK_GOAL": 27,
+        "FK_WIDE": 7,
+        "FK_BLOCK": 13,
+        "FK_OVER": 13
+      },
+      "perMatch": {
+        "moments": 2.433333333333333,
+        "goals": 3.55,
+        "fouls": 0.5625,
+        "shots": 17.745833333333334,
+        "freeKicks": 0.5625
+      }
+    },
+    {
+      "profile": "real_balanced",
+      "policy": {
+        "id": "FK_RIGHT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_RIGHT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 584,
+        "opportunities": 5760,
+        "contacts": 444,
+        "legal": 237,
+        "beaten": 73,
+        "fouls": 134,
+        "freeKicks": 134,
+        "offensive": 74,
+        "defensive": 60,
+        "direct": 69,
+        "indirect": 65,
+        "shots": 4251,
+        "shotsOnTarget": 3021,
+        "saves": 2171,
+        "goals": 850,
+        "recoveries": 1684,
+        "kickShots": 81,
+        "kickGoals": 25,
+        "kickSaves": 35,
+        "blocks": 18,
+        "headers": 26,
+        "crosses": 51,
+        "short": 14,
+        "repeatedFamilies": 87,
+        "familyTransitions": 344
+      },
+      "options": {
+        "FK_RIGHT": 38,
+        "FK_CROSS": 36,
+        "WALL_JUMP": 31,
+        "MAN_MARK": 29,
+        "FAR_POST": 17
+      },
+      "outcomes": {
+        "FK_SAVE": 35,
+        "FK_CLEAR": 35,
+        "FK_BLOCK": 18,
+        "FK_GOAL": 25,
+        "FK_WIDE": 8,
+        "FK_OVER": 13
+      },
+      "perMatch": {
+        "moments": 2.433333333333333,
+        "goals": 3.5416666666666665,
+        "fouls": 0.5583333333333333,
+        "shots": 17.7125,
+        "freeKicks": 0.5583333333333333
+      }
+    },
+    {
+      "profile": "real_balanced",
+      "policy": {
+        "id": "FK_RIGHT/WALL_HOLD",
+        "enabled": true,
+        "aim": "FK_RIGHT",
+        "wall": "WALL_HOLD",
+        "indirect": "FK_CROSS",
+        "coverage": "ZONE"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 584,
+        "opportunities": 5760,
+        "contacts": 444,
+        "legal": 237,
+        "beaten": 73,
+        "fouls": 134,
+        "freeKicks": 134,
+        "offensive": 74,
+        "defensive": 60,
+        "direct": 69,
+        "indirect": 65,
+        "shots": 4256,
+        "shotsOnTarget": 3026,
+        "saves": 2174,
+        "goals": 852,
+        "recoveries": 1679,
+        "kickShots": 86,
+        "kickGoals": 27,
+        "kickSaves": 38,
+        "blocks": 14,
+        "headers": 27,
+        "crosses": 51,
+        "short": 14,
+        "repeatedFamilies": 87,
+        "familyTransitions": 344
+      },
+      "options": {
+        "FK_RIGHT": 38,
+        "FK_CROSS": 36,
+        "WALL_HOLD": 31,
+        "ZONE": 29,
+        "FAR_POST": 17
+      },
+      "outcomes": {
+        "FK_SAVE": 38,
+        "FK_CLEAR": 34,
+        "FK_GOAL": 27,
+        "FK_WIDE": 8,
+        "FK_BLOCK": 14,
+        "FK_OVER": 13
+      },
+      "perMatch": {
+        "moments": 2.433333333333333,
+        "goals": 3.55,
+        "fouls": 0.5583333333333333,
+        "shots": 17.733333333333334,
+        "freeKicks": 0.5583333333333333
+      }
+    },
+    {
+      "profile": "real_physical",
+      "policy": {
+        "id": "R06-baseline",
+        "enabled": false
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 546,
+        "opportunities": 5760,
+        "contacts": 0,
+        "legal": 0,
+        "beaten": 0,
+        "fouls": 0,
+        "freeKicks": 0,
+        "offensive": 0,
+        "defensive": 0,
+        "direct": 0,
+        "indirect": 0,
+        "shots": 4305,
+        "shotsOnTarget": 3118,
+        "saves": 2145,
+        "goals": 973,
+        "recoveries": 1675,
+        "kickShots": 0,
+        "kickGoals": 0,
+        "kickSaves": 0,
+        "blocks": 0,
+        "headers": 0,
+        "crosses": 0,
+        "short": 0,
+        "repeatedFamilies": 111,
+        "familyTransitions": 306
+      },
+      "options": {},
+      "outcomes": {},
+      "perMatch": {
+        "moments": 2.275,
+        "goals": 4.054166666666666,
+        "fouls": 0,
+        "shots": 17.9375,
+        "freeKicks": 0
+      }
+    },
+    {
+      "profile": "real_physical",
+      "policy": {
+        "id": "FK_LEFT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 546,
+        "opportunities": 5760,
+        "contacts": 411,
+        "legal": 210,
+        "beaten": 72,
+        "fouls": 129,
+        "freeKicks": 129,
+        "offensive": 72,
+        "defensive": 57,
+        "direct": 58,
+        "indirect": 71,
+        "shots": 4306,
+        "shotsOnTarget": 3124,
+        "saves": 2151,
+        "goals": 973,
+        "recoveries": 1642,
+        "kickShots": 71,
+        "kickGoals": 20,
+        "kickSaves": 35,
+        "blocks": 18,
+        "headers": 26,
+        "crosses": 60,
+        "short": 11,
+        "repeatedFamilies": 65,
+        "familyTransitions": 306
+      },
+      "options": {
+        "FK_CROSS": 39,
+        "FAR_POST": 17,
+        "WALL_JUMP": 25,
+        "MAN_MARK": 32,
+        "FK_LEFT": 33
+      },
+      "outcomes": {
+        "FK_GOAL": 20,
+        "FK_CLEAR": 40,
+        "FK_SAVE": 35,
+        "FK_BLOCK": 18,
+        "FK_OVER": 11,
+        "FK_WIDE": 5
+      },
+      "perMatch": {
+        "moments": 2.275,
+        "goals": 4.054166666666666,
+        "fouls": 0.5375,
+        "shots": 17.941666666666666,
+        "freeKicks": 0.5375
+      }
+    },
+    {
+      "profile": "real_physical",
+      "policy": {
+        "id": "FK_LEFT/WALL_HOLD",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_HOLD",
+        "indirect": "FK_CROSS",
+        "coverage": "ZONE"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 546,
+        "opportunities": 5760,
+        "contacts": 411,
+        "legal": 210,
+        "beaten": 72,
+        "fouls": 129,
+        "freeKicks": 129,
+        "offensive": 72,
+        "defensive": 57,
+        "direct": 58,
+        "indirect": 71,
+        "shots": 4305,
+        "shotsOnTarget": 3123,
+        "saves": 2151,
+        "goals": 972,
+        "recoveries": 1643,
+        "kickShots": 70,
+        "kickGoals": 19,
+        "kickSaves": 35,
+        "blocks": 20,
+        "headers": 27,
+        "crosses": 60,
+        "short": 11,
+        "repeatedFamilies": 65,
+        "familyTransitions": 306
+      },
+      "options": {
+        "FK_CROSS": 39,
+        "FAR_POST": 17,
+        "WALL_HOLD": 25,
+        "ZONE": 32,
+        "FK_LEFT": 33
+      },
+      "outcomes": {
+        "FK_GOAL": 19,
+        "FK_CLEAR": 39,
+        "FK_SAVE": 35,
+        "FK_BLOCK": 20,
+        "FK_OVER": 11,
+        "FK_WIDE": 5
+      },
+      "perMatch": {
+        "moments": 2.275,
+        "goals": 4.05,
+        "fouls": 0.5375,
+        "shots": 17.9375,
+        "freeKicks": 0.5375
+      }
+    },
+    {
+      "profile": "real_physical",
+      "policy": {
+        "id": "FK_CENTER/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_CENTER",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_SHORT",
+        "coverage": "MAN_MARK"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 546,
+        "opportunities": 5760,
+        "contacts": 411,
+        "legal": 212,
+        "beaten": 70,
+        "fouls": 129,
+        "freeKicks": 129,
+        "offensive": 72,
+        "defensive": 57,
+        "direct": 57,
+        "indirect": 72,
+        "shots": 4307,
+        "shotsOnTarget": 3129,
+        "saves": 2157,
+        "goals": 972,
+        "recoveries": 1641,
+        "kickShots": 72,
+        "kickGoals": 19,
+        "kickSaves": 41,
+        "blocks": 16,
+        "headers": 10,
+        "crosses": 22,
+        "short": 50,
+        "repeatedFamilies": 65,
+        "familyTransitions": 306
+      },
+      "options": {
+        "FK_SHORT": 39,
+        "WALL_JUMP": 24,
+        "MAN_MARK": 33,
+        "FK_CENTER": 33
+      },
+      "outcomes": {
+        "FK_OVER": 8,
+        "FK_CLEAR": 41,
+        "FK_SAVE": 41,
+        "FK_GOAL": 19,
+        "FK_BLOCK": 16,
+        "FK_WIDE": 4
+      },
+      "perMatch": {
+        "moments": 2.275,
+        "goals": 4.05,
+        "fouls": 0.5375,
+        "shots": 17.945833333333333,
+        "freeKicks": 0.5375
+      }
+    },
+    {
+      "profile": "real_physical",
+      "policy": {
+        "id": "FK_CENTER/WALL_HOLD",
+        "enabled": true,
+        "aim": "FK_CENTER",
+        "wall": "WALL_HOLD",
+        "indirect": "FK_SHORT",
+        "coverage": "ZONE"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 546,
+        "opportunities": 5760,
+        "contacts": 411,
+        "legal": 212,
+        "beaten": 70,
+        "fouls": 129,
+        "freeKicks": 129,
+        "offensive": 72,
+        "defensive": 57,
+        "direct": 57,
+        "indirect": 72,
+        "shots": 4307,
+        "shotsOnTarget": 3128,
+        "saves": 2157,
+        "goals": 971,
+        "recoveries": 1641,
+        "kickShots": 72,
+        "kickGoals": 18,
+        "kickSaves": 41,
+        "blocks": 17,
+        "headers": 11,
+        "crosses": 22,
+        "short": 50,
+        "repeatedFamilies": 65,
+        "familyTransitions": 306
+      },
+      "options": {
+        "FK_SHORT": 39,
+        "WALL_HOLD": 24,
+        "ZONE": 33,
+        "FK_CENTER": 33
+      },
+      "outcomes": {
+        "FK_OVER": 9,
+        "FK_CLEAR": 40,
+        "FK_SAVE": 41,
+        "FK_GOAL": 18,
+        "FK_BLOCK": 17,
+        "FK_WIDE": 4
+      },
+      "perMatch": {
+        "moments": 2.275,
+        "goals": 4.045833333333333,
+        "fouls": 0.5375,
+        "shots": 17.945833333333333,
+        "freeKicks": 0.5375
+      }
+    },
+    {
+      "profile": "real_physical",
+      "policy": {
+        "id": "FK_RIGHT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_RIGHT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 546,
+        "opportunities": 5760,
+        "contacts": 411,
+        "legal": 210,
+        "beaten": 72,
+        "fouls": 129,
+        "freeKicks": 129,
+        "offensive": 72,
+        "defensive": 57,
+        "direct": 58,
+        "indirect": 71,
+        "shots": 4306,
+        "shotsOnTarget": 3124,
+        "saves": 2151,
+        "goals": 973,
+        "recoveries": 1642,
+        "kickShots": 71,
+        "kickGoals": 20,
+        "kickSaves": 35,
+        "blocks": 18,
+        "headers": 26,
+        "crosses": 60,
+        "short": 11,
+        "repeatedFamilies": 65,
+        "familyTransitions": 306
+      },
+      "options": {
+        "FK_CROSS": 39,
+        "FAR_POST": 17,
+        "WALL_JUMP": 25,
+        "MAN_MARK": 32,
+        "FK_RIGHT": 33
+      },
+      "outcomes": {
+        "FK_GOAL": 20,
+        "FK_CLEAR": 40,
+        "FK_SAVE": 35,
+        "FK_BLOCK": 18,
+        "FK_OVER": 11,
+        "FK_WIDE": 5
+      },
+      "perMatch": {
+        "moments": 2.275,
+        "goals": 4.054166666666666,
+        "fouls": 0.5375,
+        "shots": 17.941666666666666,
+        "freeKicks": 0.5375
+      }
+    },
+    {
+      "profile": "real_physical",
+      "policy": {
+        "id": "FK_RIGHT/WALL_HOLD",
+        "enabled": true,
+        "aim": "FK_RIGHT",
+        "wall": "WALL_HOLD",
+        "indirect": "FK_CROSS",
+        "coverage": "ZONE"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 546,
+        "opportunities": 5760,
+        "contacts": 411,
+        "legal": 210,
+        "beaten": 72,
+        "fouls": 129,
+        "freeKicks": 129,
+        "offensive": 72,
+        "defensive": 57,
+        "direct": 58,
+        "indirect": 71,
+        "shots": 4305,
+        "shotsOnTarget": 3123,
+        "saves": 2151,
+        "goals": 972,
+        "recoveries": 1643,
+        "kickShots": 70,
+        "kickGoals": 19,
+        "kickSaves": 35,
+        "blocks": 20,
+        "headers": 27,
+        "crosses": 60,
+        "short": 11,
+        "repeatedFamilies": 65,
+        "familyTransitions": 306
+      },
+      "options": {
+        "FK_CROSS": 39,
+        "FAR_POST": 17,
+        "WALL_HOLD": 25,
+        "ZONE": 32,
+        "FK_RIGHT": 33
+      },
+      "outcomes": {
+        "FK_GOAL": 19,
+        "FK_CLEAR": 39,
+        "FK_SAVE": 35,
+        "FK_BLOCK": 20,
+        "FK_OVER": 11,
+        "FK_WIDE": 5
+      },
+      "perMatch": {
+        "moments": 2.275,
+        "goals": 4.05,
+        "fouls": 0.5375,
+        "shots": 17.9375,
+        "freeKicks": 0.5375
+      }
+    },
+    {
+      "profile": "synthetic_readers",
+      "policy": {
+        "id": "R06-baseline",
+        "enabled": false
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 462,
+        "opportunities": 5760,
+        "contacts": 0,
+        "legal": 0,
+        "beaten": 0,
+        "fouls": 0,
+        "freeKicks": 0,
+        "offensive": 0,
+        "defensive": 0,
+        "direct": 0,
+        "indirect": 0,
+        "shots": 4507,
+        "shotsOnTarget": 3355,
+        "saves": 2030,
+        "goals": 1325,
+        "recoveries": 1429,
+        "kickShots": 0,
+        "kickGoals": 0,
+        "kickSaves": 0,
+        "blocks": 0,
+        "headers": 0,
+        "crosses": 0,
+        "short": 0,
+        "repeatedFamilies": 87,
+        "familyTransitions": 228
+      },
+      "options": {},
+      "outcomes": {},
+      "perMatch": {
+        "moments": 1.925,
+        "goals": 5.520833333333333,
+        "fouls": 0,
+        "shots": 18.779166666666665,
+        "freeKicks": 0
+      }
+    },
+    {
+      "profile": "synthetic_readers",
+      "policy": {
+        "id": "FK_LEFT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 462,
+        "opportunities": 5760,
+        "contacts": 350,
+        "legal": 178,
+        "beaten": 67,
+        "fouls": 105,
+        "freeKicks": 105,
+        "offensive": 67,
+        "defensive": 38,
+        "direct": 58,
+        "indirect": 47,
+        "shots": 4520,
+        "shotsOnTarget": 3381,
+        "saves": 2045,
+        "goals": 1336,
+        "recoveries": 1387,
+        "kickShots": 65,
+        "kickGoals": 20,
+        "kickSaves": 29,
+        "blocks": 13,
+        "headers": 18,
+        "crosses": 42,
+        "short": 5,
+        "repeatedFamilies": 55,
+        "familyTransitions": 228
+      },
+      "options": {
+        "FK_CROSS": 30,
+        "FAR_POST": 13,
+        "MAN_MARK": 17,
+        "WALL_JUMP": 21,
+        "FK_LEFT": 37
+      },
+      "outcomes": {
+        "FK_GOAL": 20,
+        "FK_SAVE": 29,
+        "FK_CLEAR": 27,
+        "FK_BLOCK": 13,
+        "FK_WIDE": 11,
+        "FK_OVER": 5
+      },
+      "perMatch": {
+        "moments": 1.925,
+        "goals": 5.566666666666666,
+        "fouls": 0.4375,
+        "shots": 18.833333333333332,
+        "freeKicks": 0.4375
+      }
+    },
+    {
+      "profile": "synthetic_readers",
+      "policy": {
+        "id": "FK_LEFT/WALL_HOLD",
+        "enabled": true,
+        "aim": "FK_LEFT",
+        "wall": "WALL_HOLD",
+        "indirect": "FK_CROSS",
+        "coverage": "ZONE"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 462,
+        "opportunities": 5760,
+        "contacts": 350,
+        "legal": 178,
+        "beaten": 67,
+        "fouls": 105,
+        "freeKicks": 105,
+        "offensive": 67,
+        "defensive": 38,
+        "direct": 58,
+        "indirect": 47,
+        "shots": 4519,
+        "shotsOnTarget": 3380,
+        "saves": 2044,
+        "goals": 1336,
+        "recoveries": 1388,
+        "kickShots": 64,
+        "kickGoals": 20,
+        "kickSaves": 28,
+        "blocks": 13,
+        "headers": 18,
+        "crosses": 42,
+        "short": 5,
+        "repeatedFamilies": 55,
+        "familyTransitions": 228
+      },
+      "options": {
+        "FK_CROSS": 30,
+        "FAR_POST": 13,
+        "ZONE": 17,
+        "WALL_HOLD": 21,
+        "FK_LEFT": 37
+      },
+      "outcomes": {
+        "FK_GOAL": 20,
+        "FK_SAVE": 28,
+        "FK_CLEAR": 28,
+        "FK_BLOCK": 13,
+        "FK_WIDE": 11,
+        "FK_OVER": 5
+      },
+      "perMatch": {
+        "moments": 1.925,
+        "goals": 5.566666666666666,
+        "fouls": 0.4375,
+        "shots": 18.829166666666666,
+        "freeKicks": 0.4375
+      }
+    },
+    {
+      "profile": "synthetic_readers",
+      "policy": {
+        "id": "FK_CENTER/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_CENTER",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_SHORT",
+        "coverage": "MAN_MARK"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 462,
+        "opportunities": 5760,
+        "contacts": 350,
+        "legal": 178,
+        "beaten": 67,
+        "fouls": 105,
+        "freeKicks": 105,
+        "offensive": 67,
+        "defensive": 38,
+        "direct": 56,
+        "indirect": 49,
+        "shots": 4515,
+        "shotsOnTarget": 3382,
+        "saves": 2049,
+        "goals": 1333,
+        "recoveries": 1393,
+        "kickShots": 58,
+        "kickGoals": 16,
+        "kickSaves": 33,
+        "blocks": 18,
+        "headers": 5,
+        "crosses": 13,
+        "short": 36,
+        "repeatedFamilies": 55,
+        "familyTransitions": 228
+      },
+      "options": {
+        "FK_SHORT": 31,
+        "MAN_MARK": 18,
+        "WALL_JUMP": 20,
+        "FK_CENTER": 36
+      },
+      "outcomes": {
+        "FK_GOAL": 16,
+        "FK_CLEAR": 29,
+        "FK_SAVE": 33,
+        "FK_BLOCK": 18,
+        "FK_WIDE": 6,
+        "FK_OVER": 3
+      },
+      "perMatch": {
+        "moments": 1.925,
+        "goals": 5.554166666666666,
+        "fouls": 0.4375,
+        "shots": 18.8125,
+        "freeKicks": 0.4375
+      }
+    },
+    {
+      "profile": "synthetic_readers",
+      "policy": {
+        "id": "FK_CENTER/WALL_HOLD",
+        "enabled": true,
+        "aim": "FK_CENTER",
+        "wall": "WALL_HOLD",
+        "indirect": "FK_SHORT",
+        "coverage": "ZONE"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 462,
+        "opportunities": 5760,
+        "contacts": 350,
+        "legal": 178,
+        "beaten": 67,
+        "fouls": 105,
+        "freeKicks": 105,
+        "offensive": 67,
+        "defensive": 38,
+        "direct": 56,
+        "indirect": 49,
+        "shots": 4514,
+        "shotsOnTarget": 3381,
+        "saves": 2048,
+        "goals": 1333,
+        "recoveries": 1394,
+        "kickShots": 57,
+        "kickGoals": 16,
+        "kickSaves": 32,
+        "blocks": 18,
+        "headers": 5,
+        "crosses": 13,
+        "short": 36,
+        "repeatedFamilies": 55,
+        "familyTransitions": 228
+      },
+      "options": {
+        "FK_SHORT": 31,
+        "ZONE": 18,
+        "WALL_HOLD": 20,
+        "FK_CENTER": 36
+      },
+      "outcomes": {
+        "FK_GOAL": 16,
+        "FK_CLEAR": 30,
+        "FK_BLOCK": 18,
+        "FK_SAVE": 32,
+        "FK_WIDE": 6,
+        "FK_OVER": 3
+      },
+      "perMatch": {
+        "moments": 1.925,
+        "goals": 5.554166666666666,
+        "fouls": 0.4375,
+        "shots": 18.808333333333334,
+        "freeKicks": 0.4375
+      }
+    },
+    {
+      "profile": "synthetic_readers",
+      "policy": {
+        "id": "FK_RIGHT/WALL_JUMP",
+        "enabled": true,
+        "aim": "FK_RIGHT",
+        "wall": "WALL_JUMP",
+        "indirect": "FK_CROSS",
+        "coverage": "MAN_MARK"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 462,
+        "opportunities": 5760,
+        "contacts": 350,
+        "legal": 178,
+        "beaten": 67,
+        "fouls": 105,
+        "freeKicks": 105,
+        "offensive": 67,
+        "defensive": 38,
+        "direct": 58,
+        "indirect": 47,
+        "shots": 4520,
+        "shotsOnTarget": 3381,
+        "saves": 2046,
+        "goals": 1335,
+        "recoveries": 1387,
+        "kickShots": 65,
+        "kickGoals": 19,
+        "kickSaves": 30,
+        "blocks": 13,
+        "headers": 18,
+        "crosses": 42,
+        "short": 5,
+        "repeatedFamilies": 55,
+        "familyTransitions": 228
+      },
+      "options": {
+        "FK_CROSS": 30,
+        "FAR_POST": 13,
+        "MAN_MARK": 17,
+        "WALL_JUMP": 21,
+        "FK_RIGHT": 37
+      },
+      "outcomes": {
+        "FK_GOAL": 19,
+        "FK_SAVE": 30,
+        "FK_CLEAR": 27,
+        "FK_BLOCK": 13,
+        "FK_WIDE": 11,
+        "FK_OVER": 5
+      },
+      "perMatch": {
+        "moments": 1.925,
+        "goals": 5.5625,
+        "fouls": 0.4375,
+        "shots": 18.833333333333332,
+        "freeKicks": 0.4375
+      }
+    },
+    {
+      "profile": "synthetic_readers",
+      "policy": {
+        "id": "FK_RIGHT/WALL_HOLD",
+        "enabled": true,
+        "aim": "FK_RIGHT",
+        "wall": "WALL_HOLD",
+        "indirect": "FK_CROSS",
+        "coverage": "ZONE"
+      },
+      "samples": 240,
+      "totals": {
+        "moments": 462,
+        "opportunities": 5760,
+        "contacts": 350,
+        "legal": 178,
+        "beaten": 67,
+        "fouls": 105,
+        "freeKicks": 105,
+        "offensive": 67,
+        "defensive": 38,
+        "direct": 58,
+        "indirect": 47,
+        "shots": 4519,
+        "shotsOnTarget": 3380,
+        "saves": 2045,
+        "goals": 1335,
+        "recoveries": 1388,
+        "kickShots": 64,
+        "kickGoals": 19,
+        "kickSaves": 29,
+        "blocks": 13,
+        "headers": 18,
+        "crosses": 42,
+        "short": 5,
+        "repeatedFamilies": 55,
+        "familyTransitions": 228
+      },
+      "options": {
+        "FK_CROSS": 30,
+        "FAR_POST": 13,
+        "ZONE": 17,
+        "WALL_HOLD": 21,
+        "FK_RIGHT": 37
+      },
+      "outcomes": {
+        "FK_GOAL": 19,
+        "FK_SAVE": 29,
+        "FK_CLEAR": 28,
+        "FK_BLOCK": 13,
+        "FK_WIDE": 11,
+        "FK_OVER": 5
+      },
+      "perMatch": {
+        "moments": 1.925,
+        "goals": 5.5625,
+        "fouls": 0.4375,
+        "shots": 18.829166666666666,
+        "freeKicks": 0.4375
+      }
+    }
+  ]
+}

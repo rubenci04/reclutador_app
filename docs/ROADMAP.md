@@ -113,3 +113,7 @@ Implementadas las categorías de 150–300, el ajuste medible action-v3, rareza 
 ## SIM-005R-06 — Entrega local
 
 Familia corners-v1 implementada en nuevos partidos dirigidos contra CPU con tres envíos, dos defensas y cabezazo dirigido, sin aumentar interrupciones ni oportunidades. Relato normal variado desde hechos confirmados. Compatibilidad y calibración ejecutadas; [QA y límites](qa/SIM-005R-06.md). Pendiente revisión visual completa/audio humano; sin publicación ni otras pelotas paradas, hot-seat u online.
+
+## SIM-005R-07 — 21/10/2026
+
+Familia free-kicks-v1 opt-in para CPU local, causa deportiva previa, zonas fuera del área, barrera y directo/indirecto con Canvas y tres idiomas. 5.040 partidos calibrados, 360 sesiones históricas idénticas; 42 pruebas nuevas. Publicación autorizada en este encargo. Sin tarjetas, penales ni banco ampliado. [QA](qa/SIM-005R-07.md).

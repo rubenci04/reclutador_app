@@ -241,3 +241,11 @@ CPU estratégica local implementada como opción junto a hot-seat. Perfiles CONS
 - Verificar plan CPU anterior a MAN_MARK/ZONE, duelo OVR puro, cobertura por atributos, replay/restauración por nodo/ventana/final; rechazar decisiones stale/duplicadas y snapshots manipulados. Única consulta estratégica en entretiempo.
 - Ejecutar cuatro controles obligatorios. Calibrar con node scripts/calibrate-corners.mjs (240 semillas × 7 políticas × 3 perfiles); comparar fuentes anteriores con node scripts/check-corners-compatibility.mjs sin actualizar golden.
 - Secuencias reales a 390/412/768/1280, continuidad de jugadores/pelota, arquero/dirección oculta, pausa/velocidad/omitir/reduced-motion, teclado, idiomas y escucha sin doble contacto. Reproductor/semillas: [QA](qa/SIM-005R-06.md). DOM/curvas no acreditan movimiento/audio; navegador bloqueado deja esas verificaciones pendientes.
+
+## SIM-005R-07
+
+- Causa legal/falta, zonas, nueve formaciones, directo/centro/corto, salto/firme, cobertura y todos los terminales.
+- Checkpoint por fase/final, replay, duplicados/stale, planes privados y manipulación; 24 oportunidades, cap y entretiempo único.
+- 240 semillas por política/perfil (5.040 partidos); comparación independiente de 360 sesiones y 18 checkpoints R-06, golden intactos.
+- Tres idiomas, foco, doble clic, pausa/velocidad/omitir/reduced-motion y ledger; cuatro controles antes y después del commit.
+- Capturas reales de cuatro anchos y fases; escucha humana pendiente. Build/dry-run/deploy Worker y hash HTTP/assets según DEPLOY. [QA](qa/SIM-005R-07.md).

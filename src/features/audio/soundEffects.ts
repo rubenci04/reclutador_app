@@ -2,7 +2,7 @@
  * Original synthesised effects (Web Audio). No external audio files, so there is nothing to license or credit.
  * Every recipe schedules short oscillator and noise events against `now`; nothing keeps running after it ends.
  */
-export const SOUND_IDS = ['coinToss', 'coinLand', 'bid', 'award', 'signing', 'discard', 'diceRoll', 'goal', 'finalWhistle', 'kickoffWhistle', 'halfTimeWhistle', 'shot', 'pass', 'intercept', 'cross', 'header'] as const
+export const SOUND_IDS = ['coinToss', 'coinLand', 'bid', 'award', 'signing', 'discard', 'diceRoll', 'goal', 'finalWhistle', 'kickoffWhistle', 'halfTimeWhistle', 'shot', 'pass', 'intercept', 'cross', 'header', 'foulContact', 'wallBlock', 'keeperSave'] as const
 export type SoundId = (typeof SOUND_IDS)[number]
 
 interface Tone { readonly type: OscillatorType; readonly from: number; readonly to?: number; readonly at: number; readonly length: number; readonly gain: number; readonly vibrato?: number }
@@ -10,6 +10,9 @@ interface Noise { readonly at: number; readonly length: number; readonly gain: n
 interface Recipe { readonly tones: readonly Tone[]; readonly noise?: readonly Noise[] }
 
 export const RECIPES: Readonly<Record<SoundId, Recipe>> = {
+  foulContact: { tones: [{ type: 'triangle', from: 160, to: 70, at: 0, length: .10, gain: .20 }, { type: 'sine', from: 2900, at: .12, length: .22, gain: .16 }], noise: [{ at: 0, length: .08, gain: .12, from: 600, to: 200 }] },
+  wallBlock: { tones: [{ type: 'sine', from: 130, to: 60, at: 0, length: .10, gain: .23 }], noise: [{ at: 0, length: .07, gain: .13, from: 900, to: 250 }] },
+  keeperSave: { tones: [{ type: 'triangle', from: 260, to: 140, at: 0, length: .12, gain: .15 }], noise: [{ at: 0, length: .12, gain: .16, from: 1800, to: 500 }] },
   coinToss: { tones: [{ type: 'sine', from: 520, to: 1300, at: 0, length: .28, gain: .35 }, { type: 'triangle', from: 2600, at: .26, length: .1, gain: .12 }] },
   coinLand: { tones: [{ type: 'triangle', from: 1900, at: 0, length: .09, gain: .4 }, { type: 'triangle', from: 1500, at: .13, length: .08, gain: .25 }, { type: 'triangle', from: 1700, at: .24, length: .06, gain: .14 }] },
   bid: { tones: [{ type: 'square', from: 660, at: 0, length: .06, gain: .12 }, { type: 'square', from: 880, at: .07, length: .09, gain: .12 }] },

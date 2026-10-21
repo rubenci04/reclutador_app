@@ -332,3 +332,7 @@ Validación: typecheck, lint, 831 pruebas y build ejecutados. QA visual en naveg
 - Ejecutado: 5.040 partidos de calibración, 240 sesiones históricas idénticas y 12 checkpoints anteriores restaurados. [Informe](qa/SIM-005R-06.md). Corto desfavorable en dos perfiles; zona depende del perfil. Balance competitivo no acreditado.
 - QA visual parcial: DOM a 1280 antes de corrección del foco; luego navegador deshabilitado por Work settings. Pendientes secuencias reales a 390/412/768/1280 y escucha. Reproductor de ocho casos documentado.
 - Cierre: commit local, sin push/merge/deploy. No iniciar otras familias.
+
+## SIM-005R-07 — 21/10/2026
+
+Implementados contacto/falta/tiro libre directo e indirecto, defensa, Canvas, tres idiomas y persistencia. 1.118 pruebas aprobadas, 42 nuevas; 5.040 calibraciones y 360 comparaciones históricas. Capturas reales 390/412/768/1280 y por fases; escucha/fluidez humana completa pendientes. Publicación expresamente autorizada; estado comprobado en [registro](logs/SIM-005R-07.md).
