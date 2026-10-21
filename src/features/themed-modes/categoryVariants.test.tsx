@@ -32,6 +32,21 @@ describe('current and legend category variants', () => {
     expect(screen.getByRole('button', { name: /^Argentine league current players 2026/ })).toHaveAttribute('aria-pressed', 'true')
     expect(onChange).not.toHaveBeenCalled()
   })
+  it.each(['es-AR', 'en', 'pt-BR'] as const)('renders the nine categories in the exact 3x3 reading and tab order in %s', async (language) => {
+    const i18n = await createI18n(language)
+    const { container } = render(<I18nextProvider i18n={i18n}><ModeSelector selected="ARGENTINA_CURRENT" onChange={vi.fn()} /></I18nextProvider>)
+    const order = ['argentina', 'brazil', 'mexico', 'spain', 'england', 'italy', 'global', 'latinAmerica', 'europe']
+    expect(CATEGORY_GROUPS.map((g) => g.id)).toEqual(order)
+    const buttons = [...container.querySelectorAll('.category-groups > button')]
+    expect(buttons.map((b) => b.querySelector('strong')?.textContent)).toEqual(order.map((id) => i18n.t(`categoryTree.groups.${id}`)))
+    for (const [index, group] of CATEGORY_GROUPS.entries()) {
+      expect(buttons[index].hasAttribute('tabindex')).toBe(false)
+      fireEvent.click(container.querySelectorAll('.category-groups > button')[index])
+      const names = screen.getAllByRole('button').map((button) => button.textContent ?? '')
+      for (const mode of group.modes) expect(names.some((name) => name.includes(i18n.t(`categoryTree.options.${mode}`))), mode).toBe(true)
+      fireEvent.click(screen.getByRole('button', { name: i18n.t('categoryTree.back') }))
+    }
+  })
   it('keeps the two original catalogs intact and enables the supplied league editions', () => {
     expect(catalogForMode('GLOBAL_CLASSIC').length).toBeGreaterThan(300)
     expect(catalogForMode('ARGENTINA_CLUBS')).toEqual(ARGENTINA_PLAYERS)

@@ -13,7 +13,7 @@ import { coachesForMode } from '../coaches/coachContext'
 
 describe('category tree and nationality collections', () => {
   it('has nine categories, two editions each and no mixed legacy league in the visible tree', () => {
-    expect(CATEGORY_GROUPS.map((g) => g.id)).toEqual(['global', 'argentina', 'england', 'spain', 'italy', 'mexico', 'brazil', 'latinAmerica', 'europe'])
+    expect(CATEGORY_GROUPS.map((g) => g.id)).toEqual(['argentina', 'brazil', 'mexico', 'spain', 'england', 'italy', 'global', 'latinAmerica', 'europe'])
     expect(CATEGORY_GROUPS.every((g) => g.modes.length === 2)).toBe(true)
     expect(new Set(CATEGORY_GROUPS.flatMap((g) => [...g.modes])).size).toBe(18)
     expect(CATEGORY_GROUPS.flatMap((g) => [...g.modes])).not.toContain('ARGENTINA_CLUBS')
