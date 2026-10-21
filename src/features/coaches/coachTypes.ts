@@ -19,6 +19,10 @@ export interface Coach {
   readonly tier: CoachTier
   readonly focus: CoachFocus
   readonly price: number
+  /** COACH-006: league the coach worked in and the documented years of the reference spell. */
+  readonly league?: 'ITA' | 'MEX'
+  readonly period?: readonly [number, number | null]
+  readonly sourceUrl?: string
 }
 
 /** Extra strength points a coach adds to each sector of his team in every block. */

@@ -1,0 +1,433 @@
+{
+  "version": "coach-league-v1",
+  "retrieved": "2026-10-21",
+  "note": "Eligibility is by having coached in the league (club, years from the cited Wikipedia career table, retrieved 2026-10-21). Tier and focus are editorial game design. Team is a career reference, not a current-employment claim. No photographs are included.",
+  "new": [
+    {
+      "id": "coach_ita_001",
+      "league": "ITA",
+      "name": "Luciano",
+      "surname": "Spalletti",
+      "birthYear": 1959,
+      "nationality": "ITA",
+      "status": "ACTIVE",
+      "tier": "A",
+      "focus": "ATTACK",
+      "team": "Roma",
+      "period": [
+        2005,
+        2009
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Luciano_Spalletti"
+    },
+    {
+      "id": "coach_ita_002",
+      "league": "ITA",
+      "name": "Maurizio",
+      "surname": "Sarri",
+      "birthYear": 1959,
+      "nationality": "ITA",
+      "status": "ACTIVE",
+      "tier": "A",
+      "focus": "MIDFIELD",
+      "team": "Napoli",
+      "period": [
+        2015,
+        2018
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Maurizio_Sarri"
+    },
+    {
+      "id": "coach_ita_003",
+      "league": "ITA",
+      "name": "Gian Piero",
+      "surname": "Gasperini",
+      "birthYear": 1958,
+      "nationality": "ITA",
+      "status": "ACTIVE",
+      "tier": "A",
+      "focus": "ATTACK",
+      "team": "Atalanta",
+      "period": [
+        2016,
+        2025
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Gian_Piero_Gasperini"
+    },
+    {
+      "id": "coach_ita_004",
+      "league": "ITA",
+      "name": "Stefano",
+      "surname": "Pioli",
+      "birthYear": 1965,
+      "nationality": "ITA",
+      "status": "ACTIVE",
+      "tier": "B",
+      "focus": "BALANCED",
+      "team": "AC Milan",
+      "period": [
+        2019,
+        2024
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Stefano_Pioli"
+    },
+    {
+      "id": "coach_ita_005",
+      "league": "ITA",
+      "name": "Vincenzo",
+      "surname": "Italiano",
+      "birthYear": 1977,
+      "nationality": "ITA",
+      "status": "ACTIVE",
+      "tier": "C",
+      "focus": "ATTACK",
+      "team": "Fiorentina",
+      "period": [
+        2021,
+        2024
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Vincenzo_Italiano"
+    },
+    {
+      "id": "coach_ita_006",
+      "league": "ITA",
+      "name": "Fabio",
+      "surname": "Capello",
+      "birthYear": 1946,
+      "nationality": "ITA",
+      "status": "LEGEND",
+      "tier": "S",
+      "focus": "DEFENSE",
+      "team": "AC Milan",
+      "period": [
+        1991,
+        1996
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Fabio_Capello"
+    },
+    {
+      "id": "coach_ita_007",
+      "league": "ITA",
+      "name": "Marcello",
+      "surname": "Lippi",
+      "birthYear": 1948,
+      "nationality": "ITA",
+      "status": "LEGEND",
+      "tier": "S",
+      "focus": "BALANCED",
+      "team": "Juventus",
+      "period": [
+        1994,
+        1999
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Marcello_Lippi"
+    },
+    {
+      "id": "coach_ita_008",
+      "league": "ITA",
+      "name": "Giovanni",
+      "surname": "Trapattoni",
+      "birthYear": 1939,
+      "nationality": "ITA",
+      "status": "LEGEND",
+      "tier": "S",
+      "focus": "DEFENSE",
+      "team": "Juventus",
+      "period": [
+        1976,
+        1986
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Giovanni_Trapattoni"
+    },
+    {
+      "id": "coach_ita_009",
+      "league": "ITA",
+      "name": "Nils",
+      "surname": "Liedholm",
+      "birthYear": 1922,
+      "deathYear": 2007,
+      "nationality": "SWE",
+      "status": "LEGEND",
+      "tier": "A",
+      "focus": "MIDFIELD",
+      "team": "Roma",
+      "period": [
+        1979,
+        1984
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Nils_Liedholm"
+    },
+    {
+      "id": "coach_ita_010",
+      "league": "ITA",
+      "name": "Claudio",
+      "surname": "Ranieri",
+      "birthYear": 1951,
+      "nationality": "ITA",
+      "status": "LEGEND",
+      "tier": "B",
+      "focus": "ATTACK",
+      "team": "Roma",
+      "period": [
+        2009,
+        2011
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Claudio_Ranieri"
+    },
+    {
+      "id": "coach_mex_001",
+      "league": "MEX",
+      "name": "Miguel",
+      "surname": "Herrera",
+      "birthYear": 1968,
+      "nationality": "MEX",
+      "status": "ACTIVE",
+      "tier": "B",
+      "focus": "ATTACK",
+      "team": "Club América",
+      "period": [
+        2017,
+        2020
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Miguel_Herrera"
+    },
+    {
+      "id": "coach_mex_002",
+      "league": "MEX",
+      "name": "Antonio",
+      "surname": "Mohamed",
+      "birthYear": 1970,
+      "nationality": "ARG",
+      "status": "ACTIVE",
+      "tier": "B",
+      "focus": "BALANCED",
+      "team": "Monterrey",
+      "period": [
+        2015,
+        2018
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Antonio_Mohamed"
+    },
+    {
+      "id": "coach_mex_003",
+      "league": "MEX",
+      "name": "Guillermo",
+      "surname": "Almada",
+      "birthYear": 1966,
+      "nationality": "URU",
+      "status": "ACTIVE",
+      "tier": "B",
+      "focus": "MIDFIELD",
+      "team": "Pachuca",
+      "period": [
+        2021,
+        2025
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Guillermo_Almada"
+    },
+    {
+      "id": "coach_mex_004",
+      "league": "MEX",
+      "name": "Ricardo",
+      "surname": "Ferretti",
+      "birthYear": 1954,
+      "nationality": "BRA",
+      "status": "ACTIVE",
+      "tier": "A",
+      "focus": "DEFENSE",
+      "team": "Tigres UANL",
+      "period": [
+        2010,
+        2021
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Ricardo_Ferretti"
+    },
+    {
+      "id": "coach_mex_005",
+      "league": "MEX",
+      "name": "Víctor Manuel",
+      "surname": "Vucetich",
+      "birthYear": 1955,
+      "nationality": "MEX",
+      "status": "ACTIVE",
+      "tier": "B",
+      "focus": "ATTACK",
+      "team": "Monterrey",
+      "period": [
+        2009,
+        2013
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/V%C3%ADctor_Manuel_Vucetich"
+    },
+    {
+      "id": "coach_mex_006",
+      "league": "MEX",
+      "name": "Ignacio",
+      "surname": "Trelles",
+      "birthYear": 1916,
+      "deathYear": 2020,
+      "nationality": "MEX",
+      "status": "LEGEND",
+      "tier": "A",
+      "focus": "BALANCED",
+      "team": "Cruz Azul",
+      "period": [
+        1976,
+        1982
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Ignacio_Trelles"
+    },
+    {
+      "id": "coach_mex_007",
+      "league": "MEX",
+      "name": "Raúl",
+      "surname": "Cárdenas",
+      "birthYear": 1928,
+      "deathYear": 2016,
+      "nationality": "MEX",
+      "status": "LEGEND",
+      "tier": "B",
+      "focus": "DEFENSE",
+      "team": "Cruz Azul",
+      "period": [
+        1966,
+        1975
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Ra%C3%BAl_C%C3%A1rdenas"
+    },
+    {
+      "id": "coach_mex_008",
+      "league": "MEX",
+      "name": "Manuel",
+      "surname": "Lapuente",
+      "birthYear": 1944,
+      "deathYear": 2025,
+      "nationality": "MEX",
+      "status": "LEGEND",
+      "tier": "A",
+      "focus": "MIDFIELD",
+      "team": "Necaxa",
+      "period": [
+        1994,
+        1997
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Manuel_Lapuente"
+    },
+    {
+      "id": "coach_mex_009",
+      "league": "MEX",
+      "name": "Bora",
+      "surname": "Milutinović",
+      "birthYear": 1944,
+      "nationality": "SRB",
+      "status": "LEGEND",
+      "tier": "B",
+      "focus": "BALANCED",
+      "team": "Pumas UNAM",
+      "period": [
+        1977,
+        1983
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Bora_Milutinovi%C4%87"
+    },
+    {
+      "id": "coach_mex_010",
+      "league": "MEX",
+      "name": "Carlos",
+      "surname": "Reinoso",
+      "birthYear": 1945,
+      "nationality": "CHI",
+      "status": "LEGEND",
+      "tier": "C",
+      "focus": "ATTACK",
+      "team": "Club América",
+      "period": [
+        1981,
+        1984
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Carlos_Reinoso"
+    }
+  ],
+  "existing": [
+    {
+      "league": "ITA",
+      "coach": "Antonio Conte",
+      "team": "Juventus",
+      "period": [
+        2011,
+        2014
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Antonio_Conte"
+    },
+    {
+      "league": "ITA",
+      "coach": "Massimiliano Allegri",
+      "team": "Juventus",
+      "period": [
+        2014,
+        2019
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Massimiliano_Allegri"
+    },
+    {
+      "league": "ITA",
+      "coach": "Simone Inzaghi",
+      "team": "Inter de Milán",
+      "period": [
+        2021,
+        2025
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Simone_Inzaghi"
+    },
+    {
+      "league": "ITA",
+      "coach": "Arrigo Sacchi",
+      "team": "AC Milan",
+      "period": [
+        1987,
+        1991
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Arrigo_Sacchi"
+    },
+    {
+      "league": "ITA",
+      "coach": "Helenio Herrera",
+      "team": "Inter de Milán",
+      "period": [
+        1960,
+        1968
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Helenio_Herrera"
+    },
+    {
+      "league": "MEX",
+      "coach": "Javier Aguirre",
+      "team": "Pachuca",
+      "period": [
+        1998,
+        2001
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Javier_Aguirre"
+    },
+    {
+      "league": "MEX",
+      "coach": "Fernando Gago",
+      "team": "Guadalajara",
+      "period": [
+        2024,
+        2024
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Fernando_Gago"
+    },
+    {
+      "league": "MEX",
+      "coach": "Ricardo La Volpe",
+      "team": "Atlas",
+      "period": [
+        1997,
+        2001
+      ],
+      "sourceUrl": "https://en.wikipedia.org/wiki/Ricardo_La_Volpe"
+    }
+  ]
+}

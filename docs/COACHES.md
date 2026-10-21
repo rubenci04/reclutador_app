@@ -36,3 +36,6 @@ Actualiza las reglas anteriores sin borrar su historia:
 ## Selección editorial COACH-FLOW — 20/10/2026
 
 Catálogo combinado: 120 técnicos, 65 S (54,17 %), con 32 leyendas y 33 actuales elegidos explícitamente. Los promovidos usan precio 8M y bonus S existentes. Contratos contextuales con precio reducido conservados. Técnico primero, luego suplentes/once y confirmación antes de tácticas. Ver qa/COACH-FLOW.md.
+
+## COACH-006 — 21/10/2026
+Mercado `coach-market-v2`: seis cartas asequibles, 20 técnicos de Serie A y Liga MX con fuente y años. Ver qa/COACH-006.md.

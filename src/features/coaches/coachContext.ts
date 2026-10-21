@@ -1,6 +1,7 @@
 import type { ThemedModeId } from '../themed-modes/modeTypes'
 import { COACH_CATALOG, EXTRA_COACHES } from './coachCatalog'
 import type { Coach } from './coachTypes'
+import { LEAGUE_COACHES, LEAGUE_EXISTING, type CoachLeague } from './leagueCoaches'
 import { EUROPEAN_NATIONALITIES, LATIN_AMERICAN_ASSOCIATIONS } from '../themed-modes/nationalityRegions'
 
 /** Reference affiliations, not assertions of employment in October 2026.
@@ -28,19 +29,32 @@ const ESP_ACTIVE = ['Simeone', 'Flick', 'Alonso', 'García Toral', 'Pellegrini',
 const ENG_ACTIVE = ['Guardiola', 'Arteta', 'Slot', 'Howe', 'Emery', 'Glasner', 'Silva', 'Maresca', 'Amorim', 'Frank', 'Iraola', 'Hürzeler', 'Farke']
 const scoped = (names: readonly string[], legend: boolean) => [...COACH_CATALOG, ...EXTRA_COACHES].filter((coach) => names.includes(coach.surname) && (coach.status === 'LEGEND') === legend)
 
-export function coachesForMode(mode?: ThemedModeId): readonly Coach[] {
+/** Existing coaches with a documented spell in Serie A or Liga MX, carrying that spell as their reference. */
+const EXISTING_ELIGIBLE: readonly Coach[] = LEAGUE_EXISTING.map((entry) => {
+  const coach = [...COACH_CATALOG, ...EXTRA_COACHES].find((candidate) => `${candidate.name} ${candidate.surname}` === entry.coach)
+  if (!coach) throw new Error(`league_coach_missing:${entry.coach}`)
+  return { ...coach, team: entry.team, teamKind: 'CLUB', secondaryTeam: undefined, league: entry.league, period: entry.period, sourceUrl: entry.sourceUrl }
+})
+/** Coaches who worked in that league, by edition. Eligibility is the career, never the nationality. */
+export const leagueCoaches = (league: CoachLeague, legend: boolean): readonly Coach[] => [...LEAGUE_COACHES, ...EXISTING_ELIGIBLE].filter((coach) => coach.league === league && (coach.status === 'LEGEND') === legend)
+
+/** `market` v2 (coach-market-v2) adds the league coaches and uses league-specific pools for Italy and Mexico; v1 reproduces the offers of earlier games. */
+export function coachesForMode(mode?: ThemedModeId, market: 'v1' | 'v2' = 'v1'): readonly Coach[] {
   const legend = mode?.includes('LEGENDS') || mode === 'LEGENDS_ONLY'
-  let pool: readonly Coach[] = COACH_CATALOG
+  if (market === 'v2' && mode?.startsWith('ITALY')) return leagueCoaches('ITA', Boolean(legend))
+  if (market === 'v2' && mode?.startsWith('MEXICO')) return leagueCoaches('MEX', Boolean(legend))
+  const all: readonly Coach[] = market === 'v2' ? [...COACH_CATALOG, ...LEAGUE_COACHES] : COACH_CATALOG
+  let pool: readonly Coach[] = all
   if (mode?.startsWith('ARGENTINA')) pool = legend ? COACH_CATALOG.filter((c) => c.status === 'LEGEND' && c.nationality === 'ARG') : scoped(ARG_ACTIVE, false)
   else if (mode?.startsWith('BRAZIL')) pool = legend ? scoped(['Santana', 'Zagallo', 'Perez (Lula)'], true) : scoped(BRA_ACTIVE, false)
   else if (mode?.startsWith('SPAIN')) pool = legend ? scoped(['Cruyff', 'del Bosque', 'Menotti', 'Herrera', 'Di Stéfano', 'Martino'], true) : scoped(ESP_ACTIVE, false)
   else if (mode?.startsWith('ENGLAND')) pool = legend ? scoped(['Ferguson', 'Clough', 'Busby'], true) : scoped(ENG_ACTIVE, false)
-  else if (mode?.startsWith('SOUTH_AMERICA')) pool = COACH_CATALOG.filter((c) => LATIN_AMERICAN_ASSOCIATIONS.has(c.nationality) && (c.status === 'LEGEND') === Boolean(legend))
-  else if (mode?.startsWith('EUROPE_')) pool = COACH_CATALOG.filter((c) => EUROPEAN_NATIONALITIES.has(c.nationality) && (c.status === 'LEGEND') === Boolean(legend))
-  else if (legend) pool = COACH_CATALOG.filter((c) => c.status === 'LEGEND' && (c.tier === 'S' || c.tier === 'A'))
-  else if (mode === 'GLOBAL_CLASSIC' || mode === 'ITALY_CURRENT' || mode === 'MEXICO_CURRENT') pool = COACH_CATALOG.filter((c) => c.status === 'ACTIVE')
+  else if (mode?.startsWith('SOUTH_AMERICA')) pool = all.filter((c) => LATIN_AMERICAN_ASSOCIATIONS.has(c.nationality) && (c.status === 'LEGEND') === Boolean(legend))
+  else if (mode?.startsWith('EUROPE_')) pool = all.filter((c) => EUROPEAN_NATIONALITIES.has(c.nationality) && (c.status === 'LEGEND') === Boolean(legend))
+  else if (legend) pool = all.filter((c) => c.status === 'LEGEND' && (c.tier === 'S' || c.tier === 'A'))
+  else if (mode === 'GLOBAL_CLASSIC' || mode === 'ITALY_CURRENT' || mode === 'MEXICO_CURRENT') pool = all.filter((c) => c.status === 'ACTIVE')
   return pool.map((coach) => {
-    const refs = REFERENCES[coach.surname]
+    const refs = coach.league ? undefined : REFERENCES[coach.surname]
     // In the Spanish legend edition, the Spanish affiliation is primary.
     const spanish: Readonly<Record<string, string>> = { Menotti: 'FC Barcelona', Guardiola: 'FC Barcelona', Emery: 'Sevilla', Enrique: 'FC Barcelona', Aguirre: 'Mallorca', Martino: 'FC Barcelona' }
     const english: Readonly<Record<string, string>> = { Tuchel: 'Chelsea', Pochettino: 'Tottenham Hotspur' }

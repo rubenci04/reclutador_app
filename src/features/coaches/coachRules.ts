@@ -10,6 +10,10 @@ export const COACH_MAX_PRICE = 8
 export const coachReserveFor = (config?: { readonly coaches?: boolean; readonly coachReserve?: number }) => config?.coaches ? config.coachReserve ?? COACH_RESERVE : 0
 /** Coaches offered to each recruiter. */
 export const COACH_OFFER_SIZE = 3
+/** coach-market-v2 (COACH-006): six distinct, affordable coaches. Games without the marker keep the three-card offer. */
+export const COACH_MARKET_V2 = 'coach-market-v2' as const
+export const COACH_OFFER_SIZE_V2 = 6
+export const coachMarketOf = (config?: { readonly coachMarket?: string }): 'v1' | 'v2' => config?.coachMarket === COACH_MARKET_V2 ? 'v2' : 'v1'
 
 /** Coaches cost a fraction of a footballer: 1 to 8 million by tier. */
 export const COACH_TIER_PRICE: Readonly<Record<CoachTier, number>> = { S: COACH_MAX_PRICE, A: 5, B: 3, C: 2, D: COACH_RESERVE }

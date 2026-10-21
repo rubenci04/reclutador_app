@@ -1,5 +1,6 @@
 import { COACH_TIER_PRICE } from './coachRules'
 import type { Coach, CoachFocus, CoachTier } from './coachTypes'
+import { LEAGUE_COACHES } from './leagueCoaches'
 
 /**
  * Coach catalog v1: 100 coaches, 70 active and 30 legends, 54 of them Argentine.
@@ -155,4 +156,4 @@ const eliteCoach = (coach: Coach): Coach => coach.status === 'LEGEND' || ELITE_C
   ? { ...coach, tier: 'S', price: COACH_TIER_PRICE.S } : coach
 export const COACH_CATALOG: readonly Coach[] = BASE_COACH_CATALOG.map(eliteCoach)
 export const EXTRA_COACHES: readonly Coach[] = BASE_EXTRA_COACHES.map(eliteCoach)
-export const coachById = (id: string | undefined) => [...COACH_CATALOG, ...EXTRA_COACHES].find((coach) => coach.id === id)
+export const coachById = (id: string | undefined) => [...COACH_CATALOG, ...EXTRA_COACHES, ...LEAGUE_COACHES].find((coach) => coach.id === id)

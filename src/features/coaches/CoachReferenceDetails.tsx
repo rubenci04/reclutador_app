@@ -10,7 +10,7 @@ export function CoachReferenceDetails({ coach }: { readonly coach: Coach }) {
   const iso = NATIONALITY_FLAGS[coach.nationality as keyof typeof NATIONALITY_FLAGS]
   const country = iso?.startsWith('gb-') ? t('rosterUX.countries.' + coach.nationality) : iso ? new Intl.DisplayNames([i18n.language], { type: 'region' }).of(iso.toUpperCase()) : coach.nationality
   const period = referenceCareers(coach.id, coach.team)[0]
-  const years = period ? `${period.from}–${period.to ?? t('playtest.present')}` : coach.status === 'ACTIVE' ? String(COACH_AS_OF_YEAR) : null
+  const years = coach.period ? (coach.period[0] === coach.period[1] ? String(coach.period[0]) : `${coach.period[0]}–${coach.period[1] ?? t('playtest.present')}`) : period ? `${period.from}–${period.to ?? t('playtest.present')}` : coach.status === 'ACTIVE' ? String(COACH_AS_OF_YEAR) : null
   return <div className="coach-reference-details">
     <span className="coach-nationality">{flagUrl(coach.nationality) && <img src={flagUrl(coach.nationality)} alt="" width="24" height="18" />}{country}</span>
     <strong className="coach-reference">{coach.team}{years && <span className="coach-years"> · {years}</span>}</strong>

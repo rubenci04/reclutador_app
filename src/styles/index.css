@@ -754,3 +754,7 @@
 @media (max-width: 540px) { .team-name-screen { margin: 1rem auto; } .entry-caption { font-size: 1.45rem; margin: .7rem auto .9rem; } }
 .foot-icon{display:inline-flex;vertical-align:middle;margin-inline-end:4px}.foot-icon svg{width:22px;height:20px}.foot-on{fill:#d5fb76}.foot-off{fill:#ffffff3d}
 .player-facts{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:4px 0}.player-facts .club-period{color:#c6d5bd}.player-reference{display:grid;gap:3px}
+.coach-grid-six{grid-template-columns:repeat(3,minmax(0,1fr))}.coach-grid-six .coach-card{padding:14px;gap:.3rem}.coach-level{font-weight:700}
+.coach-stats{display:flex;gap:6px;margin:0;padding:0;list-style:none}.coach-stats li{display:grid;justify-items:center;min-width:48px;padding:4px 6px;border:1px solid #ffffff30;border-radius:8px;background:#ffffff0d}.coach-stats b{color:#d5fb76}.coach-stats small{font-size:11px;opacity:.8}
+.coach-grid-six .coach-reference-details{display:grid;gap:2px}.coach-grid-six .coach-photo,.coach-grid-six .coach-emblem{margin-inline:0}
+@media(max-width:900px){.coach-grid-six{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.coach-grid-six{grid-template-columns:1fr}}
