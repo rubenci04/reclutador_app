@@ -1,6 +1,6 @@
 {
- "version": "europe-top-150-v1",
- "rule": "Exact normalised name and same nationality against the deduplicated contemporary master (ALL_CURRENT). Homonyms without proof are AMBIGUOUS; missing people are never invented. Two documented name variants (ranks 38 and 145) are reconciled by full name.",
+ "version": "europe-top-150-v2",
+ "rule": "Exact normalised name and same nationality against the deduplicated contemporary master (ALL_CURRENT). Homonyms without proof are AMBIGUOUS; missing people are never invented. Two documented name variants (ranks 38 and 145) are reconciled by full name. v2 (DATA-REG-003A) adds the priority figures of ranks 1-50 as independent regional editions (league EUR) with documented club, position and foot.",
  "rows": [
   {
    "rank": 1,
@@ -46,9 +46,9 @@
    "rank": 6,
    "name": "Ousmane Dembélé",
    "nationality": "FRA",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_ousmane_dembele",
+   "note": "Imported by DATA-REG-003A as a regional 2026 edition (OVR 90 is editorial, not official). Page: can use either foot well."
   },
   {
    "rank": 7,
@@ -62,17 +62,17 @@
    "rank": 8,
    "name": "Michael Olise",
    "nationality": "FRA",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_michael_olise",
+   "note": "Imported by DATA-REG-003A as a regional 2026 edition (OVR 90 is editorial, not official). Page: mainly left-footed."
   },
   {
    "rank": 9,
    "name": "Vitinha",
    "nationality": "POR",
-   "status": "AMBIGUOUS",
-   "editionId": null,
-   "note": "Exact name and nationality also match import_ita_act_175 (Serie A), but nothing proves it is the same person as the ranked player."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_vitinha_psg",
+   "note": "Imported by DATA-REG-003A as a regional 2026 edition (OVR 90 is editorial, not official). Distinct from the Serie A Vitinha (Genoa, import_ita_act_175). Preferred foot not stated."
   },
   {
    "rank": 10,
@@ -102,25 +102,25 @@
    "rank": 13,
    "name": "Nuno Mendes",
    "nationality": "POR",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_nuno_mendes",
+   "note": "Imported by DATA-REG-003A as a regional 2026 edition (OVR 88 is editorial, not official). Preferred foot not stated."
   },
   {
    "rank": 14,
    "name": "João Neves",
    "nationality": "POR",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_joao_neves",
+   "note": "Imported by DATA-REG-003A as a regional 2026 edition (OVR 87 is editorial, not official). Preferred foot not stated."
   },
   {
    "rank": 15,
    "name": "Khvicha Kvaratskhelia",
    "nationality": "GEO",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "Only a historical (legend) edition exists in the master catalogue; it is not merged with the 2026 edition."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_khvicha_kvaratskhelia",
+   "note": "Imported by DATA-REG-003A as a regional 2026 edition (OVR 87 is editorial, not official). Page: favours his stronger right foot. Independent of the historical edition import_ita_leg_131."
   },
   {
    "rank": 16,
@@ -134,9 +134,9 @@
    "rank": 17,
    "name": "Fabián Ruiz",
    "nationality": "ESP",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_fabian_ruiz",
+   "note": "Imported by DATA-REG-003A as a regional 2026 edition (OVR 86 is editorial, not official). Page: left foot."
   },
   {
    "rank": 18,
@@ -150,17 +150,17 @@
    "rank": 19,
    "name": "Dayot Upamecano",
    "nationality": "FRA",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_dayot_upamecano",
+   "note": "Imported by DATA-REG-003A as a regional 2026 edition (OVR 85 is editorial, not official). Preferred foot not stated."
   },
   {
    "rank": 20,
    "name": "Ferran Torres",
    "nationality": "ESP",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_ferran_torres",
+   "note": "Imported by DATA-REG-003A as a regional 2026 edition (OVR 85 is editorial, not official). Page: at Paris Saint-Germain since 15 August 2026. Preferred foot not stated. Not the legend Fernando Torres."
   },
   {
    "rank": 21,
@@ -206,9 +206,9 @@
    "rank": 26,
    "name": "Jamal Musiala",
    "nationality": "GER",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_jamal_musiala",
+   "note": "Imported by DATA-REG-003A as a regional 2026 edition (OVR 87 is editorial, not official). Preferred foot not stated."
   },
   {
    "rank": 27,
@@ -246,9 +246,9 @@
    "rank": 31,
    "name": "Nico Schlotterbeck",
    "nationality": "GER",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_nico_schlotterbeck",
+   "note": "Imported by DATA-REG-003A as a regional 2026 edition (OVR 86 is editorial, not official). Preferred foot not stated."
   },
   {
    "rank": 32,
@@ -294,9 +294,9 @@
    "rank": 37,
    "name": "Désiré Doué",
    "nationality": "FRA",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_desire_doue",
+   "note": "Imported by DATA-REG-003A as a regional 2026 edition (OVR 86 is editorial, not official). Preferred foot not stated."
   },
   {
    "rank": 38,
@@ -350,9 +350,9 @@
    "rank": 44,
    "name": "Diogo Costa",
    "nationality": "POR",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_diogo_costa",
+   "note": "Imported by DATA-REG-003A as a regional 2026 edition (OVR 85 is editorial, not official). Preferred foot not stated. Not the legend Diego Costa."
   },
   {
    "rank": 45,

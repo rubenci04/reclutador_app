@@ -177,6 +177,6 @@ describe('UX-DRAW-007 credit footer', () => {
     const i18n = await createI18n(language)
     const { container } = render(<I18nextProvider i18n={i18n}><AppFooter /></I18nextProvider>)
     expect(container.querySelectorAll('footer')).toHaveLength(1)
-    expect(container.textContent).toBe(`${label}: Rubén E. Alvarrazin © 2026`)
+    expect(container.textContent).toBe(`${label}: Rubén E. Albarracín © 2026`)
   })
 })

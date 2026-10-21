@@ -151,10 +151,10 @@
       "mode": "EUROPE_CURRENT",
       "pairs": 12,
       "mismatches": 0,
-      "goals": 68,
-      "wins": 12,
-      "draws": 0,
-      "digest": "60c920da4c4a1d067945bd57403a293ed98ce9a702ba752cb5abe77d5b105116"
+      "goals": 56,
+      "wins": 8,
+      "draws": 3,
+      "digest": "7afef66a8d5a9e0181f9e0c6f41f60ca653cc239cf6922a10da6daa61c9f61d0"
     },
     {
       "mode": "EUROPE_LEGENDS",

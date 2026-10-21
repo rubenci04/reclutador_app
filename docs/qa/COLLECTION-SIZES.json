@@ -133,13 +133,13 @@
   },
   {
     "mode": "GLOBAL_CLASSIC",
-    "count": 981,
+    "count": 994,
     "stars": 2,
     "positions": {
-      "ARQ": 96,
-      "DEF": 277,
-      "MED": 331,
-      "DEL": 277
+      "ARQ": 97,
+      "DEF": 280,
+      "MED": 336,
+      "DEL": 281
     }
   },
   {
@@ -180,10 +180,10 @@
     "count": 150,
     "stars": 1,
     "positions": {
-      "ARQ": 13,
-      "DEF": 41,
-      "MED": 62,
-      "DEL": 34
+      "ARQ": 12,
+      "DEF": 37,
+      "MED": 64,
+      "DEL": 37
     }
   },
   {

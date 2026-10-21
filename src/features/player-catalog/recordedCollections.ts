@@ -1,4 +1,5 @@
 import ids from '../../data/league-collections/preItalyCollections.json'
+import preEuropeTopV2 from '../../data/league-collections/preEuropeTopV2Collections.json'
 import preEuropeTop from '../../data/league-collections/preEuropeTopCollections.json'
 import preBalance from '../../data/league-collections/preBalanceCollections.json'
 import preMexico from '../../data/league-collections/preMexicoCollections.json'
@@ -7,8 +8,8 @@ import { catalogKey } from '../recruiter-duel/drawHistory'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
 
 const master = new Map(MASTER_CATALOG.map(p => [p.id, p]))
-/** Frozen memberships: 06a81b4 (before Italy) and 6f0c706 (Italy 200, before the Top-150 rule and Liga MX), b7c2c31 (before legend-balance-v1), a483638 (Europe Actualidad before europe-top-150-v1); old seeds keep their exact sporting inputs. */
-export const RECORDED_COLLECTIONS = Object.entries({ ...ids }).concat(Object.entries(preMexico), Object.entries(preBalance), Object.entries(preEuropeTop)).map(([mode, playerIds]) => ({
+/** Frozen memberships: 06a81b4 (before Italy) and 6f0c706 (Italy 200, before the Top-150 rule and Liga MX), b7c2c31 (before legend-balance-v1), a483638 (Europe Actualidad before europe-top-150-v1), 22d3adc (europe-top-150-v1); old seeds keep their exact sporting inputs. */
+export const RECORDED_COLLECTIONS = Object.entries({ ...ids }).concat(Object.entries(preMexico), Object.entries(preBalance), Object.entries(preEuropeTop), Object.entries(preEuropeTopV2)).map(([mode, playerIds]) => ({
   mode: mode as ThemedModeId,
   players: playerIds.map(id => {
     const player = master.get(id)

@@ -43,7 +43,7 @@ describe('UX-DRAW-007 Europe Actualidad Top 150', () => {
       expect(row.note, row.name).toBeTruthy()
     }
     // A homonym without proof is not merged.
-    expect(EUROPE_TOP_RESOLUTION.find((row) => row.name === 'Vitinha')?.status).toBe('AMBIGUOUS')
+    expect(EUROPE_TOP_RESOLUTION.find((row) => row.name === 'Vitinha')?.editionId).toBe('import_eur_act_vitinha_psg') // DATA-REG-003A: the ranked Vitinha (PSG) is its own edition, distinct from the Serie A one
   })
   it('contains the explicitly audited stars with their 2026 edition and without historical editions', () => {
     for (const name of ['Rodri', 'Kylian Mbappé', 'Lamine Yamal', 'Erling Haaland', 'Harry Kane', 'Jude Bellingham', 'Pedri', 'Marc Cucurella', 'Robert Lewandowski']) {
