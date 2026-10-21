@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-21",
+  "implementationCommit": "8e88a137d1424a010efe564c5193f13d0e62b6d0",
+  "remoteCommit": "8e88a137d1424a010efe564c5193f13d0e62b6d0",
+  "worker": "reclutador-app",
+  "deploymentId": "78dc5851-81ba-4110-9837-beec992ed703",
+  "url": "https://reclutador-app.rea-04.workers.dev/",
+  "verifiedAtUtc": "2026-10-21T15:46:50.522Z",
+  "checks": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "bytes": 630,
+      "sha256": "803c18e808a8fcce613b568b76f2f2ee7e8af652c608574cc20fc096075e7840",
+      "expectedSha256": "803c18e808a8fcce613b568b76f2f2ee7e8af652c608574cc20fc096075e7840",
+      "matches": true
+    },
+    {
+      "path": "assets/AuctionPage-Cpi_k9S6.js",
+      "status": 200,
+      "bytes": 2076314,
+      "sha256": "234c9c5132510084302b64288dcd973a05d3ab812fc56e6c0308a8f9d9bf51a8",
+      "expectedSha256": "234c9c5132510084302b64288dcd973a05d3ab812fc56e6c0308a8f9d9bf51a8",
+      "matches": true
+    },
+    {
+      "path": "assets/index-B07YTiZ0.js",
+      "status": 200,
+      "bytes": 230215,
+      "sha256": "626af270aff1e0608705581c3783ef7182c47d9adbaf6556588977182c4849a7",
+      "expectedSha256": "626af270aff1e0608705581c3783ef7182c47d9adbaf6556588977182c4849a7",
+      "matches": true
+    },
+    {
+      "path": "assets/index-DkfmxWWU.css",
+      "status": 200,
+      "bytes": 96669,
+      "sha256": "f52efc73f3e453e1f763670f8f80754410f8dd15202e1fc61aaff826fd1bbc2b",
+      "expectedSha256": "f52efc73f3e453e1f763670f8f80754410f8dd15202e1fc61aaff826fd1bbc2b",
+      "matches": true
+    },
+    {
+      "path": "assets/OnlinePage-DQyUFkRd.js",
+      "status": 200,
+      "bytes": 235905,
+      "sha256": "8367aa26ce00af65c63c460d261753588d2c91fa77551c508393b563338300a4",
+      "expectedSha256": "8367aa26ce00af65c63c460d261753588d2c91fa77551c508393b563338300a4",
+      "matches": true
+    },
+    {
+      "path": "assets/OnlinePage-ieYY5d5L.css",
+      "status": 200,
+      "bytes": 1146,
+      "sha256": "8ff45b3ec344d580150e21b57e36ba059926be7034abb65c30f62f34c71696c7",
+      "expectedSha256": "8ff45b3ec344d580150e21b57e36ba059926be7034abb65c30f62f34c71696c7",
+      "matches": true
+    }
+  ],
+  "referencedAssets": [
+    "/assets/index-B07YTiZ0.js",
+    "/assets/AuctionPage-Cpi_k9S6.js",
+    "/assets/index-DkfmxWWU.css"
+  ],
+  "onlineEntry": {
+    "status": 200,
+    "matchesBuildHtml": true
+  },
+  "browserSmoke": "Not executed after deployment: Local browser use is disabled in Work settings. HTTP and bundle checks do not establish functional E2E or audio approval.",
+  "versionId": "4d12b451-4452-4368-97e3-ae496ea72b3f"
+}

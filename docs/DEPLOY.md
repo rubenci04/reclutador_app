@@ -85,3 +85,9 @@ Cloudflare no permite convertir un proyecto creado por subida directa (`draft-le
 3. **Environment variables** (Production y Preview): `VITE_SUPABASE_URL` y `VITE_SUPABASE_PUBLISHABLE_KEY` (los valores de `.env.local`; son claves públicas).
 4. Cada `git push` a `main` desplegará solo. Si se quiere conservar la dirección `draft-legends.pages.dev`, hay que eliminar primero el proyecto antiguo y nombrar el nuevo igual.
 Mientras tanto, la subida directa sigue funcionando: `npm run build && npx wrangler pages deploy dist --project-name draft-legends --branch codex/current-club-audit`.
+
+## Publicación SIM-005R-07 — 21/10/2026
+
+Código publicado en main: **8e88a137d1424a010efe564c5193f13d0e62b6d0**. Worker **reclutador-app**, [producción](https://reclutador-app.rea-04.workers.dev/). Deployment **78dc5851-81ba-4110-9837-beec992ed703**, versión **4d12b451-4452-4368-97e3-ae496ea72b3f** al 100%, etiqueta SHA completa. Push fast-forward autorizado directamente, build/dry-run/deploy con Wrangler 4.151.3, compatibility-date 2026-10-12, --keep-vars --no-autoconfig, sin cambios de bindings/variables.
+
+HTML y cinco bundles con HTTP 200 y SHA-256 idénticos a dist; ?online carga HTML correcto. [Registro](logs/SIM-005R-07.md), [evidencia](qa/SIM-005R-07-deployment.json). Smoke funcional de navegador posterior bloqueado por Work settings; sin escucha real ni E2E online. La documentación posterior conserva el SHA del código compilado.
