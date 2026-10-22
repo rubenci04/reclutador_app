@@ -68,7 +68,8 @@ describe('UX-AUCTION-006 footballer and offer stay together', () => {
     expect(card.querySelector('.pos-pill')).not.toBeNull()
     expect(card.querySelector('.base-price-chip')?.textContent).toMatch(/\d/)
     expect(card.querySelector('.player-club')?.textContent?.length).toBeGreaterThan(3)
-    expect(card.querySelector('.rank-chip')?.textContent).toMatch(/^#\d+ \/ 150$/)
+    // RANK-REVEAL-009: the position is a reward after the signing, never shown while the footballer is on sale.
+    expect(document.querySelector('.rank-chip')).toBeNull()
     expect(card.querySelector('.player-full-card')).not.toBeNull()
     // The balance and the maximum bid are not repeated: balance only in the header, maximum only as the offer action.
     expect(panel.querySelectorAll('.bid-figures dt')).toHaveLength(2)

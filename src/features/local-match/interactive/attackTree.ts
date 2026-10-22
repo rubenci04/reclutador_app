@@ -33,7 +33,11 @@ export type Sector = 'LEFT' | 'RIGHT'
 export type DribbleSector = 'LEFT' | 'CENTER' | 'RIGHT'
 export const DRIBBLE_VERSION = 'dribble-mini-v1' as const
 export const DRIBBLE_CHOICES = ['DRIBBLE_LEFT', 'DRIBBLE_CENTER', 'DRIBBLE_RIGHT'] as const
-export type PlayChoice = 'FK_LEFT' | 'FK_CENTER' | 'FK_RIGHT' | 'FK_CROSS' | 'FK_SHORT' | 'WALL_JUMP' | 'WALL_HOLD' | 'CORNER_NEAR' | 'CORNER_FAR' | 'CORNER_SHORT' | 'MAN_MARK' | 'ZONE' | 'LEFT' | 'RIGHT' | 'CROSS' | 'SHOOT' | 'INTERCEPT' | 'PRESS' | 'NEAR_POST' | 'GOAL_CENTER' | 'FAR_POST' | 'DRIBBLE_LEFT' | 'DRIBBLE_CENTER' | 'DRIBBLE_RIGHT'
+export const DEFENSE_VERSION = 'defense-mini-v1' as const
+export const SHOT_VERSION = 'precision-shot-v1' as const
+/** The hand-played defense keeps the two traditional options (the first one is the automatic fallback) and adds the three lanes. */
+export const DEFENSE_CHOICES = ['INTERCEPT', 'PRESS', 'DEFEND_LEFT', 'DEFEND_CENTER', 'DEFEND_RIGHT'] as const
+export type PlayChoice = 'FK_LEFT' | 'FK_CENTER' | 'FK_RIGHT' | 'FK_CROSS' | 'FK_SHORT' | 'WALL_JUMP' | 'WALL_HOLD' | 'CORNER_NEAR' | 'CORNER_FAR' | 'CORNER_SHORT' | 'MAN_MARK' | 'ZONE' | 'LEFT' | 'RIGHT' | 'CROSS' | 'SHOOT' | 'INTERCEPT' | 'PRESS' | 'NEAR_POST' | 'GOAL_CENTER' | 'FAR_POST' | 'DRIBBLE_LEFT' | 'DRIBBLE_CENTER' | 'DRIBBLE_RIGHT' | 'DEFEND_LEFT' | 'DEFEND_CENTER' | 'DEFEND_RIGHT'
 export type PlayNode = 'DRIBBLE' | 'FK_ATTACK' | 'FK_DEFEND' | 'FK_HEADER' | 'CORNER_ATTACK' | 'CORNER_DEFEND' | 'CORNER_HEADER' | 'DIRECTION' | 'FINISH' | 'DEFEND' | 'HEADER'
 export interface PlayOption { readonly choice: PlayChoice; readonly available: boolean; readonly playerId: string | null; readonly rivalId: string | null }
 export interface PendingPlay {
@@ -47,11 +51,13 @@ export interface PendingPlay {
   readonly attackerId?: string
   /** DRIBBLE node only: the lane the CPU defender decided to cover, fixed before the player chooses (hidden by the interface until the reveal). */
   readonly dribble?: { readonly cover: DribbleSector }
+  /** DEFEND node only (defense-mini-v1): the lane the CPU attacker will use, fixed before the player chooses. */
+  readonly defense?: { readonly lane: DribbleSector }
   readonly aerial?: AerialAction
   readonly freeKick?: FreeKickEvent
   readonly corner?: CornerEvent
 }
-export interface PlayLogEntry { readonly id: string; readonly playId: string; readonly node: PlayNode; readonly choice: PlayChoice; /** DRIBBLE node only: timing precision (0-1) the player achieved. */ readonly precision?: number }
+export interface PlayLogEntry { readonly id: string; readonly playId: string; readonly node: PlayNode; readonly choice: PlayChoice; /** DRIBBLE, FK_ATTACK and DEFEND nodes only: timing precision (0-1) the player achieved. */ readonly precision?: number }
 
 export interface Squad { readonly lineup: DraftLineup; readonly formation: FormationId }
 export interface PlayContext {
@@ -65,6 +71,8 @@ export interface PlayContext {
   readonly duels?: 'ovr-duels-v1'
   /** Set only while the dribble challenge may still appear (enabled, and not yet played in this match). */
   readonly dribble?: typeof DRIBBLE_VERSION
+  /** Set only while the first CPU attack of the match may still be defended by hand. */
+  readonly defenseMini?: typeof DEFENSE_VERSION
 }
 
 const clamp = (value: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, value))

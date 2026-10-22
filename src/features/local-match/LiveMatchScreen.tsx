@@ -11,6 +11,8 @@ import { DecisionPanel, Handover } from './LiveDecisionPanel'
 import { HalftimePanel } from './HalftimePanel'
 import { PlayPanel } from './LivePlayPanel'
 import { DribbleScene, type DribbleScene as DribbleSceneData } from './DribblePanel'
+import { ShotScene, type ShotSceneData, type ShotOutcome } from './ShotPanel'
+import { DefenseScene, type DefenseSceneData, type DefenseResult } from './DefensePanel'
 import { freeKickBeatDuration } from './freeKickGeometry'
 import { cornerBeatDuration } from './cornerGeometry'
 import { aerialBeatDuration } from './aerialGeometry'
@@ -55,6 +57,8 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   const [skipAnimation, setSkipAnimation] = useState(false); const [replay, setReplay] = useState(false)
   const [focus, setFocus] = useState<BoardFocus>('full')
   const [scene, setScene] = useState<DribbleSceneData | null>(null)
+  const [shotScene, setShotScene] = useState<ShotSceneData | null>(null)
+  const [defenseScene, setDefenseScene] = useState<DefenseSceneData | null>(null)
   const [subRequests, setSubRequests] = useState<Record<MatchSide, boolean>>({ local: false, cpu: false })
   const subRequested = subRequests.local || subRequests.cpu
   const [halftimeConfirmed, setHalftimeConfirmed] = useState(false)
@@ -95,6 +99,8 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   const choosePlay = (rendered: PendingPlay, choice: PlayChoice, precision?: number) => {
     const state = current.current
     if (state.phase !== 'PLAY') return
+    const eventsOf = (value: Session) => [...value.kernel.blocks.flatMap((block) => block.events), ...(value.kernel.partial?.events ?? [])]
+    const before = eventsOf(state).length
     const next = submitPlay(state, { version: 'interactive-play-command-v1', id: `${state.sessionId}:${rendered.id}:${rendered.node}`, sessionId: state.sessionId, expectedRevision: state.revision, playId: rendered.id, node: rendered.node, choice, ...(precision !== undefined ? { precision } : {}) })
     if (next.ok) {
       commit(next.value)
@@ -102,6 +108,18 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
         // Show the confirmed dribble on the close-up: lane chosen, lane covered and the outcome the engine recorded.
         const steps = [...next.value.kernel.blocks.flatMap((block) => block.events), ...(next.value.kernel.partial?.events ?? [])].filter((item) => item.step?.startsWith('DRIBBLE'))
         setScene({ key: `${rendered.id}:${next.value.revision}`, lane: choice.slice(8) as DribbleSceneData['lane'], cover: rendered.dribble!.cover, ok: steps.at(-1)?.step === 'DRIBBLE_OK', attackerId: rendered.receiverId, defenderId: rendered.options[0]?.rivalId ?? null })
+      }
+      const confirmed = eventsOf(next.value).slice(before)
+      if (rendered.node === 'FK_ATTACK' && precision !== undefined && !rest) {
+        // SIM-MINI-002: the confirmed free kick on the close-up. The keeper's dive was fixed before the shot.
+        const last = confirmed.find((item) => ['FK_GOAL', 'FK_SAVE', 'FK_WIDE', 'FK_OVER', 'FK_BLOCK'].includes(item.step ?? ''))
+        const dive = last?.freeKick?.keeperDirection
+        if (last && dive) setShotScene({ key: `${rendered.id}:${next.value.revision}`, mode: 'FREE_KICK', direction: choice.slice(3) as ShotSceneData['direction'], dive: dive === 'NEAR_POST' ? 'LEFT' : dive === 'FAR_POST' ? 'RIGHT' : 'CENTER', outcome: ({ FK_GOAL: 'GOAL', FK_SAVE: 'SAVE', FK_WIDE: 'WIDE', FK_OVER: 'OVER', FK_BLOCK: 'BLOCK' } as Record<string, ShotOutcome>)[last.step!], kickerId: rendered.freeKick?.kickerId ?? null, keeperId: rendered.freeKick?.keeperId ?? null })
+      }
+      if (rendered.node === 'DEFEND' && rendered.defense && !rest) {
+        // SIM-MINI-003: the CPU attacker's lane is revealed together with the confirmed outcome.
+        const ended = confirmed.find((item) => ['INTERCEPT_OK', 'PRESS_OK', 'DEFENSE_BLOCK', 'CPU_WIDE', 'CPU_GOAL', 'DEFENSE_SAVE'].includes(item.step ?? ''))
+        if (ended) setDefenseScene({ key: `${rendered.id}:${next.value.revision}`, intent: rendered.defense.lane, pick: choice.startsWith('DEFEND_') ? choice.slice(7) as DefenseSceneData['pick'] : 'PRESS', result: ({ INTERCEPT_OK: 'RECOVERED', PRESS_OK: 'RECOVERED', DEFENSE_BLOCK: 'BEATEN_BLOCK', CPU_WIDE: 'BEATEN_WIDE', CPU_GOAL: 'BEATEN_GOAL', DEFENSE_SAVE: 'BEATEN_SAVE' } as Record<string, DefenseResult>)[ended.step!], attackerId: rendered.attackerId ?? null, defenderId: rendered.protagonistId })
       }
       // Reveal the first confirmed response immediately; later beats keep their normal duration.
       setCursor((value) => Math.min(value + 1, liveFrames(next.value.kernel.blocks, next.value.kernel.partial ? { minute: next.value.kernel.partial.events[0].minute, events: next.value.kernel.partial.events } : null).length))
@@ -202,8 +220,10 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
         </fieldset>
       </div>
       <p className="live-now" role="status">{finished ? t('liveDT.fullTime') : focusEvent ? <><time>{focusEvent.minute}′</time> {eventText(focusEvent)}</> : t('liveDT.kickoff')}</p>
-      {atPlay && view.play && <PlayPanel key={`${view.play.id}:${view.play.node}`} play={view.play} catalog={catalog} ovrDuels={halftimeRules} onChoose={(choice, precision) => choosePlay(view.play!, choice, precision)} />}
+      {atPlay && view.play && <PlayPanel key={`${view.play.id}:${view.play.node}`} play={view.play} catalog={catalog} ovrDuels={halftimeRules} precisionShot={Boolean(session.options.precisionShot)} onChoose={(choice, precision) => choosePlay(view.play!, choice, precision)} />}
       {scene && <DribbleScene key={scene.key} scene={scene} catalog={catalog} onDone={() => setScene(null)} />}
+      {shotScene && <ShotScene key={shotScene.key} scene={shotScene} catalog={catalog} onDone={() => setShotScene(null)} />}
+      {defenseScene && <DefenseScene key={defenseScene.key} scene={defenseScene} catalog={catalog} onDone={() => setDefenseScene(null)} />}
       {halftimeConfirmed && <p role="status">{t('halftime.confirmed')}</p>}
       {atWindow && halftimeRules && (!quietWindow || subRequested) && (passDevice ? <Handover name={names.cpu} onReady={() => setHandover(session.window!.id)} /> : <HalftimePanel key={`${session.window!.id}:${side}`} session={session} side={side} name={names[side]} halftime={!quietWindow} onConfirm={(order) => {
         const other = side === 'local' ? 'cpu' : 'local'

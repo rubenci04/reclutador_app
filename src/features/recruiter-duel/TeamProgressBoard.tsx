@@ -1,7 +1,7 @@
 import { useId, useState, useSyncExternalStore } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
-import { TeamPitchBoard } from './TeamPitchBoard'
+import { TeamPitchBoard, type RankFor } from './TeamPitchBoard'
 import { PowerBadge } from './PowerBadge'
 import { teamStrengthPreview } from './teamStrength'
 import { budgetOf, positionProgress, rosterIds } from './auctionEngine'
@@ -15,9 +15,9 @@ const subscribe = (notify: () => void) => {
   return () => media?.removeEventListener('change', notify)
 }
 const serverSnapshot = () => false
-interface Props { readonly game: RecruiterDuelGame; readonly catalog: readonly Player[]; readonly names: Readonly<Record<RecruiterId, string>>; readonly open?: boolean; readonly onOpenChange?: (open: boolean) => void }
+interface Props { readonly game: RecruiterDuelGame; readonly catalog: readonly Player[]; readonly names: Readonly<Record<RecruiterId, string>>; readonly open?: boolean; readonly onOpenChange?: (open: boolean) => void; readonly rankFor?: RankFor }
 
-export function TeamProgressBoard({ game, catalog, names, open, onOpenChange }: Props) {
+export function TeamProgressBoard({ game, catalog, names, open, onOpenChange, rankFor }: Props) {
   const { t } = useTranslation()
   const panelId = useId()
   const mobile = useSyncExternalStore(subscribe, mobileSnapshot, serverSnapshot)
@@ -34,7 +34,7 @@ export function TeamProgressBoard({ game, catalog, names, open, onOpenChange }: 
           <h3>{names[participant]}</h3>
           <PowerBadge strength={teamStrengthPreview(game, participant, catalog)} />
           <p><span>{t('teamProgress.selected', { count: rosterIds(team).filter(Boolean).length, total: rosterIds(team).length })}</span> · <span>{t('duel.balance', { amount: budgetOf(game) - team.spent })}</span></p>
-          <TeamPitchBoard game={game} participant={participant} catalog={catalog} />
+          <TeamPitchBoard game={game} participant={participant} catalog={catalog} rankFor={rankFor} />
           <ul className="team-missing">{(['ARQ', 'DEF', 'MED', 'DEL'] as const).map((position) => {
             const progress = positionProgress(team, position)
             return <li key={position} aria-label={t('hud.positionLabel', { position: t(`positions.${position}`), filled: progress.filled, capacity: progress.capacity })}><span aria-hidden="true">{position} {progress.filled}/{progress.capacity}</span></li>

@@ -6,7 +6,7 @@ import { type FormationRole } from '../tactics/roles'
 import { FORMATION_IDS, formationSlots, organizeFormation, type FormationId } from '../tactics/formations'
 import { FormationGuide } from '../tactics/FormationGuide'
 import type { RecruiterDuelGame, RecruiterId } from './auctionTypes'
-import { TeamPitchBoard } from './TeamPitchBoard'
+import { TeamPitchBoard, type RankFor } from './TeamPitchBoard'
 
 interface Props {
   readonly game: RecruiterDuelGame
@@ -22,10 +22,11 @@ interface Props {
   readonly onConfirm: () => void
   readonly onEdit: () => void
   readonly onFormationChange?: (formation: FormationId) => void
+  readonly rankFor?: RankFor
 }
 
 /** One participant's post-auction ordering step: pick two shirts of the same line to swap them, then confirm. */
-export function LineupOrganizer({ game, participant, name, catalog, confirmed, locked = false, onSwap, onBenchSwap, onConfirm, onEdit, onFormationChange }: Props) {
+export function LineupOrganizer({ game, participant, name, catalog, confirmed, locked = false, onSwap, onBenchSwap, onConfirm, onEdit, onFormationChange, rankFor }: Props) {
   const { t } = useTranslation()
   const [selected, setSelected] = useState<FormationRole | null>(null)
   const [selectedBench, setSelectedBench] = useState<number | null>(null)
@@ -92,7 +93,7 @@ export function LineupOrganizer({ game, participant, name, catalog, confirmed, l
           <button className="secondary-action" onClick={() => swapBench(index, target as FormationRole)}>{t('lineup.benchSwap.action')}</button></div>
       })}
     </div></details>}
-    <TeamPitchBoard game={game} participant={participant} catalog={catalog} organize={(editing || bench.length > 0 && onBenchSwap) && !confirmed && !locked ? { selectedSlot: selected, selectedBench, onPick: pick, onDrop: drop, onBenchPick: onBenchSwap ? pickBench : undefined, onBenchDrop: onBenchSwap ? swapBench : undefined } : undefined} />
+    <TeamPitchBoard game={game} participant={participant} catalog={catalog} rankFor={rankFor} organize={(editing || bench.length > 0 && onBenchSwap) && !confirmed && !locked ? { selectedSlot: selected, selectedBench, onPick: pick, onDrop: drop, onBenchPick: onBenchSwap ? pickBench : undefined, onBenchDrop: onBenchSwap ? swapBench : undefined } : undefined} />
     <p role={message?.kind === 'error' ? 'alert' : 'status'} className={message?.kind === 'error' ? 'draft-alert' : undefined}>{message?.text}</p>
     {confirmed
       ? <div className="duel-actions"><strong role="status">{t('lineup.confirmed')}</strong>{!locked && <button className="secondary-action" onClick={() => { setSelected(null); setSelectedBench(null); setMessage(null); onEdit() }}>{t('lineup.edit')}</button>}</div>

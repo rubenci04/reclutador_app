@@ -358,3 +358,7 @@ coach-market-v3 (nivel S+, niveles editoriales, seis cartas competitivas y asequ
 ## UX-AUCTION-007 + RANK-008 + SIM-MINI-001 — 22/10/2026
 
 Mesa de subastas unificada, Global Top 150 por calidad (Actual y Leyendas) con ranking #/150 y gambeta interactiva integrada al partido en vivo contra la CPU. 1.324 pruebas aprobadas. [Informe](qa/UX-AUCTION-007-RANK-008-SIM-MINI-001.md).
+
+## SIM-MINI-002 + SIM-MINI-003 + RANK-REVEAL-009 — 22/10/2026
+
+Ranking #/150 oculto durante la subasta y revelado («¡Fichaje confirmado! · TOP n · #p/150») al confirmar el fichaje y luego en la plantilla; disparo de precisión para tiros libres directos (`precision-shot-v1`) y tanda de penales interactiva de la serie local contra CPU (`penalty-shootout-v1`); defensa interactiva breve, una por partido (`defense-mini-v1`). Solo local contra CPU; online y partidas anteriores conservan su resolución. [Informe](qa/SIM-MINI-002-003-RANK-REVEAL.md).

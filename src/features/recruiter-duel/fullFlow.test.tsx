@@ -103,7 +103,8 @@ describe('A. human against CPU: early completion to final result', () => {
     expect(screen.getByRole('radio', { name: 'Manage match' })).toBeChecked()
     click('Start match')
     // Against the CPU the interactive attack (SIM-005R-02) may stop a block: take the first card on offer.
-    const card = () => screen.queryAllByRole('button').find((b) => b.classList.contains('play-card') && !(b as HTMLButtonElement).disabled)
+    // SIM-MINI-001/002/003: the hand-played panels offer a traditional answer; their lane buttons only select.
+    const card = () => button('Resolve with the traditional system') ?? screen.queryAllByRole('button').find((b) => b.classList.contains('play-card') && !(b as HTMLButtonElement).disabled)
     for (let i = 0; i < 60 && !screen.queryByRole('heading', { name: 'HALF-TIME · Recruiter one' }); i++) { const open = card(); if (open) fireEvent.click(open); else if (button('View next block')?.hasAttribute('disabled')) act(() => vi.advanceTimersByTime(800)); else click('View next block') }
     expect(screen.getByRole('heading', { name: 'HALF-TIME · Recruiter one' })).toHaveFocus()
     for (let i = 0; i < 120 && !button('Replay match'); i++) {

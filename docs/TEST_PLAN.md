@@ -249,3 +249,10 @@ CPU estratégica local implementada como opción junto a hot-seat. Perfiles CONS
 - 240 semillas por política/perfil (5.040 partidos); comparación independiente de 360 sesiones y 18 checkpoints R-06, golden intactos.
 - Tres idiomas, foco, doble clic, pausa/velocidad/omitir/reduced-motion y ledger; cuatro controles antes y después del commit.
 - Capturas reales de cuatro anchos y fases; escucha humana pendiente. Build/dry-run/deploy Worker y hash HTTP/assets según DEPLOY. [QA](qa/SIM-005R-07.md).
+
+## SIM-MINI-002/003 + RANK-REVEAL-009
+
+- Ranking: oculto en venta y revelado al confirmar (`rankReveal.test.tsx`, tres idiomas), visible en la plantilla, sin puestos inventados.
+- Tiro libre directo: reacción del arquero previa, precisión acotada, determinismo, sin doble resolución, checkpoint (`interactive/miniGames.test.ts`, `miniGamesScreen.test.tsx`).
+- Tanda de penales: intención CPU previa, ganador derivado de los tiros, alternativa tradicional, muerte súbita, serie completa en la pantalla real.
+- Defensa: carril de la CPU fijado antes, una por partido, continuidad del ataque, ausencia sin la opción. [QA](qa/SIM-MINI-002-003-RANK-REVEAL.md).

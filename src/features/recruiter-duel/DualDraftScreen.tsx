@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next'
 import { ConfirmNavigation } from '../../components/ConfirmNavigation'
 import type { Player } from '../../types/player'
 import { PlayerIdentity } from './PlayerIdentity'
-import { rankBadge } from '../player-catalog/categoryRanking'
 import { PowerBadge } from './PowerBadge'
 import type { RecruiterId } from './auctionTypes'
 import { canDiscard, currentCard, DUAL_SIDES, dualComplete, isSideComplete, sideBudgetLeft, sideCounts, type DualDraft, type DualEvent } from './dualDraft'
@@ -50,7 +49,7 @@ export function DualDraftScreen({ draft, catalog, names, categoryLabel, humans, 
           <span className="hud-discards" aria-label={t('hud.discards', { count: side.discards, total: 3 })}>{[0, 1, 2].map((index) => <i key={index} className={index < side.discards ? 'on' : undefined} aria-hidden="true" />)}<span>{t('hud.discards', { count: side.discards, total: 3 })}</span></span></p>
         <ul className="dual-positions" aria-label={t('dual.positions')}>{POSITIONS.map((position) => <li key={position} className={`pos-${position}${counts[position] === CAPACITY[position] ? ' is-full' : ''}`}>{position} {counts[position]}/{CAPACITY[position]}</li>)}</ul>
         {complete ? <p className="dual-complete" role="status">{t('dual.complete')}</p>
-          : card && <div className="dual-card" key={card.id}><PlayerIdentity player={card} rank={rankBadge(side.category, card.id)} />
+          : card && <div className="dual-card" key={card.id}><PlayerIdentity player={card} />
             {human ? <div className="duel-actions">
               <button className="primary-action" onClick={() => onSign(id)}>{t('dual.sign', { price: card.price })}</button>
               <button className="secondary-action" disabled={!allowDiscard} onClick={() => onDiscard(id)}>{t('dual.discard', { count: side.discards })}</button>

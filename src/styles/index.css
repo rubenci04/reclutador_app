@@ -857,3 +857,33 @@
   .auction-board > .auction-candidate { grid-column: 1; grid-row: 2 / span 4; position: sticky; top: 64px; }
   .auction-board > .bid-panel, .auction-board > .reveal-actions { grid-column: 2; }
 }
+
+/* RANK-REVEAL-009: the ranking appears only once the signing is confirmed */
+.signing-reveal { display: grid; gap: 4px; justify-items: start; margin: 0 0 8px; padding: 8px 12px; border-radius: 10px; background: #d5fb7618; border: 1px solid #d5fb7666; animation: signing-reveal .7s cubic-bezier(.2,.9,.3,1.2) both; }
+.signing-reveal strong { font-size: .95rem; }
+.signing-reveal-rank { font-size: 1.5rem; letter-spacing: .5px; color: #f4dc63; animation: signing-rank .9s .25s ease-out both; }
+@keyframes signing-reveal { from { opacity: 0; transform: translateY(10px) scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes signing-rank { from { opacity: 0; letter-spacing: 6px; } to { opacity: 1; letter-spacing: .5px; } }
+@media (prefers-reduced-motion: reduce) { .signing-reveal, .signing-reveal-rank { animation: none; } }
+
+/* SIM-MINI-002/003: precision shot, penalty shootout and hand-played defense */
+.shot-bar .dribble-sweet { left: 44%; width: 12%; }
+.shot-net { fill: #ffffff10; stroke: #ffffff33; stroke-dasharray: 3 3; }
+.shot-posts { stroke: #fff; stroke-width: 3; stroke-linecap: round; }
+.shot-wall circle, circle.shot-wall { fill: #ff6b6b; opacity: .85; }
+.shot-spot { fill: #ffffff88; }
+.shot-keeper circle { fill: #ffcf4d; }
+.shot-keeper text { font-size: 9px; font-weight: 800; fill: #10210f; }
+.shot-keeper, .shot-kicker, .shot-ball { transition: transform .7s cubic-bezier(.3,.7,.3,1); }
+.shot-contact { fill: none; stroke: #fff; stroke-width: 3; animation: shot-contact .25s ease-out both; }
+@keyframes shot-contact { from { opacity: 1; transform-origin: 150px 152px; transform: scale(.4); } to { opacity: 0; transform-origin: 150px 152px; transform: scale(1.6); } }
+.penalty-shootout { margin: 12px 0; padding: 12px; border-radius: 12px; background: #0b1a13; border: 1px solid #ffffff2e; }
+.penalty-score { font-size: 1.2rem; font-weight: 800; margin: 4px 0 8px; }
+.penalty-rounds { list-style: none; display: grid; gap: 4px; margin: 0 0 8px; padding: 0; }
+.penalty-rounds li { display: grid; grid-template-columns: 24px 1fr 1fr; gap: 6px; align-items: center; font-size: .85rem; }
+.penalty-rounds span { padding: 2px 6px; border-radius: 6px; background: #ffffff10; text-align: center; }
+.penalty-rounds .kick-GOAL { background: #7fd06a55; }
+.penalty-rounds .kick-SAVED, .penalty-rounds .kick-MISSED { background: #ff6b6b44; }
+.defense-picks { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 520px) { .defense-picks { grid-template-columns: repeat(2, 1fr); } }
+@media (prefers-reduced-motion: reduce) { .shot-keeper, .shot-kicker, .shot-ball { transition: none; } .shot-contact { animation: none; } }

@@ -42,3 +42,8 @@ export function rankBadge(mode: ThemedModeId | undefined, playerId: string): Ran
   const rank = ranking.rankOf(playerId)
   return rank === undefined ? null : { rank, total: ranking.size }
 }
+
+/** Reward bracket shown when a signing is confirmed: the smallest of 3, 10, 25 or 50 that contains the position, else the whole category. */
+export function rankBracket(badge: RankBadge): number {
+  return [3, 10, 25, 50].find((limit) => badge.rank <= limit && limit < badge.total) ?? badge.total
+}

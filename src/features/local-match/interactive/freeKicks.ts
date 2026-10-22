@@ -75,18 +75,20 @@ export function freeKickPending(a: FreeKickEvent, header = false): PendingPlay {
   return { id: a.id, node: header ? 'FK_HEADER' : defending ? 'FK_DEFEND' : 'FK_ATTACK', protagonistId: header ? a.targetId : defending ? a.defenderId : a.kickerId, receiverId: header ? a.targetId : null, sector: 'LEFT', freeKick: a, options: choices.map((choice) => ({ choice, available: true, playerId: defending ? a.defenderId : header || choice === 'FK_CROSS' ? a.targetId : choice === 'FK_SHORT' ? a.receiverId : a.kickerId, rivalId: defending ? a.kickerId : a.defenderId })) }
 }
 /** Accuracy, estimated power, wall obstruction and keeper are separate from the OVR contact/marking duel. */
-export function freeKickChances(kicker: Player, wall: readonly Player[], keeper: Player, direction: HeaderDirection, trajectory: FreeKickPlan['trajectory'], wallChoice: WallChoice, keeperDirection: HeaderDirection, edge: number) {
+export function freeKickChances(kicker: Player, wall: readonly Player[], keeper: Player, direction: HeaderDirection, trajectory: FreeKickPlan['trajectory'], wallChoice: WallChoice, keeperDirection: HeaderDirection, edge: number, timing?: number) {
+  /** SIM-MINI-002: hand timing moves the odds by at most ±.15 on target and ±.05 for the goal; absent (traditional) it is exactly neutral. */
+  const skill = timing === undefined ? 0 : clamp(timing, 0, 1) - .5
   const precision = .55 * kicker.att_rating + .30 * kicker.men_rating + .15 * kicker.overall_rating
   const power = .65 * kicker.phy_rating + .35 * kicker.att_rating
   const defense = wall.reduce((sum, p) => sum + defenderQuality(p), 0) / wall.length
   return {
-    block: clamp(.24 + (defense - precision) * .004 + (trajectory === 'HIGH' ? wallChoice === 'WALL_JUMP' ? .12 : -.06 : wallChoice === 'WALL_HOLD' ? .09 : -.08) - edge * .3, .06, .58),
-    onTarget: clamp((direction === 'GOAL_CENTER' ? .77 : .64) + (precision - 80) * .005 + (trajectory === 'LOW' ? .04 : -.03) + edge * .3, .30, .93),
-    goal: clamp((direction === 'GOAL_CENTER' ? .22 : .36) + (precision - keeperQuality(keeper)) * .005 + (power - 80) * .002 + (direction === keeperDirection ? -.10 : .035) + edge * .4, .06, .62),
+    block: clamp(.24 + (defense - precision) * .004 + (trajectory === 'HIGH' ? wallChoice === 'WALL_JUMP' ? .12 : -.06 : wallChoice === 'WALL_HOLD' ? .09 : -.08) - edge * .3 - skill * .08, .06, .58),
+    onTarget: clamp((direction === 'GOAL_CENTER' ? .77 : .64) + (precision - 80) * .005 + (trajectory === 'LOW' ? .04 : -.03) + edge * .3 + skill * .30, .30, .93),
+    goal: clamp((direction === 'GOAL_CENTER' ? .22 : .36) + (precision - keeperQuality(keeper)) * .005 + (power - 80) * .002 + (direction === keeperDirection ? -.10 : .035) + edge * .4 + skill * .10, .06, .62),
   }
 }
 /** Eight draws per execution; four fresh draws only after an accepted header direction. No further short-pass question. */
-export function resolveFreeKick(ctx: PlayContext, play: PendingPlay, choice: PlayChoice, plan: FreeKickPlan, random: () => number): StepResult {
+export function resolveFreeKick(ctx: PlayContext, play: PendingPlay, choice: PlayChoice, plan: FreeKickPlan, random: () => number, precision?: number): StepResult {
   const origin = play.freeKick!, side = origin.awardedTo, other = otherSide(side), edge = playContext(cornerContext(ctx, side))
   const r = Array.from({ length: play.node === 'FK_HEADER' ? 4 : 8 }, random)
   const direct = directEligible(origin.zone), defending = play.node === 'FK_DEFEND', header = play.node === 'FK_HEADER'
@@ -111,7 +113,7 @@ export function resolveFreeKick(ctx: PlayContext, play: PendingPlay, choice: Pla
   const reacted: FreeKickEvent = { ...aimed, keeperDirection: plan.keeper, ...(direct ? { trajectory: plan.trajectory } : {}) }
   if (direct) events.push(ev('FK_WALL', 'pass', other, defender.id, { ...a, trajectory: plan.trajectory }))
   events.push(ev(header || execution === 'CROSS' ? 'FK_HEADER_CONTACT' : 'FK_SHOT', 'pass', side, target.id, aimed))
-  const chances = direct ? freeKickChances(kicker, a.wallIds.map((id) => actor(ctx, id)), keeper, direction, plan.trajectory, a.wall!, plan.keeper, edge) : execution === 'SHORT' ? { block: blockChance(target, defender, edge), onTarget: shotOnTargetChance(target), goal: scoringChance(shooterQuality(target), keeper, edge) } : directedChances(target, defender, keeper, aimed.direction!, plan.keeper, edge)
+  const chances = direct ? freeKickChances(kicker, a.wallIds.map((id) => actor(ctx, id)), keeper, direction, plan.trajectory, a.wall!, plan.keeper, edge, precision) : execution === 'SHORT' ? { block: blockChance(target, defender, edge), onTarget: shotOnTargetChance(target), goal: scoringChance(shooterQuality(target), keeper, edge) } : directedChances(target, defender, keeper, aimed.direction!, plan.keeper, edge)
   const rolls = header ? r : r.slice(2, 6)
   if (rolls[0] < chances.block) return { events: [...events, ev('FK_BLOCK', 'recovery', other, defender.id, reacted)], next: null }
   events.push(ev('FK_FLIGHT', 'pass', side, target.id, reacted))

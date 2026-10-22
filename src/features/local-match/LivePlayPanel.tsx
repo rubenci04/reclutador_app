@@ -4,13 +4,17 @@ import type { Player } from '../../types/player'
 import type { PendingPlay, PlayChoice } from './interactive'
 import { PLAY_LETTERS } from './matchFeed'
 import { DribblePanel } from './DribblePanel'
+import { DefensePanel } from './DefensePanel'
+import { ShotPanel } from './ShotPanel'
 
 /** One interactive node as two big cards: no forms, one tap resolves it. */
-export function PlayPanel({ play, catalog, onChoose, ovrDuels = false }: { readonly play: PendingPlay; readonly catalog: readonly Player[]; readonly onChoose: (choice: PlayChoice, precision?: number) => void; readonly ovrDuels?: boolean }) {
+export function PlayPanel({ play, catalog, onChoose, ovrDuels = false, precisionShot = false }: { readonly play: PendingPlay; readonly catalog: readonly Player[]; readonly onChoose: (choice: PlayChoice, precision?: number) => void; readonly ovrDuels?: boolean; /** SIM-MINI-002: the direct free kick is taken with the close-up shot. */ readonly precisionShot?: boolean }) {
   const { t } = useTranslation()
   const card = useRef<HTMLElement>(null); const heading = useRef<HTMLHeadingElement>(null)
   useEffect(() => { heading.current?.focus({ preventScroll: true }); card.current?.scrollIntoView?.({ block: 'nearest' }) }, [play.id, play.node])
   if (play.node === 'DRIBBLE') return <DribblePanel play={play} catalog={catalog} onChoose={onChoose} />
+  if (play.node === 'DEFEND' && play.defense) return <DefensePanel play={play} catalog={catalog} onChoose={onChoose} />
+  if (precisionShot && play.node === 'FK_ATTACK' && play.freeKick?.zone === 'CENTRAL_OUTSIDE') return <ShotPanel mode="FREE_KICK" kicker={catalog.find((p) => p.id === play.freeKick!.kickerId)} keeper={catalog.find((p) => p.id === play.freeKick!.keeperId)} onShoot={(lane, precision) => onChoose(`FK_${lane}` as PlayChoice, precision)} onTraditional={() => onChoose('FK_CENTER')} />
   const fk = play.node.startsWith('FK_')
   const fkDirect = play.node === 'FK_ATTACK' && play.freeKick?.zone === 'CENTRAL_OUTSIDE'
   const isHeader = play.node === 'FK_HEADER' || play.node === 'HEADER' || play.node === 'CORNER_HEADER'

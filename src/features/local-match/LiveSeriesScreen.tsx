@@ -8,6 +8,8 @@ import type { MatchSide } from './matchTypes'
 import { LiveMatchScreen } from './LiveMatchScreen'
 import { nextLiveSession } from './interactive/liveModel'
 import { SeriesPrep } from './SeriesPrep'
+import { PenaltyShootoutScreen } from './PenaltyShootoutScreen'
+import type { Shootout } from './interactive/penaltyShootout'
 
 interface Props {
   readonly origin: Session
@@ -29,10 +31,14 @@ export function LiveSeriesScreen({ origin, acquisition, versusCpu, difficulty, n
   const [preparing, setPreparing] = useState(false)
   const [setup, setSetup] = useState<SeriesSetup>(() => ({ lineups: { local: origin.kernel.input.localLineup, cpu: origin.kernel.input.cpuLineup }, benches: origin.kernel.input.benches, formations: origin.kernel.input.formations, tactics: origin.kernel.input.tactics }))
   const [error, setError] = useState('')
+  const [shootout, setShootout] = useState<Shootout | null>(null)
   const recorded = useRef(false); const starting = useRef(false)
   const matches = completed.flatMap((session) => { const result = exportResult(session); return result.ok ? [result.value.result] : [] })
   const standing = seriesStanding(matches)
-  const penalties = matches.length && standing.needsPenalties ? seriesPenalties(matches[0]) : null
+  // SIM-MINI-002: against the CPU the tie-break is shot by hand; otherwise (and for historical series) the traditional resolution applies.
+  const handPenalties = versusCpu && Boolean(origin.options.shootout)
+  const penalties = matches.length && standing.needsPenalties ? handPenalties ? shootout?.winner ? { score: shootout.score, winner: shootout.winner } : null : seriesPenalties(matches[0]) : null
+  const awaitingShootout = handPenalties && standing.closed && standing.needsPenalties && !shootout?.winner
   const winner: MatchSide = penalties?.winner ?? (standing.wins.local > standing.wins.cpu ? 'local' : 'cpu')
   const finished = completed.some((session) => session.sessionId === current.sessionId)
   const onFinished = useCallback((session: Session) => {
@@ -44,19 +50,26 @@ export function LiveSeriesScreen({ origin, acquisition, versusCpu, difficulty, n
     const all = [...completed.filter((p) => p.sessionId !== session.sessionId), session]
     const results = all.map((p) => p.result!.result)
     const finalStanding = seriesStanding(results)
-    if (finalStanding.closed && !recorded.current) {
+    if (finalStanding.closed && !recorded.current && !(handPenalties && finalStanding.needsPenalties)) {
       recorded.current = true
       const kicks = finalStanding.needsPenalties ? seriesPenalties(results[0]) : null
       onSeriesFinished(kicks?.winner ?? (finalStanding.wins.local > finalStanding.wins.cpu ? 'local' : 'cpu'), finalStanding.wins)
     }
   }
+  const shootoutFinished = useCallback((result: Shootout) => {
+    setShootout(result)
+    if (recorded.current || !result.winner) return
+    recorded.current = true
+    onSeriesFinished(result.winner, seriesStanding(completed.map((p) => p.result!.result)).wins)
+  }, [completed, onSeriesFinished])
   return <div className="match-series live-series">
     <LiveMatchScreen key={current.sessionId} origin={current} versusCpu={versusCpu} difficulty={difficulty} names={names} closed={standing.closed} onReturn={onReturn} onFinished={finishAndRecord} />
     <section className="series-card" aria-label={t('playtest.seriesTitle')}>
       <h2>{t('playtest.seriesTitle')}</h2><ol>{matches.map((match, index) => <li key={match.seed}>{t('series.game', { count: index + 1 })} · {match.score.local}–{match.score.cpu}</li>)}</ol>
       {finished && <>
         <p>{t('series.standing', { local: standing.wins.local, cpu: standing.wins.cpu })}</p>
-        {standing.closed ? <><h2>{t('series.winner', { name: names[winner] })}</h2>{penalties && <p>{t('series.penalties', { local: penalties.score.local, cpu: penalties.score.cpu })}</p>}<button className="primary-action" onClick={onRematch} title={t('navigation.rematchHint')}>{t('match.rematch')}</button><button className="secondary-action" onClick={onNewMatch}>{t('match.newMatch')}</button></>
+        {standing.closed && handPenalties && standing.needsPenalties && <PenaltyShootoutScreen seed={matches[0].seed} rosters={{ local: matches.at(-1)!.local.players, cpu: matches.at(-1)!.cpu.players }} catalog={origin.kernel.input.catalog} names={names} onFinished={shootoutFinished} />}
+        {awaitingShootout ? null : standing.closed ? <><h2>{t('series.winner', { name: names[winner] })}</h2>{penalties && <p>{t('series.penalties', { local: penalties.score.local, cpu: penalties.score.cpu })}</p>}<button className="primary-action" onClick={onRematch} title={t('navigation.rematchHint')}>{t('match.rematch')}</button><button className="secondary-action" onClick={onNewMatch}>{t('match.newMatch')}</button></>
           : preparing ? <SeriesPrep setup={setup} catalog={origin.kernel.input.catalog} names={names} secondIsHuman={!versusCpu} onCancel={() => { setPreparing(false); starting.current = false }} onStart={(next) => {
             if (starting.current) return
             starting.current = true
@@ -67,7 +80,7 @@ export function LiveSeriesScreen({ origin, acquisition, versusCpu, difficulty, n
           }} /> : <button className="primary-action" onClick={() => setPreparing(true)}>{t('seriesPrep.prepare')}</button>}
       </>}
       {error && <p role="alert">{t('liveDT.error', { code: error })}</p>}
-      {completed.length > 0 && <details><summary>{t('liveDT.seriesAudit')}</summary><label>{t('liveDT.record')}<textarea readOnly value={JSON.stringify({ version: 'local-live-series-v1', acquisition, origin, matches: completed.map((session) => ({ origin: { input: session.kernel.input, options: session.options }, result: session.result, final: session })) })} /></label></details>}
+      {completed.length > 0 && <details><summary>{t('liveDT.seriesAudit')}</summary><label>{t('liveDT.record')}<textarea readOnly value={JSON.stringify({ version: 'local-live-series-v1', acquisition, origin, matches: completed.map((session) => ({ origin: { input: session.kernel.input, options: session.options }, result: session.result, final: session })), ...(shootout ? { shootout } : {}) })} /></label></details>}
     </section>
   </div>
 }

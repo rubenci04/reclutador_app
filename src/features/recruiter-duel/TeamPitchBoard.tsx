@@ -7,6 +7,7 @@ import { formationSlots } from '../tactics/formations'
 import { roleAptitude } from '../tactics/roleProfiles'
 import { getPlayerTier } from '../player-catalog/getPlayerTier'
 import { PlayerIdentity } from './PlayerIdentity'
+import type { RankBadge } from '../player-catalog/categoryRanking'
 import type { RecruiterDuelGame, RecruiterId } from './auctionTypes'
 import { ClubShirt } from '../../components/ClubShirt'
 import { getClubVisual } from '../player-catalog/clubVisuals'
@@ -21,10 +22,11 @@ export interface OrganizeProps {
   readonly onBenchPick?: (index: number) => void
   readonly onBenchDrop?: (index: number, to: FormationRole) => void
 }
-interface Props { readonly game: RecruiterDuelGame; readonly participant: RecruiterId; readonly catalog: readonly Player[]; readonly organize?: OrganizeProps }
+interface Props { readonly game: RecruiterDuelGame; readonly participant: RecruiterId; readonly catalog: readonly Player[]; readonly organize?: OrganizeProps; /** Position of a signed footballer in the category; only shown once signed. */ readonly rankFor?: RankFor }
+export type RankFor = (player: Player, participant: RecruiterId) => RankBadge | null
 
 /** Layout coordinates are visual only; slot IDs do not assert sporting subroles. */
-export function TeamPitchBoard({ game, participant, catalog, organize }: Props) {
+export function TeamPitchBoard({ game, participant, catalog, organize, rankFor }: Props) {
   const { t } = useTranslation()
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const dialog = useRef<HTMLDialogElement>(null)
@@ -48,7 +50,7 @@ export function TeamPitchBoard({ game, participant, catalog, organize }: Props) 
         return <div className="pitch-place" key={slot.id} data-slot={slot.id} data-position={slot.position} data-tier={player ? getPlayerTier(player.overall_rating) : undefined} style={{ left: `${slot.x}%`, top: `${slot.y}%` }}>
           <button className={`pitch-shirt ${player ? 'occupied' : 'vacant'}${player && game.phase === 'ROUND_RESULT' && game.lastAward?.reason === 'voluntary_bid' && game.lastAward.playerId === player.id ? ' just-signed' : ''}${organize && organize.selectedSlot === slot.id ? ' selected' : ''}${hasSelection && organize?.selectedSlot !== slot.id ? (sameLine ? ' swap-target' : ' swap-dim') : ''}`} data-aptitude={organize ? aptitude : undefined} draggable={organize?.onDrop && player ? true : undefined} onDragStart={(event) => { if (organize?.onDrop) event.dataTransfer.setData('text/plain', slot.id) }} onDragOver={(event) => { if (organize?.onDrop) event.preventDefault() }} onDrop={(event) => { const from = event.dataTransfer.getData('text/plain'); if (organize && from) { event.preventDefault(); if (/^bench:\d+$/.test(from)) organize.onBenchDrop?.(Number(from.slice(6)), slot.id); else if (slots.some((s) => s.id === from)) organize.onDrop?.(from as FormationRole, slot.id) } }} disabled={!player} aria-pressed={organize && player ? organize.selectedSlot === slot.id : undefined} aria-label={player ? (organize ? t('lineup.slot', { player: player.name, role, state: t(organize.selectedSlot === slot.id ? 'lineup.stateSelected' : 'lineup.stateIdle') }) + (aptitude === 'UNKNOWN' ? '' : `, ${t(`lineup.aptitude.${aptitude}`)}`) : t('pitch.details', { player: player.name, position, price })) : t('pitch.vacant', { position })} onClick={() => { if (!player) return; if (organize) return organize.onPick(slot.id); setSelectedId(player.id); dialog.current?.showModal() }}>
             {colors ? <ClubShirt key={player?.id ?? slot.id} colors={colors} /> : <svg key={player?.id ?? slot.id} viewBox="0 0 64 56" aria-hidden="true"><path d="M19 3 5 12 1 26 13 30 17 22 17 53 47 53 47 22 51 30 63 26 59 12 45 3 39 9 25 9Z" /><path className="shirt-stripe" d="M28 11H36V51H28Z" /></svg>}
-            <span className="pitch-short-name">{player ? (player.name.length > 18 ? `${player.name[0]}. ${player.name.split(' ').slice(-1)[0]}` : player.name) : position}</span><span>{player ? t('teamProgress.rating', { rating: player.overall_rating }) : t('pitch.open')}</span>{organize && <span className="pitch-role" aria-hidden="true">{team.formation && team.formation !== '4-3-3' ? position : slot.id}<i className={`apt apt-${aptitude}`} /></span>}{player && <span>{t('teamProgress.paid', { amount: price })}</span>}
+            <span className="pitch-short-name">{player ? (player.name.length > 18 ? `${player.name[0]}. ${player.name.split(' ').slice(-1)[0]}` : player.name) : position}</span><span>{player ? t('teamProgress.rating', { rating: player.overall_rating }) : t('pitch.open')}{player && rankFor?.(player, participant) ? ` · #${rankFor(player, participant)!.rank}` : ''}</span>{organize && <span className="pitch-role" aria-hidden="true">{team.formation && team.formation !== '4-3-3' ? position : slot.id}<i className={`apt apt-${aptitude}`} /></span>}{player && <span>{t('teamProgress.paid', { amount: price })}</span>}
           </button>
         </div>
       })}
@@ -67,7 +69,7 @@ export function TeamPitchBoard({ game, participant, catalog, organize }: Props) 
     </section>}
     <dialog className="pitch-player-dialog" ref={dialog} aria-label={selected ? t('pitch.playerDetails', { player: selected.name }) : t('pitch.label')} onClose={() => setSelectedId(null)} onCancel={() => setSelectedId(null)}>
       <button className="secondary-action" onClick={() => dialog.current?.close()}>{t('pitch.close')}</button>
-      {selected && <PlayerIdentity key={selected.id} player={selected} />}
+      {selected && <PlayerIdentity key={selected.id} player={selected} rank={rankFor?.(selected, participant)} />}
     </dialog>
   </>
 }

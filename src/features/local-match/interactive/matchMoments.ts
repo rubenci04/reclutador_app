@@ -2,7 +2,7 @@ import type { MatchEvent, MatchSide } from '../matchTypes'
 import { formationSlots } from '../../tactics/formations'
 import type { Player } from '../../../types/player'
 import { defenderDuelChance } from './individualDuels'
-import { blockChance, keeperOf, receiverQuality, scoringChance, shooterQuality, shotOnTargetChance, type PendingPlay, type PlayChoice, type PlayContext, type StepResult } from './attackTree'
+import { DEFENSE_CHOICES, blockChance, keeperOf, receiverQuality, scoringChance, shooterQuality, shotOnTargetChance, type DribbleSector, type PendingPlay, type PlayChoice, type PlayContext, type StepResult } from './attackTree'
 
 export const MOMENTS_VERSION = 'match-moments-v1' as const
 export interface MomentSelection { readonly opportunity: number; readonly side: MatchSide; readonly protagonistId: string }
@@ -43,19 +43,38 @@ export function planDefense(ctx: PlayContext, id: string, random: () => number, 
   const fresh = defenders.filter((p) => !excluded.includes(p.id)); const pool = fresh.length ? fresh : defenders
   if (!pool.length || !attackers.length) return null
   const defender = pool[Math.floor(random() * pool.length)]; const attacker = attackers[Math.floor(random() * attackers.length)]
-  return { protagonist: attacker, play: { id, node: 'DEFEND', protagonistId: defender.id, attackerId: attacker.id, receiverId: null, sector: null,
-    options: (['INTERCEPT', 'PRESS'] as const).map((choice) => ({ choice, available: true, playerId: defender.id, rivalId: attacker.id })) } }
+  // SIM-MINI-003: the lane is drawn after the traditional draws and only when the hand-played version is on, so the old stream is untouched.
+  const defense = ctx.defenseMini ? { lane: pickAttackLane(ctx.strategy, random) } : undefined
+  return { protagonist: attacker, play: { id, node: 'DEFEND', protagonistId: defender.id, attackerId: attacker.id, receiverId: null, sector: null, ...(defense ? { defense } : {}),
+    options: (defense ? DEFENSE_CHOICES : (['INTERCEPT', 'PRESS'] as const)).map((choice) => ({ choice, available: true, playerId: defender.id, rivalId: attacker.id })) } }
 }
-export function resolveDefense(ctx: PlayContext, play: PendingPlay, choice: PlayChoice, random: () => number): StepResult {
+/** Where the CPU attacker will go: even, with more weight on the flanks under WIDE_PLAY. Drawn once, before the player chooses. */
+export function pickAttackLane(strategy: PlayContext['strategy'], random: () => number): DribbleSector {
+  const wide = strategy.cpu === 'WIDE_PLAY'
+  const flank = wide ? 1.3 : 1
+  const ticket = random() * (2 * flank + (wide ? .7 : 1))
+  return ticket < flank ? 'LEFT' : ticket < 2 * flank ? 'RIGHT' : 'CENTER'
+}
+/** Hand-played defense: reading the lane, the defender's DEF/MEN/PHY, the timing and the strategy move the odds; clamped, never certain. */
+export function interactiveDefenseChance(defender: Player, attacker: Player, choice: PlayChoice, lane: DribbleSector, precision: number | undefined, ctx: PlayContext) {
+  const skill = precision === undefined ? 0 : clamp(precision, 0, 1) - .5
+  const press = choice === 'PRESS'
+  const base = defenseChance(defender, attacker, press ? 'PRESS' : 'INTERCEPT', ctx)
+  const read = choice.startsWith('DEFEND_') ? choice === `DEFEND_${lane}` ? .2 : -.1 : 0
+  const tactics = press ? (ctx.strategy.local === 'HIGH_PRESS' ? .03 : 0) : ctx.strategy.local === 'LOW_BLOCK' ? .02 : 0
+  return clamp(base + read + tactics + skill * .24, .1, .85)
+}
+export function resolveDefense(ctx: PlayContext, play: PendingPlay, choice: PlayChoice, random: () => number, precision?: number): StepResult {
   const defender = ctx.catalog.find((p) => p.id === play.protagonistId)!
   const attacker = ctx.catalog.find((p) => p.id === play.attackerId)!
   const keeper = keeperOf(ctx.local, ctx.catalog)!
   const event = (side: MatchSide, type: MatchEvent['type'], step: MatchEvent['step'], who: Player): MatchEvent => ({ minute: ctx.minute, side, type, step, playerId: who.id })
-  if (random() < defenseChance(defender, attacker, choice, ctx)) return { events: [event('local', 'recovery', choice === 'INTERCEPT' ? 'INTERCEPT_OK' : 'PRESS_OK', defender)], next: null }
+  const chance = play.defense ? interactiveDefenseChance(defender, attacker, choice, play.defense.lane, precision, ctx) : defenseChance(defender, attacker, choice, ctx)
+  if (random() < chance) return { events: [event('local', 'recovery', choice === 'PRESS' ? 'PRESS_OK' : 'INTERCEPT_OK', defender)], next: null }
   const events = [event('cpu', 'pass', choice === 'PRESS' ? 'PRESS_BEATEN' : 'CPU_RETAIN', attacker)]
   // A failed press leaves a clearer chance; an unsuccessful interception can still delay the attacker.
   const edge = clamp((ctx.effective.cpu.attack - ctx.effective.local.defense) * .003, -.08, .08)
-  if (random() < blockChance(attacker, defender, edge) + (choice === 'INTERCEPT' ? .08 : 0)) events.push(event('local', 'recovery', 'DEFENSE_BLOCK', defender))
+  if (random() < blockChance(attacker, defender, edge) + (choice !== 'PRESS' ? .08 : 0)) events.push(event('local', 'recovery', 'DEFENSE_BLOCK', defender))
   else if (random() >= shotOnTargetChance(attacker)) events.push(event('cpu', 'shot', 'CPU_WIDE', attacker))
   else if (random() < scoringChance(shooterQuality(attacker), keeper, edge, choice === 'PRESS' ? .04 : 0)) events.push(event('cpu', 'goal', 'CPU_GOAL', attacker))
   else events.push(event('local', 'save', 'DEFENSE_SAVE', keeper))

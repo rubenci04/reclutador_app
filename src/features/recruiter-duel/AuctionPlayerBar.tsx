@@ -7,11 +7,9 @@ import { FootIcon } from '../../components/FootIcon'
 import { dominantFoot } from '../player-catalog/dominantFoot'
 import { importedClub } from '../player-catalog/leagueCollections'
 import { getClubIdentity } from '../player-catalog/clubRegistry'
-import { RankChip } from '../../components/RankChip'
-import type { RankBadge } from '../player-catalog/categoryRanking'
 
 /** Compact, recognisable version of the footballer in play; stays next to the bid controls (sticky inside the panel). */
-export function AuctionPlayerBar({ player, rank }: { readonly player: Player; readonly rank?: RankBadge | null }) {
+export function AuctionPlayerBar({ player }: { readonly player: Player }) {
   const { t } = useTranslation()
   const [failed, setFailed] = useState(false)
   const photo = approvedPhoto(player.id)
@@ -20,7 +18,7 @@ export function AuctionPlayerBar({ player, rank }: { readonly player: Player; re
   return <div className="auction-player-bar" role="group" aria-label={t('auctionFocus.playerInPlay', { player: player.name })}>
     <span className="bar-avatar">{photo && !failed ? <img src={photo.path} alt="" onError={() => setFailed(true)} /> : <PlayerAvatar player={player} />}<b>{player.overall_rating}</b></span>
     <span className="bar-identity">
-      <strong>{player.name}</strong>{rank && <RankChip rank={rank} />}
+      <strong>{player.name}</strong>
       <span><span className="pos-pill">{t(`positions.${player.position}`)}</span>{club && <span className="bar-club"> · {club}</span>}</span>
     </span>
     <span className="bar-meta">

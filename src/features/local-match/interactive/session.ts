@@ -7,7 +7,7 @@ import { isStrategyId } from '../../tactics/strategies'
 import { formationSlots } from '../../tactics/formations'
 import { visibleStats } from '../playback'
 import { advanceKernel, finishKernel, initializeKernel, resolveKernelPlay } from './kernel'
-import { DRIBBLE_VERSION, availableChoice } from './attackTree'
+import { DEFENSE_VERSION, DRIBBLE_VERSION, SHOT_VERSION, availableChoice } from './attackTree'
 import { canonical, exact, exclusiveRoster, integer, jsonSafe, object, text, validInput } from './validation'
 import { validSnapshotState } from './snapshotValidation'
 import type { CheckpointAuthority, Decision, PlayCommand, InteractiveResult, Outcome, Pair, Receipt, Rejection, Session, SessionInput, SessionOptions } from './types'
@@ -22,14 +22,17 @@ export function createSession(source: SessionInput, options: SessionOptions): Ou
   try {
     if (source.actionModel !== 'action-v3') return fail('UNSUPPORTED_VERSION')
     if (!validInput(source)) return fail('INVALID_ROSTER')
-    if (!object(options) || !jsonSafe(options) || !exact(options, ['sessionId'], ['benchMode', 'acquisition', 'attackTree', 'moments', 'aerial', 'matchRules', 'corners', 'freeKicks', 'dribble']) || options.attackTree !== undefined && (!object(options.attackTree) || !exact(options.attackTree, ['version']) || options.attackTree.version !== 'attack-tree-v1') || !text(options.sessionId) || options.sessionId.length > 128) return fail('INVALID_PAYLOAD')
+    if (!object(options) || !jsonSafe(options) || !exact(options, ['sessionId'], ['benchMode', 'acquisition', 'attackTree', 'moments', 'aerial', 'matchRules', 'corners', 'freeKicks', 'dribble', 'precisionShot', 'defenseMini', 'shootout']) || options.attackTree !== undefined && (!object(options.attackTree) || !exact(options.attackTree, ['version']) || options.attackTree.version !== 'attack-tree-v1') || !text(options.sessionId) || options.sessionId.length > 128) return fail('INVALID_PAYLOAD')
     if (options.matchRules !== undefined && (!object(options.matchRules) || !exact(options.matchRules, ['version']) || options.matchRules.version !== 'halftime-ovr-v1' || options.attackTree !== undefined || options.moments && !options.aerial)) return fail('INVALID_PAYLOAD')
     if (options.moments !== undefined && (options.attackTree !== undefined || !object(options.moments) || !exact(options.moments, ['version']) || options.moments.version !== 'match-moments-v1')) return fail('INVALID_PAYLOAD')
     if (options.aerial !== undefined && (!options.moments || !object(options.aerial) || !exact(options.aerial, ['version']) || options.aerial.version !== 'directed-header-v1')) return fail('INVALID_PAYLOAD')
     if (options.corners !== undefined && (!object(options.corners) || !exact(options.corners, ['version']) || options.corners.version !== 'corners-v1' || !options.moments || !options.aerial || !options.matchRules)) return fail('INVALID_PAYLOAD')
     if (options.freeKicks !== undefined && (!object(options.freeKicks) || !exact(options.freeKicks, ['version']) || options.freeKicks.version !== 'free-kicks-v1' || !options.corners || !options.moments || !options.aerial || !options.matchRules)) return fail('INVALID_PAYLOAD')
     if (options.dribble !== undefined && (!object(options.dribble) || !exact(options.dribble, ['version']) || options.dribble.version !== DRIBBLE_VERSION || !options.moments || !options.aerial || !options.matchRules)) return fail('INVALID_PAYLOAD')
-    const kernel = initializeKernel(source, options.moments ? 'match-moments-v1' : options.attackTree !== undefined, options.aerial !== undefined, options.matchRules !== undefined, options.corners !== undefined, options.freeKicks !== undefined, options.dribble !== undefined)
+    if (options.precisionShot !== undefined && (!object(options.precisionShot) || !exact(options.precisionShot, ['version']) || options.precisionShot.version !== SHOT_VERSION || !options.freeKicks)) return fail('INVALID_PAYLOAD')
+    if (options.defenseMini !== undefined && (!object(options.defenseMini) || !exact(options.defenseMini, ['version']) || options.defenseMini.version !== DEFENSE_VERSION || !options.moments || !options.aerial || !options.matchRules)) return fail('INVALID_PAYLOAD')
+    if (options.shootout !== undefined && (!object(options.shootout) || !exact(options.shootout, ['version']) || options.shootout.version !== 'penalty-shootout-v1' || !options.matchRules)) return fail('INVALID_PAYLOAD')
+    const kernel = initializeKernel(source, options.moments ? 'match-moments-v1' : options.attackTree !== undefined, options.aerial !== undefined, options.matchRules !== undefined, options.corners !== undefined, options.freeKicks !== undefined, options.dribble !== undefined, { precisionShot: options.precisionShot !== undefined, defenseMini: options.defenseMini !== undefined })
     const benchMode = options.benchMode ?? { local: source.benches ? 'auto-subs-v1' : 'none', cpu: source.benches ? 'auto-subs-v1' : 'none' }
     if (!object(benchMode) || !exact(benchMode, SIDES) || !SIDES.every((side) => ['none', 'auto-subs-v1', 'manual-v1'].includes(benchMode[side]) && (benchMode[side] !== 'none' || !source.benches?.[side].length))) return fail('INVALID_PAYLOAD')
     const ownership = { local: [...Object.values(source.localLineup), ...(source.benches?.local ?? [])] as string[], cpu: [...Object.values(source.cpuLineup), ...(source.benches?.cpu ?? [])] as string[] }
@@ -69,8 +72,8 @@ function settle(next: Session): Outcome {
 }
 
 function parsePlay(raw: unknown): PlayCommand | null {
-  if (!object(raw) || !jsonSafe(raw) || !exact(raw, ['version', 'id', 'sessionId', 'expectedRevision', 'playId', 'node', 'choice'], ['precision']) || !text(raw.version) || !text(raw.id) || !text(raw.sessionId) || !integer(raw.expectedRevision) || !text(raw.playId) || !['FK_ATTACK', 'FK_DEFEND', 'FK_HEADER', 'DIRECTION', 'DRIBBLE', 'FINISH', 'DEFEND', 'HEADER', 'CORNER_ATTACK', 'CORNER_DEFEND', 'CORNER_HEADER'].includes(raw.node as string) || !['FK_LEFT', 'FK_CENTER', 'FK_RIGHT', 'FK_CROSS', 'FK_SHORT', 'WALL_JUMP', 'WALL_HOLD', 'LEFT', 'RIGHT', 'CROSS', 'SHOOT', 'INTERCEPT', 'PRESS', 'NEAR_POST', 'GOAL_CENTER', 'FAR_POST', 'CORNER_NEAR', 'CORNER_FAR', 'CORNER_SHORT', 'MAN_MARK', 'ZONE', 'DRIBBLE_LEFT', 'DRIBBLE_CENTER', 'DRIBBLE_RIGHT'].includes(raw.choice as string)) return null
-  if (raw.precision !== undefined && (raw.node !== 'DRIBBLE' || typeof raw.precision !== 'number' || !Number.isFinite(raw.precision) || raw.precision < 0 || raw.precision > 1)) return null
+  if (!object(raw) || !jsonSafe(raw) || !exact(raw, ['version', 'id', 'sessionId', 'expectedRevision', 'playId', 'node', 'choice'], ['precision']) || !text(raw.version) || !text(raw.id) || !text(raw.sessionId) || !integer(raw.expectedRevision) || !text(raw.playId) || !['FK_ATTACK', 'FK_DEFEND', 'FK_HEADER', 'DIRECTION', 'DRIBBLE', 'FINISH', 'DEFEND', 'HEADER', 'CORNER_ATTACK', 'CORNER_DEFEND', 'CORNER_HEADER'].includes(raw.node as string) || !['FK_LEFT', 'FK_CENTER', 'FK_RIGHT', 'FK_CROSS', 'FK_SHORT', 'WALL_JUMP', 'WALL_HOLD', 'LEFT', 'RIGHT', 'CROSS', 'SHOOT', 'INTERCEPT', 'PRESS', 'NEAR_POST', 'GOAL_CENTER', 'FAR_POST', 'CORNER_NEAR', 'CORNER_FAR', 'CORNER_SHORT', 'MAN_MARK', 'ZONE', 'DRIBBLE_LEFT', 'DRIBBLE_CENTER', 'DRIBBLE_RIGHT', 'DEFEND_LEFT', 'DEFEND_CENTER', 'DEFEND_RIGHT'].includes(raw.choice as string)) return null
+  if (raw.precision !== undefined && (!['DRIBBLE', 'FK_ATTACK', 'DEFEND'].includes(raw.node as string) || typeof raw.precision !== 'number' || !Number.isFinite(raw.precision) || raw.precision < 0 || raw.precision > 1)) return null
   return raw as unknown as PlayCommand
 }
 
@@ -85,6 +88,7 @@ export function submitPlay(session: Session, raw: unknown): Outcome {
   if (command.sessionId !== session.sessionId || command.playId !== pending.id || command.node !== pending.node) return fail('WRONG_PLAY')
   if (command.expectedRevision !== session.revision) return fail('STALE_STATE')
   if (!availableChoice(pending, command.choice)) return fail('INVALID_CHOICE')
+  if (command.precision !== undefined && !(pending.node === 'DRIBBLE' || pending.node === 'FK_ATTACK' && session.kernel.precisionShot || pending.node === 'DEFEND' && pending.defense)) return fail('INVALID_PAYLOAD')
   try { return settle({ ...copy(session), kernel: resolveKernelPlay(session.kernel, command.id, command.choice, command.precision === undefined ? undefined : Math.round(command.precision * 100) / 100), revision: session.revision + 1 }) } catch { return fail('INVALID_CHOICE') }
 }
 

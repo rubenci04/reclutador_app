@@ -40,6 +40,12 @@ export interface SessionOptions {
   readonly corners?: { readonly version: 'corners-v1' }
   /** SIM-MINI-001: one hand-played dribble per match for the local side. New local matches only; never online. */
   readonly dribble?: { readonly version: 'dribble-mini-v1' }
+  /** SIM-MINI-002: the direct free kick may be taken by hand (direction + timing). Needs freeKicks. */
+  readonly precisionShot?: { readonly version: 'precision-shot-v1' }
+  /** SIM-MINI-003: the first CPU attack of the match may be defended by hand. */
+  readonly defenseMini?: { readonly version: 'defense-mini-v1' }
+  /** SIM-MINI-002: the series tie-break against the CPU is shot by hand (read by the series screen; the match itself ignores it). */
+  readonly shootout?: { readonly version: 'penalty-shootout-v1' }
   /** New matches only: halftime tactics, optional substitutions and OVR direct duels. */
   readonly matchRules?: { readonly version: 'halftime-ovr-v1' }
 }
@@ -52,7 +58,7 @@ export interface PlayCommand {
   readonly playId: string
   readonly node: PlayNode
   readonly choice: PlayChoice
-  /** Dribble node only: timing precision from 0 (worst) to 1 (best). Omitted means the traditional automatic resolution (0.5). */
+  /** DRIBBLE, FK_ATTACK (direct) and DEFEND (hand-played) nodes only: timing precision from 0 (worst) to 1 (best). Omitted means the traditional automatic resolution. */
   readonly precision?: number
 }
 export interface InteractiveResult {
