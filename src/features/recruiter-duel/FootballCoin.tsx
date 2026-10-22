@@ -40,7 +40,7 @@ export function FootballCoin({ side, tossing = false }: { readonly side: CoinSid
   const [landed, setLanded] = useState(false)
   const showResult = !tossing || landed
   return <div className={`football-coin ${tossing ? 'tossing' : ''}${tossing && landed ? ' landed' : ''}`} data-side={side} role="img" aria-label={showResult ? t('coin.side', { side: t(`duel.${side}`) }) : t('duel.coinTossWaiting')}>
-    <div className="coin-stage" aria-hidden="true"><div className="coin3d" onAnimationEnd={(event) => { if (event.target === event.currentTarget) setLanded(true) }}><div className="coin-face coin-front"><CoinFace side="heads" /></div><div className="coin-face coin-back"><CoinFace side="tails" /></div></div></div>
+    <div className="coin-stage" aria-hidden="true"><div className="coin3d" onAnimationEnd={() => setLanded(true)}><div className="coin-face coin-front"><CoinFace side="heads" /></div><div className="coin-face coin-back"><CoinFace side="tails" /></div></div></div>
     {tossing && <div className="coin-shadow" aria-hidden="true" />}
     <span className="coin-result">{showResult ? `${t(`duel.${side}`)} · ${t(FACE_KEY[side])}` : t('duel.coinToss')}</span>
   </div>

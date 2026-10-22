@@ -29,7 +29,7 @@ describe('single-player auction interface', () => {
     act(() => { heads.click(); heads.click() })
     expect(toss).toHaveBeenCalledTimes(1)
     if (!reduced) expect(screen.getByRole('heading', { name: 'Coin toss' })).toBeInTheDocument()
-    act(() => vi.advanceTimersByTime(reduced ? 1300 : COIN_TOSS_MS))
+    act(() => vi.advanceTimersByTime(reduced ? 2200 : COIN_TOSS_MS))
     expect(screen.getByRole('img', { name: 'Coin: Heads' })).toBeInTheDocument()
     expect(screen.getByText('The coin landed on Heads. Recruiter one starts recruiting.')).toBeVisible()
     act(() => vi.advanceTimersByTime(3000))

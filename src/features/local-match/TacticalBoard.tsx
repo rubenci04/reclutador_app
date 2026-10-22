@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { freeKickBeatDuration, freeKickScene } from './freeKickGeometry'
 import { cornerBeatDuration, cornerScene } from './cornerGeometry'
 import { useTranslation } from 'react-i18next'
@@ -9,7 +9,7 @@ import { attackingSide, ballPoint, boardDots, focusWindow, teamShift, type Board
 import { aerialBeatDuration, aerialScene } from './aerialGeometry'
 import { HEADER_DIRECTIONS, headerGoalPoint } from './interactive/directedHeader'
 import type { MatchSide } from './matchTypes'
-import { nearestHit, shortName } from './shortName'
+import { boardPoint, nearestHit, shortName, type BoardHit } from './shortName'
 
 export interface TacticalBoardProps {
   readonly formations: Readonly<Record<MatchSide, FormationId>>
@@ -39,6 +39,12 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
   const { t } = useTranslation()
   const canvas = useRef<HTMLCanvasElement>(null)
   const [hits] = useState<Hit[]>(() => [])
+  const painted = useRef({ width: 640, height: 413 })
+  const hover = useRef<string | null>(null)
+  const redraw = useRef<() => void>(() => {})
+  /** The pass just chosen: the ball flies from the carrier to the teammate while the engine confirms it. */
+  const [flight, setFlight] = useState<{ readonly key: number; readonly fx: number; readonly fy: number; readonly tx: number; readonly ty: number } | null>(null)
+  useEffect(() => { if (!flight) return; const timer = window.setTimeout(() => setFlight(null), 520); return () => window.clearTimeout(timer) }, [flight])
   /** Every footballer on the pitch carries his rating; the readable surname is added when the board is wide enough or zoomed on one team. */
   const info = useMemo(() => new Map(catalog.map((player) => [player.id, { ovr: player.overall_rating, short: shortName(player.name) }])), [catalog])
   const dots = useMemo(() => boardDots(formations, lineups), [formations, lineups])
@@ -71,8 +77,8 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
   const pulsed = useRef(-1)
   const elapsed = useRef(0)
   const aerialStart = useRef<Parameters<typeof aerialScene>[3]>(undefined)
-  const latest = useRef({ dots, carrier, from, options, carrierName, names, focus, play, target, hits: hits, info })
-  useEffect(() => { latest.current = { dots, carrier, from, options, carrierName, names, focus, play, target, hits: hits, info } })
+  const latest = useRef({ dots, carrier, from, options, carrierName, names, focus, play, target, hits: hits, info, hover })
+  useEffect(() => { latest.current = { dots, carrier, from, options, carrierName, names, focus, play, target, hits: hits, info, hover } })
 
   useEffect(() => {
     const element = canvas.current
@@ -93,8 +99,10 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
       const ratio = typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1
       if (element.width !== Math.round(width * ratio) || element.height !== Math.round(height * ratio)) { element.width = Math.round(width * ratio); element.height = Math.round(height * ratio) }
       context.setTransform(ratio, 0, 0, ratio, 0, 0)
+      painted.current = { width, height }
       paint(context, width, height, pose.current, latest.current)
     }
+    redraw.current = draw
     const step = (time: number) => {
       if (!running) return
       const state = pose.current; const goal = latest.current.target
@@ -135,18 +143,21 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
 
   const attacker = attackingSide(play)
   return <figure className="tactical-board">
-    <canvas ref={canvas} className={`tactical-canvas${onPick && options.length ? ' is-pickable' : ''}`} role="img" aria-label={t('board.label', { local: names.local, cpu: names.cpu })} onClick={onPick ? (event) => {
-      const rect = event.currentTarget.getBoundingClientRect()
-      const x = event.clientX - rect.left; const y = event.clientY - rect.top
-      const hit = nearestHit(hits, x, y)
-      if (hit) onPick(hit.label)
+    <canvas ref={canvas} className={`tactical-canvas${onPick && options.length ? ' is-pickable' : ''}`} onPointerMove={onPick && options.length ? (event) => { if (event.pointerType !== 'mouse') return; const point = boardPoint({ x: event.clientX, y: event.clientY }, event.currentTarget.getBoundingClientRect(), painted.current); const hit = nearestHit(hits, point.x, point.y); const next = hit?.label ?? null; if (next !== hover.current) { hover.current = next; event.currentTarget.style.cursor = next ? 'pointer' : 'default'; redraw.current() } } : undefined} onPointerLeave={() => { if (hover.current) { hover.current = null; redraw.current() } }} role="img" aria-label={t('board.label', { local: names.local, cpu: names.cpu })} onClick={onPick ? (event) => {
+      const point = boardPoint({ x: event.clientX, y: event.clientY }, event.currentTarget.getBoundingClientRect(), painted.current)
+      const hit = nearestHit(hits, point.x, point.y)
+      if (!hit) return
+      if (hit.cx !== undefined && hit.fx !== undefined) setFlight({ key: Date.now(), fx: hit.fx / painted.current.width, fy: hit.fy! / painted.current.height, tx: hit.cx / painted.current.width, ty: hit.cy! / painted.current.height })
+      onPick(hit.label)
     } : undefined} />
+    {flight && <span key={flight.key} className="pass-ball" aria-hidden="true" style={{ '--fx': `${flight.fx * 100}%`, '--fy': `${flight.fy * 100}%`, '--tx': `${flight.tx * 100}%`, '--ty': `${flight.ty * 100}%` } as CSSProperties} />}
+    {onPick && options.length > 0 && <small className="board-pick-hint">{t('field.pickHint')}</small>}
     <figcaption className="tactical-caption">{attacker ? t('series.attacking', { name: names[attacker] }) : t('board.idle')}{carrierName && (!play.freeKick || carrier?.side === attacker) && <> · <b>{carrierName}</b></>}</figcaption>
   </figure>
 }
 
-interface Hit { readonly x: number; readonly y: number; readonly r: number; readonly label: string }
-function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, view: { dots: ReturnType<typeof boardDots>; carrier: BoardDot | undefined; from: BoardDot | undefined; options: readonly { dot: BoardDot; label: string }[]; carrierName: string | undefined; names: Readonly<Record<MatchSide, string>>; focus: BoardFocus; play: BoardPlay; hits: Hit[]; info: ReadonlyMap<string, { ovr: number; short: string }> }) {
+type Hit = BoardHit
+function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, view: { dots: ReturnType<typeof boardDots>; carrier: BoardDot | undefined; from: BoardDot | undefined; options: readonly { dot: BoardDot; label: string }[]; carrierName: string | undefined; names: Readonly<Record<MatchSide, string>>; focus: BoardFocus; play: BoardPlay; hits: Hit[]; info: ReadonlyMap<string, { ovr: number; short: string }>; hover: { current: string | null } }) {
   const aerialActors = view.play.aerial ?? (view.play.corner ? { ...view.play.corner, defenderId: view.play.corner.markerId ?? view.play.corner.defenderId } : undefined)
   const window_ = (view.play.corner || view.play.freeKick) ? pose.camera : focusWindow(view.focus)
   const pitchW = w / (window_.to - window_.from); const pitchH = pitchW * PITCH_RATIO
@@ -198,7 +209,8 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
     const origin = at(view.carrier)
     for (const option of view.options) {
       const p = at(option.dot)
-      view.hits.push({ x: p.x, y: p.y - radius, r: Math.max(24, radius * 3.6), label: option.label })
+      view.hits.push({ x: p.x, y: p.y - radius, r: Math.max(24, radius * 3.6), label: option.label, cx: p.x, cy: p.y, fx: origin.x, fy: origin.y })
+      if (view.hover.current === option.label) { ctx.fillStyle = '#ffffff33'; ctx.beginPath(); ctx.arc(p.x, p.y, radius * 2.8, 0, Math.PI * 2); ctx.fill() }
       ctx.strokeStyle = '#ffffffb0'; ctx.lineWidth = 2; ctx.setLineDash([5, 5]); ctx.beginPath(); ctx.moveTo(origin.x, origin.y); ctx.lineTo(p.x, p.y); ctx.stroke(); ctx.setLineDash([])
       ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(p.x, p.y, radius * 1.9, 0, Math.PI * 2); ctx.stroke()
       ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(p.x, p.y - radius * 2.9, radius * 1.1, 0, Math.PI * 2); ctx.fill()

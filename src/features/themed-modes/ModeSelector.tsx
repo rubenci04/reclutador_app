@@ -23,8 +23,6 @@ export function ModeSelector({ selected, onChange }: ModeSelectorProps) {
     previousGroup.current = openGroup
   }, [openGroup])
   const group = CATEGORY_GROUPS.find((item) => item.id === openGroup)
-  const selectedInTree = CATEGORY_GROUPS.some((item) => (item.modes as readonly ThemedModeId[]).includes(selected))
-  const selectedName = selectedInTree ? t(`categoryTree.options.${selected}`) : t(`modes.items.${THEMED_MODES.find((m) => m.id === selected)?.translationKey}.name`)
   const card = (id: ThemedModeId) => {
     const mode = THEMED_MODES.find((item) => item.id === id)!
     const source = modeSource(mode.id)
@@ -41,7 +39,7 @@ export function ModeSelector({ selected, onChange }: ModeSelectorProps) {
   }
   return <section className="mode-selector" aria-labelledby="mode-title">
     <div><p className="eyebrow"><span />{t('modes.label')}</p><h2 id="mode-title" ref={heading} tabIndex={-1}>{group ? t(`categoryTree.groups.${group.id}`) : t('categoryTree.title')}</h2></div>
-    <details className="collection-help"><summary>{t('entry.collectionHelp')}</summary><p>{t('playtest.poolHelp')}</p></details><p className="category-selection" role="status">{t('categoryTree.selected', { name: selectedName })}</p>
+    <details className="collection-help"><summary>{t('entry.collectionHelp')}</summary><p>{t('playtest.poolHelp')}</p></details>
     {group ? <>
       <button className="secondary-action category-back" onClick={() => setOpenGroup(null)}>{t('categoryTree.back')}</button>
       <p className="market-hint">{t(group.id === 'europe' || group.id === 'latinAmerica' ? 'categoryTree.nationalityHelp' : 'categoryTree.editionHelp')}</p>

@@ -31,6 +31,7 @@ import { autoChooseCoach, chooseCoach, declineCoach } from './coachHiring'
 import { COACH_MARKET_V4, COACH_MAX_PRICE } from '../coaches/coachRules'
 import { StageGuide } from '../onboarding/StageGuide'
 import { ModeSelector } from '../themed-modes/ModeSelector'
+import { EditionHero } from './EditionHero'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
 import { chooseFormation, autoBuySubstitutes, buySubstitute, swapBenchWithStarter, budgetOf, autoCompleteAll, autoCompleteStep, canAutoComplete, previewAutoComplete, beginBidding, completeDuelMatch, createRecruiterDuel, currentRound, positionProgress, auctionAvailability, nextAuctionRound, passAuction, placeBid, reorderTeamLineup, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss, startDuelMatch } from './auctionEngine'
 import type { AuctionTransition, CoinSide, RecruiterDuelGame, RecruiterId } from './auctionTypes'
@@ -69,9 +70,9 @@ import { WinCelebration } from './WinCelebration'
 
 interface AuctionPageProps { readonly onDraftFree: () => void; readonly onOnline?: () => void; readonly teamName?: string; readonly onEditName?: () => void; readonly nameStorageWarning?: boolean; /** Plays the shared game of an online room instead of a local one. */ readonly online?: OnlineDuelBinding }
 /** Presentation time of the toss; the result is already stored when it starts. */
-/** The coin flies for 2.2 s and rests on the stored face before the next phase; reduced motion gets a short fade instead of a flip. */
+/** The coin flies for 2.2 s and rests on the stored face before the next phase; reduced motion gets a cross-fade of both faces instead of a flip. */
 export const COIN_TOSS_MS = 2700
-const COIN_TOSS_REDUCED_MS = 1300
+const COIN_TOSS_REDUCED_MS = 2200
 const NO_AUTO_ROUNDS: ReadonlySet<number> = new Set()
 
 /** One whole round for a card the human cannot take: reveal, human pass, CPU decisions, award, next card. Null (do nothing) if anything is not a plain legal transition. */
@@ -462,11 +463,9 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
         </> : <>
           <button className="secondary-action" onClick={() => setEntryChosen(false)}>{t('entry.back')}</button>
           <h2 ref={entryHeading} tabIndex={-1}>{t(opponentMode === 'cpu' ? 'entry.cpu' : 'entry.local')}</h2>
-          <div className="entry-start">
-            <p>{t('categoryTree.selected', { name: categoryLabel(mode) })}</p>
-            <p>{t('entry.defaults', { budget: config.budget, reserve: config.coaches ? config.coachReserve : 0 })}</p>
-            <button className="primary-action" disabled={!canStart} onClick={start}>{t('duel.start')}</button>
-          </div>
+          <EditionHero mode={mode} rivalMode={secondCategory === 'same' ? undefined : secondCategory} budget={config.budget} reserve={config.coaches ? config.coachReserve ?? 0 : 0}>
+            <button className="primary-action edition-start" disabled={!canStart} onClick={start}>{t('duel.start')}</button>
+          </EditionHero>
           <ModeSelector selected={mode} onChange={setMode} />
           <details className="entry-options"><summary>{t('entry.customize')}</summary>
             <label>{t('cpu.opponent')}<select value={opponentMode} onChange={(event) => setOpponentMode(event.target.value as 'hotseat' | 'cpu')}><option value="hotseat">{t('cpu.hotseat')}</option><option value="cpu">{t('cpu.versus')}</option></select></label>

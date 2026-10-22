@@ -204,7 +204,7 @@ describe('GAMEPLAY-POLISH-010 coin', () => {
     expect(css).toMatch(/\.coin3d \{[^}]*transform-style: preserve-3d;\s*\}/)
     expect(css).toMatch(/\.coin-stage \{[^}]*filter: drop-shadow/)
     expect(css).toMatch(/\.football-coin\.tossing \.coin3d \{ animation: 2200ms/)
-    expect(css).toMatch(/prefers-reduced-motion: reduce\) \{[^]*coin-fade/)
+    expect(css).toMatch(/prefers-reduced-motion: reduce\) \{[^]*coin-alt-front-heads/)
   })
 })
 

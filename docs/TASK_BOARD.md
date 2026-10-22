@@ -366,3 +366,7 @@ Ranking #/150 oculto durante la subasta y revelado («¡Fichaje confirmado! · T
 ## GAMEPLAY-POLISH-010 — 22/10/2026
 
 Presupuestos 160/220 M (viabilidad verificada), técnicos argentinos por trayectoria documentada (coach-market-v4), escaparate fijo de diez suplentes en serpiente (bench-showcase-v1), moneda visible, microinteracciones, nombres y OVR en cancha y resumen final comparativo. Online y partidas históricas intactos; la selección sobre el tablero (un momento) no se probó en navegador. [Informe](qa/GAMEPLAY-POLISH-010.md).
+
+## UX-ENTRY-011 + SIM-FIELD-001 — 22/10/2026
+
+Bloque único de edición seleccionada junto a Iniciar duelo, pase directo sobre la cancha en DIRECTION con animación y coordenadas responsive, y moneda perceptible con movimiento reducido. Recorrido real en navegador documentado (con límites). [Informe](qa/UX-ENTRY-011-SIM-FIELD-001.md).
