@@ -354,3 +354,7 @@ Presupuestos nuevos 200/250 M, hasta cinco suplentes opcionales (`bench-5-v1`, c
 ## COACH-006B + DISCARD-005 — 22/10/2026
 
 coach-market-v3 (nivel S+, niveles editoriales, seis cartas competitivas y asequibles por especialidad, pools ampliados, CPU por perfil táctico) y cinco descartes compartidos (`discards-5-v1`) para partidas locales nuevas. Online y partidas anteriores conservan sus reglas. [Informe](qa/COACH-006B-DISCARD-005.md).
+
+## UX-AUCTION-007 + RANK-008 + SIM-MINI-001 — 22/10/2026
+
+Mesa de subastas unificada, Global Top 150 por calidad (Actual y Leyendas) con ranking #/150 y gambeta interactiva integrada al partido en vivo contra la CPU. 1.324 pruebas aprobadas. [Informe](qa/UX-AUCTION-007-RANK-008-SIM-MINI-001.md).

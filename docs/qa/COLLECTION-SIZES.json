@@ -133,24 +133,24 @@
   },
   {
     "mode": "GLOBAL_CLASSIC",
-    "count": 1039,
+    "count": 150,
     "stars": 2,
     "positions": {
-      "ARQ": 100,
-      "DEF": 291,
-      "MED": 350,
-      "DEL": 298
+      "ARQ": 18,
+      "DEF": 38,
+      "MED": 48,
+      "DEL": 46
     }
   },
   {
     "mode": "LEGENDS_ONLY",
-    "count": 177,
+    "count": 150,
     "stars": 4,
     "positions": {
-      "ARQ": 14,
-      "DEF": 33,
-      "MED": 61,
-      "DEL": 69
+      "ARQ": 10,
+      "DEF": 24,
+      "MED": 49,
+      "DEL": 67
     }
   },
   {

@@ -1,0 +1,576 @@
+{
+ "version": "global-top-150-v1",
+ "current": {
+  "stats": {
+   "all": {
+    "count": 150,
+    "min": 85,
+    "max": 99,
+    "mean": 88.3
+   },
+   "ARQ": {
+    "count": 18,
+    "min": 85,
+    "max": 93,
+    "mean": 88.6
+   },
+   "DEF": {
+    "count": 38,
+    "min": 85,
+    "max": 94,
+    "mean": 87.8
+   },
+   "MED": {
+    "count": 48,
+    "min": 85,
+    "max": 96,
+    "mean": 87.8
+   },
+   "DEL": {
+    "count": 46,
+    "min": 85,
+    "max": 99,
+    "mean": 89
+   }
+  },
+  "origin": {
+   "CATALOG": 59,
+   "ESP": 22,
+   "ITA": 23,
+   "EUR": 13,
+   "ENG": 23,
+   "SAM": 5,
+   "BRA": 5
+  },
+  "cutoffOvr": 85,
+  "excludedBest": [
+   {
+    "id": "import_eng_epl_act_031",
+    "name": "Sandro Tonali",
+    "position": "MED",
+    "ovr": 85,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_eng_epl_act_032",
+    "name": "Youri Tielemans",
+    "position": "MED",
+    "ovr": 85,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_eur_act_antonio_silva",
+    "name": "António Silva",
+    "position": "DEF",
+    "ovr": 85,
+    "origin": "EUR",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_eur_act_diogo_costa",
+    "name": "Diogo Costa",
+    "position": "ARQ",
+    "ovr": 85,
+    "origin": "EUR",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_eur_act_diogo_dalot",
+    "name": "Diogo Dalot",
+    "position": "DEF",
+    "ovr": 85,
+    "origin": "EUR",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_eur_act_goncalo_inacio",
+    "name": "Gonçalo Inácio",
+    "position": "DEF",
+    "ovr": 85,
+    "origin": "EUR",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_eur_act_rafael_leao",
+    "name": "Rafael Leão",
+    "position": "DEL",
+    "ovr": 85,
+    "origin": "EUR",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_eur_act_ruben_neves",
+    "name": "Rúben Neves",
+    "position": "MED",
+    "ovr": 85,
+    "origin": "EUR",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_eur_act_theo_hernandez",
+    "name": "Theo Hernández",
+    "position": "DEF",
+    "ovr": 85,
+    "origin": "EUR",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_sam_act_alejandro_garnacho",
+    "name": "Alejandro Garnacho",
+    "position": "DEL",
+    "ovr": 85,
+    "origin": "SAM",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_sam_act_andre",
+    "name": "André",
+    "position": "MED",
+    "ovr": 85,
+    "origin": "SAM",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_sam_act_endrick",
+    "name": "Endrick",
+    "position": "DEL",
+    "ovr": 85,
+    "origin": "SAM",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_sam_act_jhon_duran",
+    "name": "Jhon Durán",
+    "position": "DEL",
+    "ovr": 85,
+    "origin": "SAM",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "plr_015",
+    "name": "Marcos Acuña",
+    "position": "DEF",
+    "ovr": 85,
+    "origin": "CATALOG",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "plr_029",
+    "name": "Rodrigo De Paul",
+    "position": "MED",
+    "ovr": 85,
+    "origin": "CATALOG",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "plr_045",
+    "name": "Raúl Jiménez",
+    "position": "DEL",
+    "ovr": 85,
+    "origin": "CATALOG",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "plr_064",
+    "name": "Medhi Benatia",
+    "position": "DEF",
+    "ovr": 85,
+    "origin": "CATALOG",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "plr_080",
+    "name": "Shinji Kagawa",
+    "position": "MED",
+    "ovr": 85,
+    "origin": "CATALOG",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "plr_130",
+    "name": "Alexis Mac Allister",
+    "position": "MED",
+    "ovr": 85,
+    "origin": "CATALOG",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "plr_132",
+    "name": "Sofyan Amrabat",
+    "position": "MED",
+    "ovr": 85,
+    "origin": "CATALOG",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "plr_143",
+    "name": "Richarlison",
+    "position": "DEL",
+    "ovr": 85,
+    "origin": "CATALOG",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_bra_bra_act_andreas_hugo_hoelgebaum_pereira",
+    "name": "Andreas Pereira",
+    "position": "MED",
+    "ovr": 84,
+    "origin": "BRA",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_bra_bra_act_gustavo_raul_gomez_portillo",
+    "name": "Gustavo Gómez",
+    "position": "DEF",
+    "ovr": 84,
+    "origin": "BRA",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_bra_bra_act_kaio_jorge_pinto_ramos",
+    "name": "Kaio Jorge",
+    "position": "DEL",
+    "ovr": 84,
+    "origin": "BRA",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_bra_bra_act_kevin_viveros_rodallega",
+    "name": "Kevin Viveros",
+    "position": "DEL",
+    "ovr": 84,
+    "origin": "BRA",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_bra_bra_act_samuel_dias_lino",
+    "name": "Samuel Lino",
+    "position": "DEL",
+    "ovr": 84,
+    "origin": "BRA",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_eng_epl_act_034",
+    "name": "Boubacar Kamara",
+    "position": "MED",
+    "ovr": 84,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_eng_epl_act_035",
+    "name": "Bryan Mbeumo",
+    "position": "MED",
+    "ovr": 84,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_eng_epl_act_036",
+    "name": "Eberechi Eze",
+    "position": "MED",
+    "ovr": 84,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   },
+   {
+    "id": "import_eng_epl_act_037",
+    "name": "Elliot Anderson",
+    "position": "MED",
+    "ovr": 84,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order (OVR, 2026 edition, league editorial rank)"
+   }
+  ]
+ },
+ "legends": {
+  "stats": {
+   "all": {
+    "count": 150,
+    "min": 92,
+    "max": 99,
+    "mean": 93.9
+   },
+   "ARQ": {
+    "count": 10,
+    "min": 93,
+    "max": 96,
+    "mean": 93.8
+   },
+   "DEF": {
+    "count": 24,
+    "min": 92,
+    "max": 97,
+    "mean": 93.5
+   },
+   "MED": {
+    "count": 49,
+    "min": 92,
+    "max": 98,
+    "mean": 93.7
+   },
+   "DEL": {
+    "count": 67,
+    "min": 92,
+    "max": 99,
+    "mean": 94.2
+   }
+  },
+  "origin": {
+   "ESP": 50,
+   "BRA": 5,
+   "ITA": 44,
+   "ENG": 46,
+   "EUR": 4,
+   "CATALOG": 1
+  },
+  "cutoffOvr": 92,
+  "candidates": 413,
+  "newcomers": 34,
+  "excludedBest": [
+   {
+    "id": "import_eng_epl_ley_056",
+    "name": "Edwin van der Sar",
+    "position": "ARQ",
+    "ovr": 92,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_060",
+    "name": "Graeme Souness",
+    "position": "MED",
+    "ovr": 92,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_067",
+    "name": "Sadio Mané",
+    "position": "DEL",
+    "ovr": 92,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_069",
+    "name": "Tony Adams",
+    "position": "DEF",
+    "ovr": 92,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_ita_leg_053",
+    "name": "Hernán Crespo",
+    "position": "DEL",
+    "ovr": 92,
+    "origin": "ITA",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_055",
+    "name": "Duncan Edwards",
+    "position": "MED",
+    "ovr": 92,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_057",
+    "name": "Gary Neville",
+    "position": "DEF",
+    "ovr": 92,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_059",
+    "name": "Gordon Hodgson",
+    "position": "DEL",
+    "ovr": 92,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_061",
+    "name": "Ian Wright",
+    "position": "DEL",
+    "ovr": 92,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_062",
+    "name": "John Barnes",
+    "position": "DEL",
+    "ovr": 92,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_063",
+    "name": "Nemanja Vidić",
+    "position": "DEF",
+    "ovr": 92,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_064",
+    "name": "Robert Pirès",
+    "position": "MED",
+    "ovr": 92,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_065",
+    "name": "Robin van Persie",
+    "position": "DEL",
+    "ovr": 92,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_066",
+    "name": "Ruud van Nistelrooy",
+    "position": "DEL",
+    "ovr": 92,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_068",
+    "name": "Son Heung-min",
+    "position": "DEL",
+    "ovr": 92,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_070",
+    "name": "Billy Wright",
+    "position": "DEF",
+    "ovr": 92,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_esp_esp_leg_radamel_falcao_garcia_zarate",
+    "name": "Radamel Falcao",
+    "position": "DEL",
+    "ovr": 92,
+    "origin": "ESP",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_esp_esp_leg_ronald_koeman",
+    "name": "Ronald Koeman",
+    "position": "DEF",
+    "ovr": 92,
+    "origin": "ESP",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_072",
+    "name": "Carlos Tevez",
+    "position": "DEL",
+    "ovr": 91,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_079",
+    "name": "Gianfranco Zola",
+    "position": "MED",
+    "ovr": 91,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_086",
+    "name": "Michael Owen",
+    "position": "DEL",
+    "ovr": 91,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_eng_epl_ley_089",
+    "name": "Paul Gascoigne",
+    "position": "MED",
+    "ovr": 91,
+    "origin": "ENG",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_esp_esp_leg_david_robert_joseph_beckham",
+    "name": "David Beckham",
+    "position": "MED",
+    "ovr": 91,
+    "origin": "ESP",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_esp_esp_leg_emilio_butragueno_santos",
+    "name": "Emilio Butragueño",
+    "position": "DEL",
+    "ovr": 91,
+    "origin": "ESP",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_esp_esp_leg_fernando_ruiz_hierro",
+    "name": "Fernando Hierro",
+    "position": "DEF",
+    "ovr": 91,
+    "origin": "ESP",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_esp_esp_leg_xabier_alonso_olano",
+    "name": "Xabi Alonso",
+    "position": "MED",
+    "ovr": 91,
+    "origin": "ESP",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_ita_leg_054",
+    "name": "Filippo Inzaghi",
+    "position": "DEL",
+    "ovr": 91,
+    "origin": "ITA",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_ita_leg_055",
+    "name": "David Trezeguet",
+    "position": "DEL",
+    "ovr": 91,
+    "origin": "ITA",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_ita_leg_058",
+    "name": "Roberto Donadoni",
+    "position": "MED",
+    "ovr": 91,
+    "origin": "ITA",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   },
+   {
+    "id": "import_ita_leg_059",
+    "name": "Dejan Savićević",
+    "position": "MED",
+    "ovr": 91,
+    "origin": "ITA",
+    "reason": "below the 150th by quality order; still in the archive and the master"
+   }
+  ]
+ }
+}

@@ -60,7 +60,7 @@ async function openWith(game: RecruiterDuelGame, mode: 'cpu' | 'hot') {
   fireEvent.click(screen.getByRole('button', { name: i18n.t('duel.start') }))
   return i18n
 }
-const roundLabel = () => document.querySelector('.auction-heading .eyebrow')?.textContent
+const roundLabel = () => [...document.querySelectorAll('[data-testid="auction-header"] .auction-header-stats li')].at(-1)?.textContent
 
 describe('UX-DRAW-007 automatic rounds without a human decision', () => {
   it('against the CPU: resolves a card the human cannot take through the engine, groups it as automatic and keeps the ledger honest', async () => {

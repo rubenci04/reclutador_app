@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 import italian from '../../data/league-collections/italy.json'
 import aliases from '../../data/league-collections/italyIdentityAliases.json'
 import { LEAGUE_PLAYERS } from './leagueCollections'
-import { ALL_CURRENT, GLOBAL_LEGENDS, MASTER_CATALOG, personKey, WORLD_LEGEND_POLICY } from './globalCollection'
+import { ALL_CURRENT, GLOBAL_CURRENT_ALL, GLOBAL_LEGENDS, GLOBAL_LEGENDS_ALL, MASTER_CATALOG, personKey, WORLD_LEGEND_POLICY } from './globalCollection'
 import { calculatePlayerPrice } from './calculatePlayerPrice'
 import { catalogForMode } from '../themed-modes/modeCatalog'
 import { RECORDED_COLLECTIONS, recordedCollection } from './recordedCollections'
@@ -45,11 +45,11 @@ describe('DATA-ITA-001 collections', () => {
     expect(GLOBAL_LEGENDS.some(p => p.name.includes('Maidana'))).toBe(false)
     // SOUTH_AMERICA_LEGENDS is the editorial Top 150 since DATA-REG-003C: local legends stay in their national mode.
     expect(catalogForMode('ARGENTINA_LEGENDS').some(p => p.name.includes('Maidana'))).toBe(true)
-    expect(WORLD_LEGEND_POLICY.approved).toHaveLength(GLOBAL_LEGENDS.length)
+    expect(WORLD_LEGEND_POLICY.approved).toHaveLength(GLOBAL_LEGENDS_ALL.length)
     expect(WORLD_LEGEND_POLICY.unresolvedNames).toContain('Rafael Márquez')
   })
   it('reads full expanded replay/history payloads and frozen previous collections', () => {
-    const players = catalogForMode('GLOBAL_CLASSIC')
+    const players = GLOBAL_CURRENT_ALL // the pre-RANK-008 pool of 1,039 keeps its large payloads
     const replay = { seed: 'italy-replay', context: createDrawContext(players) }
     const json = JSON.stringify(replay)
     expect(json.length).toBeGreaterThan(250_000)

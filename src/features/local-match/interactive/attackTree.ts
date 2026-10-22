@@ -29,8 +29,12 @@ export const ATTACK_TREE_LIMIT = 3
 const HEADER_BONUS = .06
 
 export type Sector = 'LEFT' | 'RIGHT'
-export type PlayChoice = 'FK_LEFT' | 'FK_CENTER' | 'FK_RIGHT' | 'FK_CROSS' | 'FK_SHORT' | 'WALL_JUMP' | 'WALL_HOLD' | 'CORNER_NEAR' | 'CORNER_FAR' | 'CORNER_SHORT' | 'MAN_MARK' | 'ZONE' | 'LEFT' | 'RIGHT' | 'CROSS' | 'SHOOT' | 'INTERCEPT' | 'PRESS' | 'NEAR_POST' | 'GOAL_CENTER' | 'FAR_POST'
-export type PlayNode = 'FK_ATTACK' | 'FK_DEFEND' | 'FK_HEADER' | 'CORNER_ATTACK' | 'CORNER_DEFEND' | 'CORNER_HEADER' | 'DIRECTION' | 'FINISH' | 'DEFEND' | 'HEADER'
+/** SIM-MINI-001: the three lanes of the dribble challenge. */
+export type DribbleSector = 'LEFT' | 'CENTER' | 'RIGHT'
+export const DRIBBLE_VERSION = 'dribble-mini-v1' as const
+export const DRIBBLE_CHOICES = ['DRIBBLE_LEFT', 'DRIBBLE_CENTER', 'DRIBBLE_RIGHT'] as const
+export type PlayChoice = 'FK_LEFT' | 'FK_CENTER' | 'FK_RIGHT' | 'FK_CROSS' | 'FK_SHORT' | 'WALL_JUMP' | 'WALL_HOLD' | 'CORNER_NEAR' | 'CORNER_FAR' | 'CORNER_SHORT' | 'MAN_MARK' | 'ZONE' | 'LEFT' | 'RIGHT' | 'CROSS' | 'SHOOT' | 'INTERCEPT' | 'PRESS' | 'NEAR_POST' | 'GOAL_CENTER' | 'FAR_POST' | 'DRIBBLE_LEFT' | 'DRIBBLE_CENTER' | 'DRIBBLE_RIGHT'
+export type PlayNode = 'DRIBBLE' | 'FK_ATTACK' | 'FK_DEFEND' | 'FK_HEADER' | 'CORNER_ATTACK' | 'CORNER_DEFEND' | 'CORNER_HEADER' | 'DIRECTION' | 'FINISH' | 'DEFEND' | 'HEADER'
 export interface PlayOption { readonly choice: PlayChoice; readonly available: boolean; readonly playerId: string | null; readonly rivalId: string | null }
 export interface PendingPlay {
   readonly id: string
@@ -41,11 +45,13 @@ export interface PendingPlay {
   readonly sector: Sector | null
   readonly options: readonly PlayOption[]
   readonly attackerId?: string
+  /** DRIBBLE node only: the lane the CPU defender decided to cover, fixed before the player chooses (hidden by the interface until the reveal). */
+  readonly dribble?: { readonly cover: DribbleSector }
   readonly aerial?: AerialAction
   readonly freeKick?: FreeKickEvent
   readonly corner?: CornerEvent
 }
-export interface PlayLogEntry { readonly id: string; readonly playId: string; readonly node: PlayNode; readonly choice: PlayChoice }
+export interface PlayLogEntry { readonly id: string; readonly playId: string; readonly node: PlayNode; readonly choice: PlayChoice; /** DRIBBLE node only: timing precision (0-1) the player achieved. */ readonly precision?: number }
 
 export interface Squad { readonly lineup: DraftLineup; readonly formation: FormationId }
 export interface PlayContext {
@@ -57,6 +63,8 @@ export interface PlayContext {
   readonly strategy: Readonly<Record<MatchSide, StrategyId>>
   readonly effectiveOnly?: boolean
   readonly duels?: 'ovr-duels-v1'
+  /** Set only while the dribble challenge may still appear (enabled, and not yet played in this match). */
+  readonly dribble?: typeof DRIBBLE_VERSION
 }
 
 const clamp = (value: number, lower: number, upper: number) => Math.max(lower, Math.min(upper, value))
@@ -67,6 +75,7 @@ export const headerQuality = (p: Player) => .45 * p.att_rating + .35 * p.phy_rat
 export const shooterQuality = (p: Player) => .5 * p.att_rating + .3 * p.overall_rating + .2 * p.men_rating
 export const defenderQuality = (p: Player) => .5 * p.def_rating + .25 * p.phy_rating + .25 * p.men_rating
 export const keeperQuality = (p: Player) => .6 * p.overall_rating + .4 * p.def_rating
+export const dribblerQuality = (p: Player) => .5 * p.att_rating + .3 * p.men_rating + .2 * p.overall_rating
 
 /** Midfield and attack-versus-defence balance of the vigente effective strengths (already include strategy, coach, formation, squad). */
 export function playContext(ctx: Pick<PlayContext, 'effective'>) {
@@ -133,21 +142,60 @@ export function planPlay(ctx: PlayContext, id: string, random: () => number, exc
 
 export interface StepResult { readonly events: readonly MatchEvent[]; readonly next: PendingPlay | null }
 
+/** Where the defender will cover: leaning to the attacker's flank, more central against a low block. Drawn once, before the player chooses. */
+export function pickCover(sector: Sector, strategy: Readonly<Record<MatchSide, StrategyId>>, random: () => number): DribbleSector {
+  const flank = sector === 'LEFT' ? 'LEFT' : 'RIGHT'; const far = sector === 'LEFT' ? 'RIGHT' : 'LEFT'
+  const weights: Record<DribbleSector, number> = { LEFT: 1, CENTER: 1 + (strategy.cpu === 'LOW_BLOCK' ? .3 : 0), RIGHT: 1 }
+  weights[flank] += .3 + (strategy.cpu === 'HIGH_PRESS' ? .2 : 0); weights[far] -= .3
+  const order: readonly DribbleSector[] = ['LEFT', 'CENTER', 'RIGHT']
+  let ticket = random() * order.reduce((sum, key) => sum + weights[key], 0)
+  for (const key of order) { ticket -= weights[key]; if (ticket <= 0) return key }
+  return 'CENTER'
+}
+
+/** Chance of beating the defender: ratings of both players, the lane against the cover, the timing precision and the strategies. Clamped, never certain. */
+export function dribbleChance(attacker: Player, defender: Player, lane: DribbleSector, cover: DribbleSector, precision: number, edge: number, strategy: Readonly<Record<MatchSide, StrategyId>>) {
+  const timing = (clamp(precision, 0, 1) - .5) * .24
+  const read = lane === cover ? -.22 : .06
+  const tactics = (strategy.local === 'WIDE_PLAY' && lane !== 'CENTER' ? .03 : 0) + (strategy.local === 'COUNTER_ATTACK' && lane === 'CENTER' ? .02 : 0) - (strategy.cpu === 'LOW_BLOCK' && lane === 'CENTER' ? .03 : 0) - (strategy.cpu === 'HIGH_PRESS' ? .02 : 0)
+  return clamp(.5 + (dribblerQuality(attacker) - defenderQuality(defender)) * .008 + edge + timing + read + tactics, .12, .85)
+}
+
 export function availableChoice(play: PendingPlay, choice: unknown): choice is PlayChoice {
   return play.options.some((o) => o.choice === choice && o.available)
 }
 
 /** One node of the tree. All draws come from the supplied tree stream, in a fixed order. */
-export function resolvePlay(ctx: PlayContext, play: PendingPlay, choice: PlayChoice, random: () => number): StepResult {
+export function resolvePlay(ctx: PlayContext, play: PendingPlay, choice: PlayChoice, random: () => number, precision = .5): StepResult {
   const player = (id: string | null) => ctx.catalog.find((p) => p.id === id)!
   const event = (side: MatchSide, type: MatchEvent['type'], step: PlayStep, who: Player): MatchEvent => ({ minute: ctx.minute, side, type, playerId: who.id, step })
   const edge = playContext(ctx)
   const option = play.options.find((o) => o.choice === choice)!
+  const finishNode = (receiver: Player, sector: Sector): PendingPlay => {
+    const target = crossTarget(ctx.local, ctx.catalog, receiver.id)
+    const targetDefender = target ? rivalDefenderFor(target.slot.x, ctx.cpu, ctx.catalog) : null
+    const shotDefender = rivalDefenderFor(placed(ctx.local, ctx.catalog).find((p) => p.player.id === receiver.id)!.slot.x, ctx.cpu, ctx.catalog)
+    return { id: play.id, node: 'FINISH', protagonistId: play.protagonistId, receiverId: receiver.id, sector, options: [
+      { choice: 'CROSS', available: Boolean(target && targetDefender), playerId: target?.player.id ?? null, rivalId: targetDefender?.id ?? null },
+      { choice: 'SHOOT', available: Boolean(shotDefender), playerId: receiver.id, rivalId: shotDefender?.id ?? null },
+    ] }
+  }
+  if (play.node === 'DRIBBLE') {
+    const lane = (choice as string).slice('DRIBBLE_'.length) as DribbleSector
+    const attacker = player(play.receiverId); const defender = player(option.rivalId)
+    if (random() < dribbleChance(attacker, defender, lane, play.dribble!.cover, precision, edge, ctx.effectiveOnly ? { local: 'NEUTRAL', cpu: 'NEUTRAL' } : ctx.strategy)) return { events: [event('local', 'pass', 'DRIBBLE_OK', attacker)], next: finishNode(attacker, play.sector!) }
+    return { events: [event('cpu', 'recovery', 'DRIBBLE_LOST', defender)], next: null }
+  }
   if (play.node === 'DIRECTION') {
     const sector = choice as Sector
     const passer = player(play.protagonistId); const receiver = player(option.playerId); const defender = player(option.rivalId)
     if (random() < passChance(passer, receiver, defender, edge, ctx.effectiveOnly ? { local: 'NEUTRAL', cpu: 'NEUTRAL' } : ctx.strategy)) {
       // Delivery is not a 1v1. Once received, the winger must beat the actual marker to advance.
+      if (ctx.dribble) {
+        // SIM-MINI-001: the carry is played by hand. The defender's lane is decided now, before the player moves.
+        const cover = pickCover(sector, ctx.strategy, random)
+        return { events: [event('local', 'pass', sector === 'LEFT' ? 'PASS_LEFT_OK' : 'PASS_RIGHT_OK', receiver)], next: { id: play.id, node: 'DRIBBLE', protagonistId: play.protagonistId, receiverId: receiver.id, sector, dribble: { cover }, options: DRIBBLE_CHOICES.map((c) => ({ choice: c, available: true, playerId: receiver.id, rivalId: defender.id })) } }
+      }
       if (ctx.duels && random() < defenderDuelChance(receiver.overall_rating, defender.overall_rating)) return { events: [event('local', 'pass', sector === 'LEFT' ? 'PASS_LEFT_OK' : 'PASS_RIGHT_OK', receiver), event('cpu', 'recovery', 'CARRY_LOST', defender)], next: null }
       const target = crossTarget(ctx.local, ctx.catalog, receiver.id)
       const targetDefender = target ? rivalDefenderFor(target.slot.x, ctx.cpu, ctx.catalog) : null

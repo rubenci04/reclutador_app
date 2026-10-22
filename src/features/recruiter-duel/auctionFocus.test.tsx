@@ -59,18 +59,23 @@ describe('UX-AUCTION-006 footballer and offer stay together', () => {
   it.each(['es-AR', 'en', 'pt-BR'] as const)('keeps the footballer, the four amounts and both actions in one panel in %s', async (language) => {
     const i18n = await openLocal('hot', 'focus-panel', language, 'Los Pibes de Barrio')
     const panel = document.querySelector('.bid-panel') as HTMLElement
-    const bar = panel.querySelector('.auction-player-bar') as HTMLElement
-    const name = document.querySelector('.auction-candidate h2')!.textContent!
-    expect(bar.textContent).toContain(name)
-    expect(bar.querySelector('.bar-avatar b')?.textContent).toMatch(/^\d+$/)
-    expect(bar.querySelector('.pos-pill')).not.toBeNull()
-    expect(bar.querySelector('.base-price-chip')?.textContent).toMatch(/\d/)
-    expect(bar.querySelector('.bar-club')?.textContent?.length).toBeGreaterThan(3)
-    expect(bar.getAttribute('role')).toBe('group')
-    // Sticky inside the panel only: never a fixed overlay over the Bid button.
-    expect(getComputedStyle(bar).position).not.toBe('fixed')
-    expect(panel.querySelectorAll('.bid-figures dt')).toHaveLength(4)
-    expect([...panel.querySelectorAll('.bid-figures dt')].map((el) => el.textContent)).toEqual([i18n.t('auctionFocus.current'), i18n.t('auctionFocus.minimum'), i18n.t('auctionFocus.available'), i18n.t('auctionFocus.maximum')])
+    // UX-AUCTION-007: ONE card of the footballer (no second bar), with the key facts visible and the rest under «full card».
+    const card = document.querySelector('.auction-candidate') as HTMLElement
+    expect(document.querySelectorAll('.single-player-card')).toHaveLength(1)
+    expect(document.querySelector('.auction-player-bar')).toBeNull()
+    expect(card.querySelector('h2')!.textContent!.length).toBeGreaterThan(2)
+    expect(card.querySelector('.player-avatar b')?.textContent).toMatch(/^\d+$/)
+    expect(card.querySelector('.pos-pill')).not.toBeNull()
+    expect(card.querySelector('.base-price-chip')?.textContent).toMatch(/\d/)
+    expect(card.querySelector('.player-club')?.textContent?.length).toBeGreaterThan(3)
+    expect(card.querySelector('.rank-chip')?.textContent).toMatch(/^#\d+ \/ 150$/)
+    expect(card.querySelector('.player-full-card')).not.toBeNull()
+    // The balance and the maximum bid are not repeated: balance only in the header, maximum only as the offer action.
+    expect(panel.querySelectorAll('.bid-figures dt')).toHaveLength(2)
+    expect([...panel.querySelectorAll('.bid-figures dt')].map((el) => el.textContent)).toEqual([i18n.t('auctionFocus.current'), i18n.t('auctionFocus.minimum')])
+    expect(document.querySelectorAll('[data-testid="auction-header"]')).toHaveLength(1)
+    expect(document.querySelector('[data-testid="wallet"]')).toBeNull()
+    expect(document.querySelector('.wallet-chip')).toBeNull()
     const bid = within(panel, i18n.t('duel.bid')), pass = within(panel, i18n.t('duel.pass'))
     expect(bid.classList.contains('bid-primary')).toBe(true)
     expect(pass.classList.contains('bid-pass')).toBe(true)
@@ -83,11 +88,13 @@ describe('UX-AUCTION-006 footballer and offer stay together', () => {
   })
   it('highlights the personalised team name as the turn owner', async () => {
     await openLocal('hot', 'focus-name', 'es-AR', 'Los Pibes de Barrio')
-    const heading = document.querySelector('.bid-panel .team-turn-name')!
-    expect(heading.textContent).toContain('Los Pibes de Barrio')
+    const header = document.querySelector('[data-testid="auction-header"]')!
+    expect(header.querySelector('.wallet-name')?.textContent).toBe('Los Pibes de Barrio')
+    expect(header.textContent).toMatch(/\d+ M/)
     expect(document.querySelector('.hud-recruiter_one header strong')?.textContent).toBe('Los Pibes de Barrio')
     expect(document.querySelector('.hud-recruiter_two header strong')?.textContent).not.toContain('Los Pibes')
-    expect(document.querySelector('.team-status')?.textContent).toMatch(/\d+ .*\d+M/)
+    expect(document.querySelector('.hud-rival')?.textContent).not.toContain('Los Pibes')
+    expect(document.querySelector('.bid-panel .team-turn-name')).toBeNull()
   })
 })
 
@@ -119,7 +126,7 @@ describe('UX-AUCTION-006 automatic close', () => {
       const bid = button('Bid'); const pass = button(/^(Pass|Confirm shared discard|Confirm mandatory assignment|Claim)$/); const next = button(/^(Next round|Confirm signing and continue)$/); const start = button('Start auction')
       if (start) fireEvent.click(start)
       else if (next) fireEvent.click(next)
-      else if (bid && !bid.disabled && document.querySelector('.bid-panel h2')?.textContent?.includes('Recruiter one')) fireEvent.click(bid)
+      else if (bid && !bid.disabled && document.querySelector('[data-testid="auction-header"] .wallet-name')?.textContent?.includes('Recruiter one')) fireEvent.click(bid)
       else if (pass && !pass.disabled) fireEvent.click(pass)
       else if (bid && !bid.disabled) fireEvent.click(bid)
       else act(() => vi.advanceTimersByTime(700))
@@ -147,7 +154,7 @@ describe('UX-AUCTION-006 automatic close', () => {
       const bid = button('Bid'); const pass = button(/^(Pass|Confirm shared discard|Confirm mandatory assignment|Claim)$/); const next = button(/^(Next round|Confirm signing and continue)$/); const start = button('Start auction')
       if (start) fireEvent.click(start)
       else if (next) fireEvent.click(next)
-      else if (bid && !bid.disabled && document.querySelector('.bid-panel h2')?.textContent?.includes('Recruiter one')) fireEvent.click(bid)
+      else if (bid && !bid.disabled && document.querySelector('[data-testid="auction-header"] .wallet-name')?.textContent?.includes('Recruiter one')) fireEvent.click(bid)
       else if (pass && !pass.disabled) fireEvent.click(pass)
       else if (bid && !bid.disabled) fireEvent.click(bid)
       else act(() => vi.advanceTimersByTime(700))
@@ -223,7 +230,7 @@ describe('UX-AUCTION-006 rounds without a human decision', () => {
     fireEvent.click(screen.getByText(i18n.t('entry.customize')))
     fireEvent.change(screen.getByLabelText(i18n.t('cpu.opponent')), { target: { value: 'cpu' } })
     fireEvent.click(screen.getByRole('button', { name: i18n.t('duel.start') }))
-    const round = () => document.querySelector('.auction-heading .eyebrow')?.textContent
+    const round = () => [...document.querySelectorAll('[data-testid="auction-header"] .auction-header-stats li')].at(-1)?.textContent
     const before = round()
     expect(document.querySelector('.award-result')).not.toBeNull()
     act(() => vi.advanceTimersByTime(3000))

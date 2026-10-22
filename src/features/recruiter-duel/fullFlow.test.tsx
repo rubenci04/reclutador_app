@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { I18nextProvider } from 'react-i18next'
 import { createI18n } from '../../i18n'
-import { DRAFT_CATALOG } from '../draft/catalog'
+import { GLOBAL_CURRENT as DRAFT_CATALOG } from '../player-catalog/globalCollection'
 import * as simulator from '../local-match/simulator'
 import { AuctionPage } from './AuctionPage'
 import * as engine from './auctionEngine'
@@ -54,7 +54,7 @@ function drive(stop: () => boolean, limit = 900) {
     if (decline) { fireEvent.click(decline); continue }
     if (button('Start auction')) { click('Start auction'); continue }
     const next = button(/^(Next round|Confirm signing and continue)$/); if (next) { click(next.textContent!); continue }
-    const panel = document.querySelector('.bid-panel h2')?.textContent ?? ''
+    const panel = document.querySelector('[data-testid="auction-header"] .wallet-name')?.textContent ?? ''
     const bid = button('Bid'); const pass = button(/^(Pass|Confirm shared discard|Confirm mandatory assignment|Claim)$/)
     if (bid && !bid.disabled && panel.includes('Recruiter one')) { click('Bid'); continue }
     if (pass && !pass.disabled) { click(pass.textContent!); continue }

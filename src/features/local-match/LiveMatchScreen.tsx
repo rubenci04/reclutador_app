@@ -10,6 +10,7 @@ import { confirmLiveOrder, currentPower, defaultPlayChoice, keepWindow, resolveQ
 import { DecisionPanel, Handover } from './LiveDecisionPanel'
 import { HalftimePanel } from './HalftimePanel'
 import { PlayPanel } from './LivePlayPanel'
+import { DribbleScene, type DribbleScene as DribbleSceneData } from './DribblePanel'
 import { freeKickBeatDuration } from './freeKickGeometry'
 import { cornerBeatDuration } from './cornerGeometry'
 import { aerialBeatDuration } from './aerialGeometry'
@@ -53,6 +54,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   const [handover, setHandover] = useState(''); const [error, setError] = useState('')
   const [skipAnimation, setSkipAnimation] = useState(false); const [replay, setReplay] = useState(false)
   const [focus, setFocus] = useState<BoardFocus>('full')
+  const [scene, setScene] = useState<DribbleSceneData | null>(null)
   const [subRequests, setSubRequests] = useState<Record<MatchSide, boolean>>({ local: false, cpu: false })
   const subRequested = subRequests.local || subRequests.cpu
   const [halftimeConfirmed, setHalftimeConfirmed] = useState(false)
@@ -90,12 +92,17 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
     if (next.ok) commit(next.value, reveal); else setError(next.error)
   }
   /** A card is bound to the node it was rendered for: a second tap or a stale card can never resolve a later node. */
-  const choosePlay = (rendered: PendingPlay, choice: PlayChoice) => {
+  const choosePlay = (rendered: PendingPlay, choice: PlayChoice, precision?: number) => {
     const state = current.current
     if (state.phase !== 'PLAY') return
-    const next = submitPlay(state, { version: 'interactive-play-command-v1', id: `${state.sessionId}:${rendered.id}:${rendered.node}`, sessionId: state.sessionId, expectedRevision: state.revision, playId: rendered.id, node: rendered.node, choice })
+    const next = submitPlay(state, { version: 'interactive-play-command-v1', id: `${state.sessionId}:${rendered.id}:${rendered.node}`, sessionId: state.sessionId, expectedRevision: state.revision, playId: rendered.id, node: rendered.node, choice, ...(precision !== undefined ? { precision } : {}) })
     if (next.ok) {
       commit(next.value)
+      if (rendered.node === 'DRIBBLE' && !rest) {
+        // Show the confirmed dribble on the close-up: lane chosen, lane covered and the outcome the engine recorded.
+        const steps = [...next.value.kernel.blocks.flatMap((block) => block.events), ...(next.value.kernel.partial?.events ?? [])].filter((item) => item.step?.startsWith('DRIBBLE'))
+        setScene({ key: `${rendered.id}:${next.value.revision}`, lane: choice.slice(8) as DribbleSceneData['lane'], cover: rendered.dribble!.cover, ok: steps.at(-1)?.step === 'DRIBBLE_OK', attackerId: rendered.receiverId, defenderId: rendered.options[0]?.rivalId ?? null })
+      }
       // Reveal the first confirmed response immediately; later beats keep their normal duration.
       setCursor((value) => Math.min(value + 1, liveFrames(next.value.kernel.blocks, next.value.kernel.partial ? { minute: next.value.kernel.partial.events[0].minute, events: next.value.kernel.partial.events } : null).length))
     } else if (next.error !== 'DUPLICATE_COMMAND' && next.error !== 'WRONG_PLAY' && next.error !== 'STALE_STATE') setError(next.error)
@@ -195,7 +202,8 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
         </fieldset>
       </div>
       <p className="live-now" role="status">{finished ? t('liveDT.fullTime') : focusEvent ? <><time>{focusEvent.minute}′</time> {eventText(focusEvent)}</> : t('liveDT.kickoff')}</p>
-      {atPlay && view.play && <PlayPanel key={`${view.play.id}:${view.play.node}`} play={view.play} catalog={catalog} ovrDuels={halftimeRules} onChoose={(choice) => choosePlay(view.play!, choice)} />}
+      {atPlay && view.play && <PlayPanel key={`${view.play.id}:${view.play.node}`} play={view.play} catalog={catalog} ovrDuels={halftimeRules} onChoose={(choice, precision) => choosePlay(view.play!, choice, precision)} />}
+      {scene && <DribbleScene key={scene.key} scene={scene} catalog={catalog} onDone={() => setScene(null)} />}
       {halftimeConfirmed && <p role="status">{t('halftime.confirmed')}</p>}
       {atWindow && halftimeRules && (!quietWindow || subRequested) && (passDevice ? <Handover name={names.cpu} onReady={() => setHandover(session.window!.id)} /> : <HalftimePanel key={`${session.window!.id}:${side}`} session={session} side={side} name={names[side]} halftime={!quietWindow} onConfirm={(order) => {
         const other = side === 'local' ? 'cpu' : 'local'

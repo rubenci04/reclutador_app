@@ -38,6 +38,8 @@ export interface SessionOptions {
   readonly attackTree?: { readonly version: 'attack-tree-v1' }
   readonly freeKicks?: { readonly version: 'free-kicks-v1' }
   readonly corners?: { readonly version: 'corners-v1' }
+  /** SIM-MINI-001: one hand-played dribble per match for the local side. New local matches only; never online. */
+  readonly dribble?: { readonly version: 'dribble-mini-v1' }
   /** New matches only: halftime tactics, optional substitutions and OVR direct duels. */
   readonly matchRules?: { readonly version: 'halftime-ovr-v1' }
 }
@@ -50,6 +52,8 @@ export interface PlayCommand {
   readonly playId: string
   readonly node: PlayNode
   readonly choice: PlayChoice
+  /** Dribble node only: timing precision from 0 (worst) to 1 (best). Omitted means the traditional automatic resolution (0.5). */
+  readonly precision?: number
 }
 export interface InteractiveResult {
   readonly version: 'interactive-result-v1'

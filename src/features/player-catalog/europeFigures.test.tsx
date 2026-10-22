@@ -4,7 +4,7 @@ import { I18nextProvider } from 'react-i18next'
 import allFigures from '../../data/league-collections/europeFigures.json'
 import preV1 from '../../data/league-collections/preEuropeTopCollections.json'
 import preV2 from '../../data/league-collections/preEuropeTopV2Collections.json'
-import { ALL_CURRENT, GLOBAL_CURRENT, MASTER_CATALOG, personKey } from './globalCollection'
+import { ALL_CURRENT, GLOBAL_CURRENT, GLOBAL_CURRENT_ALL, MASTER_CATALOG, personKey } from './globalCollection'
 import { EUROPE_CURRENT_POOL, EUROPE_TOP_REPORT, EUROPE_TOP_RESOLUTION, EUROPE_TOP_VERSION } from './europeTop150'
 import { LEAGUE_PLAYERS, LEAGUE_PROVENANCE } from './leagueCollections'
 import { calculatePlayerPrice } from './calculatePlayerPrice'
@@ -81,7 +81,7 @@ describe('DATA-REG-003A priority Europe figures (ranks 1-50)', () => {
     expect(new Set(europe.map(personKey)).size).toBe(150)
     expect(new Set(GLOBAL_CURRENT.map(personKey)).size).toBe(GLOBAL_CURRENT.length)
     expect(new Set(ALL_CURRENT.map(personKey)).size).toBe(ALL_CURRENT.length)
-    for (const row of figures) expect(GLOBAL_CURRENT.some((p) => p.id === row.id)).toBe(true)
+    for (const row of figures) expect(GLOBAL_CURRENT_ALL.some((p) => p.id === row.id)).toBe(true)
     const ranked = EUROPE_TOP_RESOLUTION.filter((row) => row.status === 'RECONCILED')
     expect(europe.slice(0, ranked.length).map((p) => p.id)).toEqual(ranked.map((row) => row.editionId))
   })

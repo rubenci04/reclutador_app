@@ -43,6 +43,7 @@ export function defaultPlayChoice(play: PendingPlay, catalog: readonly Player[])
   if (play.node === 'CORNER_HEADER') return 'GOAL_CENTER'
   if (play.node === 'HEADER') return 'GOAL_CENTER'
   if (play.node === 'DEFEND') return 'INTERCEPT'
+  if (play.node === 'DRIBBLE') return 'DRIBBLE_CENTER'
   if (play.node === 'FINISH') return (usable.find((option) => option.choice === 'SHOOT') ?? usable[0]).choice
   const rating = (id: string | null) => catalog.find((p) => p.id === id)?.overall_rating ?? -1
   return [...usable].sort((a, b) => rating(b.playerId) - rating(a.playerId))[0].choice

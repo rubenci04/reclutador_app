@@ -809,3 +809,51 @@
 
 /* COACH-006B: S+ tier of coach-market-v3 */
 .coach-card[data-tier="S+"] { --coach-tier: #ffd24a; box-shadow: 0 0 0 1px #ffd24a66, 0 0 14px #ffd24a33; }
+
+/* RANK-008: editorial position badge */
+.rank-chip { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 10px; background: #d5fb76; color: #10210f; font-size: .78rem; font-weight: 800; letter-spacing: .02em; font-variant-numeric: tabular-nums; vertical-align: middle; white-space: nowrap; }
+.auction-player-bar .rank-chip { margin: 0 0 0 6px; font-size: .7rem; padding: 0 6px; }
+
+/* SIM-MINI-001: dribble challenge */
+.dribble-panel .dribble-field { touch-action: pan-y; max-width: 420px; margin: 8px auto; }
+.dribble-pitch { width: 100%; height: auto; display: block; }
+.dribble-grass { fill: #1d4d2b; stroke: #ffffff44; }
+.dribble-lane { fill: #ffffff0d; stroke: #ffffff22; }
+.dribble-lane.is-chosen { fill: #d5fb7630; stroke: #d5fb76; }
+.dribble-lane.is-covered { stroke: #ff6b6b; stroke-dasharray: 4 3; }
+.dribble-goal-mark { fill: #ffffff66; }
+.dribble-attacker circle { fill: #d5fb76; } .dribble-defender circle { fill: #ff6b6b; }
+.dribble-attacker text, .dribble-defender text { font-size: 10px; font-weight: 800; fill: #10210f; }
+.dribble-ball { fill: #fff; stroke: #111; }
+.dribble-attacker, .dribble-defender, .dribble-ball { transition: transform .8s cubic-bezier(.3,.7,.3,1); }
+.dribble-lanes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.dribble-lane-button.is-chosen { outline: 2px solid #d5fb76; }
+.dribble-timing { margin: 8px 0; }
+.dribble-bar { position: relative; height: 18px; border-radius: 9px; background: #ffffff22; overflow: hidden; }
+.dribble-sweet { position: absolute; left: 40%; width: 20%; top: 0; bottom: 0; background: #7fd06a99; }
+.dribble-marker { position: absolute; top: 0; bottom: 0; width: 6px; margin-left: -3px; background: #fff; border-radius: 3px; }
+.dribble-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.dribble-actions .primary-action { flex: 1 1 160px; min-height: 48px; font-size: 1.1rem; }
+.dribble-scene { max-width: 420px; margin: 8px auto; padding: 8px; border-radius: 10px; background: #0b1a13; border: 1px solid #ffffff2e; }
+.dribble-scene.is-ok { border-color: #7fd06a; } .dribble-scene.is-lost { border-color: #ff6b6b; }
+.dribble-scene p { margin: 6px 0 0; }
+@media (prefers-reduced-motion: reduce) { .dribble-attacker, .dribble-defender, .dribble-ball { transition: none; } }
+
+/* UX-AUCTION-007: one sticky header, a quiet rival summary, one player card next to the bid on wide screens */
+.auction-header { position: sticky; top: 0; z-index: 7; display: grid; grid-template-columns: auto minmax(0, 1fr) max-content max-content; grid-template-areas: "icon name balance details" "stats stats stats stats"; align-items: center; gap: 2px 8px; margin: 0 0 6px; padding: 5px 10px; border-radius: 8px; background: #0b1a13f7; border: 1px solid #d5fb7666; box-shadow: 0 4px 14px #0008; color: #f4f7ef; }
+.auction-header .wallet-icon { grid-area: icon; } .auction-header .wallet-name { grid-area: name; } .auction-header .wallet-balance { grid-area: balance; } .auction-header .wallet-details { grid-area: details; }
+.auction-header-stats { grid-area: stats; display: flex; flex-wrap: wrap; gap: 2px 14px; margin: 0; padding: 0; list-style: none; font-size: .74rem; font-weight: 700; letter-spacing: .03em; color: #d5fb76; }
+.auction-hud.auction-hud-compact { position: static; display: block; padding: 4px 8px; margin: 0 0 6px; box-shadow: none; background: #0b1a1399; }
+.hud-rival { margin: 0; font-size: .78rem; opacity: .85; }
+.hud-more > summary { cursor: pointer; font-size: .74rem; opacity: .8; min-height: 24px; }
+.hud-more-body { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
+.hud-more-body .hud-centre { grid-column: 1 / -1; }
+.player-full-card { margin-top: 6px; font-size: .85rem; } .player-full-card > summary { cursor: pointer; font-weight: 700; color: #d5fb76; }
+.player-line { margin: 4px 0; } .auction-board .single-player-card .base-price-chip { display: inline-block; margin-top: 4px; }
+.auction-board .auction-heading { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; font-size: .8rem; }
+@media (min-width: 900px) {
+  .auction-board { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px 16px; align-items: start; }
+  .auction-board > .auction-heading, .auction-board > .auction-banner, .auction-board > .assignment-notice, .auction-board > .award-result, .auction-board > .cpu-status { grid-column: 1 / -1; }
+  .auction-board > .auction-candidate { grid-column: 1; grid-row: 2 / span 4; position: sticky; top: 64px; }
+  .auction-board > .bid-panel, .auction-board > .reveal-actions { grid-column: 2; }
+}

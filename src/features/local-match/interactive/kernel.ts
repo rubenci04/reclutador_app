@@ -7,7 +7,7 @@ import { eventInfluence } from '../../tactics/eventInfluence'
 import { NEUTRAL_SELECTION, TACTICS_VERSION, parseStrategySelection } from '../../tactics/strategies'
 import { ZERO_ADJUSTMENT, tacticalAdjustment, tacticalFeatures, type TacticalAdjustment } from '../../tactics/tacticalModel'
 import { initialCheckpoint, nextCheckpoint } from './random'
-import { ATTACK_TREE_LIMIT, ATTACK_TREE_VERSION, availableChoice, planPlay, resolvePlay, type PendingPlay, type PlayChoice, type PlayContext, type PlayLogEntry } from './attackTree'
+import { ATTACK_TREE_LIMIT, ATTACK_TREE_VERSION, DRIBBLE_VERSION, availableChoice, planPlay, resolvePlay, type PendingPlay, type PlayChoice, type PlayContext, type PlayLogEntry } from './attackTree'
 import { calculateTeamStrength, initiativeChance, rosterAdvantage, isValidOrganizedLineup, isValidBench, SUBSTITUTION_MINUTES, SUBSTITUTION_CHANCE, SUBSTITUTION_RULES_VERSION, type SimulationInput } from '../simulator'
 import { composeStrength, squadQuality, SQUAD_QUALITY_VERSION } from '../squadQuality'
 import { MATCH_MINUTES, MATCH_RULES_VERSION, type MatchBlock, type MatchEvent, type MatchResult, type MatchSide, type MatchStats, type MatchTeam, type TeamStrength } from '../matchTypes'
@@ -49,7 +49,7 @@ const meanAdjustment = (total: TacticalAdjustment): TacticalAdjustment => ({ att
 type Side = { team: MatchTeam; strength: TeamStrength; features: ReturnType<typeof tacticalFeatures>; unused: string[]; subbed: boolean; baseMidfield: number }
 
 /** Version-frozen block adapter. Historical batch API stays untouched as regression oracle. */
-export function initializeKernel(source: SimulationInput, attackTree: boolean | 'match-moments-v1' = false, aerial = false, duels = false, corners = false, freeKicks = false) {
+export function initializeKernel(source: SimulationInput, attackTree: boolean | 'match-moments-v1' = false, aerial = false, duels = false, corners = false, freeKicks = false, dribble = false) {
   const input = structuredClone(source)
   if (input.rulesVersion !== MATCH_RULES_VERSION || input.catalogVersion !== 'catalog_v1') throw new Error('unsupported_match_rules')
   const local = teamFrom(input.localLineup, input.catalog, input.budget, input.formations?.local)
@@ -82,6 +82,7 @@ export function initializeKernel(source: SimulationInput, attackTree: boolean | 
     ...(freeKicks ? { freeKicks: { version: FREE_KICKS_VERSION, plan: null, families: [] } as FreeKickState, freeKickRng: initialCheckpoint(`${input.seed}:free-kicks`), freeKickPolicyRng: initialCheckpoint(`${input.seed}:free-kick-policy`) } : {}),
     ...(corners ? { corners: { version: CORNERS_VERSION, plan: null, families: [] } as CornerState, cornerRng: initialCheckpoint(`${input.seed}:corners`), cornerPolicyRng: initialCheckpoint(`${input.seed}:corner-policy`) } : {}),
     ...(duels ? { duels: 'ovr-duels-v1' as const } : {}),
+    ...(dribble ? { dribble: DRIBBLE_VERSION } : {}),
     ...(director ? { director: director as MomentDirector } : {}),
     ...(aerial ? { aerial: { version: AERIAL_VERSION, keeperPlan: null } as AerialState } : {}),
     ...(attackTree ? { tree: { version: ATTACK_TREE_VERSION, limit: ATTACK_TREE_LIMIT, started: 0, log: [] as PlayLogEntry[] }, partial: null as PartialBlock | null } : {}) }
@@ -251,6 +252,8 @@ function playContext(state: KernelState, minute: MatchEvent['minute'], effective
   const { input } = state
   return {
     minute, catalog: input.catalog, effective, strategy: state.selection, ...(state.director ? { effectiveOnly: true } : {}), ...(state.duels ? { duels: state.duels } : {}),
+    // SIM-MINI-001: offered at most once per match.
+    ...(state.dribble && !state.tree?.log.some((entry) => entry.node === 'DRIBBLE') ? { dribble: state.dribble } : {}),
     local: { lineup: state.sides.local.team.lineup, formation: input.formations?.local ?? '4-3-3' },
     cpu: { lineup: state.sides.cpu.team.lineup, formation: input.formations?.cpu ?? '4-3-3' },
   }
@@ -266,7 +269,7 @@ export function advanceKernel(current: KernelState, automatic: Readonly<Record<M
 }
 
 /** Resolves the pending node with the player's choice (attack-tree-v1). The rest of the block continues from the next opportunity. */
-export function resolveKernelPlay(current: KernelState, id: string, choice: PlayChoice): KernelState {
+export function resolveKernelPlay(current: KernelState, id: string, choice: PlayChoice, precision?: number): KernelState {
   const pending = current.partial?.play
   if (!current.tree || !current.partial || !pending || !availableChoice(pending, choice)) throw new Error('invalid_play')
   const state = structuredClone(current)
@@ -287,8 +290,8 @@ export function resolveKernelPlay(current: KernelState, id: string, choice: Play
     const sent = sendDirectedCross(ctx, pending, aerialRandom); state.aerial.keeperPlan = sent.keeperPlan; step = sent
   } else if (state.aerial && pending.node === 'HEADER' && isHeaderDirection(choice) && state.aerial.keeperPlan) {
     step = resolveDirectedHeader(ctx, pending, choice, state.aerial.keeperPlan, aerialRandom); state.aerial.keeperPlan = null
-  } else step = (pending.node === 'DEFEND' ? resolveDefense : resolvePlay)(ctx, pending, choice, treeRandom)
-  state.tree!.log.push({ id, playId: pending.id, node: pending.node, choice })
+  } else step = pending.node === 'DEFEND' ? resolveDefense(ctx, pending, choice, treeRandom) : resolvePlay(ctx, pending, choice, treeRandom, precision)
+  state.tree!.log.push({ id, playId: pending.id, node: pending.node, choice, ...(pending.node === 'DRIBBLE' ? { precision: precision ?? .5 } : {}) })
   for (const item of step.events) { partial.events.push(item); countEvent(state, item) }
   if (step.next) { partial.play = step.next; return state }
   partial.play = null

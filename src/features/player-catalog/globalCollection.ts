@@ -1,5 +1,5 @@
 import { DRAFT_CATALOG } from '../draft/catalog'
-import { ELIGIBLE_LEAGUE_PLAYERS, isEligibleEdition, LEAGUE_PLAYERS, WORLD_EDITIONS, WORLD_EDITION_PREFIX, worldEditionId } from './leagueCollections'
+import { ELIGIBLE_LEAGUE_PLAYERS, isEligibleEdition, LEAGUE_PLAYERS, LEAGUE_PROVENANCE, WORLD_EDITIONS, WORLD_EDITION_PREFIX, worldEditionId } from './leagueCollections'
 import { collectionPersonKey, distinctCollection } from './collectionIdentity'
 import worldPolicy from '../../data/league-collections/worldLegendPolicy.json'
 import type { Player } from '../../types/player'
@@ -30,5 +30,28 @@ export const ALL_GLOBAL_LEGENDS = distinctCollection(worldPolicy.approved.map((e
 export function capCollection(players: readonly Player[]): readonly Player[] {
   return [...players].sort((a, b) => b.overall_rating - a.overall_rating || a.id.localeCompare(b.id))
 }
-export const GLOBAL_CURRENT = capCollection(ALL_CURRENT)
-export const GLOBAL_LEGENDS = capCollection(ALL_GLOBAL_LEGENDS)
+/** Playable size of the global categories (global-top-150-v1). The complete master and the archived nominations stay available. */
+export const GLOBAL_TOP_SIZE = 150
+export const GLOBAL_TOP_VERSION = 'global-top-150-v1'
+/** Every eligible contemporary identity, best first (the pre-RANK-008 pool of 1,039). */
+export const GLOBAL_CURRENT_ALL = capCollection(ALL_CURRENT)
+/** Global Actual: the best 150 identities by effective OVR; ties prefer a 2026 edition, then id. Positions are checked by the tests (the 22-card auction needs ARQ, DEF, MED and DEL depth). */
+const leagueRank = new Map(LEAGUE_PROVENANCE.map((row) => [row.id, row.sourceRank]))
+/** Quality order of the global pools: effective OVR, then a 2026 edition, then the best editorial position in the edition's own league (catalogue editions first), then id. */
+const byQuality = (a: Player, b: Player) => b.overall_rating - a.overall_rating || b.reference_year - a.reference_year || (leagueRank.get(a.id) ?? 0) - (leagueRank.get(b.id) ?? 0) || a.id.localeCompare(b.id)
+export const GLOBAL_CURRENT: readonly Player[] = [...ALL_CURRENT].sort(byQuality).slice(0, GLOBAL_TOP_SIZE)
+/** The 177 archived nominations, best first (the pre-RANK-008 pool). */
+export const GLOBAL_LEGENDS_ALL = capCollection(ALL_GLOBAL_LEGENDS)
+/** Editorial opening of the global legends ranking; OVRs stay the originals, the position is not an official rating. */
+const LEGENDS_HEAD = ['Lionel Messi', 'Diego Maradona', 'Pelé']
+const legendsHead = LEGENDS_HEAD.map((name) => GLOBAL_LEGENDS_ALL.find((player) => player.name === name)!)
+const fullNameOf = new Map(LEAGUE_PROVENANCE.map((row) => [row.id, row.fullName]))
+const identity = (player: Player) => `${(fullNameOf.get(player.id.replace(/^world_/, '')) ?? player.name).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '')}:${player.nationality}`
+/** Legends of the European leagues are world class by construction (Top 150 of Spain, England and Italy); local Argentine, Brazilian and Mexican heroes stay in their own categories unless nominated. */
+const EUROPEAN_LEAGUE_LEGEND = /^import_(esp_esp_leg_|eng_epl_ley_|ita_leg_|eur_leg_)/
+const archived = new Set([...GLOBAL_LEGENDS_ALL.map(personKey), ...GLOBAL_LEGENDS_ALL.map(identity)])
+const European = ALL_LEGENDS.filter((player) => EUROPEAN_LEAGUE_LEGEND.test(player.id) && !archived.has(personKey(player)) && !archived.has(identity(player)))
+/** Candidates of Global Leyendas: the 177 archived nominations plus the world-class European league legends that were never nominated (one edition per person). */
+export const GLOBAL_LEGEND_CANDIDATES: readonly Player[] = [...GLOBAL_LEGENDS_ALL, ...European.filter((player, index) => European.findIndex((other) => personKey(other) === personKey(player) || identity(other) === identity(player)) === index)]
+/** Global Leyendas: Messi, Maradona and Pelé first, then the best candidates by quality, 150 in total. Everything left out stays in the archive and the master. */
+export const GLOBAL_LEGENDS: readonly Player[] = [...legendsHead, ...[...GLOBAL_LEGEND_CANDIDATES].sort(byQuality).filter((player) => !legendsHead.includes(player))].slice(0, GLOBAL_TOP_SIZE)

@@ -115,19 +115,19 @@
       "mode": "GLOBAL_CLASSIC",
       "pairs": 12,
       "mismatches": 0,
-      "goals": 57,
-      "wins": 11,
+      "goals": 59,
+      "wins": 10,
       "draws": 1,
-      "digest": "808cd0495940894302247194a60f845d33c21c0f7549c7936bfb67d935fbf123"
+      "digest": "25a467d924e122faaf8fac7d24e4d2f30eeed359478b0349ce3fd4151942f7c4"
     },
     {
       "mode": "LEGENDS_ONLY",
       "pairs": 12,
       "mismatches": 0,
-      "goals": 59,
+      "goals": 61,
       "wins": 7,
-      "draws": 1,
-      "digest": "c8a73bb71bb66dcf9292ec2ef87bc2930e3286f04cad5047c2ada062163d5623"
+      "draws": 2,
+      "digest": "3b3b39b03380806239662be1fcac0a62bc905ad354612a3bf6fcb1d49d842fea"
     },
     {
       "mode": "SOUTH_AMERICA_CURRENT",

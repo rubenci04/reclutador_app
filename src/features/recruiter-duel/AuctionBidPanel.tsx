@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
-import { AuctionPlayerBar } from './AuctionPlayerBar'
-import { budgetOf, type auctionAvailability, type positionProgress } from './auctionEngine'
+import { type auctionAvailability, type positionProgress } from './auctionEngine'
 import type { RecruiterDuelGame, RecruiterId } from './auctionTypes'
 import type { HudModel } from './hudModel'
 
@@ -41,16 +40,13 @@ export function AuctionBidPanel({ game, side, footballer, names, availability, o
   const ratio = maximum > 0 ? base / maximum : 1
   const level = !availability?.bid.enabled || maximum < minimum || ratio > .9 ? 'danger' : ratio > .6 ? 'warn' : 'safe'
   const participant = hud?.participants[side]
-  const left = budgetOf(game) - game.teams[side].spent
   const missing = participant ? hud!.teamSize - participant.signed : null
   const needs = participant ? participant.positions.filter((position) => position.remaining > 0) : []
   const showBlocked = blockedMessage && (blocked === 'POSITION_FULL' || blocked === 'FUTURE_BUDGET_RESERVED' || blocked === 'INSUFFICIENT_BUDGET')
   return <section className={`bid-panel bid-panel-${side}`}>
-    <AuctionPlayerBar player={footballer} />
     <header className="bid-turn">
       <p className="turn-strip"><span className="dealer-puck" role="img" aria-label={t('bidTable.dealer', { name: names[side] })}>●</span><span>{t('bidTable.turnNow')}</span></p>
-      <h2 className="team-turn-name">{t('duel.yourTurn', { participant: names[side] })}</h2>
-      {missing !== null && <p className="team-status">{t('auctionFocus.teamStatus', { count: missing, amount: left })}{missing > 0 && missing <= 2 && <strong className="team-needs"> · {t('auctionFocus.needs', { positions: needs.map((position) => `${position.position}${position.remaining > 1 ? ` ×${position.remaining}` : ''}`).join(', ') })}</strong>}</p>}
+      {missing !== null && <p className="team-status">{missing > 0 && missing <= 2 && <strong className="team-needs">{t('auctionFocus.needs', { positions: needs.map((position) => `${position.position}${position.remaining > 1 ? ` ×${position.remaining}` : ''}`).join(', ') })}</strong>}</p>}
     </header>
     {showBlocked
       ? <div className="auction-banner auction-banner-blocked" role="alert"><strong>{blockedMessage}</strong></div>
@@ -58,8 +54,6 @@ export function AuctionBidPanel({ game, side, footballer, names, availability, o
     <dl className={`bid-figures${game.currentBid ? ' has-bid' : ''}`}>
       <div className="figure-current" key={game.currentBid?.amount ?? 0}><dt>{t('auctionFocus.current')}</dt><dd>{game.currentBid ? `${game.currentBid.amount}M` : '—'}<small>{game.currentBid ? names[game.currentBid.participant] : t('duel.noBid')}</small></dd></div>
       <div><dt>{t('auctionFocus.minimum')}</dt><dd>{minimum}M</dd></div>
-      <div><dt>{t('auctionFocus.available')}</dt><dd>{left}M</dd></div>
-      <div className="figure-max"><dt>{t('auctionFocus.maximum')}</dt><dd>{availability?.maximum ?? '—'}{availability?.maximum !== undefined && 'M'}</dd></div>
     </dl>
     <div className="bid-chips" role="group" aria-label={t('bidTable.chipsLabel')}>
       <button type="button" className="bid-chip" disabled={maximum < minimum} onClick={() => onOffer(minimum)}>{t('bidTable.min', { amount: minimum })}</button>

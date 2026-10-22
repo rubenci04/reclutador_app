@@ -9,6 +9,8 @@ interface Props {
   /** Position of the footballer currently up for auction; its slot pulses in both panels. */
   readonly currentPosition?: Position
   readonly names: Readonly<Record<RecruiterId, string>>
+  /** Whose header is on screen; the other recruiter is summarised as the rival. */
+  readonly viewer?: RecruiterId
   /** Optional shortcut to the live pitches below. */
   readonly onShowPitches?: () => void
 }
@@ -33,9 +35,14 @@ function Panel({ hud, side, name, active, currentPosition }: { hud: HudModel; si
 }
 
 /** Scoreboard-style status bar. Pure view: every figure arrives in `hud`, derived from the game state and engine predicates. */
-export function AuctionHud({ hud, names, onShowPitches, currentPosition }: Props) {
+export function AuctionHud({ hud, names, onShowPitches, currentPosition, viewer = 'recruiter_one' }: Props) {
   const { t } = useTranslation()
-  return <section className="auction-hud" aria-label={t('hud.label')}>
+  const rivalId: RecruiterId = viewer === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one'
+  const rival = hud.participants[rivalId]
+  return <section className="auction-hud auction-hud-compact" aria-label={t('hud.label')}>
+    <p className="hud-rival">{t('hud.rival', { name: names[rivalId], amount: rival.remaining, count: rival.signed, total: hud.teamSize })}</p>
+    <details className="hud-more"><summary>{t('hud.more')}</summary>
+    <div className="hud-more-body">
     <div className="hud-centre">
       <p className="hud-awards">{t('hud.awards', { done: hud.awards, total: hud.totalAwards })}</p>
       <details className="hud-discard-details" open={hud.discardsRemaining === 0}><summary>{t('auctionUX.discards')}</summary><p className="hud-discards" aria-label={t('hud.discards', { count: hud.discardsRemaining, total: hud.discardsTotal })}>
@@ -46,5 +53,6 @@ export function AuctionHud({ hud, names, onShowPitches, currentPosition }: Props
       {onShowPitches && <button className="secondary-action hud-pitches" onClick={onShowPitches}>{t('hud.showPitches')}</button>}
     </div>
     {ORDER.map((id) => <Panel key={id} hud={hud} side={hud.participants[id]} name={names[id]} active={hud.turn === id} currentPosition={currentPosition} />)}
+    </div></details>
   </section>
 }

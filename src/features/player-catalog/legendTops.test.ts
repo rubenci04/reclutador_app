@@ -3,7 +3,7 @@ import europeLegendFigures from '../../data/league-collections/europeLegendFigur
 import southTop from '../../data/league-collections/southAmericaLegends150.json'
 import europeTop from '../../data/league-collections/europeLegends150.json'
 import frozen from '../../data/league-collections/preDataReg003CCollections.json'
-import { GLOBAL_LEGENDS, MASTER_CATALOG, personKey } from './globalCollection'
+import { GLOBAL_LEGENDS_ALL as GLOBAL_LEGENDS, MASTER_CATALOG, personKey } from './globalCollection'
 import { EUROPE_LEGENDS_POOL, EUROPE_LEGENDS_REPORT, EUROPE_LEGENDS_RESOLUTION, EUROPE_LEGENDS_VERSION, SOUTH_AMERICA_LEGENDS_POOL, SOUTH_AMERICA_LEGENDS_REPORT, SOUTH_AMERICA_LEGENDS_RESOLUTION, SOUTH_AMERICA_LEGENDS_VERSION } from './legendTops'
 import { SOUTH_AMERICA_MEXICO_NATIONALITIES } from './southAmericaTop150'
 import { BALANCED_LEGEND_EDITIONS, LEAGUE_PLAYERS, LEAGUE_PROVENANCE } from './leagueCollections'

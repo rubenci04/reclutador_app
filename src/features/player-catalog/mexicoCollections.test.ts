@@ -97,7 +97,7 @@ describe('DATA-MX-001 combined collections', () => {
       const pool = catalogForMode(mode)
       expect(new Set(pool.map(personKey)).size, mode).toBe(pool.length)
     }
-    expect(catalogForMode('GLOBAL_CLASSIC').length).toBeGreaterThan(150)
+    expect(catalogForMode('GLOBAL_CLASSIC')).toHaveLength(150) // global-top-150-v1
   })
   it('does not turn every Mexican legend into a Global Legend', () => {
     expect(GLOBAL_LEGENDS.filter(p => p.id.startsWith('import_mex_'))).toHaveLength(0)

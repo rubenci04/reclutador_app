@@ -51,7 +51,7 @@ describe('playtest expansion', () => {
     expect(opened.ok && opened.game.phase).toBe('TEAMS_COMPLETED')
   })
   it('offers the complete distinct current pool, including active world legends in both editions and nationality regions', () => {
-    expect(GLOBAL_CURRENT.length).toBeGreaterThan(300)
+    expect(GLOBAL_CURRENT).toHaveLength(150) // global-top-150-v1
     expect(new Set(GLOBAL_CURRENT.map(personKey)).size).toBe(GLOBAL_CURRENT.length)
     for (const surname of ['Messi', 'Cristiano', 'Neuer']) {
       expect(GLOBAL_CURRENT.some((p) => p.name.includes(surname))).toBe(true)

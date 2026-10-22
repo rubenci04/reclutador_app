@@ -1,9 +1,9 @@
 {
   "mode": "LEGENDS_ONLY",
   "draws": 480,
-  "baselineStars": 162,
-  "rareStars": 39,
-  "theoreticalUniformStars": 172.43050605844618,
-  "uniquePlayers": 177,
+  "baselineStars": 182,
+  "rareStars": 54,
+  "theoreticalUniformStars": 187.73073408467866,
+  "uniquePlayers": 150,
   "distinctDraws": 480
 }

@@ -58,6 +58,8 @@ import { LiveMarketPanel } from './LiveMarketPanel'
 import { useLiveMarket } from './liveMarket'
 import { SubstituteMarket } from './SubstituteMarket'
 import { Wallet } from './Wallet'
+import { AuctionHeader } from './AuctionHeader'
+import { rankBadge } from '../player-catalog/categoryRanking'
 import type { OnlineDuelBinding } from './onlineBinding'
 import { OnlineTeamsStage } from './OnlineTeamsStage'
 import { WinCelebration } from './WinCelebration'
@@ -278,7 +280,7 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
   /** Starts the match. Returns false when the engine refuses, so the start button can be used again. */
   const playMatch = (current: RecruiterDuelGame, first: StrategyId, second: StrategyId) => {
     if (!online && current.manualBench && matchMode === 'live') {
-      const created = createDuelSession(current, catalog, { recruiter_one: first, recruiter_two: second }, opponentMode === 'cpu' ? 'directed-header-v1' : false, true, opponentMode === 'cpu', opponentMode === 'cpu')
+      const created = createDuelSession(current, catalog, { recruiter_one: first, recruiter_two: second }, opponentMode === 'cpu' ? 'directed-header-v1' : false, true, opponentMode === 'cpu', opponentMode === 'cpu', opponentMode === 'cpu')
       if (!created.ok) { setError(t('liveDT.error', { code: created.error })); return false }
       setLiveOrigin(created.value)
       return true
@@ -305,6 +307,13 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
   const round = game ? currentRound(game) : null
   const footballer = round ? playerById(round.playerId) : null
   const minimum = game?.currentBid ? game.currentBid.amount + 1 : footballer?.price ?? 0
+  /** Editorial position in the category being played (the assigned category of each participant in a crossing). Hidden in historical games: their catalogue is a frozen one. */
+  const rankingFor = (player: Player | null, participant?: RecruiterId) => {
+    if (!game || !player || game.legacyCatalog || recordedCollection(game.drawContext?.catalogKey)) return null
+    if (!game.categoryPair) return rankBadge(game.coachMode ?? mode, player.id)
+    const own = participant ?? game.activeParticipant ?? 'recruiter_one'
+    return rankBadge(game.categoryPair[own], player.id) ?? rankBadge(game.categoryPair[own === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one'], player.id)
+  }
   const offerKey = game ? [game.seed, game.roundIndex, currentRound(game)?.playerId, game.activeParticipant, game.currentBid?.amount ?? 0].join(':') : ''
   const offer = offerInput?.key === offerKey ? offerInput.value : minimum
   const availability = game && game.activeParticipant && !remoteTurn ? auctionAvailability(game, game.activeParticipant, catalog, offer, cpuTurn) : null
@@ -463,10 +472,10 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
       {(() => { const topic = helpTopicForPhase(game?.phase); return game && topic && !(game && ['SIMULATING', 'MATCH_RESULT', 'DISCARD_RESULT', 'COIN_TOSS', 'NEXT_ROUND'].includes(game.phase)) ? <HelpTip topic={topic} /> : null })()}
       {online && online.connection !== 'connected' && <p className="auction-banner auction-banner-blocked" role="status">{t('online.connection.' + online.connection)}</p>}
       {game && !online && <ConfirmNavigation label={t('navigation.home')} message={t('navigation.recruitmentExitWarning')} onConfirm={goHome} />}{game && <AbandonGame versusCpu={opponentMode === 'cpu'} names={names} onAbandon={abandon} onlySide={online?.mySide} />}
-      {game && walletSide && <Wallet game={game} catalog={catalog} side={walletSide} name={names[walletSide]} onShowHud={hud ? () => document.querySelector('.auction-hud')?.scrollIntoView?.({ block: 'start' }) : undefined} />}
+      {game && walletSide && (hud ? <AuctionHeader game={game} catalog={catalog} side={walletSide} name={names[walletSide]} hud={hud} /> : <Wallet game={game} catalog={catalog} side={walletSide} name={names[walletSide]} />)}
       {game && !game.categoryPair && !hud && <p className="discard-counter" role="status">{t('discards.available', { count: game.discardsRemaining })}{game.discardsRemaining === 0 && <span> · {t('discards.exhausted')}</span>}</p>}
-      {game?.phase === 'DISCARD_RESULT' && game.lastDiscard && <section className="discard-scene" aria-live="polite"><h2>{t('discards.newDraw')}</h2><DiceRoller key={game.lastDiscard.playerId} position={playerById(game.lastDiscard.playerId).position} tier={diceTier(playerById(game.lastDiscard.playerId).overall_rating)} roundNumber={game.roundIndex + 1} /><div className="card-discard"><PlayerIdentity player={playerById(game.lastDiscard.playerId)} /></div></section>}
-      {hud && game && <AuctionHud hud={hud} names={names} currentPosition={game.phase === 'BIDDING' || game.phase === 'REVEAL_PLAYER' ? footballer?.position : undefined} onShowPitches={() => { setPitchesOpen(true); const court = document.getElementById('team-progress'); court?.focus({ preventScroll: true }); court?.scrollIntoView?.({ behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }) }} />}
+      {game?.phase === 'DISCARD_RESULT' && game.lastDiscard && <section className="discard-scene" aria-live="polite"><h2>{t('discards.newDraw')}</h2><DiceRoller key={game.lastDiscard.playerId} position={playerById(game.lastDiscard.playerId).position} tier={diceTier(playerById(game.lastDiscard.playerId).overall_rating)} roundNumber={game.roundIndex + 1} /><div className="card-discard"><PlayerIdentity player={playerById(game.lastDiscard.playerId)} rank={rankingFor(playerById(game.lastDiscard.playerId))} /></div></section>}
+      {hud && game && <AuctionHud hud={hud} names={names} viewer={walletSide ?? 'recruiter_one'} currentPosition={game.phase === 'BIDDING' || game.phase === 'REVEAL_PLAYER' ? footballer?.position : undefined} onShowPitches={() => { setPitchesOpen(true); const court = document.getElementById('team-progress'); court?.focus({ preventScroll: true }); court?.scrollIntoView?.({ behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }) }} />}
       {game && ['REVEAL_PLAYER', 'BIDDING', 'ROUND_RESULT', 'NEXT_ROUND', 'DISCARD_RESULT'].includes(game.phase) && <LiveMarketPanel market={liveMarket} />}
       {error && game?.phase !== 'TEAMS_COMPLETED' && <p className="draft-alert" role="alert">{error}</p>}
       {game?.phase === 'LOBBY' && online && online.mySide !== 'recruiter_one' && <section className="coin-toss" role="status"><h1>{t('duel.chooseCoin')}</h1><p>{t('online.duel.waitingCoin', { name: names.recruiter_one })}</p></section>}
@@ -480,7 +489,7 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
           return <CpuCompletionPanel cpuName={names.recruiter_two} done={signed.length} total={signed.length + game.rounds.length - game.roundIndex} lastPlayer={last?.type === 'award' ? playerById(last.playerId).name : null} lastPrice={last?.type === 'award' ? last.price : null}
             onSkip={() => { const result = autoCompleteAll(game, 'recruiter_two', catalog); if (result.ok) apply(result); else { setAutoFailedSeed(game.seed); setError(t('autoComplete.cpuFailed')) } }} />
         })()}
-        {game.phase !== 'TEAMS_COMPLETED' && !cpuAuto && round && footballer && <section className="auction-board" aria-live="polite"><div className="auction-heading"><span className="category-chip">{categoryLabel(game.coachMode ?? mode)}</span><p className="eyebrow"><span />{t('duel.round', { current: game.roundIndex + 1, total: game.rounds.length })}</p><p>{t('duel.opening', { participant: names[game.openingOrder[game.roundIndex]] })}</p></div><DiceRoller key={`${game.roundIndex}:${footballer.id}`} position={footballer.position} tier={diceTier(footballer.overall_rating)} roundNumber={game.roundIndex + 1} /><div className="auction-candidate" key={footballer.id}><PlayerIdentity player={footballer} /></div>
+        {game.phase !== 'TEAMS_COMPLETED' && !cpuAuto && round && footballer && <section className="auction-board" aria-live="polite"><div className="auction-heading"><span className="category-chip">{categoryLabel(game.coachMode ?? mode)}</span><p>{t('duel.opening', { participant: names[game.openingOrder[game.roundIndex]] })}</p></div><div className="auction-candidate" key={footballer.id}><PlayerIdentity player={footballer} rank={rankingFor(footballer)} /></div>
           {game.phase === 'REVEAL_PLAYER' && <div className="duel-actions reveal-actions">{game.roundIndex === 0 && <><FootballCoin side={game.coinResult!} /><p>{t('coin.result', { side: t(`duel.${game.coinResult}`), participant: names[game.coinTossWinner!] })}</p></>}<button ref={auctionAction} className="primary-action" onClick={() => apply(beginBidding(game))}>{t('duel.beginBidding')}</button></div>}
           {mustSkip && game.activeParticipant && footballer && <section className="bid-panel auction-banner auction-banner-blocked" role="status"><strong>{t('auctionActions.autoSkip', { participant: names[game.activeParticipant], position: t(`positions.${footballer.position}`) })}</strong></section>}
           {game.phase === 'BIDDING' && game.activeParticipant && !cpuTurn && !remoteTurn && !mustSkip && <AuctionBidPanel game={game} side={game.activeParticipant} footballer={footballer} names={names} availability={availability} offer={offer} minimum={minimum} onOffer={(value) => setOfferInput({ key: offerKey, value })} blockedMessage={blockedMessage} progress={progress} hud={hud ?? null}
