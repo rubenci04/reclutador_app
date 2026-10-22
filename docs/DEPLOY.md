@@ -1,5 +1,9 @@
 # Despliegue: producción actual y antecedentes
 
+## Publicación GAMEPLAY-POLISH-010 — 22/10/2026
+
+Commit **ff15376** en main (push fast-forward). Worker **reclutador-app**, versión **a134976d-df2e-4186-9467-883b15bf8a11** al 100%, etiqueta ff15376; Wrangler 4.151.3, --keep-vars --no-autoconfig. HTML y assets coinciden con dist. [Registro](logs/GAMEPLAY-POLISH-010.md).
+
 ## Publicación SIM-MINI-002/003 + RANK-REVEAL-009 — 22/10/2026
 
 Commit **3d458fa** en `main` (push fast-forward). Worker **reclutador-app**, versión **05e99a73-495a-41f9-80ee-63980e59f3e0** al 100%, etiqueta 3d458fa; Wrangler 4.151.3, `--keep-vars --no-autoconfig`, sin cambios de bindings ni secretos. HTTP 200 y SHA-256 de HTML y assets coinciden con dist. [Registro](logs/SIM-MINI-002-003.md). Las secciones siguientes son antecedentes.
