@@ -28,7 +28,7 @@ import { CPU_STRATEGIES, CPU_DIFFICULTIES, takeCpuTurn, type CpuStrategy, type C
 import { CoachMarket } from './CoachMarket'
 import { TeamPowerPanel } from './TeamPowerPanel'
 import { autoChooseCoach, chooseCoach, declineCoach } from './coachHiring'
-import { COACH_MARKET_V3, COACH_MAX_PRICE } from '../coaches/coachRules'
+import { COACH_MARKET_V4, COACH_MAX_PRICE } from '../coaches/coachRules'
 import { StageGuide } from '../onboarding/StageGuide'
 import { ModeSelector } from '../themed-modes/ModeSelector'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
@@ -39,7 +39,7 @@ import { FootballCoin } from './FootballCoin'
 import { LineupOrganizer } from './LineupOrganizer'
 import { SigningReveal } from './SigningReveal'
 import { MatchSetupPanel } from './MatchSetupPanel'
-import { DEFAULT_SETUP_DRAFT, type SetupDraft, CLASSIC_CONFIG, BENCH_MARKET_V2, DISCARDS_MARKER_V2, isValidBudget, nameIssues, parseMatchConfig, preflightMatchConfig, sanitizeName, MATCH_CONFIG_VERSION, type MatchConfig } from './matchConfig'
+import { DEFAULT_SETUP_DRAFT, type SetupDraft, CLASSIC_CONFIG, BENCH_SHOWCASE_V1, isShowcaseBench, DISCARDS_MARKER_V2, isValidBudget, nameIssues, parseMatchConfig, preflightMatchConfig, sanitizeName, MATCH_CONFIG_VERSION, type MatchConfig } from './matchConfig'
 import { AuctionHud } from './AuctionHud'
 import { CpuCompletionPanel, CpuSigningsSummary, QuickCompletePanel } from './AutoCompletePanel'
 import { buildHudModel } from './hudModel'
@@ -58,6 +58,8 @@ import { matchHistory, type HistoryOutcome } from '../history/matchHistory'
 import { LiveMarketPanel } from './LiveMarketPanel'
 import { useLiveMarket } from './liveMarket'
 import { SubstituteMarket } from './SubstituteMarket'
+import { BenchShowcase } from './BenchShowcase'
+import { buyShowcaseCard, cpuShowcase, finishShowcase, passShowcaseTurn } from './benchShowcaseModel'
 import { Wallet } from './Wallet'
 import { AuctionHeader } from './AuctionHeader'
 import { rankBadge } from '../player-catalog/categoryRanking'
@@ -67,7 +69,9 @@ import { WinCelebration } from './WinCelebration'
 
 interface AuctionPageProps { readonly onDraftFree: () => void; readonly onOnline?: () => void; readonly teamName?: string; readonly onEditName?: () => void; readonly nameStorageWarning?: boolean; /** Plays the shared game of an online room instead of a local one. */ readonly online?: OnlineDuelBinding }
 /** Presentation time of the toss; the result is already stored when it starts. */
-export const COIN_TOSS_MS = 1500
+/** The coin flies for 2.2 s and rests on the stored face before the next phase; reduced motion gets a short fade instead of a flip. */
+export const COIN_TOSS_MS = 2700
+const COIN_TOSS_REDUCED_MS = 1300
 const NO_AUTO_ROUNDS: ReadonlySet<number> = new Set()
 
 /** One whole round for a card the human cannot take: reveal, human pass, CPU decisions, award, next card. Null (do nothing) if anything is not a plain legal transition. */
@@ -156,10 +160,10 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
     setGame(next); setError(null)
   }
   const customBudget = Number(setup.budgetText)
-  const customConfig: MatchConfig = { version: MATCH_CONFIG_VERSION, budget: customBudget, names: { recruiter_one: sanitizeName(setup.nameOne), recruiter_two: sanitizeName(setup.nameTwo) }, substitutes: setup.substitutes, ...(setup.coaches ? { coaches: true, coachReserve: setup.coachReserve ?? COACH_MAX_PRICE, coachMarket: COACH_MARKET_V3 } : {}), bench: BENCH_MARKET_V2, discards: DISCARDS_MARKER_V2 }
+  const customConfig: MatchConfig = { version: MATCH_CONFIG_VERSION, budget: customBudget, names: { recruiter_one: sanitizeName(setup.nameOne), recruiter_two: sanitizeName(setup.nameTwo) }, substitutes: setup.substitutes, ...(setup.coaches ? { coaches: true, coachReserve: setup.coachReserve ?? COACH_MAX_PRICE, coachMarket: COACH_MARKET_V4 } : {}), bench: BENCH_SHOWCASE_V1, discards: DISCARDS_MARKER_V2 }
   const setupPreflight = isValidBudget(customBudget) ? preflightMatchConfig(catalog, customConfig) : { ok: false as const, reason: 'budget_range' as const }
-  const classicConfig = { ...CLASSIC_CONFIG, bench: BENCH_MARKET_V2, discards: DISCARDS_MARKER_V2, budget: Math.max(defaultBudgetForMode(mode), secondCategory === 'same' ? 0 : defaultBudgetForMode(secondCategory)) }
-  const config = setup.mode === 'custom' ? customConfig : setup.coaches ? { ...classicConfig, coaches: true, coachReserve: setup.coachReserve ?? COACH_MAX_PRICE, coachMarket: COACH_MARKET_V3 } : classicConfig
+  const classicConfig = { ...CLASSIC_CONFIG, bench: BENCH_SHOWCASE_V1, discards: DISCARDS_MARKER_V2, budget: Math.max(defaultBudgetForMode(mode), secondCategory === 'same' ? 0 : defaultBudgetForMode(secondCategory)) }
+  const config = setup.mode === 'custom' ? customConfig : setup.coaches ? { ...classicConfig, coaches: true, coachReserve: setup.coachReserve ?? COACH_MAX_PRICE, coachMarket: COACH_MARKET_V4 } : classicConfig
   const canStart = preflightMatchConfig(catalog, config).ok && (setup.mode === 'classic' || (setupPreflight.ok && Object.keys(nameIssues(customConfig.names)).length === 0))
   const start = () => {
     if (!canStart) return
@@ -226,7 +230,7 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
   }), [setGame])
   useEffect(() => {
     if (game?.phase !== 'COIN_TOSS') return
-    const timeout = window.setTimeout(revealToss, window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 0 : COIN_TOSS_MS)
+    const timeout = window.setTimeout(revealToss, window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? COIN_TOSS_REDUCED_MS : COIN_TOSS_MS)
     return () => window.clearTimeout(timeout)
   }, [game?.phase, revealToss])
 
@@ -243,9 +247,11 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
   useEffect(() => {
     if (opponentMode !== 'cpu' || game?.phase !== 'TEAMS_COMPLETED') return
     const next = autoBuySubstitutes(autoChooseCoach(game, 'recruiter_two', catalog, selectCpuStrategy(game.teams.recruiter_two.lineup, catalog, game.seed, difficulty)), 'recruiter_two', catalog)
-    if (next === game) return
+    // bench-showcase-v1: the CPU buys only on its own chances of the fixed showcase.
+    const withBench = cpuShowcase(next, 'recruiter_two', catalog)
+    if (withBench === game) return
     // Deferred like the other automatic steps, so the screen never changes inside the render pass.
-    const timer = window.setTimeout(() => setGame((current) => (current === game ? next : current)), 0)
+    const timer = window.setTimeout(() => setGame((current) => (current === game ? withBench : current)), 0)
     return () => window.clearTimeout(timer)
   }, [opponentMode, game, catalog, difficulty, setGame])
   const cpuTurn = opponentMode === 'cpu' && game?.phase === 'BIDDING' && game.activeParticipant === 'recruiter_two'
@@ -320,7 +326,9 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
   const availability = game && game.activeParticipant && !remoteTurn ? auctionAvailability(game, game.activeParticipant, catalog, offer, cpuTurn) : null
   const progress = game?.activeParticipant && round ? positionProgress(game.teams[game.activeParticipant], round.position) : null
   const orderingDone = (participant: RecruiterId) => (opponentMode === 'cpu' && participant === 'recruiter_two') || (lineupConfirmed.seed === game?.seed && lineupConfirmed[participant])
-  const setOrderingDone = (participant: RecruiterId, value: boolean) => game && setLineupConfirmed((current) => ({ ...(current.seed === game.seed ? current : { seed: game.seed, recruiter_one: false, recruiter_two: false }), [participant]: value }))
+  /** Confirming the squad closes the optional bench for that participant: the remaining chances go to the other one. */
+  const finishBench = (participant: RecruiterId) => { if (!game || !isShowcaseBench(game.config)) return; const result = finishShowcase(game, participant, catalog); if (result.ok) setGame(result.game) }
+  const setOrderingDone = (participant: RecruiterId, value: boolean) => game && (value && finishBench(participant), setLineupConfirmed((current) => ({ ...(current.seed === game.seed ? current : { seed: game.seed, recruiter_one: false, recruiter_two: false }), [participant]: value })))
   const swapLineup = (participant: RecruiterId, first: FormationRole, second: FormationRole) => {
     if (!game) return null
     const result = reorderTeamLineup(game, participant, first, second)
@@ -525,7 +533,7 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
             {!bothReady && <details className="lineup-recap" open>
               <summary>{t('stages.showTeams')}</summary>
               <div className="team-comparison">{RECRUITER_IDS.map((participant) => <article key={participant}><h2>{names[participant]}</h2><strong>{t('duel.spent', { amount: game.teams[participant].spent })}</strong><p>{DRAFT_SLOTS.map((slot) => playerById(game.teams[participant].lineup[slot.id]!).name).join(' · ')}</p></article>)}</div>
-              {(pending ? [pending] : humans).map((participant) => <div key={participant}>{game.config?.coaches && !game.teams[participant].coachDeclined && <CoachMarket game={game} participant={participant} name={names[participant]} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} onDecline={() => apply(declineCoach(game, participant))} onHire={(coachId) => { apply(chooseCoach(game, participant, coachId)) }} />}{(!game.config?.coaches || game.teams[participant].coachId || game.teams[participant].coachDeclined) && <><SubstituteMarket game={game} participant={participant} name={names[participant]} catalog={catalog} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} onBuy={(playerId) => apply(buySubstitute(game, participant, playerId, catalog))} /><LineupOrganizer rankFor={rankingFor} onFormationChange={(formation) => apply(chooseFormation(game, participant, formation, catalog))} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} game={game} participant={participant} name={names[participant]} catalog={catalog} confirmed={orderingDone(participant)} onSwap={(first, second) => swapLineup(participant, first, second)} onBenchSwap={(benchIndex, slot) => benchSwap(participant, benchIndex, slot)} onConfirm={() => setOrderingDone(participant, true)} onEdit={() => setOrderingDone(participant, false)} /></>}</div>)}
+              {isShowcaseBench(game.config) && !online && <BenchShowcase game={game} catalog={catalog} names={names} humans={humans} onBuy={(participant, playerId) => apply(buyShowcaseCard(game, participant, playerId, catalog))} onPass={(participant) => apply(passShowcaseTurn(game, participant, catalog))} onFinish={finishBench} />}{(pending ? [pending] : humans).map((participant) => <div key={participant}>{game.config?.coaches && !game.teams[participant].coachDeclined && <CoachMarket game={game} participant={participant} name={names[participant]} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} onDecline={() => apply(declineCoach(game, participant))} onHire={(coachId) => { apply(chooseCoach(game, participant, coachId)) }} />}{(!game.config?.coaches || game.teams[participant].coachId || game.teams[participant].coachDeclined) && <><SubstituteMarket game={game} participant={participant} name={names[participant]} catalog={catalog} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} onBuy={(playerId) => apply(buySubstitute(game, participant, playerId, catalog))} /><LineupOrganizer rankFor={rankingFor} onFormationChange={(formation) => apply(chooseFormation(game, participant, formation, catalog))} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} game={game} participant={participant} name={names[participant]} catalog={catalog} confirmed={orderingDone(participant)} onSwap={(first, second) => swapLineup(participant, first, second)} onBenchSwap={(benchIndex, slot) => benchSwap(participant, benchIndex, slot)} onConfirm={() => setOrderingDone(participant, true)} onEdit={() => setOrderingDone(participant, false)} /></>}</div>)}
 
 
             </details>}

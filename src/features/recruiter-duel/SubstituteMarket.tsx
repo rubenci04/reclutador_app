@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
-import { SUBSTITUTE_POSITIONS } from './matchConfig'
+import { SUBSTITUTE_POSITIONS, isShowcaseBench } from './matchConfig'
 import { benchStatus, substituteMarket } from './auctionEngine'
 import type { RecruiterDuelGame, RecruiterId } from './auctionTypes'
 
@@ -31,7 +31,7 @@ export function SubstituteMarket({ game, participant, name, catalog, locked, onB
   /** The bench step is optional: the recruiter may close it at any time and reopen it while the squads are not locked. */
   const [finished, setFinished] = useState(false)
   const hasOptions = market.length > 0 && !(v2 && finished)
-  if (!market.length && !signed.length) return null
+  if (isShowcaseBench(game.config) || !market.length && !signed.length) return null
   return <section className="substitute-market" aria-label={t('market.title', { name })}>
     <h3>{t('market.title', { name })}</h3>
     {v2 && <p className="market-counter" role="status" aria-label={t('market.counter', { count: filled, limit })}><b>{filled}/{limit}</b> {t('market.counterLabel')}</p>}

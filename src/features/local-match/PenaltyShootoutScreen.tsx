@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
 import type { MatchSide } from './matchTypes'
-import { LANES, finishAutomatically, startShootout, takeKick, type KickRecord, type Lane, type Shootout } from './interactive/penaltyShootout'
+import { LANES, finishAutomatically, startShootout, takeKick, type KickRecord, type Shootout } from './interactive/penaltyShootout'
 import { ShotPanel, ShotScene, type ShotSceneData } from './ShotPanel'
 import { reducedMotion } from './timing'
 
@@ -25,7 +25,6 @@ export function PenaltyShootoutScreen({ seed, rosters, catalog, names, onFinishe
   const { t } = useTranslation()
   const [state, setState] = useState<Shootout>(() => startShootout(seed, rosters, catalog))
   const [scene, setScene] = useState<ShotSceneData | null>(null)
-  const [dive, setDive] = useState<Lane | null>(null)
   const reported = useRef(false)
   const pending = state.pending
   const kicker = catalog.find((p) => p.id === pending?.kickerId); const keeper = catalog.find((p) => p.id === pending?.keeperId)
@@ -36,7 +35,7 @@ export function PenaltyShootoutScreen({ seed, rosters, catalog, names, onFinishe
   const confirm = (input: Parameters<typeof takeKick>[1]) => {
     const result = takeKick(state, input, catalog)
     if (!result) return
-    setState(result.state); setDive(null)
+    setState(result.state)
     setScene(sceneOf(result.kick, `${result.kick.round}:${result.kick.side}`))
   }
   const rest = () => {
@@ -54,9 +53,8 @@ export function PenaltyShootoutScreen({ seed, rosters, catalog, names, onFinishe
     {!scene && pending && pending.side === 'cpu' && <section className="live-play dribble-panel penalty-dive" aria-label={t('penalty.diveLabel')}>
       <h2 tabIndex={-1}>{t('penalty.diveTitle')}</h2>
       <p className="live-moment">{t('penalty.diveIntro', { kicker: kicker?.name ?? '', keeper: keeper?.name ?? '' })}</p>
-      <div className="dribble-lanes" role="radiogroup" aria-label={t('penalty.diveLanes')}>{LANES.map((id) => <button key={id} type="button" role="radio" aria-checked={dive === id} className={`play-card dribble-lane-button${dive === id ? ' is-chosen' : ''}`} onClick={() => setDive(id)}>
+      <div className="dribble-lanes" role="group" aria-label={t('penalty.diveLanes')}>{LANES.map((id) => <button key={id} type="button" className="play-card dribble-lane-button" onClick={() => confirm({ dive: id })}>
         <b className="play-letter" aria-hidden="true">{id === 'LEFT' ? '←' : id === 'RIGHT' ? '→' : '↑'}</b><strong>{t(`shot.lane.${id}`)}</strong></button>)}</div>
-      <div className="dribble-actions"><button type="button" className="primary-action" disabled={!dive} onClick={() => dive && confirm({ dive })}>{dive ? t('penalty.diveConfirm') : t('penalty.diveChoose')}</button></div>
       <p className="market-hint">{reducedMotion() ? t('penalty.diveHintStatic') : t('penalty.diveHint')}</p>
     </section>}
     {state.winner && !scene && <p role="status"><strong>{t('series.winner', { name: names[state.winner] })}</strong> {t('penalty.final', { local: state.score.local, cpu: state.score.cpu })}{state.coinToss && ` ${t('penalty.coin')}`}</p>}

@@ -1,4 +1,5 @@
 import v3 from '../../data/coaches-v3.json'
+import arg26 from '../../data/argentina-coaches-2026.json'
 import { COACH_TIER_PRICE } from './coachRules'
 import type { Coach, CoachFocus, CoachTier } from './coachTypes'
 import { LEAGUE_COACHES } from './leagueCoaches'
@@ -158,7 +159,11 @@ const eliteCoach = (coach: Coach): Coach => coach.status === 'LEGEND' || ELITE_C
 export const COACH_CATALOG: readonly Coach[] = BASE_COACH_CATALOG.map(eliteCoach)
 /** coach-market-v3 additions (documented spells in England, Spain and Brazil); they only enter v3 pools, so earlier markets are unaffected. */
 export const V3_ADDED_COACHES: readonly Coach[] = v3.added.map((row) => ({ ...row, teamKind: row.teamKind as Coach['teamKind'], status: row.status as Coach['status'], tier: row.tier as Coach['tier'], focus: row.focus as Coach['focus'], price: COACH_TIER_PRICE[row.tier as Coach['tier']], period: [row.period[0], row.period[1]] as const }))
-export const EXTRA_COACHES: readonly Coach[] = [...BASE_EXTRA_COACHES.map(eliteCoach), ...V3_ADDED_COACHES]
+/** coach-market-v4: coaches with a documented Argentine Primera spell, current (2026) and historical editions. They only enter v4 pools. */
+const argRow = (row: typeof arg26.added[number]): Coach => ({ id: row.id, name: row.name, surname: row.surname, birthYear: row.birthYear, team: row.team, teamKind: 'CLUB', nationality: row.nationality, status: row.status as Coach['status'], tier: row.tier as CoachTier, focus: row.focus as CoachFocus, price: COACH_TIER_PRICE[row.tier as CoachTier], period: [row.period[0] as number, row.period[1]], sourceUrl: row.sourceUrl })
+export const ARG_2026_ADDED: readonly Coach[] = arg26.added.map(argRow)
+export const ARG_LEGENDS_ADDED: readonly Coach[] = arg26.legendsAdded.map(argRow)
+export const EXTRA_COACHES: readonly Coach[] = [...BASE_EXTRA_COACHES.map(eliteCoach), ...V3_ADDED_COACHES, ...ARG_2026_ADDED, ...ARG_LEGENDS_ADDED]
 export const coachById = (id: string | undefined) => [...COACH_CATALOG, ...EXTRA_COACHES, ...LEAGUE_COACHES].find((coach) => coach.id === id)
 /** The hired coach with the tier he had when hired: coach-market-v3 re-tiers coaches editorially, so the stored tier wins. */
 export const hiredCoachOf = (team: { readonly coachId?: string; readonly coachTier?: Coach['tier'] }): Coach | undefined => { const coach = coachById(team.coachId); return coach && team.coachTier ? { ...coach, tier: team.coachTier } : coach }

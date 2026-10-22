@@ -4,13 +4,15 @@ import type { MatchResult, MatchSide } from './matchTypes'
 import { coachById } from '../coaches/coachCatalog'
 import { SQUAD_TIERS } from './squadQuality'
 import { probabilityExplanation } from './probabilityExplanation'
+import { InlineSummary } from './inlineSummary'
+import type { Player } from '../../types/player'
 
 /** Describes applied inputs as a short side-by-side card; never claims a causal proof for a stochastic result. The long detail stays one tap away. */
-export function ResultExplanation({ result, name, note = '' }: { readonly result: MatchResult; readonly name: (side: MatchSide) => string; readonly note?: string }) {
+export function ResultExplanation({ result, name, note = '', inline = false, catalog = [] }: { readonly result: MatchResult; readonly name: (side: MatchSide) => string; readonly note?: string; /** GAMEPLAY-POLISH-010: a visible summary with a collapsible detail instead of the modal window. */ readonly inline?: boolean; readonly catalog?: readonly Player[] }) {
   const { t } = useTranslation(); const [closed, setClosed] = useState(false)
   const ref = useRef<HTMLDialogElement>(null); const titleId = useId()
   const reopen = useRef<HTMLButtonElement>(null)
-  useEffect(() => { if (closed) { reopen.current?.focus(); return } const dialog = ref.current; if (dialog && !dialog.open) { if (dialog.showModal) dialog.showModal(); else dialog.setAttribute('open', '') } }, [closed])
+  useEffect(() => { if (inline) return; if (closed) { reopen.current?.focus(); return } const dialog = ref.current; if (dialog && !dialog.open) { if (dialog.showModal) dialog.showModal(); else dialog.setAttribute('open', '') } }, [closed, inline])
   const strengths = result.effectiveStrengths ?? result.strengths
   const winner = result.winner === 'draw' ? null : result.winner
   const label = winner ? name(winner) : t('match.draw')
@@ -25,6 +27,7 @@ export function ResultExplanation({ result, name, note = '' }: { readonly result
     { key: 'formation', label: t('resultCard.formation'), local: result.formations?.local ?? '4-3-3', cpu: result.formations?.cpu ?? '4-3-3' },
     { key: 'tactic', label: t('resultCard.tactic'), local: strategy('local'), cpu: strategy('cpu') },
   ]
+  if (inline) return <InlineSummary result={result} name={name} catalog={catalog} rows={rows} ranks={ranks} detail={detail} />
   if (closed) return <button ref={reopen} className="secondary-action" onClick={() => setClosed(false)}>{t('playtest.why')}</button>
   return <dialog ref={ref} className="guide-dialog result-dialog" aria-labelledby={titleId} onCancel={(event) => { event.preventDefault(); setClosed(true) }}>
     <h2 id={titleId}>{t('playtest.resultTitle', { name: label })}</h2>

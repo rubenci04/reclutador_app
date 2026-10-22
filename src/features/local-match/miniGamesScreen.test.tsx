@@ -60,6 +60,9 @@ describe('SIM-MINI-002 free kick on the real live screen', () => {
     expect(region('Precision shot')).toBeNull()
     tick(3000)
     advance(() => false)
+    // GAMEPLAY-POLISH-010: the final comparison is a visible summary, not a modal window.
+    expect(document.querySelector('.result-inline')).not.toBeNull(); expect(document.querySelector('dialog[open]')).toBeNull()
+    expect(document.querySelector('.result-inline')!.textContent).toMatch(/Decisive moments/); expect(document.querySelector('.result-inline details')).not.toBeNull()
     const plays = done.mock.calls[0][0].result!.plays!
     expect(plays.filter((entry) => entry.node === 'FK_ATTACK' && entry.choice === 'FK_RIGHT' && typeof entry.precision === 'number')).toHaveLength(1)
   })
@@ -116,7 +119,7 @@ describe('SIM-MINI-002 penalty shootout screen', () => {
       if (document.querySelector('.shot-scene')) { tick(3000); continue }
       const shot = region('Precision shot'); const dive = region('Choose where the keeper dives')
       if (shot) { fireEvent.click(within(shot).getByRole('radio', { name: /Centre/ })); fireEvent.click(within(shot).getByRole('button', { name: 'Now!' })) }
-      else if (dive) { fireEvent.click(within(dive).getByRole('radio', { name: /Left/ })); fireEvent.click(within(dive).getByRole('button', { name: 'Dive' })) }
+      else if (dive) { fireEvent.click(within(dive).getByRole('button', { name: /Left/ })) }
       else tick(100)
     }
     expect(finished).toHaveBeenCalledTimes(1)
@@ -161,7 +164,7 @@ describe('SIM-MINI-002 series decided by hand', () => {
         if (document.querySelector('.shot-scene')) { tick(3000); continue }
         const shot = region('Precision shot'); const dive = region('Choose where the keeper dives')
         if (shot) { fireEvent.click(within(shot).getByRole('radio', { name: /Left/ })); fireEvent.click(within(shot).getByRole('button', { name: 'Now!' })) }
-        else if (dive) { fireEvent.click(within(dive).getByRole('radio', { name: /Right/ })); fireEvent.click(within(dive).getByRole('button', { name: 'Dive' })) }
+        else if (dive) { fireEvent.click(within(dive).getByRole('button', { name: /Right/ })) }
         else tick(100)
       }
       expect(recorded).toHaveBeenCalledTimes(1)

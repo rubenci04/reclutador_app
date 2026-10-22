@@ -1,0 +1,310 @@
+{
+ "version": "argentina-coaches-v1",
+ "retrieved": "2026-10-22",
+ "note": "GAMEPLAY-POLISH-010. Eligibility is having really coached an Argentine Primera Division club, never nationality or having played at the club. \"period\" is the documented spell in 2026 (null end = still in charge at the last source update). The c5n list gives the head coach of each club at the start of the 2026 season; later changes come from the cited pages.",
+ "current": [
+  {
+   "coach": "Gustavo Costas",
+   "club": "Racing Club",
+   "period": [
+    2026,
+    null
+   ],
+   "sourceUrl": "https://www.c5n.com/deportes/entrenadores-primera-division-2026-los-equipos-que-cambiaron-y-quienes-continuan-su-cargo-n225366"
+  },
+  {
+   "coach": "Claudio Úbeda",
+   "club": "Boca Juniors",
+   "period": [
+    2026,
+    2026
+   ],
+   "note": "Replaced by Rodolfo Arruabarrena on 18 June 2026",
+   "sourceUrl": "https://www.c5n.com/deportes/entrenadores-primera-division-2026-los-equipos-que-cambiaron-y-quienes-continuan-su-cargo-n225366"
+  },
+  {
+   "coach": "Marcelo Gallardo",
+   "club": "River Plate",
+   "period": [
+    2026,
+    2026
+   ],
+   "note": "Started 2026 in charge; left during the Apertura (442 list)",
+   "sourceUrl": "https://442.perfil.com/noticias/futbol/apertura-2026-entrenadores-que-dejaron-el-cargo.phtml"
+  },
+  {
+   "coach": "Carlos Tevez",
+   "club": "Talleres",
+   "period": [
+    2026,
+    null
+   ],
+   "sourceUrl": "https://www.c5n.com/deportes/entrenadores-primera-division-2026-los-equipos-que-cambiaron-y-quienes-continuan-su-cargo-n225366"
+  },
+  {
+   "coach": "Mauricio Pellegrino",
+   "club": "Lanús",
+   "period": [
+    2024,
+    null
+   ],
+   "note": "In charge since 14 Dec 2024; still in charge on 12 Oct 2026",
+   "sourceUrl": "https://es.wikipedia.org/wiki/Mauricio_Pellegrino"
+  },
+  {
+   "coach": "Ricardo Zielinski",
+   "club": "Belgrano",
+   "period": [
+    2025,
+    null
+   ],
+   "note": "Second spell since 10 Feb 2025; still in charge on 11 Oct 2026",
+   "sourceUrl": "https://es.wikipedia.org/wiki/Ricardo_Zielinski"
+  },
+  {
+   "coach": "Alfredo Berti",
+   "club": "Independiente Rivadavia",
+   "period": [
+    2024,
+    null
+   ],
+   "note": "Third spell since 27 Aug 2024; still in charge on 11 Oct 2026",
+   "sourceUrl": "https://es.wikipedia.org/wiki/Alfredo_Berti"
+  },
+  {
+   "coach": "Jorge Almirón",
+   "club": "Rosario Central",
+   "period": [
+    2025,
+    null
+   ],
+   "note": "Appointed 15 Dec 2025; still in charge on 18 Oct 2026",
+   "sourceUrl": "https://es.wikipedia.org/wiki/Jorge_Almirón"
+  },
+  {
+   "coach": "Gustavo Quinteros",
+   "club": "Independiente",
+   "period": [
+    2026,
+    2026
+   ],
+   "note": "Started 2026 in charge; left during the Clausura (El Gráfico list)",
+   "sourceUrl": "https://www.c5n.com/deportes/entrenadores-primera-division-2026-los-equipos-que-cambiaron-y-quienes-continuan-su-cargo-n225366"
+  },
+  {
+   "coach": "Mariano Soso",
+   "club": "Defensa y Justicia",
+   "period": [
+    2026,
+    null
+   ],
+   "sourceUrl": "https://www.c5n.com/deportes/entrenadores-primera-division-2026-los-equipos-que-cambiaron-y-quienes-continuan-su-cargo-n225366"
+  },
+  {
+   "coach": "Lucas Pusineri",
+   "club": "Central Córdoba (SdE)",
+   "period": [
+    2026,
+    null
+   ],
+   "note": "Replaced Omar De Felippe for 2026",
+   "sourceUrl": "https://www.c5n.com/deportes/entrenadores-primera-division-2026-los-equipos-que-cambiaron-y-quienes-continuan-su-cargo-n225366"
+  },
+  {
+   "coach": "Eduardo Domínguez",
+   "club": "Estudiantes de La Plata",
+   "period": [
+    2026,
+    2026
+   ],
+   "note": "Started 2026 in charge; left for Atlético Mineiro (442 list)",
+   "sourceUrl": "https://442.perfil.com/noticias/futbol/apertura-2026-entrenadores-que-dejaron-el-cargo.phtml"
+  }
+ ],
+ "added": [
+  {
+   "id": "coach_arg26_arruabarrena",
+   "name": "Rodolfo",
+   "surname": "Arruabarrena",
+   "birthYear": 1975,
+   "team": "Boca Juniors",
+   "teamKind": "CLUB",
+   "nationality": "ARG",
+   "status": "ACTIVE",
+   "tier": "B",
+   "focus": "BALANCED",
+   "period": [
+    2026,
+    null
+   ],
+   "sourceUrl": "https://es.wikipedia.org/wiki/Rodolfo_Arruabarrena",
+   "note": "Second spell at Boca from 18 June 2026 (contract to Dec 2027); first spell 2014-2016"
+  },
+  {
+   "id": "coach_arg26_falcioni",
+   "name": "Julio César",
+   "surname": "Falcioni",
+   "birthYear": 1956,
+   "team": "Atlético Tucumán",
+   "teamKind": "CLUB",
+   "nationality": "ARG",
+   "status": "ACTIVE",
+   "tier": "B",
+   "focus": "DEFENSE",
+   "period": [
+    2026,
+    null
+   ],
+   "sourceUrl": "https://es.wikipedia.org/wiki/Julio_César_Falcioni",
+   "note": "Took charge in Feb 2026 and still coached on 9 Oct 2026"
+  },
+  {
+   "id": "coach_arg26_gorosito",
+   "name": "Néstor",
+   "surname": "Gorosito",
+   "birthYear": 1964,
+   "team": "San Lorenzo",
+   "teamKind": "CLUB",
+   "nationality": "ARG",
+   "status": "ACTIVE",
+   "tier": "C",
+   "focus": "ATTACK",
+   "period": [
+    2026,
+    2026
+   ],
+   "sourceUrl": "https://es.wikipedia.org/wiki/Néstor_Gorosito",
+   "note": "Second spell 3 Jul - 1 Sep 2026 (dismissed after eight matches)"
+  },
+  {
+   "id": "coach_arg26_troglio",
+   "name": "Pedro",
+   "surname": "Troglio",
+   "birthYear": 1965,
+   "team": "Banfield",
+   "teamKind": "CLUB",
+   "nationality": "ARG",
+   "status": "ACTIVE",
+   "tier": "C",
+   "focus": "BALANCED",
+   "period": [
+    2025,
+    null
+   ],
+   "sourceUrl": "https://es.wikipedia.org/wiki/Pedro_Troglio",
+   "note": "In charge since 29 Apr 2025; still coaching on 10 Oct 2026"
+  },
+  {
+   "id": "coach_arg26_barros_schelotto",
+   "name": "Guillermo",
+   "surname": "Barros Schelotto",
+   "birthYear": 1973,
+   "team": "Vélez Sarsfield",
+   "teamKind": "CLUB",
+   "nationality": "ARG",
+   "status": "ACTIVE",
+   "tier": "B",
+   "focus": "ATTACK",
+   "period": [
+    2025,
+    null
+   ],
+   "sourceUrl": "https://es.wikipedia.org/wiki/Guillermo_Barros_Schelotto",
+   "note": "Appointed 18 Mar 2025; head coach at the start of 2026 (c5n). Later status not confirmed"
+  },
+  {
+   "id": "coach_arg26_diego_martinez",
+   "name": "Diego",
+   "surname": "Martínez",
+   "birthYear": 1978,
+   "team": "Huracán",
+   "teamKind": "CLUB",
+   "nationality": "ARG",
+   "status": "ACTIVE",
+   "tier": "B",
+   "focus": "BALANCED",
+   "period": [
+    2025,
+    null
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Diego_Mart%C3%ADnez_(footballer,_born_1978)",
+   "note": "Second spell at Huracán since Dec 2025 (contract to Jun 2027); coached the 2026 Apertura"
+  },
+  {
+   "id": "coach_arg26_madelon",
+   "name": "Leonardo",
+   "surname": "Madelón",
+   "birthYear": 1963,
+   "team": "Unión",
+   "teamKind": "CLUB",
+   "nationality": "ARG",
+   "status": "ACTIVE",
+   "tier": "C",
+   "focus": "DEFENSE",
+   "period": [
+    2025,
+    null
+   ],
+   "sourceUrl": "https://es.wikipedia.org/wiki/Leonardo_Madelón",
+   "note": "Returned 27 Apr 2025; still coaching on 2 Oct 2026"
+  }
+ ],
+ "legendsAdded": [
+  {
+   "id": "coach_arg_leg_gallego",
+   "name": "Américo Rubén",
+   "surname": "Gallego",
+   "birthYear": 1955,
+   "team": "River Plate",
+   "teamKind": "CLUB",
+   "nationality": "ARG",
+   "status": "LEGEND",
+   "tier": "A",
+   "focus": "MIDFIELD",
+   "period": [
+    1994,
+    2001
+   ],
+   "sourceUrl": "https://es.wikipedia.org/wiki/Américo_Gallego",
+   "note": "River Apertura 1994 and Clausura 2000, Independiente Apertura 2002, Newell's Apertura 2004"
+  },
+  {
+   "id": "coach_arg_leg_ramon_diaz",
+   "name": "Ramón Ángel",
+   "surname": "Díaz",
+   "birthYear": 1959,
+   "team": "River Plate",
+   "teamKind": "CLUB",
+   "nationality": "ARG",
+   "status": "LEGEND",
+   "tier": "A",
+   "focus": "ATTACK",
+   "period": [
+    1995,
+    2002
+   ],
+   "sourceUrl": "https://es.wikipedia.org/wiki/Ramón_Ángel_Díaz",
+   "note": "Historical edition (River 1995-2000 and 2001-2002; Libertadores 1996); his current reference is a separate card"
+  }
+ ],
+ "excluded": [
+  {
+   "coach": "Mauricio Pochettino",
+   "reason": "Having played at Newell's does not accredit having coached in the Argentine league; he never did."
+  },
+  {
+   "coach": "Marcelo Bielsa, Diego Simeone, Matías Almeyda, Fernando Gago, Gustavo Alfaro, Eduardo Coudet",
+   "reason": "Documented Argentine spells are earlier than 2026 (or are not confirmed by a cited source); they leave the Actualidad pool."
+  }
+ ],
+ "pending": [
+  {
+   "coach": "Fonseca",
+   "reason": "No verifiable source places him at River; not added."
+  },
+  {
+   "coach": "Rubén Darío Insua, Facundo Sava, Diego Dabove",
+   "reason": "Head coaches at the start of 2026 per c5n, but birth year/spell dates were not verified in this pass."
+  }
+ ]
+}

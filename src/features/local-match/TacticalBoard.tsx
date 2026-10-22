@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { freeKickBeatDuration, freeKickScene } from './freeKickGeometry'
 import { cornerBeatDuration, cornerScene } from './cornerGeometry'
 import { useTranslation } from 'react-i18next'
@@ -9,6 +9,7 @@ import { attackingSide, ballPoint, boardDots, focusWindow, teamShift, type Board
 import { aerialBeatDuration, aerialScene } from './aerialGeometry'
 import { HEADER_DIRECTIONS, headerGoalPoint } from './interactive/directedHeader'
 import type { MatchSide } from './matchTypes'
+import { nearestHit, shortName } from './shortName'
 
 export interface TacticalBoardProps {
   readonly formations: Readonly<Record<MatchSide, FormationId>>
@@ -18,6 +19,8 @@ export interface TacticalBoardProps {
   readonly play: BoardPlay
   /** Teammates the user can pick right now, drawn with the same letter as their decision card. */
   readonly choices?: readonly { readonly playerId: string | null; readonly label: string }[]
+  /** GAMEPLAY-POLISH-010: tapping an offered teammate on the board sends the same command as its card. Absent: the board is display only. */
+  readonly onPick?: (label: string) => void
   /** Changes whenever a new moment is revealed, so the same kind of event twice in a row still restarts the pulse. */
   readonly tick: number
   readonly focus: BoardFocus
@@ -32,9 +35,12 @@ const COLORS = { local: '#00f5d4', cpu: '#ff5d73', gold: '#ffd54a' } as const
 interface Pose { camera: { from: number; to: number }; start?: Parameters<typeof aerialScene>[3]; progress: number; height: number; jump: number; players: Record<string, Point>; ball: Point; shift: Record<MatchSide, number>; pulse: number }
 
 /** Small Canvas 2D tactical board. Original code; it draws only what the confirmed event states. */
-export function TacticalBoard({ formations, lineups, catalog, names, play, choices = [], tick, focus, speed, animate, paused = false }: TacticalBoardProps) {
+export function TacticalBoard({ formations, lineups, catalog, names, play, choices = [], onPick, tick, focus, speed, animate, paused = false }: TacticalBoardProps) {
   const { t } = useTranslation()
   const canvas = useRef<HTMLCanvasElement>(null)
+  const [hits] = useState<Hit[]>(() => [])
+  /** Every footballer on the pitch carries his rating; the readable surname is added when the board is wide enough or zoomed on one team. */
+  const info = useMemo(() => new Map(catalog.map((player) => [player.id, { ovr: player.overall_rating, short: shortName(player.name) }])), [catalog])
   const dots = useMemo(() => boardDots(formations, lineups), [formations, lineups])
   const carrier = useMemo(() => dots.find((dot) => dot.side === play.side && dot.playerId === play.playerId && play.playerId !== undefined), [dots, play.side, play.playerId])
   const from = useMemo(() => dots.find((dot) => play.fromPlayerId !== undefined && dot.playerId === play.fromPlayerId), [dots, play.fromPlayerId])
@@ -65,8 +71,8 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
   const pulsed = useRef(-1)
   const elapsed = useRef(0)
   const aerialStart = useRef<Parameters<typeof aerialScene>[3]>(undefined)
-  const latest = useRef({ dots, carrier, from, options, carrierName, names, focus, play, target })
-  useEffect(() => { latest.current = { dots, carrier, from, options, carrierName, names, focus, play, target } })
+  const latest = useRef({ dots, carrier, from, options, carrierName, names, focus, play, target, hits: hits, info })
+  useEffect(() => { latest.current = { dots, carrier, from, options, carrierName, names, focus, play, target, hits: hits, info } })
 
   useEffect(() => {
     const element = canvas.current
@@ -129,12 +135,18 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
 
   const attacker = attackingSide(play)
   return <figure className="tactical-board">
-    <canvas ref={canvas} className="tactical-canvas" role="img" aria-label={t('board.label', { local: names.local, cpu: names.cpu })} />
+    <canvas ref={canvas} className={`tactical-canvas${onPick && options.length ? ' is-pickable' : ''}`} role="img" aria-label={t('board.label', { local: names.local, cpu: names.cpu })} onClick={onPick ? (event) => {
+      const rect = event.currentTarget.getBoundingClientRect()
+      const x = event.clientX - rect.left; const y = event.clientY - rect.top
+      const hit = nearestHit(hits, x, y)
+      if (hit) onPick(hit.label)
+    } : undefined} />
     <figcaption className="tactical-caption">{attacker ? t('series.attacking', { name: names[attacker] }) : t('board.idle')}{carrierName && (!play.freeKick || carrier?.side === attacker) && <> · <b>{carrierName}</b></>}</figcaption>
   </figure>
 }
 
-function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, view: { dots: ReturnType<typeof boardDots>; carrier: BoardDot | undefined; from: BoardDot | undefined; options: readonly { dot: BoardDot; label: string }[]; carrierName: string | undefined; names: Readonly<Record<MatchSide, string>>; focus: BoardFocus; play: BoardPlay }) {
+interface Hit { readonly x: number; readonly y: number; readonly r: number; readonly label: string }
+function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, view: { dots: ReturnType<typeof boardDots>; carrier: BoardDot | undefined; from: BoardDot | undefined; options: readonly { dot: BoardDot; label: string }[]; carrierName: string | undefined; names: Readonly<Record<MatchSide, string>>; focus: BoardFocus; play: BoardPlay; hits: Hit[]; info: ReadonlyMap<string, { ovr: number; short: string }> }) {
   const aerialActors = view.play.aerial ?? (view.play.corner ? { ...view.play.corner, defenderId: view.play.corner.markerId ?? view.play.corner.defenderId } : undefined)
   const window_ = (view.play.corner || view.play.freeKick) ? pose.camera : focusWindow(view.focus)
   const pitchW = w / (window_.to - window_.from); const pitchH = pitchW * PITCH_RATIO
@@ -143,6 +155,7 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
   const oy = (view.play.corner || view.play.freeKick) ? pan * Math.min(1, (1 - window_.to + window_.from) / .45) : view.focus === 'full' ? 0 : pan
   const X = (u: number) => ox + u * pitchW; const Y = (v: number) => oy + v * pitchH
   ctx.clearRect(0, 0, w, h)
+  view.hits.length = 0
   ctx.save(); ctx.beginPath(); ctx.rect(0, 0, w, h); ctx.clip()
   for (let stripe = 0; stripe < 12; stripe++) { ctx.fillStyle = stripe % 2 ? '#203f2b' : '#254d32'; ctx.fillRect(X(stripe / 12), Y(0), pitchW / 12 + 1, pitchH) }
   ctx.strokeStyle = '#ffffff66'; ctx.lineWidth = 1.5
@@ -185,6 +198,7 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
     const origin = at(view.carrier)
     for (const option of view.options) {
       const p = at(option.dot)
+      view.hits.push({ x: p.x, y: p.y - radius, r: Math.max(24, radius * 3.6), label: option.label })
       ctx.strokeStyle = '#ffffffb0'; ctx.lineWidth = 2; ctx.setLineDash([5, 5]); ctx.beginPath(); ctx.moveTo(origin.x, origin.y); ctx.lineTo(p.x, p.y); ctx.stroke(); ctx.setLineDash([])
       ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(p.x, p.y, radius * 1.9, 0, Math.PI * 2); ctx.stroke()
       ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(p.x, p.y - radius * 2.9, radius * 1.1, 0, Math.PI * 2); ctx.fill()
@@ -201,6 +215,11 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
     if (marked) { ctx.fillStyle = COLORS.gold + '55'; ctx.beginPath(); ctx.arc(x, y, radius * 2.2, 0, Math.PI * 2); ctx.fill() }
     ctx.fillStyle = COLORS[dot.side]; ctx.strokeStyle = marked ? COLORS.gold : '#0b1a10'; ctx.lineWidth = marked ? 3 : 1.5
     ctx.beginPath(); ctx.arc(x, y, marked ? radius * 1.25 : radius, 0, Math.PI * 2); ctx.fill(); ctx.stroke()
+    const facts = dot.playerId ? view.info.get(dot.playerId) : undefined
+    if (facts && radius >= 6) {
+      ctx.font = `800 ${Math.max(8, radius * 1.05)}px Inter, system-ui, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#08130c'; ctx.fillText(String(facts.ovr), x, y + .5); ctx.textBaseline = 'alphabetic'
+      if (!marked && (w >= 520 || view.focus === dot.side)) { ctx.font = `700 ${Math.max(9, radius * 1.05)}px Inter, system-ui, sans-serif`; ctx.lineWidth = 3; ctx.strokeStyle = '#0b1a10'; ctx.fillStyle = '#fff'; ctx.strokeText(facts.short, x, y + radius * 2.2); ctx.fillText(facts.short, x, y + radius * 2.2) }
+    }
     if (marked && view.carrierName) {
       ctx.font = `700 ${Math.max(11, radius * 1.5)}px Inter, system-ui, sans-serif`; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = '#0b1a10'; ctx.fillStyle = '#fff'
       const halfLabel = ctx.measureText(view.carrierName).width / 2 + 4

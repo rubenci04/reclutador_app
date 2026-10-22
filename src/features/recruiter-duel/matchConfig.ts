@@ -1,7 +1,7 @@
 import { DRAFT_BUDGET_MILLIONS } from '../../data/catalogRules'
 import type { Player } from '../../types/player'
 import type { Position } from '../../types/football'
-import { COACH_MARKET_V2, COACH_MARKET_V3, COACH_MAX_PRICE, coachReserveFor } from '../coaches/coachRules'
+import { COACH_MARKET_V2, COACH_MARKET_V3, COACH_MARKET_V4, COACH_MAX_PRICE, coachReserveFor } from '../coaches/coachRules'
 
 /** Versioned configuration of one duel. The classic mode is exactly CLASSIC_CONFIG; nothing else holds a budget. */
 export const MATCH_CONFIG_VERSION = 1 as const
@@ -12,10 +12,13 @@ export const DISCARDS_V2 = 5
 export const discardLimitOf = (config?: { readonly discards?: string }) => config?.discards === DISCARDS_MARKER_V2 ? DISCARDS_V2 : DISCARDS_V1
 /** bench-5-v1: up to five optional substitutes, bought after the eleven and the coach (goalkeeper allowed). */
 export const BENCH_MARKET_V2 = 'bench-5-v1' as const
+/** bench-showcase-v1 (GAMEPLAY-POLISH-010): same five-substitute limit, but the bench is bought from ONE fixed ten-card showcase in snake turns. New local games only. */
+export const BENCH_SHOWCASE_V1 = 'bench-showcase-v1' as const
+export const isShowcaseBench = (config?: { readonly bench?: string }) => config?.bench === BENCH_SHOWCASE_V1
 export const BENCH_LIMIT_V1 = 3
 export const BENCH_LIMIT_V2 = 5
-export const benchLimitOf = (config?: { readonly bench?: string }) => config?.bench === BENCH_MARKET_V2 ? BENCH_LIMIT_V2 : BENCH_LIMIT_V1
-export const BUDGET_PRESETS = [100, 120, 150, 175, 200, 250] as const
+export const benchLimitOf = (config?: { readonly bench?: string }) => config?.bench === BENCH_MARKET_V2 || config?.bench === BENCH_SHOWCASE_V1 ? BENCH_LIMIT_V2 : BENCH_LIMIT_V1
+export const BUDGET_PRESETS = [100, 120, 150, 160, 175, 200, 220, 250] as const
 export const BUDGET_LIMITS = { min: 60, max: 300, step: 5 } as const
 export const NAME_MAX_LENGTH = 24
 
@@ -31,11 +34,11 @@ export interface MatchConfig {
   readonly coaches?: boolean
   readonly coachReserve?: number
   /** Marker of the six-card coach market (absent in earlier games, which keep three cards). */
-  readonly coachMarket?: typeof COACH_MARKET_V2 | typeof COACH_MARKET_V3
+  readonly coachMarket?: typeof COACH_MARKET_V2 | typeof COACH_MARKET_V3 | typeof COACH_MARKET_V4
   /** Marker of the five shared discards (DISCARD-005). Absent in earlier games and online rooms, which keep three. */
   readonly discards?: typeof DISCARDS_MARKER_V2
   /** Marker of the five-substitute bench (ROSTER-005). Absent in earlier games and online rooms, which keep the three-substitute rules. */
-  readonly bench?: typeof BENCH_MARKET_V2
+  readonly bench?: typeof BENCH_MARKET_V2 | typeof BENCH_SHOWCASE_V1
 }
 
 export const CLASSIC_CONFIG: MatchConfig = { version: MATCH_CONFIG_VERSION, budget: DRAFT_BUDGET_MILLIONS, names: { recruiter_one: null, recruiter_two: null }, substitutes: false }
@@ -69,15 +72,15 @@ export function parseMatchConfig(value: unknown): MatchConfig | null {
   const names = record.names as Record<string, unknown> | undefined
   if (record.version !== MATCH_CONFIG_VERSION || !isValidBudget(record.budget) || typeof record.substitutes !== 'boolean' || (record.coaches !== undefined && typeof record.coaches !== 'boolean') || typeof names !== 'object' || names === null) return null
   if (record.coachReserve !== undefined && (record.coaches !== true || typeof record.coachReserve !== 'number' || !Number.isInteger(record.coachReserve) || record.coachReserve < 1 || record.coachReserve > COACH_MAX_PRICE)) return null
-  if (record.coachMarket !== undefined && (record.coaches !== true || (record.coachMarket !== COACH_MARKET_V2 && record.coachMarket !== COACH_MARKET_V3))) return null
+  if (record.coachMarket !== undefined && (record.coaches !== true || (record.coachMarket !== COACH_MARKET_V2 && record.coachMarket !== COACH_MARKET_V3 && record.coachMarket !== COACH_MARKET_V4))) return null
   if (record.discards !== undefined && record.discards !== DISCARDS_MARKER_V2) return null
-  if (record.bench !== undefined && record.bench !== BENCH_MARKET_V2) return null
+  if (record.bench !== undefined && record.bench !== BENCH_MARKET_V2 && record.bench !== BENCH_SHOWCASE_V1) return null
   const read = (key: string) => names[key] === null ? null : typeof names[key] === 'string' ? sanitizeName(names[key] as string) : undefined
   const one = read('recruiter_one'); const two = read('recruiter_two')
   if (one === undefined || two === undefined) return null
   const parsed = { recruiter_one: one, recruiter_two: two }
   if (Object.keys(nameIssues(parsed)).length) return null
-  return { version: MATCH_CONFIG_VERSION, budget: record.budget, names: parsed, substitutes: record.substitutes, ...(record.coaches ? { coaches: true, ...(record.coachReserve !== undefined ? { coachReserve: record.coachReserve as number } : {}), ...(record.coachMarket !== undefined ? { coachMarket: record.coachMarket as typeof COACH_MARKET_V2 | typeof COACH_MARKET_V3 } : {}) } : {}), ...(record.discards !== undefined ? { discards: DISCARDS_MARKER_V2 } : {}), ...(record.bench !== undefined ? { bench: BENCH_MARKET_V2 } : {}) }
+  return { version: MATCH_CONFIG_VERSION, budget: record.budget, names: parsed, substitutes: record.substitutes, ...(record.coaches ? { coaches: true, ...(record.coachReserve !== undefined ? { coachReserve: record.coachReserve as number } : {}), ...(record.coachMarket !== undefined ? { coachMarket: record.coachMarket as typeof COACH_MARKET_V2 | typeof COACH_MARKET_V3 | typeof COACH_MARKET_V4 } : {}) } : {}), ...(record.discards !== undefined ? { discards: DISCARDS_MARKER_V2 } : {}), ...(record.bench !== undefined ? { bench: record.bench as typeof BENCH_MARKET_V2 | typeof BENCH_SHOWCASE_V1 } : {}) }
 }
 
 export const POSITIONS_ORDER: readonly Position[] = ['ARQ', 'DEF', 'MED', 'DEL']

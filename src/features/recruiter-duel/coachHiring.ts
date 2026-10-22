@@ -1,7 +1,7 @@
 import { coachById } from '../coaches/coachCatalog'
 import { coachesForMode } from '../coaches/coachContext'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
-import { COACH_OFFER_SIZE, COACH_OFFER_SIZE_V2, COACH_RESERVE, coachMarketOf, coachReserveFor, coachEffect, type CoachMarketVersion } from '../coaches/coachRules'
+import { COACH_OFFER_SIZE, COACH_OFFER_SIZE_V2, COACH_RESERVE, coachMarketOf, coachReserveFor, coachEffect, usesV3Rules, type CoachMarketVersion } from '../coaches/coachRules'
 import type { Coach, CoachTier } from '../coaches/coachTypes'
 import type { StrategyId } from '../tactics/strategies'
 import type { Player } from '../../types/player'
@@ -47,8 +47,8 @@ const TIER_RANK: Readonly<Record<CoachTier, number>> = { 'S+': 5, S: 4, A: 3, B:
  * exist (S+, S, A first); inside that band the cards cover attack, defence, midfield and balanced before filling with the best remaining.
  * With less money the band slides down to cheaper tiers. Deterministic in the seed.
  */
-function offerV3(seed: string, side: RecruiterId, mode: ThemedModeId | undefined, budget: number | undefined): readonly Coach[] {
-  const affordable = shuffleSeeded(coachesForMode(mode, 'v3'), createSeededRandom(`${seed}:coaches:${side}`)).filter((c) => budget === undefined || c.price <= budget)
+function offerV3(seed: string, side: RecruiterId, mode: ThemedModeId | undefined, budget: number | undefined, market: CoachMarketVersion = 'v3'): readonly Coach[] {
+  const affordable = shuffleSeeded(coachesForMode(mode, market), createSeededRandom(`${seed}:coaches:${side}`)).filter((c) => budget === undefined || c.price <= budget)
   const ranked = [...affordable].sort((a, b) => TIER_RANK[b.tier] - TIER_RANK[a.tier])
   if (ranked.length <= COACH_OFFER_SIZE_V2) return ranked.sort((a, b) => b.price - a.price || a.id.localeCompare(b.id))
   const floor = TIER_RANK[ranked[COACH_OFFER_SIZE_V2 - 1].tier]
@@ -66,7 +66,7 @@ function offerV3(seed: string, side: RecruiterId, mode: ThemedModeId | undefined
 }
 
 export function coachOffers(seed: string, reserve: number = COACH_RESERVE, mode?: ThemedModeId, left?: Readonly<Record<RecruiterId, number>>, market: CoachMarketVersion = 'v1'): Readonly<Record<RecruiterId, readonly Coach[]>> {
-  if (market === 'v3') return { recruiter_one: offerV3(seed, SIDES[0], mode, left?.[SIDES[0]]), recruiter_two: offerV3(seed, SIDES[1], mode, left?.[SIDES[1]]) }
+  if (usesV3Rules(market)) return { recruiter_one: offerV3(seed, SIDES[0], mode, left?.[SIDES[0]], market), recruiter_two: offerV3(seed, SIDES[1], mode, left?.[SIDES[1]], market) }
   if (market === 'v2') return { recruiter_one: offerV2(seed, SIDES[0], reserve, mode, left?.[SIDES[0]]), recruiter_two: offerV2(seed, SIDES[1], reserve, mode, left?.[SIDES[1]]) }
   const pool = coachesForMode(mode)
   const offer = (side: RecruiterId): readonly Coach[] => {
@@ -101,7 +101,7 @@ export function chooseCoach(game: RecruiterDuelGame, participant: RecruiterId, c
   const coach = coachMarket(game, participant).find((candidate) => candidate.id === coachId)
   if (!coach) return { ok: false, error: 'invalid_coach' }
   const team = game.teams[participant]
-  return { ok: true, game: { ...game, teams: { ...game.teams, [participant]: { ...team, coachId: coach.id, coachPrice: coach.price, ...(coachMarketOf(game.config) === 'v3' ? { coachTier: coach.tier } : {}), spent: team.spent + coach.price } } } }
+  return { ok: true, game: { ...game, teams: { ...game.teams, [participant]: { ...team, coachId: coach.id, coachPrice: coach.price, ...(coachMarketOf(game.config) !== 'v1' && coachMarketOf(game.config) !== 'v2' ? { coachTier: coach.tier } : {}), spent: team.spent + coach.price } } } }
 }
 
 /** Chooses to go without a coach; opens the substitute step. Only while a coach could still be hired. */
@@ -130,7 +130,7 @@ function needScore(coach: Coach, base: { readonly attack: number; readonly defen
  */
 export function autoChooseCoach(game: RecruiterDuelGame, participant: RecruiterId, catalog?: readonly Player[], strategy: StrategyId = 'NEUTRAL'): RecruiterDuelGame {
   const market = [...coachMarket(game, participant)]
-  const base = coachMarketOf(game.config) === 'v3' && catalog ? teamPower(game, participant, catalog)?.base : undefined
+  const base = usesV3Rules(coachMarketOf(game.config)) && catalog ? teamPower(game, participant, catalog)?.base : undefined
   const best = market.sort((a, b) => (base ? needScore(b, base, strategy) - needScore(a, base, strategy) : power(b) - power(a)) || a.price - b.price || a.id.localeCompare(b.id))[0]
   if (!best) return declineCoach(game, participant).ok ? { ...game, teams: { ...game.teams, [participant]: { ...game.teams[participant], coachDeclined: true } } } : game
   const result = chooseCoach(game, participant, best.id)

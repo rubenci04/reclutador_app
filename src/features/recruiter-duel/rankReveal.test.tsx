@@ -19,7 +19,7 @@ async function open(language: 'es-AR' | 'en' | 'pt-BR') {
   fireEvent.click(screen.getByText(i18n.t('entry.customize')))
   fireEvent.click(screen.getByRole('button', { name: i18n.t('duel.start') }))
   fireEvent.click(screen.getByRole('button', { name: i18n.t('duel.heads') }))
-  act(() => vi.advanceTimersByTime(2000))
+  act(() => vi.advanceTimersByTime(3000))
   fireEvent.click(screen.getByRole('button', { name: i18n.t('duel.beginBidding') }))
   return i18n
 }

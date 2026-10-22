@@ -48,8 +48,8 @@ const modes: Partial<Record<ThemedModeId, readonly [string, Player['category']]>
   MEXICO_CURRENT: ['MEX', 'contemporary'], MEXICO_LEGENDS: ['MEX', 'legend'],
 }
 export const IMPORTED_MODE_IDS = [...Object.keys(modes), 'LEGENDS_ONLY'] as ThemedModeId[]
-/** roster-budget-v2 (ROSTER-005): 200M for current categories and 250M for legends in new local games. */
-export const defaultBudgetForMode = (id: ThemedModeId) => id.includes('LEGENDS') || id === 'LEGENDS_ONLY' ? 250 : 200
+/** roster-budget-v3 (GAMEPLAY-POLISH-010): 160M for current categories and 220M for legends in new local games (v2, ROSTER-005: 200/250). */
+export const defaultBudgetForMode = (id: ThemedModeId) => id.includes('LEGENDS') || id === 'LEGENDS_ONLY' ? 220 : 160
 /** Budgets of online rooms before ROSTER-005; the shared contract is not migrated unilaterally. */
 export const legacyOnlineBudgetForMode = (id: ThemedModeId) => id.includes('LEGENDS') || id === 'LEGENDS_ONLY' ? 200 : 150
 const sourceById = new Map(LEAGUE_PROVENANCE.map((row) => [row.id, row]))

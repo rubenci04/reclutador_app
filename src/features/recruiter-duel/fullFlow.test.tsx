@@ -73,7 +73,7 @@ async function open(mode: 'cpu' | 'hot', seed: string) {
   fireEvent.click(screen.getByText(i18n.t('entry.customize')))
   if (mode === 'cpu') fireEvent.change(screen.getByLabelText('Opponent'), { target: { value: 'cpu' } })
   click('Start duel'); click('Heads')
-  act(() => vi.advanceTimersByTime(2000))
+  act(() => vi.advanceTimersByTime(3000))
   return i18n
 }
 

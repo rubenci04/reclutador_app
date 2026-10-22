@@ -22,7 +22,7 @@ it.each(['es-AR', 'en', 'pt-BR'] as const)('offers rivals first and an unchanged
   expect(screen.queryByRole('button', { name: i18n.t('duel.freeDraft') })).toBeNull()
   fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.cpu') }))
   expect(screen.getByRole('heading', { name: i18n.t('entry.cpu') })).toHaveFocus()
-  expect(screen.getByText(i18n.t('entry.defaults', { budget: 200, reserve: 8 }))).toBeVisible()
+  expect(screen.getByText(i18n.t('entry.defaults', { budget: 160, reserve: 8 }))).toBeVisible()
   expect(screen.getByRole('button', { name: i18n.t('duel.start') })).toBeEnabled()
   const details = screen.getByText(i18n.t('entry.customize')).closest('details')!
   expect(details).not.toHaveAttribute('open')

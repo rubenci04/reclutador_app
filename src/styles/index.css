@@ -81,6 +81,7 @@
 .pitch-shirt.vacant { color: #e6f0e7; background: #152b20c9; border: 1px dashed #c3d7c4; cursor: default; }
 .pitch-shirt.vacant svg { fill: #56705e; stroke: #e6f0e7; }
 .pitch-short-name { max-width: 100%; font-weight: 750; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pitch-ovr { font-weight: 850; font-size: 1.15em; color: #f4dc63; background: #00000055; border-radius: 6px; padding: 0 5px; }
 .pitch-player-dialog { width: min(620px,calc(100vw - 24px)); max-height: calc(100dvh - 32px); overflow: auto; border: 1px solid #9cb484; border-radius: 12px; padding: 18px; background: #18271c; color: #eff2e9; margin: auto; }
 .pitch-player-dialog::backdrop { background: #081009dc; }
 .pitch-player-dialog .single-player-card { flex-wrap: wrap; }
@@ -160,8 +161,8 @@
 
 /* CODEX-005G-C3C: football coin (ball = heads, stadium = tails) */
 .football-coin { width: 140px; margin: 1rem auto; text-align: center; font-weight: 750; color: #f4d68b; }
-.coin-stage { width: 110px; height: 110px; margin: 0 auto 6px; perspective: 700px; }
-.coin3d { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; filter: drop-shadow(0 7px 5px #0006); }
+.coin-stage { width: 110px; height: 110px; margin: 0 auto 6px; perspective: 700px; filter: drop-shadow(0 7px 5px #0006); }
+.coin3d { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; }
 .football-coin[data-side="tails"] .coin3d { transform: rotateY(180deg); }
 .coin-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .coin-back { transform: rotateY(180deg); }
@@ -177,7 +178,13 @@
 .stadium-line { fill: none; stroke: #f6f7f2; stroke-width: 1.2; }
 .stadium-tower { stroke: #11251b; stroke-width: 2; }
 .stadium-light { fill: #ffe98a; stroke: #11251b; stroke-width: .8; }
-.football-coin.tossing .coin3d { animation: 1500ms var(--motion-ease) both coin-flip-heads; }
+.football-coin.tossing .coin3d { animation: 2200ms var(--motion-ease) both coin-flip-heads; }
+.football-coin.tossing .coin-shadow { animation: 2200ms var(--motion-ease) both coin-shadow; }
+.coin-shadow { width: 70px; height: 10px; margin: -4px auto 4px; border-radius: 50%; background: #0007; filter: blur(3px); }
+@keyframes coin-shadow { 0% { transform: scale(1); opacity: .6; } 38% { transform: scale(.45); opacity: .25; } 72% { transform: scale(1); opacity: .6; } 100% { transform: scale(1); opacity: .6; } }
+.football-coin.landed .coin-result { animation: coin-result .35s ease-out both; }
+@keyframes coin-result { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@keyframes coin-fade { from { opacity: .15; } to { opacity: 1; } }
 .football-coin.tossing[data-side="tails"] .coin3d { animation-name: coin-flip-tails; }
 @keyframes coin-flip-heads { 0% { transform: translateY(0) rotateY(0) scale(1); } 38% { transform: translateY(-80px) rotateY(540deg) scale(1.18); } 72% { transform: translateY(0) rotateY(1080deg) scale(1); } 84% { transform: translateY(-16px) rotateY(1080deg) scale(1.02); } 100% { transform: translateY(0) rotateY(1080deg) scale(1); } }
 @keyframes coin-flip-tails { 0% { transform: translateY(0) rotateY(0) scale(1); } 38% { transform: translateY(-80px) rotateY(630deg) scale(1.18); } 72% { transform: translateY(0) rotateY(1260deg) scale(1); } 84% { transform: translateY(-16px) rotateY(1260deg) scale(1.02); } 100% { transform: translateY(0) rotateY(1260deg) scale(1); } }
@@ -189,7 +196,8 @@
 .audio-control { display: inline-flex; align-items: center; gap: 6px; }
 .audio-control input[type="range"] { width: 72px; }
 @media (prefers-reduced-motion: reduce) {
-  .football-coin.tossing .coin3d, .football-coin.tossing[data-side="tails"] .coin3d, .coin-face-choice { animation: none; transition: none; }
+  .football-coin.tossing .coin3d, .football-coin.tossing[data-side="tails"] .coin3d { animation: 800ms ease-out both coin-fade; }
+  .football-coin.tossing .coin-shadow, .football-coin.landed .coin-result, .coin-face-choice { animation: none; transition: none; }
   .auction-candidate, .card-discard, .bid-highlight, .pitch-shirt.occupied, .goal-flash, .strategy-panel, .strategy-revealed { animation: none; transform: none; opacity: 1; }
 }
 .event-tactic { display: block; color: #d5fb76; font-size: .75rem; }
@@ -867,6 +875,7 @@
 @media (prefers-reduced-motion: reduce) { .signing-reveal, .signing-reveal-rank { animation: none; } }
 
 /* SIM-MINI-002/003: precision shot, penalty shootout and hand-played defense */
+.tactical-canvas.is-pickable { cursor: pointer; }
 .shot-bar .dribble-sweet { left: 44%; width: 12%; }
 .shot-net { fill: #ffffff10; stroke: #ffffff33; stroke-dasharray: 3 3; }
 .shot-posts { stroke: #fff; stroke-width: 3; stroke-linecap: round; }
@@ -887,3 +896,31 @@
 .defense-picks { grid-template-columns: repeat(4, 1fr); }
 @media (max-width: 520px) { .defense-picks { grid-template-columns: repeat(2, 1fr); } }
 @media (prefers-reduced-motion: reduce) { .shot-keeper, .shot-kicker, .shot-ball { transition: none; } .shot-contact { animation: none; } }
+
+/* GAMEPLAY-POLISH-010: fixed bench showcase */
+.bench-showcase { margin: 12px 0; padding: 12px; border-radius: 12px; background: #0b1a13; border: 1px solid #ffffff2e; }
+.showcase-scores { list-style: none; display: grid; gap: 4px; margin: 6px 0; padding: 0; font-size: .9rem; }
+.showcase-scores .is-turn { color: #f4dc63; }
+.showcase-turn { font-weight: 700; margin: 6px 0; }
+.showcase-card { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center; padding: 8px 10px; border-radius: 8px; background: #ffffff0f; min-width: 150px; transition: opacity .25s ease, transform .25s ease; }
+.showcase-card .secondary-action, .showcase-card .showcase-badge { grid-column: 1 / -1; }
+.showcase-card.is-sold { opacity: .55; }
+.showcase-ovr { color: #f4dc63; }
+.showcase-badge { font-style: normal; font-weight: 800; font-size: .8rem; letter-spacing: .5px; color: #ff9b9b; }
+.showcase-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+@media (prefers-reduced-motion: reduce) { .showcase-card { transition: none; } }
+
+/* GAMEPLAY-POLISH-010: discreet, consistent micro-interactions (short, never covering Bid/Pass) */
+button:focus-visible, [role="radio"]:focus-visible, summary:focus-visible { outline: 2px solid #d5fb76; outline-offset: 2px; }
+.primary-action, .secondary-action, .play-card { transition: transform var(--motion-fast) var(--motion-ease), background-color var(--motion-fast), border-color var(--motion-fast); }
+.primary-action:active, .secondary-action:active, .play-card:active { transform: scale(.98); }
+.teams-completed, .bench-showcase, .result-inline, .signing-reveal, .discard-scene { animation: panel-enter var(--motion-base) var(--motion-ease) both; }
+.team-missing li[data-complete="true"] { animation: slot-complete .5s var(--motion-ease) 1; }
+.showcase-card.is-sold { animation: showcase-sold .35s var(--motion-ease) 1; }
+@keyframes slot-complete { 0% { transform: scale(1); } 40% { transform: scale(1.08); color: #d5fb76; } 100% { transform: scale(1); } }
+@keyframes showcase-sold { 0% { transform: scale(1.04); } 100% { transform: scale(1); } }
+.result-inline { margin: 12px 0; padding: 12px; border-radius: 12px; background: #0b1a13; border: 1px solid #ffffff2e; }
+.result-inline h3 { margin: 0 0 8px; }
+.result-advantages p, .result-moments li { font-size: .9rem; margin: 4px 0; }
+.result-moments ul { margin: 4px 0; padding-left: 18px; }
+@media (prefers-reduced-motion: reduce) { .teams-completed, .bench-showcase, .result-inline, .signing-reveal, .discard-scene, .team-missing li[data-complete="true"], .showcase-card.is-sold { animation: none; } .primary-action, .secondary-action, .play-card { transition: none; } }

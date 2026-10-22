@@ -34,7 +34,7 @@ describe('COACH-006B tiers and the historical market', () => {
       expect(pool.every((coach) => coach.tier !== 'S+' && !coach.id.startsWith('coach_v3_')), `${mode} ${market}`).toBe(true)
       for (const coach of pool) expect(coach.price, `${mode} ${market} ${coach.id}`).toBe(COACH_TIER_PRICE[coach.tier])
     }
-    expect([...COACH_CATALOG, ...EXTRA_COACHES].filter((c) => !c.id.startsWith('coach_v3_'))).toHaveLength(120)
+    expect([...COACH_CATALOG, ...EXTRA_COACHES].filter((c) => !c.id.startsWith('coach_v3_') && !c.id.startsWith('coach_arg'))).toHaveLength(120)
     expect(COACH_CATALOG.find((c) => c.surname === 'Guardiola')!.tier).toBe('S')
   })
   it('re-tiers editorially: scarce S+ and S, every explicit name exists', () => {

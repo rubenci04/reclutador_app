@@ -16,7 +16,7 @@ import { TACTICS_VERSION, isStrategyId, type StrategyId } from '../tactics/strat
 import { usesRarity, validContext, type DrawContext } from './drawHistory'
 import { CLUB_SPREAD_POLICY, clubRepeats, spreadClubs } from './clubSpread'
 import { canonicalClubKey } from '../player-catalog/clubKey'
-import { BENCH_LIMIT_V1, CLASSIC_CONFIG, discardLimitOf, SUBSTITUTE_POSITIONS, benchLimitOf, preflightMatchConfig, rosterComposition, type MatchConfig } from './matchConfig'
+import { BENCH_LIMIT_V1, isShowcaseBench, CLASSIC_CONFIG, discardLimitOf, SUBSTITUTE_POSITIONS, benchLimitOf, preflightMatchConfig, rosterComposition, type MatchConfig } from './matchConfig'
 import type { AuctionActionError, AuctionCreation, AuctionRound, AuctionTransition, AwardReason, CoinSide, RecruiterDuelGame, RecruiterId, RecruiterTeam, RoundAward } from './auctionTypes'
 
 /** The one source of the budget of a game: its configuration, or the classic value for games without one. */
@@ -388,7 +388,7 @@ export function substitutePool(game: RecruiterDuelGame, catalog: readonly Player
  * only what the recruiter can still pay and only while both recruiters still have money. Best rated first. Empty outside TEAMS_COMPLETED.
  */
 export function substituteMarket(game: RecruiterDuelGame, participant: RecruiterId, catalog: readonly Player[]): Player[] {
-  if (game.phase !== 'TEAMS_COMPLETED') return []
+  if (game.phase !== 'TEAMS_COMPLETED' || isShowcaseBench(game.config)) return []
   const team = game.teams[participant]
   if (game.config?.coaches && !team.coachId && !team.coachDeclined) return []
   if (game.config?.bench ? benchStatus(game, participant).filled >= benchLimitOf(game.config) : benchSlots(team).length >= BENCH_LIMIT_V1) return []
@@ -426,6 +426,8 @@ export function buySubstitute(game: RecruiterDuelGame, participant: RecruiterId,
 
 /** The CPU spends what is left on its best affordable substitute of each line; with bench-5-v1 it keeps buying the best affordable one until the bench is full. Deterministic. */
 export function autoBuySubstitutes(game: RecruiterDuelGame, participant: RecruiterId, catalog: readonly Player[]): RecruiterDuelGame {
+  // bench-showcase-v1: no anticipated purchases; the CPU decides on its own chances (benchShowcase.ts).
+  if (isShowcaseBench(game.config)) return game
   let current = game
   if (game.config?.bench) {
     for (const position of [...SUBSTITUTE_POSITIONS, 'ARQ' as const, undefined]) {

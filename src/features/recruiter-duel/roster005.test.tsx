@@ -37,13 +37,13 @@ const buyAll = (game: RecruiterDuelGame, count: number, position?: string) => {
 }
 
 describe('ROSTER-005 budgets', () => {
-  it('uses 200M for current categories, 250M for legends and the larger one for crossings', () => {
-    expect(defaultBudgetForMode('SPAIN_LEAGUE')).toBe(200)
-    expect(defaultBudgetForMode('GLOBAL_CLASSIC')).toBe(200)
-    expect(defaultBudgetForMode('EUROPE_LEGENDS')).toBe(250)
-    expect(defaultBudgetForMode('LEGENDS_ONLY')).toBe(250)
-    expect(Math.max(defaultBudgetForMode('GLOBAL_CLASSIC'), defaultBudgetForMode('EUROPE_LEGENDS'))).toBe(250)
-    expect(BUDGET_PRESETS).toContain(250)
+  it('uses 160M for current categories, 220M for legends and the larger one for crossings', () => {
+    expect(defaultBudgetForMode('SPAIN_LEAGUE')).toBe(160)
+    expect(defaultBudgetForMode('GLOBAL_CLASSIC')).toBe(160)
+    expect(defaultBudgetForMode('EUROPE_LEGENDS')).toBe(220)
+    expect(defaultBudgetForMode('LEGENDS_ONLY')).toBe(220)
+    expect(Math.max(defaultBudgetForMode('GLOBAL_CLASSIC'), defaultBudgetForMode('EUROPE_LEGENDS'))).toBe(220)
+    expect(BUDGET_PRESETS).toContain(220)
   })
   it('keeps online rooms on their previous budgets and three-substitute rules (coordinated migration pending)', () => {
     expect(legacyOnlineBudgetForMode('GLOBAL_CLASSIC')).toBe(150)

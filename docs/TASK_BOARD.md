@@ -362,3 +362,7 @@ Mesa de subastas unificada, Global Top 150 por calidad (Actual y Leyendas) con r
 ## SIM-MINI-002 + SIM-MINI-003 + RANK-REVEAL-009 — 22/10/2026
 
 Ranking #/150 oculto durante la subasta y revelado («¡Fichaje confirmado! · TOP n · #p/150») al confirmar el fichaje y luego en la plantilla; disparo de precisión para tiros libres directos (`precision-shot-v1`) y tanda de penales interactiva de la serie local contra CPU (`penalty-shootout-v1`); defensa interactiva breve, una por partido (`defense-mini-v1`). Solo local contra CPU; online y partidas anteriores conservan su resolución. [Informe](qa/SIM-MINI-002-003-RANK-REVEAL.md).
+
+## GAMEPLAY-POLISH-010 — 22/10/2026
+
+Presupuestos 160/220 M (viabilidad verificada), técnicos argentinos por trayectoria documentada (coach-market-v4), escaparate fijo de diez suplentes en serpiente (bench-showcase-v1), moneda visible, microinteracciones, nombres y OVR en cancha y resumen final comparativo. Online y partidas históricas intactos; la selección sobre el tablero (un momento) no se probó en navegador. [Informe](qa/GAMEPLAY-POLISH-010.md).

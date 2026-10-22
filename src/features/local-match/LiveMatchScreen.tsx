@@ -21,7 +21,7 @@ import { EVENT_ICONS, PLAY_LETTERS, eventKey, eventVariant, momentumShare } from
 import { MatchScreen } from './MatchScreen'
 import { MatchStatsPanel } from './MatchStatsPanel'
 import { TacticalBoard } from './TacticalBoard'
-import { TacticalSummary } from './TacticalSummary'
+import { ResultExplanation } from './ResultExplanation'
 import { playerName } from './simulator'
 import { visibleStats } from './playback'
 import { IDLE_PLAY, type BoardFocus, type BoardPlay } from './boardGeometry'
@@ -210,7 +210,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
       </div>
       <div className="match-progress" aria-hidden="true"><span style={{ width: `${Math.min(100, minute / 90 * 100)}%` }} /></div>
       <div className="live-board-wrap">
-        <TacticalBoard formations={session.kernel.input.formations ?? { local: '4-3-3', cpu: '4-3-3' }} lineups={{ local: session.kernel.sides.local.team.lineup, cpu: session.kernel.sides.cpu.team.lineup }} catalog={catalog} names={names} play={play} choices={choices} tick={shownCount} focus={play.freeKick ? play.freeKick.awardedTo === 'local' ? 'cpu' : 'local' : play.corner ? play.corner.awardedTo === 'local' ? 'cpu' : 'local' : focus} speed={speed} animate={animate} paused={paused || exitOpen} />
+        <TacticalBoard formations={session.kernel.input.formations ?? { local: '4-3-3', cpu: '4-3-3' }} lineups={{ local: session.kernel.sides.local.team.lineup, cpu: session.kernel.sides.cpu.team.lineup }} catalog={catalog} names={names} play={play} choices={choices} onPick={atPlay && view.play?.node === 'DIRECTION' ? (label) => { const option = view.play!.options.find((candidate) => candidate.available && PLAY_LETTERS[candidate.choice] === label); if (option) choosePlay(view.play!, option.choice) } : undefined} tick={shownCount} focus={play.freeKick ? play.freeKick.awardedTo === 'local' ? 'cpu' : 'local' : play.corner ? play.corner.awardedTo === 'local' ? 'cpu' : 'local' : focus} speed={speed} animate={animate} paused={paused || exitOpen} />
         {focusEvent?.type === 'recovery' && focusEvent.step && <div className="recovery-flash" key={`recovery:${shownCount}`} role="status">{t('moments.recovered')}</div>}
         {goal && <div className={`goal-flash${goal.aerial ? ' header-goal-flash' : ''}`} key={`goal:${shownCount}`} role="status"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27" /><path d="m30 14 14 10-5 17H21l-5-17Z" /></svg>{t(goal.aerial || goal.corner && goal.corner.delivery !== 'CORNER_SHORT' ? 'aerial.goalCelebration' : 'match.goalCelebration', { team: goal.side ? names[goal.side] : '' })}</div>}
         {play.freeKick && <small className="corner-camera-note">{t('freeKick.camera')}</small>}
@@ -252,7 +252,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
       <MatchStatsPanel stats={stats} />
       <details className="live-power"><summary>{t('liveDT.powerDetail')}</summary><div className="team-power-grid">{(['local', 'cpu'] as const).map((id) => <article className="team-power-card" key={id}><h2>{names[id]}</h2><p>{t('liveDT.strategy')}: {t(`tactics.strategies.${session.kernel.selection[id]}.name`)}</p><p>{t('auctionUX.base', { value: power[id].base.global.toFixed(1) })}</p><p>{t('auctionUX.effective')}: <b>{power[id].effective.global.toFixed(1)}</b></p><p>{t('liveDT.changes', { count: session.benchMode[id] === 'manual-v1' ? Math.min(3 - session.entered[id].length, session.kernel.sides[id].unused.filter((playerId) => catalog.find((p) => p.id === playerId)?.position !== 'ARQ').length) : 0 })}</p></article>)}</div></details>
       {error && <p role="alert">{t('liveDT.error', { code: error })}</p>}
-      {final?.ok && <section className="match-summary"><h2>{t('match.final')} · {score.local}–{score.cpu}</h2><TacticalSummary result={final.value.result} teamName={(id) => id ? names[id] : ''} /><div className="match-actions"><button className="secondary-action" onClick={() => setReplay(true)}>{t('match.replay')}</button></div><details><summary>{t('liveDT.audit')}</summary><p>{t('liveDT.localTrust')}</p><label>{t('liveDT.record')}<textarea readOnly value={JSON.stringify({ version: 'local-live-audit-v1', origin, final: session, result: final.value })} /></label></details></section>}
+      {final?.ok && <section className="match-summary"><h2>{t('match.final')} · {score.local}–{score.cpu}</h2><ResultExplanation inline result={final.value.result} name={(id) => names[id]} catalog={catalog} /><div className="match-actions"><button className="secondary-action" onClick={() => setReplay(true)}>{t('match.replay')}</button></div><details><summary>{t('liveDT.audit')}</summary><p>{t('liveDT.localTrust')}</p><label>{t('liveDT.record')}<textarea readOnly value={JSON.stringify({ version: 'local-live-audit-v1', origin, final: session, result: final.value })} /></label></details></section>}
     </section>
   </main>
 }

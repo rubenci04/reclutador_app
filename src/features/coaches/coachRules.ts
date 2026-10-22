@@ -15,8 +15,12 @@ export const COACH_MARKET_V2 = 'coach-market-v2' as const
 export const COACH_OFFER_SIZE_V2 = 6
 /** coach-market-v3 (COACH-006B): six competitive coaches of the best affordable band, S+ tier, editorial tiers; earlier games keep their coaches, prices and offers. */
 export const COACH_MARKET_V3 = 'coach-market-v3' as const
-export type CoachMarketVersion = 'v1' | 'v2' | 'v3'
-export const coachMarketOf = (config?: { readonly coachMarket?: string }): CoachMarketVersion => config?.coachMarket === COACH_MARKET_V3 ? 'v3' : config?.coachMarket === COACH_MARKET_V2 ? 'v2' : 'v1'
+/** coach-market-v4 (GAMEPLAY-POLISH-010): v3 plus versioned Argentine pools whose eligibility is a documented spell in the Argentine Primera (src/data/argentina-coaches-2026.json). Earlier games keep their markets. */
+export const COACH_MARKET_V4 = 'coach-market-v4' as const
+export type CoachMarketVersion = 'v1' | 'v2' | 'v3' | 'v4'
+/** v3 and v4 share the same prices, tiers and offer rule. */
+export const usesV3Rules = (market: CoachMarketVersion) => market === 'v3' || market === 'v4'
+export const coachMarketOf = (config?: { readonly coachMarket?: string }): CoachMarketVersion => config?.coachMarket === COACH_MARKET_V4 ? 'v4' : config?.coachMarket === COACH_MARKET_V3 ? 'v3' : config?.coachMarket === COACH_MARKET_V2 ? 'v2' : 'v1'
 
 /** Coaches cost a fraction of a footballer: 1 to 8 million by tier. */
 export const COACH_TIER_PRICE: Readonly<Record<CoachTier, number>> = { 'S+': 12, S: COACH_MAX_PRICE, A: 5, B: 3, C: 2, D: COACH_RESERVE }

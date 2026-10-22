@@ -10,8 +10,8 @@ import { createRecruiterDuel } from './auctionEngine'
 import { defaultBudgetForMode } from '../player-catalog/leagueCollections'
 import { CATEGORY_GROUPS } from '../themed-modes/categoryTree'
 
-it('uses 200/250 for new edition defaults (roster-budget-v2)', () => {
-  for (const id of CATEGORY_GROUPS.flatMap((g) => g.modes)) expect(defaultBudgetForMode(id)).toBe(id.includes('LEGENDS') ? 250 : 200)
+it('uses 160/220 for new edition defaults (roster-budget-v3)', () => {
+  for (const id of CATEGORY_GROUPS.flatMap((g) => g.modes)) expect(defaultBudgetForMode(id)).toBe(id.includes('LEGENDS') ? 220 : 160)
 })
 
 it.each(['es-AR', 'en', 'pt-BR'] as const)('distinguishes base and effective strength and shows the goalkeeper without changing power in %s', async (language) => {

@@ -80,7 +80,7 @@ describe('coin flow in the duel', () => {
     vi.stubGlobal('matchMedia', () => ({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() }))
     await start()
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
-    act(() => vi.advanceTimersByTime(0))
+    act(() => vi.advanceTimersByTime(1300))
     expect(document.querySelector('.football-coin')).toHaveAttribute('data-side', storedResult('coin-seed-1'))
     expect(document.querySelector('.football-coin.tossing')).toBeNull()
   })

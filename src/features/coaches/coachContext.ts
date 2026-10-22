@@ -1,7 +1,8 @@
 import type { ThemedModeId } from '../themed-modes/modeTypes'
 import v3 from '../../data/coaches-v3.json'
-import { COACH_CATALOG, EXTRA_COACHES, V3_ADDED_COACHES } from './coachCatalog'
-import { COACH_TIER_PRICE, type CoachMarketVersion } from './coachRules'
+import arg26 from '../../data/argentina-coaches-2026.json'
+import { ARG_2026_ADDED, ARG_LEGENDS_ADDED, COACH_CATALOG, EXTRA_COACHES, V3_ADDED_COACHES } from './coachCatalog'
+import { COACH_TIER_PRICE, usesV3Rules, type CoachMarketVersion } from './coachRules'
 import type { Coach, CoachTier } from './coachTypes'
 import { LEAGUE_COACHES, LEAGUE_EXISTING, type CoachLeague } from './leagueCoaches'
 import { EUROPEAN_NATIONALITIES, LATIN_AMERICAN_ASSOCIATIONS } from '../themed-modes/nationalityRegions'
@@ -52,8 +53,24 @@ export const leagueCoaches = (league: CoachLeague, legend: boolean, extra: reado
 
 /** `market` v2 (coach-market-v2) adds the league coaches and uses league-specific pools for Italy and Mexico; v1 reproduces the offers of earlier games. */
 export function coachesForMode(mode?: ThemedModeId, market: CoachMarketVersion = 'v1'): readonly Coach[] {
-  const pool = poolForMode(mode, market === 'v3' ? 'v2' : market, market === 'v3')
-  return market === 'v3' ? pool.map(toV3) : pool
+  if (market === 'v4' && mode?.startsWith('ARGENTINA')) return argentinaPoolV4(Boolean(mode.includes('LEGENDS'))).map(toV3)
+  const pool = poolForMode(mode, usesV3Rules(market) ? 'v2' : market as 'v1' | 'v2', usesV3Rules(market))
+  return usesV3Rules(market) ? pool.map(toV3) : pool
+}
+
+/**
+ * coach-market-v4, Argentina: the career decides, never the nationality. Actualidad = coaches with a documented 2026 spell in the Argentine Primera (club and period in
+ * argentina-coaches-2026.json, each with its source); Leyendas = the historical Argentine coaches plus separate historical editions of people who also have a current card.
+ */
+export function argentinaPoolV4(legend: boolean): readonly Coach[] {
+  if (legend) return [...COACH_CATALOG.filter((c) => c.status === 'LEGEND' && c.nationality === 'ARG'), ...ARG_LEGENDS_ADDED]
+  const everyone = [...COACH_CATALOG, ...EXTRA_COACHES]
+  const current = arg26.current.map((entry) => {
+    const coach = everyone.find((c) => `${c.name} ${c.surname}` === entry.coach && c.status === 'ACTIVE')
+    if (!coach) throw new Error(`argentina_coach_missing:${entry.coach}`)
+    return { ...coach, team: entry.club, teamKind: 'CLUB' as const, secondaryTeam: undefined, period: [entry.period[0] as number, entry.period[1]] as const, sourceUrl: entry.sourceUrl }
+  })
+  return [...current, ...ARG_2026_ADDED]
 }
 
 function poolForMode(mode: ThemedModeId | undefined, market: 'v1' | 'v2', v3: boolean): readonly Coach[] {

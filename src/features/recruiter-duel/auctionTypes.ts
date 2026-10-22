@@ -83,7 +83,11 @@ export interface RecruiterDuelGame {
   readonly strategies?: Readonly<Record<RecruiterId, StrategyId>>
   /** Absent in games created before configuration existed (classic rules). */
   readonly config?: MatchConfig
+  /** bench-showcase-v1 only: the decisions taken on the fixed showcase, in order. The cards themselves are derived from the seed, never stored. */
+  readonly benchPicks?: readonly BenchPick[]
 }
+
+export interface BenchPick { readonly participant: RecruiterId; readonly action: 'BUY' | 'PASS' | 'FINISH'; readonly playerId?: string }
 
 export type AuctionCreation =
   | { readonly ok: true; readonly game: RecruiterDuelGame }

@@ -1,3 +1,4 @@
+import { shortName } from '../local-match/shortName'
 import { describe, expect, it } from 'vitest'
 import { useState } from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
@@ -85,7 +86,7 @@ describe('LineupOrganizer', () => {
       fireEvent.click(gesture === 'click' ? bench() : shirt('LB'))
       fireEvent.click(gesture === 'click' ? shirt('LB') : bench())
     }
-    expect(shirt('LB')).toHaveTextContent(sub.name.length > 18 ? sub.name.split(' ').slice(-1)[0] : sub.name)
+    expect(shirt('LB')).toHaveTextContent(shortName(sub.name))
     expect(bench()).toHaveTextContent(nameOf(starter))
     fireEvent.click(screen.getByRole('button', { name: 'Confirm eleven' }))
     expect(bench()).not.toHaveAttribute('draggable', 'true')

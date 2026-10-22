@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { CoinSide } from './auctionTypes'
 
@@ -35,8 +36,12 @@ const FACE_KEY = { heads: 'coin.faces.heads', tails: 'coin.faces.tails' } as con
  */
 export function FootballCoin({ side, tossing = false }: { readonly side: CoinSide; readonly tossing?: boolean }) {
   const { t } = useTranslation()
-  return <div className={`football-coin ${tossing ? 'tossing' : ''}`} data-side={side} role="img" aria-label={tossing ? t('duel.coinTossWaiting') : t('coin.side', { side: t(`duel.${side}`) })}>
-    <div className="coin-stage" aria-hidden="true"><div className="coin3d"><div className="coin-face coin-front"><CoinFace side="heads" /></div><div className="coin-face coin-back"><CoinFace side="tails" /></div></div></div>
-    <span>{tossing ? t('duel.coinToss') : `${t(`duel.${side}`)} · ${t(FACE_KEY[side])}`}</span>
+  /** The label only names the side once the CSS landing ended; the side itself is the stored result and never changes. */
+  const [landed, setLanded] = useState(false)
+  const showResult = !tossing || landed
+  return <div className={`football-coin ${tossing ? 'tossing' : ''}${tossing && landed ? ' landed' : ''}`} data-side={side} role="img" aria-label={showResult ? t('coin.side', { side: t(`duel.${side}`) }) : t('duel.coinTossWaiting')}>
+    <div className="coin-stage" aria-hidden="true"><div className="coin3d" onAnimationEnd={(event) => { if (event.target === event.currentTarget) setLanded(true) }}><div className="coin-face coin-front"><CoinFace side="heads" /></div><div className="coin-face coin-back"><CoinFace side="tails" /></div></div></div>
+    {tossing && <div className="coin-shadow" aria-hidden="true" />}
+    <span className="coin-result">{showResult ? `${t(`duel.${side}`)} · ${t(FACE_KEY[side])}` : t('duel.coinToss')}</span>
   </div>
 }
