@@ -70,7 +70,7 @@ describe('DATA-MX-001 Top 150 eligibility', () => {
     const count = (position: string) => catalog.filter(p => p.position === position).length
     expect(count('ARQ')).toBeGreaterThanOrEqual(5)
     for (const position of ['DEF', 'MED', 'DEL']) expect(count(position)).toBeGreaterThanOrEqual(15)
-    expect(defaultBudgetForMode(mode)).toBe(mode.endsWith('LEGENDS') ? 200 : 150)
+    expect(defaultBudgetForMode(mode)).toBe(mode.endsWith("LEGENDS") ? 250 : 200)
     expect(preflightMatchConfig(catalog, config(mode))).toMatchObject({ ok: true })
   })
   it('supports crossing Mexico with every other league', () => {

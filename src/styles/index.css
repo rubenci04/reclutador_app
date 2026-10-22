@@ -784,3 +784,25 @@
 .live-market-headline{margin:0;min-height:2.6em;display:flex;align-items:center;font-size:.95rem;font-weight:700;overflow-wrap:anywhere;animation:play-enter .25s ease-out}.live-market-headline.live-auto{color:#9ad8ff}.live-market-headline.live-outbid{color:#ffb347}.live-market-headline.live-award{color:#f4dc63}
 .live-market-history{font-size:.82rem}.live-market-history summary{cursor:pointer;color:#c6d5bd}.live-market-history ol{margin:6px 0 0;padding-left:18px;display:grid;gap:3px}
 @media(prefers-reduced-motion:reduce){.live-market-headline{animation:none}}
+
+/* ROSTER-005: permanent compact wallet. Sticks above the scoreboard; the scoreboard and the footballer bar sit below it. */
+:root { --wallet-h: 56px; }
+.wallet-bar { position: sticky; top: 0; z-index: 7; display: grid; grid-template-columns: auto minmax(0, 1fr) max-content max-content; grid-template-areas: "icon name balance details" "row row row row"; align-items: center; gap: 2px 8px; margin: 0 0 6px; padding: 5px 10px; border-radius: 8px; background: #0b1a13f7; border: 1px solid #d5fb7666; box-shadow: 0 4px 14px #0008; color: #f4f7ef; }
+.wallet-icon { grid-area: icon; width: 20px; height: 20px; fill: #d5fb76; }
+.wallet-name { grid-area: name; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .8rem; font-weight: 700; opacity: .9; }
+.wallet-balance { grid-area: balance; font-size: 1.35rem; line-height: 1; color: #d5fb76; font-variant-numeric: tabular-nums; }
+.wallet-row { grid-area: row; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.wallet-meter { flex: 1 1 40px; min-width: 40px; height: 6px; border-radius: 4px; background: #ffffff22; overflow: hidden; }
+.wallet-meter i { display: block; height: 100%; background: linear-gradient(90deg, #d5fb76, #7fd06a); transition: width .3s ease; }
+.wallet-chips { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 2px 6px; flex: 0 1 auto; }
+.wallet-chip { font-size: .7rem; font-weight: 700; padding: 0 6px; border-radius: 10px; background: #ffffff1a; white-space: nowrap; }
+.wallet-max { background: #d5fb7633; color: #d5fb76; }
+.wallet-details { grid-area: details; position: relative; font-size: .72rem; }
+.wallet-details summary { cursor: pointer; min-height: 24px; display: flex; align-items: center; opacity: .85; }
+.wallet-details[open] > ul { position: absolute; right: 0; z-index: 8; top: 100%; margin: 4px 0 0; padding: 8px 12px; list-style: none; min-width: 11rem; border-radius: 8px; background: #0b1a13; border: 1px solid #ffffff33; box-shadow: 0 6px 18px #000a; }
+.wallet-details li { padding: 1px 0; }
+.wallet-bar ~ .auction-hud { top: var(--wallet-h); }
+.market-counter { margin: 0 0 4px; font-size: .9rem; } .market-counter b { font-size: 1.1rem; color: #d5fb76; }
+.market-finish { margin-top: 8px; }
+@media (max-width: 480px) { .wallet-balance { font-size: 1.2rem; } .wallet-name { font-size: .72rem; } }
+@media (prefers-reduced-motion: reduce) { .wallet-meter i { transition: none; } }

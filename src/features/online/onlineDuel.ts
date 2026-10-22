@@ -9,7 +9,7 @@ import type { HistoryEntry, HistoryOutcome } from '../history/matchHistory'
 import { resolveSeries } from '../local-match/matchSeries'
 import { catalogForMode } from '../themed-modes/modeCatalog'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
-import { defaultBudgetForMode } from '../player-catalog/leagueCollections'
+import { legacyOnlineBudgetForMode } from '../player-catalog/leagueCollections'
 import { createCrossCategoryDraw, crossCategoryCatalog } from '../recruiter-duel/crossCategoryDraw'
 
 export const seatSide = (seat: 1 | 2): RecruiterId => (seat === 1 ? 'recruiter_one' : 'recruiter_two')
@@ -20,7 +20,7 @@ export const slimDuel = (game: RecruiterDuelGame): RecruiterDuelGame => ({ ...ga
 
 /** The host builds the deal once; the seed is random per room and stored with the state. */
 export function buildInitialDuel(names: { readonly host: string; readonly guest: string }, first: ThemedModeId = 'GLOBAL_CLASSIC', second: ThemedModeId = first): RecruiterDuelGame {
-  const config = { ...CLASSIC_CONFIG, budget: Math.max(defaultBudgetForMode(first), defaultBudgetForMode(second)), coaches: true, coachReserve: COACH_MAX_PRICE, coachMarket: COACH_MARKET_V2, names: { recruiter_one: names.host, recruiter_two: names.guest } }
+  const config = { ...CLASSIC_CONFIG, budget: Math.max(legacyOnlineBudgetForMode(first), legacyOnlineBudgetForMode(second)), coaches: true, coachReserve: COACH_MAX_PRICE, coachMarket: COACH_MARKET_V2, names: { recruiter_one: names.host, recruiter_two: names.guest } }
   const catalog = catalogForMode(first); const seed = newDrawSeed()
   const created = first !== second ? createCrossCategoryDraw(first, second, seed, config) : createRecruiterDuel(catalog, seed, createDrawContext(catalog, [], CURRENT_DRAW_POLICY), config)
   if (!created.ok) throw new Error(created.error)

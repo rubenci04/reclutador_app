@@ -5,7 +5,12 @@ import { COACH_MARKET_V2, COACH_MAX_PRICE, coachReserveFor } from '../coaches/co
 
 /** Versioned configuration of one duel. The classic mode is exactly CLASSIC_CONFIG; nothing else holds a budget. */
 export const MATCH_CONFIG_VERSION = 1 as const
-export const BUDGET_PRESETS = [100, 120, 150, 175, 200] as const
+/** bench-5-v1: up to five optional substitutes, bought after the eleven and the coach (goalkeeper allowed). */
+export const BENCH_MARKET_V2 = 'bench-5-v1' as const
+export const BENCH_LIMIT_V1 = 3
+export const BENCH_LIMIT_V2 = 5
+export const benchLimitOf = (config?: { readonly bench?: string }) => config?.bench === BENCH_MARKET_V2 ? BENCH_LIMIT_V2 : BENCH_LIMIT_V1
+export const BUDGET_PRESETS = [100, 120, 150, 175, 200, 250] as const
 export const BUDGET_LIMITS = { min: 60, max: 300, step: 5 } as const
 export const NAME_MAX_LENGTH = 24
 
@@ -22,6 +27,8 @@ export interface MatchConfig {
   readonly coachReserve?: number
   /** Marker of the six-card coach market (absent in earlier games, which keep three cards). */
   readonly coachMarket?: typeof COACH_MARKET_V2
+  /** Marker of the five-substitute bench (ROSTER-005). Absent in earlier games and online rooms, which keep the three-substitute rules. */
+  readonly bench?: typeof BENCH_MARKET_V2
 }
 
 export const CLASSIC_CONFIG: MatchConfig = { version: MATCH_CONFIG_VERSION, budget: DRAFT_BUDGET_MILLIONS, names: { recruiter_one: null, recruiter_two: null }, substitutes: false }
@@ -56,12 +63,13 @@ export function parseMatchConfig(value: unknown): MatchConfig | null {
   if (record.version !== MATCH_CONFIG_VERSION || !isValidBudget(record.budget) || typeof record.substitutes !== 'boolean' || (record.coaches !== undefined && typeof record.coaches !== 'boolean') || typeof names !== 'object' || names === null) return null
   if (record.coachReserve !== undefined && (record.coaches !== true || typeof record.coachReserve !== 'number' || !Number.isInteger(record.coachReserve) || record.coachReserve < 1 || record.coachReserve > COACH_MAX_PRICE)) return null
   if (record.coachMarket !== undefined && (record.coaches !== true || record.coachMarket !== COACH_MARKET_V2)) return null
+  if (record.bench !== undefined && record.bench !== BENCH_MARKET_V2) return null
   const read = (key: string) => names[key] === null ? null : typeof names[key] === 'string' ? sanitizeName(names[key] as string) : undefined
   const one = read('recruiter_one'); const two = read('recruiter_two')
   if (one === undefined || two === undefined) return null
   const parsed = { recruiter_one: one, recruiter_two: two }
   if (Object.keys(nameIssues(parsed)).length) return null
-  return { version: MATCH_CONFIG_VERSION, budget: record.budget, names: parsed, substitutes: record.substitutes, ...(record.coaches ? { coaches: true, ...(record.coachReserve !== undefined ? { coachReserve: record.coachReserve as number } : {}), ...(record.coachMarket !== undefined ? { coachMarket: COACH_MARKET_V2 } : {}) } : {}) }
+  return { version: MATCH_CONFIG_VERSION, budget: record.budget, names: parsed, substitutes: record.substitutes, ...(record.coaches ? { coaches: true, ...(record.coachReserve !== undefined ? { coachReserve: record.coachReserve as number } : {}), ...(record.coachMarket !== undefined ? { coachMarket: COACH_MARKET_V2 } : {}) } : {}), ...(record.bench !== undefined ? { bench: BENCH_MARKET_V2 } : {}) }
 }
 
 export const POSITIONS_ORDER: readonly Position[] = ['ARQ', 'DEF', 'MED', 'DEL']

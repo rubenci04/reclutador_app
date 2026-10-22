@@ -42,10 +42,12 @@ export interface SimulationInput {
 export const SUBSTITUTION_RULES_VERSION = 'subs-v1' as const
 export const SUBSTITUTION_MINUTES: readonly (typeof MATCH_MINUTES)[number][] = [45, 60, 75]
 export const SUBSTITUTION_CHANCE = .45
+/** Largest bench a side may bring (bench-5-v1); validation only, the substitution policy and its probabilities are unchanged. */
+export const MAX_BENCH = 5
 
 /** Bench of one side: unique catalog players, outside the eleven, with a general position. */
 export function isValidBench(bench: readonly string[], lineup: DraftLineup, catalog: readonly Player[]) {
-  if (new Set(bench).size !== bench.length || bench.length > 3) return false
+  if (new Set(bench).size !== bench.length || bench.length > MAX_BENCH) return false
   const onPitch = new Set(Object.values(lineup))
   return bench.every((id) => !onPitch.has(id) && catalog.some((player) => player.id === id))
 }

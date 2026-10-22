@@ -16,7 +16,7 @@ import { TACTICS_VERSION, isStrategyId, type StrategyId } from '../tactics/strat
 import { usesRarity, validContext, type DrawContext } from './drawHistory'
 import { CLUB_SPREAD_POLICY, clubRepeats, spreadClubs } from './clubSpread'
 import { canonicalClubKey } from '../player-catalog/clubKey'
-import { CLASSIC_CONFIG, SUBSTITUTE_POSITIONS, preflightMatchConfig, rosterComposition, type MatchConfig } from './matchConfig'
+import { BENCH_LIMIT_V1, CLASSIC_CONFIG, SUBSTITUTE_POSITIONS, benchLimitOf, preflightMatchConfig, rosterComposition, type MatchConfig } from './matchConfig'
 import type { AuctionActionError, AuctionCreation, AuctionRound, AuctionTransition, AwardReason, CoinSide, RecruiterDuelGame, RecruiterId, RecruiterTeam, RoundAward } from './auctionTypes'
 
 /** The one source of the budget of a game: its configuration, or the classic value for games without one. */
@@ -357,18 +357,25 @@ export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player
 /** Candidates per line (DEF, MED, DEL) in the substitute pool. */
 export const SUBSTITUTE_POOL_PER_LINE = 3
 
+/** bench-5-v1 also offers goalkeepers; earlier games keep the three outfield lines. */
+const BENCH_V2_POSITIONS: readonly Player['position'][] = ['ARQ', 'DEF', 'MED', 'DEL']
+const poolPositions = (game: Pick<RecruiterDuelGame, 'config'>) => game.config?.bench ? BENCH_V2_POSITIONS : SUBSTITUTE_POSITIONS
+/** Substitutes already signed and the most the team may have (3 in earlier games, 5 with bench-5-v1). Both come from the game, never from a stored counter. */
+export const benchStatus = (game: Pick<RecruiterDuelGame, 'config' | 'teams'>, participant: RecruiterId) => ({ filled: benchSlots(game.teams[participant]).filter((slot) => slot.playerId).length, limit: benchLimitOf(game.config) })
+
 /**
  * Where substitutes come from: first the players that came out as cards and were discarded (nobody owns them), then, for
  * every line short of ${SUBSTITUTE_POOL_PER_LINE}, seeded extras of the same catalog nobody owns. Same pool for both recruiters, derived from the seed.
  */
 export function substitutePool(game: RecruiterDuelGame, catalog: readonly Player[]): Player[] {
-  const lines = SUBSTITUTE_POSITIONS as readonly string[]
+  const positions = poolPositions(game)
+  const lines = positions as readonly string[]
   const owned = new Set([...rosterIds(game.teams[FIRST]), ...rosterIds(game.teams[SECOND])])
   const byId = playerMap(catalog)
   const discarded = game.discardedPlayerIds.flatMap((id) => { const player = byId.get(id); return player && lines.includes(player.position) && !owned.has(id) ? [player] : [] })
   const random = createSeededRandom(`${game.seed}:bench`)
   const used = new Set(discarded.map((player) => player.id))
-  const extras = SUBSTITUTE_POSITIONS.flatMap((position) => {
+  const extras = positions.flatMap((position) => {
     const missing = SUBSTITUTE_POOL_PER_LINE - discarded.filter((player) => player.position === position).length
     const eligible = catalog.filter((player) => player.position === position && !owned.has(player.id) && !used.has(player.id)).sort((a, b) => a.id.localeCompare(b.id))
     return missing > 0 ? shuffleSeeded(eligible, random).slice(0, missing) : []
@@ -384,12 +391,12 @@ export function substituteMarket(game: RecruiterDuelGame, participant: Recruiter
   if (game.phase !== 'TEAMS_COMPLETED') return []
   const team = game.teams[participant]
   if (game.config?.coaches && !team.coachId && !team.coachDeclined) return []
-  if (benchSlots(team).length >= 3) return []
+  if (game.config?.bench ? benchStatus(game, participant).filled >= benchLimitOf(game.config) : benchSlots(team).length >= BENCH_LIMIT_V1) return []
   const left = budgetOf(game) - team.spent
-  if (!game.manualBench && budgetOf(game) - game.teams[opponent(participant)].spent <= 0) return []
+  if (!game.manualBench && !game.config?.bench && budgetOf(game) - game.teams[opponent(participant)].spent <= 0) return []
   const taken = new Set(benchSlots(team).map((slot) => slot.position))
   const eligible = game.categoryPair ? new Set(catalogForMode(game.categoryPair[participant]).map((p) => p.id)) : null
-  return substitutePool(game, eligible ? catalog.filter((p) => eligible.has(p.id)) : catalog).filter((player) => (game.manualBench || !taken.has(player.position)) && player.price <= left)
+  return substitutePool(game, eligible ? catalog.filter((p) => eligible.has(p.id)) : catalog).filter((player) => (game.manualBench || game.config?.bench || !taken.has(player.position)) && player.price <= left)
     .sort((a, b) => b.overall_rating - a.overall_rating || a.price - b.price || a.id.localeCompare(b.id))
 }
 
@@ -417,10 +424,21 @@ export function buySubstitute(game: RecruiterDuelGame, participant: RecruiterId,
   return transition(game, { teams: { ...game.teams, [participant]: bought } })
 }
 
-/** The CPU spends what is left on its best affordable substitute of each line. Deterministic. */
+/** The CPU spends what is left on its best affordable substitute of each line; with bench-5-v1 it keeps buying the best affordable one until the bench is full. Deterministic. */
 export function autoBuySubstitutes(game: RecruiterDuelGame, participant: RecruiterId, catalog: readonly Player[]): RecruiterDuelGame {
   let current = game
-  for (const position of SUBSTITUTE_POSITIONS) {
+  if (game.config?.bench) {
+    for (const position of [...SUBSTITUTE_POSITIONS, 'ARQ' as const, undefined]) {
+      while (benchStatus(current, participant).filled < benchLimitOf(current.config)) {
+        const pick = substituteMarket(current, participant, catalog).find((player) => position === undefined || player.position === position)
+        const result = pick ? buySubstitute(current, participant, pick.id, catalog) : null
+        if (!result?.ok) break
+        current = result.game
+        if (position !== undefined) break
+      }
+    }
+  }
+  else for (const position of SUBSTITUTE_POSITIONS) {
     const pick = substituteMarket(current, participant, catalog).find((player) => player.position === position)
     if (!pick) continue
     const result = buySubstitute(current, participant, pick.id, catalog)

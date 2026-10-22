@@ -111,11 +111,11 @@ describe('setup screen', () => {
     return i18n
   }
 
-  it('keeps the classic mode as the default: no extra fields, 150M summary, start enabled', async () => {
+  it('keeps the classic mode as the default: no extra fields, 200M summary, start enabled', async () => {
     await open()
     expect(screen.getByRole('radio', { name: /Classic/ })).toBeChecked()
     expect(screen.queryByLabelText('Team 1 name')).not.toBeInTheDocument()
-    expect(screen.getByText('Starting budget: 150M per team')).toBeInTheDocument()
+    expect(screen.getByText('Starting budget: 200M per team')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Start duel' })).toBeEnabled()
   })
 
@@ -154,7 +154,7 @@ describe('setup screen', () => {
     expect(screen.getByRole('img', { name: 'Deportivo Pasto budget: 150M left of 150M' })).toBeInTheDocument()
     expect(screen.getByText(/Deportivo Pasto's turn|Club Atlético Pichirica's turn/)).toBeInTheDocument()
     const exported = JSON.parse((screen.getByLabelText('Original seed and context') as HTMLTextAreaElement).value)
-    expect(exported.config).toEqual({ ...custom(150, { recruiter_one: 'Deportivo Pasto', recruiter_two: 'Club Atlético Pichirica' }), coaches: true, coachReserve: 8, coachMarket: 'coach-market-v2' })
+    expect(exported.config).toEqual({ ...custom(150, { recruiter_one: 'Deportivo Pasto', recruiter_two: 'Club Atlético Pichirica' }), coaches: true, coachReserve: 8, coachMarket: 'coach-market-v2', bench: 'bench-5-v1' })
   })
 
   it('uses an editable default name for the CPU rival and translates the setup', async () => {

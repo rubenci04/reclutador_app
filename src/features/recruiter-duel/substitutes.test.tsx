@@ -158,7 +158,7 @@ describe('substitutions in the match', () => {
     expect(() => run(bench)).not.toThrow()
     expect(() => run({ ...bench, local: [bench.local[0], bench.local[0], bench.local[2]] })).toThrow('invalid_match_bench')
     expect(() => run({ ...bench, cpu: [lineups.cpu.LB!, bench.cpu[1], bench.cpu[2]] })).toThrow('invalid_match_bench')
-    expect(() => run({ ...bench, local: [...bench.local, bench.cpu[0]] })).toThrow('invalid_match_bench')
+    expect(() => run({ ...bench, local: [...bench.local, ...bench.cpu, bench.cpu[0]] })).toThrow('invalid_match_bench')
   })
 
   it('really change what the engine uses: a far stronger substitute raises the scoring after he comes on', () => {

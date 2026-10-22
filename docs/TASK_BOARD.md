@@ -346,3 +346,7 @@ Europa Actualidad completa (150 reconciladas, 0 provisionales; 31 ediciones nuev
 ## DATA-REG-003C — 22/10/2026
 
 Sudamérica + México Leyendas (110 reconciladas, 40 provisionales) y Europa Leyendas (114 reconciladas, 4 ediciones nuevas, 36 provisionales) pasan a Top 150 editorial; catálogos anteriores congelados; clubes de Ferran Torres, Leão, Gordon y Dumfries confirmados sin correcciones. 1.273 pruebas aprobadas. [Informe](qa/DATA-REG-003C.md).
+
+## ROSTER-005 — 22/10/2026
+
+Presupuestos nuevos 200/250 M, hasta cinco suplentes opcionales (`bench-5-v1`, con arquero, CPU limitada al saldo) y billetera permanente con saldo y máximo ofertable. Online conserva presupuestos y tres suplentes hasta una migración coordinada (pendiente). 1.284 pruebas aprobadas. [Informe](qa/ROSTER-005.md).

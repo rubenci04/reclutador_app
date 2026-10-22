@@ -38,7 +38,7 @@ import { PlayerIdentity, VisualCredits } from './PlayerIdentity'
 import { FootballCoin } from './FootballCoin'
 import { LineupOrganizer } from './LineupOrganizer'
 import { MatchSetupPanel } from './MatchSetupPanel'
-import { DEFAULT_SETUP_DRAFT, type SetupDraft, CLASSIC_CONFIG, isValidBudget, nameIssues, parseMatchConfig, preflightMatchConfig, sanitizeName, MATCH_CONFIG_VERSION, type MatchConfig } from './matchConfig'
+import { DEFAULT_SETUP_DRAFT, type SetupDraft, CLASSIC_CONFIG, BENCH_MARKET_V2, isValidBudget, nameIssues, parseMatchConfig, preflightMatchConfig, sanitizeName, MATCH_CONFIG_VERSION, type MatchConfig } from './matchConfig'
 import { AuctionHud } from './AuctionHud'
 import { CpuCompletionPanel, CpuSigningsSummary, QuickCompletePanel } from './AutoCompletePanel'
 import { buildHudModel } from './hudModel'
@@ -57,6 +57,7 @@ import { matchHistory, type HistoryOutcome } from '../history/matchHistory'
 import { LiveMarketPanel } from './LiveMarketPanel'
 import { useLiveMarket } from './liveMarket'
 import { SubstituteMarket } from './SubstituteMarket'
+import { Wallet } from './Wallet'
 import type { OnlineDuelBinding } from './onlineBinding'
 import { OnlineTeamsStage } from './OnlineTeamsStage'
 import { WinCelebration } from './WinCelebration'
@@ -152,9 +153,9 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
     setGame(next); setError(null)
   }
   const customBudget = Number(setup.budgetText)
-  const customConfig: MatchConfig = { version: MATCH_CONFIG_VERSION, budget: customBudget, names: { recruiter_one: sanitizeName(setup.nameOne), recruiter_two: sanitizeName(setup.nameTwo) }, substitutes: setup.substitutes, ...(setup.coaches ? { coaches: true, coachReserve: setup.coachReserve ?? COACH_MAX_PRICE, coachMarket: COACH_MARKET_V2 } : {}) }
+  const customConfig: MatchConfig = { version: MATCH_CONFIG_VERSION, budget: customBudget, names: { recruiter_one: sanitizeName(setup.nameOne), recruiter_two: sanitizeName(setup.nameTwo) }, substitutes: setup.substitutes, ...(setup.coaches ? { coaches: true, coachReserve: setup.coachReserve ?? COACH_MAX_PRICE, coachMarket: COACH_MARKET_V2 } : {}), bench: BENCH_MARKET_V2 }
   const setupPreflight = isValidBudget(customBudget) ? preflightMatchConfig(catalog, customConfig) : { ok: false as const, reason: 'budget_range' as const }
-  const classicConfig = { ...CLASSIC_CONFIG, budget: Math.max(defaultBudgetForMode(mode), secondCategory === 'same' ? 0 : defaultBudgetForMode(secondCategory)) }
+  const classicConfig = { ...CLASSIC_CONFIG, bench: BENCH_MARKET_V2, budget: Math.max(defaultBudgetForMode(mode), secondCategory === 'same' ? 0 : defaultBudgetForMode(secondCategory)) }
   const config = setup.mode === 'custom' ? customConfig : setup.coaches ? { ...classicConfig, coaches: true, coachReserve: setup.coachReserve ?? COACH_MAX_PRICE, coachMarket: COACH_MARKET_V2 } : classicConfig
   const canStart = preflightMatchConfig(catalog, config).ok && (setup.mode === 'classic' || (setupPreflight.ok && Object.keys(nameIssues(customConfig.names)).length === 0))
   const start = () => {
@@ -361,6 +362,9 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
     return () => window.clearTimeout(timer)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [noHumanDecision, game?.roundIndex])
+  /** Whose wallet is shown: the online player, the human against the CPU, otherwise whoever acts now (bidder, round opener or the recruiter organising the squad). */
+  const walletSide: RecruiterId | null = !game || !['REVEAL_PLAYER', 'BIDDING', 'ROUND_RESULT', 'NEXT_ROUND', 'DISCARD_RESULT', 'TEAMS_COMPLETED'].includes(game.phase) ? null
+    : online ? online.mySide : opponentMode === 'cpu' ? 'recruiter_one' : game.phase === 'TEAMS_COMPLETED' ? RECRUITER_IDS.find((participant) => !orderingDone(participant)) ?? 'recruiter_one' : game.activeParticipant ?? hud?.turn ?? 'recruiter_one'
   const names = { recruiter_one: (!online ? teamName : undefined) ?? game?.config?.names.recruiter_one ?? t('duel.recruiters.recruiter_one'), recruiter_two: game?.config?.names.recruiter_two ?? (opponentMode === 'cpu' ? 'CPU' : t('duel.recruiters.recruiter_two')) }
   const autoRounds = autoRoundState.seed === game?.seed ? autoRoundState.rounds : NO_AUTO_ROUNDS
   const liveMarket = useLiveMarket(game, catalog, names, autoRounds)
@@ -459,6 +463,7 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
       {(() => { const topic = helpTopicForPhase(game?.phase); return game && topic && !(game && ['SIMULATING', 'MATCH_RESULT', 'DISCARD_RESULT', 'COIN_TOSS', 'NEXT_ROUND'].includes(game.phase)) ? <HelpTip topic={topic} /> : null })()}
       {online && online.connection !== 'connected' && <p className="auction-banner auction-banner-blocked" role="status">{t('online.connection.' + online.connection)}</p>}
       {game && !online && <ConfirmNavigation label={t('navigation.home')} message={t('navigation.recruitmentExitWarning')} onConfirm={goHome} />}{game && <AbandonGame versusCpu={opponentMode === 'cpu'} names={names} onAbandon={abandon} onlySide={online?.mySide} />}
+      {game && walletSide && <Wallet game={game} catalog={catalog} side={walletSide} name={names[walletSide]} onShowHud={hud ? () => document.querySelector('.auction-hud')?.scrollIntoView?.({ block: 'start' }) : undefined} />}
       {game && !game.categoryPair && !hud && <p className="discard-counter" role="status">{t('discards.available', { count: game.discardsRemaining })}{game.discardsRemaining === 0 && <span> · {t('discards.exhausted')}</span>}</p>}
       {game?.phase === 'DISCARD_RESULT' && game.lastDiscard && <section className="discard-scene" aria-live="polite"><h2>{t('discards.newDraw')}</h2><DiceRoller key={game.lastDiscard.playerId} position={playerById(game.lastDiscard.playerId).position} tier={diceTier(playerById(game.lastDiscard.playerId).overall_rating)} roundNumber={game.roundIndex + 1} /><div className="card-discard"><PlayerIdentity player={playerById(game.lastDiscard.playerId)} /></div></section>}
       {hud && game && <AuctionHud hud={hud} names={names} currentPosition={game.phase === 'BIDDING' || game.phase === 'REVEAL_PLAYER' ? footballer?.position : undefined} onShowPitches={() => { setPitchesOpen(true); const court = document.getElementById('team-progress'); court?.focus({ preventScroll: true }); court?.scrollIntoView?.({ behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }) }} />}
