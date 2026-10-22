@@ -806,3 +806,6 @@
 .market-finish { margin-top: 8px; }
 @media (max-width: 480px) { .wallet-balance { font-size: 1.2rem; } .wallet-name { font-size: .72rem; } }
 @media (prefers-reduced-motion: reduce) { .wallet-meter i { transition: none; } }
+
+/* COACH-006B: S+ tier of coach-market-v3 */
+.coach-card[data-tier="S+"] { --coach-tier: #ffd24a; box-shadow: 0 0 0 1px #ffd24a66, 0 0 14px #ffd24a33; }

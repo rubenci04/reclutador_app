@@ -1,5 +1,5 @@
 import type { Player } from '../../types/player'
-import { coachById } from '../coaches/coachCatalog'
+import { hiredCoachOf } from '../coaches/coachCatalog'
 import { coachEffect } from '../coaches/coachRules'
 import type { Coach } from '../coaches/coachTypes'
 import { summarizeDraft } from '../draft/draftModel'
@@ -31,7 +31,7 @@ export function teamPower(game: RecruiterDuelGame, participant: RecruiterId, cat
   if (summary.selectedCount !== 11 || summary.averageRating === null) return null
   const match: MatchTeam = { lineup: team.lineup, players: summary.selectedPlayers, spent: summary.spent, averageRating: summary.averageRating }
   const base = calculateTeamStrength(match)
-  const coach = coachById(team.coachId) ?? null
+  const coach = hiredCoachOf(team) ?? null
   const bonus = coach ? coachEffect(coach, game.strategies?.[participant] ?? 'NEUTRAL') : { attack: 0, defense: 0, midfield: 0 }
   const quality = squadQuality(match.players)
   const rival = summarizeDraft(game.teams[participant === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one'].lineup, catalog, budgetOf(game))

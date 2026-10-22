@@ -37,7 +37,7 @@ export function CoachMarket({ game, participant, name, locked, onHire, onDecline
       </details>
     </article>
   </section>
-  const v2 = coachMarketOf(game.config) === 'v2'
+  const v2 = coachMarketOf(game.config) !== 'v1'
   const stats = (coach: Coach) => { const e = effectText(coach); return <ul className="coach-stats" aria-label={t('coach.cardEffect', e)}>{(['attack', 'midfield', 'defense'] as const).map((sector) => <li key={sector}><b>+{e[sector]}</b><small>{t(`coach.sector.${sector}`)}</small></li>)}</ul> }
   if (!market.length) return null
   return <section className="coach-market" aria-label={t('coach.title', { name })}>

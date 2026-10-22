@@ -1,4 +1,5 @@
-export const COACH_TIERS = ['S', 'A', 'B', 'C', 'D'] as const
+/** S+ (coach-market-v3) is reserved for extraordinary coaches; earlier markets never contain it. */
+export const COACH_TIERS = ['S+', 'S', 'A', 'B', 'C', 'D'] as const
 export type CoachTier = (typeof COACH_TIERS)[number]
 /** Where the coach's influence is strongest. BALANCED spreads it over the three sectors. */
 export type CoachFocus = 'ATTACK' | 'DEFENSE' | 'MIDFIELD' | 'BALANCED'

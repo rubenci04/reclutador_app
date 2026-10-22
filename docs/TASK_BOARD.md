@@ -350,3 +350,7 @@ Sudamérica + México Leyendas (110 reconciladas, 40 provisionales) y Europa Ley
 ## ROSTER-005 — 22/10/2026
 
 Presupuestos nuevos 200/250 M, hasta cinco suplentes opcionales (`bench-5-v1`, con arquero, CPU limitada al saldo) y billetera permanente con saldo y máximo ofertable. Online conserva presupuestos y tres suplentes hasta una migración coordinada (pendiente). 1.284 pruebas aprobadas. [Informe](qa/ROSTER-005.md).
+
+## COACH-006B + DISCARD-005 — 22/10/2026
+
+coach-market-v3 (nivel S+, niveles editoriales, seis cartas competitivas y asequibles por especialidad, pools ampliados, CPU por perfil táctico) y cinco descartes compartidos (`discards-5-v1`) para partidas locales nuevas. Online y partidas anteriores conservan sus reglas. [Informe](qa/COACH-006B-DISCARD-005.md).

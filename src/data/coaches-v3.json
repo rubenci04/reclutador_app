@@ -1,0 +1,329 @@
+{
+ "version": "coach-market-v3",
+ "note": "Editorial tiers and expanded pools of coach-market-v3. Tiers are game design, not a factual ranking; reference spells are the documented spell in that league (eligibility is the career, never the nationality). Earlier markets are unaffected.",
+ "tiers": {
+  "S+": [
+   "Pep Guardiola",
+   "Carlo Ancelotti",
+   "Alex Ferguson",
+   "Johan Cruyff",
+   "Arrigo Sacchi",
+   "César Luis Menotti",
+   "Carlos Bilardo",
+   "Luis Enrique"
+  ],
+  "S": [
+   "Lionel Scaloni",
+   "Diego Simeone",
+   "Hansi Flick",
+   "Mikel Arteta",
+   "Thomas Tuchel",
+   "Julian Nagelsmann",
+   "Didier Deschamps",
+   "Simone Inzaghi",
+   "Antonio Conte",
+   "José Mourinho",
+   "Luis de la Fuente",
+   "Carlos Bianchi",
+   "Helenio Herrera",
+   "Rinus Michels",
+   "Mário Zagallo",
+   "Vicente del Bosque",
+   "Brian Clough",
+   "Marcelo Bielsa",
+   "Marcello Lippi",
+   "Giovanni Trapattoni",
+   "Fabio Capello",
+   "Alejandro Sabella",
+   "Marcelo Gallardo",
+   "Mauricio Pochettino",
+   "Telê Santana",
+   "Osvaldo Zubeldía",
+   "Bill Shankly",
+   "Bob Paisley",
+   "Arsène Wenger",
+   "Alf Ramsey",
+   "Miguel Muñoz"
+  ],
+  "A": [
+   "Claudio Ranieri",
+   "Stefano Pioli",
+   "Roberto De Zerbi",
+   "Antonio Mohamed",
+   "Víctor Manuel Vucetich",
+   "Guillermo Almada",
+   "Bora Milutinović",
+   "Javier Aguirre",
+   "Bobby Robson",
+   "Carlos Alberto Parreira",
+   "Luiz Felipe Scolari",
+   "Adenor Leonardo Bacchi (Tite)",
+   "Luis Aragonés",
+   "Matías Almeyda"
+  ],
+  "B": [
+   "Vincenzo Italiano",
+   "Carlos Reinoso"
+  ]
+ },
+ "added": [
+  {
+   "id": "coach_v3_shankly",
+   "name": "Bill",
+   "surname": "Shankly",
+   "birthYear": 1913,
+   "deathYear": 1981,
+   "team": "Liverpool",
+   "teamKind": "CLUB",
+   "nationality": "SCO",
+   "status": "LEGEND",
+   "tier": "S",
+   "focus": "ATTACK",
+   "period": [
+    1959,
+    1974
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Bill_Shankly"
+  },
+  {
+   "id": "coach_v3_paisley",
+   "name": "Bob",
+   "surname": "Paisley",
+   "birthYear": 1919,
+   "deathYear": 1996,
+   "team": "Liverpool",
+   "teamKind": "CLUB",
+   "nationality": "ENG",
+   "status": "LEGEND",
+   "tier": "S",
+   "focus": "DEFENSE",
+   "period": [
+    1974,
+    1983
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Bob_Paisley"
+  },
+  {
+   "id": "coach_v3_wenger",
+   "name": "Arsène",
+   "surname": "Wenger",
+   "birthYear": 1949,
+   "team": "Arsenal",
+   "teamKind": "CLUB",
+   "nationality": "FRA",
+   "status": "LEGEND",
+   "tier": "S",
+   "focus": "ATTACK",
+   "period": [
+    1996,
+    2018
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Ars%C3%A8ne_Wenger"
+  },
+  {
+   "id": "coach_v3_robson",
+   "name": "Bobby",
+   "surname": "Robson",
+   "birthYear": 1933,
+   "deathYear": 2009,
+   "team": "Ipswich Town",
+   "teamKind": "CLUB",
+   "nationality": "ENG",
+   "status": "LEGEND",
+   "tier": "A",
+   "focus": "BALANCED",
+   "period": [
+    1969,
+    1982
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Bobby_Robson"
+  },
+  {
+   "id": "coach_v3_ramsey",
+   "name": "Alf",
+   "surname": "Ramsey",
+   "birthYear": 1920,
+   "deathYear": 1999,
+   "team": "Ipswich Town",
+   "teamKind": "CLUB",
+   "nationality": "ENG",
+   "status": "LEGEND",
+   "tier": "S",
+   "focus": "MIDFIELD",
+   "period": [
+    1955,
+    1963
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Alf_Ramsey"
+  },
+  {
+   "id": "coach_v3_munoz",
+   "name": "Miguel",
+   "surname": "Muñoz",
+   "birthYear": 1922,
+   "deathYear": 1990,
+   "team": "Real Madrid",
+   "teamKind": "CLUB",
+   "nationality": "ESP",
+   "status": "LEGEND",
+   "tier": "S",
+   "focus": "BALANCED",
+   "period": [
+    1960,
+    1974
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Miguel_Mu%C3%B1oz"
+  },
+  {
+   "id": "coach_v3_aragones",
+   "name": "Luis",
+   "surname": "Aragonés",
+   "birthYear": 1938,
+   "deathYear": 2014,
+   "team": "España",
+   "teamKind": "NATIONAL",
+   "nationality": "ESP",
+   "status": "LEGEND",
+   "tier": "A",
+   "focus": "MIDFIELD",
+   "period": [
+    2004,
+    2008
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Luis_Aragon%C3%A9s"
+  },
+  {
+   "id": "coach_v3_parreira",
+   "name": "Carlos Alberto",
+   "surname": "Parreira",
+   "birthYear": 1943,
+   "team": "Brasil",
+   "teamKind": "NATIONAL",
+   "nationality": "BRA",
+   "status": "LEGEND",
+   "tier": "A",
+   "focus": "DEFENSE",
+   "period": [
+    1991,
+    1994
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Carlos_Alberto_Parreira"
+  },
+  {
+   "id": "coach_v3_scolari",
+   "name": "Luiz Felipe",
+   "surname": "Scolari",
+   "birthYear": 1948,
+   "team": "Grêmio",
+   "teamKind": "CLUB",
+   "nationality": "BRA",
+   "status": "LEGEND",
+   "tier": "A",
+   "focus": "DEFENSE",
+   "period": [
+    1993,
+    1996
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Luiz_Felipe_Scolari"
+  },
+  {
+   "id": "coach_v3_tite",
+   "name": "Adenor Leonardo",
+   "surname": "Bacchi (Tite)",
+   "birthYear": 1961,
+   "team": "Corinthians",
+   "teamKind": "CLUB",
+   "nationality": "BRA",
+   "status": "ACTIVE",
+   "tier": "A",
+   "focus": "MIDFIELD",
+   "period": [
+    2010,
+    2013
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Tite_(football_manager)"
+  }
+ ],
+ "leagueSpells": [
+  {
+   "coach": "José Mourinho",
+   "league": "ITA",
+   "team": "Inter de Milán",
+   "period": [
+    2008,
+    2010
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Jos%C3%A9_Mourinho"
+  },
+  {
+   "coach": "Carlo Ancelotti",
+   "league": "ITA",
+   "team": "AC Milan",
+   "period": [
+    2001,
+    2009
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Carlo_Ancelotti"
+  },
+  {
+   "coach": "Roberto De Zerbi",
+   "league": "ITA",
+   "team": "Sassuolo",
+   "period": [
+    2018,
+    2021
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Roberto_De_Zerbi"
+  },
+  {
+   "coach": "Luis Enrique",
+   "league": "ITA",
+   "team": "Roma",
+   "period": [
+    2011,
+    2012
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Luis_Enrique"
+  },
+  {
+   "coach": "Gennaro Gattuso",
+   "league": "ITA",
+   "team": "AC Milan",
+   "period": [
+    2017,
+    2019
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Gennaro_Gattuso"
+  },
+  {
+   "coach": "Carlos Bianchi",
+   "league": "ITA",
+   "team": "Roma",
+   "period": [
+    1996,
+    1997
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Carlos_Bianchi"
+  },
+  {
+   "coach": "Matías Almeyda",
+   "league": "MEX",
+   "team": "Guadalajara",
+   "period": [
+    2015,
+    2018
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Mat%C3%ADas_Almeyda"
+  },
+  {
+   "coach": "Marcelo Bielsa",
+   "league": "MEX",
+   "team": "Club América",
+   "period": [
+    1993,
+    1994
+   ],
+   "sourceUrl": "https://en.wikipedia.org/wiki/Marcelo_Bielsa"
+  }
+ ]
+}

@@ -31,6 +31,8 @@ export interface RecruiterTeam {
   readonly coachId?: string
   /** What the coach actually cost (a starter contract can be cheaper than his tier price). */
   readonly coachPrice?: number
+  /** Tier of the coach when hired under coach-market-v3 (editorial tiers differ from the catalogue base tier). */
+  readonly coachTier?: 'S+' | 'S' | 'A' | 'B' | 'C' | 'D'
   /** The recruiter chose to go without a coach, which opens the substitute step. */
   readonly coachDeclined?: boolean
 }

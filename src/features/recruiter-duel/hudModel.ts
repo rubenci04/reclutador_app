@@ -1,11 +1,11 @@
 import type { Player } from '../../types/player'
+import { discardLimitOf } from './matchConfig'
 import { budgetOf, currentRound, maximumSafeBid, openingPriority, positionProgress, rosterIds } from './auctionEngine'
 import type { RecruiterDuelGame, RecruiterId } from './auctionTypes'
 import { coachReserveFor } from '../coaches/coachRules'
 import { teamStrengthPreview, type TeamStrength } from './teamStrength'
 
 export const HUD_POSITIONS = ['ARQ', 'DEF', 'MED', 'DEL'] as const
-export const SHARED_DISCARDS = 3
 
 export interface HudPosition {
   readonly position: (typeof HUD_POSITIONS)[number]
@@ -86,7 +86,7 @@ export function buildHudModel(game: RecruiterDuelGame, catalog: readonly Player[
   }
   return {
     budget: budgetOf(game), awards: game.record.filter((entry) => entry.type === 'award').length, totalAwards: game.rounds.length, teamSize: rosterIds(game.teams.recruiter_one).length,
-    discardsRemaining: game.discardsRemaining, discardsTotal: SHARED_DISCARDS,
+    discardsRemaining: game.discardsRemaining, discardsTotal: discardLimitOf(game.config),
     turn: game.activeParticipant ?? openingPriority(game) ?? null,
     participants: { recruiter_one: participant('recruiter_one'), recruiter_two: participant('recruiter_two') },
   }

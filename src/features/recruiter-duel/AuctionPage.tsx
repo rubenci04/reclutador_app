@@ -28,7 +28,7 @@ import { CPU_STRATEGIES, CPU_DIFFICULTIES, takeCpuTurn, type CpuStrategy, type C
 import { CoachMarket } from './CoachMarket'
 import { TeamPowerPanel } from './TeamPowerPanel'
 import { autoChooseCoach, chooseCoach, declineCoach } from './coachHiring'
-import { COACH_MARKET_V2, COACH_MAX_PRICE } from '../coaches/coachRules'
+import { COACH_MARKET_V3, COACH_MAX_PRICE } from '../coaches/coachRules'
 import { StageGuide } from '../onboarding/StageGuide'
 import { ModeSelector } from '../themed-modes/ModeSelector'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
@@ -38,7 +38,7 @@ import { PlayerIdentity, VisualCredits } from './PlayerIdentity'
 import { FootballCoin } from './FootballCoin'
 import { LineupOrganizer } from './LineupOrganizer'
 import { MatchSetupPanel } from './MatchSetupPanel'
-import { DEFAULT_SETUP_DRAFT, type SetupDraft, CLASSIC_CONFIG, BENCH_MARKET_V2, isValidBudget, nameIssues, parseMatchConfig, preflightMatchConfig, sanitizeName, MATCH_CONFIG_VERSION, type MatchConfig } from './matchConfig'
+import { DEFAULT_SETUP_DRAFT, type SetupDraft, CLASSIC_CONFIG, BENCH_MARKET_V2, DISCARDS_MARKER_V2, isValidBudget, nameIssues, parseMatchConfig, preflightMatchConfig, sanitizeName, MATCH_CONFIG_VERSION, type MatchConfig } from './matchConfig'
 import { AuctionHud } from './AuctionHud'
 import { CpuCompletionPanel, CpuSigningsSummary, QuickCompletePanel } from './AutoCompletePanel'
 import { buildHudModel } from './hudModel'
@@ -153,10 +153,10 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
     setGame(next); setError(null)
   }
   const customBudget = Number(setup.budgetText)
-  const customConfig: MatchConfig = { version: MATCH_CONFIG_VERSION, budget: customBudget, names: { recruiter_one: sanitizeName(setup.nameOne), recruiter_two: sanitizeName(setup.nameTwo) }, substitutes: setup.substitutes, ...(setup.coaches ? { coaches: true, coachReserve: setup.coachReserve ?? COACH_MAX_PRICE, coachMarket: COACH_MARKET_V2 } : {}), bench: BENCH_MARKET_V2 }
+  const customConfig: MatchConfig = { version: MATCH_CONFIG_VERSION, budget: customBudget, names: { recruiter_one: sanitizeName(setup.nameOne), recruiter_two: sanitizeName(setup.nameTwo) }, substitutes: setup.substitutes, ...(setup.coaches ? { coaches: true, coachReserve: setup.coachReserve ?? COACH_MAX_PRICE, coachMarket: COACH_MARKET_V3 } : {}), bench: BENCH_MARKET_V2, discards: DISCARDS_MARKER_V2 }
   const setupPreflight = isValidBudget(customBudget) ? preflightMatchConfig(catalog, customConfig) : { ok: false as const, reason: 'budget_range' as const }
-  const classicConfig = { ...CLASSIC_CONFIG, bench: BENCH_MARKET_V2, budget: Math.max(defaultBudgetForMode(mode), secondCategory === 'same' ? 0 : defaultBudgetForMode(secondCategory)) }
-  const config = setup.mode === 'custom' ? customConfig : setup.coaches ? { ...classicConfig, coaches: true, coachReserve: setup.coachReserve ?? COACH_MAX_PRICE, coachMarket: COACH_MARKET_V2 } : classicConfig
+  const classicConfig = { ...CLASSIC_CONFIG, bench: BENCH_MARKET_V2, discards: DISCARDS_MARKER_V2, budget: Math.max(defaultBudgetForMode(mode), secondCategory === 'same' ? 0 : defaultBudgetForMode(secondCategory)) }
+  const config = setup.mode === 'custom' ? customConfig : setup.coaches ? { ...classicConfig, coaches: true, coachReserve: setup.coachReserve ?? COACH_MAX_PRICE, coachMarket: COACH_MARKET_V3 } : classicConfig
   const canStart = preflightMatchConfig(catalog, config).ok && (setup.mode === 'classic' || (setupPreflight.ok && Object.keys(nameIssues(customConfig.names)).length === 0))
   const start = () => {
     if (!canStart) return
@@ -239,12 +239,12 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
 
   useEffect(() => {
     if (opponentMode !== 'cpu' || game?.phase !== 'TEAMS_COMPLETED') return
-    const next = autoBuySubstitutes(autoChooseCoach(game, 'recruiter_two'), 'recruiter_two', catalog)
+    const next = autoBuySubstitutes(autoChooseCoach(game, 'recruiter_two', catalog, selectCpuStrategy(game.teams.recruiter_two.lineup, catalog, game.seed, difficulty)), 'recruiter_two', catalog)
     if (next === game) return
     // Deferred like the other automatic steps, so the screen never changes inside the render pass.
     const timer = window.setTimeout(() => setGame((current) => (current === game ? next : current)), 0)
     return () => window.clearTimeout(timer)
-  }, [opponentMode, game, catalog, setGame])
+  }, [opponentMode, game, catalog, difficulty, setGame])
   const cpuTurn = opponentMode === 'cpu' && game?.phase === 'BIDDING' && game.activeParticipant === 'recruiter_two'
   /** Online: the other person is the one who has to act. */
   const remoteTurn = !!online && game?.phase === 'BIDDING' && game.activeParticipant !== online.mySide

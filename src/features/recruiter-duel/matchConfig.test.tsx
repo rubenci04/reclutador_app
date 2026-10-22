@@ -154,7 +154,7 @@ describe('setup screen', () => {
     expect(screen.getByRole('img', { name: 'Deportivo Pasto budget: 150M left of 150M' })).toBeInTheDocument()
     expect(screen.getByText(/Deportivo Pasto's turn|Club Atlético Pichirica's turn/)).toBeInTheDocument()
     const exported = JSON.parse((screen.getByLabelText('Original seed and context') as HTMLTextAreaElement).value)
-    expect(exported.config).toEqual({ ...custom(150, { recruiter_one: 'Deportivo Pasto', recruiter_two: 'Club Atlético Pichirica' }), coaches: true, coachReserve: 8, coachMarket: 'coach-market-v2', bench: 'bench-5-v1' })
+    expect(exported.config).toEqual({ ...custom(150, { recruiter_one: 'Deportivo Pasto', recruiter_two: 'Club Atlético Pichirica' }), coaches: true, coachReserve: 8, coachMarket: 'coach-market-v3', bench: 'bench-5-v1', discards: 'discards-5-v1' })
   })
 
   it('uses an editable default name for the CPU rival and translates the setup', async () => {

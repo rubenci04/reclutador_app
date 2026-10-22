@@ -1,6 +1,6 @@
 import { DRAFT_BUDGET_MILLIONS } from '../../data/catalogRules'
 import { coachReserveFor, coachEffect } from '../coaches/coachRules'
-import { coachById } from '../coaches/coachCatalog'
+import { hiredCoachOf } from '../coaches/coachCatalog'
 import { formationSlots, organizeFormation, isFormationId, type FormationId } from '../tactics/formations'
 import type { Player } from '../../types/player'
 import { catalogForMode } from '../themed-modes/modeCatalog'
@@ -16,7 +16,7 @@ import { TACTICS_VERSION, isStrategyId, type StrategyId } from '../tactics/strat
 import { usesRarity, validContext, type DrawContext } from './drawHistory'
 import { CLUB_SPREAD_POLICY, clubRepeats, spreadClubs } from './clubSpread'
 import { canonicalClubKey } from '../player-catalog/clubKey'
-import { BENCH_LIMIT_V1, CLASSIC_CONFIG, SUBSTITUTE_POSITIONS, benchLimitOf, preflightMatchConfig, rosterComposition, type MatchConfig } from './matchConfig'
+import { BENCH_LIMIT_V1, CLASSIC_CONFIG, discardLimitOf, SUBSTITUTE_POSITIONS, benchLimitOf, preflightMatchConfig, rosterComposition, type MatchConfig } from './matchConfig'
 import type { AuctionActionError, AuctionCreation, AuctionRound, AuctionTransition, AwardReason, CoinSide, RecruiterDuelGame, RecruiterId, RecruiterTeam, RoundAward } from './auctionTypes'
 
 /** The one source of the budget of a game: its configuration, or the classic value for games without one. */
@@ -146,7 +146,7 @@ export function createRecruiterDuel(catalog: readonly Player[], seed: string, co
     const shares = usesRarity(context?.policy) ? [.85, .925, 1] : DRAW_BASE_SHARE
     const rounds = createRounds(catalog, `${seed}:attempt:${attempt}`, context, relaxation, config, shares[Math.min(2, Math.floor(attempt / 16))])
     if (!rounds) continue
-    return { ok: true, game: { seed, ...(config === CLASSIC_CONFIG ? {} : { config }), ...(context ? { drawContext: structuredClone(context) } : {}), drawDiagnostics: { attempts: attempt + 1, relaxation, ...(context?.policy === CLUB_SPREAD_POLICY ? { clubRepeats: clubRepeats(rounds, clubOfRound(catalog)) } : {}), smallPoolPositions: POSITIONS.filter((position) => catalog.filter((player) => player.position === position).length < 4 * rosterComposition(config)[position]) }, phase: 'LOBBY', rounds, roundIndex: 0, discardsRemaining: 3, discardedPlayerIds: [], lastDiscard: null, coinCall: null, coinResult: null, coinTossWinner: null, openingOrder: [], teams: { recruiter_one: emptyTeam(config), recruiter_two: emptyTeam(config) }, activeParticipant: null, currentBid: null, passedParticipants: [], lastAward: null, record: [], matchResult: null } }
+    return { ok: true, game: { seed, ...(config === CLASSIC_CONFIG ? {} : { config }), ...(context ? { drawContext: structuredClone(context) } : {}), drawDiagnostics: { attempts: attempt + 1, relaxation, ...(context?.policy === CLUB_SPREAD_POLICY ? { clubRepeats: clubRepeats(rounds, clubOfRound(catalog)) } : {}), smallPoolPositions: POSITIONS.filter((position) => catalog.filter((player) => player.position === position).length < 4 * rosterComposition(config)[position]) }, phase: 'LOBBY', rounds, roundIndex: 0, discardsRemaining: discardLimitOf(config), discardedPlayerIds: [], lastDiscard: null, coinCall: null, coinResult: null, coinTossWinner: null, openingOrder: [], teams: { recruiter_one: emptyTeam(config), recruiter_two: emptyTeam(config) }, activeParticipant: null, currentBid: null, passedParticipants: [], lastAward: null, record: [], matchResult: null } }
   }
   return { ok: false, error: 'auction_pool_unavailable' }
 }
@@ -159,7 +159,7 @@ export function discardReplacement(game: RecruiterDuelGame, catalog: readonly Pl
   const round = currentRound(game)
   if (!round) return null
   const unavailable = new Set([...game.rounds.map((entry) => entry.playerId), ...game.discardedPlayerIds, ...Object.values(game.teams).flatMap((team) => Object.values(team.lineup))])
-  const random = createSeededRandom(`${game.seed}:discard:${3 - game.discardsRemaining}:${game.roundIndex}`)
+  const random = createSeededRandom(`${game.seed}:discard:${game.discardedPlayerIds.length}:${game.roundIndex}`)
   const candidates = catalog.filter((player) => player.position === round.position && !unavailable.has(player.id)).sort((a, b) => a.id.localeCompare(b.id)).map((player) => {
     const appearances = game.drawContext?.recent.filter((draw) => draw.includes(player.id)).length ?? 0
     return { player, key: -Math.log(Math.max(Number.MIN_VALUE, random())) * (1 + 2 * appearances) * Math.max(.5, player.price / 8) }
@@ -348,7 +348,7 @@ export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player
   const stored: Record<RecruiterId, StrategyId> = { recruiter_one: chosen.recruiter_one, recruiter_two: chosen.recruiter_two }
   const benchIds = (participant: RecruiterId) => benchSlots(game.teams[participant]).flatMap((slot) => slot.playerId ? [slot.playerId] : [])
   const benches = { local: benchIds(FIRST), cpu: benchIds(SECOND) }
-  const coachFor = (participant: RecruiterId) => { const coach = coachById(game.teams[participant].coachId); return coach ? { id: coach.id, ...coachEffect(coach, stored[participant]) } : null }
+  const coachFor = (participant: RecruiterId) => { const coach = hiredCoachOf(game.teams[participant]); return coach ? { id: coach.id, ...coachEffect(coach, stored[participant]) } : null }
   const coaches = { local: coachFor(FIRST), cpu: coachFor(SECOND) }
   const matchResult = simulateMatch({ ...(game.teams[FIRST].formation || game.teams[SECOND].formation || actionModel ? { formations: { local: game.teams[FIRST].formation ?? '4-3-3', cpu: game.teams[SECOND].formation ?? '4-3-3' } } : {}), ...(actionModel ? { seriesFormat: 'home-away' as const, actionModel: 'action-v3' as const } : {}), localLineup: game.teams[FIRST].lineup, cpuLineup: game.teams[SECOND].lineup, catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match`, rosterBonus: true, ...(game.config ? { budget: game.config.budget } : {}), ...(!game.manualBench && (benches.local.length || benches.cpu.length) ? { benches } : {}), ...(coaches.local || coaches.cpu ? { coaches } : {}), tactics: { version: TACTICS_VERSION, local: stored.recruiter_one, cpu: stored.recruiter_two } })
   return transition(game, { phase: 'SIMULATING', matchResult, strategies: stored })

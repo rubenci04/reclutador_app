@@ -1,7 +1,7 @@
 import type { Player } from '../../../types/player'
 import type { RecruiterDuelGame, RecruiterId } from '../../recruiter-duel/auctionTypes'
 import { budgetOf } from '../../recruiter-duel/auctionEngine'
-import { coachById } from '../../coaches/coachCatalog'
+import { hiredCoachOf } from '../../coaches/coachCatalog'
 import { coachEffect } from '../../coaches/coachRules'
 import { isStrategyId, type StrategyId } from '../../tactics/strategies'
 import { createSession } from './session'
@@ -12,10 +12,10 @@ export function createDuelSession(game: RecruiterDuelGame, catalog: readonly Pla
   if (game.phase !== 'TEAMS_COMPLETED') return { ok: false, error: 'INVALID_PHASE' }
   if (!isStrategyId(strategies.recruiter_one) || !isStrategyId(strategies.recruiter_two)) return { ok: false, error: 'INVALID_STRATEGY' }
   const budget = budgetOf(game)
-  const coach = (id: RecruiterId) => { const hired = coachById(game.teams[id].coachId); return hired ? { id: hired.id, ...coachEffect(hired, strategies[id]) } : null }
+  const coach = (id: RecruiterId) => { const hired = hiredCoachOf(game.teams[id]); return hired ? { id: hired.id, ...coachEffect(hired, strategies[id]) } : null }
   const bench = (id: RecruiterId) => (game.teams[id].bench ?? []).flatMap((slot) => slot.playerId ? [slot.playerId] : [])
   const ledger = (id: RecruiterId) => {
-    const team = game.teams[id]; const hired = coachById(team.coachId)
+    const team = game.teams[id]; const hired = hiredCoachOf(team)
     const coachPaid = hired ? team.coachPrice ?? hired.price : 0
     return { spent: team.spent - coachPaid, coachPaid, budget }
   }
