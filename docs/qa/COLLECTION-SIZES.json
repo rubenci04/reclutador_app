@@ -133,13 +133,13 @@
   },
   {
     "mode": "GLOBAL_CLASSIC",
-    "count": 994,
+    "count": 1039,
     "stars": 2,
     "positions": {
-      "ARQ": 97,
-      "DEF": 280,
-      "MED": 336,
-      "DEL": 281
+      "ARQ": 100,
+      "DEF": 291,
+      "MED": 350,
+      "DEL": 298
     }
   },
   {
@@ -155,13 +155,13 @@
   },
   {
     "mode": "SOUTH_AMERICA_CURRENT",
-    "count": 525,
+    "count": 150,
     "stars": 1,
     "positions": {
-      "ARQ": 53,
-      "DEF": 143,
-      "MED": 176,
-      "DEL": 153
+      "ARQ": 11,
+      "DEF": 36,
+      "MED": 50,
+      "DEL": 53
     }
   },
   {
@@ -180,10 +180,10 @@
     "count": 150,
     "stars": 1,
     "positions": {
-      "ARQ": 12,
-      "DEF": 37,
-      "MED": 64,
-      "DEL": 37
+      "ARQ": 13,
+      "DEF": 35,
+      "MED": 62,
+      "DEL": 40
     }
   },
   {

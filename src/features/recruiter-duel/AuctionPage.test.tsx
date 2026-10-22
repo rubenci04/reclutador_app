@@ -10,7 +10,7 @@ import * as engine from './auctionEngine'
 import { beginBidding, createRecruiterDuel, maximumSafeBid, nextAuctionRound, passAuction, positionProgress, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss } from './auctionEngine'
 import type { AuctionCreation, AuctionTransition } from './auctionTypes'
 
-beforeEach(() => { localStorage.clear(); vi.spyOn(drawHistory, 'newDrawSeed').mockReturnValue('hot-seat-001') })
+beforeEach(() => { localStorage.clear(); vi.spyOn(drawHistory, 'newDrawSeed').mockReturnValue('hot-seat-004') })
 afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals(); localStorage.clear() })
 
 describe('single-player auction interface', () => {
@@ -71,7 +71,7 @@ describe('single-player auction interface', () => {
     fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.local') }))
     fireEvent.click(screen.getByText(i18n.t('entry.customize')))
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
-    let expected = get(createRecruiterDuel(DRAFT_CATALOG, 'hot-seat-001', drawHistory.createDrawContext(DRAFT_CATALOG, [], 'rarity-v2')))
+    let expected = get(createRecruiterDuel(DRAFT_CATALOG, 'hot-seat-004', drawHistory.createDrawContext(DRAFT_CATALOG, [], 'rarity-v2')))
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
     act(() => vi.advanceTimersByTime(COIN_TOSS_MS))
     expected = get(revealCoinToss(get(startCoinToss(expected, 'heads'))))

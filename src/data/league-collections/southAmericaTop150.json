@@ -1,0 +1,908 @@
+{
+ "version": "south-america-mexico-top-150-v1",
+ "sourceFile": "Ranking global de futbolistas 2026_ Sudamérica + México y Europa, actualidad y leyendas.txt",
+ "section": "Sudamérica + México los 150 mejores de la actualidad",
+ "note": "Transcribed from the document tables (rank, name, country). Editorial ranking; not an official list. Scope: ARG BOL BRA CHI COL ECU PAR PER URU VEN MEX (no Central America or Caribbean).",
+ "rows": [
+  {
+   "rank": 1,
+   "name": "Lionel Messi",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 2,
+   "name": "Vinícius Júnior",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 3,
+   "name": "Gabriel Magalhães",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 4,
+   "name": "Willian Pacho",
+   "country": "Ecuador",
+   "nationality": "ECU"
+  },
+  {
+   "rank": 5,
+   "name": "Raphinha",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 6,
+   "name": "Luis Díaz",
+   "country": "Colombia",
+   "nationality": "COL"
+  },
+  {
+   "rank": 7,
+   "name": "Lautaro Martínez",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 8,
+   "name": "Federico Valverde",
+   "country": "Uruguay",
+   "nationality": "URU"
+  },
+  {
+   "rank": 9,
+   "name": "Marquinhos",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 10,
+   "name": "Julián Álvarez",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 11,
+   "name": "Moisés Caicedo",
+   "country": "Ecuador",
+   "nationality": "ECU"
+  },
+  {
+   "rank": 12,
+   "name": "Alisson Becker",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 13,
+   "name": "Bruno Guimarães",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 14,
+   "name": "Enzo Fernández",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 15,
+   "name": "Julián Quiñones",
+   "country": "México",
+   "nationality": "MEX"
+  },
+  {
+   "rank": 16,
+   "name": "Emiliano Martínez",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 17,
+   "name": "Rodrygo",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 18,
+   "name": "Alexis Mac Allister",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 19,
+   "name": "Éder Militão",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 20,
+   "name": "Ronald Araújo",
+   "country": "Uruguay",
+   "nationality": "URU"
+  },
+  {
+   "rank": 21,
+   "name": "Cristian Romero",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 22,
+   "name": "Gabriel Martinelli",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 23,
+   "name": "Bremer",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 24,
+   "name": "Savinho",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 25,
+   "name": "Estêvão",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 26,
+   "name": "João Pedro",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 27,
+   "name": "Murillo",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 28,
+   "name": "Ederson",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 29,
+   "name": "Matheus Cunha",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 30,
+   "name": "Darwin Núñez",
+   "country": "Uruguay",
+   "nationality": "URU"
+  },
+  {
+   "rank": 31,
+   "name": "Paulo Dybala",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 32,
+   "name": "Santiago Giménez",
+   "country": "México",
+   "nationality": "MEX"
+  },
+  {
+   "rank": 33,
+   "name": "Lisandro Martínez",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 34,
+   "name": "Manuel Ugarte",
+   "country": "Uruguay",
+   "nationality": "URU"
+  },
+  {
+   "rank": 35,
+   "name": "Rodrigo Bentancur",
+   "country": "Uruguay",
+   "nationality": "URU"
+  },
+  {
+   "rank": 36,
+   "name": "Piero Hincapié",
+   "country": "Ecuador",
+   "nationality": "ECU"
+  },
+  {
+   "rank": 37,
+   "name": "Nico Paz",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 38,
+   "name": "Alejandro Garnacho",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 39,
+   "name": "Thiago Almada",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 40,
+   "name": "Lucas Paquetá",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 41,
+   "name": "Endrick",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 42,
+   "name": "Vitor Roque",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 43,
+   "name": "André",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 44,
+   "name": "Jhon Durán",
+   "country": "Colombia",
+   "nationality": "COL"
+  },
+  {
+   "rank": 45,
+   "name": "Richard Ríos",
+   "country": "Colombia",
+   "nationality": "COL"
+  },
+  {
+   "rank": 46,
+   "name": "Daniel Muñoz",
+   "country": "Colombia",
+   "nationality": "COL"
+  },
+  {
+   "rank": 47,
+   "name": "Jhon Arias",
+   "country": "Colombia",
+   "nationality": "COL"
+  },
+  {
+   "rank": 48,
+   "name": "Davinson Sánchez",
+   "country": "Colombia",
+   "nationality": "COL"
+  },
+  {
+   "rank": 49,
+   "name": "José María Giménez",
+   "country": "Uruguay",
+   "nationality": "URU"
+  },
+  {
+   "rank": 50,
+   "name": "Giorgian de Arrascaeta",
+   "country": "Uruguay",
+   "nationality": "URU"
+  },
+  {
+   "rank": 51,
+   "name": "Rodrigo De Paul",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 52,
+   "name": "Giovani Lo Celso",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 53,
+   "name": "Exequiel Palacios",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 54,
+   "name": "Andrey Santos",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 55,
+   "name": "Wesley França",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 56,
+   "name": "Vanderson",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 57,
+   "name": "David Neres",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 58,
+   "name": "Evanilson",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 59,
+   "name": "Antony",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 60,
+   "name": "Joelinton",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 61,
+   "name": "Douglas Luiz",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 62,
+   "name": "Richarlison",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 63,
+   "name": "Gabriel Jesus",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 64,
+   "name": "Neymar",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 65,
+   "name": "Pedro",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 66,
+   "name": "Gerson",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 67,
+   "name": "Maximiliano Araújo",
+   "country": "Uruguay",
+   "nationality": "URU"
+  },
+  {
+   "rank": 68,
+   "name": "Facundo Pellistri",
+   "country": "Uruguay",
+   "nationality": "URU"
+  },
+  {
+   "rank": 69,
+   "name": "Mathías Olivera",
+   "country": "Uruguay",
+   "nationality": "URU"
+  },
+  {
+   "rank": 70,
+   "name": "Nahitan Nández",
+   "country": "Uruguay",
+   "nationality": "URU"
+  },
+  {
+   "rank": 71,
+   "name": "Jhon Lucumí",
+   "country": "Colombia",
+   "nationality": "COL"
+  },
+  {
+   "rank": 72,
+   "name": "Jefferson Lerma",
+   "country": "Colombia",
+   "nationality": "COL"
+  },
+  {
+   "rank": 73,
+   "name": "Yerry Mina",
+   "country": "Colombia",
+   "nationality": "COL"
+  },
+  {
+   "rank": 74,
+   "name": "Yaser Asprilla",
+   "country": "Colombia",
+   "nationality": "COL"
+  },
+  {
+   "rank": 75,
+   "name": "Luis Sinisterra",
+   "country": "Colombia",
+   "nationality": "COL"
+  },
+  {
+   "rank": 76,
+   "name": "Juan Camilo Hernández",
+   "country": "Colombia",
+   "nationality": "COL"
+  },
+  {
+   "rank": 77,
+   "name": "Kevin Castaño",
+   "country": "Colombia",
+   "nationality": "COL"
+  },
+  {
+   "rank": 78,
+   "name": "Nelson Deossa",
+   "country": "Colombia",
+   "nationality": "COL"
+  },
+  {
+   "rank": 79,
+   "name": "Pervis Estupiñán",
+   "country": "Ecuador",
+   "nationality": "ECU"
+  },
+  {
+   "rank": 80,
+   "name": "Kendry Páez",
+   "country": "Ecuador",
+   "nationality": "ECU"
+  },
+  {
+   "rank": 81,
+   "name": "Gonzalo Plata",
+   "country": "Ecuador",
+   "nationality": "ECU"
+  },
+  {
+   "rank": 82,
+   "name": "Edson Álvarez",
+   "country": "México",
+   "nationality": "MEX"
+  },
+  {
+   "rank": 83,
+   "name": "Raúl Jiménez",
+   "country": "México",
+   "nationality": "MEX"
+  },
+  {
+   "rank": 84,
+   "name": "Johan Vásquez",
+   "country": "México",
+   "nationality": "MEX"
+  },
+  {
+   "rank": 85,
+   "name": "César Montes",
+   "country": "México",
+   "nationality": "MEX"
+  },
+  {
+   "rank": 86,
+   "name": "Luis Chávez",
+   "country": "México",
+   "nationality": "MEX"
+  },
+  {
+   "rank": 87,
+   "name": "Orbelín Pineda",
+   "country": "México",
+   "nationality": "MEX"
+  },
+  {
+   "rank": 88,
+   "name": "Gilberto Mora",
+   "country": "México",
+   "nationality": "MEX"
+  },
+  {
+   "rank": 89,
+   "name": "Roberto Alvarado",
+   "country": "México",
+   "nationality": "MEX"
+  },
+  {
+   "rank": 90,
+   "name": "Alexis Vega",
+   "country": "México",
+   "nationality": "MEX"
+  },
+  {
+   "rank": 91,
+   "name": "Franco Mastantuono",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 92,
+   "name": "Claudio Echeverri",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 93,
+   "name": "Matías Soulé",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 94,
+   "name": "Facundo Buonanotte",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 95,
+   "name": "Nicolás González",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 96,
+   "name": "Leonardo Balerdi",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 97,
+   "name": "Marcos Senesi",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 98,
+   "name": "Alan Varela",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 99,
+   "name": "Santiago Hezze",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 100,
+   "name": "Ezequiel Fernández",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 101,
+   "name": "Valentín Barco",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 102,
+   "name": "Nahuel Molina",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 103,
+   "name": "Nicolás Otamendi",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 104,
+   "name": "Nicolás Tagliafico",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 105,
+   "name": "Gonzalo Montiel",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 106,
+   "name": "Leandro Paredes",
+   "country": "Argentina",
+   "nationality": "ARG"
+  },
+  {
+   "rank": 107,
+   "name": "Beraldo",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 108,
+   "name": "Yan Couto",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 109,
+   "name": "Bento",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 110,
+   "name": "Gabriel Sara",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 111,
+   "name": "Pepê",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 112,
+   "name": "Gabriel Barbosa",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 113,
+   "name": "Philippe Coutinho",
+   "country": "Brasil",
+   "nationality": "BRA"
+  },
+  {
+   "rank": 114,
+   "name": "Jorge Carrascal",
+   "country": "Colombia",
+   "nationality": "COL"
+  },
+  {
+   "rank": 115,
+   "name": "Rafael Santos Borré",
+   "country": "Colombia",
+   "nationality": "COL"
+  },
+  {
+   "rank": 116,
+   "name": "James Rodríguez",
+   "country": "Colombia",
+   "nationality": "COL"
+  },
+  {
+   "rank": 117,
+   "name": "Alan Franco",
+   "country": "Ecuador",
+   "nationality": "ECU"
+  },
+  {
+   "rank": 118,
+   "name": "John Yeboah",
+   "country": "Ecuador",
+   "nationality": "ECU"
+  },
+  {
+   "rank": 119,
+   "name": "Jeremy Sarmiento",
+   "country": "Ecuador",
+   "nationality": "ECU"
+  },
+  {
+   "rank": 120,
+   "name": "Enner Valencia",
+   "country": "Ecuador",
+   "nationality": "ECU"
+  },
+  {
+   "rank": 121,
+   "name": "Rodrigo Huescas",
+   "country": "México",
+   "nationality": "MEX"
+  },
+  {
+   "rank": 122,
+   "name": "Marcel Ruiz",
+   "country": "México",
+   "nationality": "MEX"
+  },
+  {
+   "rank": 123,
+   "name": "César Huerta",
+   "country": "México",
+   "nationality": "MEX"
+  },
+  {
+   "rank": 124,
+   "name": "Julio Enciso",
+   "country": "Paraguay",
+   "nationality": "PAR"
+  },
+  {
+   "rank": 125,
+   "name": "Diego Gómez",
+   "country": "Paraguay",
+   "nationality": "PAR"
+  },
+  {
+   "rank": 126,
+   "name": "Ramón Sosa",
+   "country": "Paraguay",
+   "nationality": "PAR"
+  },
+  {
+   "rank": 127,
+   "name": "Miguel Almirón",
+   "country": "Paraguay",
+   "nationality": "PAR"
+  },
+  {
+   "rank": 128,
+   "name": "Omar Alderete",
+   "country": "Paraguay",
+   "nationality": "PAR"
+  },
+  {
+   "rank": 129,
+   "name": "Gustavo Gómez",
+   "country": "Paraguay",
+   "nationality": "PAR"
+  },
+  {
+   "rank": 130,
+   "name": "Damián Bobadilla",
+   "country": "Paraguay",
+   "nationality": "PAR"
+  },
+  {
+   "rank": 131,
+   "name": "Darío Osorio",
+   "country": "Chile",
+   "nationality": "CHI"
+  },
+  {
+   "rank": 132,
+   "name": "Marcelino Núñez",
+   "country": "Chile",
+   "nationality": "CHI"
+  },
+  {
+   "rank": 133,
+   "name": "Paulo Díaz",
+   "country": "Chile",
+   "nationality": "CHI"
+  },
+  {
+   "rank": 134,
+   "name": "Gabriel Suazo",
+   "country": "Chile",
+   "nationality": "CHI"
+  },
+  {
+   "rank": 135,
+   "name": "Ben Brereton Díaz",
+   "country": "Chile",
+   "nationality": "CHI"
+  },
+  {
+   "rank": 136,
+   "name": "Lucas Cepeda",
+   "country": "Chile",
+   "nationality": "CHI"
+  },
+  {
+   "rank": 137,
+   "name": "Yangel Herrera",
+   "country": "Venezuela",
+   "nationality": "VEN"
+  },
+  {
+   "rank": 138,
+   "name": "Jon Aramburu",
+   "country": "Venezuela",
+   "nationality": "VEN"
+  },
+  {
+   "rank": 139,
+   "name": "Telasco Segovia",
+   "country": "Venezuela",
+   "nationality": "VEN"
+  },
+  {
+   "rank": 140,
+   "name": "Jefferson Savarino",
+   "country": "Venezuela",
+   "nationality": "VEN"
+  },
+  {
+   "rank": 141,
+   "name": "Salomón Rondón",
+   "country": "Venezuela",
+   "nationality": "VEN"
+  },
+  {
+   "rank": 142,
+   "name": "Renato Tapia",
+   "country": "Perú",
+   "nationality": "PER"
+  },
+  {
+   "rank": 143,
+   "name": "Oliver Sonne",
+   "country": "Perú",
+   "nationality": "PER"
+  },
+  {
+   "rank": 144,
+   "name": "Piero Quispe",
+   "country": "Perú",
+   "nationality": "PER"
+  },
+  {
+   "rank": 145,
+   "name": "Miguel Terceros",
+   "country": "Bolivia",
+   "nationality": "BOL"
+  },
+  {
+   "rank": 146,
+   "name": "Ramiro Vaca",
+   "country": "Bolivia",
+   "nationality": "BOL"
+  },
+  {
+   "rank": 147,
+   "name": "Sergio Rochet",
+   "country": "Uruguay",
+   "nationality": "URU"
+  },
+  {
+   "rank": 148,
+   "name": "Facundo Torres",
+   "country": "Uruguay",
+   "nationality": "URU"
+  },
+  {
+   "rank": 149,
+   "name": "Luciano Rodríguez",
+   "country": "Uruguay",
+   "nationality": "URU"
+  },
+  {
+   "rank": 150,
+   "name": "Agustín Canobbio",
+   "country": "Uruguay",
+   "nationality": "URU"
+  }
+ ]
+}

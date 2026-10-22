@@ -37,7 +37,7 @@ export const NATIONALITY_CODES = [
   'SUI', 'ISL', 'CRC', 'KVX', 'UKR', 'GNB', 'EQG', 'MKD', 'LBR',
   'SVN', 'AUT', 'BIH', 'PAN', 'TUN', 'IRN',
   'KSA', 'QAT',
-  'ARM', 'BUL', 'COD', 'CZE', 'GAB', 'GEO', 'GUI', 'GRE', 'HUN', 'IRL', 'MLI', 'MNE', 'NIR', 'NZL', 'ROU', 'RSA', 'SRB', 'SVK', 'TGO', 'TRI', 'TUR', 'UZB', 'ZAM',
+  'ARM', 'BUL', 'COD', 'CZE', 'GAB', 'GEO', 'GUI', 'GRE', 'HUN', 'IRL', 'MLI', 'MNE', 'NIR', 'NZL', 'ROU', 'RSA', 'SRB', 'SVK', 'TGO', 'TRI', 'TUR', 'UZB', 'ZAM', 'RUS',
 ] as const
 
 export const EXPECTED_PLAYER_IDS: readonly string[] = Array.from(

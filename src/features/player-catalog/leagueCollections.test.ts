@@ -24,10 +24,10 @@ describe('supplied league collections', () => {
     expect(matheuzinhos).toHaveLength(2)
     expect(new Set(matheuzinhos.map((p) => p.id)).size).toBe(2)
   })
-  it('imports all 1,913 rows with valid positions, game ratings, prices, provenance and no photos', () => {
-    expect(LEAGUE_PLAYERS).toHaveLength(1913)
+  it('imports all 1,958 rows with valid positions, game ratings, prices, provenance and no photos', () => {
+    expect(LEAGUE_PLAYERS).toHaveLength(1958)
     const ids = LEAGUE_PLAYERS.map((p) => p.id)
-    expect(new Set(ids).size).toBe(1913)
+    expect(new Set(ids).size).toBe(1958)
     const issues = LEAGUE_PLAYERS.flatMap((p) => { const result = validatePlayer(p, ids); return result.valid ? [] : [{ id: p.id, issues: result.issues }] })
     expect(issues).toEqual([])
     expect(LEAGUE_PLAYERS.every((p) => approvedPhoto(p.id) === undefined)).toBe(true)

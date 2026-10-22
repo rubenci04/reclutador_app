@@ -2,6 +2,7 @@ import rows from '../../data/league-collections/players.json'
 import italianRows from '../../data/league-collections/italy.json'
 import mexicanRows from '../../data/league-collections/mexico.json'
 import europeFigures from '../../data/league-collections/europeFigures.json'
+import southAmericaFigures from '../../data/league-collections/southAmericaFigures.json'
 import type { Player } from '../../types/player'
 import type { Position } from '../../types/football'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
@@ -16,7 +17,7 @@ import { balancedRatings, BALANCED_LEGEND_MODES, isBalancedLegendMode } from './
  * design estimates by position, not researched individual attributes.
  */
 export type LeagueSource = Omit<typeof rows[number], 'sourceUrl'> & { readonly sourceUrl: string | null } & Partial<Pick<typeof italianRows[number], 'abbreviation' | 'sourceNationality' | 'sourceFoot' | 'sourceClassification' | 'sourceClubPeriod' | 'sourceLine' | 'sourceSha256'>>
-export const LEAGUE_PROVENANCE: readonly LeagueSource[] = [...rows, ...italianRows, ...mexicanRows, ...europeFigures]
+export const LEAGUE_PROVENANCE: readonly LeagueSource[] = [...rows, ...italianRows, ...mexicanRows, ...europeFigures, ...southAmericaFigures]
 /** Builds an edition at a given OVR; price and derived ratings always follow the effective OVR. `id` lets a separate edition (e.g. a world edition) reuse the source row. */
 function buildPlayer(row: LeagueSource, effectiveRating = row.sourceRating, id = row.id): Player {
   if (!isDominantFoot(row.dominantFoot)) throw new Error(`invalid_imported_dominant_foot:${row.league}:${row.sourceId}`)

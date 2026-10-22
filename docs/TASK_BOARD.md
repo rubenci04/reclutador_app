@@ -338,3 +338,7 @@ Validación: typecheck, lint, 831 pruebas y build ejecutados. QA visual en naveg
 Implementados contacto/falta/tiro libre directo e indirecto, defensa, Canvas, tres idiomas y persistencia. 1.118 pruebas aprobadas, 42 nuevas; 5.040 calibraciones y 360 comparaciones históricas. Capturas reales 390/412/768/1280 y por fases; escucha/fluidez humana completa pendientes. Publicación expresamente autorizada; estado comprobado en [registro](logs/SIM-005R-07.md).
 
 R-07 publicado: main 8e88a137d1424a010efe564c5193f13d0e62b6d0, deployment 78dc5851-81ba-4110-9837-beec992ed703, Worker al 100%, seis hashes públicos y entrada online verificados. Smoke humano/audio pendientes por Work settings. [Registro](logs/SIM-005R-07.md).
+
+## DATA-REG-003B — 21/10/2026
+
+Europa Actualidad completa (150 reconciladas, 0 provisionales; 31 ediciones nuevas) y Sudamérica + México pasa de 525 a un Top 150 editorial (101 reconciladas, 14 ediciones nuevas del Top 50, 49 provisionales, 49 pendientes documentados). Catálogos anteriores congelados. 1.267 pruebas aprobadas. [Informe](qa/DATA-REG-003B.md).

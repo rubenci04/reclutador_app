@@ -1,0 +1,1206 @@
+{
+ "version": "south-america-mexico-top-150-v1",
+ "rule": "Exact normalised full-name tokens and same nationality against the master (contemporary editions only; the deduplicated representative wins). Reviewed alias or override rows carry a note. Homonyms are never merged (Gabriel Martinelli vs Matheus Martinelli, the Atalanta Éderson vs Ederson Moraes, Pepê, André). Missing people are never invented; ranks 1-50 were imported, the remainder is documented.",
+ "rows": [
+  {
+   "rank": 1,
+   "name": "Lionel Messi",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "plr_038",
+   "note": null
+  },
+  {
+   "rank": 2,
+   "name": "Vinícius Júnior",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_act_vinicius_jose_paixao_de_oliveira_junior",
+   "note": null
+  },
+  {
+   "rank": 3,
+   "name": "Gabriel Magalhães",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_act_003",
+   "note": null
+  },
+  {
+   "rank": 4,
+   "name": "Willian Pacho",
+   "nationality": "ECU",
+   "status": "RECONCILED",
+   "editionId": "import_sam_act_willian_pacho",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 89 is editorial, not official)."
+  },
+  {
+   "rank": 5,
+   "name": "Raphinha",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_act_raphael_dias_belloli",
+   "note": null
+  },
+  {
+   "rank": 6,
+   "name": "Luis Díaz",
+   "nationality": "COL",
+   "status": "RECONCILED",
+   "editionId": "import_sam_act_luis_diaz",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 89 is editorial, not official)."
+  },
+  {
+   "rank": 7,
+   "name": "Lautaro Martínez",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_ita_act_001",
+   "note": null
+  },
+  {
+   "rank": 8,
+   "name": "Federico Valverde",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_act_federico_santiago_valverde_dipetta",
+   "note": null
+  },
+  {
+   "rank": 9,
+   "name": "Marquinhos",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "plr_110",
+   "note": null
+  },
+  {
+   "rank": 10,
+   "name": "Julián Álvarez",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_act_julian_alvarez",
+   "note": null
+  },
+  {
+   "rank": 11,
+   "name": "Moisés Caicedo",
+   "nationality": "ECU",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_act_019",
+   "note": null
+  },
+  {
+   "rank": 12,
+   "name": "Alisson Becker",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "plr_051",
+   "note": null
+  },
+  {
+   "rank": 13,
+   "name": "Bruno Guimarães",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_act_013",
+   "note": null
+  },
+  {
+   "rank": 14,
+   "name": "Enzo Fernández",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_act_015",
+   "note": null
+  },
+  {
+   "rank": 15,
+   "name": "Julián Quiñones",
+   "nationality": "MEX",
+   "status": "RECONCILED",
+   "editionId": "import_sam_act_julian_quinones",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 87 is editorial, not official)."
+  },
+  {
+   "rank": 16,
+   "name": "Emiliano Martínez",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "plr_003",
+   "note": null
+  },
+  {
+   "rank": 17,
+   "name": "Rodrygo",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_act_rodrygo_silva_de_goes",
+   "note": null
+  },
+  {
+   "rank": 18,
+   "name": "Alexis Mac Allister",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "plr_130",
+   "note": null
+  },
+  {
+   "rank": 19,
+   "name": "Éder Militão",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_sam_act_eder_militao",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 86 is editorial, not official)."
+  },
+  {
+   "rank": 20,
+   "name": "Ronald Araújo",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_act_058",
+   "note": null
+  },
+  {
+   "rank": 21,
+   "name": "Cristian Romero",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "plr_016",
+   "note": null
+  },
+  {
+   "rank": 22,
+   "name": "Gabriel Martinelli",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_sam_act_gabriel_martinelli",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 86 is editorial, not official)."
+  },
+  {
+   "rank": 23,
+   "name": "Bremer",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_act_007",
+   "note": null
+  },
+  {
+   "rank": 24,
+   "name": "Savinho",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_act_113",
+   "note": null
+  },
+  {
+   "rank": 25,
+   "name": "Estêvão",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_act_066",
+   "note": null
+  },
+  {
+   "rank": 26,
+   "name": "João Pedro",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_act_050",
+   "note": null
+  },
+  {
+   "rank": 27,
+   "name": "Murillo",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_act_079",
+   "note": null
+  },
+  {
+   "rank": 28,
+   "name": "Ederson",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "plr_053",
+   "note": "Reconciled by full name / reviewed alias to Ederson."
+  },
+  {
+   "rank": 29,
+   "name": "Matheus Cunha",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_act_042",
+   "note": null
+  },
+  {
+   "rank": 30,
+   "name": "Darwin Núñez",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_sam_act_darwin_nunez",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 84 is editorial, not official)."
+  },
+  {
+   "rank": 31,
+   "name": "Paulo Dybala",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_ita_act_014",
+   "note": null
+  },
+  {
+   "rank": 32,
+   "name": "Santiago Giménez",
+   "nationality": "MEX",
+   "status": "RECONCILED",
+   "editionId": "import_sam_act_santiago_gimenez",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 84 is editorial, not official)."
+  },
+  {
+   "rank": 33,
+   "name": "Lisandro Martínez",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "plr_116",
+   "note": null
+  },
+  {
+   "rank": 34,
+   "name": "Manuel Ugarte",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_sam_act_manuel_ugarte",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 84 is editorial, not official)."
+  },
+  {
+   "rank": 35,
+   "name": "Rodrigo Bentancur",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_act_137",
+   "note": null
+  },
+  {
+   "rank": 36,
+   "name": "Piero Hincapié",
+   "nationality": "ECU",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_act_045",
+   "note": null
+  },
+  {
+   "rank": 37,
+   "name": "Nico Paz",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_ita_act_012",
+   "note": null
+  },
+  {
+   "rank": 38,
+   "name": "Alejandro Garnacho",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_sam_act_alejandro_garnacho",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 85 is editorial, not official)."
+  },
+  {
+   "rank": 39,
+   "name": "Thiago Almada",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_act_005",
+   "note": null
+  },
+  {
+   "rank": 40,
+   "name": "Lucas Paquetá",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_act_lucas_tolentino_coelho_de_lima",
+   "note": null
+  },
+  {
+   "rank": 41,
+   "name": "Endrick",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_sam_act_endrick",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 85 is editorial, not official)."
+  },
+  {
+   "rank": 42,
+   "name": "Vitor Roque",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_act_vitor_hugo_roque_ferreira",
+   "note": null
+  },
+  {
+   "rank": 43,
+   "name": "André",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_sam_act_andre",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 85 is editorial, not official)."
+  },
+  {
+   "rank": 44,
+   "name": "Jhon Durán",
+   "nationality": "COL",
+   "status": "RECONCILED",
+   "editionId": "import_sam_act_jhon_duran",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 85 is editorial, not official)."
+  },
+  {
+   "rank": 45,
+   "name": "Richard Ríos",
+   "nationality": "COL",
+   "status": "RECONCILED",
+   "editionId": "import_sam_act_richard_rios",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 84 is editorial, not official)."
+  },
+  {
+   "rank": 46,
+   "name": "Daniel Muñoz",
+   "nationality": "COL",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_act_064",
+   "note": null
+  },
+  {
+   "rank": 47,
+   "name": "Jhon Arias",
+   "nationality": "COL",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_act_jhon_adolfo_arias_andrade",
+   "note": null
+  },
+  {
+   "rank": 48,
+   "name": "Davinson Sánchez",
+   "nationality": "COL",
+   "status": "RECONCILED",
+   "editionId": "import_sam_act_davinson_sanchez",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 83 is editorial, not official)."
+  },
+  {
+   "rank": 49,
+   "name": "José María Giménez",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "plr_014",
+   "note": null
+  },
+  {
+   "rank": 50,
+   "name": "Giorgian de Arrascaeta",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_act_giorgian_daniel_de_arrascaeta_benedetti",
+   "note": "Reconciled by full name / reviewed alias to Arrascaeta (Giorgian Daniel de Arrascaeta Benedetti)."
+  },
+  {
+   "rank": 51,
+   "name": "Rodrigo De Paul",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "plr_029",
+   "note": null
+  },
+  {
+   "rank": 52,
+   "name": "Giovani Lo Celso",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_act_giovani_lo_celso",
+   "note": null
+  },
+  {
+   "rank": 53,
+   "name": "Exequiel Palacios",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_act_143",
+   "note": null
+  },
+  {
+   "rank": 54,
+   "name": "Andrey Santos",
+   "nationality": "BRA",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 55,
+   "name": "Wesley França",
+   "nationality": "BRA",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 56,
+   "name": "Vanderson",
+   "nationality": "BRA",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 57,
+   "name": "David Neres",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_act_038",
+   "note": null
+  },
+  {
+   "rank": 58,
+   "name": "Evanilson",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_act_145",
+   "note": null
+  },
+  {
+   "rank": 59,
+   "name": "Antony",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_act_antony_matheus_dos_santos",
+   "note": null
+  },
+  {
+   "rank": 60,
+   "name": "Joelinton",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_act_132",
+   "note": null
+  },
+  {
+   "rank": 61,
+   "name": "Douglas Luiz",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_act_077",
+   "note": null
+  },
+  {
+   "rank": 62,
+   "name": "Richarlison",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "plr_143",
+   "note": null
+  },
+  {
+   "rank": 63,
+   "name": "Gabriel Jesus",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_act_gabriel_fernando_de_jesus",
+   "note": null
+  },
+  {
+   "rank": 64,
+   "name": "Neymar",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "plr_040",
+   "note": null
+  },
+  {
+   "rank": 65,
+   "name": "Pedro",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_act_pedro_guilherme_abreu_dos_santos",
+   "note": "Reconciled by full name / reviewed alias to Pedro (Pedro Guilherme Abreu dos Santos)."
+  },
+  {
+   "rank": 66,
+   "name": "Gerson",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_act_gerson_santos_da_silva",
+   "note": null
+  },
+  {
+   "rank": 67,
+   "name": "Maximiliano Araújo",
+   "nationality": "URU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 68,
+   "name": "Facundo Pellistri",
+   "nationality": "URU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 69,
+   "name": "Mathías Olivera",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_ita_act_126",
+   "note": null
+  },
+  {
+   "rank": 70,
+   "name": "Nahitan Nández",
+   "nationality": "URU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 71,
+   "name": "Jhon Lucumí",
+   "nationality": "COL",
+   "status": "RECONCILED",
+   "editionId": "import_ita_act_076",
+   "note": null
+  },
+  {
+   "rank": 72,
+   "name": "Jefferson Lerma",
+   "nationality": "COL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 73,
+   "name": "Yerry Mina",
+   "nationality": "COL",
+   "status": "RECONCILED",
+   "editionId": "import_ita_act_179",
+   "note": null
+  },
+  {
+   "rank": 74,
+   "name": "Yaser Asprilla",
+   "nationality": "COL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 75,
+   "name": "Luis Sinisterra",
+   "nationality": "COL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 76,
+   "name": "Juan Camilo Hernández",
+   "nationality": "COL",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_act_juan_camilo_hernandez_suarez",
+   "note": "Reconciled by full name / reviewed alias to Cucho Hernández (Juan Camilo Hernández Suárez)."
+  },
+  {
+   "rank": 77,
+   "name": "Kevin Castaño",
+   "nationality": "COL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 78,
+   "name": "Nelson Deossa",
+   "nationality": "COL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 79,
+   "name": "Pervis Estupiñán",
+   "nationality": "ECU",
+   "status": "RECONCILED",
+   "editionId": "import_ita_act_070",
+   "note": null
+  },
+  {
+   "rank": 80,
+   "name": "Kendry Páez",
+   "nationality": "ECU",
+   "status": "RECONCILED",
+   "editionId": "import_arg_act_127",
+   "note": "Reconciled by full name / reviewed alias to Ray Páez (Ray Kendry Páez)."
+  },
+  {
+   "rank": 81,
+   "name": "Gonzalo Plata",
+   "nationality": "ECU",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_act_gonzalo_jordy_plata_jimenez",
+   "note": null
+  },
+  {
+   "rank": 82,
+   "name": "Edson Álvarez",
+   "nationality": "MEX",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 83,
+   "name": "Raúl Jiménez",
+   "nationality": "MEX",
+   "status": "RECONCILED",
+   "editionId": "plr_045",
+   "note": null
+  },
+  {
+   "rank": 84,
+   "name": "Johan Vásquez",
+   "nationality": "MEX",
+   "status": "RECONCILED",
+   "editionId": "import_ita_act_172",
+   "note": null
+  },
+  {
+   "rank": 85,
+   "name": "César Montes",
+   "nationality": "MEX",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 86,
+   "name": "Luis Chávez",
+   "nationality": "MEX",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 87,
+   "name": "Orbelín Pineda",
+   "nationality": "MEX",
+   "status": "RECONCILED",
+   "editionId": "import_mex_act_048",
+   "note": null
+  },
+  {
+   "rank": 88,
+   "name": "Gilberto Mora",
+   "nationality": "MEX",
+   "status": "RECONCILED",
+   "editionId": "import_mex_act_065",
+   "note": null
+  },
+  {
+   "rank": 89,
+   "name": "Roberto Alvarado",
+   "nationality": "MEX",
+   "status": "RECONCILED",
+   "editionId": "import_mex_act_017",
+   "note": null
+  },
+  {
+   "rank": 90,
+   "name": "Alexis Vega",
+   "nationality": "MEX",
+   "status": "RECONCILED",
+   "editionId": "import_mex_act_004",
+   "note": null
+  },
+  {
+   "rank": 91,
+   "name": "Franco Mastantuono",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_ita_act_104",
+   "note": null
+  },
+  {
+   "rank": 92,
+   "name": "Claudio Echeverri",
+   "nationality": "ARG",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 93,
+   "name": "Matías Soulé",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_ita_act_045",
+   "note": null
+  },
+  {
+   "rank": 94,
+   "name": "Facundo Buonanotte",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_act_facundo_valentin_buonanotte",
+   "note": null
+  },
+  {
+   "rank": 95,
+   "name": "Nicolás González",
+   "nationality": "ARG",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 96,
+   "name": "Leonardo Balerdi",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_ita_act_133",
+   "note": null
+  },
+  {
+   "rank": 97,
+   "name": "Marcos Senesi",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_act_075",
+   "note": null
+  },
+  {
+   "rank": 98,
+   "name": "Alan Varela",
+   "nationality": "ARG",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 99,
+   "name": "Santiago Hezze",
+   "nationality": "ARG",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 100,
+   "name": "Ezequiel Fernández",
+   "nationality": "ARG",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 101,
+   "name": "Valentín Barco",
+   "nationality": "ARG",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 102,
+   "name": "Nahuel Molina",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_ita_act_062",
+   "note": null
+  },
+  {
+   "rank": 103,
+   "name": "Nicolás Otamendi",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "plr_010",
+   "note": null
+  },
+  {
+   "rank": 104,
+   "name": "Nicolás Tagliafico",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "plr_117",
+   "note": null
+  },
+  {
+   "rank": 105,
+   "name": "Gonzalo Montiel",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_act_015",
+   "note": null
+  },
+  {
+   "rank": 106,
+   "name": "Leandro Paredes",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_act_002",
+   "note": null
+  },
+  {
+   "rank": 107,
+   "name": "Beraldo",
+   "nationality": "BRA",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 108,
+   "name": "Yan Couto",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_act_096",
+   "note": null
+  },
+  {
+   "rank": 109,
+   "name": "Bento",
+   "nationality": "BRA",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 110,
+   "name": "Gabriel Sara",
+   "nationality": "BRA",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 111,
+   "name": "Pepê",
+   "nationality": "BRA",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 112,
+   "name": "Gabriel Barbosa",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_act_gabriel_barbosa_almeida",
+   "note": "Reconciled by full name / reviewed alias to Gabigol (Gabriel Barbosa Almeida)."
+  },
+  {
+   "rank": 113,
+   "name": "Philippe Coutinho",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_act_philippe_coutinho_correia",
+   "note": null
+  },
+  {
+   "rank": 114,
+   "name": "Jorge Carrascal",
+   "nationality": "COL",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_act_jorge_andres_carrascal_guardo",
+   "note": null
+  },
+  {
+   "rank": 115,
+   "name": "Rafael Santos Borré",
+   "nationality": "COL",
+   "status": "RECONCILED",
+   "editionId": "import_arg_act_063",
+   "note": "Reconciled by full name / reviewed alias to Rafael Borré (Rafael Santos Borré)."
+  },
+  {
+   "rank": 116,
+   "name": "James Rodríguez",
+   "nationality": "COL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 117,
+   "name": "Alan Franco",
+   "nationality": "ECU",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_act_alan_steven_franco_palma",
+   "note": null
+  },
+  {
+   "rank": 118,
+   "name": "John Yeboah",
+   "nationality": "ECU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 119,
+   "name": "Jeremy Sarmiento",
+   "nationality": "ECU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 120,
+   "name": "Enner Valencia",
+   "nationality": "ECU",
+   "status": "RECONCILED",
+   "editionId": "plr_145",
+   "note": null
+  },
+  {
+   "rank": 121,
+   "name": "Rodrigo Huescas",
+   "nationality": "MEX",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 122,
+   "name": "Marcel Ruiz",
+   "nationality": "MEX",
+   "status": "RECONCILED",
+   "editionId": "import_mex_act_010",
+   "note": null
+  },
+  {
+   "rank": 123,
+   "name": "César Huerta",
+   "nationality": "MEX",
+   "status": "RECONCILED",
+   "editionId": "import_mex_act_016",
+   "note": null
+  },
+  {
+   "rank": 124,
+   "name": "Julio Enciso",
+   "nationality": "PAR",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 125,
+   "name": "Diego Gómez",
+   "nationality": "PAR",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 126,
+   "name": "Ramón Sosa",
+   "nationality": "PAR",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 127,
+   "name": "Miguel Almirón",
+   "nationality": "PAR",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 128,
+   "name": "Omar Alderete",
+   "nationality": "PAR",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 129,
+   "name": "Gustavo Gómez",
+   "nationality": "PAR",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_act_gustavo_raul_gomez_portillo",
+   "note": null
+  },
+  {
+   "rank": 130,
+   "name": "Damián Bobadilla",
+   "nationality": "PAR",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 131,
+   "name": "Darío Osorio",
+   "nationality": "CHI",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 132,
+   "name": "Marcelino Núñez",
+   "nationality": "CHI",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 133,
+   "name": "Paulo Díaz",
+   "nationality": "CHI",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 134,
+   "name": "Gabriel Suazo",
+   "nationality": "CHI",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_act_gabriel_alonso_suazo_urbina",
+   "note": null
+  },
+  {
+   "rank": 135,
+   "name": "Ben Brereton Díaz",
+   "nationality": "CHI",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 136,
+   "name": "Lucas Cepeda",
+   "nationality": "CHI",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 137,
+   "name": "Yangel Herrera",
+   "nationality": "VEN",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 138,
+   "name": "Jon Aramburu",
+   "nationality": "VEN",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 139,
+   "name": "Telasco Segovia",
+   "nationality": "VEN",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 140,
+   "name": "Jefferson Savarino",
+   "nationality": "VEN",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_act_jefferson_david_savarino_quintero",
+   "note": null
+  },
+  {
+   "rank": 141,
+   "name": "Salomón Rondón",
+   "nationality": "VEN",
+   "status": "RECONCILED",
+   "editionId": "import_mex_act_002",
+   "note": null
+  },
+  {
+   "rank": 142,
+   "name": "Renato Tapia",
+   "nationality": "PER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 143,
+   "name": "Oliver Sonne",
+   "nationality": "PER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 144,
+   "name": "Piero Quispe",
+   "nationality": "PER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 145,
+   "name": "Miguel Terceros",
+   "nationality": "BOL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 146,
+   "name": "Ramiro Vaca",
+   "nationality": "BOL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 147,
+   "name": "Sergio Rochet",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_act_sergio_ramon_rochet_alvarez",
+   "note": null
+  },
+  {
+   "rank": 148,
+   "name": "Facundo Torres",
+   "nationality": "URU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 149,
+   "name": "Luciano Rodríguez",
+   "nationality": "URU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No contemporary edition in the master catalogue; not imported (outside the priority ranks 1-50)."
+  },
+  {
+   "rank": 150,
+   "name": "Agustín Canobbio",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_act_agustin_canobbio_graviz",
+   "note": null
+  }
+ ]
+}

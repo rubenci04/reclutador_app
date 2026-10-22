@@ -14,8 +14,8 @@ import { MATCH_RULES_VERSION } from '../local-match/matchTypes'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
 import { DRAFT_SLOTS, type DraftLineup } from '../draft/draftTypes'
 
-const originalProvenance = LEAGUE_PROVENANCE.filter(p => !['ITA', 'MEX', 'EUR'].includes(p.league))
-const originalPlayers = LEAGUE_PLAYERS.filter(p => !p.id.startsWith('import_ita_') && !p.id.startsWith('import_mex_') && !p.id.startsWith('import_eur_'))
+const originalProvenance = LEAGUE_PROVENANCE.filter(p => !['ITA', 'MEX', 'EUR', 'SAM'].includes(p.league))
+const originalPlayers = LEAGUE_PLAYERS.filter(p => !p.id.startsWith('import_ita_') && !p.id.startsWith('import_mex_') && !p.id.startsWith('import_eur_') && !p.id.startsWith('import_sam_'))
 const stripFoot = (value: unknown) => JSON.stringify(value, (key, value: unknown) => key === 'dominantFoot' ? undefined : value)
 const hash = (value: unknown) => createHash('sha256').update(stripFoot(value)).digest('hex')
 const key = (row: { league: string; sourceId: string }) => JSON.stringify([row.league, row.sourceId])

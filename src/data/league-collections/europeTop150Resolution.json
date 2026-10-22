@@ -1,6 +1,6 @@
 {
- "version": "europe-top-150-v2",
- "rule": "Exact normalised name and same nationality against the deduplicated contemporary master (ALL_CURRENT). Homonyms without proof are AMBIGUOUS; missing people are never invented. Two documented name variants (ranks 38 and 145) are reconciled by full name. v2 (DATA-REG-003A) adds the priority figures of ranks 1-50 as independent regional editions (league EUR) with documented club, position and foot.",
+ "version": "europe-top-150-v3",
+ "rule": "Exact normalised name and same nationality against the deduplicated contemporary master (ALL_CURRENT). Homonyms without proof are AMBIGUOUS; missing people are never invented. Two documented name variants (ranks 38 and 145) are reconciled by full name. v2 (DATA-REG-003A) adds the priority figures of ranks 1-50 as independent regional editions (league EUR) with documented club, position and foot. v3 (DATA-REG-003B) resolves the remaining ranks 51-150 as independent regional editions (league EUR) with documented club, position, foot and an editorial OVR.",
  "rows": [
   {
    "rank": 1,
@@ -454,9 +454,9 @@
    "rank": 57,
    "name": "Theo Hernández",
    "nationality": "FRA",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_theo_hernandez",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 85 is editorial, not official)."
   },
   {
    "rank": 58,
@@ -510,9 +510,9 @@
    "rank": 64,
    "name": "Matvey Safonov",
    "nationality": "RUS",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_matvey_safonov",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 86 is editorial, not official)."
   },
   {
    "rank": 65,
@@ -590,9 +590,9 @@
    "rank": 74,
    "name": "Rafael Leão",
    "nationality": "POR",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_rafael_leao",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 85 is editorial, not official)."
   },
   {
    "rank": 75,
@@ -606,25 +606,25 @@
    "rank": 76,
    "name": "Rúben Neves",
    "nationality": "POR",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_ruben_neves",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 85 is editorial, not official)."
   },
   {
    "rank": 77,
    "name": "Gonçalo Inácio",
    "nationality": "POR",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_goncalo_inacio",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 85 is editorial, not official)."
   },
   {
    "rank": 78,
    "name": "António Silva",
    "nationality": "POR",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_antonio_silva",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 85 is editorial, not official)."
   },
   {
    "rank": 79,
@@ -646,9 +646,9 @@
    "rank": 81,
    "name": "Diogo Dalot",
    "nationality": "POR",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_diogo_dalot",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 85 is editorial, not official)."
   },
   {
    "rank": 82,
@@ -734,9 +734,9 @@
    "rank": 92,
    "name": "Anthony Gordon",
    "nationality": "ENG",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_anthony_gordon",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 84 is editorial, not official)."
   },
   {
    "rank": 93,
@@ -766,9 +766,9 @@
    "rank": 96,
    "name": "Jonathan Tah",
    "nationality": "GER",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_jonathan_tah",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 84 is editorial, not official)."
   },
   {
    "rank": 97,
@@ -782,25 +782,25 @@
    "rank": 98,
    "name": "Aleksandar Pavlović",
    "nationality": "GER",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_aleksandar_pavlovic",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 84 is editorial, not official)."
   },
   {
    "rank": 99,
    "name": "Felix Nmecha",
    "nationality": "GER",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_felix_nmecha",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 83 is editorial, not official)."
   },
   {
    "rank": 100,
    "name": "Lennart Karl",
    "nationality": "GER",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_lennart_karl",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 83 is editorial, not official)."
   },
   {
    "rank": 101,
@@ -814,25 +814,25 @@
    "rank": 102,
    "name": "Konrad Laimer",
    "nationality": "AUT",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_konrad_laimer",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 82 is editorial, not official)."
   },
   {
    "rank": 103,
    "name": "Marcel Sabitzer",
    "nationality": "AUT",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_marcel_sabitzer",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 82 is editorial, not official)."
   },
   {
    "rank": 104,
    "name": "Christoph Baumgartner",
    "nationality": "AUT",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_christoph_baumgartner",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 82 is editorial, not official)."
   },
   {
    "rank": 105,
@@ -870,17 +870,17 @@
    "rank": 109,
    "name": "Lucas Bergvall",
    "nationality": "SWE",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_lucas_bergvall",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 82 is editorial, not official)."
   },
   {
    "rank": 110,
    "name": "Antonio Nusa",
    "nationality": "NOR",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_antonio_nusa",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 82 is editorial, not official)."
   },
   {
    "rank": 111,
@@ -894,9 +894,9 @@
    "rank": 112,
    "name": "Oscar Bobb",
    "nationality": "NOR",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_oscar_bobb",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 82 is editorial, not official)."
   },
   {
    "rank": 113,
@@ -934,9 +934,9 @@
    "rank": 117,
    "name": "Zuriko Davitashvili",
    "nationality": "GEO",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_zuriko_davitashvili",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 82 is editorial, not official)."
   },
   {
    "rank": 118,
@@ -950,57 +950,57 @@
    "rank": 119,
    "name": "Illia Zabarnyi",
    "nationality": "UKR",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_illia_zabarnyi",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 82 is editorial, not official)."
   },
   {
    "rank": 120,
    "name": "Georgiy Sudakov",
    "nationality": "UKR",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_georgiy_sudakov",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 82 is editorial, not official)."
   },
   {
    "rank": 121,
    "name": "Andriy Lunin",
    "nationality": "UKR",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_andriy_lunin",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 83 is editorial, not official)."
   },
   {
    "rank": 122,
    "name": "Viktor Tsygankov",
    "nationality": "UKR",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_viktor_tsygankov",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 83 is editorial, not official)."
   },
   {
    "rank": 123,
    "name": "Anatoliy Trubin",
    "nationality": "UKR",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_anatoliy_trubin",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 83 is editorial, not official)."
   },
   {
    "rank": 124,
    "name": "Dušan Vlahović",
    "nationality": "SRB",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_dusan_vlahovic",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 83 is editorial, not official)."
   },
   {
    "rank": 125,
    "name": "Sergej Milinković-Savić",
    "nationality": "SRB",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "Only a historical (legend) edition exists in the master catalogue; it is not merged with the 2026 edition."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_sergej_milinkovic_savic",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 83 is editorial, not official)."
   },
   {
    "rank": 126,
@@ -1022,9 +1022,9 @@
    "rank": 128,
    "name": "Loïs Openda",
    "nationality": "BEL",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_lois_openda",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 84 is editorial, not official)."
   },
   {
    "rank": 129,
@@ -1062,17 +1062,17 @@
    "rank": 133,
    "name": "Leandro Trossard",
    "nationality": "BEL",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_leandro_trossard",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 84 is editorial, not official)."
   },
   {
    "rank": 134,
    "name": "Mateo Retegui",
    "nationality": "ITA",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_mateo_retegui",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 84 is editorial, not official)."
   },
   {
    "rank": 135,
@@ -1174,17 +1174,17 @@
    "rank": 147,
    "name": "Tijjani Reijnders",
    "nationality": "NED",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_tijjani_reijnders",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 84 is editorial, not official)."
   },
   {
    "rank": 148,
    "name": "Denzel Dumfries",
    "nationality": "NED",
-   "status": "MISSING",
-   "editionId": null,
-   "note": "No contemporary edition in the master catalogue."
+   "status": "RECONCILED",
+   "editionId": "import_eur_act_denzel_dumfries",
+   "note": "Imported by DATA-REG-003B as a regional 2026 edition (OVR 84 is editorial, not official)."
   },
   {
    "rank": 149,

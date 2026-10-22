@@ -34,7 +34,6 @@ describe('category tree and nationality collections', () => {
     expect(eligiblePlayers(players, definition, {}).map((p) => p.nationality)).toEqual(['MEX', 'CRC', 'PAN', 'CUB', 'BRA'])
     expect(['HUN', 'SRB', 'IRL', 'CZE', 'POR'].every((code) => EUROPEAN_NATIONALITIES.has(code))).toBe(true)
     expect(catalogForMode('SOUTH_AMERICA_CURRENT').some((p) => p.nationality === 'MEX')).toBe(true)
-    expect(catalogForMode('SOUTH_AMERICA_CURRENT').filter((p) => p.name === 'Matheuzinho')).toHaveLength(2)
   })
   it.each(REGIONAL_MODE_IDS)('%s is separated by nationality and edition, affordable, and CPU compatible', (id) => {
     const players = catalogForMode(id)

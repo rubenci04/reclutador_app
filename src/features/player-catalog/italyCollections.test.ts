@@ -53,7 +53,8 @@ describe('DATA-ITA-001 collections', () => {
     for (const [mode, scope, category] of [
       // EUROPE_CURRENT is the editorial Top 150 since europe-top-150-v1 (see europeTop150.test.ts).
       ['EUROPE_LEGENDS', EUROPEAN_NATIONALITIES, 'legend'],
-      ['SOUTH_AMERICA_CURRENT', LATIN_AMERICAN_ASSOCIATIONS, 'contemporary'], ['SOUTH_AMERICA_LEGENDS', LATIN_AMERICAN_ASSOCIATIONS, 'legend'],
+      // SOUTH_AMERICA_CURRENT is the editorial Top 150 since south-america-mexico-top-150-v1 (see southAmericaTop150.test.ts).
+      ['SOUTH_AMERICA_LEGENDS', LATIN_AMERICAN_ASSOCIATIONS, 'legend'],
     ] as const) {
       const players = catalogForMode(mode), keys = new Set(players.map(personKey))
       expect(players.length).toBeGreaterThanOrEqual(300)

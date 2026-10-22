@@ -83,23 +83,21 @@ describe('DATA-MX-001 Top 150 eligibility', () => {
 describe('DATA-MX-001 combined collections', () => {
   const master = (id: string) => MASTER_CATALOG.find(p => p.id === id)!
   it('routes Mexican-league players by nationality, not by where they play', () => {
-    const sa = catalogForMode('SOUTH_AMERICA_CURRENT'), eu = catalogForMode('EUROPE_CURRENT')
+    const sa = catalogForMode('SOUTH_AMERICA_CURRENT')
     const inSa = (id: string) => sa.some(p => personKey(p) === personKey(master(id)))
-    const inEu = (id: string) => eu.some(p => personKey(p) === personKey(master(id)))
     expect(inSa('import_mex_act_002')).toBe(true)
     expect(inSa('import_mex_act_003')).toBe(true)
     expect(master('import_mex_act_001').nationality).toBe('POR')
     expect(inSa('import_mex_act_001')).toBe(false)
-    expect(inEu('import_mex_act_001')).toBe(true)
-    const eligibleMexicans = mexican.filter(r => r.category === 'contemporary' && r.nationality === 'MEX')
-    expect(eligibleMexicans.every(r => inSa(r.id))).toBe(true)
+    // South America + Mexico Actualidad is the editorial Top 150 (south-america-mexico-top-150-v1): Mexicans enter by ranking, not automatically.
+    expect(sa.filter(p => p.nationality === 'MEX').length).toBeGreaterThanOrEqual(10)
   })
   it('deduplicates people in every combined collection and sets no 150 cap', () => {
     for (const mode of ['SOUTH_AMERICA_CURRENT', 'SOUTH_AMERICA_LEGENDS', 'EUROPE_CURRENT', 'EUROPE_LEGENDS', 'GLOBAL_CLASSIC', 'LEGENDS_ONLY'] as const) {
       const pool = catalogForMode(mode)
       expect(new Set(pool.map(personKey)).size, mode).toBe(pool.length)
     }
-    for (const mode of ['SOUTH_AMERICA_CURRENT', 'GLOBAL_CLASSIC'] as const) expect(catalogForMode(mode).length).toBeGreaterThan(150)
+    expect(catalogForMode('GLOBAL_CLASSIC').length).toBeGreaterThan(150)
   })
   it('does not turn every Mexican legend into a Global Legend', () => {
     expect(GLOBAL_LEGENDS.filter(p => p.id.startsWith('import_mex_'))).toHaveLength(0)

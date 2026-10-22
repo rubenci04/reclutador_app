@@ -1,9 +1,9 @@
 {
   "mode": "GLOBAL_CLASSIC",
   "draws": 480,
-  "baselineStars": 21,
-  "rareStars": 6,
-  "theoreticalUniformStars": 20.498220640569397,
-  "uniquePlayers": 994,
+  "baselineStars": 16,
+  "rareStars": 5,
+  "theoreticalUniformStars": 19.328859060402685,
+  "uniquePlayers": 1039,
   "distinctDraws": 480
 }
