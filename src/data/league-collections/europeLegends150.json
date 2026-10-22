@@ -1,0 +1,908 @@
+{
+ "version": "europe-legends-150-v1",
+ "sourceFile": "Ranking global de futbolistas 2026_ Sudamérica + México y Europa, actualidad y leyendas.txt",
+ "section": "Europa las 150 grandes leyendas",
+ "note": "Transcribed from the document tables (rank, name, country). Editorial ranking; not an official list.",
+ "rows": [
+  {
+   "rank": 1,
+   "name": "Cristiano Ronaldo",
+   "country": "Portugal",
+   "nationality": "POR"
+  },
+  {
+   "rank": 2,
+   "name": "Johan Cruyff",
+   "country": "Países Bajos",
+   "nationality": "NED"
+  },
+  {
+   "rank": 3,
+   "name": "Franz Beckenbauer",
+   "country": "Alemania",
+   "nationality": "GER"
+  },
+  {
+   "rank": 4,
+   "name": "Ferenc Puskás",
+   "country": "Hungría",
+   "nationality": "HUN"
+  },
+  {
+   "rank": 5,
+   "name": "Zinedine Zidane",
+   "country": "Francia",
+   "nationality": "FRA"
+  },
+  {
+   "rank": 6,
+   "name": "Michel Platini",
+   "country": "Francia",
+   "nationality": "FRA"
+  },
+  {
+   "rank": 7,
+   "name": "Gerd Müller",
+   "country": "Alemania",
+   "nationality": "GER"
+  },
+  {
+   "rank": 8,
+   "name": "Eusébio",
+   "country": "Portugal",
+   "nationality": "POR"
+  },
+  {
+   "rank": 9,
+   "name": "Bobby Charlton",
+   "country": "Inglaterra",
+   "nationality": "ENG"
+  },
+  {
+   "rank": 10,
+   "name": "Marco van Basten",
+   "country": "Países Bajos",
+   "nationality": "NED"
+  },
+  {
+   "rank": 11,
+   "name": "Lev Yashin",
+   "country": "Rusia URSS",
+   "nationality": "RUS"
+  },
+  {
+   "rank": 12,
+   "name": "Paolo Maldini",
+   "country": "Italia",
+   "nationality": "ITA"
+  },
+  {
+   "rank": 13,
+   "name": "Xavi Hernández",
+   "country": "España",
+   "nationality": "ESP"
+  },
+  {
+   "rank": 14,
+   "name": "Andrés Iniesta",
+   "country": "España",
+   "nationality": "ESP"
+  },
+  {
+   "rank": 15,
+   "name": "Luka Modrić",
+   "country": "Croacia",
+   "nationality": "CRO"
+  },
+  {
+   "rank": 16,
+   "name": "Lothar Matthäus",
+   "country": "Alemania",
+   "nationality": "GER"
+  },
+  {
+   "rank": 17,
+   "name": "Franco Baresi",
+   "country": "Italia",
+   "nationality": "ITA"
+  },
+  {
+   "rank": 18,
+   "name": "George Best",
+   "country": "Irlanda del Norte",
+   "nationality": "NIR"
+  },
+  {
+   "rank": 19,
+   "name": "Thierry Henry",
+   "country": "Francia",
+   "nationality": "FRA"
+  },
+  {
+   "rank": 20,
+   "name": "Roberto Baggio",
+   "country": "Italia",
+   "nationality": "ITA"
+  },
+  {
+   "rank": 21,
+   "name": "Gianluigi Buffon",
+   "country": "Italia",
+   "nationality": "ITA"
+  },
+  {
+   "rank": 22,
+   "name": "Iker Casillas",
+   "country": "España",
+   "nationality": "ESP"
+  },
+  {
+   "rank": 23,
+   "name": "Sergio Ramos",
+   "country": "España",
+   "nationality": "ESP"
+  },
+  {
+   "rank": 24,
+   "name": "Ruud Gullit",
+   "country": "Países Bajos",
+   "nationality": "NED"
+  },
+  {
+   "rank": 25,
+   "name": "Gianni Rivera",
+   "country": "Italia",
+   "nationality": "ITA"
+  },
+  {
+   "rank": 26,
+   "name": "Dennis Bergkamp",
+   "country": "Países Bajos",
+   "nationality": "NED"
+  },
+  {
+   "rank": 27,
+   "name": "Giacinto Facchetti",
+   "country": "Italia",
+   "nationality": "ITA"
+  },
+  {
+   "rank": 28,
+   "name": "Karl-Heinz Rummenigge",
+   "country": "Alemania",
+   "nationality": "GER"
+  },
+  {
+   "rank": 29,
+   "name": "Raymond Kopa",
+   "country": "Francia",
+   "nationality": "FRA"
+  },
+  {
+   "rank": 30,
+   "name": "Stanley Matthews",
+   "country": "Inglaterra",
+   "nationality": "ENG"
+  },
+  {
+   "rank": 31,
+   "name": "Bobby Moore",
+   "country": "Inglaterra",
+   "nationality": "ENG"
+  },
+  {
+   "rank": 32,
+   "name": "Luis Suárez Miramontes",
+   "country": "España",
+   "nationality": "ESP"
+  },
+  {
+   "rank": 33,
+   "name": "Kenny Dalglish",
+   "country": "Escocia",
+   "nationality": "SCO"
+  },
+  {
+   "rank": 34,
+   "name": "Kevin Keegan",
+   "country": "Inglaterra",
+   "nationality": "ENG"
+  },
+  {
+   "rank": 35,
+   "name": "Paco Gento",
+   "country": "España",
+   "nationality": "ESP"
+  },
+  {
+   "rank": 36,
+   "name": "Dino Zoff",
+   "country": "Italia",
+   "nationality": "ITA"
+  },
+  {
+   "rank": 37,
+   "name": "Andrea Pirlo",
+   "country": "Italia",
+   "nationality": "ITA"
+  },
+  {
+   "rank": 38,
+   "name": "Gheorghe Hagi",
+   "country": "Rumanía",
+   "nationality": "ROU"
+  },
+  {
+   "rank": 39,
+   "name": "Andriy Shevchenko",
+   "country": "Ucrania",
+   "nationality": "UKR"
+  },
+  {
+   "rank": 40,
+   "name": "Luís Figo",
+   "country": "Portugal",
+   "nationality": "POR"
+  },
+  {
+   "rank": 41,
+   "name": "Ronald Koeman",
+   "country": "Países Bajos",
+   "nationality": "NED"
+  },
+  {
+   "rank": 42,
+   "name": "Frank Rijkaard",
+   "country": "Países Bajos",
+   "nationality": "NED"
+  },
+  {
+   "rank": 43,
+   "name": "Johan Neeskens",
+   "country": "Países Bajos",
+   "nationality": "NED"
+  },
+  {
+   "rank": 44,
+   "name": "Alessandro Del Piero",
+   "country": "Italia",
+   "nationality": "ITA"
+  },
+  {
+   "rank": 45,
+   "name": "Francesco Totti",
+   "country": "Italia",
+   "nationality": "ITA"
+  },
+  {
+   "rank": 46,
+   "name": "Raúl González",
+   "country": "España",
+   "nationality": "ESP"
+  },
+  {
+   "rank": 47,
+   "name": "Sergio Busquets",
+   "country": "España",
+   "nationality": "ESP"
+  },
+  {
+   "rank": 48,
+   "name": "Philipp Lahm",
+   "country": "Alemania",
+   "nationality": "GER"
+  },
+  {
+   "rank": 49,
+   "name": "Toni Kroos",
+   "country": "Alemania",
+   "nationality": "GER"
+  },
+  {
+   "rank": 50,
+   "name": "Robert Lewandowski",
+   "country": "Polonia",
+   "nationality": "POL"
+  },
+  {
+   "rank": 51,
+   "name": "Zlatan Ibrahimović",
+   "country": "Suecia",
+   "nationality": "SWE"
+  },
+  {
+   "rank": 52,
+   "name": "Peter Schmeichel",
+   "country": "Dinamarca",
+   "nationality": "DEN"
+  },
+  {
+   "rank": 53,
+   "name": "Manuel Neuer",
+   "country": "Alemania",
+   "nationality": "GER"
+  },
+  {
+   "rank": 54,
+   "name": "Oliver Kahn",
+   "country": "Alemania",
+   "nationality": "GER"
+  },
+  {
+   "rank": 55,
+   "name": "Fabio Cannavaro",
+   "country": "Italia",
+   "nationality": "ITA"
+  },
+  {
+   "rank": 56,
+   "name": "Alessandro Nesta",
+   "country": "Italia",
+   "nationality": "ITA"
+  },
+  {
+   "rank": 57,
+   "name": "Gaetano Scirea",
+   "country": "Italia",
+   "nationality": "ITA"
+  },
+  {
+   "rank": 58,
+   "name": "Paolo Rossi",
+   "country": "Italia",
+   "nationality": "ITA"
+  },
+  {
+   "rank": 59,
+   "name": "Giuseppe Meazza",
+   "country": "Italia",
+   "nationality": "ITA"
+  },
+  {
+   "rank": 60,
+   "name": "Sandro Mazzola",
+   "country": "Italia",
+   "nationality": "ITA"
+  },
+  {
+   "rank": 61,
+   "name": "Silvio Piola",
+   "country": "Italia",
+   "nationality": "ITA"
+  },
+  {
+   "rank": 62,
+   "name": "David Villa",
+   "country": "España",
+   "nationality": "ESP"
+  },
+  {
+   "rank": 63,
+   "name": "Carles Puyol",
+   "country": "España",
+   "nationality": "ESP"
+  },
+  {
+   "rank": 64,
+   "name": "Fernando Hierro",
+   "country": "España",
+   "nationality": "ESP"
+  },
+  {
+   "rank": 65,
+   "name": "Xabi Alonso",
+   "country": "España",
+   "nationality": "ESP"
+  },
+  {
+   "rank": 66,
+   "name": "David Silva",
+   "country": "España",
+   "nationality": "ESP"
+  },
+  {
+   "rank": 67,
+   "name": "Telmo Zarra",
+   "country": "España",
+   "nationality": "ESP"
+  },
+  {
+   "rank": 68,
+   "name": "Emilio Butragueño",
+   "country": "España",
+   "nationality": "ESP"
+  },
+  {
+   "rank": 69,
+   "name": "Josef Masopust",
+   "country": "Chequia",
+   "nationality": "CZE"
+  },
+  {
+   "rank": 70,
+   "name": "Pavel Nedvěd",
+   "country": "Chequia",
+   "nationality": "CZE"
+  },
+  {
+   "rank": 71,
+   "name": "Petr Čech",
+   "country": "Chequia",
+   "nationality": "CZE"
+  },
+  {
+   "rank": 72,
+   "name": "Zbigniew Boniek",
+   "country": "Polonia",
+   "nationality": "POL"
+  },
+  {
+   "rank": 73,
+   "name": "Grzegorz Lato",
+   "country": "Polonia",
+   "nationality": "POL"
+  },
+  {
+   "rank": 74,
+   "name": "Hristo Stoichkov",
+   "country": "Bulgaria",
+   "nationality": "BUL"
+  },
+  {
+   "rank": 75,
+   "name": "Michael Laudrup",
+   "country": "Dinamarca",
+   "nationality": "DEN"
+  },
+  {
+   "rank": 76,
+   "name": "Allan Simonsen",
+   "country": "Dinamarca",
+   "nationality": "DEN"
+  },
+  {
+   "rank": 77,
+   "name": "Gunnar Nordahl",
+   "country": "Suecia",
+   "nationality": "SWE"
+  },
+  {
+   "rank": 78,
+   "name": "Nils Liedholm",
+   "country": "Suecia",
+   "nationality": "SWE"
+  },
+  {
+   "rank": 79,
+   "name": "Henrik Larsson",
+   "country": "Suecia",
+   "nationality": "SWE"
+  },
+  {
+   "rank": 80,
+   "name": "Ryan Giggs",
+   "country": "Gales",
+   "nationality": "WAL"
+  },
+  {
+   "rank": 81,
+   "name": "Gareth Bale",
+   "country": "Gales",
+   "nationality": "WAL"
+  },
+  {
+   "rank": 82,
+   "name": "John Charles",
+   "country": "Gales",
+   "nationality": "WAL"
+  },
+  {
+   "rank": 83,
+   "name": "Wayne Rooney",
+   "country": "Inglaterra",
+   "nationality": "ENG"
+  },
+  {
+   "rank": 84,
+   "name": "Steven Gerrard",
+   "country": "Inglaterra",
+   "nationality": "ENG"
+  },
+  {
+   "rank": 85,
+   "name": "Frank Lampard",
+   "country": "Inglaterra",
+   "nationality": "ENG"
+  },
+  {
+   "rank": 86,
+   "name": "Paul Scholes",
+   "country": "Inglaterra",
+   "nationality": "ENG"
+  },
+  {
+   "rank": 87,
+   "name": "David Beckham",
+   "country": "Inglaterra",
+   "nationality": "ENG"
+  },
+  {
+   "rank": 88,
+   "name": "Alan Shearer",
+   "country": "Inglaterra",
+   "nationality": "ENG"
+  },
+  {
+   "rank": 89,
+   "name": "Gordon Banks",
+   "country": "Inglaterra",
+   "nationality": "ENG"
+  },
+  {
+   "rank": 90,
+   "name": "Jimmy Greaves",
+   "country": "Inglaterra",
+   "nationality": "ENG"
+  },
+  {
+   "rank": 91,
+   "name": "Tom Finney",
+   "country": "Inglaterra",
+   "nationality": "ENG"
+  },
+  {
+   "rank": 92,
+   "name": "Gary Lineker",
+   "country": "Inglaterra",
+   "nationality": "ENG"
+  },
+  {
+   "rank": 93,
+   "name": "Harry Kane",
+   "country": "Inglaterra",
+   "nationality": "ENG"
+  },
+  {
+   "rank": 94,
+   "name": "Karim Benzema",
+   "country": "Francia",
+   "nationality": "FRA"
+  },
+  {
+   "rank": 95,
+   "name": "Just Fontaine",
+   "country": "Francia",
+   "nationality": "FRA"
+  },
+  {
+   "rank": 96,
+   "name": "Antoine Griezmann",
+   "country": "Francia",
+   "nationality": "FRA"
+  },
+  {
+   "rank": 97,
+   "name": "Franck Ribéry",
+   "country": "Francia",
+   "nationality": "FRA"
+  },
+  {
+   "rank": 98,
+   "name": "Lilian Thuram",
+   "country": "Francia",
+   "nationality": "FRA"
+  },
+  {
+   "rank": 99,
+   "name": "Patrick Vieira",
+   "country": "Francia",
+   "nationality": "FRA"
+  },
+  {
+   "rank": 100,
+   "name": "Claude Makélélé",
+   "country": "Francia",
+   "nationality": "FRA"
+  },
+  {
+   "rank": 101,
+   "name": "Kylian Mbappé",
+   "country": "Francia",
+   "nationality": "FRA"
+  },
+  {
+   "rank": 102,
+   "name": "Fritz Walter",
+   "country": "Alemania",
+   "nationality": "GER"
+  },
+  {
+   "rank": 103,
+   "name": "Uwe Seeler",
+   "country": "Alemania",
+   "nationality": "GER"
+  },
+  {
+   "rank": 104,
+   "name": "Paul Breitner",
+   "country": "Alemania",
+   "nationality": "GER"
+  },
+  {
+   "rank": 105,
+   "name": "Günter Netzer",
+   "country": "Alemania",
+   "nationality": "GER"
+  },
+  {
+   "rank": 106,
+   "name": "Matthias Sammer",
+   "country": "Alemania",
+   "nationality": "GER"
+  },
+  {
+   "rank": 107,
+   "name": "Bernd Schuster",
+   "country": "Alemania",
+   "nationality": "GER"
+  },
+  {
+   "rank": 108,
+   "name": "Rudi Völler",
+   "country": "Alemania",
+   "nationality": "GER"
+  },
+  {
+   "rank": 109,
+   "name": "Jürgen Klinsmann",
+   "country": "Alemania",
+   "nationality": "GER"
+  },
+  {
+   "rank": 110,
+   "name": "Thomas Müller",
+   "country": "Alemania",
+   "nationality": "GER"
+  },
+  {
+   "rank": 111,
+   "name": "Arjen Robben",
+   "country": "Países Bajos",
+   "nationality": "NED"
+  },
+  {
+   "rank": 112,
+   "name": "Wesley Sneijder",
+   "country": "Países Bajos",
+   "nationality": "NED"
+  },
+  {
+   "rank": 113,
+   "name": "Clarence Seedorf",
+   "country": "Países Bajos",
+   "nationality": "NED"
+  },
+  {
+   "rank": 114,
+   "name": "Ruud van Nistelrooy",
+   "country": "Países Bajos",
+   "nationality": "NED"
+  },
+  {
+   "rank": 115,
+   "name": "Edwin van der Sar",
+   "country": "Países Bajos",
+   "nationality": "NED"
+  },
+  {
+   "rank": 116,
+   "name": "Ruud Krol",
+   "country": "Países Bajos",
+   "nationality": "NED"
+  },
+  {
+   "rank": 117,
+   "name": "Sándor Kocsis",
+   "country": "Hungría",
+   "nationality": "HUN"
+  },
+  {
+   "rank": 118,
+   "name": "Nándor Hidegkuti",
+   "country": "Hungría",
+   "nationality": "HUN"
+  },
+  {
+   "rank": 119,
+   "name": "József Bozsik",
+   "country": "Hungría",
+   "nationality": "HUN"
+  },
+  {
+   "rank": 120,
+   "name": "Gyula Grosics",
+   "country": "Hungría",
+   "nationality": "HUN"
+  },
+  {
+   "rank": 121,
+   "name": "Flórián Albert",
+   "country": "Hungría",
+   "nationality": "HUN"
+  },
+  {
+   "rank": 122,
+   "name": "Oleg Blokhin",
+   "country": "Ucrania URSS",
+   "nationality": "UKR"
+  },
+  {
+   "rank": 123,
+   "name": "Igor Belanov",
+   "country": "Ucrania URSS",
+   "nationality": "UKR"
+  },
+  {
+   "rank": 124,
+   "name": "Rinat Dasayev",
+   "country": "RusiaURSS",
+   "nationality": "RUS"
+  },
+  {
+   "rank": 125,
+   "name": "Igor Netto",
+   "country": "RusiaURSS",
+   "nationality": "RUS"
+  },
+  {
+   "rank": 126,
+   "name": "Eduard Streltsov",
+   "country": "RusiaURSS",
+   "nationality": "RUS"
+  },
+  {
+   "rank": 127,
+   "name": "Davor Šuker",
+   "country": "Croacia",
+   "nationality": "CRO"
+  },
+  {
+   "rank": 128,
+   "name": "Zvonimir Boban",
+   "country": "Croacia",
+   "nationality": "CRO"
+  },
+  {
+   "rank": 129,
+   "name": "Dragan Džajić",
+   "country": "Serbia Yugoslavia",
+   "nationality": "SRB"
+  },
+  {
+   "rank": 130,
+   "name": "Dragan Stojković",
+   "country": "Serbia Yugoslavia",
+   "nationality": "SRB"
+  },
+  {
+   "rank": 131,
+   "name": "Dejan Savićević",
+   "country": "Montenegro Yugoslavia",
+   "nationality": "MNE"
+  },
+  {
+   "rank": 132,
+   "name": "Nemanja Vidić",
+   "country": "Serbia",
+   "nationality": "SRB"
+  },
+  {
+   "rank": 133,
+   "name": "Jean Marie Pfaff",
+   "country": "Bélgica",
+   "nationality": "BEL"
+  },
+  {
+   "rank": 134,
+   "name": "Kevin De Bruyne",
+   "country": "Bélgica",
+   "nationality": "BEL"
+  },
+  {
+   "rank": 135,
+   "name": "Eden Hazard",
+   "country": "Bélgica",
+   "nationality": "BEL"
+  },
+  {
+   "rank": 136,
+   "name": "Matthias Sindelar",
+   "country": "Austria",
+   "nationality": "AUT"
+  },
+  {
+   "rank": 137,
+   "name": "Ernst Ocwirk",
+   "country": "Austria",
+   "nationality": "AUT"
+  },
+  {
+   "rank": 138,
+   "name": "Duncan Edwards",
+   "country": "Inglaterra",
+   "nationality": "ENG"
+  },
+  {
+   "rank": 139,
+   "name": "Denis Law",
+   "country": "Escocia",
+   "nationality": "SCO"
+  },
+  {
+   "rank": 140,
+   "name": "Graeme Souness",
+   "country": "Escocia",
+   "nationality": "SCO"
+  },
+  {
+   "rank": 141,
+   "name": "Roy Keane",
+   "country": "Irlanda",
+   "nationality": "IRL"
+  },
+  {
+   "rank": 142,
+   "name": "Jari Litmanen",
+   "country": "Finlandia",
+   "nationality": "FIN"
+  },
+  {
+   "rank": 143,
+   "name": "Pepe",
+   "country": "Portugal",
+   "nationality": "POR"
+  },
+  {
+   "rank": 144,
+   "name": "Rui Costa",
+   "country": "Portugal",
+   "nationality": "POR"
+  },
+  {
+   "rank": 145,
+   "name": "Deco",
+   "country": "Portugal",
+   "nationality": "POR"
+  },
+  {
+   "rank": 146,
+   "name": "Paulo Futre",
+   "country": "Portugal",
+   "nationality": "POR"
+  },
+  {
+   "rank": 147,
+   "name": "Erling Haaland",
+   "country": "Noruega",
+   "nationality": "NOR"
+  },
+  {
+   "rank": 148,
+   "name": "Dimitar Berbatov",
+   "country": "Bulgaria",
+   "nationality": "BUL"
+  },
+  {
+   "rank": 149,
+   "name": "Gheorghe Popescu",
+   "country": "Rumanía",
+   "nationality": "ROU"
+  },
+  {
+   "rank": 150,
+   "name": "Nicolae Dobrin",
+   "country": "Rumanía",
+   "nationality": "ROU"
+  }
+ ]
+}

@@ -1,0 +1,1206 @@
+{
+ "version": "europe-legends-150-v1",
+ "rule": "Exact full-name tokens against historical (legend) editions of the master; one edition per person; reviewed choices are noted. Local legend-balance-v1 editions are used where they exist. Current-era editions are never used for legends. Missing people are never invented.",
+ "rows": [
+  {
+   "rank": 1,
+   "name": "Cristiano Ronaldo",
+   "nationality": "POR",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_001",
+   "note": null
+  },
+  {
+   "rank": 2,
+   "name": "Johan Cruyff",
+   "nationality": "NED",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_hendrik_johannes_cruijff",
+   "note": null
+  },
+  {
+   "rank": 3,
+   "name": "Franz Beckenbauer",
+   "nationality": "GER",
+   "status": "RECONCILED",
+   "editionId": "import_eur_leg_franz_beckenbauer",
+   "note": "Imported by DATA-REG-003C as an independent historical edition (OVR 96 is editorial, not official)."
+  },
+  {
+   "rank": 4,
+   "name": "Ferenc Puskás",
+   "nationality": "HUN",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_ferenc_puskas",
+   "note": null
+  },
+  {
+   "rank": 5,
+   "name": "Zinedine Zidane",
+   "nationality": "FRA",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_zinedine_yazid_zidane",
+   "note": null
+  },
+  {
+   "rank": 6,
+   "name": "Michel Platini",
+   "nationality": "FRA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_003",
+   "note": null
+  },
+  {
+   "rank": 7,
+   "name": "Gerd Müller",
+   "nationality": "GER",
+   "status": "RECONCILED",
+   "editionId": "import_eur_leg_gerd_muller",
+   "note": "Imported by DATA-REG-003C as an independent historical edition (OVR 96 is editorial, not official)."
+  },
+  {
+   "rank": 8,
+   "name": "Eusébio",
+   "nationality": "POR",
+   "status": "RECONCILED",
+   "editionId": "import_eur_leg_eusebio",
+   "note": "Imported by DATA-REG-003C as an independent historical edition (OVR 96 is editorial, not official)."
+  },
+  {
+   "rank": 9,
+   "name": "Bobby Charlton",
+   "nationality": "ENG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_005",
+   "note": null
+  },
+  {
+   "rank": 10,
+   "name": "Marco van Basten",
+   "nationality": "NED",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_004",
+   "note": null
+  },
+  {
+   "rank": 11,
+   "name": "Lev Yashin",
+   "nationality": "RUS",
+   "status": "RECONCILED",
+   "editionId": "import_eur_leg_lev_yashin",
+   "note": "Imported by DATA-REG-003C as an independent historical edition (OVR 96 is editorial, not official)."
+  },
+  {
+   "rank": 12,
+   "name": "Paolo Maldini",
+   "nationality": "ITA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_002",
+   "note": null
+  },
+  {
+   "rank": 13,
+   "name": "Xavi Hernández",
+   "nationality": "ESP",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_xavier_hernandez_creus",
+   "note": null
+  },
+  {
+   "rank": 14,
+   "name": "Andrés Iniesta",
+   "nationality": "ESP",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_andres_iniesta_lujan",
+   "note": null
+  },
+  {
+   "rank": 15,
+   "name": "Luka Modrić",
+   "nationality": "CRO",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_039",
+   "note": null
+  },
+  {
+   "rank": 16,
+   "name": "Lothar Matthäus",
+   "nationality": "GER",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_022",
+   "note": null
+  },
+  {
+   "rank": 17,
+   "name": "Franco Baresi",
+   "nationality": "ITA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_005",
+   "note": null
+  },
+  {
+   "rank": 18,
+   "name": "George Best",
+   "nationality": "NIR",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_004",
+   "note": null
+  },
+  {
+   "rank": 19,
+   "name": "Thierry Henry",
+   "nationality": "FRA",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_002",
+   "note": null
+  },
+  {
+   "rank": 20,
+   "name": "Roberto Baggio",
+   "nationality": "ITA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_009",
+   "note": null
+  },
+  {
+   "rank": 21,
+   "name": "Gianluigi Buffon",
+   "nationality": "ITA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_007",
+   "note": null
+  },
+  {
+   "rank": 22,
+   "name": "Iker Casillas",
+   "nationality": "ESP",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_iker_casillas_fernandez",
+   "note": null
+  },
+  {
+   "rank": 23,
+   "name": "Sergio Ramos",
+   "nationality": "ESP",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_sergio_ramos_garcia",
+   "note": null
+  },
+  {
+   "rank": 24,
+   "name": "Ruud Gullit",
+   "nationality": "NED",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_129",
+   "note": null
+  },
+  {
+   "rank": 25,
+   "name": "Gianni Rivera",
+   "nationality": "ITA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_017",
+   "note": null
+  },
+  {
+   "rank": 26,
+   "name": "Dennis Bergkamp",
+   "nationality": "NED",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_015",
+   "note": null
+  },
+  {
+   "rank": 27,
+   "name": "Giacinto Facchetti",
+   "nationality": "ITA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_018",
+   "note": null
+  },
+  {
+   "rank": 28,
+   "name": "Karl-Heinz Rummenigge",
+   "nationality": "GER",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_094",
+   "note": null
+  },
+  {
+   "rank": 29,
+   "name": "Raymond Kopa",
+   "nationality": "FRA",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_raymond_kopaszewski",
+   "note": null
+  },
+  {
+   "rank": 30,
+   "name": "Stanley Matthews",
+   "nationality": "ENG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_012",
+   "note": null
+  },
+  {
+   "rank": 31,
+   "name": "Bobby Moore",
+   "nationality": "ENG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_010",
+   "note": null
+  },
+  {
+   "rank": 32,
+   "name": "Luis Suárez Miramontes",
+   "nationality": "ESP",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_luis_suarez_miramontes",
+   "note": null
+  },
+  {
+   "rank": 33,
+   "name": "Kenny Dalglish",
+   "nationality": "SCO",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_011",
+   "note": null
+  },
+  {
+   "rank": 34,
+   "name": "Kevin Keegan",
+   "nationality": "ENG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_038",
+   "note": null
+  },
+  {
+   "rank": 35,
+   "name": "Paco Gento",
+   "nationality": "ESP",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_francisco_gento_lopez",
+   "note": null
+  },
+  {
+   "rank": 36,
+   "name": "Dino Zoff",
+   "nationality": "ITA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_016",
+   "note": null
+  },
+  {
+   "rank": 37,
+   "name": "Andrea Pirlo",
+   "nationality": "ITA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_014",
+   "note": null
+  },
+  {
+   "rank": 38,
+   "name": "Gheorghe Hagi",
+   "nationality": "ROU",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_gheorghe_hagi",
+   "note": null
+  },
+  {
+   "rank": 39,
+   "name": "Andriy Shevchenko",
+   "nationality": "UKR",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_030",
+   "note": null
+  },
+  {
+   "rank": 40,
+   "name": "Luís Figo",
+   "nationality": "POR",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_luis_filipe_madeira_caeiro_figo",
+   "note": null
+  },
+  {
+   "rank": 41,
+   "name": "Ronald Koeman",
+   "nationality": "NED",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_ronald_koeman",
+   "note": null
+  },
+  {
+   "rank": 42,
+   "name": "Frank Rijkaard",
+   "nationality": "NED",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_035",
+   "note": null
+  },
+  {
+   "rank": 43,
+   "name": "Johan Neeskens",
+   "nationality": "NED",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 44,
+   "name": "Alessandro Del Piero",
+   "nationality": "ITA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_013",
+   "note": null
+  },
+  {
+   "rank": 45,
+   "name": "Francesco Totti",
+   "nationality": "ITA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_012",
+   "note": null
+  },
+  {
+   "rank": 46,
+   "name": "Raúl González",
+   "nationality": "ESP",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_raul_gonzalez_blanco",
+   "note": null
+  },
+  {
+   "rank": 47,
+   "name": "Sergio Busquets",
+   "nationality": "ESP",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_sergio_busquets_burgos",
+   "note": null
+  },
+  {
+   "rank": 48,
+   "name": "Philipp Lahm",
+   "nationality": "GER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 49,
+   "name": "Toni Kroos",
+   "nationality": "GER",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_toni_kroos",
+   "note": null
+  },
+  {
+   "rank": 50,
+   "name": "Robert Lewandowski",
+   "nationality": "POL",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_robert_lewandowski",
+   "note": null
+  },
+  {
+   "rank": 51,
+   "name": "Zlatan Ibrahimović",
+   "nationality": "SWE",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_zlatan_ibrahimovic",
+   "note": null
+  },
+  {
+   "rank": 52,
+   "name": "Peter Schmeichel",
+   "nationality": "DEN",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_021",
+   "note": "Reviewed choice: Peter Bolesław Schmeichel (DEN)."
+  },
+  {
+   "rank": 53,
+   "name": "Manuel Neuer",
+   "nationality": "GER",
+   "status": "RECONCILED",
+   "editionId": "edition_neuer_legend",
+   "note": null
+  },
+  {
+   "rank": 54,
+   "name": "Oliver Kahn",
+   "nationality": "GER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 55,
+   "name": "Fabio Cannavaro",
+   "nationality": "ITA",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_fabio_cannavaro",
+   "note": null
+  },
+  {
+   "rank": 56,
+   "name": "Alessandro Nesta",
+   "nationality": "ITA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_015",
+   "note": null
+  },
+  {
+   "rank": 57,
+   "name": "Gaetano Scirea",
+   "nationality": "ITA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_019",
+   "note": null
+  },
+  {
+   "rank": 58,
+   "name": "Paolo Rossi",
+   "nationality": "ITA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_047",
+   "note": null
+  },
+  {
+   "rank": 59,
+   "name": "Giuseppe Meazza",
+   "nationality": "ITA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_008",
+   "note": null
+  },
+  {
+   "rank": 60,
+   "name": "Sandro Mazzola",
+   "nationality": "ITA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_032",
+   "note": null
+  },
+  {
+   "rank": 61,
+   "name": "Silvio Piola",
+   "nationality": "ITA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_025",
+   "note": null
+  },
+  {
+   "rank": 62,
+   "name": "David Villa",
+   "nationality": "ESP",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_david_villa_sanchez",
+   "note": null
+  },
+  {
+   "rank": 63,
+   "name": "Carles Puyol",
+   "nationality": "ESP",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_carles_puyol_saforcada",
+   "note": null
+  },
+  {
+   "rank": 64,
+   "name": "Fernando Hierro",
+   "nationality": "ESP",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_fernando_ruiz_hierro",
+   "note": null
+  },
+  {
+   "rank": 65,
+   "name": "Xabi Alonso",
+   "nationality": "ESP",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_096",
+   "note": null
+  },
+  {
+   "rank": 66,
+   "name": "David Silva",
+   "nationality": "ESP",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_030",
+   "note": null
+  },
+  {
+   "rank": 67,
+   "name": "Telmo Zarra",
+   "nationality": "ESP",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_pedro_telmo_zarraonandia_montoya",
+   "note": null
+  },
+  {
+   "rank": 68,
+   "name": "Emilio Butragueño",
+   "nationality": "ESP",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_emilio_butragueno_santos",
+   "note": null
+  },
+  {
+   "rank": 69,
+   "name": "Josef Masopust",
+   "nationality": "CZE",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 70,
+   "name": "Pavel Nedvěd",
+   "nationality": "CZE",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_036",
+   "note": null
+  },
+  {
+   "rank": 71,
+   "name": "Petr Čech",
+   "nationality": "CZE",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_042",
+   "note": null
+  },
+  {
+   "rank": 72,
+   "name": "Zbigniew Boniek",
+   "nationality": "POL",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_167",
+   "note": null
+  },
+  {
+   "rank": 73,
+   "name": "Grzegorz Lato",
+   "nationality": "POL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 74,
+   "name": "Hristo Stoichkov",
+   "nationality": "BUL",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_hristo_stoichkov_stoichkov",
+   "note": null
+  },
+  {
+   "rank": 75,
+   "name": "Michael Laudrup",
+   "nationality": "DEN",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_michael_laudrup",
+   "note": null
+  },
+  {
+   "rank": 76,
+   "name": "Allan Simonsen",
+   "nationality": "DEN",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 77,
+   "name": "Gunnar Nordahl",
+   "nationality": "SWE",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_024",
+   "note": null
+  },
+  {
+   "rank": 78,
+   "name": "Nils Liedholm",
+   "nationality": "SWE",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_063",
+   "note": null
+  },
+  {
+   "rank": 79,
+   "name": "Henrik Larsson",
+   "nationality": "SWE",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_henrik_edward_larsson",
+   "note": null
+  },
+  {
+   "rank": 80,
+   "name": "Ryan Giggs",
+   "nationality": "WAL",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_025",
+   "note": null
+  },
+  {
+   "rank": 81,
+   "name": "Gareth Bale",
+   "nationality": "WAL",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_034",
+   "note": null
+  },
+  {
+   "rank": 82,
+   "name": "John Charles",
+   "nationality": "WAL",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_037",
+   "note": "Reviewed choice: John Charles (WAL)."
+  },
+  {
+   "rank": 83,
+   "name": "Wayne Rooney",
+   "nationality": "ENG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_013",
+   "note": null
+  },
+  {
+   "rank": 84,
+   "name": "Steven Gerrard",
+   "nationality": "ENG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_027",
+   "note": null
+  },
+  {
+   "rank": 85,
+   "name": "Frank Lampard",
+   "nationality": "ENG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_016",
+   "note": null
+  },
+  {
+   "rank": 86,
+   "name": "Paul Scholes",
+   "nationality": "ENG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_020",
+   "note": null
+  },
+  {
+   "rank": 87,
+   "name": "David Beckham",
+   "nationality": "ENG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_054",
+   "note": null
+  },
+  {
+   "rank": 88,
+   "name": "Alan Shearer",
+   "nationality": "ENG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_003",
+   "note": null
+  },
+  {
+   "rank": 89,
+   "name": "Gordon Banks",
+   "nationality": "ENG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_035",
+   "note": null
+  },
+  {
+   "rank": 90,
+   "name": "Jimmy Greaves",
+   "nationality": "ENG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_006",
+   "note": null
+  },
+  {
+   "rank": 91,
+   "name": "Tom Finney",
+   "nationality": "ENG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_043",
+   "note": null
+  },
+  {
+   "rank": 92,
+   "name": "Gary Lineker",
+   "nationality": "ENG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_058",
+   "note": null
+  },
+  {
+   "rank": 93,
+   "name": "Harry Kane",
+   "nationality": "ENG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_017",
+   "note": null
+  },
+  {
+   "rank": 94,
+   "name": "Karim Benzema",
+   "nationality": "FRA",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_karim_mostafa_benzema",
+   "note": null
+  },
+  {
+   "rank": 95,
+   "name": "Just Fontaine",
+   "nationality": "FRA",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 96,
+   "name": "Antoine Griezmann",
+   "nationality": "FRA",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_antoine_griezmann",
+   "note": null
+  },
+  {
+   "rank": 97,
+   "name": "Franck Ribéry",
+   "nationality": "FRA",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 98,
+   "name": "Lilian Thuram",
+   "nationality": "FRA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_037",
+   "note": null
+  },
+  {
+   "rank": 99,
+   "name": "Patrick Vieira",
+   "nationality": "FRA",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_019",
+   "note": null
+  },
+  {
+   "rank": 100,
+   "name": "Claude Makélélé",
+   "nationality": "FRA",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_053",
+   "note": null
+  },
+  {
+   "rank": 101,
+   "name": "Kylian Mbappé",
+   "nationality": "FRA",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 102,
+   "name": "Fritz Walter",
+   "nationality": "GER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 103,
+   "name": "Uwe Seeler",
+   "nationality": "GER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 104,
+   "name": "Paul Breitner",
+   "nationality": "GER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 105,
+   "name": "Günter Netzer",
+   "nationality": "GER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 106,
+   "name": "Matthias Sammer",
+   "nationality": "GER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 107,
+   "name": "Bernd Schuster",
+   "nationality": "GER",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_bernd_schuster",
+   "note": null
+  },
+  {
+   "rank": 108,
+   "name": "Rudi Völler",
+   "nationality": "GER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 109,
+   "name": "Jürgen Klinsmann",
+   "nationality": "GER",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_114",
+   "note": null
+  },
+  {
+   "rank": 110,
+   "name": "Thomas Müller",
+   "nationality": "GER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 111,
+   "name": "Arjen Robben",
+   "nationality": "NED",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 112,
+   "name": "Wesley Sneijder",
+   "nationality": "NED",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_076",
+   "note": null
+  },
+  {
+   "rank": 113,
+   "name": "Clarence Seedorf",
+   "nationality": "NED",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_038",
+   "note": "Reviewed choice: Clarence Seedorf (NED)."
+  },
+  {
+   "rank": 114,
+   "name": "Ruud van Nistelrooy",
+   "nationality": "NED",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_066",
+   "note": "Reviewed choice: Ruud van Nistelrooy (NED)."
+  },
+  {
+   "rank": 115,
+   "name": "Edwin van der Sar",
+   "nationality": "NED",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_056",
+   "note": null
+  },
+  {
+   "rank": 116,
+   "name": "Ruud Krol",
+   "nationality": "NED",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_129",
+   "note": null
+  },
+  {
+   "rank": 117,
+   "name": "Sándor Kocsis",
+   "nationality": "HUN",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 118,
+   "name": "Nándor Hidegkuti",
+   "nationality": "HUN",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 119,
+   "name": "József Bozsik",
+   "nationality": "HUN",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 120,
+   "name": "Gyula Grosics",
+   "nationality": "HUN",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 121,
+   "name": "Flórián Albert",
+   "nationality": "HUN",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 122,
+   "name": "Oleg Blokhin",
+   "nationality": "UKR",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 123,
+   "name": "Igor Belanov",
+   "nationality": "UKR",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 124,
+   "name": "Rinat Dasayev",
+   "nationality": "RUS",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 125,
+   "name": "Igor Netto",
+   "nationality": "RUS",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 126,
+   "name": "Eduard Streltsov",
+   "nationality": "RUS",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 127,
+   "name": "Davor Šuker",
+   "nationality": "CRO",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_davor_suker",
+   "note": null
+  },
+  {
+   "rank": 128,
+   "name": "Zvonimir Boban",
+   "nationality": "CRO",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_060",
+   "note": null
+  },
+  {
+   "rank": 129,
+   "name": "Dragan Džajić",
+   "nationality": "SRB",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 130,
+   "name": "Dragan Stojković",
+   "nationality": "SRB",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 131,
+   "name": "Dejan Savićević",
+   "nationality": "MNE",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_059",
+   "note": null
+  },
+  {
+   "rank": 132,
+   "name": "Nemanja Vidić",
+   "nationality": "SRB",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_063",
+   "note": null
+  },
+  {
+   "rank": 133,
+   "name": "Jean Marie Pfaff",
+   "nationality": "BEL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 134,
+   "name": "Kevin De Bruyne",
+   "nationality": "BEL",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_007",
+   "note": null
+  },
+  {
+   "rank": 135,
+   "name": "Eden Hazard",
+   "nationality": "BEL",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_033",
+   "note": null
+  },
+  {
+   "rank": 136,
+   "name": "Matthias Sindelar",
+   "nationality": "AUT",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 137,
+   "name": "Ernst Ocwirk",
+   "nationality": "AUT",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 138,
+   "name": "Duncan Edwards",
+   "nationality": "ENG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_055",
+   "note": null
+  },
+  {
+   "rank": 139,
+   "name": "Denis Law",
+   "nationality": "SCO",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_031",
+   "note": null
+  },
+  {
+   "rank": 140,
+   "name": "Graeme Souness",
+   "nationality": "SCO",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_060",
+   "note": null
+  },
+  {
+   "rank": 141,
+   "name": "Roy Keane",
+   "nationality": "IRL",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_024",
+   "note": null
+  },
+  {
+   "rank": 142,
+   "name": "Jari Litmanen",
+   "nationality": "FIN",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 143,
+   "name": "Pepe",
+   "nationality": "POR",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_kepler_laveran_de_lima_ferreira",
+   "note": "Reviewed choice: Képler Laveran de Lima Ferreira (POR)."
+  },
+  {
+   "rank": 144,
+   "name": "Rui Costa",
+   "nationality": "POR",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_133",
+   "note": null
+  },
+  {
+   "rank": 145,
+   "name": "Deco",
+   "nationality": "POR",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_anderson_luis_de_souza",
+   "note": null
+  },
+  {
+   "rank": 146,
+   "name": "Paulo Futre",
+   "nationality": "POR",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_paulo_jorge_dos_santos_futre",
+   "note": null
+  },
+  {
+   "rank": 147,
+   "name": "Erling Haaland",
+   "nationality": "NOR",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 148,
+   "name": "Dimitar Berbatov",
+   "nationality": "BUL",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_102",
+   "note": null
+  },
+  {
+   "rank": 149,
+   "name": "Gheorghe Popescu",
+   "nationality": "ROU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 150,
+   "name": "Nicolae Dobrin",
+   "nationality": "ROU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  }
+ ]
+}

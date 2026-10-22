@@ -142,10 +142,10 @@
       "mode": "SOUTH_AMERICA_LEGENDS",
       "pairs": 12,
       "mismatches": 0,
-      "goals": 47,
-      "wins": 7,
+      "goals": 43,
+      "wins": 6,
       "draws": 5,
-      "digest": "9eb4de83ea3b3c691f51e47b97102e6367c56857b579fdf06a04ef14319d9a7c"
+      "digest": "25508b9afc8067de3a9023ecdd4ca94e64af066ed8c03344f6de6c21a9cacdf5"
     },
     {
       "mode": "EUROPE_CURRENT",
@@ -161,9 +161,9 @@
       "pairs": 12,
       "mismatches": 0,
       "goals": 47,
-      "wins": 8,
+      "wins": 7,
       "draws": 3,
-      "digest": "dbf977a79747501edbb49f2a384f88eb5b0f28ebcaf55a119567d165bf12bbc1"
+      "digest": "8c6207f52f045fb84d871f1e83508dd196134ce65fb0a002b75ab651bb1a2145"
     }
   ]
 }

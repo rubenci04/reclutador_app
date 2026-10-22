@@ -342,3 +342,7 @@ R-07 publicado: main 8e88a137d1424a010efe564c5193f13d0e62b6d0, deployment 78dc58
 ## DATA-REG-003B — 21/10/2026
 
 Europa Actualidad completa (150 reconciladas, 0 provisionales; 31 ediciones nuevas) y Sudamérica + México pasa de 525 a un Top 150 editorial (101 reconciladas, 14 ediciones nuevas del Top 50, 49 provisionales, 49 pendientes documentados). Catálogos anteriores congelados. 1.267 pruebas aprobadas. [Informe](qa/DATA-REG-003B.md).
+
+## DATA-REG-003C — 22/10/2026
+
+Sudamérica + México Leyendas (110 reconciladas, 40 provisionales) y Europa Leyendas (114 reconciladas, 4 ediciones nuevas, 36 provisionales) pasan a Top 150 editorial; catálogos anteriores congelados; clubes de Ferran Torres, Leão, Gordon y Dumfries confirmados sin correcciones. 1.273 pruebas aprobadas. [Informe](qa/DATA-REG-003C.md).

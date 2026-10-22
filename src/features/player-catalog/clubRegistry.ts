@@ -16,7 +16,7 @@ export const clubRegistry: Readonly<Record<string, ClubIdentity | undefined>> = 
     ['independiente', 'Independiente'], ['cruzeiro', 'Cruzeiro'], ['deportivo_saprissa', 'Deportivo Saprissa'], ['servette', 'Servette FC'],
     ['vfl_wolfsburg', 'VfL Wolfsburg'], ['houston_dynamo', 'Houston Dynamo FC'], ['sporting_cristal', 'Sporting Cristal'], ['iraklis', 'Iraklis FC'], ['cf_montreal', 'CF Montréal'], ['inter_san_carlos', 'Inter San Carlos'], ['melbourne_city', 'Melbourne City'],
     ['trabzonspor', 'Trabzonspor'], ['crystal_palace', 'Crystal Palace'], ['al_qadsiah', 'Al-Qadsiah'],
-    ['sporting_cp', 'Sporting CP'], ['rb_leipzig', 'RB Leipzig'], ['saint_etienne', 'Saint-Étienne'], ['al_diriyah', 'Al-Diriyah'], ['al_ittihad', 'Al-Ittihad'],
+    ['sporting_cp', 'Sporting CP'], ['dynamo_moscow', 'Dynamo Moscow'], ['rb_leipzig', 'RB Leipzig'], ['saint_etienne', 'Saint-Étienne'], ['al_diriyah', 'Al-Diriyah'], ['al_ittihad', 'Al-Ittihad'],
     ['ajax', 'Ajax'], ['boca_juniors', 'Boca Juniors'], ['al_wasl', 'Al Wasl'],
     ['udinese', 'Udinese'], ['getafe', 'Getafe'], ['schalke_04', 'Schalke 04'],
     ['sunderland', 'Sunderland'], ['chicago_fire', 'Chicago Fire FC'],

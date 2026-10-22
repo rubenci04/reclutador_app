@@ -1,0 +1,1206 @@
+{
+ "version": "south-america-mexico-legends-150-v1",
+ "rule": "Exact full-name tokens against historical (legend) editions of the master; one edition per person; reviewed choices are noted. Local legend-balance-v1 editions are used where they exist. Current-era editions are never used for legends. Missing people are never invented.",
+ "rows": [
+  {
+   "rank": 1,
+   "name": "Lionel Messi",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_lionel_andres_messi_cuccittini",
+   "note": null
+  },
+  {
+   "rank": 2,
+   "name": "Pelé",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_edson_arantes_do_nascimento",
+   "note": null
+  },
+  {
+   "rank": 3,
+   "name": "Diego Maradona",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_001",
+   "note": null
+  },
+  {
+   "rank": 4,
+   "name": "Alfredo Di Stéfano",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_002",
+   "note": null
+  },
+  {
+   "rank": 5,
+   "name": "Ronaldo Nazário",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_ronaldo_luis_nazario_de_lima",
+   "note": "Reviewed choice: Ronaldo Luís Nazário de Lima (BRA)."
+  },
+  {
+   "rank": 6,
+   "name": "Garrincha",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_manuel_francisco_dos_santos",
+   "note": null
+  },
+  {
+   "rank": 7,
+   "name": "Ronaldinho",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_ronaldo_de_assis_moreira",
+   "note": null
+  },
+  {
+   "rank": 8,
+   "name": "Zico",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_arthur_antunes_coimbra",
+   "note": null
+  },
+  {
+   "rank": 9,
+   "name": "Romário",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_romario_de_souza_faria",
+   "note": null
+  },
+  {
+   "rank": 10,
+   "name": "Neymar",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_neymar_da_silva_santos_junior",
+   "note": null
+  },
+  {
+   "rank": 11,
+   "name": "Luis Suárez",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_008",
+   "note": "Reviewed choice: Luis Alberto Suárez Díaz (URU)."
+  },
+  {
+   "rank": 12,
+   "name": "Rivaldo",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_rivaldo_vitor_borba_ferreira",
+   "note": null
+  },
+  {
+   "rank": 13,
+   "name": "Cafu",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_marcos_evangelista_de_morais",
+   "note": null
+  },
+  {
+   "rank": 14,
+   "name": "Roberto Carlos",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_roberto_carlos_da_silva_rocha",
+   "note": "Reviewed choice: Roberto Carlos da Silva Rocha (BRA)."
+  },
+  {
+   "rank": 15,
+   "name": "Didi",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_valdir_pereira",
+   "note": null
+  },
+  {
+   "rank": 16,
+   "name": "Juan Alberto Schiaffino",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_039",
+   "note": null
+  },
+  {
+   "rank": 17,
+   "name": "José Manuel Moreno",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_006",
+   "note": null
+  },
+  {
+   "rank": 18,
+   "name": "Daniel Passarella",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_009",
+   "note": null
+  },
+  {
+   "rank": 19,
+   "name": "Falcão",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_paulo_roberto_falcao",
+   "note": "Reviewed choice: Paulo Roberto Falcão (BRA)."
+  },
+  {
+   "rank": 20,
+   "name": "Rivellino",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_roberto_rivellino",
+   "note": null
+  },
+  {
+   "rank": 21,
+   "name": "Sócrates",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_socrates_brasileiro_sampaio_de_souza_vieira_de_oliveira",
+   "note": null
+  },
+  {
+   "rank": 22,
+   "name": "Jairzinho",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_jair_ventura_filho",
+   "note": null
+  },
+  {
+   "rank": 23,
+   "name": "Alberto Spencer",
+   "nationality": "ECU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 24,
+   "name": "Enzo Francescoli",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_005",
+   "note": null
+  },
+  {
+   "rank": 25,
+   "name": "Teófilo Cubillas",
+   "nationality": "PER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 26,
+   "name": "Carlos Alberto Torres",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_carlos_alberto_torres",
+   "note": null
+  },
+  {
+   "rank": 27,
+   "name": "Zizinho",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_thomaz_soares_da_silva",
+   "note": null
+  },
+  {
+   "rank": 28,
+   "name": "Arsenio Erico",
+   "nationality": "PAR",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_003",
+   "note": null
+  },
+  {
+   "rank": 29,
+   "name": "Elías Figueroa",
+   "nationality": "CHI",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_elias_ricardo_figueroa_brander",
+   "note": null
+  },
+  {
+   "rank": 30,
+   "name": "Obdulio Varela",
+   "nationality": "URU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 31,
+   "name": "Mario Kempes",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_017",
+   "note": null
+  },
+  {
+   "rank": 32,
+   "name": "Gabriel Batistuta",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_015",
+   "note": null
+  },
+  {
+   "rank": 33,
+   "name": "Kaká",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_ricardo_izecson_dos_santos_leite",
+   "note": null
+  },
+  {
+   "rank": 34,
+   "name": "Marcelo",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_marcelo_vieira_da_silva_junior",
+   "note": "Reviewed choice: Marcelo Vieira da Silva Júnior (BRA)."
+  },
+  {
+   "rank": 35,
+   "name": "Dani Alves",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_daniel_alves_da_silva",
+   "note": null
+  },
+  {
+   "rank": 36,
+   "name": "Javier Zanetti",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_016",
+   "note": null
+  },
+  {
+   "rank": 37,
+   "name": "Ángel Di María",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_097",
+   "note": null
+  },
+  {
+   "rank": 38,
+   "name": "Hugo Sánchez",
+   "nationality": "MEX",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_hugo_sanchez_marquez",
+   "note": null
+  },
+  {
+   "rank": 39,
+   "name": "Rafael Márquez",
+   "nationality": "MEX",
+   "status": "RECONCILED",
+   "editionId": "import_mex_leg_030",
+   "note": null
+  },
+  {
+   "rank": 40,
+   "name": "Alexis Sánchez",
+   "nationality": "CHI",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_071",
+   "note": null
+  },
+  {
+   "rank": 41,
+   "name": "Arturo Vidal",
+   "nationality": "CHI",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_175",
+   "note": null
+  },
+  {
+   "rank": 42,
+   "name": "Diego Forlán",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_diego_forlan_corazo",
+   "note": null
+  },
+  {
+   "rank": 43,
+   "name": "Sergio Agüero",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_028",
+   "note": null
+  },
+  {
+   "rank": 44,
+   "name": "Juan Román Riquelme",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_011",
+   "note": null
+  },
+  {
+   "rank": 45,
+   "name": "Nílton Santos",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_nilton_dos_santos",
+   "note": null
+  },
+  {
+   "rank": 46,
+   "name": "Djalma Santos",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_djalma_dos_santos",
+   "note": null
+  },
+  {
+   "rank": 47,
+   "name": "Gérson",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_gerson_de_oliveira_nunes",
+   "note": null
+  },
+  {
+   "rank": 48,
+   "name": "Tostão",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_eduardo_goncalves_de_andrade",
+   "note": null
+  },
+  {
+   "rank": 49,
+   "name": "Leônidas da Silva",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_leonidas_da_silva",
+   "note": null
+  },
+  {
+   "rank": 50,
+   "name": "Arthur Friedenreich",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_arthur_friedenreich",
+   "note": null
+  },
+  {
+   "rank": 51,
+   "name": "Ademir de Menezes",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_ademir_marques_de_menezes",
+   "note": null
+  },
+  {
+   "rank": 52,
+   "name": "Gilmar",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_gylmar_dos_santos_neves",
+   "note": null
+  },
+  {
+   "rank": 53,
+   "name": "Bebeto",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_jose_roberto_gama_de_oliveira",
+   "note": null
+  },
+  {
+   "rank": 54,
+   "name": "Careca",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_antonio_de_oliveira_filho",
+   "note": null
+  },
+  {
+   "rank": 55,
+   "name": "Thiago Silva",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_192",
+   "note": null
+  },
+  {
+   "rank": 56,
+   "name": "Cláudio Taffarel",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_claudio_andre_mergen_taffarel",
+   "note": null
+  },
+  {
+   "rank": 57,
+   "name": "Roberto Dinamite",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_carlos_roberto_de_oliveira",
+   "note": null
+  },
+  {
+   "rank": 58,
+   "name": "Ademir da Guia",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_ademir_da_guia",
+   "note": null
+  },
+  {
+   "rank": 59,
+   "name": "Dunga",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_carlos_caetano_bledorn_verri",
+   "note": null
+  },
+  {
+   "rank": 60,
+   "name": "Raí",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_rai_souza_vieira_de_oliveira",
+   "note": null
+  },
+  {
+   "rank": 61,
+   "name": "Juninho Pernambucano",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_antonio_augusto_ribeiro_reis_junior",
+   "note": null
+  },
+  {
+   "rank": 62,
+   "name": "Reinaldo",
+   "nationality": "BRA",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_jose_reinaldo_de_lima",
+   "note": null
+  },
+  {
+   "rank": 63,
+   "name": "Adolfo Pedernera",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_004",
+   "note": null
+  },
+  {
+   "rank": 64,
+   "name": "Omar Sívori",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_034",
+   "note": null
+  },
+  {
+   "rank": 65,
+   "name": "Ángel Labruna",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_007",
+   "note": null
+  },
+  {
+   "rank": 66,
+   "name": "Ubaldo Fillol",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_013",
+   "note": null
+  },
+  {
+   "rank": 67,
+   "name": "Amadeo Carrizo",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_008",
+   "note": null
+  },
+  {
+   "rank": 68,
+   "name": "Ricardo Bochini",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_012",
+   "note": null
+  },
+  {
+   "rank": 69,
+   "name": "Fernando Redondo",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_021",
+   "note": null
+  },
+  {
+   "rank": 70,
+   "name": "Javier Mascherano",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_035",
+   "note": null
+  },
+  {
+   "rank": 71,
+   "name": "Carlos Tévez",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_020",
+   "note": null
+  },
+  {
+   "rank": 72,
+   "name": "Hernán Crespo",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_023",
+   "note": null
+  },
+  {
+   "rank": 73,
+   "name": "Diego Simeone",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_061",
+   "note": null
+  },
+  {
+   "rank": 74,
+   "name": "Claudio Caniggia",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_059",
+   "note": null
+  },
+  {
+   "rank": 75,
+   "name": "Jorge Valdano",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_jorge_alberto_francisco_valdano_castellanos",
+   "note": null
+  },
+  {
+   "rank": 76,
+   "name": "Jorge Burruchaga",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_037",
+   "note": null
+  },
+  {
+   "rank": 77,
+   "name": "Oscar Ruggeri",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_044",
+   "note": null
+  },
+  {
+   "rank": 78,
+   "name": "Osvaldo Ardiles",
+   "nationality": "ARG",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 79,
+   "name": "René Houseman",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_045",
+   "note": null
+  },
+  {
+   "rank": 80,
+   "name": "Ariel Ortega",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_030",
+   "note": null
+  },
+  {
+   "rank": 81,
+   "name": "Pablo Aimar",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_077",
+   "note": null
+  },
+  {
+   "rank": 82,
+   "name": "Juan Sebastián Verón",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_025",
+   "note": null
+  },
+  {
+   "rank": 83,
+   "name": "Gonzalo Higuaín",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_065",
+   "note": null
+  },
+  {
+   "rank": 84,
+   "name": "José Leandro Andrade",
+   "nationality": "URU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 85,
+   "name": "José Nasazzi",
+   "nationality": "URU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 86,
+   "name": "Héctor Scarone",
+   "nationality": "URU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 87,
+   "name": "Alcides Ghiggia",
+   "nationality": "URU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 88,
+   "name": "Luis Cubilla",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_119",
+   "note": null
+  },
+  {
+   "rank": 89,
+   "name": "Pedro Rocha",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_pedro_virgilio_rocha_franchetti",
+   "note": null
+  },
+  {
+   "rank": 90,
+   "name": "Ladislao Mazurkiewicz",
+   "nationality": "URU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 91,
+   "name": "Fernando Morena",
+   "nationality": "URU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 92,
+   "name": "Diego Godín",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_diego_roberto_godin_leal",
+   "note": null
+  },
+  {
+   "rank": 93,
+   "name": "Edinson Cavani",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_eng_epl_ley_104",
+   "note": null
+  },
+  {
+   "rank": 94,
+   "name": "Álvaro Recoba",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_107",
+   "note": null
+  },
+  {
+   "rank": 95,
+   "name": "Diego Lugano",
+   "nationality": "URU",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_diego_alfredo_lugano_moreno",
+   "note": null
+  },
+  {
+   "rank": 96,
+   "name": "Héctor Chumpitaz",
+   "nationality": "PER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 97,
+   "name": "Hugo Sotil",
+   "nationality": "PER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 98,
+   "name": "César Cueto",
+   "nationality": "PER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 99,
+   "name": "Roberto Ayala",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_048",
+   "note": null
+  },
+  {
+   "rank": 100,
+   "name": "Roberto Perfumo",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_027",
+   "note": null
+  },
+  {
+   "rank": 101,
+   "name": "Juan Carlos Oblitas",
+   "nationality": "PER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 102,
+   "name": "Paolo Guerrero",
+   "nationality": "PER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 103,
+   "name": "Jefferson Farfán",
+   "nationality": "PER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 104,
+   "name": "José Velásquez",
+   "nationality": "PER",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 105,
+   "name": "Carlos Valderrama",
+   "nationality": "COL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 106,
+   "name": "Radamel Falcao",
+   "nationality": "COL",
+   "status": "RECONCILED",
+   "editionId": "import_esp_esp_leg_radamel_falcao_garcia_zarate",
+   "note": null
+  },
+  {
+   "rank": 107,
+   "name": "James Rodríguez",
+   "nationality": "COL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 108,
+   "name": "Faustino Asprilla",
+   "nationality": "COL",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_153",
+   "note": null
+  },
+  {
+   "rank": 109,
+   "name": "René Higuita",
+   "nationality": "COL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 110,
+   "name": "Iván Córdoba",
+   "nationality": "COL",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_109",
+   "note": null
+  },
+  {
+   "rank": 111,
+   "name": "Mario Yepes",
+   "nationality": "COL",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_120",
+   "note": null
+  },
+  {
+   "rank": 112,
+   "name": "Freddy Rincón",
+   "nationality": "COL",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_freddy_eusebio_rincon_valencia",
+   "note": null
+  },
+  {
+   "rank": 113,
+   "name": "Willington Ortiz",
+   "nationality": "COL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 114,
+   "name": "Óscar Córdoba",
+   "nationality": "COL",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_054",
+   "note": null
+  },
+  {
+   "rank": 115,
+   "name": "Iván Zamorano",
+   "nationality": "CHI",
+   "status": "RECONCILED",
+   "editionId": "import_ita_leg_108",
+   "note": null
+  },
+  {
+   "rank": 116,
+   "name": "Marcelo Salas",
+   "nationality": "CHI",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_038",
+   "note": null
+  },
+  {
+   "rank": 117,
+   "name": "Claudio Bravo",
+   "nationality": "CHI",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 118,
+   "name": "Carlos Caszely",
+   "nationality": "CHI",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 119,
+   "name": "Leonel Sánchez",
+   "nationality": "CHI",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 120,
+   "name": "Jorge Campos",
+   "nationality": "MEX",
+   "status": "RECONCILED",
+   "editionId": "import_mex_leg_015",
+   "note": "Reviewed choice: Jorge Campos (MEX)."
+  },
+  {
+   "rank": 121,
+   "name": "Cuauhtémoc Blanco",
+   "nationality": "MEX",
+   "status": "RECONCILED",
+   "editionId": "import_mex_leg_004",
+   "note": null
+  },
+  {
+   "rank": 122,
+   "name": "Javier Hernández",
+   "nationality": "MEX",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 123,
+   "name": "Andrés Guardado",
+   "nationality": "MEX",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 124,
+   "name": "Jared Borgetti",
+   "nationality": "MEX",
+   "status": "RECONCILED",
+   "editionId": "import_mex_leg_008",
+   "note": null
+  },
+  {
+   "rank": 125,
+   "name": "Manuel Negrete",
+   "nationality": "MEX",
+   "status": "RECONCILED",
+   "editionId": "import_mex_leg_061",
+   "note": null
+  },
+  {
+   "rank": 126,
+   "name": "Luis Hernández",
+   "nationality": "MEX",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 127,
+   "name": "Claudio Suárez",
+   "nationality": "MEX",
+   "status": "RECONCILED",
+   "editionId": "import_mex_leg_021",
+   "note": null
+  },
+  {
+   "rank": 128,
+   "name": "Guillermo Ochoa",
+   "nationality": "MEX",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 129,
+   "name": "José Luis Chilavert",
+   "nationality": "PAR",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_010",
+   "note": null
+  },
+  {
+   "rank": 130,
+   "name": "Romerito",
+   "nationality": "PAR",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_julio_cesar_romero_insfran",
+   "note": null
+  },
+  {
+   "rank": 131,
+   "name": "Carlos Gamarra",
+   "nationality": "PAR",
+   "status": "RECONCILED",
+   "editionId": "import_bra_bra_leg_carlos_alberto_gamarra_pavon",
+   "note": null
+  },
+  {
+   "rank": 132,
+   "name": "Roque Santa Cruz",
+   "nationality": "PAR",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 133,
+   "name": "Salvador Cabañas",
+   "nationality": "PAR",
+   "status": "RECONCILED",
+   "editionId": "import_mex_leg_042",
+   "note": null
+  },
+  {
+   "rank": 134,
+   "name": "José Saturnino Cardozo",
+   "nationality": "PAR",
+   "status": "RECONCILED",
+   "editionId": "import_mex_leg_002",
+   "note": null
+  },
+  {
+   "rank": 135,
+   "name": "Julio César Romero",
+   "nationality": "PAR",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "Duplicate of an earlier ranking row (same person); counted once."
+  },
+  {
+   "rank": 136,
+   "name": "Álex Aguinaga",
+   "nationality": "ECU",
+   "status": "RECONCILED",
+   "editionId": "import_mex_leg_012",
+   "note": null
+  },
+  {
+   "rank": 137,
+   "name": "Antonio Valencia",
+   "nationality": "ECU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 138,
+   "name": "Agustín Delgado",
+   "nationality": "ECU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 139,
+   "name": "Iván Hurtado",
+   "nationality": "ECU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 140,
+   "name": "Édison Méndez",
+   "nationality": "ECU",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 141,
+   "name": "Juan Arango",
+   "nationality": "VEN",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 142,
+   "name": "Salomón Rondón",
+   "nationality": "VEN",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 143,
+   "name": "Marco Etcheverry",
+   "nationality": "BOL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 144,
+   "name": "Jaime Moreno",
+   "nationality": "BOL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 145,
+   "name": "Erwin Sánchez",
+   "nationality": "BOL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 146,
+   "name": "Víctor Agustín Ugarte",
+   "nationality": "BOL",
+   "status": "MISSING",
+   "editionId": null,
+   "note": "No historical (legend) edition in the master catalogue; not imported."
+  },
+  {
+   "rank": 147,
+   "name": "Norberto Alonso",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_018",
+   "note": null
+  },
+  {
+   "rank": 148,
+   "name": "Ramón Díaz",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_079",
+   "note": null
+  },
+  {
+   "rank": 149,
+   "name": "Walter Samuel",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_052",
+   "note": null
+  },
+  {
+   "rank": 150,
+   "name": "José Sanfilippo",
+   "nationality": "ARG",
+   "status": "RECONCILED",
+   "editionId": "import_arg_ley_024",
+   "note": null
+  }
+ ]
+}

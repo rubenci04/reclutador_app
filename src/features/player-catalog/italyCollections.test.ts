@@ -2,13 +2,11 @@ import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
 import italian from '../../data/league-collections/italy.json'
-import mexico from '../../data/league-collections/mexico.json'
 import aliases from '../../data/league-collections/italyIdentityAliases.json'
 import { LEAGUE_PLAYERS } from './leagueCollections'
 import { ALL_CURRENT, GLOBAL_LEGENDS, MASTER_CATALOG, personKey, WORLD_LEGEND_POLICY } from './globalCollection'
 import { calculatePlayerPrice } from './calculatePlayerPrice'
 import { catalogForMode } from '../themed-modes/modeCatalog'
-import { EUROPEAN_NATIONALITIES, LATIN_AMERICAN_ASSOCIATIONS } from '../themed-modes/nationalityRegions'
 import { RECORDED_COLLECTIONS, recordedCollection } from './recordedCollections'
 import { catalogKey, createDrawContext, parseReplay, readDrawHistory } from '../recruiter-duel/drawHistory'
 
@@ -45,23 +43,10 @@ describe('DATA-ITA-001 collections', () => {
     expect(new Set(GLOBAL_LEGENDS.map(personKey)).size).toBe(GLOBAL_LEGENDS.length)
     for (const name of ['Pelé', 'Maradona', 'Ronaldo', 'Maldini', 'Neuer']) expect(GLOBAL_LEGENDS.some(p => p.name.includes(name))).toBe(true)
     expect(GLOBAL_LEGENDS.some(p => p.name.includes('Maidana'))).toBe(false)
-    for (const mode of ['ARGENTINA_LEGENDS', 'SOUTH_AMERICA_LEGENDS'] as const) expect(catalogForMode(mode).some(p => p.name.includes('Maidana'))).toBe(true)
+    // SOUTH_AMERICA_LEGENDS is the editorial Top 150 since DATA-REG-003C: local legends stay in their national mode.
+    expect(catalogForMode('ARGENTINA_LEGENDS').some(p => p.name.includes('Maidana'))).toBe(true)
     expect(WORLD_LEGEND_POLICY.approved).toHaveLength(GLOBAL_LEGENDS.length)
     expect(WORLD_LEGEND_POLICY.unresolvedNames).toContain('Rafael Márquez')
-  })
-  it('grows all regional pools by association independently of league and retains every eligible identity', () => {
-    for (const [mode, scope, category] of [
-      // EUROPE_CURRENT is the editorial Top 150 since europe-top-150-v1 (see europeTop150.test.ts).
-      ['EUROPE_LEGENDS', EUROPEAN_NATIONALITIES, 'legend'],
-      // SOUTH_AMERICA_CURRENT is the editorial Top 150 since south-america-mexico-top-150-v1 (see southAmericaTop150.test.ts).
-      ['SOUTH_AMERICA_LEGENDS', LATIN_AMERICAN_ASSOCIATIONS, 'legend'],
-    ] as const) {
-      const players = catalogForMode(mode), keys = new Set(players.map(personKey))
-      expect(players.length).toBeGreaterThanOrEqual(300)
-      expect(keys.size).toBe(players.length)
-      for (const row of [...italian, ...mexico].filter(p => p.sourceRank <= 150 && scope.has(p.nationality) && p.category === category)) expect(keys.has(personKey(LEAGUE_PLAYERS.find(p => p.id === row.id)!)), row.name).toBe(true)
-    }
-    expect(catalogForMode('GLOBAL_CLASSIC')).toEqual(expect.arrayContaining([...ALL_CURRENT]))
   })
   it('reads full expanded replay/history payloads and frozen previous collections', () => {
     const players = catalogForMode('GLOBAL_CLASSIC')

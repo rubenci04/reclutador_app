@@ -166,13 +166,13 @@
   },
   {
     "mode": "SOUTH_AMERICA_LEGENDS",
-    "count": 467,
-    "stars": 3,
+    "count": 150,
+    "stars": 1,
     "positions": {
-      "ARQ": 46,
-      "DEF": 88,
-      "MED": 138,
-      "DEL": 195
+      "ARQ": 10,
+      "DEF": 30,
+      "MED": 45,
+      "DEL": 65
     }
   },
   {
@@ -188,13 +188,13 @@
   },
   {
     "mode": "EUROPE_LEGENDS",
-    "count": 327,
+    "count": 150,
     "stars": 0,
     "positions": {
-      "ARQ": 34,
-      "DEF": 61,
-      "MED": 103,
-      "DEL": 129
+      "ARQ": 11,
+      "DEF": 28,
+      "MED": 49,
+      "DEL": 62
     }
   }
 ]

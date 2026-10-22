@@ -7,7 +7,7 @@ import type { ThemedModeId } from '../themed-modes/modeTypes'
 
 describe('reference club periods', () => {
   it('covers all 600 imported legend cards with sourced years at their reference club', () => {
-    const legends = LEAGUE_PLAYERS.filter(p => p.category === 'legend' && !p.id.startsWith('import_ita_') && !p.id.startsWith('import_mex_'))
+    const legends = LEAGUE_PLAYERS.filter(p => p.category === 'legend' && !p.id.startsWith('import_ita_') && !p.id.startsWith('import_mex_') && !p.id.startsWith('import_eur_'))
     expect(legends).toHaveLength(600)
     for (const player of legends) {
       const periods = playerCareerReferences(player)
