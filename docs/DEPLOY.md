@@ -1,5 +1,9 @@
 # Despliegue: producción actual y antecedentes
 
+## Publicación SIM-MINI-002/003 + RANK-REVEAL-009 — 22/10/2026
+
+Commit **3d458fa** en `main` (push fast-forward). Worker **reclutador-app**, versión **05e99a73-495a-41f9-80ee-63980e59f3e0** al 100%, etiqueta 3d458fa; Wrangler 4.151.3, `--keep-vars --no-autoconfig`, sin cambios de bindings ni secretos. HTTP 200 y SHA-256 de HTML y assets coinciden con dist. [Registro](logs/SIM-MINI-002-003.md). Las secciones siguientes son antecedentes.
+
 ## Publicación SIM-005R-05 — 21/10/2026
 
 Última verificación de esta entrega: **76d23cd**, Worker existente **reclutador-app**, https://reclutador-app.rea-04.workers.dev/. Versión **9d03e991-e554-4e5b-bf9e-3644ed73aaf1** al 100%, etiqueta 76d23cd. Build, dry-run y deploy con Wrangler 4.151.3, `--keep-vars --no-autoconfig`, sin cambios de bindings, secretos ni migraciones.
