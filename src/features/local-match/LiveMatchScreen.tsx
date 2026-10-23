@@ -12,7 +12,10 @@ import { HalftimePanel } from './HalftimePanel'
 import { PlayPanel } from './LivePlayPanel'
 import { DribbleScene, type DribbleScene as DribbleSceneData } from './DribblePanel'
 import { ShotScene, type ShotSceneData, type ShotOutcome } from './ShotPanel'
-import { DefenseScene, type DefenseSceneData, type DefenseResult } from './DefensePanel'
+import { DefenseScene, type DefenseSceneData, type DefenseResult, type DefensePick } from './DefensePanel'
+import { defenseChoice } from './interactive/attackTree'
+import { TimingBar } from './TimingBar'
+import { useTimingBar } from './timing'
 import { freeKickBeatDuration } from './freeKickGeometry'
 import { cornerBeatDuration } from './cornerGeometry'
 import { aerialBeatDuration } from './aerialGeometry'
@@ -85,6 +88,15 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   const halftimeRules = Boolean(session.options.matchRules)
   const quietWindow = halftimeRules && session.window !== null && session.window.applyBlock !== 3
   const atPlay = session.phase === 'PLAY' && caughtUp && view.play !== null
+  // SIM-FIELD-002: the pitch takes the finish and the defense by touch; the cards remain as the accessible alternative.
+  const momentKey = view.play ? `${view.play.id}:${view.play.node}` : ''
+  const defendOnBoard = atPlay && versusCpu && !rest && view.play?.node === 'DEFEND' && Boolean(view.play.defense) && view.play.attackerId !== undefined
+  const boardMoment = atPlay && !rest && (view.play?.node === 'DIRECTION' || view.play?.node === 'FINISH' || defendOnBoard)
+  const [defensePick, setDefensePick] = useState<{ readonly key: string; readonly pick: DefensePick } | null>(null)
+  const boardPick = defendOnBoard && defensePick?.key === momentKey ? defensePick.pick : null
+  const timing = useTimingBar(boardPick !== null)
+  const boardWrap = useRef<HTMLDivElement>(null)
+  useEffect(() => { if (boardMoment) boardWrap.current?.scrollIntoView?.({ block: 'nearest' }) }, [boardMoment, momentKey])
   const commit = (next: Session, reveal = false) => {
     current.current = next; setSession(next); setError('')
     if (reveal) setCursor(liveFrames(next.kernel.blocks).length)
@@ -168,8 +180,13 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   const final = finished ? exportResult(session) : null
   const focusEvent = frameFocus(latest)
   const source = [...events].reverse().find((item) => item !== focusEvent && item.playerId && (item.type === 'attack' || item.type === 'pass') && item.minute === focusEvent?.minute)
-  const play: BoardPlay = focusEvent && !finished ? { kind: focusEvent.type, side: focusEvent.side, playerId: focusEvent.playerId, aerial: focusEvent.aerial, corner: focusEvent.corner, freeKick: focusEvent.freeKick, ...(session.options.corners && !focusEvent.step ? { variant: eventVariant(focusEvent) } : {}), step: focusEvent.step, ...(focusEvent.step && !['BUILD', 'DEFENSE_BUILD'].includes(focusEvent.step) && source?.playerId ? { fromPlayerId: source.playerId } : {}), ...(focusEvent.corner ? { defenderId: focusEvent.corner.markerId ?? focusEvent.corner.defenderId } : atPlay && view.play ? { defenderId: view.play.node === 'DEFEND' ? view.play.protagonistId : view.play.options.find((o) => o.available)?.rivalId ?? undefined } : {}) } : IDLE_PLAY
+  const shownPlay: BoardPlay = focusEvent && !finished ? { kind: focusEvent.type, side: focusEvent.side, playerId: focusEvent.playerId, aerial: focusEvent.aerial, corner: focusEvent.corner, freeKick: focusEvent.freeKick, ...(session.options.corners && !focusEvent.step ? { variant: eventVariant(focusEvent) } : {}), step: focusEvent.step, ...(focusEvent.step && !['BUILD', 'DEFENSE_BUILD'].includes(focusEvent.step) && source?.playerId ? { fromPlayerId: source.playerId } : {}), ...(focusEvent.corner ? { defenderId: focusEvent.corner.markerId ?? focusEvent.corner.defenderId } : atPlay && view.play ? { defenderId: view.play.node === 'DEFEND' ? view.play.protagonistId : view.play.options.find((o) => o.available)?.rivalId ?? undefined } : {}) } : IDLE_PLAY
+  // A moment taken on the pitch is never drawn through the camera of the set piece that came before it.
+  // On a defensive moment the CPU attacker carries the ball and the defender stands in front of him, whatever the last confirmed event was.
+  const play: BoardPlay = defendOnBoard && view.play ? { kind: 'attack', side: 'cpu', playerId: view.play.attackerId, defenderId: view.play.protagonistId } : boardMoment ? { ...shownPlay, aerial: undefined, corner: undefined, freeKick: undefined } : shownPlay
   const choices = atPlay && view.play && (view.play.node === 'DIRECTION' || view.play.node === 'FINISH') ? view.play.options.filter((option) => option.available && option.choice !== 'SHOOT').map((option) => ({ playerId: option.playerId, label: PLAY_LETTERS[option.choice] })) : []
+  const shootOption = atPlay && !rest && view.play?.node === 'FINISH' && view.play.options.some((option) => option.choice === 'SHOOT' && option.available)
+  const boardHint = !boardMoment ? undefined : defendOnBoard ? t(boardPick ? timing.motionOff ? 'field.tapConfirm' : 'field.tapStop' : 'field.tapLane') : choices.length ? t(shootOption ? 'field.tapGoalOrMate' : 'field.tapMate') : shootOption ? t('field.tapGoal') : undefined
   const goal = latest?.events.find((item) => item.type === 'goal')
   const momentum = momentumShare(events)
   const stats = finished ? view.stats : visibleStats(events)
@@ -209,18 +226,18 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
         <div className="momentum-bar" aria-hidden="true"><i className="momentum-local" style={{ width: `${momentum}%` }} /></div>
       </div>
       <div className="match-progress" aria-hidden="true"><span style={{ width: `${Math.min(100, minute / 90 * 100)}%` }} /></div>
-      <div className="live-board-wrap">
-        <TacticalBoard formations={session.kernel.input.formations ?? { local: '4-3-3', cpu: '4-3-3' }} lineups={{ local: session.kernel.sides.local.team.lineup, cpu: session.kernel.sides.cpu.team.lineup }} catalog={catalog} names={names} play={play} choices={choices} onPick={atPlay && view.play?.node === 'DIRECTION' ? (label) => { const option = view.play!.options.find((candidate) => candidate.available && PLAY_LETTERS[candidate.choice] === label); if (option) choosePlay(view.play!, option.choice) } : undefined} tick={shownCount} focus={play.freeKick ? play.freeKick.awardedTo === 'local' ? 'cpu' : 'local' : play.corner ? play.corner.awardedTo === 'local' ? 'cpu' : 'local' : focus} speed={speed} animate={animate} paused={paused || exitOpen} />
+      <div className={`live-board-wrap${boardMoment ? ' is-moment' : ''}`} ref={boardWrap}>
+        <TacticalBoard formations={session.kernel.input.formations ?? { local: '4-3-3', cpu: '4-3-3' }} lineups={{ local: session.kernel.sides.local.team.lineup, cpu: session.kernel.sides.cpu.team.lineup }} catalog={catalog} names={names} play={play} choices={choices} hint={boardHint} goalZone={shootOption ? { label: t('field.shoot'), onSelect: () => choosePlay(view.play!, 'SHOOT') } : undefined} defense={defendOnBoard && view.play ? { attackerId: view.play.attackerId!, defenderId: view.play.protagonistId, pick: boardPick, labels: { LEFT: t('defenseMini.lane.LEFT'), CENTER: t('defenseMini.lane.CENTER'), RIGHT: t('defenseMini.lane.RIGHT'), PRESS: t('defenseMini.press') }, onSelect: (pick) => setDefensePick({ key: momentKey, pick }), onExecute: () => { if (boardPick) choosePlay(view.play!, defenseChoice(boardPick), timing.stop()) } } : undefined} extra={boardPick && !timing.motionOff ? <TimingBar marker={timing.marker} label={t('defenseMini.barLabel')} /> : undefined} onPick={atPlay && !rest && (view.play?.node === 'DIRECTION' || view.play?.node === 'FINISH') ? (label) => { const option = view.play!.options.find((candidate) => candidate.available && PLAY_LETTERS[candidate.choice] === label); if (option) choosePlay(view.play!, option.choice) } : undefined} tick={shownCount} focus={play.freeKick ? play.freeKick.awardedTo === 'local' ? 'cpu' : 'local' : play.corner ? play.corner.awardedTo === 'local' ? 'cpu' : 'local' : boardMoment ? 'full' : focus} speed={speed} animate={animate} paused={paused || exitOpen} />
         {focusEvent?.type === 'recovery' && focusEvent.step && <div className="recovery-flash" key={`recovery:${shownCount}`} role="status">{t('moments.recovered')}</div>}
         {goal && <div className={`goal-flash${goal.aerial ? ' header-goal-flash' : ''}`} key={`goal:${shownCount}`} role="status"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27" /><path d="m30 14 14 10-5 17H21l-5-17Z" /></svg>{t(goal.aerial || goal.corner && goal.corner.delivery !== 'CORNER_SHORT' ? 'aerial.goalCelebration' : 'match.goalCelebration', { team: goal.side ? names[goal.side] : '' })}</div>}
         {play.freeKick && <small className="corner-camera-note">{t('freeKick.camera')}</small>}
         {play.corner && <small className="corner-camera-note">{t('corner.camera')}</small>}
-        <fieldset className="board-focus" disabled={Boolean(play.corner || play.freeKick)}><legend>{t('board.focus')}</legend>
+        <fieldset className="board-focus" disabled={Boolean(play.corner || play.freeKick || boardMoment)}><legend>{t('board.focus')}</legend>
           {(['full', 'local', 'cpu'] as const).map((id) => <label key={id}><input type="radio" name="board-focus" checked={focus === id} onChange={() => setFocus(id)} />{id === 'full' ? t('board.full') : t('board.zone', { name: names[id] })}</label>)}
         </fieldset>
       </div>
       <p className="live-now" role="status">{finished ? t('liveDT.fullTime') : focusEvent ? <><time>{focusEvent.minute}′</time> {eventText(focusEvent)}</> : t('liveDT.kickoff')}</p>
-      {atPlay && view.play && <PlayPanel key={`${view.play.id}:${view.play.node}`} play={view.play} catalog={catalog} ovrDuels={halftimeRules} precisionShot={Boolean(session.options.precisionShot)} onChoose={(choice, precision) => choosePlay(view.play!, choice, precision)} />}
+      {atPlay && view.play && <PlayPanel key={momentKey} play={view.play} catalog={catalog} boardDriven={boardMoment} defenseDriver={defendOnBoard ? { pick: boardPick, setPick: (pick) => setDefensePick({ key: momentKey, pick }), stop: timing.stop, motionOff: timing.motionOff } : undefined} ovrDuels={halftimeRules} precisionShot={Boolean(session.options.precisionShot)} onChoose={(choice, precision) => choosePlay(view.play!, choice, precision)} />}
       {scene && <DribbleScene key={scene.key} scene={scene} catalog={catalog} onDone={() => setScene(null)} />}
       {shotScene && <ShotScene key={shotScene.key} scene={shotScene} catalog={catalog} onDone={() => setShotScene(null)} />}
       {defenseScene && <DefenseScene key={defenseScene.key} scene={defenseScene} catalog={catalog} onDone={() => setDefenseScene(null)} />}

@@ -31,6 +31,8 @@ const HEADER_BONUS = .06
 export type Sector = 'LEFT' | 'RIGHT'
 /** SIM-MINI-001: the three lanes of the dribble challenge. */
 export type DribbleSector = 'LEFT' | 'CENTER' | 'RIGHT'
+/** The command a hand-played defense sends: PRESS, or anticipating one lane. */
+export const defenseChoice = (pick: DribbleSector | 'PRESS') => (pick === 'PRESS' ? 'PRESS' : `DEFEND_${pick}`) as PlayChoice
 export const DRIBBLE_VERSION = 'dribble-mini-v1' as const
 export const DRIBBLE_CHOICES = ['DRIBBLE_LEFT', 'DRIBBLE_CENTER', 'DRIBBLE_RIGHT'] as const
 export const DEFENSE_VERSION = 'defense-mini-v1' as const

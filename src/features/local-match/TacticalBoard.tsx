@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { freeKickBeatDuration, freeKickScene } from './freeKickGeometry'
 import { cornerBeatDuration, cornerScene } from './cornerGeometry'
 import { useTranslation } from 'react-i18next'
@@ -10,6 +10,11 @@ import { aerialBeatDuration, aerialScene } from './aerialGeometry'
 import { HEADER_DIRECTIONS, headerGoalPoint } from './interactive/directedHeader'
 import type { MatchSide } from './matchTypes'
 import { boardPoint, nearestHit, shortName, type BoardHit } from './shortName'
+import type { DefensePick } from './DefensePanel'
+
+/** SIM-FIELD-002: the defensive moment on the pitch. Three lanes (the defender's left, centre, right) and the press zone; the first tap picks, the next one stops the precision bar. */
+export interface BoardDefense { readonly attackerId: string; readonly defenderId: string; readonly pick: DefensePick | null; readonly labels: Readonly<Record<DefensePick, string>>; readonly onSelect: (pick: DefensePick) => void; readonly onExecute: () => void }
+const DEFENSE_PICKS = ['LEFT', 'CENTER', 'RIGHT'] as const
 
 export interface TacticalBoardProps {
   readonly formations: Readonly<Record<MatchSide, FormationId>>
@@ -21,6 +26,13 @@ export interface TacticalBoardProps {
   readonly choices?: readonly { readonly playerId: string | null; readonly label: string }[]
   /** GAMEPLAY-POLISH-010: tapping an offered teammate on the board sends the same command as its card. Absent: the board is display only. */
   readonly onPick?: (label: string) => void
+  /** SIM-FIELD-002: the rival goal as a target while a finish is offered; tapping it sends the same SHOOT command as its card. */
+  readonly goalZone?: { readonly label: string; readonly onSelect: () => void }
+  readonly defense?: BoardDefense
+  /** Short instruction for the moment on offer, kept next to the pitch. */
+  readonly hint?: string
+  /** Anything that belongs right under the pitch while the moment is live (the precision bar). */
+  readonly extra?: ReactNode
   /** Changes whenever a new moment is revealed, so the same kind of event twice in a row still restarts the pulse. */
   readonly tick: number
   readonly focus: BoardFocus
@@ -35,12 +47,13 @@ const COLORS = { local: '#00f5d4', cpu: '#ff5d73', gold: '#ffd54a' } as const
 interface Pose { camera: { from: number; to: number }; start?: Parameters<typeof aerialScene>[3]; progress: number; height: number; jump: number; players: Record<string, Point>; ball: Point; shift: Record<MatchSide, number>; pulse: number }
 
 /** Small Canvas 2D tactical board. Original code; it draws only what the confirmed event states. */
-export function TacticalBoard({ formations, lineups, catalog, names, play, choices = [], onPick, tick, focus, speed, animate, paused = false }: TacticalBoardProps) {
+export function TacticalBoard({ formations, lineups, catalog, names, play, choices = [], onPick, goalZone, defense, hint, extra, tick, focus, speed, animate, paused = false }: TacticalBoardProps) {
   const { t } = useTranslation()
   const canvas = useRef<HTMLCanvasElement>(null)
   const [hits] = useState<Hit[]>(() => [])
   const painted = useRef({ width: 640, height: 413 })
   const hover = useRef<string | null>(null)
+  const pickedAt = useRef(0)
   const redraw = useRef<() => void>(() => {})
   /** The pass just chosen: the ball flies from the carrier to the teammate while the engine confirms it. */
   const [flight, setFlight] = useState<{ readonly key: number; readonly fx: number; readonly fy: number; readonly tx: number; readonly ty: number } | null>(null)
@@ -77,8 +90,8 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
   const pulsed = useRef(-1)
   const elapsed = useRef(0)
   const aerialStart = useRef<Parameters<typeof aerialScene>[3]>(undefined)
-  const latest = useRef({ dots, carrier, from, options, carrierName, names, focus, play, target, hits: hits, info, hover })
-  useEffect(() => { latest.current = { dots, carrier, from, options, carrierName, names, focus, play, target, hits: hits, info, hover } })
+  const latest = useRef({ dots, carrier, from, options, carrierName, names, focus, play, target, hits: hits, info, hover, goalZone, defense })
+  useEffect(() => { latest.current = { dots, carrier, from, options, carrierName, names, focus, play, target, hits: hits, info, hover, goalZone, defense } })
 
   useEffect(() => {
     const element = canvas.current
@@ -139,25 +152,36 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
     const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(() => { if (!frame) draw() })
     observer?.observe(element)
     return () => { running = false; if (frame) window.cancelAnimationFrame(frame); observer?.disconnect() }
-  }, [tick, focus, play, animate, speed, dots, options, paused])
+  }, [tick, focus, play, animate, speed, dots, options, paused, Boolean(goalZone), defense?.attackerId, defense?.pick]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const attacker = attackingSide(play)
+  const interactive = Boolean(onPick && options.length || goalZone || defense)
+  const hitAt = (event: { readonly clientX: number; readonly clientY: number; readonly currentTarget: HTMLCanvasElement }) => { const point = boardPoint({ x: event.clientX, y: event.clientY }, event.currentTarget.getBoundingClientRect(), painted.current); return nearestHit(hits, point.x, point.y) }
+  const choose = (event: { readonly clientX: number; readonly clientY: number; readonly currentTarget: HTMLCanvasElement }) => {
+    const now = Date.now()
+    if (defense) {
+      // The pick starts the timing and the next tap stops it: no third confirmation. A double tap on the same spot is not a second decision.
+      if (defense.pick) { if (now - pickedAt.current > 350) defense.onExecute(); return }
+      const hit = hitAt(event)
+      if (hit?.label.startsWith('DEF:')) { pickedAt.current = now; defense.onSelect(hit.label.slice(4) as DefensePick) }
+      return
+    }
+    const hit = hitAt(event)
+    if (!hit) return
+    if (hit.cx !== undefined && hit.fx !== undefined) setFlight({ key: now, fx: hit.fx / painted.current.width, fy: hit.fy! / painted.current.height, tx: hit.cx / painted.current.width, ty: hit.cy! / painted.current.height })
+    if (hit.label === 'GOAL') goalZone?.onSelect(); else onPick?.(hit.label)
+  }
   return <figure className="tactical-board">
-    <canvas ref={canvas} className={`tactical-canvas${onPick && options.length ? ' is-pickable' : ''}`} onPointerMove={onPick && options.length ? (event) => { if (event.pointerType !== 'mouse') return; const point = boardPoint({ x: event.clientX, y: event.clientY }, event.currentTarget.getBoundingClientRect(), painted.current); const hit = nearestHit(hits, point.x, point.y); const next = hit?.label ?? null; if (next !== hover.current) { hover.current = next; event.currentTarget.style.cursor = next ? 'pointer' : 'default'; redraw.current() } } : undefined} onPointerLeave={() => { if (hover.current) { hover.current = null; redraw.current() } }} role="img" aria-label={t('board.label', { local: names.local, cpu: names.cpu })} onClick={onPick ? (event) => {
-      const point = boardPoint({ x: event.clientX, y: event.clientY }, event.currentTarget.getBoundingClientRect(), painted.current)
-      const hit = nearestHit(hits, point.x, point.y)
-      if (!hit) return
-      if (hit.cx !== undefined && hit.fx !== undefined) setFlight({ key: Date.now(), fx: hit.fx / painted.current.width, fy: hit.fy! / painted.current.height, tx: hit.cx / painted.current.width, ty: hit.cy! / painted.current.height })
-      onPick(hit.label)
-    } : undefined} />
+    <canvas ref={canvas} className={`tactical-canvas${interactive ? ' is-pickable' : ''}`} onPointerMove={interactive ? (event) => { if (event.pointerType !== 'mouse') return; const next = hitAt(event)?.label ?? null; if (next !== hover.current) { hover.current = next; event.currentTarget.style.cursor = next || defense?.pick ? 'pointer' : 'default'; redraw.current() } } : undefined} onPointerLeave={() => { if (hover.current) { hover.current = null; redraw.current() } }} role="img" aria-label={t('board.label', { local: names.local, cpu: names.cpu })} onClick={interactive ? choose : undefined} />
     {flight && <span key={flight.key} className="pass-ball" aria-hidden="true" style={{ '--fx': `${flight.fx * 100}%`, '--fy': `${flight.fy * 100}%`, '--tx': `${flight.tx * 100}%`, '--ty': `${flight.ty * 100}%` } as CSSProperties} />}
-    {onPick && options.length > 0 && <small className="board-pick-hint">{t('field.pickHint')}</small>}
+    {hint && <small className="board-pick-hint" role="status">{hint}</small>}
+    {extra}
     <figcaption className="tactical-caption">{attacker ? t('series.attacking', { name: names[attacker] }) : t('board.idle')}{carrierName && (!play.freeKick || carrier?.side === attacker) && <> · <b>{carrierName}</b></>}</figcaption>
   </figure>
 }
 
 type Hit = BoardHit
-function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, view: { dots: ReturnType<typeof boardDots>; carrier: BoardDot | undefined; from: BoardDot | undefined; options: readonly { dot: BoardDot; label: string }[]; carrierName: string | undefined; names: Readonly<Record<MatchSide, string>>; focus: BoardFocus; play: BoardPlay; hits: Hit[]; info: ReadonlyMap<string, { ovr: number; short: string }>; hover: { current: string | null } }) {
+function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, view: { dots: ReturnType<typeof boardDots>; carrier: BoardDot | undefined; from: BoardDot | undefined; options: readonly { dot: BoardDot; label: string }[]; carrierName: string | undefined; names: Readonly<Record<MatchSide, string>>; focus: BoardFocus; play: BoardPlay; hits: Hit[]; info: ReadonlyMap<string, { ovr: number; short: string }>; hover: { current: string | null }; goalZone?: { label: string }; defense?: BoardDefense }) {
   const aerialActors = view.play.aerial ?? (view.play.corner ? { ...view.play.corner, defenderId: view.play.corner.markerId ?? view.play.corner.defenderId } : undefined)
   const window_ = (view.play.corner || view.play.freeKick) ? pose.camera : focusWindow(view.focus)
   const pitchW = w / (window_.to - window_.from); const pitchH = pitchW * PITCH_RATIO
@@ -216,6 +240,41 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
       ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(p.x, p.y - radius * 2.9, radius * 1.1, 0, Math.PI * 2); ctx.fill()
       ctx.fillStyle = '#0b1a10'; ctx.font = `800 ${Math.max(11, radius * 1.4)}px Inter, system-ui, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(option.label, p.x, p.y - radius * 2.9); ctx.textBaseline = 'alphabetic'
     }
+  }
+  // SIM-FIELD-002 FINISH: the rival goal is a target while SHOOT is on offer and the goal is on screen.
+  if (view.goalZone) {
+    const gx = X(.985), top = Y(.40), bottom = Y(.60), mid = (top + bottom) / 2
+    if (gx > 0 && gx < w + 2 && mid > 0 && mid < h) {
+      const hot = view.hover.current === 'GOAL'
+      ctx.fillStyle = hot ? '#ffd54a77' : '#ffd54a33'; ctx.fillRect(gx - pitchW * .05, top - 5, pitchW * .06, bottom - top + 10)
+      ctx.strokeStyle = COLORS.gold; ctx.lineWidth = hot ? 4 : 3; ctx.setLineDash([6, 4]); ctx.strokeRect(gx - pitchW * .05, top - 5, pitchW * .06, bottom - top + 10); ctx.setLineDash([])
+      ctx.font = `800 ${Math.max(11, radius * 1.3)}px Inter, system-ui, sans-serif`; ctx.textAlign = 'right'; ctx.lineWidth = 3; ctx.strokeStyle = '#0b1a10'; ctx.fillStyle = COLORS.gold
+      ctx.strokeText(view.goalZone.label, Math.min(w - 4, gx + 4), top - 12); ctx.fillText(view.goalZone.label, Math.min(w - 4, gx + 4), top - 12)
+      const origin = view.carrier ? at(view.carrier) : undefined
+      view.hits.push({ x: gx, y: mid, r: Math.max(30, (bottom - top) * .9), label: 'GOAL', cx: gx, cy: mid, ...(origin ? { fx: origin.x, fy: origin.y } : {}) })
+    }
+  }
+  // SIM-FIELD-002 DEFEND: attacker, defender, three lanes seen from the defender (he faces the rival, so his left is the top of the pitch) and the press zone. The CPU intention is never drawn.
+  const duel = view.defense
+  const rival = duel && view.dots.find((dot) => dot.playerId === duel.attackerId); const keeper = duel && view.dots.find((dot) => dot.playerId === duel.defenderId)
+  if (duel && rival && keeper) {
+    const a = at(rival), d = at(keeper)
+    const left = Math.max(2, X(.03)), right = Math.min(w - 2, Math.max(a.x, d.x) + pitchW * .1), edges = [.14, .38, .62, .86].map(Y)
+    DEFENSE_PICKS.forEach((lane, index) => {
+      const chosen = duel.pick === lane, hot = view.hover.current === 'DEF:' + lane
+      ctx.fillStyle = chosen ? '#ffd54a40' : hot ? '#ffffff30' : '#ffffff12'; ctx.fillRect(left, edges[index], right - left, edges[index + 1] - edges[index])
+      ctx.strokeStyle = chosen ? COLORS.gold : '#ffffff80'; ctx.lineWidth = chosen ? 3 : 1.5; ctx.setLineDash(chosen ? [] : [6, 5]); ctx.strokeRect(left, edges[index], right - left, edges[index + 1] - edges[index]); ctx.setLineDash([])
+      ctx.font = `800 ${Math.max(11, radius * 1.3)}px Inter, system-ui, sans-serif`; ctx.textAlign = 'left'; ctx.lineWidth = 3; ctx.strokeStyle = '#0b1a10'; ctx.fillStyle = chosen ? COLORS.gold : '#fff'
+      ctx.strokeText(duel.labels[lane], left + 6, edges[index] + 16); ctx.fillText(duel.labels[lane], left + 6, edges[index] + 16)
+      if (!duel.pick) view.hits.push({ x: (left + right) / 2, y: (edges[index] + edges[index + 1]) / 2, r: 0, hw: (right - left) / 2, hh: (edges[index + 1] - edges[index]) / 2, label: 'DEF:' + lane })
+    })
+    ctx.fillStyle = COLORS.cpu + '55'; ctx.beginPath(); ctx.arc(a.x, a.y, radius * 2.3, 0, Math.PI * 2); ctx.fill()
+    const press = duel.pick === 'PRESS', pressHot = view.hover.current === 'DEF:PRESS'
+    ctx.fillStyle = press ? '#ffd54a55' : pressHot ? '#ffffff40' : '#00f5d422'; ctx.strokeStyle = press ? COLORS.gold : COLORS.local; ctx.lineWidth = press ? 3.5 : 2.5; ctx.setLineDash(press ? [] : [4, 4])
+    ctx.beginPath(); ctx.arc(d.x, d.y, radius * 2.7, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); ctx.setLineDash([])
+    ctx.font = `800 ${Math.max(10, radius * 1.2)}px Inter, system-ui, sans-serif`; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.strokeStyle = '#0b1a10'; ctx.fillStyle = press ? COLORS.gold : '#fff'
+    ctx.strokeText(duel.labels.PRESS, d.x, d.y + radius * 4.6); ctx.fillText(duel.labels.PRESS, d.x, d.y + radius * 4.6)
+    if (!duel.pick) view.hits.push({ x: d.x, y: d.y, r: Math.max(26, radius * 3.2), label: 'DEF:PRESS' })
   }
   for (const dot of view.dots) {
     const { x, y } = at(dot)

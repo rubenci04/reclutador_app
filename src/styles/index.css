@@ -949,3 +949,14 @@ button:focus-visible, [role="radio"]:focus-visible, summary:focus-visible { outl
 .result-advantages p, .result-moments li { font-size: .9rem; margin: 4px 0; }
 .result-moments ul { margin: 4px 0; padding-left: 18px; }
 @media (prefers-reduced-motion: reduce) { .teams-completed, .bench-showcase, .result-inline, .signing-reveal, .discard-scene, .team-missing li[data-complete="true"], .showcase-card.is-sold { animation: none; } .primary-action, .secondary-action, .play-card { transition: none; } }
+
+/* SIM-FIELD-002: attack and defense taken directly on the pitch; the cards stay as a quieter, accessible alternative */
+.live-board-wrap.is-moment .tactical-canvas { border-color: #ffd54a; box-shadow: 0 0 0 2px #ffd54a55, 0 0 22px #ffd54a33; }
+.live-board-wrap.is-moment .board-pick-hint { margin: 6px 0 2px; font-size: 1.05rem; font-weight: 800; color: #ffd54a; }
+.live-board-wrap .tactical-board .dribble-timing { margin: 6px 0 0; }
+.live-play.is-board-secondary, .defense-panel.is-board-driven { border-color: #ffffff33; background: #142619; box-shadow: none; padding: .6rem 1rem; }
+.live-play.is-board-secondary h2, .defense-panel.is-board-driven h2 { font-size: .95rem; }
+.live-play.is-board-secondary .play-card { min-height: 52px; opacity: .85; }
+.live-play.is-board-secondary .play-card:hover, .live-play.is-board-secondary .play-card:focus-visible { opacity: 1; }
+.defense-panel.is-board-driven .dribble-field, .defense-panel.is-board-driven .live-moment { display: none; }
+.defense-panel.is-board-driven .dribble-lane-button { opacity: .85; }

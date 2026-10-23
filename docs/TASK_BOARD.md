@@ -370,3 +370,7 @@ Presupuestos 160/220 M (viabilidad verificada), técnicos argentinos por trayect
 ## UX-ENTRY-011 + SIM-FIELD-001 — 22/10/2026
 
 Bloque único de edición seleccionada junto a Iniciar duelo, pase directo sobre la cancha en DIRECTION con animación y coordenadas responsive, y moneda perceptible con movimiento reducido. Recorrido real en navegador documentado (con límites). [Informe](qa/UX-ENTRY-011-SIM-FIELD-001.md).
+
+## SIM-FIELD-002 — 23/10/2026
+
+Ataque (arco = SHOOT, compañero = CROSS) y defensa (carriles, presión y barra de precisión) directamente sobre TacticalBoard, con tarjetas como alternativa accesible. Mismos comandos y motor. [Informe y límites](qa/SIM-FIELD-002.md).

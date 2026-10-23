@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
-import type { DribbleSector, PendingPlay, PlayChoice } from './interactive/attackTree'
+import { defenseChoice, type DribbleSector, type PendingPlay, type PlayChoice } from './interactive/attackTree'
 import { LANE_X } from './DribblePanel'
 import { TimingBar } from './TimingBar'
 import { reducedMotion, useTimingBar } from './timing'
 
 const LANES: readonly DribbleSector[] = ['LEFT', 'CENTER', 'RIGHT']
-type Pick = DribbleSector | 'PRESS'
-const choiceOf = (pick: Pick) => (pick === 'PRESS' ? 'PRESS' : `DEFEND_${pick}`) as PlayChoice
+export type DefensePick = DribbleSector | 'PRESS'
+type Pick = DefensePick
 
 function Field({ attacker, defender, pick, intent, moved }: { readonly attacker: Player | undefined; readonly defender: Player | undefined; readonly pick: Pick | null; readonly intent?: DribbleSector; readonly moved?: boolean }) {
   const defenderX = pick && pick !== 'PRESS' ? LANE_X[pick] : 150
@@ -25,14 +25,19 @@ function Field({ attacker, defender, pick, intent, moved }: { readonly attacker:
  * Hand-played defense (SIM-MINI-003). The CPU already decided which lane its attacker will use (hidden). Step 1: anticipate a lane or press.
  * Step 2: stop the marker near the middle. «Resolve with the traditional system» sends the old automatic interception.
  */
-export function DefensePanel({ play, catalog, onChoose }: { readonly play: PendingPlay; readonly catalog: readonly Player[]; readonly onChoose: (choice: PlayChoice, precision?: number) => void }) {
+/** SIM-FIELD-002: when the board drives the defense, the pick and the precision bar live above (next to the pitch) and this panel is the accessible alternative. */
+export interface DefenseDriver { readonly pick: DefensePick | null; readonly setPick: (pick: DefensePick) => void; readonly stop: () => number; readonly motionOff: boolean }
+export function DefensePanel({ play, catalog, onChoose, driver }: { readonly play: PendingPlay; readonly catalog: readonly Player[]; readonly onChoose: (choice: PlayChoice, precision?: number) => void; readonly driver?: DefenseDriver }) {
   const { t } = useTranslation()
   const attacker = catalog.find((p) => p.id === play.attackerId); const defender = catalog.find((p) => p.id === play.protagonistId)
-  const [pick, setPick] = useState<Pick | null>(null)
-  const { marker, stop, motionOff } = useTimingBar(pick !== null)
+  const [own, setOwn] = useState<Pick | null>(null)
+  const timer = useTimingBar(!driver && own !== null)
+  const pick = driver ? driver.pick : own
+  const setPick = driver ? driver.setPick : setOwn
+  const { marker } = timer; const stop = driver ? driver.stop : timer.stop; const motionOff = driver ? driver.motionOff : timer.motionOff
   const heading = useRef<HTMLHeadingElement>(null)
   useEffect(() => { heading.current?.focus({ preventScroll: true }) }, [])
-  const confirm = () => { if (pick) onChoose(choiceOf(pick), stop()) }
+  const confirm = () => { if (pick) onChoose(defenseChoice(pick), stop()) }
   const keys = (event: KeyboardEvent) => {
     if (event.key === 'ArrowLeft') { setPick('LEFT'); event.preventDefault() }
     else if (event.key === 'ArrowRight') { setPick('RIGHT'); event.preventDefault() }
@@ -40,7 +45,7 @@ export function DefensePanel({ play, catalog, onChoose }: { readonly play: Pendi
     else if (event.key === 'ArrowDown') { setPick('PRESS'); event.preventDefault() }
     else if ((event.key === ' ' || event.key === 'Enter') && pick && event.target === event.currentTarget) { confirm(); event.preventDefault() }
   }
-  return <section className="live-play dribble-panel defense-panel" aria-label={t('defenseMini.label')} tabIndex={-1} onKeyDown={keys}>
+  return <section className={`live-play dribble-panel defense-panel${driver ? ' is-board-driven' : ''}`} aria-label={t('defenseMini.label')} tabIndex={-1} onKeyDown={keys}>
     <h2 tabIndex={-1} ref={heading}>{t('defenseMini.title')}</h2>
     <p className="live-moment">{t('defenseMini.intro', { attacker: attacker?.name ?? '', defender: defender?.name ?? '' })}</p>
     <div className="dribble-field"><svg className="dribble-pitch" viewBox="0 0 300 180" aria-hidden="true"><Field attacker={attacker} defender={defender} pick={pick} /></svg></div>
@@ -49,7 +54,7 @@ export function DefensePanel({ play, catalog, onChoose }: { readonly play: Pendi
         <b className="play-letter" aria-hidden="true">{id === 'LEFT' ? '←' : id === 'RIGHT' ? '→' : id === 'CENTER' ? '↑' : '↓'}</b><strong>{t(id === 'PRESS' ? 'defenseMini.press' : `defenseMini.anticipate.${id}`)}</strong>
       </button>)}
     </div>
-    {pick && !motionOff && <TimingBar marker={marker} label={t('defenseMini.barLabel')} />}
+    {pick && !motionOff && !driver && <TimingBar marker={marker} label={t('defenseMini.barLabel')} />}
     <div className="dribble-actions">
       <button type="button" className="primary-action" disabled={!pick} onClick={confirm}>{pick ? t(motionOff ? 'defenseMini.confirm' : 'defenseMini.stop') : t('defenseMini.chooseFirst')}</button>
       <button type="button" className="secondary-action" onClick={() => onChoose('INTERCEPT')}>{t('defenseMini.traditional')}</button>
