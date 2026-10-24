@@ -1,10 +1,10 @@
 .online-main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
 .online-main h1 { font-size: clamp(2rem, 7vw, 3.4rem); font-weight: 900; }
 .online-main p { margin: 16px 0; line-height: 1.6; overflow-wrap: anywhere; }
-.online-card { display: grid; gap: 14px; padding: clamp(16px, 4vw, 32px); margin-top: 24px; border: 1px solid #3b5963; border-radius: 22px; background: #10242b; }
-.online-card input { width: 100%; min-width: 0; border: 1px solid #68838b; border-radius: 8px; padding: 12px; background: #08191f; color: #fff; }
+.online-card { display: grid; gap: 14px; padding: clamp(16px, 4vw, 32px); margin-top: 24px; border: 1px solid #d5fb7655; border-radius: 22px; background: #14281e; }
+.online-card input { width: 100%; min-width: 0; border: 1px solid #d5fb7655; border-radius: 8px; padding: 12px; background: #0b1a13; color: #fff; }
 .online-members { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; padding: 0; list-style: none; }
-.online-members li { display: grid; gap: 12px; padding: 18px; border: 1px solid #4b717b; border-radius: 14px; overflow-wrap: anywhere; }
+.online-members li { display: grid; gap: 12px; padding: 18px; border: 1px solid #d5fb7655; border-radius: 14px; background: #18271c; overflow-wrap: anywhere; }
 .online-main [role=alert] { padding: 12px; background: #50251d; border-radius: 8px; }
 .online-main button { white-space: normal; }
 @media (max-width: 480px) { .online-members { grid-template-columns: 1fr; } }
@@ -12,3 +12,9 @@
 .online-steps { margin: 8px 0 12px; padding-left: 18px; line-height: 1.6; font-size: .9rem; }
 .online-hint { font-size: .8rem; color: #c4d4c0; margin: 4px 0 12px; }
 .online-code { font-size: 1.05rem; margin: 4px 0 10px; } .online-code strong { letter-spacing: .18em; font-size: 1.4rem; color: #f4dc63; }
+
+.online-invite { display: grid; gap: 10px; justify-items: start; padding: 14px 16px; border: 1px solid #d5fb7655; border-left: 5px solid #d5fb76; border-radius: 14px; background: #0b1a13; }
+.online-invite .online-code { margin: 0; }
+.online-invite .online-code strong { display: block; margin-top: 4px; font-size: clamp(1.8rem, 9vw, 2.6rem); letter-spacing: .3em; color: #f4dc63; font-variant-numeric: tabular-nums; }
+.online-invite-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.online-invite-actions button { min-height: 44px; }

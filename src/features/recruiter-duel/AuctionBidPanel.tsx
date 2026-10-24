@@ -42,6 +42,8 @@ export function AuctionBidPanel({ game, side, footballer, names, availability, o
   const participant = hud?.participants[side]
   const missing = participant ? hud!.teamSize - participant.signed : null
   const needs = participant ? participant.positions.filter((position) => position.remaining > 0) : []
+  const saldo = participant?.remaining ?? null
+  const reserved = participant?.reserved ?? (saldo === null ? null : Math.max(0, saldo - maximum))
   const showBlocked = blockedMessage && (blocked === 'POSITION_FULL' || blocked === 'FUTURE_BUDGET_RESERVED' || blocked === 'INSUFFICIENT_BUDGET')
   return <section className={`bid-panel bid-panel-${side}`}>
     <header className="bid-turn">
@@ -61,11 +63,12 @@ export function AuctionBidPanel({ game, side, footballer, names, availability, o
       <button type="button" className="bid-chip bid-chip-max" disabled={maximum < minimum} onClick={() => onOffer(maximum)}>{t('bidTable.max', { amount: maximum })}</button>
     </div>
     <div className={`risk-meter risk-${level}`} role="img" aria-label={t('bidTable.riskLabel', { level: t(`bidTable.risk.${level}`) })}><i style={{ width: `${Math.max(4, Math.min(100, ratio * 100))}%` }} /></div>
+    {saldo !== null && reserved !== null && <p className="budget-breakdown"><span>{t('budgetBreakdown.balance', { remaining: saldo })}</span> · <span>{t('budgetBreakdown.reserved', { reserved })}</span> · <strong>{t('budgetBreakdown.offerable', { maximum })}</strong></p>}
     <label className="bid-amount">{t('duel.offerAmount')}<input type="number" min={game.currentBid ? game.currentBid.amount + 1 : footballer.price} max={availability?.maximum} value={Number.isNaN(offer) ? '' : offer} onChange={(event) => onOffer(event.target.value === '' ? NaN : Number(event.target.value))} /></label>
     <p id="auction-action-reason" className="sr-only" role="status">{availability?.bid.reason ? t('auctionActions.blocks.' + availability.bid.reason) : t('auctionActions.available')}</p>
     <div className="duel-actions bid-actions">
       <span className="blockable"><button className="primary-action bid-primary" aria-describedby="auction-action-reason position-capacity" disabled={!availability?.bid.enabled} onClick={onBid}>{t('duel.bid')}</button></span>
-      <span className="blockable"><button className="secondary-action bid-pass" aria-describedby="auction-assignment" disabled={!availability?.pass.enabled} onClick={onPass}>{passLabel}</button></span>
+      <span className="blockable"><button className={`secondary-action bid-pass${assignmentSpecial ? ' bid-pass-special' : ''}`} aria-describedby="auction-assignment" disabled={!availability?.pass.enabled} onClick={onPass}>{passLabel}</button></span>
     </div>
     {assignmentSpecial && <div className="assignment-notice-slot">{assignment}</div>}
     <details className="bid-details"><summary>{t('auctionFocus.moreInfo')}</summary>

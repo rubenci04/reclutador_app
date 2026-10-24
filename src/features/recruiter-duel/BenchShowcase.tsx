@@ -28,6 +28,7 @@ export function BenchShowcase({ game, catalog, names, humans, onBuy, onPass, onF
   const mine = turn !== null && humans.includes(turn)
   const budgetLeft = (id: RecruiterId) => budgetOf(game) - game.teams[id].spent
   const owned = (id: RecruiterId) => cards.filter((card) => soldTo(game, card.id) === id).length
+  if (turn === null && !closed) return <section className="bench-showcase bench-showcase-waiting" aria-label={t('showcase.label')}><h3>{t('showcase.title')}</h3><p className="showcase-turn" role="status" aria-live="polite">{t('showcase.waiting')}</p></section>
   return <section className="bench-showcase" aria-label={t('showcase.label')}>
     <h3>{t('showcase.title')}</h3>
     <p className="market-hint">{t('showcase.rules', { limit })}</p>

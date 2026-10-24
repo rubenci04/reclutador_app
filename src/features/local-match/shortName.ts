@@ -1,9 +1,11 @@
 /** Readable on a small pitch: the surname (or the last word) with the initial only when the whole name is long. */
+const SURNAME_PARTICLES = new Set(['de', 'del', 'da', 'dos', 'di', 'van', 'von', 'mac', 'mc', 'al', 'el', 'san', 'st', 'st.'])
 export function shortName(name: string) {
   const parts = name.trim().split(/\s+/)
   if (name.length <= 11 || parts.length < 2) return name.length > 13 ? `${name.slice(0, 12)}…` : name
-  const last = parts[parts.length - 1]
-  return last.length > 11 ? `${parts[0][0]}. ${last.slice(0, 9)}…` : `${parts[0][0]}. ${last}`
+  let last = parts[parts.length - 1]
+  if (parts.length >= 3 && SURNAME_PARTICLES.has(parts[parts.length - 2].toLowerCase())) last = `${parts[parts.length - 2]} ${last}`
+  return last.length > 12 ? `${parts[0][0]}. ${last.slice(0, 10)}…` : `${parts[0][0]}. ${last}`
 }
 
 /** A teammate offered on the board: `x`/`y`/`r` is the touch area, `cx`/`cy` the player and `fx`/`fy` the carrier, all in the board's CSS pixels. */

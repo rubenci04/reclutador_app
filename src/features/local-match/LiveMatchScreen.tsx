@@ -214,7 +214,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
   }
   if (replay && final?.ok) return <MatchScreen result={final.value.result} catalog={catalog} localName={names.local} cpuName={names.cpu} onReturn={() => setReplay(false)} returnLabel={t('navigation.backSummary')} exitWarning={t('liveDT.closeReplay')} onRematch={() => {}} showNewMatchActions={false} />
   return <main id="match-main" ref={main} tabIndex={-1} onPointerDownCapture={() => { void audio.unlock() }} onKeyDownCapture={() => { void audio.unlock() }} className={`match-screen live-match${animate ? '' : ' live-no-motion'}`}>
-    <section className="match-card" aria-label={t('liveDT.title')}>
+    <section className={`match-card${atPlay ? ' is-at-play' : ''}`} aria-label={t('liveDT.title')}>
       <header className="match-heading"><p className="eyebrow"><span />{finished ? t('match.final') : t('match.playing')}</p><h1 className="live-title">{t('liveDT.title')}</h1>{finished && closed ? <button className="secondary-action" onClick={onReturn}>{t('navigation.home')}</button> : <ConfirmNavigation label={t(finished ? 'navigation.home' : 'navigation.exitMatch')} message={t('navigation.seriesExitWarning')} onConfirm={onReturn} onOpenChange={setExitOpen} />}</header>
       <div className="match-scoreboard">
         <div><strong>{names.local}</strong><small>{t(`tactics.strategies.${session.kernel.selection.local}.name`)}</small><small>{t('match.globalPower', { value: power.local.effective.global.toFixed(1) })}</small></div>
@@ -226,6 +226,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
         <div className="momentum-bar" aria-hidden="true"><i className="momentum-local" style={{ width: `${momentum}%` }} /></div>
       </div>
       <div className="match-progress" aria-hidden="true"><span style={{ width: `${Math.min(100, minute / 90 * 100)}%` }} /></div>
+      <div className="live-layout"><div className="live-main">
       <div className={`live-board-wrap${boardMoment ? ' is-moment' : ''}`} ref={boardWrap}>
         <TacticalBoard formations={session.kernel.input.formations ?? { local: '4-3-3', cpu: '4-3-3' }} lineups={{ local: session.kernel.sides.local.team.lineup, cpu: session.kernel.sides.cpu.team.lineup }} catalog={catalog} names={names} play={play} choices={choices} hint={boardHint} goalZone={shootOption ? { label: t('field.shoot'), onSelect: () => choosePlay(view.play!, 'SHOOT') } : undefined} defense={defendOnBoard && view.play ? { attackerId: view.play.attackerId!, defenderId: view.play.protagonistId, pick: boardPick, labels: { LEFT: t('defenseMini.lane.LEFT'), CENTER: t('defenseMini.lane.CENTER'), RIGHT: t('defenseMini.lane.RIGHT'), PRESS: t('defenseMini.press') }, onSelect: (pick) => setDefensePick({ key: momentKey, pick }), onExecute: () => { if (boardPick) choosePlay(view.play!, defenseChoice(boardPick), timing.stop()) } } : undefined} extra={boardPick && !timing.motionOff ? <TimingBar marker={timing.marker} label={t('defenseMini.barLabel')} /> : undefined} onPick={atPlay && !rest && (view.play?.node === 'DIRECTION' || view.play?.node === 'FINISH') ? (label) => { const option = view.play!.options.find((candidate) => candidate.available && PLAY_LETTERS[candidate.choice] === label); if (option) choosePlay(view.play!, option.choice) } : undefined} tick={shownCount} focus={play.freeKick ? play.freeKick.awardedTo === 'local' ? 'cpu' : 'local' : play.corner ? play.corner.awardedTo === 'local' ? 'cpu' : 'local' : boardMoment ? 'full' : focus} speed={speed} animate={animate} paused={paused || exitOpen} />
         {focusEvent?.type === 'recovery' && focusEvent.step && <div className="recovery-flash" key={`recovery:${shownCount}`} role="status">{t('moments.recovered')}</div>}
@@ -263,6 +264,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
         {savedRevision !== null && <button className="secondary-action" disabled={savedRevision !== session.revision} onClick={() => { void restore() }}>{t('liveDT.restorePause')}</button>}
         {rest && <p role="status">{t('liveDT.keepMode')}</p>}
       </div>}
+      </div><aside className="live-side">
       <details className="moment-history"><summary>{t('moments.history')}</summary><div className="match-layout">
         <section className="match-narration"><h2>{t('liveDT.narration')}</h2>{events.length ? <ol ref={narration} aria-label={t('liveDT.narration')}>{events.map((item, index) => <li className={`event-${item.type}${item.type === 'goal' ? ' goal-event' : ''}`} key={`${item.minute}-${index}`}><time>{item.minute}'</time><i className="event-icon" aria-hidden="true">{EVENT_ICONS[item.type]}</i><span>{eventText(item)}</span>{item.tactic && <small className="event-tactic tactic-chip">{t('match.influence', { tactic: t(`match.tacticNotes.${item.tactic}`) })}</small>}</li>)}</ol> : <p>{t('liveDT.kickoff')}</p>}</section>
       </div></details>
@@ -270,6 +272,7 @@ export function LiveMatchScreen({ origin, versusCpu, difficulty, names, onFinish
       <details className="live-power"><summary>{t('liveDT.powerDetail')}</summary><div className="team-power-grid">{(['local', 'cpu'] as const).map((id) => <article className="team-power-card" key={id}><h2>{names[id]}</h2><p>{t('liveDT.strategy')}: {t(`tactics.strategies.${session.kernel.selection[id]}.name`)}</p><p>{t('auctionUX.base', { value: power[id].base.global.toFixed(1) })}</p><p>{t('auctionUX.effective')}: <b>{power[id].effective.global.toFixed(1)}</b></p><p>{t('liveDT.changes', { count: session.benchMode[id] === 'manual-v1' ? Math.min(3 - session.entered[id].length, session.kernel.sides[id].unused.filter((playerId) => catalog.find((p) => p.id === playerId)?.position !== 'ARQ').length) : 0 })}</p></article>)}</div></details>
       {error && <p role="alert">{t('liveDT.error', { code: error })}</p>}
       {final?.ok && <section className="match-summary"><h2>{t('match.final')} · {score.local}–{score.cpu}</h2><ResultExplanation inline result={final.value.result} name={(id) => names[id]} catalog={catalog} /><div className="match-actions"><button className="secondary-action" onClick={() => setReplay(true)}>{t('match.replay')}</button></div><details><summary>{t('liveDT.audit')}</summary><p>{t('liveDT.localTrust')}</p><label>{t('liveDT.record')}<textarea readOnly value={JSON.stringify({ version: 'local-live-audit-v1', origin, final: session, result: final.value })} /></label></details></section>}
+      </aside></div>
     </section>
   </main>
 }

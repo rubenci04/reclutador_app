@@ -19,6 +19,7 @@ import { benchShowcase, buyShowcaseCard, cpuShowcase, finishShowcase, passShowca
 import type { AuctionTransition, RecruiterDuelGame, RecruiterId } from './auctionTypes'
 import { FootballCoin } from './FootballCoin'
 import { BenchShowcase } from './BenchShowcase'
+import { TeamPitchBoard } from './TeamPitchBoard'
 import { resultAdvantages } from '../local-match/resultAdvantages'
 import { nearestHit, shortName } from '../local-match/shortName'
 import type { MatchResult } from '../local-match/matchTypes'
@@ -184,6 +185,27 @@ describe('GAMEPLAY-POLISH-010 showcase screen', () => {
     const sold = container.querySelectorAll('.showcase-card[data-sold="true"]')
     expect(sold).toHaveLength(1); expect(sold[0].textContent).toContain('SOLD'); expect(sold[0].querySelector('button')).toBeNull()
   })
+  it('collapses to a compact banner while a coach is still pending and opens the ten cards once both are resolved', async () => {
+    const pending = completed(DRAFT_CATALOG, showcaseConfig(300, { coaches: true, coachReserve: COACH_MAX_PRICE }), 'showcase-waiting')
+    const i18n = await createI18n('en'); const names = { recruiter_one: 'One', recruiter_two: 'Two' }
+    const view = (g: RecruiterDuelGame) => <I18nextProvider i18n={i18n}><BenchShowcase game={g} catalog={DRAFT_CATALOG} names={names} humans={['recruiter_one', 'recruiter_two']} onBuy={() => {}} onPass={() => {}} onFinish={() => {}} /></I18nextProvider>
+    const { container, rerender } = render(view(pending))
+    expect(container.querySelectorAll('.showcase-card')).toHaveLength(0)
+    expect(container.querySelector('.showcase-turn')!.textContent).toBe(i18n.t('showcase.waiting'))
+    rerender(view(must(declineCoach(must(declineCoach(pending, 'recruiter_one')), 'recruiter_two'))))
+    expect(container.querySelectorAll('.showcase-card')).toHaveLength(10)
+  })
+  it('shows the catalogue price as paid for a showcase substitute on the bench', async () => {
+    const base = must(declineCoach(must(declineCoach(completed(DRAFT_CATALOG, showcaseConfig(300, { coaches: true, coachReserve: COACH_MAX_PRICE }), 'showcase-paid'), 'recruiter_one')), 'recruiter_two'))
+    const turn = showcaseTurn(base, DRAFT_CATALOG)!
+    const card = benchShowcase(base, DRAFT_CATALOG)[0]
+    const after = must(buyShowcaseCard(base, turn, card.id, DRAFT_CATALOG))
+    const i18n = await createI18n('en')
+    const { container } = render(<I18nextProvider i18n={i18n}><TeamPitchBoard game={after} participant={turn} catalog={DRAFT_CATALOG} /></I18nextProvider>)
+    const slot = Array.from(container.querySelectorAll('.team-bench .bench-slot')).find((el) => el.textContent?.includes(card.name))!
+    expect(slot.textContent).toContain(i18n.t('teamProgress.paid', { amount: card.price }))
+    expect(slot.textContent).not.toContain('—')
+  })
 })
 
 describe('GAMEPLAY-POLISH-010 coin', () => {
@@ -219,6 +241,8 @@ describe('GAMEPLAY-POLISH-010 result summary and board helpers', () => {
   it('abbreviates long names readably and finds the offered teammate under a tap', () => {
     expect(shortName('Messi')).toBe('Messi'); expect(shortName('Lionel Andrés Messi')).toBe('L. Messi'); expect(shortName('Cristiano Ronaldo dos Santos Aveiro')).toBe('C. Aveiro')
     const hits = [{ x: 100, y: 100, r: 30, label: 'A' }, { x: 220, y: 90, r: 30, label: 'B' }]
+    expect(shortName('Kevin De Bruyne')).toBe('K. De Bruyne'); expect(shortName('Matthijs de Ligt')).toBe('M. de Ligt'); expect(shortName('Alexis Mac Allister')).toBe('A. Mac Allister')
+    expect(shortName('Juan Carlos de Almeidasilva')).toBe('J. de Almeida…')
     expect(nearestHit(hits, 110, 95)?.label).toBe('A'); expect(nearestHit(hits, 215, 100)?.label).toBe('B'); expect(nearestHit(hits, 160, 200)).toBeNull()
   })
 })

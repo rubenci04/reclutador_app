@@ -5,6 +5,7 @@ import type { ThemedModeId } from '../themed-modes/modeTypes'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LanguageSelector } from '../../components/LanguageSelector'
+import { AudioControls } from '../audio/AudioControls'
 import { matchHistory } from '../history/matchHistory'
 import { NoticeToasts } from '../recruiter-duel/NoticeToasts'
 import { useToasts } from '../recruiter-duel/useToasts'
@@ -32,7 +33,8 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<OnlineErrorCode | null>(gateway ? null : 'NOT_CONFIGURED')
   const [connection, setConnection] = useState<ConnectionStatus>('connecting')
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState<'link' | 'code' | null>(null)
+  const canShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
   const [closedNotice, setClosedNotice] = useState(false)
   const [copyFailed, setCopyFailed] = useState(false)
   const [retry, setRetry] = useState<(() => Promise<RoomSnapshot | null>) | null>(null)
@@ -138,10 +140,15 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
     const command = { ...action, roomId: room.roomId, expectedVersion: room.version, actionId: crypto.randomUUID() }
     void run(() => gateway.command(command))
   }
-  async function copy() {
+  async function copy(text = room ? invitationUrl(room.inviteCode) : '', notice: 'link' | 'code' = 'link') {
     if (!room) return
-    try { await navigator.clipboard.writeText(invitationUrl(room.inviteCode)); setCopied(true); setCopyFailed(false) }
-    catch { setCopied(false); setCopyFailed(true) }
+    try { await navigator.clipboard.writeText(text); setCopied(notice); setCopyFailed(false) }
+    catch { setCopied(null); setCopyFailed(true) }
+  }
+  async function share() {
+    if (!room) return
+    try { await navigator.share({ title: 'Reclutador', text: t('online.shareText', { code: room.shortCode ?? room.inviteCode }), url: invitationUrl(room.inviteCode) }) }
+    catch { /* a dismissed share sheet is not an error */ }
   }
   const own = room?.members.find(member => member.userId === userId)
   // Tell the person when the other one enters, gets ready or leaves.
@@ -200,7 +207,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
   if (binding && duel && forfeitBy) {
     const names = { recruiter_one: duel.config?.names.recruiter_one ?? '', recruiter_two: duel.config?.names.recruiter_two ?? '' }
     return <div className="draft-app online-shell">
-      <header className="draft-header"><span className="brand">Reclutador</span><LanguageSelector /></header>
+      <header className="draft-header"><span className="brand"><span className="brand-emblem">R</span><span>Reclutador</span></span><div className="header-actions"><AudioControls /><LanguageSelector /></div></header>
       <main className="online-main"><section className="online-card" role="status">
         <h1>{t('online.duel.forfeitTitle')}</h1>
         <p>{t('online.duel.forfeitBody', { loser: names[forfeitBy], winner: names[otherSide(forfeitBy)] })}</p>
@@ -210,7 +217,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
     </div>
   }
   return <div className="draft-app online-shell">
-    <header className="draft-header"><span className="brand">Reclutador</span><LanguageSelector /></header>
+    <header className="draft-header"><span className="brand"><span className="brand-emblem">R</span><span>Reclutador</span></span><div className="header-actions"><AudioControls /><LanguageSelector /></div></header>
     <main className="online-main">
       <button className="secondary-action" onClick={onBack} disabled={busy}>{t('online.back')}</button>
       <p className="eyebrow">{t('online.eyebrow')}</p><h1 ref={heading} tabIndex={-1}>{t('online.title')}</h1>
@@ -232,7 +239,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
       </section> : <section className="online-card" aria-label={t('online.lobby')}>
         <p role="status">{t('online.connection.' + connection)}</p><p>{t('online.peerNotice')}</p>
         <h2>{room.roomName ? t('online.roomTitle', { name: room.roomName }) : t('online.lobby')}</h2>
-        {room.shortCode && <p className="online-code"><span>{t('online.roomCode')}</span> <strong>{room.shortCode}</strong></p>}
+        {room.shortCode && <div className="online-invite"><p className="online-code"><span>{t('online.roomCode')}</span> <strong>{room.shortCode}</strong></p><div className="online-invite-actions"><button className="secondary-action" onClick={() => { void copy(room.shortCode!, 'code') }}>{t('online.copyCode')}</button>{canShare && <button className="secondary-action" onClick={() => { void share() }}>{t('online.share')}</button>}</div></div>}
         {lobbyOpen && room.hostId === userId && <><ModeSelector selected={category} onChange={setCategory} /><label>{t('playtest.opponentCategory')}<select value={opponentCategory} onChange={(e) => setOpponentCategory(e.target.value as ThemedModeId | 'same')}><option value="same">{t('playtest.sameCategory')}</option>{CATEGORY_GROUPS.flatMap((g) => g.modes).map((id) => <option key={id} value={id}>{t('categoryTree.options.' + id)}</option>)}</select></label>{opponentCategory !== 'same' && opponentCategory !== category && <p>{t('playtest.mixedHelp')}</p>}</>}
         <ol className="online-steps"><li>{t('online.step1')}</li><li>{t('online.step2')}</li><li>{t('online.step3')}</li></ol>
         <p>{t('online.expires', { date: new Date(room.expiresAt).toLocaleString(i18n.language) })}</p>
@@ -242,7 +249,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
         })}</ul>
         <label htmlFor="online-share">{t('online.shareLink')}</label><input id="online-share" value={invitationUrl(room.inviteCode)} readOnly onFocus={e => e.target.select()} />
         <button className="secondary-action" onClick={() => { void copy() }}>{t('online.copy')}</button>
-        {copied && <p role="status">{t('online.copied')}</p>}{copyFailed && <p role="alert">{t('online.copyFailed')}</p>}
+        {copied && <p role="status">{t(copied === 'code' ? 'online.codeCopied' : 'online.copied')}</p>}{copyFailed && <p role="alert">{t('online.copyFailed')}</p>}
         {lobbyOpen && <div className="duel-actions">
           <button className="primary-action" disabled={busy || !!retry || !own} onClick={() => send({actionType:'SET_READY',payload:{ready:!own?.ready}})}>{t(own?.ready ? 'online.unready' : 'online.markReady')}</button>
           {room.hostId === userId && <button className="primary-action" disabled={busy || !!retry || room.status !== 'READY'} onClick={startDuel}>{t('online.start')}</button>}
