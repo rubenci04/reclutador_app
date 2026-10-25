@@ -1,5 +1,9 @@
 # Tablero de tareas
 
+## Publicación sprint 8 — 25/10/2026
+
+Entrega aislada del trabajo de Codex, excluyendo sprints posteriores de Claude. Validación completa: 1.447 pruebas; commit bc7648c subido a codex/sprint-8-publicacion. Main actualizado y Worker publicado tras autorización explícita: versión b194ae0d al 100 %, etiqueta bc7648c; HTTP/HTML y nueve bundles verificados. [Registro](logs/SPRINT-8-PUBLICACION.md) y [trabajo paralelo](PARALLEL_WORK.md).
+
 ## Todos los nodos sobre la cancha — 24/10/2026
 
 Cabezazos de las tres familias, córners, tiros libres directos/indirectos, barrera y gambeta con objetivos táctiles en TacticalBoard. Gambeta/tiro directo comparten selección y precisión con tarjetas/teclado; controles accesibles y motor intactos. Typecheck/lint/build y 1.447 pruebas en 133 archivos aprobados; fieldInteraction incluye 29 pruebas nuevas. QA visual bloqueada por timeout de Vite desde el navegador integrado. [Registro](logs/FIELD-ALL-2026-10-24.md).
