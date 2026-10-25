@@ -432,3 +432,7 @@ EASY ahora queda 1,0-1,7 de OVR medio por debajo de NORMAL (NORMAL/HARD sin camb
 ## Sprint 5 UX — 25/10/2026
 
 Texto funcional a .8rem, medidor de riesgo con etiqueta y patrón (no solo color), aviso de presupuesto sin filtrar la suma de cartas, tests de calibración sin escribir salvo `WRITE_QA=1`, README corto (historial en docs/CHANGELOG.md). Pendiente: revisión visual en celular. [Registro](logs/SPRINT-5-UX.md).
+
+## Sprint 6 verificación online — 25/10/2026
+
+Prueba de punta a punta con las 5 migraciones (honesta, trampas, inactividad) que destapó un error de `verifyDuelState` con el orden de claves de jsonb (corregido); guía de prueba manual, lista de publicación y reversa SQL probada. Nada mezclado, aplicado ni desplegado. [Registro](logs/SPRINT-6-VERIFICACION.md), [checklist](RELEASE-CHECKLIST.md), [prueba manual](qa/MANUAL-PLAYTEST.md).

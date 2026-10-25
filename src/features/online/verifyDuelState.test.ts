@@ -104,4 +104,9 @@ describe('verifyDuelState', () => {
     expect(tamper(game, (state) => edit(state, bidding, { amount: 1 }))).toEqual({ ok: false, reason: 'replay' })
     expect(tamper(game, (state) => ({ ...state, currentBid: { participant: state.currentBid!.participant, amount: state.currentBid!.amount + 4 } }))).toEqual({ ok: false, reason: 'teams' })
   })
+  it('accepts the same state when the database returns the keys in another order (jsonb)', () => {
+    const reorder = (value: unknown): unknown => Array.isArray(value) ? value.map(reorder) : value && typeof value === 'object' ? Object.fromEntries(Object.entries(value).reverse().map(([key, entry]) => [key, reorder(entry)])) : value
+    const done = finished(auctions('verify-1', { recruiter_one: 1, recruiter_two: 1 }))
+    expect(verifyDuelState(reorder(roundTrip(done)) as RecruiterDuelGame)).toEqual({ ok: true, coverage: 'full' })
+  })
 })

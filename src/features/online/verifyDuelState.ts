@@ -13,7 +13,9 @@ export type DuelVerification =
   | { readonly ok: false; readonly reason: 'deal' | 'coin' | 'replay' | 'teams' | 'spent' | 'roster' | 'match_result' }
 
 const SIDES: readonly RecruiterId[] = ['recruiter_one', 'recruiter_two']
-const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b)
+/** PostgreSQL stores jsonb with its own key order, so objects are compared by content, never by the order of their keys. */
+const canonical = (value: unknown): unknown => Array.isArray(value) ? value.map(canonical) : value && typeof value === 'object' ? Object.fromEntries(Object.entries(value).filter(([, entry]) => entry !== undefined).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)).map(([key, entry]) => [key, canonical(entry)])) : value
+const same = (a: unknown, b: unknown) => JSON.stringify(canonical(a)) === JSON.stringify(canonical(b))
 const PRE_TEAMS = ['LOBBY', 'COIN_TOSS', 'REVEAL_PLAYER', 'BIDDING', 'ROUND_RESULT', 'NEXT_ROUND', 'DISCARD_RESULT']
 
 /** Same catalogue choice the duel page makes for a shared game. */
