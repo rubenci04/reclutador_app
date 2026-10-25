@@ -3,20 +3,21 @@ import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
 import type { DribbleSector } from './interactive/attackTree'
 import { TimingBar } from './TimingBar'
-import { reducedMotion, useTimingBar } from './timing'
+import { reducedMotion, useTimingBar, type LaneDriver } from './timing'
 
 export type Lane = DribbleSector
 const LANES: readonly Lane[] = ['LEFT', 'CENTER', 'RIGHT']
 /** x of each third of the goal on the 300x180 close-up. */
-const GOAL_X: Readonly<Record<Lane, number>> = { LEFT: 85, CENTER: 150, RIGHT: 215 }
+export const GOAL_X: Readonly<Record<Lane, number>> = { LEFT: 85, CENTER: 150, RIGHT: 215 }
 export type ShotMode = 'FREE_KICK' | 'PENALTY'
 export type ShotOutcome = 'GOAL' | 'SAVE' | 'WIDE' | 'OVER' | 'BLOCK'
 
-function Goal({ mode, lane }: { readonly mode: ShotMode; readonly lane: Lane | null }) {
+/** SIM-FIELD-003: the three thirds of the goal can be touched directly; the buttons below stay as the accessible alternative. */
+export function Goal({ mode, lane, onPick }: { readonly mode: ShotMode; readonly lane: Lane | null; readonly onPick?: (lane: Lane) => void }) {
   return <>
     <rect x="0" y="0" width="300" height="180" rx="10" className="dribble-grass" />
     <rect x="40" y="24" width="220" height="80" className="shot-net" />
-    {LANES.map((id) => <rect key={id} x={GOAL_X[id] - 35} y="24" width="70" height="80" className={`dribble-lane${lane === id ? ' is-chosen' : ''}`} />)}
+    {LANES.map((id) => <rect key={id} x={GOAL_X[id] - 35} y="24" width="70" height="80" className={`dribble-lane${lane === id ? ' is-chosen' : ''}${onPick ? ' is-pickable' : ''}`} data-lane={id} onClick={onPick ? () => onPick(id) : undefined} />)}
     <path d="M40 104V24H260V104" className="shot-posts" fill="none" />
     {mode === 'FREE_KICK' && [120, 150, 180].map((x) => <circle key={x} cx={x} cy="126" r="8" className="shot-wall" />)}
     <circle cx="150" cy="152" r="2" className="shot-spot" />
@@ -27,10 +28,13 @@ function Goal({ mode, lane }: { readonly mode: ShotMode; readonly lane: Lane | n
  * Close view of the goal for the hand-taken shot (direct free kick or penalty): pick the third, then stop the marker near the middle.
  * The keeper's reaction was fixed before this screen and is not shown; the precision helps but never decides alone.
  */
-export function ShotPanel({ mode, kicker, keeper, onShoot, onTraditional }: { readonly mode: ShotMode; readonly kicker: Player | undefined; readonly keeper: Player | undefined; readonly onShoot: (lane: Lane, precision: number) => void; readonly onTraditional?: () => void }) {
+export function ShotPanel({ mode, kicker, keeper, onShoot, onTraditional, driver }: { readonly mode: ShotMode; readonly kicker: Player | undefined; readonly keeper: Player | undefined; readonly onShoot: (lane: Lane, precision: number) => void; readonly onTraditional?: () => void; readonly driver?: LaneDriver }) {
   const { t } = useTranslation()
-  const [lane, setLane] = useState<Lane | null>(null)
-  const { marker, stop, motionOff } = useTimingBar(lane !== null)
+  const [ownLane, setOwnLane] = useState<Lane | null>(null)
+  const lane = driver ? driver.pick : ownLane
+  const setLane = driver ? driver.setPick : setOwnLane
+  const timer = useTimingBar(!driver && lane !== null)
+  const { marker } = timer; const stop = driver ? driver.stop : timer.stop; const motionOff = driver ? driver.motionOff : timer.motionOff
   const heading = useRef<HTMLHeadingElement>(null)
   useEffect(() => { heading.current?.focus({ preventScroll: true }) }, [])
   const shoot = () => { if (lane) onShoot(lane, stop()) }
@@ -40,12 +44,12 @@ export function ShotPanel({ mode, kicker, keeper, onShoot, onTraditional }: { re
     else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') { setLane('CENTER'); event.preventDefault() }
     else if ((event.key === ' ' || event.key === 'Enter') && lane && event.target === event.currentTarget) { shoot(); event.preventDefault() }
   }
-  return <section className="live-play dribble-panel shot-panel" aria-label={t('shot.label')} tabIndex={-1} onKeyDown={keys} data-mode={mode}>
+  return <section className={`live-play dribble-panel shot-panel${driver ? ' is-board-driven is-board-secondary' : ''}`} aria-label={t('shot.label')} tabIndex={-1} onKeyDown={keys} data-mode={mode}>
     <h2 tabIndex={-1} ref={heading}>{t(mode === 'PENALTY' ? 'shot.titlePenalty' : 'shot.titleFreeKick')}</h2>
     <p className="live-moment">{t('shot.intro', { kicker: kicker?.name ?? '', keeper: keeper?.name ?? '' })}</p>
     <div className="dribble-field">
       <svg className="dribble-pitch" viewBox="0 0 300 180" aria-hidden="true">
-        <Goal mode={mode} lane={lane} />
+        <Goal mode={mode} lane={lane} onPick={setLane} />
         <g className="shot-keeper" style={{ transform: 'translate(150px, 84px)' }}><circle r="11" /><text textAnchor="middle" y="4">{keeper?.overall_rating ?? ''}</text></g>
         <circle className="dribble-ball" r="5" cx="150" cy="152" />
       </svg>
@@ -55,7 +59,7 @@ export function ShotPanel({ mode, kicker, keeper, onShoot, onTraditional }: { re
         <b className="play-letter" aria-hidden="true">{id === 'LEFT' ? '←' : id === 'RIGHT' ? '→' : '↑'}</b><strong>{t(`shot.lane.${id}`)}</strong>
       </button>)}
     </div>
-    {lane && !motionOff && <TimingBar marker={marker} label={t('shot.barLabel')} />}
+    {lane && !motionOff && !driver && <TimingBar marker={marker} label={t('shot.barLabel')} />}
     <div className="dribble-actions">
       <button type="button" className="primary-action" disabled={!lane} onClick={shoot}>{lane ? t(motionOff ? 'shot.confirm' : 'shot.stop') : t('shot.chooseFirst')}</button>
       {onTraditional && <button type="button" className="secondary-action" onClick={onTraditional}>{t('shot.traditional')}</button>}

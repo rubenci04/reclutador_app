@@ -13,7 +13,7 @@
 .online-hint { font-size: .8rem; color: #c4d4c0; margin: 4px 0 12px; }
 .online-code { font-size: 1.05rem; margin: 4px 0 10px; } .online-code strong { letter-spacing: .18em; font-size: 1.4rem; color: #f4dc63; }
 
-.online-invite { display: grid; gap: 10px; justify-items: start; padding: 14px 16px; border: 1px solid #d5fb7655; border-left: 5px solid #d5fb76; border-radius: 14px; background: #0b1a13; }
+.online-invite { display: grid; gap: 10px; min-width: 0; padding: 14px 16px; border: 1px solid #d5fb7655; border-left: 5px solid #d5fb76; border-radius: 14px; background: #0b1a13; }
 .online-invite .online-code { margin: 0; }
 .online-invite .online-code strong { display: block; margin-top: 4px; font-size: clamp(1.8rem, 9vw, 2.6rem); letter-spacing: .3em; color: #f4dc63; font-variant-numeric: tabular-nums; }
 .online-invite-actions { display: flex; flex-wrap: wrap; gap: 8px; }

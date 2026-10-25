@@ -20,6 +20,12 @@ async function open(language: 'es-AR' | 'en' | 'pt-BR') {
   fireEvent.click(screen.getByRole('button', { name: i18n.t('duel.start') }))
   fireEvent.click(screen.getByRole('button', { name: i18n.t('duel.heads') }))
   act(() => vi.advanceTimersByTime(3000))
+  // REVEAL_PLAYER: the candidate is visible, but its rank is still private.
+  expect(document.querySelector('.auction-candidate h2')).not.toBeNull()
+  expect(document.querySelector('.rank-chip')).toBeNull()
+  expect(document.querySelector('.signing-reveal')).toBeNull()
+  expect(document.body.textContent).not.toMatch(/#\d+\s*\/\s*150/)
+  expect(document.querySelector('[aria-label*="150"]')).toBeNull()
   fireEvent.click(screen.getByRole('button', { name: i18n.t('duel.beginBidding') }))
   return i18n
 }

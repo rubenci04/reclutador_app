@@ -1,16 +1,31 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { freeKickBeatDuration, freeKickScene } from './freeKickGeometry'
 import { cornerBeatDuration, cornerScene } from './cornerGeometry'
 import { useTranslation } from 'react-i18next'
 import type { DraftLineup } from '../draft/draftTypes'
 import type { FormationId } from '../tactics/formations'
 import type { Player } from '../../types/player'
-import { attackingSide, ballPoint, boardDots, focusWindow, teamShift, type BoardDot, type BoardFocus, type BoardPlay, type Point } from './boardGeometry'
+import { attackingSide, ballPoint, boardDots, contextualPlayerOffset, focusWindow, teamShift, type BoardDot, type BoardFocus, type BoardPlay, type Point } from './boardGeometry'
 import { aerialBeatDuration, aerialScene } from './aerialGeometry'
 import { HEADER_DIRECTIONS, headerGoalPoint } from './interactive/directedHeader'
 import type { MatchSide } from './matchTypes'
 import { boardPoint, nearestHit, shortName, type BoardHit } from './shortName'
 import type { DefensePick } from './DefensePanel'
+import type { PlayChoice, PlayNode } from './interactive'
+import type { DribbleScene } from './DribblePanel'
+import { isFrontLine, shoutOffset, type Shout } from './touchlineShouts'
+import { DUEL_STEPS, duelEdge, HOLD_MIN_MS, isPerfect, ringPrecision, ringScale } from './deliveryRing'
+
+/** Public, available choices only; hidden CPU plans never cross this interface. */
+export interface BoardDecision {
+  readonly key: string
+  readonly node: PlayNode
+  readonly options: readonly { readonly choice: PlayChoice; readonly label: string; readonly playerId: string | null; readonly rivalId: string | null }[]
+  readonly selected: PlayChoice | null
+  readonly timed: boolean
+  readonly onSelect: (choice: PlayChoice) => void
+  readonly onExecute: () => void
+}
 
 /** SIM-FIELD-002: the defensive moment on the pitch. Three lanes (the defender's left, centre, right) and the press zone; the first tap picks, the next one stops the precision bar. */
 export interface BoardDefense { readonly attackerId: string; readonly defenderId: string; readonly pick: DefensePick | null; readonly labels: Readonly<Record<DefensePick, string>>; readonly onSelect: (pick: DefensePick) => void; readonly onExecute: () => void }
@@ -23,12 +38,15 @@ export interface TacticalBoardProps {
   readonly names: Readonly<Record<MatchSide, string>>
   readonly play: BoardPlay
   /** Teammates the user can pick right now, drawn with the same letter as their decision card. */
-  readonly choices?: readonly { readonly playerId: string | null; readonly label: string }[]
+  readonly choices?: readonly { readonly playerId: string | null; readonly label: string; /** The marker the receiver would face; drives the duel line. */ readonly rivalId?: string | null }[]
   /** GAMEPLAY-POLISH-010: tapping an offered teammate on the board sends the same command as its card. Absent: the board is display only. */
-  readonly onPick?: (label: string) => void
+  /** A held press sends the precision (0-1) of the contracting ring; a plain tap sends none. */
+  readonly onPick?: (label: string, precision?: number) => void
   /** SIM-FIELD-002: the rival goal as a target while a finish is offered; tapping it sends the same SHOOT command as its card. */
   readonly goalZone?: { readonly label: string; readonly onSelect: () => void }
   readonly defense?: BoardDefense
+  readonly decision?: BoardDecision
+  readonly dribbleResult?: DribbleScene
   /** Short instruction for the moment on offer, kept next to the pitch. */
   readonly hint?: string
   /** Anything that belongs right under the pitch while the moment is live (the precision bar). */
@@ -40,24 +58,47 @@ export interface TacticalBoardProps {
   /** False under reduced motion or when the user asked to skip animations: the board snaps to each moment. */
   readonly animate: boolean
   readonly paused?: boolean
+  /** SIM-FIELD-004: shouts from the bench currently on the pitch (presentation only) and a key that restarts their pulse when one is called. */
+  readonly shouts?: readonly Shout[]
+  readonly shoutKey?: number
 }
+
+/** SIM-FIELD-003 overlay state that lives outside React: the held ring and the duel shockwave. */
+interface Fx { pulse: { t0: number } | null; hold: { label: string; t0: number; hit: BoardHit } | null; shock: { a: string; b: string; win: boolean; t0: number } | null; looping: boolean }
+interface Overlay { readonly shouts: readonly Shout[]; readonly fx: { current: Fx }; readonly rivals: ReadonlyMap<string, string>; readonly texts: { readonly duel: (own: number, rival: number) => string; readonly perfect: string } }
+const SHOCK_MS = 750
+const PULSE_MS = 1600
+const clock = () => performance.now()
+const wallClock = () => Date.now()
 
 const PITCH_RATIO = 68 / 105
 const COLORS = { local: '#00f5d4', cpu: '#ff5d73', gold: '#ffd54a' } as const
-interface Pose { camera: { from: number; to: number }; start?: Parameters<typeof aerialScene>[3]; progress: number; height: number; jump: number; players: Record<string, Point>; ball: Point; shift: Record<MatchSide, number>; pulse: number }
+interface Pose { camera: { from: number; to: number }; start?: Parameters<typeof aerialScene>[3]; progress: number; height: number; jump: number; players: Record<string, Point>; ball: Point; trail: { x: number; y: number; height: number }[]; runPhase: number; flightProgress: number; shift: Record<MatchSide, number>; pulse: number }
 
 /** Small Canvas 2D tactical board. Original code; it draws only what the confirmed event states. */
-export function TacticalBoard({ formations, lineups, catalog, names, play, choices = [], onPick, goalZone, defense, hint, extra, tick, focus, speed, animate, paused = false }: TacticalBoardProps) {
+export function TacticalBoard({ formations, lineups, catalog, names, play, choices = [], onPick, goalZone, defense, decision, dribbleResult, hint, extra, tick, focus, speed, animate, paused = false, shouts = [], shoutKey = 0 }: TacticalBoardProps) {
   const { t } = useTranslation()
   const canvas = useRef<HTMLCanvasElement>(null)
   const [hits] = useState<Hit[]>(() => [])
   const painted = useRef({ width: 640, height: 413 })
   const hover = useRef<string | null>(null)
   const pickedAt = useRef(0)
+  const fx = useRef<Fx>({ pulse: null, hold: null, shock: null, looping: false })
+  const heldClick = useRef(false)
   const redraw = useRef<() => void>(() => {})
+  const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false)
+  useEffect(() => {
+    const media = window.matchMedia?.('(prefers-reduced-motion: reduce)')
+    if (!media) return
+    const update = () => setReducedMotion(media.matches)
+    media.addEventListener?.('change', update)
+    return () => media.removeEventListener?.('change', update)
+  }, [])
+  const motion = animate && !reducedMotion
   /** The pass just chosen: the ball flies from the carrier to the teammate while the engine confirms it. */
   const [flight, setFlight] = useState<{ readonly key: number; readonly fx: number; readonly fy: number; readonly tx: number; readonly ty: number } | null>(null)
-  useEffect(() => { if (!flight) return; const timer = window.setTimeout(() => setFlight(null), 520); return () => window.clearTimeout(timer) }, [flight])
+  const flightClock = useRef({ key: -1, elapsed: 0 })
+  useEffect(() => { if (!flight || paused) return; const timer = window.setTimeout(() => setFlight(null), Math.max(0, 520 - flightClock.current.elapsed)); return () => window.clearTimeout(timer) }, [flight, paused])
   /** Every footballer on the pitch carries his rating; the readable surname is added when the board is wide enough or zoomed on one team. */
   const info = useMemo(() => new Map(catalog.map((player) => [player.id, { ovr: player.overall_rating, short: shortName(player.name) }])), [catalog])
   const dots = useMemo(() => boardDots(formations, lineups), [formations, lineups])
@@ -70,7 +111,11 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
     const dir = play.side === 'cpu' ? -1 : 1
     let ball = carrier && (play.kind === 'attack' || play.kind === 'pass' || play.kind === 'recovery') ? { x: carrier.home.x + shift[carrier.side] + dir * .02, y: carrier.home.y } : ballPoint(play)
     const players: Record<string, Point> = {}
-    for (const dot of dots) players[dot.slotId + dot.side] = { x: dot.home.x + shift[dot.side], y: dot.home.y }
+    for (const dot of dots) {
+      const offset = contextualPlayerOffset(dot, play, ball, options.some(option => option.dot === dot))
+      const cheer = dot.side === 'local' && shouts.length ? shoutOffset(shouts, dot.home, dot.slotId === 'GK') : { x: 0, y: 0 }
+      players[dot.slotId + dot.side] = { x: dot.home.x + offset.x + cheer.x, y: dot.home.y + offset.y + cheer.y }
+    }
     if (carrier) {
       const key = carrier.slotId + carrier.side
       const carry = play.kind === 'attack' || play.kind === 'pass' ? dir * .10 : 0
@@ -84,20 +129,72 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
       const keeper = dots.find((d) => d.side === defending && d.slotId === 'GK')
       if (keeper) players[keeper.slotId + keeper.side] = { x: defending === 'local' ? .055 : .945, y: ball.y + .035 }
     }
+    if (dribbleResult && (play.step === 'DRIBBLE_OK' || play.step === 'DRIBBLE_LOST')) {
+      const runner = dots.find(dot => dot.playerId === dribbleResult.attackerId)
+      const marker = dots.find(dot => dot.playerId === dribbleResult.defenderId)
+      if (runner && marker) {
+        const start = players[runner.slotId + runner.side]
+        const laneY = Math.max(.10, Math.min(.90, start.y + ({ LEFT: -.14, CENTER: 0, RIGHT: .14 })[dribbleResult.lane]))
+        players[runner.slotId + runner.side] = { x: Math.min(.90, start.x + (dribbleResult.ok ? .12 : .035)), y: laneY }
+        players[marker.slotId + marker.side] = { x: Math.min(.94, start.x + .07), y: Math.max(.10, Math.min(.90, start.y + ({ LEFT: -.14, CENTER: 0, RIGHT: .14 })[dribbleResult.cover])) }
+        const holder = players[(dribbleResult.ok ? runner : marker).slotId + (dribbleResult.ok ? runner : marker).side]
+        ball = { x: holder.x + .018, y: holder.y }
+      }
+    }
     return { ball, shift, players }
-  }, [play, carrier, dots])
-  const pose = useRef<Pose>({ camera: { from: 0, to: 1 }, progress: 0, height: 0, jump: 0, players: {}, ball: { x: .5, y: .5 }, shift: { local: 0, cpu: 0 }, pulse: 0 })
+  }, [play, carrier, dots, options, dribbleResult, shouts])
+  const rivals = useMemo(() => new Map(choices.flatMap((choice) => choice.rivalId ? [[choice.label, choice.rivalId] as const] : [])), [choices])
+  const texts = { duel: (own: number, rival: number) => t('board.duel', { own, rival, edge: duelEdge(own, rival) }), perfect: t('board.perfectPass') }
+  const pose = useRef<Pose>({ camera: { from: 0, to: 1 }, progress: 0, height: 0, jump: 0, players: {}, ball: { x: .5, y: .5 }, trail: [], runPhase: 0, flightProgress: 0, shift: { local: 0, cpu: 0 }, pulse: 0 })
   const pulsed = useRef(-1)
   const elapsed = useRef(0)
   const aerialStart = useRef<Parameters<typeof aerialScene>[3]>(undefined)
-  const latest = useRef({ dots, carrier, from, options, carrierName, names, focus, play, target, hits: hits, info, hover, goalZone, defense })
-  useEffect(() => { latest.current = { dots, carrier, from, options, carrierName, names, focus, play, target, hits: hits, info, hover, goalZone, defense } })
+  const runningOptions = motion && Boolean(onPick) && options.length > 0 && !play.aerial && !play.corner && !play.freeKick
+  const latest = useRef({ dots, carrier, from, options, carrierName, names, focus, play, target, hits: hits, info, hover, goalZone, defense, decision, runningOptions, motion, flight, overlay: { shouts, fx: fx, rivals, texts } })
+  useEffect(() => { latest.current = { dots, carrier, from, options, carrierName, names, focus, play, target, hits: hits, info, hover, goalZone, defense, decision, runningOptions, motion, flight, overlay: { shouts, fx: fx, rivals, texts } } })
+  const animateOverlay = () => {
+    if (fx.current.looping) return
+    fx.current.looping = true
+    const loop = () => {
+      const state = fx.current
+      if (state.shock && clock() - state.shock.t0 > SHOCK_MS) state.shock = null
+      if (state.pulse && clock() - state.pulse.t0 > PULSE_MS) state.pulse = null
+      if (!state.hold && !state.shock && !state.pulse) { state.looping = false; redraw.current(); return }
+      redraw.current(); window.requestAnimationFrame(loop)
+    }
+    window.requestAnimationFrame(loop)
+  }
+  const pulsedKey = useRef(0)
+  useEffect(() => {
+    if (pulsedKey.current === shoutKey) return
+    pulsedKey.current = shoutKey
+    if (!motion || !shouts.length) return
+    fx.current.pulse = { t0: clock() }
+    animateOverlay()
+  })
+  // A settled duel (carry, dribble, interception, aerial) sends a shockwave between the two circles involved.
+  const shockedAt = useRef(-1)
+  useEffect(() => {
+    if (shockedAt.current === tick) return
+    shockedAt.current = tick
+    if (!motion || !play.step || !play.side || !DUEL_STEPS.includes(play.step) || !play.playerId) return
+    const actor = dots.find((dot) => dot.playerId === play.playerId)
+    if (!actor) return
+    const named = play.defenderId ? dots.find((dot) => dot.playerId === play.defenderId && dot.side !== actor.side) : undefined
+    const base = target.players[actor.slotId + actor.side] ?? actor.home
+    const distance = (dot: BoardDot) => { const p = target.players[dot.slotId + dot.side] ?? dot.home; return Math.hypot(p.x - base.x, p.y - base.y) }
+    const rival = named ?? dots.filter((dot) => dot.side !== actor.side && dot.playerId).sort((x, y) => distance(x) - distance(y))[0]
+    if (!rival?.playerId) return
+    fx.current.shock = { a: actor.playerId!, b: rival.playerId, win: play.side === 'local', t0: clock() }
+    animateOverlay()
+  })
+  useEffect(() => { latest.current.hits.length = 0; hover.current = null; pickedAt.current = 0 }, [decision?.key])
 
   useEffect(() => {
     const element = canvas.current
     const context = element?.getContext?.('2d') ?? null
     if (!element || !context) return
-    let frame = 0; let last: number | undefined; let running = true
+    let frame = 0; let last: number | undefined; let runLast: number | undefined; let running = true
     if (pulsed.current !== tick) {
       pulsed.current = tick; pose.current.pulse = 1; elapsed.current = 0
       // Preserve the previous confirmed pose when a new aerial beat starts.
@@ -120,8 +217,17 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
       if (!running) return
       const state = pose.current; const goal = latest.current.target
       const dt = last === undefined ? 0 : Math.min(.1, (time - last) / 1000); last = time
-      if (paused && animate) { draw(); frame = 0; return }
-      const k = animate ? 1 - Math.exp(-dt * 7 * speed) : 1
+      if (paused && motion) { draw(); frame = 0; return }
+      const runNow = clock()
+      const runDelta = runLast === undefined ? 0 : Math.min(.1, Math.max(0, (runNow - runLast) / 1000))
+      runLast = runNow
+      state.runPhase = motion ? state.runPhase + runDelta * 2.4 : 0
+      const flightKey = flight?.key ?? -1
+      if (flightClock.current.key !== flightKey) flightClock.current = { key: flightKey, elapsed: 0 }
+      flightClock.current.elapsed += dt * 1000
+      state.flightProgress = motion ? Math.min(1, flightClock.current.elapsed / 450) : 1
+      const previousBall = { ...state.ball, height: state.height }
+      const k = motion ? 1 - Math.exp(-dt * 7 * speed) : 1
       const camera = focusWindow(latest.current.focus)
       state.camera.from += (camera.from - state.camera.from) * k; state.camera.to += (camera.to - state.camera.to) * k
       state.ball = { x: state.ball.x + (goal.ball.x - state.ball.x) * k, y: state.ball.y + (goal.ball.y - state.ball.y) * k }
@@ -130,10 +236,10 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
         state.players[key] = { x: prior.x + (point.x - prior.x) * k, y: prior.y + (point.y - prior.y) * k }
       }
       for (const side of ['local', 'cpu'] as const) state.shift[side] += (goal.shift[side] - state.shift[side]) * k
-      state.pulse = animate ? Math.max(0, state.pulse - dt * 1.4 * speed) : 0
+      state.pulse = motion ? Math.max(0, state.pulse - dt * 1.4 * speed) : 0
       const action = latest.current.play
       elapsed.current += dt * 1000 * speed
-      state.progress = animate ? Math.min(1, elapsed.current / (action.freeKick ? freeKickBeatDuration(action.step) : action.corner ? cornerBeatDuration(action.step) : aerialBeatDuration(action.step))) : 1
+      state.progress = motion ? Math.min(1, elapsed.current / (action.freeKick ? freeKickBeatDuration(action.step) : action.corner ? cornerBeatDuration(action.step) : aerialBeatDuration(action.step))) : 1
       if ((action.aerial || action.corner || action.freeKick) && action.step) {
         const scene = action.freeKick ? freeKickScene(action.freeKick, action.step, state.progress, aerialStart.current) : action.corner ? cornerScene(action.corner, action.step, state.progress, aerialStart.current) : aerialScene(action.aerial!, action.step, state.progress, aerialStart.current)
         state.ball = scene.ball; state.height = scene.height; state.jump = scene.jump
@@ -142,23 +248,35 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
           if (dot.side === ((action.freeKick ?? action.corner)?.awardedTo === 'cpu' ? 'local' : 'cpu') && dot.slotId === 'GK') state.players[dot.slotId + dot.side] = scene.keeper
         }
       } else { state.height = 0; state.jump = 0 }
+      const travel = Math.hypot(state.ball.x - previousBall.x, state.ball.y - previousBall.y, state.height - previousBall.height)
+      state.trail = motion && travel > .0002 ? [previousBall, ...state.trail].slice(0, 3) : []
       draw()
       if ((action.aerial || action.corner || action.freeKick) && state.progress >= 1) { frame = 0; return }
       const settled = Math.abs(goal.ball.x - state.ball.x) < .001 && Math.abs(goal.ball.y - state.ball.y) < .001 && Object.entries(goal.players).every(([key, p]) => Math.abs(state.players[key].x - p.x) < .001 && Math.abs(state.players[key].y - p.y) < .001) && state.pulse === 0 && ['local', 'cpu'].every((side) => Math.abs(goal.shift[side as MatchSide] - state.shift[side as MatchSide]) < .001)
-      if (settled && !action.aerial && !action.corner && !action.freeKick) { state.ball = goal.ball; state.players = { ...goal.players }; state.shift = { ...goal.shift }; draw(); frame = 0; return }
+      if (settled && !runningOptions && (!flight || state.flightProgress >= 1) && !action.aerial && !action.corner && !action.freeKick) { state.ball = goal.ball; state.players = { ...goal.players }; state.shift = { ...goal.shift }; state.trail = []; draw(); frame = 0; return }
       frame = window.requestAnimationFrame(step)
     }
     frame = window.requestAnimationFrame(step)
     const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(() => { if (!frame) draw() })
     observer?.observe(element)
     return () => { running = false; if (frame) window.cancelAnimationFrame(frame); observer?.disconnect() }
-  }, [tick, focus, play, animate, speed, dots, options, paused, Boolean(goalZone), defense?.attackerId, defense?.pick]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [tick, focus, play, motion, speed, dots, options, paused, runningOptions, flight, Boolean(goalZone), defense?.attackerId, defense?.pick, decision?.key, decision?.selected, target]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const attacker = attackingSide(play)
-  const interactive = Boolean(onPick && options.length || goalZone || defense)
+  const interactive = Boolean(onPick && options.length || goalZone || defense || decision)
   const hitAt = (event: { readonly clientX: number; readonly clientY: number; readonly currentTarget: HTMLCanvasElement }) => { const point = boardPoint({ x: event.clientX, y: event.clientY }, event.currentTarget.getBoundingClientRect(), painted.current); return nearestHit(hits, point.x, point.y) }
   const choose = (event: { readonly clientX: number; readonly clientY: number; readonly currentTarget: HTMLCanvasElement }) => {
-    const now = Date.now()
+    if (heldClick.current) { heldClick.current = false; return }
+    const now = wallClock()
+    if (decision) {
+      const hit = hitAt(event)
+      const option = decision.options.find(option => hit?.label === 'PLAY:' + option.choice)
+      if (!option) return
+      if (decision.timed && decision.selected) { if (now - pickedAt.current > 350) decision.onExecute(); return }
+      pickedAt.current = now
+      decision.onSelect(option.choice)
+      return
+    }
     if (defense) {
       // The pick starts the timing and the next tap stops it: no third confirmation. A double tap on the same spot is not a second decision.
       if (defense.pick) { if (now - pickedAt.current > 350) defense.onExecute(); return }
@@ -168,22 +286,38 @@ export function TacticalBoard({ formations, lineups, catalog, names, play, choic
     }
     const hit = hitAt(event)
     if (!hit) return
-    if (hit.cx !== undefined && hit.fx !== undefined) setFlight({ key: now, fx: hit.fx / painted.current.width, fy: hit.fy! / painted.current.height, tx: hit.cx / painted.current.width, ty: hit.cy! / painted.current.height })
-    if (hit.label === 'GOAL') goalZone?.onSelect(); else onPick?.(hit.label)
+    deliver(hit, now)
+  }
+  const deliver = (hit: BoardHit, now: number, precision?: number) => {
+    if (motion && hit.cx !== undefined && hit.fx !== undefined) {
+      flightClock.current = { key: now, elapsed: 0 }
+      setFlight({ key: now, fx: hit.fx / painted.current.width, fy: hit.fy! / painted.current.height, tx: hit.cx / painted.current.width, ty: hit.cy! / painted.current.height })
+    }
+    if (hit.label === 'GOAL') goalZone?.onSelect(); else if (precision === undefined) onPick?.(hit.label); else onPick?.(hit.label, precision)
+  }
+  const holdable = Boolean(onPick && options.length && motion && !decision && !defense)
+  const release = (send: boolean) => {
+    const held = fx.current.hold
+    if (!held) return
+    fx.current.hold = null
+    const elapsed = clock() - held.t0
+    if (send && elapsed >= HOLD_MIN_MS) { heldClick.current = true; window.setTimeout(() => { heldClick.current = false }, 60); deliver(held.hit, wallClock(), ringPrecision(elapsed)) }
+    redraw.current()
   }
   return <figure className="tactical-board">
-    <canvas ref={canvas} className={`tactical-canvas${interactive ? ' is-pickable' : ''}`} onPointerMove={interactive ? (event) => { if (event.pointerType !== 'mouse') return; const next = hitAt(event)?.label ?? null; if (next !== hover.current) { hover.current = next; event.currentTarget.style.cursor = next || defense?.pick ? 'pointer' : 'default'; redraw.current() } } : undefined} onPointerLeave={() => { if (hover.current) { hover.current = null; redraw.current() } }} role="img" aria-label={t('board.label', { local: names.local, cpu: names.cpu })} onClick={interactive ? choose : undefined} />
-    {flight && <span key={flight.key} className="pass-ball" aria-hidden="true" style={{ '--fx': `${flight.fx * 100}%`, '--fy': `${flight.fy * 100}%`, '--tx': `${flight.tx * 100}%`, '--ty': `${flight.ty * 100}%` } as CSSProperties} />}
+    <canvas ref={canvas} className={`tactical-canvas${interactive ? ' is-pickable' : ''}`} onPointerMove={interactive ? (event) => { if (event.pointerType !== 'mouse') return; const next = hitAt(event)?.label ?? null; if (next !== hover.current) { hover.current = next; event.currentTarget.style.cursor = next || defense?.pick ? 'pointer' : 'default'; redraw.current() } } : undefined} onPointerDown={holdable ? (event) => { const hit = hitAt(event); if (hit && hit.cx !== undefined && hit.label !== 'GOAL') { fx.current.hold = { label: hit.label, t0: clock(), hit }; animateOverlay() } } : undefined} onPointerUp={holdable ? () => release(true) : undefined} onPointerCancel={() => release(false)} onContextMenu={(event) => { if (fx.current.hold) event.preventDefault() }} onPointerLeave={() => { fx.current.hold = null; hover.current = null; redraw.current() }} role="img" aria-label={t('board.label', { local: names.local, cpu: names.cpu })} onClick={interactive ? choose : undefined} />
     {hint && <small className="board-pick-hint" role="status">{hint}</small>}
+    {holdable && <small className="board-hold-hint">{t('board.holdHint')}</small>}
     {extra}
     <figcaption className="tactical-caption">{attacker ? t('series.attacking', { name: names[attacker] }) : t('board.idle')}{carrierName && (!play.freeKick || carrier?.side === attacker) && <> · <b>{carrierName}</b></>}</figcaption>
   </figure>
 }
 
 type Hit = BoardHit
-function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, view: { dots: ReturnType<typeof boardDots>; carrier: BoardDot | undefined; from: BoardDot | undefined; options: readonly { dot: BoardDot; label: string }[]; carrierName: string | undefined; names: Readonly<Record<MatchSide, string>>; focus: BoardFocus; play: BoardPlay; hits: Hit[]; info: ReadonlyMap<string, { ovr: number; short: string }>; hover: { current: string | null }; goalZone?: { label: string }; defense?: BoardDefense }) {
+function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, view: { dots: ReturnType<typeof boardDots>; carrier: BoardDot | undefined; from: BoardDot | undefined; options: readonly { dot: BoardDot; label: string }[]; carrierName: string | undefined; names: Readonly<Record<MatchSide, string>>; focus: BoardFocus; play: BoardPlay; hits: Hit[]; info: ReadonlyMap<string, { ovr: number; short: string }>; hover: { current: string | null }; goalZone?: { label: string }; defense?: BoardDefense; decision?: BoardDecision; runningOptions: boolean; motion: boolean; flight: { fx: number; fy: number; tx: number; ty: number } | null; overlay: Overlay }) {
   const aerialActors = view.play.aerial ?? (view.play.corner ? { ...view.play.corner, defenderId: view.play.corner.markerId ?? view.play.corner.defenderId } : undefined)
-  const window_ = (view.play.corner || view.play.freeKick) ? pose.camera : focusWindow(view.focus)
+  // Interactive targets use the requested focus immediately; a prior set-piece pan must never move their hit areas.
+  const window_ = (view.play.corner || view.play.freeKick) && !view.decision ? pose.camera : focusWindow(view.focus)
   const pitchW = w / (window_.to - window_.from); const pitchH = pitchW * PITCH_RATIO
   const ox = -window_.from * pitchW
   const pan = Math.min(0, Math.max(h - pitchH, h / 2 - pose.ball.y * pitchH))
@@ -212,7 +346,13 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
     ctx.beginPath(); ctx.moveTo(end, y - 9); ctx.lineTo(end + dir * 14, y); ctx.lineTo(end, y + 9); ctx.stroke()
   }
   const radius = Math.max(5, Math.min(11, pitchW * .0145))
-  const at = (dot: BoardDot) => { const p = pose.players[dot.slotId + dot.side] ?? dot.home; const jumping = view.play.freeKick ? (view.play.step === 'FK_WALL' || view.play.step === 'FK_SHOT' ? view.play.freeKick.wallIds.includes(dot.playerId ?? '') : dot.playerId === view.play.freeKick.targetId || dot.playerId === view.play.freeKick.defenderId) : aerialActors && (dot.playerId === aerialActors.targetId || dot.playerId === aerialActors.defenderId); return { x: X(p.x), y: Y(p.y) - (jumping ? pose.jump * pitchH : 0) } }
+  const at = (dot: BoardDot) => {
+    const p = pose.players[dot.slotId + dot.side] ?? dot.home
+    const option = view.options.findIndex(option => option.dot === dot)
+    const run = view.runningOptions && option >= 0 && dot.side === attacker ? Math.sin(pose.runPhase + option * Math.PI) * .025 * (dot.side === 'local' ? 1 : -1) : 0
+    const jumping = view.play.freeKick ? (view.play.step === 'FK_WALL' || view.play.step === 'FK_SHOT' ? view.play.freeKick.wallIds.includes(dot.playerId ?? '') : dot.playerId === view.play.freeKick.targetId || dot.playerId === view.play.freeKick.defenderId) : aerialActors && (dot.playerId === aerialActors.targetId || dot.playerId === aerialActors.defenderId)
+    return { x: X(Math.max(.035, Math.min(.965, p.x + run))), y: Y(p.y) - (jumping ? pose.jump * pitchH : 0) }
+  }
   // The pass that was just played: from the protagonist to whoever received it (or cut it out).
   if (!view.play.aerial && !view.play.corner && !view.play.freeKick && view.from && view.carrier && view.carrier !== view.from && (view.play.kind === 'pass' || view.play.kind === 'recovery')) {
     const a = at(view.from)
@@ -233,6 +373,13 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
     const origin = at(view.carrier)
     for (const option of view.options) {
       const p = at(option.dot)
+      if (option.dot.side === attacker) {
+        const dir = attacker === 'local' ? 1 : -1
+        const start = p.x + dir * radius * 2.2, end = p.x + dir * pitchW * .065
+        ctx.save(); ctx.strokeStyle = COLORS.gold; ctx.lineWidth = 2; ctx.setLineDash([4, 5]); ctx.lineDashOffset = view.runningOptions ? -pose.runPhase * 8 : 0
+        ctx.beginPath(); ctx.moveTo(start, p.y); ctx.lineTo(end, p.y); ctx.stroke(); ctx.setLineDash([])
+        ctx.beginPath(); ctx.moveTo(end - dir * 6, p.y - 5); ctx.lineTo(end, p.y); ctx.lineTo(end - dir * 6, p.y + 5); ctx.stroke(); ctx.restore()
+      }
       view.hits.push({ x: p.x, y: p.y - radius, r: Math.max(24, radius * 3.6), label: option.label, cx: p.x, cy: p.y, fx: origin.x, fy: origin.y })
       if (view.hover.current === option.label) { ctx.fillStyle = '#ffffff33'; ctx.beginPath(); ctx.arc(p.x, p.y, radius * 2.8, 0, Math.PI * 2); ctx.fill() }
       ctx.strokeStyle = '#ffffffb0'; ctx.lineWidth = 2; ctx.setLineDash([5, 5]); ctx.beginPath(); ctx.moveTo(origin.x, origin.y); ctx.lineTo(p.x, p.y); ctx.stroke(); ctx.setLineDash([])
@@ -283,7 +430,14 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
     }
     const marked = view.carrier?.side === dot.side && view.carrier.playerId === dot.playerId
     if (dot.playerId && dot.playerId === view.play.defenderId) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, radius * 1.8, 0, Math.PI * 2); ctx.stroke() }
-    if (marked) { ctx.fillStyle = COLORS.gold + '55'; ctx.beginPath(); ctx.arc(x, y, radius * 2.2, 0, Math.PI * 2); ctx.fill() }
+    if (marked) {
+      ctx.fillStyle = COLORS.gold + '55'; ctx.beginPath(); ctx.arc(x, y, radius * 2.2, 0, Math.PI * 2); ctx.fill()
+      if (attacker === dot.side && ['attack', 'pass', 'recovery'].includes(view.play.kind) && !view.play.aerial && !view.play.corner && !view.play.freeKick) {
+        const dir = dot.side === 'local' ? 1 : -1
+        ctx.strokeStyle = COLORS.gold; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(x, y + radius * .65, radius * 1.8, radius * .8, 0, 0, Math.PI * 2); ctx.stroke()
+        ctx.beginPath(); ctx.moveTo(x + dir * radius * 1.3, y + radius * .2); ctx.lineTo(x + dir * radius * 2.2, y + radius * .65); ctx.lineTo(x + dir * radius * 1.3, y + radius * 1.1); ctx.stroke()
+      }
+    }
     ctx.fillStyle = COLORS[dot.side]; ctx.strokeStyle = marked ? COLORS.gold : '#0b1a10'; ctx.lineWidth = marked ? 3 : 1.5
     ctx.beginPath(); ctx.arc(x, y, marked ? radius * 1.25 : radius, 0, Math.PI * 2); ctx.fill(); ctx.stroke()
     const facts = dot.playerId ? view.info.get(dot.playerId) : undefined
@@ -298,7 +452,96 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
       ctx.strokeText(view.carrierName, labelX, y - radius * 2.3); ctx.fillText(view.carrierName, labelX, y - radius * 2.3)
     }
   }
-  if (view.play.aerial && view.play.step === 'AERIAL_WON' || view.play.corner?.awardedTo === 'local' && view.play.step === 'CORNER_WON') {
+  const decision = view.decision
+  if (decision) {
+    const awarded = view.play.freeKick?.awardedTo ?? view.play.corner?.awardedTo ?? 'local'
+    const flip = awarded === 'cpu'
+    const world = (x: number, y: number) => ({ x: X(flip ? 1 - x : x), y: Y(flip ? 1 - y : y) })
+    const header = ['HEADER', 'CORNER_HEADER', 'FK_HEADER'].includes(decision.node)
+    const direct = decision.node === 'FK_ATTACK' && view.play.freeKick?.zone === 'CENTRAL_OUTSIDE'
+    // Show the actual public marking pair / wall, never the CPU's covered lane or planned delivery.
+    if (decision.node === 'CORNER_DEFEND' || decision.node === 'FK_DEFEND') {
+      const wall = view.play.freeKick?.wallIds ?? []
+      const pairs = decision.options.flatMap(option => {
+        const defender = view.dots.find(dot => dot.playerId === option.playerId)
+        const forward = view.dots.find(dot => dot.playerId === option.rivalId)
+        return defender && forward ? [{ defender, forward }] : []
+      })
+      ctx.save(); ctx.strokeStyle = COLORS.gold; ctx.fillStyle = COLORS.local + '44'; ctx.lineWidth = 2; ctx.setLineDash([4, 4])
+      for (const pair of pairs) {
+        const a = at(pair.defender), b = at(pair.forward)
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke()
+        for (const point of [a, b]) { ctx.beginPath(); ctx.arc(point.x, point.y, radius * 2, 0, Math.PI * 2); ctx.stroke() }
+        if (decision.options.some(option => option.choice === 'MAN_MARK')) view.hits.push({ x: a.x, y: a.y, r: Math.max(24, radius * 2), label: 'PLAY:MAN_MARK' })
+      }
+      for (const dot of view.dots.filter(dot => wall.includes(dot.playerId ?? ''))) {
+        const p = at(dot); ctx.beginPath(); ctx.arc(p.x, p.y, radius * 2, 0, Math.PI * 2); ctx.fill(); ctx.stroke()
+        if (decision.options.some(option => option.choice === 'WALL_JUMP')) view.hits.push({ x: p.x, y: p.y, r: Math.max(24, radius * 2), label: 'PLAY:' + (dot.playerId === wall[wall.length - 1] ? 'WALL_HOLD' : 'WALL_JUMP') })
+      }
+      const box = world(.88, .37), boxEnd = world(.995, .63)
+      ctx.fillRect(Math.min(box.x, boxEnd.x), Math.min(box.y, boxEnd.y), Math.abs(boxEnd.x - box.x), Math.abs(boxEnd.y - box.y))
+      ctx.strokeRect(Math.min(box.x, boxEnd.x), Math.min(box.y, boxEnd.y), Math.abs(boxEnd.x - box.x), Math.abs(boxEnd.y - box.y)); ctx.restore()
+      if (decision.options.some(option => option.choice === 'ZONE')) view.hits.push({ x: (box.x + boxEnd.x) / 2, y: (box.y + boxEnd.y) / 2, r: 0, hw: Math.max(24, Math.abs(boxEnd.x - box.x) / 2), hh: Math.max(24, Math.abs(boxEnd.y - box.y) / 2), label: 'PLAY:ZONE' })
+    }
+    decision.options.forEach((option, index) => {
+      let point: Point
+      let lane = false
+      if (header) {
+        const sector = view.play.aerial?.sector ?? view.play.corner?.sector ?? 'LEFT'
+        const goal = headerGoalPoint(sector, option.choice as typeof HEADER_DIRECTIONS[number], awarded)
+        point = { x: X(goal.x - (flip ? -.025 : .025)), y: Y(goal.y) }
+      } else if (direct) {
+        point = world(.96, [.43, .50, .57][index])
+      } else if (decision.node === 'DRIBBLE') {
+        const origin = view.carrier ? at(view.carrier) : world(.62, .5)
+        point = { x: Math.min(w - 42, Math.max(42, origin.x + pitchW * .12)), y: Y([.20, .50, .80][index]) }
+        lane = true
+        ctx.strokeStyle = COLORS.gold + '88'; ctx.setLineDash([4, 5]); ctx.beginPath(); ctx.moveTo(origin.x, origin.y); ctx.lineTo(point.x, point.y); ctx.stroke(); ctx.setLineDash([])
+      } else if (option.choice === 'WALL_JUMP' || option.choice === 'WALL_HOLD') {
+        const wall = view.play.freeKick?.wallIds ?? []
+        const dot = view.dots.find(dot => dot.playerId === wall[index === 0 ? 0 : wall.length - 1])
+        const p = dot ? at(dot) : world(.82, .5)
+        point = { x: p.x, y: p.y + (index === 0 ? -30 : 30) }
+      } else if (option.choice === 'MAN_MARK' || option.choice === 'ZONE') {
+        point = world(.82, option.choice === 'MAN_MARK' ? .30 : .70)
+      } else {
+        const sector = view.play.corner?.sector ?? 'LEFT'
+        const near = sector === 'LEFT' ? .30 : .70
+        const short = option.choice.endsWith('SHORT')
+        point = world(short ? .72 : .86, short ? sector === 'LEFT' ? .12 : .88 : option.choice === 'CORNER_FAR' ? 1 - near : near)
+      }
+      const x = Math.max(26, Math.min(w - 26, point.x)), y = Math.max(28, Math.min(h - 28, point.y))
+      const hot = view.hover.current === 'PLAY:' + option.choice || decision.selected === option.choice
+      const hitRadius = Math.max(24, radius * 2.5)
+      if (!header && !direct && decision.node.endsWith('ATTACK') && option.playerId) {
+        const receiver = view.dots.find(dot => dot.playerId === option.playerId)
+        if (receiver) {
+          const p = at(receiver)
+          ctx.strokeStyle = COLORS.gold + '99'; ctx.lineWidth = 2; ctx.setLineDash([4, 5]); ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(x, y); ctx.stroke(); ctx.setLineDash([])
+          ctx.beginPath(); ctx.arc(p.x, p.y, radius * 1.8, 0, Math.PI * 2); ctx.stroke()
+        }
+      }
+      ctx.save(); ctx.fillStyle = hot ? '#f4dc6388' : '#d5fb7633'; ctx.strokeStyle = hot ? '#fff' : COLORS.gold; ctx.lineWidth = hot ? 3.5 : 2
+      if (lane) {
+        const hw = Math.max(26, pitchW * .055), hh = Math.max(24, pitchH * .10)
+        ctx.fillRect(x - hw, y - hh, hw * 2, hh * 2); ctx.strokeRect(x - hw, y - hh, hw * 2, hh * 2)
+        view.hits.push({ x, y, r: 0, hw, hh, label: 'PLAY:' + option.choice })
+      } else {
+        ctx.beginPath(); ctx.arc(x, y, hitRadius, 0, Math.PI * 2); ctx.fill(); ctx.stroke()
+        view.hits.push({ x, y, r: hitRadius, label: 'PLAY:' + option.choice })
+      }
+      ctx.fillStyle = COLORS.gold; ctx.beginPath(); ctx.arc(x, y, radius * 1.15, 0, Math.PI * 2); ctx.fill()
+      ctx.fillStyle = '#102016'; ctx.font = '800 12px system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+      ctx.fillText(String.fromCharCode(65 + index), x, y)
+      ctx.fillStyle = '#fff'; ctx.strokeStyle = '#0b1a10'; ctx.lineWidth = 3; ctx.font = '700 11px system-ui'
+      const compact = header || direct
+      const labelX = compact ? x - hitRadius - 5 : Math.max(70, Math.min(w - 70, x))
+      const labelY = compact ? y : Math.min(h - 12, y + hitRadius + 13)
+      ctx.textAlign = compact ? 'right' : 'center'
+      ctx.strokeText(option.label, labelX, labelY, Math.min(150, w * .4)); ctx.fillText(option.label, labelX, labelY, Math.min(150, w * .4)); ctx.restore()
+    })
+  }
+  if (!view.decision && (view.play.aerial && view.play.step === 'AERIAL_WON' || view.play.corner?.awardedTo === 'local' && view.play.step === 'CORNER_WON')) {
     for (const [i, direction] of HEADER_DIRECTIONS.entries()) {
       const point = headerGoalPoint(aerialActors!.sector, direction)
       ctx.fillStyle = COLORS.gold; ctx.beginPath(); ctx.arc(X(point.x - .035), Y(point.y), radius * .9, 0, Math.PI * 2); ctx.fill()
@@ -311,10 +554,25 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
     ctx.fillStyle = '#ffe45e'; ctx.beginPath(); ctx.arc(rx, ry, radius, 0, Math.PI * 2); ctx.fill();
     ctx.strokeStyle = '#ffe45e'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(rx, ry); ctx.lineTo(rx + direction * radius * 3, ry - radius * 2); ctx.stroke();
   }
-  if (view.play.freeKick?.awardedTo === 'local' && view.play.step === 'FK_SETUP' && view.play.freeKick.zone === 'CENTRAL_OUTSIDE') {
+  if (!view.decision && view.play.freeKick?.awardedTo === 'local' && view.play.step === 'FK_SETUP' && view.play.freeKick.zone === 'CENTRAL_OUTSIDE') {
     for (const [index, y] of [.43, .50, .57].entries()) { ctx.fillStyle = COLORS.gold; ctx.beginPath(); ctx.arc(X(.965), Y(y), radius, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#102016'; ctx.font = '800 11px system-ui'; ctx.textAlign = 'center'; ctx.fillText(['A', 'B', 'C'][index], X(.965), Y(y) + 4) }
   }
-  const bx = X(pose.ball.x); const groundY = Y(pose.ball.y); const by = groundY - pose.height * pitchH
+  const flight = view.motion && view.flight && pose.flightProgress < 1 ? view.flight : null
+  const flightAt = (progress: number) => {
+    const eased = 1 - (1 - Math.max(0, progress)) ** 3
+    return { x: (flight!.fx + (flight!.tx - flight!.fx) * eased) * w, y: (flight!.fy + (flight!.ty - flight!.fy) * eased) * h }
+  }
+  const flying = flight ? flightAt(pose.flightProgress) : null
+  const bx = flying?.x ?? X(pose.ball.x); const groundY = Y(pose.ball.y); const by = flying?.y ?? groundY - pose.height * pitchH
+  if (view.motion) {
+    ctx.save(); ctx.fillStyle = '#fff'
+    const trail = flight ? [1, 2, 3].map(i => flightAt(pose.flightProgress - i * .045)) : pose.trail.map(point => ({ x: X(point.x), y: Y(point.y) - point.height * pitchH }))
+    trail.forEach((point, index) => {
+      ctx.globalAlpha = [.35, .20, .08][index]
+      ctx.beginPath(); ctx.arc(point.x, point.y, Math.max(2, radius * (.5 - index * .10)), 0, Math.PI * 2); ctx.fill()
+    })
+    ctx.restore()
+  }
   if (aerialActors || view.play.freeKick) {
     ctx.fillStyle = '#0008'; ctx.beginPath(); ctx.ellipse(bx, groundY + 3, radius * .8, radius * .3, 0, 0, Math.PI * 2); ctx.fill()
     if (view.play.step === 'DIRECTED_HEADER_CONTACT' || view.play.step === 'CORNER_CONTACT') { ctx.strokeStyle = COLORS.gold; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(bx, by, radius * (1.4 + pose.progress), 0, Math.PI * 2); ctx.stroke() }
@@ -322,6 +580,70 @@ function paint(ctx: CanvasRenderingContext2D, w: number, h: number, pose: Pose, 
   if (pose.pulse > 0 && view.play.kind === 'goal') { ctx.strokeStyle = COLORS.gold; ctx.lineWidth = 4; ctx.globalAlpha = pose.pulse; ctx.beginPath(); ctx.arc(bx, by, radius * (1.5 + (1 - pose.pulse) * 5), 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = 1 }
   ctx.fillStyle = '#fff'; ctx.strokeStyle = '#0b1a10'; ctx.lineWidth = 2
   ctx.beginPath(); ctx.arc(bx, by, Math.max(3.5, radius * .55), 0, Math.PI * 2); ctx.fill(); ctx.stroke()
+  const overlay = view.overlay
+  // SIM-FIELD-004: shouts from the bench. The cyan pulse, the pressing arrows and the shield only decorate what the circles already do.
+  if (overlay.shouts.length) {
+    const pulseAge = overlay.fx.current.pulse ? Math.min(1, (clock() - overlay.fx.current.pulse.t0) / PULSE_MS) : null
+    for (const dot of view.dots) {
+      if (dot.side !== 'local' || dot.slotId === 'GK') continue
+      const p = at(dot)
+      if (overlay.shouts.includes('ONE_ON_ONE') && isFrontLine(dot.home)) {
+        ctx.save(); ctx.strokeStyle = COLORS.local; ctx.lineWidth = 2.5; ctx.globalAlpha = pulseAge === null ? .55 : .9 * (1 - pulseAge * .5)
+        ctx.beginPath(); ctx.arc(p.x, p.y, radius * (1.7 + (pulseAge ?? 0) * 2.2), 0, Math.PI * 2); ctx.stroke(); ctx.restore()
+      }
+      if (overlay.shouts.includes('PRESS') && dot.home.x >= .3) {
+        ctx.save(); ctx.fillStyle = COLORS.gold; ctx.font = `800 ${Math.max(11, radius * 1.5)}px system-ui`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.globalAlpha = .9
+        ctx.fillText('»', p.x + radius * 2.4, p.y); ctx.restore()
+      }
+    }
+    if (overlay.shouts.includes('COMPACT')) {
+      const sx = X(.075), sy = Y(.5), sw = radius * 1.7, sh = radius * 2.2
+      ctx.save(); ctx.strokeStyle = COLORS.local; ctx.fillStyle = '#00f5d433'; ctx.lineWidth = 2.5
+      ctx.beginPath(); ctx.moveTo(sx - sw, sy - sh); ctx.lineTo(sx + sw, sy - sh); ctx.lineTo(sx + sw, sy + sh * .1); ctx.quadraticCurveTo(sx + sw, sy + sh, sx, sy + sh * 1.3); ctx.quadraticCurveTo(sx - sw, sy + sh, sx - sw, sy + sh * .1); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.restore()
+    }
+  }
+  // SIM-FIELD-003: the duel line with the real rating edge, the held ring and the shockwave of a settled duel.
+  const bubble = (text: string, x: number, y: number, color: string) => {
+    ctx.save(); ctx.font = '800 11px Inter, system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+    const width = Math.min(w - 8, ctx.measureText(text).width + 16), left = Math.max(4, Math.min(w - width - 4, x - width / 2)), top = Math.max(4, Math.min(h - 26, y - 11))
+    ctx.fillStyle = '#0b1a10ee'; ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.roundRect(left, top, width, 22, 11); ctx.fill(); ctx.stroke()
+    ctx.fillStyle = '#fff'; ctx.fillText(text, left + width / 2, top + 11, width - 10); ctx.restore()
+  }
+  const focusLabel = overlay.fx.current.hold?.label ?? view.hover.current
+  const focused = focusLabel ? view.options.find((option) => option.label === focusLabel) : undefined
+  if (focused && !view.decision) {
+    const rivalId = overlay.rivals.get(focused.label)
+    const rivalDot = rivalId ? view.dots.find((dot) => dot.playerId === rivalId) : undefined
+    const own = focused.dot.playerId ? view.info.get(focused.dot.playerId) : undefined, other = rivalId ? view.info.get(rivalId) : undefined
+    if (rivalDot && own && other) {
+      const a = at(focused.dot), b = at(rivalDot)
+      ctx.save(); ctx.strokeStyle = COLORS.cpu; ctx.lineWidth = 2.5; ctx.setLineDash([3, 4]); ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); ctx.setLineDash([])
+      ctx.beginPath(); ctx.arc(b.x, b.y, radius * 1.7, 0, Math.PI * 2); ctx.stroke(); ctx.restore()
+      bubble(overlay.texts.duel(own.ovr, other.ovr), (a.x + b.x) / 2, Math.min(a.y, b.y) - radius * 2.2, own.ovr >= other.ovr ? COLORS.gold : COLORS.cpu)
+    }
+  }
+  const held = overlay.fx.current.hold
+  if (held) {
+    const option = view.options.find((candidate) => candidate.label === held.label)
+    if (option) {
+      const p = at(option.dot), elapsed = clock() - held.t0, perfect = isPerfect(elapsed)
+      ctx.save(); ctx.strokeStyle = perfect ? '#4ade80' : COLORS.gold; ctx.lineWidth = perfect ? 4 : 3; ctx.beginPath(); ctx.arc(p.x, p.y, radius * 1.9 * ringScale(elapsed), 0, Math.PI * 2); ctx.stroke(); ctx.restore()
+      if (perfect) bubble(overlay.texts.perfect, p.x, p.y + radius * 4.4, '#4ade80')
+    }
+  }
+  const shock = overlay.fx.current.shock
+  if (shock) {
+    const age = Math.min(1, (clock() - shock.t0) / SHOCK_MS)
+    const da = view.dots.find((dot) => dot.playerId === shock.a), db = view.dots.find((dot) => dot.playerId === shock.b)
+    if (da && db && age < 1) {
+      const a = at(da), b = at(db), mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2, color = shock.win ? (age < .5 ? COLORS.gold : '#4ade80') : COLORS.cpu
+      ctx.save(); ctx.globalAlpha = 1 - age; ctx.strokeStyle = color; ctx.lineWidth = 4 * (1 - age) + 1
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke()
+      for (const ring of [0, .25]) { const k = Math.max(0, age - ring); ctx.beginPath(); ctx.arc(mx, my, radius * (1.2 + k * 9), 0, Math.PI * 2); ctx.stroke() }
+      for (const p of [a, b]) { ctx.beginPath(); ctx.arc(p.x, p.y, radius * (1.6 + age * 2.4), 0, Math.PI * 2); ctx.stroke() }
+      ctx.restore()
+    }
+  }
   // Goal labels keep orientation when zoomed: the local side defends the left goal. A cut edge points to the rest of the pitch.
   ctx.font = '800 11px Inter, system-ui, sans-serif'; ctx.lineWidth = 3; ctx.strokeStyle = '#0b1a10'
   const label = (text: string, x: number, align: CanvasTextAlign, color: string) => { ctx.textAlign = align; ctx.fillStyle = color; ctx.strokeText(text, x, h - 8); ctx.fillText(text, x, h - 8) }

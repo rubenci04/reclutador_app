@@ -59,7 +59,7 @@ export interface PendingPlay {
   readonly freeKick?: FreeKickEvent
   readonly corner?: CornerEvent
 }
-export interface PlayLogEntry { readonly id: string; readonly playId: string; readonly node: PlayNode; readonly choice: PlayChoice; /** DRIBBLE, FK_ATTACK and DEFEND nodes only: timing precision (0-1) the player achieved. */ readonly precision?: number }
+export interface PlayLogEntry { readonly id: string; readonly playId: string; readonly node: PlayNode; readonly choice: PlayChoice; /** DRIBBLE, FK_ATTACK, DEFEND, DIRECTION and FINISH (cross) nodes only: timing precision (0-1) the player achieved. */ readonly precision?: number }
 
 export interface Squad { readonly lineup: DraftLineup; readonly formation: FormationId }
 export interface PlayContext {
@@ -92,12 +92,15 @@ export function playContext(ctx: Pick<PlayContext, 'effective'>) {
   return clamp((ctx.effective.local.midfield - ctx.effective.cpu.midfield) * .004 + (ctx.effective.local.attack - ctx.effective.cpu.defense) * .003, -.08, .08)
 }
 
-export function passChance(passer: Player, receiver: Player, defender: Player, edge: number, strategy: Readonly<Record<MatchSide, StrategyId>>) {
+/** Skill bonus of a hand-timed pass or cross: 0.5 (a plain tap, every automatic run and every historical game) adds exactly 0; a perfect 1 adds +8 points and 0 takes 8 away. */
+export const deliverySkill = (precision = .5) => (clamp(precision, 0, 1) - .5) * .16
+
+export function passChance(passer: Player, receiver: Player, defender: Player, edge: number, strategy: Readonly<Record<MatchSide, StrategyId>>, precision = .5) {
   const wide = (strategy.local === 'WIDE_PLAY' ? .03 : 0) + (strategy.cpu === 'LOW_BLOCK' ? -.02 : 0)
-  return clamp(.74 + (passerQuality(passer) - 80) * .004 + (receiverQuality(receiver) - 80) * .007 - (defenderQuality(defender) - 80) * .006 + edge + wide, .28, .90)
+  return clamp(.74 + (passerQuality(passer) - 80) * .004 + (receiverQuality(receiver) - 80) * .007 - (defenderQuality(defender) - 80) * .006 + edge + wide + deliverySkill(precision), .28, .90)
 }
-export function crossChance(crosser: Player, target: Player, defender: Player, edge: number) {
-  return clamp(.66 + (crosserQuality(crosser) - 80) * .005 + (headerQuality(target) - 80) * .003 - (defenderQuality(defender) - 80) * .005 + edge, .22, .82)
+export function crossChance(crosser: Player, target: Player, defender: Player, edge: number, precision = .5) {
+  return clamp(.66 + (crosserQuality(crosser) - 80) * .005 + (headerQuality(target) - 80) * .003 - (defenderQuality(defender) - 80) * .005 + edge + deliverySkill(precision), .22, .82)
 }
 export const blockChance = (shooter: Player, defender: Player, edge: number) => clamp(.15 + (defenderQuality(defender) - 80) * .004 - (shooterQuality(shooter) - 80) * .003 - edge * .5, .06, .38)
 export const shotOnTargetChance = (shooter: Player) => clamp(.74 + (shooterQuality(shooter) - 80) * .004, .45, .88)
@@ -199,7 +202,7 @@ export function resolvePlay(ctx: PlayContext, play: PendingPlay, choice: PlayCho
   if (play.node === 'DIRECTION') {
     const sector = choice as Sector
     const passer = player(play.protagonistId); const receiver = player(option.playerId); const defender = player(option.rivalId)
-    if (random() < passChance(passer, receiver, defender, edge, ctx.effectiveOnly ? { local: 'NEUTRAL', cpu: 'NEUTRAL' } : ctx.strategy)) {
+    if (random() < passChance(passer, receiver, defender, edge, ctx.effectiveOnly ? { local: 'NEUTRAL', cpu: 'NEUTRAL' } : ctx.strategy, precision)) {
       // Delivery is not a 1v1. Once received, the winger must beat the actual marker to advance.
       if (ctx.dribble) {
         // SIM-MINI-001: the carry is played by hand. The defender's lane is decided now, before the player moves.
@@ -224,7 +227,7 @@ export function resolvePlay(ctx: PlayContext, play: PendingPlay, choice: PlayCho
   const defender = player(option.rivalId)
   if (choice === 'CROSS') {
     const target = player(option.playerId)
-    if (!(random() < crossChance(receiver, target, defender, edge))) return { events: [event('cpu', 'recovery', 'CROSS_LOST', defender)], next: null }
+    if (!(random() < crossChance(receiver, target, defender, edge, precision))) return { events: [event('cpu', 'recovery', 'CROSS_LOST', defender)], next: null }
     const delivered = event('local', 'pass', 'CROSS_OK', receiver)
     if (!(random() < headerOnTargetChance(target, defender))) return { events: [delivered, event('local', 'shot', 'HEADER_WIDE', target)], next: null }
     if (random() < scoringChance(headerQuality(target), keeper, edge, HEADER_BONUS)) return { events: [delivered, event('local', 'goal', 'HEADER_GOAL', target)], next: null }

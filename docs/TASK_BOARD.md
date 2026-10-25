@@ -1,5 +1,35 @@
 # Tablero de tareas
 
+## Todos los nodos sobre la cancha — 24/10/2026
+
+Cabezazos de las tres familias, córners, tiros libres directos/indirectos, barrera y gambeta con objetivos táctiles en TacticalBoard. Gambeta/tiro directo comparten selección y precisión con tarjetas/teclado; controles accesibles y motor intactos. Typecheck/lint/build y 1.447 pruebas en 133 archivos aprobados; fieldInteraction incluye 29 pruebas nuevas. QA visual bloqueada por timeout de Vite desde el navegador integrado. [Registro](logs/FIELD-ALL-2026-10-24.md).
+
+## Movimiento contextual del tablero — 24/10/2026
+
+Offsets puros por posesión, profundidad y sector de pelota para los 22 círculos; receptores A/B con pique continuo y flechas animadas, hit areas sincronizadas, estela del balón y anillo del portador. Pausa y movimiento reducido respetados; motor/RNG intactos. Typecheck/lint/build y 1.418 pruebas en 133 archivos aprobados; 34 pruebas del tablero repetidas sobre el ajuste final. QA visual bloqueada por timeout del navegador local. [Registro](logs/BOARD-MOTION-2026-10-24.md).
+
+## Versus Online: invitaciones y paridad — 24/10/2026
+
+Reverificado ante el pedido repetido: cuatro controles aprobados nuevamente, 1.412 pruebas, sin cambios adicionales de código.
+
+Invitación destacada con copia independiente de código/enlace y compartir nativo cuando está disponible, incluidas salas sin código corto; cancelación silenciosa y errores traducidos. Paleta estadio, emblema y audio existentes conservados. Duelos nuevos con COACH_MARKET_V4 y DISCARDS_MARKER_V2 (cinco descartes), sin migrar partidas anteriores. Typecheck/lint/build aprobados; 1.412 pruebas en 132 archivos aprobadas con cuatro workers. QA visual y compartir nativo real pendientes. [Registro y límites](logs/ONLINE-UX-2026-10-24.md).
+
+## Subasta y partido responsive — 24/10/2026
+
+Barra compacta con controles de 44 px, carta de retrato 76 px y decisiones móviles más compactas; relato/estadísticas de escritorio y atajos CPU verificados en tres idiomas. Typecheck/lint/test/build aprobados: 1.407 pruebas en 132 archivos. QA visual a 390×844 pendiente por bloqueo del navegador. [Registro](logs/RESPONSIVE-UX-2026-10-24.md).
+
+## Presupuesto y vestuario — 24/10/2026
+
+Desglose siempre visible, incluso sin HUD; ambos DT accesibles antes del escaparate e indicador coherente mientras falta cualquiera. Pases ámbar, banner compacto, traducciones y confirmaciones existentes conservados. Typecheck/lint/test/build aprobados: 1.402 pruebas en 132 archivos, sin fallos. [Registro](logs/ECONOMY-UX-2026-10-24.md).
+
+## Tipografía y performance — 24/10/2026
+
+Fuentes locales display/sans, piso `.68rem` y cifras tabulares ampliadas; limpieza/marca ya presentes verificadas. Chunks de producción por debajo de 500 kB (máximo 341.461 bytes), datos originales idénticos. Typecheck/lint/test/build aprobados: 1.393 pruebas; QA visual a 360 px bloqueada por política de URL. [Registro](logs/FRONTEND-PERFORMANCE-2026-10-24.md).
+
+## QA frontend — 24/10/2026
+
+Contraste RankChip consolidado y regresiones ampliadas para ranking oculto, precios de suplentes al pasar al once y apellidos compuestos. Reglas del motor conservadas. Typecheck/lint/test/build aprobados: 1.393 pruebas en 131 archivos, sin errores; advertencias previas documentadas en el [registro](logs/QA-FRONTEND-2026-10-24.md).
+
 ## SIM-005R-05 — 21/10/2026
 
 | Entrega | Estado |

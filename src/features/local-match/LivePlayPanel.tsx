@@ -6,15 +6,16 @@ import { PLAY_LETTERS } from './matchFeed'
 import { DribblePanel } from './DribblePanel'
 import { DefensePanel, type DefenseDriver } from './DefensePanel'
 import { ShotPanel } from './ShotPanel'
+import type { LaneDriver } from './timing'
 
 /** One interactive node as two big cards: no forms, one tap resolves it. */
-export function PlayPanel({ play, catalog, onChoose, ovrDuels = false, precisionShot = false, boardDriven = false, defenseDriver }: { readonly play: PendingPlay; readonly catalog: readonly Player[]; readonly onChoose: (choice: PlayChoice, precision?: number) => void; readonly ovrDuels?: boolean; /** SIM-MINI-002: the direct free kick is taken with the close-up shot. */ readonly precisionShot?: boolean; /** SIM-FIELD-002: the pitch above takes the decision by touch; the cards stay as the accessible alternative. */ readonly boardDriven?: boolean; readonly defenseDriver?: DefenseDriver }) {
+export function PlayPanel({ play, catalog, onChoose, ovrDuels = false, precisionShot = false, boardDriven = false, defenseDriver, laneDriver }: { readonly play: PendingPlay; readonly catalog: readonly Player[]; readonly onChoose: (choice: PlayChoice, precision?: number) => void; readonly ovrDuels?: boolean; /** SIM-MINI-002: the direct free kick is taken with the close-up shot. */ readonly precisionShot?: boolean; /** SIM-FIELD-002: the pitch above takes the decision by touch; the cards stay as the accessible alternative. */ readonly boardDriven?: boolean; readonly defenseDriver?: DefenseDriver; readonly laneDriver?: LaneDriver }) {
   const { t } = useTranslation()
   const card = useRef<HTMLElement>(null); const heading = useRef<HTMLHeadingElement>(null)
   useEffect(() => { heading.current?.focus({ preventScroll: true }); if (!boardDriven) card.current?.scrollIntoView?.({ block: 'nearest' }) }, [play.id, play.node]) // eslint-disable-line react-hooks/exhaustive-deps
-  if (play.node === 'DRIBBLE') return <DribblePanel play={play} catalog={catalog} onChoose={onChoose} />
+  if (play.node === 'DRIBBLE') return <DribblePanel play={play} catalog={catalog} onChoose={onChoose} driver={laneDriver} />
   if (play.node === 'DEFEND' && play.defense) return <DefensePanel play={play} catalog={catalog} onChoose={onChoose} driver={defenseDriver} />
-  if (precisionShot && play.node === 'FK_ATTACK' && play.freeKick?.zone === 'CENTRAL_OUTSIDE') return <ShotPanel mode="FREE_KICK" kicker={catalog.find((p) => p.id === play.freeKick!.kickerId)} keeper={catalog.find((p) => p.id === play.freeKick!.keeperId)} onShoot={(lane, precision) => onChoose(`FK_${lane}` as PlayChoice, precision)} onTraditional={() => onChoose('FK_CENTER')} />
+  if (precisionShot && play.node === 'FK_ATTACK' && play.freeKick?.zone === 'CENTRAL_OUTSIDE') return <ShotPanel driver={laneDriver} mode="FREE_KICK" kicker={catalog.find((p) => p.id === play.freeKick!.kickerId)} keeper={catalog.find((p) => p.id === play.freeKick!.keeperId)} onShoot={(lane, precision) => onChoose(`FK_${lane}` as PlayChoice, precision)} onTraditional={() => onChoose('FK_CENTER')} />
   const fk = play.node.startsWith('FK_')
   const fkDirect = play.node === 'FK_ATTACK' && play.freeKick?.zone === 'CENTRAL_OUTSIDE'
   const isHeader = play.node === 'FK_HEADER' || play.node === 'HEADER' || play.node === 'CORNER_HEADER'
@@ -22,7 +23,7 @@ export function PlayPanel({ play, catalog, onChoose, ovrDuels = false, precision
   const player = (id: string | null) => catalog.find((p) => p.id === id)
   const protagonist = player(play.protagonistId); const receiver = player(play.receiverId)
   const title = fk && !isHeader ? t(play.node === 'FK_DEFEND' ? play.freeKick?.zone === 'CENTRAL_OUTSIDE' ? 'freeKick.defend' : 'freeKick.cover' : fkDirect ? 'freeKick.direct' : 'freeKick.indirect') : cornerRoot ? t(play.node === 'CORNER_ATTACK' ? 'corner.attack' : 'corner.defend') : isHeader ? t('aerial.title') : play.node === 'DEFEND' ? t('moments.defend') : play.node === 'DIRECTION' ? t('play.direction') : t('play.finish', { name: receiver?.name ?? '' })
-  return <section className={`live-play${boardDriven && !isHeader && !fk && !cornerRoot ? ' is-board-secondary' : ''}${isHeader || fkDirect || play.node === 'CORNER_ATTACK' ? ' live-header' : ''}`} ref={card} aria-label={t(fk ? 'freeKick.label' : cornerRoot ? 'corner.label' : isHeader ? 'aerial.label' : play.node === 'DEFEND' ? 'moments.label' : 'play.label')}>
+  return <section className={`live-play${boardDriven ? ' is-board-secondary' : ''}${isHeader || fkDirect || play.node === 'CORNER_ATTACK' ? ' live-header' : ''}`} ref={card} aria-label={t(fk ? 'freeKick.label' : cornerRoot ? 'corner.label' : isHeader ? 'aerial.label' : play.node === 'DEFEND' ? 'moments.label' : 'play.label')}>
     <h2 tabIndex={-1} ref={heading}>{title}</h2>
     <p className="live-moment">{`${(play.freeKick && !isHeader ? player(play.freeKick.kickerId) : play.node === 'FINISH' || isHeader ? receiver : protagonist)?.name ?? ''}`}</p>
     <div className="play-cards">

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
 import type { MatchSide } from './matchTypes'
 import { LANES, finishAutomatically, startShootout, takeKick, type KickRecord, type Shootout } from './interactive/penaltyShootout'
-import { ShotPanel, ShotScene, type ShotSceneData } from './ShotPanel'
+import { GOAL_X, Goal, ShotPanel, ShotScene, type Lane, type ShotSceneData } from './ShotPanel'
 import { reducedMotion } from './timing'
 
 interface Props {
@@ -14,6 +14,8 @@ interface Props {
   /** Called once, with the finished shootout whose winner derives only from confirmed kicks. */
   readonly onFinished: (shootout: Shootout) => void
 }
+
+const DIVE_MS = 420
 
 const sceneOf = (kick: KickRecord, key: string): ShotSceneData => ({ key, mode: 'PENALTY', direction: kick.direction, dive: kick.dive, outcome: kick.outcome === 'GOAL' ? 'GOAL' : kick.outcome === 'SAVED' ? 'SAVE' : 'WIDE', kickerId: kick.kickerId, keeperId: kick.keeperId })
 
@@ -26,6 +28,9 @@ export function PenaltyShootoutScreen({ seed, rosters, catalog, names, onFinishe
   const [state, setState] = useState<Shootout>(() => startShootout(seed, rosters, catalog))
   const [scene, setScene] = useState<ShotSceneData | null>(null)
   const reported = useRef(false)
+  const [diving, setDiving] = useState<Lane | null>(null)
+  const diveTimer = useRef(0)
+  useEffect(() => () => window.clearTimeout(diveTimer.current), [])
   const pending = state.pending
   const kicker = catalog.find((p) => p.id === pending?.kickerId); const keeper = catalog.find((p) => p.id === pending?.keeperId)
   const rounds = useMemo(() => {
@@ -37,6 +42,13 @@ export function PenaltyShootoutScreen({ seed, rosters, catalog, names, onFinishe
     if (!result) return
     setState(result.state)
     setScene(sceneOf(result.kick, `${result.kick.round}:${result.kick.side}`))
+  }
+  /** A touch on the goal sends the keeper flying to that third first, then confirms the same dive as its button. */
+  const dive = (lane: Lane) => {
+    if (diving) return
+    if (reducedMotion()) { confirm({ dive: lane }); return }
+    setDiving(lane)
+    diveTimer.current = window.setTimeout(() => { setDiving(null); confirm({ dive: lane }) }, DIVE_MS)
   }
   const rest = () => {
     setState(finishAutomatically(state, catalog)); setScene(null)
@@ -53,6 +65,11 @@ export function PenaltyShootoutScreen({ seed, rosters, catalog, names, onFinishe
     {!scene && pending && pending.side === 'cpu' && <section className="live-play dribble-panel penalty-dive" aria-label={t('penalty.diveLabel')}>
       <h2 tabIndex={-1}>{t('penalty.diveTitle')}</h2>
       <p className="live-moment">{t('penalty.diveIntro', { kicker: kicker?.name ?? '', keeper: keeper?.name ?? '' })}</p>
+      <div className="dribble-field"><svg className="dribble-pitch" viewBox="0 0 300 180" aria-hidden="true" data-diving={diving ?? undefined}>
+        <Goal mode="PENALTY" lane={diving} onPick={dive} />
+        <g className="shot-keeper" style={{ transform: `translate(${diving ? GOAL_X[diving] : 150}px, ${diving ? 80 : 84}px) rotate(${diving === 'LEFT' ? -32 : diving === 'RIGHT' ? 32 : 0}deg)` }}><circle r="11" /><text textAnchor="middle" y="4">{keeper?.overall_rating ?? ''}</text></g>
+        <circle className="dribble-ball" r="5" cx="150" cy="152" />
+      </svg></div>
       <div className="dribble-lanes" role="group" aria-label={t('penalty.diveLanes')}>{LANES.map((id) => <button key={id} type="button" className="play-card dribble-lane-button" onClick={() => confirm({ dive: id })}>
         <b className="play-letter" aria-hidden="true">{id === 'LEFT' ? '←' : id === 'RIGHT' ? '→' : '↑'}</b><strong>{t(`shot.lane.${id}`)}</strong></button>)}</div>
       <p className="market-hint">{reducedMotion() ? t('penalty.diveHintStatic') : t('penalty.diveHint')}</p>

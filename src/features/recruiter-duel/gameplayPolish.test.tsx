@@ -10,7 +10,7 @@ import { defaultBudgetForMode } from '../player-catalog/leagueCollections'
 import { coachesForMode } from '../coaches/coachContext'
 import { argentinaPoolV4 } from '../coaches/coachContext'
 import { COACH_MARKET_V4, COACH_MAX_PRICE } from '../coaches/coachRules'
-import { autoBuySubstitutes, autoCompleteAll, beginBidding, canAutoComplete, createRecruiterDuel, nextAuctionRound, passAuction, placeBid, auctionAvailability, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss, substituteMarket } from './auctionEngine'
+import { autoBuySubstitutes, autoCompleteAll, beginBidding, canAutoComplete, createRecruiterDuel, nextAuctionRound, passAuction, placeBid, auctionAvailability, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss, substituteMarket, swapBenchWithStarter } from './auctionEngine'
 import { declineCoach } from './coachHiring'
 import { createDrawContext } from './drawHistory'
 import { takeCpuTurn } from './cpuPolicy'
@@ -20,6 +20,7 @@ import type { AuctionTransition, RecruiterDuelGame, RecruiterId } from './auctio
 import { FootballCoin } from './FootballCoin'
 import { BenchShowcase } from './BenchShowcase'
 import { TeamPitchBoard } from './TeamPitchBoard'
+import { DRAFT_SLOTS } from '../draft/draftTypes'
 import { resultAdvantages } from '../local-match/resultAdvantages'
 import { nearestHit, shortName } from '../local-match/shortName'
 import type { MatchResult } from '../local-match/matchTypes'
@@ -195,16 +196,26 @@ describe('GAMEPLAY-POLISH-010 showcase screen', () => {
     rerender(view(must(declineCoach(must(declineCoach(pending, 'recruiter_one')), 'recruiter_two'))))
     expect(container.querySelectorAll('.showcase-card')).toHaveLength(10)
   })
-  it('shows the catalogue price as paid for a showcase substitute on the bench', async () => {
+  it('shows the price paid for a showcase substitute on the bench and after swapping into the eleven', async () => {
     const base = must(declineCoach(must(declineCoach(completed(DRAFT_CATALOG, showcaseConfig(300, { coaches: true, coachReserve: COACH_MAX_PRICE }), 'showcase-paid'), 'recruiter_one')), 'recruiter_two'))
     const turn = showcaseTurn(base, DRAFT_CATALOG)!
     const card = benchShowcase(base, DRAFT_CATALOG)[0]
     const after = must(buyShowcaseCard(base, turn, card.id, DRAFT_CATALOG))
     const i18n = await createI18n('en')
-    const { container } = render(<I18nextProvider i18n={i18n}><TeamPitchBoard game={after} participant={turn} catalog={DRAFT_CATALOG} /></I18nextProvider>)
+    expect(after.record.some(entry => entry.type === 'award' && entry.playerId === card.id)).toBe(false)
+    const { container, rerender } = render(<I18nextProvider i18n={i18n}><TeamPitchBoard game={after} participant={turn} catalog={DRAFT_CATALOG} /></I18nextProvider>)
     const slot = Array.from(container.querySelectorAll('.team-bench .bench-slot')).find((el) => el.textContent?.includes(card.name))!
     expect(slot.textContent).toContain(i18n.t('teamProgress.paid', { amount: card.price }))
     expect(slot.textContent).not.toContain('—')
+    const starterSlot = DRAFT_SLOTS.find(candidate => candidate.position === card.position)!
+    const starterId = after.teams[turn].lineup[starterSlot.id]
+    const award = after.record.find(entry => entry.type === 'award' && entry.playerId === starterId && entry.winner === turn)
+    if (!award || award.type !== 'award') throw new Error('missing_starter_award')
+    const benchIndex = after.teams[turn].bench!.findIndex(candidate => candidate.playerId === card.id)
+    const swapped = must(swapBenchWithStarter(after, turn, benchIndex, starterSlot.id))
+    rerender(<I18nextProvider i18n={i18n}><TeamPitchBoard game={swapped} participant={turn} catalog={DRAFT_CATALOG} /></I18nextProvider>)
+    expect(container.querySelector(`[data-slot="${starterSlot.id}"]`)!.textContent).toContain(i18n.t('teamProgress.paid', { amount: card.price }))
+    expect(container.querySelectorAll('.team-bench .bench-slot')[benchIndex].textContent).toContain(i18n.t('teamProgress.paid', { amount: award.price }))
   })
 })
 

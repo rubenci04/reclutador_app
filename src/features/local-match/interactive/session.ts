@@ -73,7 +73,7 @@ function settle(next: Session): Outcome {
 
 function parsePlay(raw: unknown): PlayCommand | null {
   if (!object(raw) || !jsonSafe(raw) || !exact(raw, ['version', 'id', 'sessionId', 'expectedRevision', 'playId', 'node', 'choice'], ['precision']) || !text(raw.version) || !text(raw.id) || !text(raw.sessionId) || !integer(raw.expectedRevision) || !text(raw.playId) || !['FK_ATTACK', 'FK_DEFEND', 'FK_HEADER', 'DIRECTION', 'DRIBBLE', 'FINISH', 'DEFEND', 'HEADER', 'CORNER_ATTACK', 'CORNER_DEFEND', 'CORNER_HEADER'].includes(raw.node as string) || !['FK_LEFT', 'FK_CENTER', 'FK_RIGHT', 'FK_CROSS', 'FK_SHORT', 'WALL_JUMP', 'WALL_HOLD', 'LEFT', 'RIGHT', 'CROSS', 'SHOOT', 'INTERCEPT', 'PRESS', 'NEAR_POST', 'GOAL_CENTER', 'FAR_POST', 'CORNER_NEAR', 'CORNER_FAR', 'CORNER_SHORT', 'MAN_MARK', 'ZONE', 'DRIBBLE_LEFT', 'DRIBBLE_CENTER', 'DRIBBLE_RIGHT', 'DEFEND_LEFT', 'DEFEND_CENTER', 'DEFEND_RIGHT'].includes(raw.choice as string)) return null
-  if (raw.precision !== undefined && (!['DRIBBLE', 'FK_ATTACK', 'DEFEND'].includes(raw.node as string) || typeof raw.precision !== 'number' || !Number.isFinite(raw.precision) || raw.precision < 0 || raw.precision > 1)) return null
+  if (raw.precision !== undefined && (!['DRIBBLE', 'FK_ATTACK', 'DEFEND', 'DIRECTION', 'FINISH'].includes(raw.node as string) || typeof raw.precision !== 'number' || !Number.isFinite(raw.precision) || raw.precision < 0 || raw.precision > 1)) return null
   return raw as unknown as PlayCommand
 }
 
@@ -88,7 +88,7 @@ export function submitPlay(session: Session, raw: unknown): Outcome {
   if (command.sessionId !== session.sessionId || command.playId !== pending.id || command.node !== pending.node) return fail('WRONG_PLAY')
   if (command.expectedRevision !== session.revision) return fail('STALE_STATE')
   if (!availableChoice(pending, command.choice)) return fail('INVALID_CHOICE')
-  if (command.precision !== undefined && !(pending.node === 'DRIBBLE' || pending.node === 'FK_ATTACK' && session.kernel.precisionShot || pending.node === 'DEFEND' && pending.defense)) return fail('INVALID_PAYLOAD')
+  if (command.precision !== undefined && !(pending.node === 'DRIBBLE' || pending.node === 'FK_ATTACK' && session.kernel.precisionShot || pending.node === 'DEFEND' && pending.defense || pending.node === 'DIRECTION' || pending.node === 'FINISH' && command.choice === 'CROSS')) return fail('INVALID_PAYLOAD')
   try { return settle({ ...copy(session), kernel: resolveKernelPlay(session.kernel, command.id, command.choice, command.precision === undefined ? undefined : Math.round(command.precision * 100) / 100), revision: session.revision + 1 }) } catch { return fail('INVALID_CHOICE') }
 }
 

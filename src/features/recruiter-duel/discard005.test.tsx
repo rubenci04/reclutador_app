@@ -31,14 +31,14 @@ function discardAll(game: RecruiterDuelGame) {
 }
 
 describe('DISCARD-005 five shared discards', () => {
-  it('gives new local games five and keeps three for earlier games and online rooms', () => {
+  it('gives new local and online games five and keeps three for earlier games', () => {
     expect(discardLimitOf(five)).toBe(5)
     expect(start(five).discardsRemaining).toBe(5)
     expect(start(three).discardsRemaining).toBe(3)
     expect(start(CLASSIC_CONFIG).discardsRemaining).toBe(3)
     const room = buildInitialDuel({ host: 'A', guest: 'B' })
-    expect(room.discardsRemaining).toBe(3)
-    expect(room.config?.discards).toBeUndefined()
+    expect(room.discardsRemaining).toBe(5)
+    expect(room.config?.discards).toBe(DISCARDS_MARKER_V2)
     expect(parseMatchConfig(five)?.discards).toBe(DISCARDS_MARKER_V2)
     expect(parseMatchConfig(three)?.discards).toBeUndefined()
     expect(parseMatchConfig({ ...five, discards: 'discards-9' })).toBeNull()

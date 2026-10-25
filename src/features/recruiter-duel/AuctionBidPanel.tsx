@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
-import { type auctionAvailability, type positionProgress } from './auctionEngine'
+import { budgetOf, type auctionAvailability, type positionProgress } from './auctionEngine'
 import type { RecruiterDuelGame, RecruiterId } from './auctionTypes'
 import type { HudModel } from './hudModel'
 
@@ -42,8 +42,8 @@ export function AuctionBidPanel({ game, side, footballer, names, availability, o
   const participant = hud?.participants[side]
   const missing = participant ? hud!.teamSize - participant.signed : null
   const needs = participant ? participant.positions.filter((position) => position.remaining > 0) : []
-  const saldo = participant?.remaining ?? null
-  const reserved = participant?.reserved ?? (saldo === null ? null : Math.max(0, saldo - maximum))
+  const remaining = participant?.remaining ?? budgetOf(game) - game.teams[side].spent
+  const reserved = participant?.reserved ?? Math.max(0, remaining - maximum)
   const showBlocked = blockedMessage && (blocked === 'POSITION_FULL' || blocked === 'FUTURE_BUDGET_RESERVED' || blocked === 'INSUFFICIENT_BUDGET')
   return <section className={`bid-panel bid-panel-${side}`}>
     <header className="bid-turn">
@@ -63,7 +63,7 @@ export function AuctionBidPanel({ game, side, footballer, names, availability, o
       <button type="button" className="bid-chip bid-chip-max" disabled={maximum < minimum} onClick={() => onOffer(maximum)}>{t('bidTable.max', { amount: maximum })}</button>
     </div>
     <div className={`risk-meter risk-${level}`} role="img" aria-label={t('bidTable.riskLabel', { level: t(`bidTable.risk.${level}`) })}><i style={{ width: `${Math.max(4, Math.min(100, ratio * 100))}%` }} /></div>
-    {saldo !== null && reserved !== null && <p className="budget-breakdown"><span>{t('budgetBreakdown.balance', { remaining: saldo })}</span> · <span>{t('budgetBreakdown.reserved', { reserved })}</span> · <strong>{t('budgetBreakdown.offerable', { maximum })}</strong></p>}
+    <p className="budget-breakdown"><span>{t('budgetBreakdown.balance', { remaining })}</span> · <span>{t('budgetBreakdown.reserved', { reserved })}</span> · <strong>{t('budgetBreakdown.offerable', { maximum })}</strong></p>
     <label className="bid-amount">{t('duel.offerAmount')}<input type="number" min={game.currentBid ? game.currentBid.amount + 1 : footballer.price} max={availability?.maximum} value={Number.isNaN(offer) ? '' : offer} onChange={(event) => onOffer(event.target.value === '' ? NaN : Number(event.target.value))} /></label>
     <p id="auction-action-reason" className="sr-only" role="status">{availability?.bid.reason ? t('auctionActions.blocks.' + availability.bid.reason) : t('auctionActions.available')}</p>
     <div className="duel-actions bid-actions">

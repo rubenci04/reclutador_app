@@ -296,7 +296,7 @@ export function resolveKernelPlay(current: KernelState, id: string, choice: Play
   } else if (state.aerial && pending.node === 'HEADER' && isHeaderDirection(choice) && state.aerial.keeperPlan) {
     step = resolveDirectedHeader(ctx, pending, choice, state.aerial.keeperPlan, aerialRandom); state.aerial.keeperPlan = null
   } else step = pending.node === 'DEFEND' ? resolveDefense(ctx, pending, choice, treeRandom, pending.defense ? precision : undefined) : resolvePlay(ctx, pending, choice, treeRandom, precision)
-  state.tree!.log.push({ id, playId: pending.id, node: pending.node, choice, ...(pending.node === 'DRIBBLE' ? { precision: precision ?? .5 } : (pending.node === 'FK_ATTACK' && state.precisionShot || pending.defense) && precision !== undefined ? { precision } : {}) })
+  state.tree!.log.push({ id, playId: pending.id, node: pending.node, choice, ...(pending.node === 'DRIBBLE' ? { precision: precision ?? .5 } : (pending.node === 'FK_ATTACK' && state.precisionShot || pending.defense || pending.node === 'DIRECTION' || pending.node === 'FINISH' && choice === 'CROSS') && precision !== undefined ? { precision } : {}) })
   for (const item of step.events) { partial.events.push(item); countEvent(state, item) }
   if (step.next) { partial.play = step.next; return state }
   partial.play = null
