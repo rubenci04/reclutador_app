@@ -110,6 +110,19 @@ export function declineCoach(game: RecruiterDuelGame, participant: RecruiterId):
   return { ok: true, game: { ...game, teams: { ...game.teams, [participant]: { ...game.teams[participant], coachDeclined: true } } } }
 }
 
+/**
+ * Takes the coach back before the match: gives his price back (spent goes down by coachPrice) and clears every coach field, including the
+ * "no coach" choice, so the recruiter can hire again. Only while the squads are being organised; the match must not have started.
+ * Coaches are not exclusive: both recruiters are offered coaches from their own seeded list and either may hire the same one.
+ */
+export function releaseCoach(game: RecruiterDuelGame, participant: RecruiterId): AuctionTransition {
+  const team = game.teams[participant]
+  if (game.phase !== 'TEAMS_COMPLETED' || game.matchResult || !game.config?.coaches || (!team.coachId && !team.coachDeclined)) return { ok: false, error: 'invalid_transition' }
+  const { coachId: _id, coachPrice, coachTier: _tier, coachDeclined: _declined, ...rest } = team
+  void _id; void _tier; void _declined
+  return { ok: true, game: { ...game, teams: { ...game.teams, [participant]: { ...rest, spent: team.spent - (team.coachId ? coachPrice ?? 0 : 0) } } } }
+}
+
 const power = (coach: Coach) => { const effect = coachEffect(coach); return effect.attack + effect.defense + effect.midfield }
 
 /**

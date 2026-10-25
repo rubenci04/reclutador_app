@@ -440,3 +440,7 @@ Prueba de punta a punta con las 5 migraciones (honesta, trampas, inactividad) qu
 ## Sprint 7 descartes y pelea de la CPU — 25/10/2026
 
 Cruce de categorías con 5 descartes (3 solo sin marcador); descartes online cruzados: sin subasta, pendiente de decisión. NORMAL y DIFÍCIL pelean las cartas con un plan de gasto (NORMAL 0,9 → 1,7-2,0 subidas por carta disputada; HARD sin pasar del 65 % de victorias en serie); límites no cumplidos documentados. [Registro](logs/SPRINT-7-CPU-DESCARTES.md).
+
+## Sprint 8 volver atrás — 25/10/2026
+
+Se puede volver a editar formación, suplentes y técnico desde la pantalla de poder/táctica (reinicia las tácticas de ambos lados), cambiar la táctica antes de empezar (la de la CPU queda sellada hasta el inicio) y cambiar de técnico con reembolso (`releaseCoach`). Los técnicos no son exclusivos (decisión pendiente). [Registro](logs/SPRINT-8-VOLVER-ATRAS.md).

@@ -233,3 +233,90 @@ describe('transitions are protected and recoverable', () => {
     expect(JSON.stringify(broke)).toBe(snapshot)
   })
 })
+
+describe('C. going back to edit before the match', () => {
+  const confirmBack = (label: string) => { fireEvent.click(button(label)!); const dialog = screen.getByRole('dialog'); fireEvent.click(within(dialog).getByRole('button', { name: label })) }
+  const toStrategyStage = () => { for (let guard = 0; guard < 40 && !button('Confirm eleven'); guard++) act(() => vi.advanceTimersByTime(450)); click('Confirm eleven') }
+  // spent = prices paid in the auction + substitutes bought at catalogue price + the coach's price (a returned coach leaves no trace).
+  const spentOf = (game: RecruiterDuelGame) => {
+    const team = game.teams.recruiter_one
+    const paid = new Map(game.record.flatMap((entry) => entry.type === 'award' && entry.winner === 'recruiter_one' ? [[entry.playerId, entry.price] as const] : []))
+    const roster = [...Object.values(team.lineup), ...(team.bench ?? []).map((slot) => slot.playerId)]
+    return roster.reduce((sum, id) => sum + (paid.get(id!) ?? DRAFT_CATALOG.find((player) => player.id === id)?.price ?? 0), 0) + (team.coachId ? team.coachPrice ?? 0 : 0)
+  }
+
+  it('against the CPU: back from the power screen, change formation and coach, confirm, choose again and the match starts with the new squad', async () => {
+    const seed = findEarlyCompletionSeed(true)
+    await open('cpu', seed)
+    drive(() => screen.queryByRole('heading', { name: 'The CPU is completing its team' }) !== null)
+    toStrategyStage()
+    expect(screen.getByText(/Step 2 of 3/)).toBeInTheDocument()
+    // The power screen offers the way back, and warns that the tactic picks are dropped.
+    fireEvent.click(button('Back to edit my team')!)
+    expect(within(screen.getByRole('dialog')).getByText(/discarded for both sides/)).toBeInTheDocument()
+    fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Back to edit my team' }))
+    expect(screen.getByText(/Step 1 of 3/)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'The elevens are ready' })).toHaveFocus()
+    expect(screen.queryByRole('radio', { name: /High press/ })).not.toBeInTheDocument()
+    // Formation: pick another one. Coach: he went without one, so hire one, then change him (price returns), then hire again.
+    const select = document.querySelector('.formation-selector select') as HTMLSelectElement
+    // Some formations cannot be filled with this roster; take the first one the page accepts.
+    const start = select.value; let other = start
+    for (const option of [...select.options]) { if (option.value === start) continue; fireEvent.change(select, { target: { value: option.value } }); if ((document.querySelector('.formation-selector select') as HTMLSelectElement).value === option.value) { other = option.value; break } }
+    expect(other).not.toBe(start)
+    fireEvent.click(button('Hire a coach')!)
+    const hire = () => fireEvent.click(document.querySelector('.coach-card .primary-action:not([disabled])')!)
+    hire()
+    expect(button('Change coach')).not.toBeNull()
+    fireEvent.click(button('Change coach')!)
+    expect(button('Change coach')).toBeNull()
+    hire()
+    expect(button('Change coach')).not.toBeNull()
+    click('Confirm eleven')
+    expect(screen.getByText(/Step 2 of 3/)).toBeInTheDocument()
+    const batch = vi.spyOn(engine, 'startDuelMatch')
+    strategy(/Counter-attack/)
+    // Against the CPU the reveal is sealed, so changing your pick never lets you counter the CPU's.
+    expect(screen.getByText(/You will see it when the match starts/)).toBeInTheDocument()
+    fireEvent.click(button('Change my tactic')!)
+    expect(screen.getAllByRole('radio')).toHaveLength(6)
+    strategy(/High press/)
+    finishMatch()
+    const played = batch.mock.calls[0][0]
+    expect(played.teams.recruiter_one.formation).toBe(other)
+    expect(played.teams.recruiter_one.coachId).toBeTruthy()
+    expect(played.teams.recruiter_one.spent).toBe(spentOf(played))
+    expect(batch.mock.calls[0][2]).toMatchObject({ recruiter_one: 'HIGH_PRESS' })
+  }, 120_000)
+
+  it('hot-seat: a tactic can be changed before the second confirms, and going back drops every pick but keeps the other eleven', async () => {
+    const seed = findEarlyCompletionSeed(false)
+    await open('hot', seed)
+    drive(() => screen.queryByRole('heading', { name: 'Complete my team' }) !== null)
+    click('Complete my team')
+    click('Confirm eleven'); click('Confirm eleven')
+    expect(screen.getAllByRole('radio')).toHaveLength(6)
+    fireEvent.click(screen.getByRole('radio', { name: /High press/ })); click('Confirm strategy')
+    expect(screen.queryByText('High press')).not.toBeInTheDocument()
+    // Before the second one confirms, the first can change; the old pick is gone.
+    fireEvent.click(button("Change Recruiter one's tactic")!)
+    expect(screen.getAllByRole('radio').every((radio) => !(radio as HTMLInputElement).checked)).toBe(true)
+    fireEvent.click(screen.getByRole('radio', { name: /Counter-attack/ })); click('Confirm strategy')
+    click(/I am Recruiter two/)
+    expect(button("Change Recruiter one's tactic")).not.toBeNull()
+    // Going back (Recruiter one) drops both picks; Recruiter two keeps the confirmed eleven and only chooses again.
+    confirmBack('Back to edit: Recruiter one')
+    expect(screen.getByText(/Step 1 of 3/)).toBeInTheDocument()
+    expect(screen.queryByRole('radio')).not.toBeInTheDocument()
+    click('Confirm eleven')
+    expect(screen.getByText(/Step 2 of 3/)).toBeInTheDocument()
+    expect(screen.getAllByRole('radio').every((radio) => !(radio as HTMLInputElement).checked)).toBe(true)
+    expect(screen.queryByRole('heading', { name: 'Strategies revealed' })).not.toBeInTheDocument()
+    strategy(/High press/)
+    click(/I am Recruiter two/)
+    strategy(/Low block/)
+    expect(screen.getByRole('heading', { name: 'Strategies revealed' })).toBeInTheDocument()
+    expect(screen.getByText('High press')).toBeInTheDocument(); expect(screen.getByText('Low block')).toBeInTheDocument()
+    finishMatch()
+  }, 120_000)
+})

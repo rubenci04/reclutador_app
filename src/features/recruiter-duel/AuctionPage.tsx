@@ -27,7 +27,7 @@ import { isValidOrganizedLineup } from '../local-match/simulator'
 import { CPU_STRATEGIES, CPU_DIFFICULTIES, takeCpuTurn, type CpuStrategy, type CpuDifficulty } from './cpuPolicy'
 import { CoachMarket } from './CoachMarket'
 import { TeamPowerPanel } from './TeamPowerPanel'
-import { autoChooseCoach, chooseCoach, declineCoach } from './coachHiring'
+import { autoChooseCoach, chooseCoach, declineCoach, releaseCoach } from './coachHiring'
 import { COACH_MARKET_V4, COACH_MAX_PRICE } from '../coaches/coachRules'
 import { StageGuide } from '../onboarding/StageGuide'
 import { ModeSelector } from '../themed-modes/ModeSelector'
@@ -150,6 +150,9 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
   const [autoRoundState, setAutoRoundState] = useState<{ seed: string; rounds: ReadonlySet<number> }>({ seed: '', rounds: new Set() })
   const [setup, setSetup] = useState<SetupDraft>(DEFAULT_SETUP_DRAFT)
   const [strategyChoice, setStrategyChoice] = useState<{ seed: string; choice: StrategyChoice } | null>(null)
+  const [stageFocus, setStageFocus] = useState(0)
+  const stageHeading = useRef<HTMLHeadingElement>(null)
+  useEffect(() => { if (stageFocus > 0) stageHeading.current?.focus() }, [stageFocus])
   const [lineupConfirmed, setLineupConfirmed] = useState<{ seed: string; recruiter_one: boolean; recruiter_two: boolean }>({ seed: '', recruiter_one: false, recruiter_two: false })
   const [offerInput, setOfferInput] = useState<{ key: string; value: number } | null>(null)
   const apply = (result: AuctionTransition) => {
@@ -327,6 +330,12 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
   const offer = offerInput?.key === offerKey ? offerInput.value : minimum
   const availability = game && game.activeParticipant && !remoteTurn ? auctionAvailability(game, game.activeParticipant, catalog, offer, cpuTurn) : null
   const progress = game?.activeParticipant && round ? positionProgress(game.teams[game.activeParticipant], round.position) : null
+  /** Back to arranging the squad (formation, order, substitutes, coach) before the match: that person confirms again and every tactic pick is dropped, so nobody adjusts after seeing a pick. */
+  const reopenOrdering = (participant: RecruiterId) => {
+    if (!game) return
+    setLineupConfirmed({ seed: game.seed, recruiter_one: lineupConfirmed.seed === game.seed && lineupConfirmed.recruiter_one, recruiter_two: lineupConfirmed.seed === game.seed && lineupConfirmed.recruiter_two, [participant]: false })
+    setStrategyChoice(null); setError(null); setStageFocus((tick) => tick + 1)
+  }
   const orderingDone = (participant: RecruiterId) => (opponentMode === 'cpu' && participant === 'recruiter_two') || (lineupConfirmed.seed === game?.seed && lineupConfirmed[participant])
   /** Confirming the squad closes the optional bench for that participant: the remaining chances go to the other one. */
   const finishBench = (participant: RecruiterId) => { if (!game || !isShowcaseBench(game.config)) return; const result = finishShowcase(game, participant, catalog); if (result.ok) setGame(result.game) }
@@ -532,15 +541,16 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
           const lockerStep = coachOpen ? 1 : isShowcaseBench(game.config) && !online && !showcaseClosed(game, catalog) ? 2 : 3
           const keep = (result: ChoiceTransition) => result.ok && setStrategyChoice({ seed: game.seed, choice: result.choice })
           return <section className="teams-completed">
-            <p className="eyebrow"><span />{t('duel.teamsCompleted')}</p><h1>{t('duel.readyMatch')}</h1>
+            <p className="eyebrow"><span />{t('duel.teamsCompleted')}</p><h1 ref={stageHeading} tabIndex={-1}>{t('duel.readyMatch')}</h1>
             <StageGuide key={game.seed} stage={!bothReady ? 'squad' : revealed ? 'ready' : 'strategy'} /><p className="stage-indicator" role="status">{t('stages.step', { current: stage, total: 3, label: t(['stages.order', 'stages.strategy', 'stages.reveal'][stage - 1]) })}</p>
             {choice && !choice.secondIsCpu && (choice.step === 'HANDOVER' || choice.step === 'SECOND') && <p className="stage-indicator" role="status">{t('stages.waitingSecond', { first: names.recruiter_one, second: names.recruiter_two })}</p>}
+            {bothReady && <div className="return-to-edit">{humans.map((participant) => <ConfirmNavigation key={`back-${participant}`} label={opponentMode === 'cpu' ? t('stages.backToEdit') : t('stages.backToEditFor', { name: names[participant] })} message={t('stages.backToEditWarning')} onConfirm={() => reopenOrdering(participant)} />)}</div>}
             {bothReady && <TeamPowerPanel game={game} catalog={catalog} sides={RECRUITER_IDS} names={names} />}
             {!bothReady && <details className="lineup-recap" open>
               <summary>{t('stages.showTeams')}</summary>
               <div className="team-comparison">{RECRUITER_IDS.map((participant) => <article key={participant}><h2>{names[participant]}</h2><strong>{t('duel.spent', { amount: game.teams[participant].spent })}</strong><p>{DRAFT_SLOTS.map((slot) => playerById(game.teams[participant].lineup[slot.id]!).name).join(' · ')}</p></article>)}</div>
               <ol className="locker-steps" aria-label={t('locker.stepsLabel')}>{(['coach', 'subs', 'lineup'] as const).map((key, index) => <li key={key} className={index + 1 === lockerStep ? 'is-current' : index + 1 < lockerStep ? 'is-done' : undefined} aria-current={index + 1 === lockerStep ? 'step' : undefined}><b>{index + 1}</b> {t(`locker.${key}`)}</li>)}</ol>
-              {coachParticipants.map((participant) => <div key={`coach-${participant}`}>{game.config?.coaches && !game.teams[participant].coachDeclined && <CoachMarket game={game} participant={participant} name={names[participant]} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} onDecline={() => apply(declineCoach(game, participant))} onHire={(coachId) => { apply(chooseCoach(game, participant, coachId)) }} />}</div>)}
+              {coachParticipants.map((participant) => <div key={`coach-${participant}`}>{game.config?.coaches && game.teams[participant].coachDeclined && !(strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST') && <section className="coach-market"><p>{t('coach.declinedNote', { name: names[participant] })}</p><div><button className="secondary-action" onClick={() => apply(releaseCoach(game, participant))}>{t('coach.hireAfterDecline')}</button></div></section>}{game.config?.coaches && !game.teams[participant].coachDeclined && <CoachMarket game={game} participant={participant} name={names[participant]} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} onDecline={() => apply(declineCoach(game, participant))} onRelease={() => apply(releaseCoach(game, participant))} onHire={(coachId) => { apply(chooseCoach(game, participant, coachId)) }} />}</div>)}
               {isShowcaseBench(game.config) && !online && <BenchShowcase game={game} catalog={catalog} names={names} humans={humans} onBuy={(participant, playerId) => apply(buyShowcaseCard(game, participant, playerId, catalog))} onPass={(participant) => apply(passShowcaseTurn(game, participant, catalog))} onFinish={finishBench} />}{(pending ? [pending] : humans).map((participant) => <div key={`squad-${participant}`}>{(!game.config?.coaches || game.teams[participant].coachId || game.teams[participant].coachDeclined) && <><SubstituteMarket game={game} participant={participant} name={names[participant]} catalog={catalog} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} onBuy={(playerId) => apply(buySubstitute(game, participant, playerId, catalog))} /><LineupOrganizer rankFor={rankingFor} onFormationChange={(formation) => apply(chooseFormation(game, participant, formation, catalog))} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} game={game} participant={participant} name={names[participant]} catalog={catalog} confirmed={orderingDone(participant)} onSwap={(first, second) => swapLineup(participant, first, second)} onBenchSwap={(benchIndex, slot) => benchSwap(participant, benchIndex, slot)} onConfirm={() => setOrderingDone(participant, true)} onEdit={() => setOrderingDone(participant, false)} /></>}</div>)}
 
 
@@ -549,7 +559,7 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
             {choice && <>
               {opponentMode === 'cpu' && !revealed && <p role="status">{t('strategyChoice.cpuFixed')}</p>}
               <StrategyChoicePanel choice={choice} chooser={choice.step === 'SECOND' ? names.recruiter_two : names.recruiter_one} nextChooser={names.recruiter_two} names={{ first: names.recruiter_one, second: names.recruiter_two }}
-                onConfirm={(strategy) => keep(confirmStrategy(choice, strategy))} onHandover={() => keep(acknowledgeHandover(choice))} onStart={() => revealed !== null && playMatch(game, revealed.first, revealed.second)} />
+                onConfirm={(strategy) => keep(confirmStrategy(choice, strategy))} onHandover={() => keep(acknowledgeHandover(choice))} sealSecond={choice.secondIsCpu} onChangeTactic={choice.secondIsCpu ? (revealed ? () => setStrategyChoice(null) : undefined) : choice.step === 'HANDOVER' || choice.step === 'SECOND' ? () => setStrategyChoice(null) : undefined} onStart={() => revealed !== null && playMatch(game, revealed.first, revealed.second)} />
             </>}
             {error && <div className="draft-alert" role="alert"><p>{error}</p><button className="secondary-action" onClick={() => { setStrategyChoice(null); setError(null) }}>{t('recovery.retry')}</button></div>}
           </section>

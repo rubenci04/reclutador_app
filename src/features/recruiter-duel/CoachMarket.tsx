@@ -15,10 +15,12 @@ interface Props {
   readonly locked: boolean
   readonly onHire: (coachId: string) => void
   readonly onDecline: () => void
+  /** Takes the coach back (his price returns) so another can be hired; offered while the squads are open. */
+  readonly onRelease?: () => void
 }
 
 /** Optional step after the squads: spend what is left on one coach from a seeded offer. */
-export function CoachMarket({ game, participant, name, locked, onHire, onDecline }: Props) {
+export function CoachMarket({ game, participant, name, locked, onHire, onDecline, onRelease }: Props) {
   const { t } = useTranslation()
   const hired = coachOf(game, participant)
   const left = budgetOf(game) - game.teams[participant].spent
@@ -36,6 +38,7 @@ export function CoachMarket({ game, participant, name, locked, onHire, onDecline
         <p>{t('coach.hired', { coach: label(hired), team: hired.team, price: hired.price, ...effectText(hired) })}</p>
       </details>
     </article>
+    {onRelease && !locked && <><button className="secondary-action" onClick={onRelease}>{t('coach.change')}</button><p className="market-hint">{t('coach.changeHint', { price: hired.price })}</p></>}
   </section>
   const v2 = coachMarketOf(game.config) !== 'v1'
   const stats = (coach: Coach) => { const e = effectText(coach); return <ul className="coach-stats" aria-label={t('coach.cardEffect', e)}>{(['attack', 'midfield', 'defense'] as const).map((sector) => <li key={sector}><b>+{e[sector]}</b><small>{t(`coach.sector.${sector}`)}</small></li>)}</ul> }
