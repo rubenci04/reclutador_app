@@ -10,6 +10,12 @@ import { auctionAvailability, autoCompleteAll, beginBidding, canAutoComplete, cr
 import type { AuctionTransition, RecruiterDuelGame } from './auctionTypes'
 import { takeCpuTurn } from './cpuPolicy'
 import * as drawHistory from './drawHistory'
+import { BENCH_SHOWCASE_V1, CLASSIC_CONFIG, DISCARDS_MARKER_V2 } from './matchConfig'
+import { COACH_MARKET_V4, COACH_MAX_PRICE } from '../coaches/coachRules'
+import { defaultBudgetForMode } from '../player-catalog/leagueCollections'
+
+/** The configuration the page builds for a classic game with coaches (the engine search below must play the same game as the page). */
+const PAGE_CONFIG = { ...CLASSIC_CONFIG, bench: BENCH_SHOWCASE_V1, discards: DISCARDS_MARKER_V2, budget: defaultBudgetForMode('GLOBAL_CLASSIC'), coaches: true as const, coachReserve: COACH_MAX_PRICE, coachMarket: COACH_MARKET_V4 }
 
 afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals(); localStorage.clear() })
 beforeEach(() => localStorage.clear())
@@ -23,17 +29,18 @@ const must = (result: AuctionTransition): RecruiterDuelGame => { if (!result.ok)
 function findEarlyCompletionSeed(secondIsCpu: boolean) {
   for (let index = 0; index < 120; index++) {
     const seed = `flow-${secondIsCpu ? 'cpu' : 'hot'}-${index}`
-    const created = createRecruiterDuel(DRAFT_CATALOG, seed, drawHistory.createDrawContext(DRAFT_CATALOG, []))
+    const created = createRecruiterDuel(DRAFT_CATALOG, seed, drawHistory.createDrawContext(DRAFT_CATALOG, [], drawHistory.CURRENT_DRAW_POLICY), PAGE_CONFIG)
     if (!created.ok) continue
     let game = must(beginBidding(must(revealCoinToss(must(startCoinToss(created.game, 'heads'))))))
     for (let step = 0; step < 800 && game.phase !== 'TEAMS_COMPLETED'; step++) {
-      if (canAutoComplete(game, 'recruiter_two')) return seed
+      // At least three cards left for recruiter two, so the completion sequence lasts long enough to be seen.
+      if (canAutoComplete(game, 'recruiter_two') && Object.values(game.teams.recruiter_two.lineup).filter(Boolean).length <= 8) return seed
       if (game.phase === 'DISCARD_RESULT') { game = must(revealDiscardReplacement(game)); continue }
       if (game.phase === 'NEXT_ROUND') { game = must(revealNextAuctionRound(game)); continue }
       if (game.phase === 'REVEAL_PLAYER') { game = must(beginBidding(game)); continue }
       if (game.phase === 'ROUND_RESULT') { game = must(nextAuctionRound(game, DRAFT_CATALOG)); continue }
       const who = game.activeParticipant!
-      if (secondIsCpu && who === 'recruiter_two') { game = must(takeCpuTurn(game, DRAFT_CATALOG, 'BALANCED')); continue }
+      if (secondIsCpu && who === 'recruiter_two') { game = must(takeCpuTurn(game, DRAFT_CATALOG, 'BALANCED', 'HARD')); continue }  // the page starts on HARD, so the search must too
       const a = auctionAvailability(game, who, DRAFT_CATALOG)
       if (who === 'recruiter_one' && a.bid.enabled) game = must(placeBid(game, who, a.minimum, DRAFT_CATALOG))
       else if (a.pass.enabled) game = must(passAuction(game, who, DRAFT_CATALOG))

@@ -8,7 +8,9 @@ import type { AuctionTransition, RecruiterDuelGame } from './auctionTypes'
 
 /** Sprint 1 simulation harness: three simulated humans against the CPU on GLOBAL_CLASSIC. */
 export const HUMANS = ['naive', 'star_hunter', 'value_buyer'] as const
-export type HumanPolicy = (typeof HUMANS)[number]
+/** Sprint 7: raises by +1 while the minimum is within 6M of the base price (and up to the safe maximum on stars), so every card can be fought for. */
+export const BID_HUMANS = [...HUMANS, 'insistent'] as const
+export type HumanPolicy = (typeof BID_HUMANS)[number]
 
 const catalog = catalogForMode('GLOBAL_CLASSIC')
 export const simulationConfig = { ...CLASSIC_CONFIG, budget: defaultBudgetForMode('GLOBAL_CLASSIC'), discards: DISCARDS_MARKER_V2 }
@@ -33,6 +35,7 @@ export function playMeasured(seed: string, strategy: CpuStrategy, difficulty: Cp
     const min = availability.minimum
     let wants: boolean
     if (human === 'naive') wants = min <= player.price + 2
+    else if (human === 'insistent') wants = player.overall_rating >= 91 ? true : min <= player.price + 6
     else if (human === 'star_hunter') wants = player.overall_rating >= 91 ? true : min <= player.price + 1
     else wants = min <= Math.min(availability.maximum, player.price + Math.max(0, player.overall_rating - 84) * .6 + 1) && min <= 1.6 * (balance / Math.max(1, slotsLeft))
     game = availability.bid.enabled && wants ? must(placeBid(game, 'recruiter_one', min, catalog)) : must(passAuction(game, 'recruiter_one', catalog))

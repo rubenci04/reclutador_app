@@ -24,18 +24,27 @@ export interface CpuPublicContext {
   readonly difficulty?: CpuDifficulty
   /** Public standing offer on the card; only HARD reads it. */
   readonly currentBid?: number | null
+  /** The CPU's own last offer on this card (public: it is in the record); NORMAL and HARD answer a big human jump with a bigger step. */
+  readonly ownLastBid?: number | null
 }
 
-const HARD_POINT_VALUE = .6
-const HARD_IDLE_SHARE = .6
+const HARD_POINT_VALUE = .15
+const HARD_IDLE_SHARE = .5
 /** EASY: cards at or above this share of the peers still on offer count as elite; some are overlooked, the rest get at most a small premium. */
 const EASY_ELITE_PERCENTILE = .5
 const EASY_OVERLOOK = .3
 const EASY_ELITE_STRETCH = 1
 const EASY_BARGAIN_PERCENTILE = .35
 const EASY_BARGAIN_STRETCH = 2
+/** NORMAL: share of the free money per open slot it is willing to add to the base price, and the hidden per-card factor range. */
+const NORMAL_FIGHT = .45
+const NORMAL_NOISE_LOW = .7
+const NORMAL_NOISE_SPAN = .6
+const NORMAL_WEAK_PERCENTILE = .2
+const NORMAL_WEAK_SLOTS = 6
+const HARD_FIGHT = 1
 const HARD_PICKY = 1
-const HARD_PICKY_SLOTS = 7
+const HARD_PICKY_SLOTS = 8
 
 const profiles = {
   CONSERVATIVE: { premium: -1.8, risk: .82, jump: 1 },
@@ -84,7 +93,10 @@ export function privateValuation(context: CpuPublicContext, strategy: CpuStrateg
     const hard = player.price + quality + profile.premium + preference + need + Math.max(0, gain) * perSlot * HARD_POINT_VALUE * profile.risk + (gain > -1 ? perSlot * HARD_IDLE_SHARE : 0)
     // Denying an elite signing to the rival is worth a little more once it is already being contested.
     const contested = context.currentBid != null && gain >= 4 ? 2 : 0
-    return Math.max(0, Math.floor(Math.min(budgetCap, hard + contested)))
+    // Spending plan like NORMAL's but bolder: it keeps fighting for any card it likes, whatever its quality, so the price goes up for both.
+    const noise = NORMAL_NOISE_LOW + NORMAL_NOISE_SPAN * createSeededRandom(`${context.seed}:cpu-fight:${strategy}:${context.roundIndex}:${player.id}`)()
+    const planned = Math.floor(perSlot * HARD_FIGHT * (.9 + .3 * percentile) * profile.risk * noise)
+    return Math.max(0, Math.floor(Math.min(budgetCap, Math.max(hard + contested, player.price + planned + contested))))
   }
   const base = Math.max(0, Math.floor(Math.min(budgetCap, opportunityCap + scouting, player.price + quality + profile.premium + preference + need + scouting)))
   if (difficulty === 'EASY' && percentile >= EASY_ELITE_PERCENTILE) {
@@ -94,6 +106,15 @@ export function privateValuation(context: CpuPublicContext, strategy: CpuStrateg
   }
   // ...and it likes bargains too much: the weaker cards of the pool are worth a little extra to it, which fills its slots with them.
   if (difficulty === 'EASY' && percentile < EASY_BARGAIN_PERCENTILE) return Math.max(base, Math.floor(Math.min(budgetCap, player.price + EASY_BARGAIN_STRETCH)))
+  if (difficulty === 'NORMAL') {
+    // A clearly weak card is let go while slots are plentiful, so the discards get used.
+    if (percentile < NORMAL_WEAK_PERCENTILE && slotsLeft > NORMAL_WEAK_SLOTS) return 0
+    // Spending plan: the free money per open slot, scaled by how good the card is among its peers, with a hidden per-card factor.
+    const noise = NORMAL_NOISE_LOW + NORMAL_NOISE_SPAN * createSeededRandom(`${context.seed}:cpu-fight:${strategy}:${context.roundIndex}:${player.id}`)()
+    const planned = Math.floor(Math.max(0, budgetCap) / Math.max(1, slotsLeft) * NORMAL_FIGHT * (.9 + .3 * percentile) * profile.risk * noise)
+    const contested = context.currentBid != null && percentile >= .8 ? 1 : 0
+    return Math.max(0, Math.floor(Math.min(budgetCap, Math.max(base, player.price + planned + contested))))
+  }
   return base
 }
 
@@ -105,7 +126,10 @@ export function decideCpu(context: CpuPublicContext, strategy: CpuStrategy, curr
   if (minimum > maximum) return pass(currentBid === null ? 'opportunity_cost' : 'private_limit')
   if (minimum > technicalMaximum) return pass('technical_limit')
   const random = createSeededRandom(`${context.seed}:cpu-offer:${strategy}:${context.roundIndex}:${minimum}`)
-  const amount = Math.min(maximum, technicalMaximum, minimum + Math.floor(random() * profiles[strategy].jump))
+  const humanJump = context.ownLastBid != null && currentBid !== null ? currentBid - context.ownLastBid : 0
+  // EASY keeps the old random step; the others raise by the minimum, answer a big jump with a bigger one, and sometimes add one more.
+  const step = context.difficulty === 'NORMAL' || context.difficulty === 'HARD' ? (humanJump > 1 ? Math.min(humanJump - 1, profiles[strategy].jump) : random() < .25 ? 1 : 0) : Math.floor(random() * profiles[strategy].jump)
+  const amount = Math.min(maximum, technicalMaximum, minimum + step)
   return { action: 'bid', amount, reason: currentBid === null ? 'opening_value' : 'competitive_value', privateMaximum: maximum }
 }
 
@@ -114,7 +138,7 @@ export function takeCpuTurn(game: RecruiterDuelGame, catalog: readonly Player[],
   if (game.phase !== 'BIDDING' || game.activeParticipant !== 'recruiter_two') return { ok: false, error: 'invalid_transition' }
   const player = catalog.find((candidate) => candidate.id === currentRound(game)?.playerId)
   if (!player) return { ok: false, error: 'invalid_bid' }
-  const context: CpuPublicContext = { budget: auctionBudgetOf(game), difficulty, seed: game.seed, roundIndex: game.roundIndex, player, team: game.teams.recruiter_two, publicCatalog: catalog, acquiredIds: Object.values(game.teams).flatMap((team) => Object.values(team.lineup).filter((id): id is string => id !== null)) }
+  const context: CpuPublicContext = { budget: auctionBudgetOf(game), difficulty, seed: game.seed, roundIndex: game.roundIndex, player, team: game.teams.recruiter_two, publicCatalog: catalog, ownLastBid: game.record.reduce<number | null>((last, entry) => entry.type === 'bid' && entry.round === game.roundIndex && entry.participant === 'recruiter_two' ? entry.amount : last, null), acquiredIds: Object.values(game.teams).flatMap((team) => Object.values(team.lineup).filter((id): id is string => id !== null)) }
   const decision = decideCpu(context, strategy, game.currentBid?.amount ?? null, maximumSafeBid(game, 'recruiter_two', catalog))
   const audited: RecruiterDuelGame = { ...game, record: [...game.record, { type: 'cpu_decision', round: game.roundIndex, playerId: player.id, strategy, difficulty, ...decision }] }
   return decision.action === 'bid' ? placeBid(audited, 'recruiter_two', decision.amount!, catalog) : passAuction(audited, 'recruiter_two', catalog)

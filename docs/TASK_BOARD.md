@@ -436,3 +436,7 @@ Texto funcional a .8rem, medidor de riesgo con etiqueta y patrón (no solo color
 ## Sprint 6 verificación online — 25/10/2026
 
 Prueba de punta a punta con las 5 migraciones (honesta, trampas, inactividad) que destapó un error de `verifyDuelState` con el orden de claves de jsonb (corregido); guía de prueba manual, lista de publicación y reversa SQL probada. Nada mezclado, aplicado ni desplegado. [Registro](logs/SPRINT-6-VERIFICACION.md), [checklist](RELEASE-CHECKLIST.md), [prueba manual](qa/MANUAL-PLAYTEST.md).
+
+## Sprint 7 descartes y pelea de la CPU — 25/10/2026
+
+Cruce de categorías con 5 descartes (3 solo sin marcador); descartes online cruzados: sin subasta, pendiente de decisión. NORMAL y DIFÍCIL pelean las cartas con un plan de gasto (NORMAL 0,9 → 1,7-2,0 subidas por carta disputada; HARD sin pasar del 65 % de victorias en serie); límites no cumplidos documentados. [Registro](logs/SPRINT-7-CPU-DESCARTES.md).
