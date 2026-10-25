@@ -1,4 +1,4 @@
-/** Readable on a small pitch: the surname (or the last word) with the initial only when the whole name is long. */
+/** Readable on a small pitch: keep a compound surname's particle when abbreviating a long name. */
 const SURNAME_PARTICLES = new Set(['de', 'del', 'da', 'dos', 'di', 'van', 'von', 'mac', 'mc', 'al', 'el', 'san', 'st', 'st.'])
 export function shortName(name: string) {
   const parts = name.trim().split(/\s+/)

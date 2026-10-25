@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
 import { useTranslation } from 'react-i18next'
+import type { LaneDriver } from './timing'
 import type { Player } from '../../types/player'
 import type { DribbleSector, PendingPlay, PlayChoice } from './interactive/attackTree'
 
@@ -32,23 +33,25 @@ function Pitch({ attacker, defender, lane, cover }: { readonly attacker: Player 
  * First hand-played dribble. Step 1: choose the lane (tap, swipe or arrow keys). Step 2: stop the moving bar near the middle for a better
  * precision. The defender's lane was fixed by the CPU before this screen and stays hidden. Precision helps but never decides alone.
  */
-export function DribblePanel({ play, catalog, onChoose }: { readonly play: PendingPlay; readonly catalog: readonly Player[]; readonly onChoose: (choice: PlayChoice, precision?: number) => void }) {
+export function DribblePanel({ play, catalog, onChoose, driver }: { readonly play: PendingPlay; readonly catalog: readonly Player[]; readonly onChoose: (choice: PlayChoice, precision?: number) => void; readonly driver?: LaneDriver }) {
   const { t } = useTranslation()
   const attacker = catalog.find((p) => p.id === play.receiverId); const defender = catalog.find((p) => p.id === play.options[0]?.rivalId)
-  const motionOff = reduced()
-  const [lane, setLane] = useState<DribbleSector | null>(null)
+  const motionOff = driver ? driver.motionOff : reduced()
+  const [ownLane, setOwnLane] = useState<DribbleSector | null>(null)
+  const lane = driver ? driver.pick : ownLane
+  const setLane = driver ? driver.setPick : setOwnLane
   const [marker, setMarker] = useState(.5)
   const startedAt = useRef(0); const frame = useRef(0); const swipe = useRef<number | null>(null)
   const heading = useRef<HTMLHeadingElement>(null)
   useEffect(() => { heading.current?.focus({ preventScroll: true }) }, [])
   useEffect(() => {
-    if (!lane || motionOff) return
+    if (driver || !lane || motionOff) return
     startedAt.current = performance.now()
     const tick = () => { setMarker(markerAt(performance.now() - startedAt.current)); frame.current = requestAnimationFrame(tick) }
     frame.current = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(frame.current)
-  }, [lane, motionOff])
-  const stop = () => { if (!lane) return; const precision = motionOff ? .5 : precisionAt(markerAt(performance.now() - startedAt.current)); cancelAnimationFrame(frame.current); onChoose(choiceOf(lane), precision) }
+  }, [lane, motionOff, driver])
+  const stop = () => { if (!lane) return; const precision = driver ? driver.stop() : motionOff ? .5 : precisionAt(markerAt(performance.now() - startedAt.current)); cancelAnimationFrame(frame.current); onChoose(choiceOf(lane), precision) }
   const keys = (event: KeyboardEvent) => {
     if (event.key === 'ArrowLeft') { setLane('LEFT'); event.preventDefault() }
     else if (event.key === 'ArrowRight') { setLane('RIGHT'); event.preventDefault() }
@@ -61,7 +64,7 @@ export function DribblePanel({ play, catalog, onChoose }: { readonly play: Pendi
     if (Math.abs(dx) > 30) setLane(dx < 0 ? 'LEFT' : 'RIGHT')
   }
   const sweet = marker
-  return <section className="live-play dribble-panel" aria-label={t('dribble.label')} tabIndex={-1} onKeyDown={keys}>
+  return <section className={`live-play dribble-panel${driver ? ' is-board-driven is-board-secondary' : ''}`} aria-label={t('dribble.label')} tabIndex={-1} onKeyDown={keys}>
     <h2 tabIndex={-1} ref={heading}>{t('dribble.title')}</h2>
     <p className="live-moment">{t('dribble.intro', { attacker: attacker?.name ?? '', defender: defender?.name ?? '' })}</p>
     <div className="dribble-field" onPointerDown={(event) => { swipe.current = event.clientX }} onPointerUp={pointerUp} onPointerCancel={() => { swipe.current = null }}>
@@ -72,13 +75,13 @@ export function DribblePanel({ play, catalog, onChoose }: { readonly play: Pendi
         <b className="play-letter" aria-hidden="true">{id === 'LEFT' ? '←' : id === 'RIGHT' ? '→' : '↑'}</b><strong>{t(`dribble.lane.${id}`)}</strong>
       </button>)}
     </div>
-    {lane && !motionOff && <div className="dribble-timing"><div className="dribble-bar" role="img" aria-label={t('dribble.barLabel')}><i className="dribble-sweet" /><i className="dribble-marker" style={{ left: `${sweet * 100}%` }} /></div></div>}
+    {lane && !motionOff && !driver && <div className="dribble-timing"><div className="dribble-bar" role="img" aria-label={t('dribble.barLabel')}><i className="dribble-sweet" /><i className="dribble-marker" style={{ left: `${sweet * 100}%` }} /></div></div>}
     <div className="dribble-actions">
       <button type="button" className="primary-action" disabled={!lane} onClick={stop}>{lane ? t(motionOff ? 'dribble.confirm' : 'dribble.stop') : t('dribble.chooseFirst')}</button>
       <button type="button" className="secondary-action" onClick={() => onChoose('DRIBBLE_CENTER')}>{t('dribble.traditional')}</button>
     </div>
     <details className="moment-detail"><summary>{t('moments.detail')}</summary><p>{t('dribble.detail')}</p></details>
-    <p className="market-hint">{t('dribble.hint')}</p>
+    <p className="market-hint">{t(driver ? 'field.tapTarget' : 'dribble.hint')}</p>
   </section>
 }
 

@@ -1,6 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { markerAt, precisionAt } from './DribblePanel'
 
+/** Shared lane selection/clock when both the pitch and the accessible panel drive the same action. */
+export interface LaneDriver {
+  readonly pick: 'LEFT' | 'CENTER' | 'RIGHT' | null
+  readonly setPick: (pick: 'LEFT' | 'CENTER' | 'RIGHT') => void
+  readonly stop: () => number
+  readonly motionOff: boolean
+}
+
 export const reducedMotion = () => typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /**

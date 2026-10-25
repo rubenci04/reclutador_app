@@ -4,6 +4,8 @@ import { PGlite } from '@electric-sql/pglite'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { buildInitialDuel } from './onlineDuel'
 import { startCoinToss, revealCoinToss } from '../recruiter-duel/auctionEngine'
+import { COACH_MARKET_V4 } from '../coaches/coachRules'
+import { DISCARDS_MARKER_V2, DISCARDS_V2, parseMatchConfig } from '../recruiter-duel/matchConfig'
 
 const db = new PGlite()
 const host = '00000000-0000-4000-8000-0000000000a1'
@@ -72,15 +74,19 @@ describe('online duel: starting', () => {
     }
     await asUser(host)
     const initial = buildInitialDuel({ host: 'Ana', guest: 'Beto' }, 'SPAIN_LEGENDS', 'ARGENTINA_CURRENT')
+    expect(initial.config).toMatchObject({ coachMarket: COACH_MARKET_V4, discards: DISCARDS_MARKER_V2 })
+    expect(initial.discardsRemaining).toBe(DISCARDS_V2)
     latest = (await call<{ version: number }>('public.online_start_duel($1,$2,$3,$4::jsonb)', [created.roomId, nextAction(), latest, JSON.stringify(initial)])).version
     const tossed = startCoinToss(initial, 'heads'); if (!tossed.ok) throw new Error(tossed.error)
     latest = (await call<{ version: number }>('public.online_submit_state($1,$2,$3,$4::jsonb)', [created.roomId, nextAction(), latest, JSON.stringify(tossed.game)])).version
     const revealed = revealCoinToss(tossed.game); if (!revealed.ok) throw new Error(revealed.error)
     await call('public.online_submit_state($1,$2,$3,$4::jsonb)', [created.roomId, nextAction(), latest, JSON.stringify(revealed.game)])
     await asUser(guest)
-    const seen = await call<{ state: { phase: string; categoryPair: unknown } }>('public.online_snapshot($1)', [created.roomId])
+    const seen = await call<{ state: { phase: string; categoryPair: unknown; config: unknown; discardsRemaining: number } }>('public.online_snapshot($1)', [created.roomId])
     expect(seen.state.phase).toBe('TEAMS_COMPLETED')
     expect(seen.state.categoryPair).toEqual(initial.categoryPair)
+    expect(parseMatchConfig(seen.state.config)).toEqual(initial.config)
+    expect(seen.state.discardsRemaining).toBe(DISCARDS_V2)
   })
   it('only the host starts, with a well-formed initial state, and both members then see it', async () => {
     await asUser(guest)

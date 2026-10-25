@@ -1,0 +1,10 @@
+# Subasta y partido responsive — 24/10/2026
+
+- Se conserva la barra ya existente de categoría/Volver/Abandonar antes de AuctionHeader. En partidas activas a ≤600 px el header mide al menos 56 px; los dos botones comparten fila con objetivos de 44 px. La confirmación de abandono ocupa una fila completa cuando se abre.
+- La carta ya tenía una regla posterior de dos columnas: ahora usa retrato de 76 px, texto flexible con mínimo cero, precio de 1 rem y espaciado compacto. Se reduce el espacio vacío de la puja sin ocultar presupuesto, consecuencias, Ofertar ni Pasar.
+- En decisiones interactivas móviles se conserva `.is-at-play` y la ocultación CSS del selector de foco. Márgenes, leyenda y tarjetas se compactan, con botones de al menos 52 px. No se altera Canvas, selección de jugadas ni temporización.
+- Desktop ≥1024 px conserva pizarra/decisiones en la columna principal y relato/estadísticas en la lateral; se eliminan márgenes redundantes, se acota el relato y se evita que su scroll arrastre la página. El relato se abre por defecto en escritorio y se contrae al pasar a móvil, conservando la posibilidad de abrir/cerrar manualmente.
+- Atajos CPU 250/650/1200 ms ya presentes y traducidos: se conservan junto al campo manual y se amplían los objetivos táctiles. Regresión en es-AR/en/pt-BR verifica selección, aria-pressed y edición manual.
+- Pruebas específicas de LiveMatchScreen, fieldInteraction y auctionUX aprobadas; se añadieron regresiones del breakpoint y del orden de los controles superiores. Los tests DOM no acreditan geometría real ni ausencia de scroll a 390×844. QA visual pendiente por el bloqueo de acceso del navegador registrado en esta sesión; sin capturas ni alternativas para eludirlo.
+
+Controles finales: `npm run typecheck`, `npm run lint`, `npm test` y `npm run build` terminan con código 0. **1.407 pruebas en 132 archivos**, sin fallos; incluye LiveMatchScreen, fieldInteraction y auctionUX. Lint conserva tres advertencias previas de Fast Refresh en DribblePanel; build sin advertencias de chunks grandes. Sin cambios del motor, probabilidades, contratos ni publicación.

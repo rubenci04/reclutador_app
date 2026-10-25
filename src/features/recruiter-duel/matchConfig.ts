@@ -35,7 +35,7 @@ export interface MatchConfig {
   readonly coachReserve?: number
   /** Marker of the six-card coach market (absent in earlier games, which keep three cards). */
   readonly coachMarket?: typeof COACH_MARKET_V2 | typeof COACH_MARKET_V3 | typeof COACH_MARKET_V4
-  /** Marker of the five shared discards (DISCARD-005). Absent in earlier games and online rooms, which keep three. */
+  /** Marker of the five shared discards (DISCARD-005). Absent in earlier games, which keep three. */
   readonly discards?: typeof DISCARDS_MARKER_V2
   /** Marker of the five-substitute bench (ROSTER-005). Absent in earlier games and online rooms, which keep the three-substitute rules. */
   readonly bench?: typeof BENCH_MARKET_V2 | typeof BENCH_SHOWCASE_V1

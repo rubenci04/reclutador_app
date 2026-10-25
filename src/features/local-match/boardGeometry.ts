@@ -49,6 +49,21 @@ export function teamShift(play: BoardPlay, side: MatchSide): number {
   return (attacking === side ? strength : -strength * .4) * TOWARD[side]
 }
 
+/** Presentation only: role/depth and ball sector shape the block, without a clock or randomness. */
+export function contextualPlayerOffset(dot: BoardDot, play: BoardPlay, ball: Point, isOption: boolean): Point {
+  const attacker = attackingSide(play)
+  if (!attacker) return { x: 0, y: 0 }
+  const attacking = dot.side === attacker
+  const depth = dot.side === 'local' ? dot.home.x : 1 - dot.home.x
+  const keeper = dot.slotId === 'GK'
+  // Formation depth also handles slots whose role changes in 3-4-3 / 5-4-1.
+  const forward = Math.max(0, Math.min(1, (depth - .25) / .24))
+  const advance = keeper ? .012 : attacking ? isOption ? .16 : depth >= .25 ? .10 + .06 * forward : .045 + depth * .08 : .04 + .035 * (1 - forward)
+  const x = dot.home.x + TOWARD[attacker] * advance
+  const y = dot.home.y + (ball.y - dot.home.y) * (keeper ? .06 : attacking ? .15 : .18)
+  return { x: Math.max(.035, Math.min(.965, x)) - dot.home.x, y: Math.max(.04, Math.min(.96, y)) - dot.home.y }
+}
+
 export function ballPoint(play: BoardPlay): Point {
   const side = play.side
   if (!side || play.kind === 'idle' || play.kind === 'substitution' || play.kind === 'final') return { x: .5, y: .5 }

@@ -5,12 +5,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createI18n, type Language } from '../../i18n'
 import { CLASSIC_ONLINE, OnlineError, type RoomCommand, type RoomSnapshot } from './contracts'
 import { OnlinePage } from './OnlinePage'
-import { readRememberedRoom, rememberRoom, type OnlineGateway } from './onlineGateway'
+import { invitationUrl, readRememberedRoom, rememberRoom, type OnlineGateway } from './onlineGateway'
 import { buildInitialDuel } from './onlineDuel'
 import { DRAFT_CATALOG } from '../draft/catalog'
 import { generateCpuTeam } from '../local-match/cpuTeam'
 import { simulateMatch } from '../local-match/simulator'
 
+const originalShare = Object.getOwnPropertyDescriptor(navigator, 'share')
 const host = '00000000-0000-4000-8000-000000000001'
 const guest = '00000000-0000-4000-8000-000000000002'
 function fixture(): RoomSnapshot {
@@ -46,7 +47,11 @@ async function show(gateway?: OnlineGateway, language: Language = 'es-AR') {
   return {...view,i18n}
 }
 beforeEach(() => {localStorage.clear(); window.history.replaceState(null,'','/'); vi.restoreAllMocks()})
-afterEach(() => { vi.unstubAllEnvs() })
+afterEach(() => {
+  vi.unstubAllEnvs()
+  if (originalShare) Object.defineProperty(navigator, 'share', originalShare)
+  else Reflect.deleteProperty(navigator, 'share')
+})
 describe('online lobby presentation using an explicit test adapter', () => {
   it('shows configuration absence safely and allows returning to the local menu', async () => {
     // A developer's .env.local must not change this case.
@@ -79,6 +84,50 @@ describe('online lobby presentation using an explicit test adapter', () => {
     await userEvent.click(screen.getByRole('button',{name:'Todavía no estoy listo'}))
     expect(fake.gateway.command).toHaveBeenCalledWith(expect.objectContaining({expectedVersion:4,actionType:'SET_READY',payload:{ready:false}}))
     view.unmount(); expect(fake.stop).toHaveBeenCalledOnce()
+  })
+  it.each(['es-AR', 'en', 'pt-BR'] as const)('copies code and link separately and shares a translated invitation in %s', async language => {
+    const user = userEvent.setup()
+    const share = vi.fn().mockResolvedValue(undefined)
+    Object.defineProperty(navigator, 'share', { configurable: true, value: share })
+    const clipboard = vi.spyOn(navigator.clipboard, 'writeText').mockResolvedValue(undefined)
+    const fake = fakeGateway()
+    fake.update({ ...fixture(), shortCode: 'ABC123' })
+    rememberRoom(host, fixture().roomId)
+    const { i18n } = await show(fake.gateway, language)
+    expect(await screen.findByText('ABC123')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: i18n.t('audio.effects') })).toBeInTheDocument()
+    expect(document.querySelector('.brand-emblem')).toHaveTextContent('R')
+    await user.click(screen.getByRole('button', { name: i18n.t('online.copyCode') }))
+    expect(clipboard).toHaveBeenLastCalledWith('ABC123')
+    expect(await screen.findByText(i18n.t('online.codeCopied'))).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: i18n.t('online.copy') }))
+    expect(clipboard).toHaveBeenLastCalledWith(invitationUrl(fixture().inviteCode))
+    expect(await screen.findByText(i18n.t('online.copied'))).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: i18n.t('online.share') }))
+    expect(share).toHaveBeenCalledWith({ title: 'Reclutador', text: i18n.t('online.shareText', { code: 'ABC123' }), url: invitationUrl(fixture().inviteCode) })
+  })
+  it('keeps sharing available without a short code, ignores cancellation and reports a real failure', async () => {
+    const share = vi.fn().mockRejectedValueOnce(new DOMException('Cancelled', 'AbortError')).mockRejectedValueOnce(new Error('Unavailable'))
+    Object.defineProperty(navigator, 'share', { configurable: true, value: share })
+    rememberRoom(host, fixture().roomId)
+    const { i18n } = await show(fakeGateway().gateway)
+    const button = await screen.findByRole('button', { name: i18n.t('online.share') })
+    await userEvent.click(button)
+    expect(share).toHaveBeenCalledWith(expect.objectContaining({ url: invitationUrl(fixture().inviteCode) }))
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+    await userEvent.click(button)
+    expect(await screen.findByRole('alert')).toHaveTextContent(i18n.t('online.shareFailed'))
+  })
+  it('hides native sharing when unavailable and reports clipboard failure', async () => {
+    const user = userEvent.setup()
+    Object.defineProperty(navigator, 'share', { configurable: true, value: undefined })
+    vi.spyOn(navigator.clipboard, 'writeText').mockRejectedValue(new Error('Denied'))
+    rememberRoom(host, fixture().roomId)
+    const { i18n } = await show(fakeGateway().gateway)
+    await screen.findByText('Boca')
+    expect(screen.queryByRole('button', { name: i18n.t('online.share') })).not.toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: i18n.t('online.copy') }))
+    expect(await screen.findByRole('alert')).toHaveTextContent(i18n.t('online.copyFailed'))
   })
   it('recovers a remembered room only for its authenticated owner', async () => {
     rememberRoom(host,fixture().roomId)

@@ -37,6 +37,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
   const canShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
   const [closedNotice, setClosedNotice] = useState(false)
   const [copyFailed, setCopyFailed] = useState(false)
+  const [shareFailed, setShareFailed] = useState(false)
   const [retry, setRetry] = useState<(() => Promise<RoomSnapshot | null>) | null>(null)
   const mounted = useRef(true)
   const operation = useRef(false)
@@ -146,9 +147,12 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
     catch { setCopied(null); setCopyFailed(true) }
   }
   async function share() {
-    if (!room) return
+    if (!room || !canShare) return
+    setShareFailed(false)
     try { await navigator.share({ title: 'Reclutador', text: t('online.shareText', { code: room.shortCode ?? room.inviteCode }), url: invitationUrl(room.inviteCode) }) }
-    catch { /* a dismissed share sheet is not an error */ }
+    catch (error) {
+      if (!(error instanceof DOMException && error.name === 'AbortError')) setShareFailed(true)
+    }
   }
   const own = room?.members.find(member => member.userId === userId)
   // Tell the person when the other one enters, gets ready or leaves.
@@ -239,7 +243,17 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
       </section> : <section className="online-card" aria-label={t('online.lobby')}>
         <p role="status">{t('online.connection.' + connection)}</p><p>{t('online.peerNotice')}</p>
         <h2>{room.roomName ? t('online.roomTitle', { name: room.roomName }) : t('online.lobby')}</h2>
-        {room.shortCode && <div className="online-invite"><p className="online-code"><span>{t('online.roomCode')}</span> <strong>{room.shortCode}</strong></p><div className="online-invite-actions"><button className="secondary-action" onClick={() => { void copy(room.shortCode!, 'code') }}>{t('online.copyCode')}</button>{canShare && <button className="secondary-action" onClick={() => { void share() }}>{t('online.share')}</button>}</div></div>}
+        <div className="online-invite">
+          {room.shortCode && <p className="online-code"><span>{t('online.roomCode')}</span> <strong>{room.shortCode}</strong></p>}
+          <label htmlFor="online-share">{t('online.shareLink')}</label><input id="online-share" value={invitationUrl(room.inviteCode)} readOnly onFocus={e => e.target.select()} />
+          <div className="online-invite-actions">
+            {room.shortCode && <button className="secondary-action" onClick={() => { void copy(room.shortCode!, 'code') }}>{t('online.copyCode')}</button>}
+            <button className="secondary-action" onClick={() => { void copy() }}>{t('online.copy')}</button>
+            {canShare && <button className="secondary-action" onClick={() => { void share() }}>{t('online.share')}</button>}
+          </div>
+          {copied && <p role="status">{t(copied === 'code' ? 'online.codeCopied' : 'online.copied')}</p>}{copyFailed && <p role="alert">{t('online.copyFailed')}</p>}
+          {shareFailed && <p role="alert">{t('online.shareFailed')}</p>}
+        </div>
         {lobbyOpen && room.hostId === userId && <><ModeSelector selected={category} onChange={setCategory} /><label>{t('playtest.opponentCategory')}<select value={opponentCategory} onChange={(e) => setOpponentCategory(e.target.value as ThemedModeId | 'same')}><option value="same">{t('playtest.sameCategory')}</option>{CATEGORY_GROUPS.flatMap((g) => g.modes).map((id) => <option key={id} value={id}>{t('categoryTree.options.' + id)}</option>)}</select></label>{opponentCategory !== 'same' && opponentCategory !== category && <p>{t('playtest.mixedHelp')}</p>}</>}
         <ol className="online-steps"><li>{t('online.step1')}</li><li>{t('online.step2')}</li><li>{t('online.step3')}</li></ol>
         <p>{t('online.expires', { date: new Date(room.expiresAt).toLocaleString(i18n.language) })}</p>
@@ -247,9 +261,6 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
           const member = room.members.find(m => m.seat === seat)
           return <li key={seat}><span>{t(seat === 1 ? 'online.host' : 'online.guest')}</span><strong>{member?.name ?? t('online.emptySeat')}</strong><span>{t(member?.ready ? 'online.ready' : 'online.waiting')}</span></li>
         })}</ul>
-        <label htmlFor="online-share">{t('online.shareLink')}</label><input id="online-share" value={invitationUrl(room.inviteCode)} readOnly onFocus={e => e.target.select()} />
-        <button className="secondary-action" onClick={() => { void copy() }}>{t('online.copy')}</button>
-        {copied && <p role="status">{t(copied === 'code' ? 'online.codeCopied' : 'online.copied')}</p>}{copyFailed && <p role="alert">{t('online.copyFailed')}</p>}
         {lobbyOpen && <div className="duel-actions">
           <button className="primary-action" disabled={busy || !!retry || !own} onClick={() => send({actionType:'SET_READY',payload:{ready:!own?.ready}})}>{t(own?.ready ? 'online.unready' : 'online.markReady')}</button>
           {room.hostId === userId && <button className="primary-action" disabled={busy || !!retry || room.status !== 'READY'} onClick={startDuel}>{t('online.start')}</button>}

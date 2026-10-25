@@ -46,6 +46,28 @@ async function open(hot = false, language: 'en' | 'es-AR' | 'pt-BR' = 'en') {
 }
 
 describe('SIM-005 live match controls', () => {
+  it('opens commentary beside statistics on desktop and restores compact disclosure on mobile', async () => {
+    let wide = true
+    const listeners = new Set<() => void>()
+    vi.stubGlobal('matchMedia', (query: string) => ({
+      matches: query === '(min-width: 1024px)' && wide,
+      addEventListener: (_event: string, notify: () => void) => { if (query === '(min-width: 1024px)') listeners.add(notify) },
+      removeEventListener: (_event: string, notify: () => void) => { listeners.delete(notify) },
+    }))
+    await open()
+    const layout = document.querySelector('.live-layout')!
+    const main = layout.querySelector('.live-main')!
+    const side = layout.querySelector('.live-side')!
+    const history = side.querySelector('.moment-history')!
+    expect(main.querySelector('.tactical-board')).not.toBeNull()
+    expect(side.querySelector('.match-stats')).not.toBeNull()
+    expect(side.querySelector('.match-narration')).not.toBeNull()
+    expect(history).toHaveAttribute('open')
+    act(() => { wide = false; listeners.forEach(notify => notify()) })
+    expect(history).not.toHaveAttribute('open')
+    fireEvent.click(history.querySelector('summary')!)
+    expect(history).toHaveAttribute('open')
+  })
   it.each(['en', 'es-AR', 'pt-BR'] as const)('pauses at a localized defensive moment and resolves the choice exactly once: %s', async (lang) => {
     vi.useFakeTimers()
     const i18n = await createI18n(lang)
@@ -63,6 +85,8 @@ describe('SIM-005 live match controls', () => {
     render(<I18nextProvider i18n={i18n}><LiveMatchScreen origin={s} versusCpu difficulty="NORMAL" names={{ local: 'Home', cpu: 'Away' }} closed={false} onFinished={vi.fn()} onReturn={vi.fn()} /></I18nextProvider>)
     click(i18n.t('liveDT.nextBlock'))
     const panel = screen.getByRole('region', { name: i18n.t('moments.label') })
+    expect(panel.closest('.match-card')).toHaveClass('is-at-play')
+    expect(document.querySelector('.board-focus')).not.toBeNull()
     expect(within(panel).getByRole('heading')).toHaveFocus()
     tick(60000); expect(spy).not.toHaveBeenCalled()
     const button = within(panel).getByRole('button', { name: new RegExp(i18n.t('play.choice.INTERCEPT')) })
