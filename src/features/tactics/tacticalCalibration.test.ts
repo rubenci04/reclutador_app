@@ -11,7 +11,7 @@ const options = full
 
 it('keeps every strategy within bounded, non-dominant balance on equivalent and unequal squads', () => {
   const report = runTacticalCalibration(DRAFT_CATALOG, options)
-  if (full) writeFileSync('docs/qa/CODEX-005G-C2-calibration.json', JSON.stringify(report, null, 2) + '\n')
+  if (full && process.env.WRITE_QA === '1') writeFileSync('docs/qa/CODEX-005G-C2-calibration.json', JSON.stringify(report, null, 2) + '\n')
   const margin = full ? .06 : .12
   // No strategy beats or loses to a strategy so reliably that it becomes a guaranteed result.
   expect(report.equivalent.minShare).toBeGreaterThan(.5 - (margin + .24))

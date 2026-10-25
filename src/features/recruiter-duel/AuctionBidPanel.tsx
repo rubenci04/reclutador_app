@@ -5,6 +5,8 @@ import { budgetOf, type auctionAvailability, type positionProgress } from './auc
 import type { RecruiterDuelGame, RecruiterId } from './auctionTypes'
 import type { HudModel } from './hudModel'
 
+const RISK_SYMBOL = { safe: '✓', warn: '!', danger: '✕' } as const
+
 type Availability = ReturnType<typeof auctionAvailability>
 
 interface Props {
@@ -62,7 +64,11 @@ export function AuctionBidPanel({ game, side, footballer, names, availability, o
       {[1, 2, 5].map((step) => <button key={step} type="button" className="bid-chip" disabled={base + step > maximum} onClick={() => onOffer(base + step)}>{t('bidTable.plus', { amount: step })}</button>)}
       <button type="button" className="bid-chip bid-chip-max" disabled={maximum < minimum} onClick={() => onOffer(maximum)}>{t('bidTable.max', { amount: maximum })}</button>
     </div>
-    <div className={`risk-meter risk-${level}`} role="img" aria-label={t('bidTable.riskLabel', { level: t(`bidTable.risk.${level}`) })}><i style={{ width: `${Math.max(4, Math.min(100, ratio * 100))}%` }} /></div>
+    <div className={`risk-row risk-${level}`}>
+      <div className={`risk-meter risk-${level}`} role="img" aria-label={t('bidTable.riskLabel', { level: t(`bidTable.risk.${level}`) })}><i style={{ width: `${Math.max(4, Math.min(100, ratio * 100))}%` }} /></div>
+      {/* Level in words and in a shape, so it never depends on colour alone. */}
+      <span className="risk-text" aria-hidden="true"><span className="risk-symbol">{RISK_SYMBOL[level]}</span> {t(`bidTable.riskText.${level}`)}</span>
+    </div>
     <p className="budget-breakdown"><span>{t('budgetBreakdown.balance', { remaining })}</span> · <span>{t('budgetBreakdown.reserved', { reserved })}</span> · <strong>{t('budgetBreakdown.offerable', { maximum })}</strong></p>
     <label className="bid-amount">{t('duel.offerAmount')}<input type="number" min={game.currentBid ? game.currentBid.amount + 1 : footballer.price} max={availability?.maximum} value={Number.isNaN(offer) ? '' : offer} onChange={(event) => onOffer(event.target.value === '' ? NaN : Number(event.target.value))} /></label>
     <p id="auction-action-reason" className="sr-only" role="status">{availability?.bid.reason ? t('auctionActions.blocks.' + availability.bid.reason) : t('auctionActions.available')}</p>

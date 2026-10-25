@@ -50,7 +50,7 @@ it('calibrates 1,000 seeds per equivalent, moderate and clear scenario in both o
   const phase = process.env.MATCH_CALIBRATION
   if (phase === 'before' || phase === 'after') {
     if (phase === 'before' && String(MATCH_RULES_VERSION) !== 'local-match-v1') throw new Error('baseline_requires_original_v1_simulator')
-    writeFileSync(`docs/qa/CODEX-005G-B-${phase}.json`, JSON.stringify(report, null, 2) + '\n')
+    if (process.env.WRITE_QA === '1') writeFileSync(`docs/qa/CODEX-005G-B-${phase}.json`, JSON.stringify(report, null, 2) + '\n')
   }
   expect(scenarios).toHaveLength(3)
   if (String(MATCH_RULES_VERSION) !== 'local-match-v1') {

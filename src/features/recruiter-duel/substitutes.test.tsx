@@ -237,7 +237,7 @@ describe('substitution policy calibration', () => {
     }
     const mean = (counts: number[]) => counts.reduce((total, count, subs) => total + count * subs, 0) / matches
     const report = { rulesVersion: MATCH_RULES_VERSION, substitutionRules: 'subs-v1', chancePerOpportunity: SUBSTITUTION_CHANCE, minutes: SUBSTITUTION_MINUTES, matches, identicalSquadsBothSides: true, substitutionsPerTeamDistribution: countsBySide, meanPerTeam: { local: mean(countsBySide.local), cpu: mean(countsBySide.cpu) }, byMinute: minutes, wins: { local: localWins, cpu: cpuWins, draws }, meanGoals: goals / matches / 2 }
-    if (full) writeFileSync('docs/qa/CODEX-005H-H3-calibration.json', JSON.stringify(report, null, 2) + '\n')
+    if (full && process.env.WRITE_QA === '1') writeFileSync('docs/qa/CODEX-005H-H3-calibration.json', JSON.stringify(report, null, 2) + '\n')
     // expectation: 3 opportunities x 0.45 = 1.35 changes per team, never above 3, some teams with none
     for (const side of ['local', 'cpu'] as const) {
       expect(mean(countsBySide[side])).toBeGreaterThan(1.2); expect(mean(countsBySide[side])).toBeLessThan(1.5)

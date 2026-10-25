@@ -99,7 +99,7 @@ it('calibrates all 9 bidding profiles over 270 complete duels with the 8M reserv
     bucket.cpuPlayerSpent /= bucket.games; bucket.cpuMeanRating /= bucket.games
     report.push(bucket)
   }
-  writeFileSync('docs/qa/SIMULATION-COACHES-cpu.json', JSON.stringify({ games: 270, coachReserve: 8, humanPolicy: 'base_plus_2', report }, null, 2) + '\n')
+  if (process.env.WRITE_QA === '1') writeFileSync('docs/qa/SIMULATION-COACHES-cpu.json', JSON.stringify({ games: 270, coachReserve: 8, humanPolicy: 'base_plus_2', report }, null, 2) + '\n')
 }, 30000)
 
 it('keeps normal legacy valuations and reduces hard scouting noise while respecting the usable auction budget', () => {

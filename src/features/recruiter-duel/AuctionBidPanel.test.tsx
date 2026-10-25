@@ -34,7 +34,7 @@ describe('always visible auction economy', () => {
     expect(row).toBeVisible()
     expect(row.closest('details')).toBeNull()
     expect(container.querySelector('.bid-details')).not.toHaveAttribute('open')
-    expect(container.querySelector('.risk-meter')!.nextElementSibling).toBe(row)
+    expect(container.querySelector('.risk-row')!.nextElementSibling).toBe(row)
   })
   it('keeps the explanation visible when the optional HUD is absent', async () => {
     const { container, i18n } = await view('en', false, false)
@@ -48,5 +48,31 @@ describe('always visible auction economy', () => {
     expect(container.querySelector('#auction-assignment')!.closest('details') !== null).toBe(!special)
     fireEvent.click(pass)
     expect(onPass).toHaveBeenCalledOnce()
+  })
+  it.each([['es-AR', 'Seguro', 'Cuidado', 'Peligro'], ['en', 'Safe', 'Careful', 'Danger'], ['pt-BR', 'Seguro', 'Cuidado', 'Perigo']] as const)('names the risk level in words and with a symbol in %s, not only with colour', async (language, safe, warn, danger) => {
+    const i18n = await createI18n(language)
+    for (const level of ['safe', 'warn', 'danger'] as const) expect(i18n.t(`bidTable.riskText.${level}`)).toBe({ safe, warn, danger }[level])
+    const { container } = await view(language, false)
+    const label = container.querySelector('.risk-text')!
+    expect(label).toBeVisible()
+    expect(label.textContent).toMatch(/^[✓!✕] S/)
+    expect(container.querySelector('.risk-meter')).toHaveAttribute('aria-label')
+  })
+  it('uses a different symbol for each level', async () => {
+    const symbols = new Set<string>()
+    for (const offer of [availability.minimum, Math.ceil(availability.maximum * .75), availability.maximum]) {
+      const i18n = await createI18n('en')
+      const { container, unmount } = render(<I18nextProvider i18n={i18n}><AuctionBidPanel game={game} side={side} footballer={footballer} names={{ recruiter_one: 'Academia', recruiter_two: 'Rival' }} availability={availability} offer={offer} minimum={availability.minimum} onOffer={vi.fn()} blockedMessage={null} progress={null} hud={hud} passLabel="Pass" assignment={null} assignmentSpecial={false} onBid={vi.fn()} onPass={vi.fn()} /></I18nextProvider>)
+      symbols.add(container.querySelector('.risk-symbol')!.textContent!)
+      unmount()
+    }
+    expect(symbols.size).toBeGreaterThan(1)
+  })
+  it.each(['es-AR', 'en', 'pt-BR'] as const)('explains the reserved-budget block without revealing the sum of the remaining cards in %s', async language => {
+    const i18n = await createI18n(language)
+    const text = i18n.t('auctionBanner.blocked.FUTURE_BUDGET_RESERVED', { player: 'Messi', price: 44, maximum: 30, need: 987, total: 654 })
+    expect(text).toContain('Messi'); expect(text).toContain('44'); expect(text).toContain('30')
+    expect(text).not.toContain('987'); expect(text).not.toContain('654')
+    expect(i18n.getResource(language, 'common', 'auctionBanner.blocked.FUTURE_BUDGET_RESERVED')).not.toMatch(/{{(need|total)}}/)
   })
 })

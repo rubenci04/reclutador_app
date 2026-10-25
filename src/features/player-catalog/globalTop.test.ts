@@ -64,7 +64,7 @@ describe('RANK-008 Global Top 150', () => {
   it('writes the audit of the selection: statistics, origin and the best excluded candidates with the reason', () => {
     const excluded = (all: readonly Player[], pool: readonly Player[], reason: string) => all.filter((p) => !pool.includes(p)).slice(0, 30).map((p) => ({ id: p.id, name: p.name, position: p.position, ovr: p.overall_rating, origin: origin(p), reason }))
     const legendsRest = [...GLOBAL_LEGEND_CANDIDATES].sort((a, b) => b.overall_rating - a.overall_rating)
-    writeFileSync('docs/qa/GLOBAL-TOP-150-audit.json', JSON.stringify({
+    if (process.env.WRITE_QA === '1') writeFileSync('docs/qa/GLOBAL-TOP-150-audit.json', JSON.stringify({
       version: 'global-top-150-v1',
       current: { stats: stats(GLOBAL_CURRENT), origin: byOrigin(GLOBAL_CURRENT), cutoffOvr: GLOBAL_CURRENT[149].overall_rating, excludedBest: excluded(GLOBAL_CURRENT_ALL, GLOBAL_CURRENT, 'below the 150th by quality order (OVR, 2026 edition, league editorial rank)') },
       legends: { stats: stats(GLOBAL_LEGENDS), origin: byOrigin(GLOBAL_LEGENDS), cutoffOvr: GLOBAL_LEGENDS[149].overall_rating, candidates: GLOBAL_LEGEND_CANDIDATES.length, newcomers: GLOBAL_LEGENDS.filter((p) => !GLOBAL_LEGENDS_ALL.includes(p)).length, excludedBest: excluded(legendsRest, GLOBAL_LEGENDS, 'below the 150th by quality order; still in the archive and the master') },

@@ -15,7 +15,7 @@ describe('collection size and draw rarity', () => {
       expect(new Set(players.map(p => p.id)).size).toBe(players.length)
       return { mode, count: players.length, stars: players.filter((p) => p.overall_rating >= 98).length, positions: Object.fromEntries(['ARQ', 'DEF', 'MED', 'DEL'].map((pos) => [pos, players.filter((p) => p.position === pos).length])) }
     })
-    writeFileSync('docs/qa/COLLECTION-SIZES.json', JSON.stringify(counts, null, 2) + '\n')
+    if (process.env.WRITE_QA === '1') writeFileSync('docs/qa/COLLECTION-SIZES.json', JSON.stringify(counts, null, 2) + '\n')
   })
   // A larger sample keeps the rare-star ratio statistically stable now that the global pool is larger (few S+ editions).
   const DRAWS = 480
@@ -43,7 +43,7 @@ describe('collection size and draw rarity', () => {
     const theoreticalUniformStars = DRAWS * (['ARQ', 'DEF', 'MED', 'DEL'] as const).reduce((sum, pos, i) => sum + [2, 8, 6, 6][i] * catalog.filter((p) => p.position === pos && p.overall_rating >= 98).length / catalog.filter((p) => p.position === pos).length, 0)
     const report = { mode, draws: DRAWS, baselineStars, rareStars, theoreticalUniformStars, uniquePlayers: unique.size, distinctDraws: signatures.size }
     console.info('rarity-v2', JSON.stringify(report))
-    writeFileSync(`docs/qa/RARITY-${mode}.json`, JSON.stringify(report, null, 2) + '\n')
+    if (process.env.WRITE_QA === '1') writeFileSync(`docs/qa/RARITY-${mode}.json`, JSON.stringify(report, null, 2) + '\n')
     // Old economy often eliminated every star. Rarity must not make them impossible.
     expect(rareStars).toBeGreaterThan(0)
     expect(rareStars).toBeLessThan(theoreticalUniformStars * .65)

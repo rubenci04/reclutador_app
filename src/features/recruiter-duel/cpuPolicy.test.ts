@@ -91,5 +91,5 @@ it('plays 3,000 CPU games against three simulated human policies with no illegal
     const result=get(startDuelMatch(game,DRAFT_CATALOG)).matchResult!
     if(result.winner==='cpu') bucket.wins++;else if(result.winner==='draw')bucket.draws++;else bucket.losses++
   }
-  writeFileSync('docs/qa/CODEX-005C-stress.json',JSON.stringify({games:3000,humanPolicies:['always_pass','base_plus_1','base_plus_4'],report},null,2)+'\n')
+  if (process.env.WRITE_QA === '1') writeFileSync('docs/qa/CODEX-005C-stress.json',JSON.stringify({games:3000,humanPolicies:['always_pass','base_plus_1','base_plus_4'],report},null,2)+'\n')
 },120000)

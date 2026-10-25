@@ -352,7 +352,7 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
     const team = game.teams[game.activeParticipant]; const left = budgetOf(game) - team.spent
     if (reason === 'POSITION_FULL') return t('auctionBanner.blocked.POSITION_FULL', { position: t(`positions.${footballer.position}`), filled: progress?.filled ?? 0, capacity: progress?.capacity ?? 0 })
     if (reason === 'INSUFFICIENT_BUDGET') return t('auctionBanner.blocked.INSUFFICIENT_BUDGET', { left, price: minimum })
-    if (reason === 'FUTURE_BUDGET_RESERVED' && availability.maximum < minimum) return t('auctionBanner.blocked.FUTURE_BUDGET_RESERVED', { player: footballer.name, price: minimum, need: game.rounds.slice(game.roundIndex).reduce((sum, entry) => sum + (catalog.find((player) => player.id === entry.playerId)?.price ?? 0), 0), total: 2 * budgetOf(game) - game.teams.recruiter_one.spent - game.teams.recruiter_two.spent, maximum: availability.maximum })
+    if (reason === 'FUTURE_BUDGET_RESERVED' && availability.maximum < minimum) return t('auctionBanner.blocked.FUTURE_BUDGET_RESERVED', { player: footballer.name, price: minimum, maximum: availability.maximum })
     return t('auctionActions.blocks.' + reason)
   })()
   /** The active recruiter already has this position full: nothing to decide, so no buttons and the pass happens by itself. */

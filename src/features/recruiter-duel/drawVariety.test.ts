@@ -101,5 +101,5 @@ it('diagnoses 1,000 reproducible draws per policy, including quotas, budgets, fr
   }, 0)]))
   const report = { seedPattern: '005F-sample-0..999', expectedTiersWithoutBudget, theoreticalUniformPairOverlap: 4 / 18 + 64 / 48 + 36 / 45 + 36 / 39, before, after }
   console.info('CODEX-005F draw diagnostic', JSON.stringify({ ...report, before: { ...before, frequencies: undefined }, after: { ...after, frequencies: undefined } }))
-  if (process.env.DRAW_DIAGNOSTICS === '1') writeFileSync('docs/qa/CODEX-005F-draws.json', JSON.stringify(report, null, 2) + '\n')
+  if (process.env.DRAW_DIAGNOSTICS === '1' && process.env.WRITE_QA === '1') writeFileSync('docs/qa/CODEX-005F-draws.json', JSON.stringify(report, null, 2) + '\n')
 }, 30_000)

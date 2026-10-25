@@ -238,6 +238,6 @@ describe('SIM-005R-02 calibration', { timeout: 60_000 }, () => {
       expect(t.passOk).toBeGreaterThan(0); expect(t.passLost).toBeGreaterThan(0); expect(t.goals).toBeGreaterThan(0)
     }
     report['batch baseline, same squads, no tree'] = { matches: baseline.matches, localGoalsPerMatch: +(baseline.goals / baseline.matches).toFixed(3) }
-    writeFileSync('docs/qa/SIM-005R-02-calibration.json', JSON.stringify({ version: 'attack-tree-v1', seeds: 150, note: 'Synthetic equal-price squads, KEEP in every window. Not a competitive balance study; no formula was tuned from these figures.', policies: report }, null, 2) + '\n')
+    if (process.env.WRITE_QA === '1') writeFileSync('docs/qa/SIM-005R-02-calibration.json', JSON.stringify({ version: 'attack-tree-v1', seeds: 150, note: 'Synthetic equal-price squads, KEEP in every window. Not a competitive balance study; no formula was tuned from these figures.', policies: report }, null, 2) + '\n')
   })
 })

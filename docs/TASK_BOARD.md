@@ -428,3 +428,7 @@ Tiempo por turno (120 s puja / 5 min estrategia) con cuenta regresiva y «Reclam
 ## Sprint 4 CPU y equilibrio — 25/10/2026
 
 EASY ahora queda 1,0-1,7 de OVR medio por debajo de NORMAL (NORMAL/HARD sin cambios). Medición del simulador en series (1.080 duelos): sin sesgo de lado; +0,5 de OVR ya da ~78 % de ganar la serie y +2 da ~95 %; la partida rápida casi no premia la calidad. Recomendación sin aplicar. [Registro](logs/SPRINT-4-BALANCE.md).
+
+## Sprint 5 UX — 25/10/2026
+
+Texto funcional a .8rem, medidor de riesgo con etiqueta y patrón (no solo color), aviso de presupuesto sin filtrar la suma de cartas, tests de calibración sin escribir salvo `WRITE_QA=1`, README corto (historial en docs/CHANGELOG.md). Pendiente: revisión visual en celular. [Registro](logs/SPRINT-5-UX.md).
