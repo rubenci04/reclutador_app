@@ -1,5 +1,9 @@
 # Despliegue: producción actual y antecedentes
 
+## Publicación sprints 9–10 + sprint 8 — 25/10/2026
+
+Merge **ad155c9** en `main` (push normal, fast-forward desde 94b1c31). Worker **reclutador-app**, versión **7d7b523a-7317-4150-a1bb-f51cab9ad4d8** al 100 %, etiqueta ad155c9; Wrangler 4.151.3, `--keep-vars --no-autoconfig`, sin cambios de bindings ni Supabase. HTTP 200 y SHA-256 de HTML y assets coinciden con dist. [Registro](logs/SPRINT-9-10-PUBLICACION.md). Interacciones nuevas sin prueba manual en producción.
+
 ## Sprint 8 — 25/10/2026
 
 Código bc7648c, integrado en main mediante fast-forward (a7679dc con documentación). Worker reclutador-app, versión b194ae0d-fad8-45d4-bfce-31417c721539 al 100 %, etiqueta bc7648c. [Abrir juego](https://reclutador-app.rea-04.workers.dev/). HTML y nueve bundles coinciden con dist por SHA-256; [evidencia](qa/SPRINT-8-deployment.json) y [registro](logs/SPRINT-8-PUBLICACION.md). Claude conserva su carpeta original para integrar los sprints posteriores; [guía](PARALLEL_WORK.md).

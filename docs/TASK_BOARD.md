@@ -408,3 +408,7 @@ Bloque único de edición seleccionada junto a Iniciar duelo, pase directo sobre
 ## SIM-FIELD-002 — 23/10/2026
 
 Ataque (arco = SHOOT, compañero = CROSS) y defensa (carriles, presión y barra de precisión) directamente sobre TacticalBoard, con tarjetas como alternativa accesible. Mismos comandos y motor. [Informe y límites](qa/SIM-FIELD-002.md).
+
+## Publicación sprints 9–10 — 25/10/2026
+
+Integrados con el sprint 8 en `main` (merge ad155c9); 1.458 pruebas, build y verificación de chunks aprobados. Worker reclutador-app versión 7d7b523a al 100 %, etiqueta ad155c9; HTTP/HTML/assets verificados. [Registro](logs/SPRINT-9-10-PUBLICACION.md). Pendiente: prueba manual de las interacciones nuevas.
