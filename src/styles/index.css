@@ -861,6 +861,11 @@
 /* UX-AUCTION-007: one sticky header, a quiet rival summary, one player card next to the bid on wide screens */
 .auction-header { position: sticky; top: 0; z-index: 7; display: grid; grid-template-columns: auto minmax(0, 1fr) max-content max-content; grid-template-areas: "icon name balance details" "stats stats stats stats"; align-items: center; gap: 2px 8px; margin: 0 0 6px; padding: 5px 10px; border-radius: 8px; background: #0b1a13f7; border: 1px solid #d5fb7666; box-shadow: 0 4px 14px #0008; color: #f4f7ef; }
 .auction-header .wallet-icon { grid-area: icon; } .auction-header .wallet-name { grid-area: name; } .auction-header .wallet-balance { grid-area: balance; } .auction-header .wallet-details { grid-area: details; }
+.auction-header .turn-clock { grid-column: 1 / -1; display: grid; gap: 3px; font-size: .78rem; font-weight: 700; color: #f4f7ef; }
+.turn-clock p { margin: 0; } .turn-clock[data-late="true"] .turn-clock-text { color: #ffb4a8; }
+.turn-clock-bar { height: 4px; border-radius: 2px; background: #ffffff22; overflow: hidden; } .turn-clock-bar span { display: block; height: 100%; background: #d5fb76; transition: width 1s linear; } .turn-clock[data-late="true"] .turn-clock-bar span { background: #ff7a66; }
+@media (prefers-reduced-motion: reduce) { .turn-clock-bar span { transition: none; } }
+.turn-clock-claim { display: grid; gap: 4px; justify-items: start; padding-top: 4px; }
 .auction-header-stats { grid-area: stats; display: flex; flex-wrap: wrap; gap: 2px 14px; margin: 0; padding: 0; list-style: none; font-size: .74rem; font-weight: 700; letter-spacing: .03em; color: #d5fb76; }
 .auction-hud.auction-hud-compact { position: static; display: block; padding: 4px 8px; margin: 0 0 6px; box-shadow: none; background: #0b1a1399; }
 .hud-rival { margin: 0; font-size: .78rem; opacity: .85; }

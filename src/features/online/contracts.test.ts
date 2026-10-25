@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parseOnlineName, validateCommand, OnlineError } from './contracts'
+import { CLASSIC_ONLINE, parseOnlineName, parseSnapshot, validateCommand, OnlineError } from './contracts'
 import { readOnlineConfig } from './supabaseClient'
 
 describe('online wire contracts', () => {
@@ -19,5 +19,12 @@ describe('online wire contracts', () => {
     expect(readOnlineConfig({})).toBeNull()
     expect(readOnlineConfig({ VITE_SUPABASE_URL: 'https://example.supabase.co', VITE_SUPABASE_PUBLISHABLE_KEY: 'sb_secret_no' })).toBeNull()
     expect(readOnlineConfig({ VITE_SUPABASE_URL: 'https://example.supabase.co', VITE_SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_example' })).toEqual({ url: 'https://example.supabase.co', key: 'sb_publishable_example' })
+  })
+  it('tolerates a snapshot without serverNow (servers not migrated yet) but not a malformed one', () => {
+    const host = crypto.randomUUID()
+    const snapshot = { roomId: crypto.randomUUID(), hostId: host, inviteCode: 'a'.repeat(64), status: 'IN_PROGRESS', phase: 'AUCTION', version: 3, createdAt: '2026-10-25T12:00:00Z', expiresAt: '2026-10-26T12:00:00Z', deadlineAt: '2026-10-25T12:02:00Z', settings: CLASSIC_ONLINE, members: [{ userId: host, name: 'Ana', seat: 1, ready: true }] }
+    expect(parseSnapshot(snapshot).serverNow).toBeUndefined()
+    expect(parseSnapshot({ ...snapshot, serverNow: '2026-10-25T12:00:01Z' }).serverNow).toBe('2026-10-25T12:00:01Z')
+    expect(() => parseSnapshot({ ...snapshot, serverNow: 'yesterday-ish' })).toThrow(OnlineError)
   })
 })

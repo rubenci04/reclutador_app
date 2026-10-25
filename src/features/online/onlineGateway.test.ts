@@ -56,4 +56,11 @@ describe('official Supabase transport boundaries', () => {
     expect(rpc).toHaveBeenCalledWith('online_flip_coin', { p_room_id: roomId, p_action_id: actionId, p_expected_version: 3, p_called_side: 'heads' })
     await expect(gateway.flipCoin(roomId, 3, 'edge' as 'heads', actionId)).rejects.toEqual(new OnlineError('INVALID_ACTION'))
   })
+  it('claims a timeout through the server and reports a missing migration clearly', async () => {
+    const roomId = crypto.randomUUID(); const actionId = crypto.randomUUID()
+    const missing = vi.fn(async () => ({ data: null, error: { message: 'Could not find the function public.online_claim_timeout', code: 'PGRST202' } }))
+    await expect(createOnlineGateway({ rpc: missing } as unknown as SupabaseClient).claimTimeout(roomId, actionId)).rejects.toEqual(new OnlineError('BACKEND_OUTDATED'))
+    expect(missing).toHaveBeenCalledWith('online_claim_timeout', { p_room_id: roomId, p_action_id: actionId })
+    await expect(createOnlineGateway({ rpc: missing } as unknown as SupabaseClient).claimTimeout('nope', actionId)).rejects.toEqual(new OnlineError('INVALID_ACTION'))
+  })
 })

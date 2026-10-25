@@ -420,3 +420,7 @@ HARD más competitiva (+0,78 OVR medio del once frente a antes, +1,1 a +1,5 sobr
 ## Sprint 2 online — 25/10/2026
 
 Moneda tirada por el servidor (`online_flip_coin`, migración 202610250001 pendiente de aplicar en Supabase) y verificación del estado en el navegador del rival (`verifyDuelState`) con aviso en es-AR/en/pt-BR. Límites: cartas futuras visibles y sin servidor autoritativo. [Registro](logs/SPRINT-2-ONLINE.md).
+
+## Sprint 3 online — 25/10/2026
+
+Tiempo por turno (120 s puja / 5 min estrategia) con cuenta regresiva y «Reclamar victoria» si el rival no responde; el aviso de conexión se limpia al reconectar. Las migraciones 202610250001 y 202610250002 deben aplicarse juntas, en ese orden, al publicar la web nueva. [Registro](logs/SPRINT-3-ONLINE.md).

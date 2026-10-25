@@ -19,6 +19,10 @@ export interface RoomSnapshot {
   readonly createdAt: string
   readonly expiresAt: string
   readonly deadlineAt: string | null
+  /** Server clock when the snapshot was taken; absent from servers without the turn-timer migration. */
+  readonly serverNow?: string
+  /** Device time (ms) when this snapshot was parsed; with serverNow it gives the offset between both clocks. */
+  readonly receivedAt?: number
   readonly settings: typeof CLASSIC_ONLINE
   readonly members: readonly RoomMember[]
   /** The shared duel (a RecruiterDuelGame) once it started; an empty object before that. Validated by parseDuel. */
@@ -52,7 +56,7 @@ export function validateCommand(command: RoomCommand): void {
 export function parseSnapshot(value: unknown): RoomSnapshot {
   if (!value || typeof value !== 'object') throw new OnlineError('INVALID_ACTION')
   const s = value as RoomSnapshot
-  if (!isUuid(s.roomId) || !isUuid(s.hostId) || !isLongInvite(s.inviteCode) || !ROOM_STATUSES.includes(s.status) || !ONLINE_PHASES.includes(s.phase) || !Number.isSafeInteger(s.version) || s.version < 0 || !Number.isFinite(Date.parse(s.createdAt)) || !Number.isFinite(Date.parse(s.expiresAt)) || (s.deadlineAt !== null && !Number.isFinite(Date.parse(s.deadlineAt)))) throw new OnlineError('INVALID_ACTION')
+  if (!isUuid(s.roomId) || !isUuid(s.hostId) || !isLongInvite(s.inviteCode) || !ROOM_STATUSES.includes(s.status) || !ONLINE_PHASES.includes(s.phase) || !Number.isSafeInteger(s.version) || s.version < 0 || !Number.isFinite(Date.parse(s.createdAt)) || !Number.isFinite(Date.parse(s.expiresAt)) || (s.deadlineAt !== null && !Number.isFinite(Date.parse(s.deadlineAt))) || (s.serverNow !== undefined && !Number.isFinite(Date.parse(s.serverNow)))) throw new OnlineError('INVALID_ACTION')
   if (!s.settings || Object.entries(CLASSIC_ONLINE).some(([key, v]) => s.settings[key as keyof typeof CLASSIC_ONLINE] !== v)) throw new OnlineError('INVALID_ACTION')
   if (!Array.isArray(s.members) || s.members.length < 1 || s.members.length > 2 || new Set(s.members.map(m => m.userId)).size !== s.members.length || new Set(s.members.map(m => m.seat)).size !== s.members.length || !s.members.some(m => m.userId === s.hostId && m.seat === 1)) throw new OnlineError('INVALID_ACTION')
   for (const member of s.members) if (!isUuid(member.userId) || ![1, 2].includes(member.seat) || typeof member.ready !== 'boolean' || parseOnlineName(member.name) !== member.name) throw new OnlineError('INVALID_ACTION')

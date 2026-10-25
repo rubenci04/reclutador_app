@@ -81,7 +81,11 @@ export function useOnlineSync(gateway: OnlineGateway | null, room: RoomSnapshot 
     if (!gateway || !roomId) return
     void gateway.forfeit(roomId, crypto.randomUUID()).then(publish).catch(e => { if (mounted.current) setError(errorCode(e)) })
   }, [gateway, roomId, publish, setError])
+  const claimTimeout = useCallback(() => {
+    if (!gateway || !roomId) return
+    void gateway.claimTimeout(roomId, crypto.randomUUID()).then(publish).catch(e => { if (mounted.current) setError(errorCode(e)) })
+  }, [gateway, roomId, publish, setError])
   const clear = useCallback(() => { roomRef.current = null }, [])
 
-  return { submit, publish, flipCoin, chooseStrategy, revealStrategies, forfeit, clear }
+  return { submit, publish, flipCoin, chooseStrategy, revealStrategies, forfeit, claimTimeout, clear }
 }

@@ -51,6 +51,7 @@ function gatewayFor(user: string): OnlineGateway {
     },
     startDuel: async (roomId, version, state, actionId) => parseSnapshot(await rpc('online_start_duel', [roomId, actionId, version, JSON.stringify(state)])),
     submitState: async (roomId, version, state, actionId) => parseSnapshot(await rpc('online_submit_state', [roomId, actionId, version, JSON.stringify(state)])),
+    claimTimeout: async (roomId, actionId) => parseSnapshot(await rpc('online_claim_timeout', [roomId, actionId])),
     flipCoin: async (roomId, version, side, actionId) => parseSnapshot(await rpc('online_flip_coin', [roomId, actionId, version, side])),
     setStrategy: async (roomId, strategy) => parseSnapshot(await rpc('online_set_strategy', [roomId, strategy])),
     revealStrategies: async (roomId) => (await rpc('online_reveal_strategies', [roomId])) as Record<'recruiter_one' | 'recruiter_two', string>,
@@ -77,6 +78,7 @@ beforeAll(async () => {
   await db.exec(readFileSync('supabase/migrations/202610180002_online_lobby.sql', 'utf8'))
   await db.exec(readFileSync('supabase/migrations/202610190001_online_duel.sql', 'utf8'))
   await db.exec(readFileSync('supabase/migrations/202610250001_online_fair_coin.sql', 'utf8'))
+  await db.exec(readFileSync('supabase/migrations/202610250002_online_turn_timer.sql', 'utf8'))
 }, 60000)
 afterAll(async () => { await db.close() })
 beforeEach(() => {

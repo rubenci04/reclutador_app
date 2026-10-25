@@ -86,6 +86,8 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
           if (!cancelled) {
             setRoom(current => current?.roomId === next.roomId && current.version <= next.version ? next : current)
             setError(current => current === 'NETWORK_ERROR' || current === 'STALE_STATE' ? null : current)
+            // A snapshot that arrived proves the network is back, even if the realtime channel has not reported it yet.
+            setConnection(current => current === 'offline' ? 'connected' : current)
           }
         } catch (e) {
           if (!cancelled) {
@@ -175,6 +177,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
   const mySide = own ? seatSide(own.seat) : null
   const duel = room && (room.status === 'IN_PROGRESS' || room.status === 'FINISHED') ? parseDuel(room.state) : null
   const forfeitBy = room ? forfeitOf(room.state) : null
+  const timedOut = !!room?.state && typeof room.state === 'object' && (room.state as { timedOut?: unknown }).timedOut === true
   // Every state received is re-run with the rules engine; a mismatch shows a warning but never blocks by itself.
   const roomState = room?.state; const roomOpen = room?.status === 'IN_PROGRESS' || room?.status === 'FINISHED'
   const verdict = useMemo(() => {
@@ -182,6 +185,8 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
     if (!received) return null
     try { return verifyDuelState(received) } catch { return { ok: false as const, reason: 'replay' as const } }
   }, [roomState, roomOpen])
+  // Server clock minus device clock at the moment the snapshot arrived; zero for servers that do not send it.
+  const clockOffsetMs = room?.serverNow && room.receivedAt ? Date.parse(room.serverNow) - room.receivedAt : 0
   const [integrityDismissed, setIntegrityDismissed] = useState<string | null>(null)
   // The result is stored on this browser once it is known (a match result, or the rival giving up).
   useEffect(() => {
@@ -214,7 +219,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
     game: duel, mySide, submit: sync.submit,
     strategyReady: { recruiter_one: !!room.strategyReady?.['1'], recruiter_two: !!room.strategyReady?.['2'] },
     flipCoin: sync.flipCoin, error, integrityIssue: verdict?.ok === false && integrityDismissed !== roomId, dismissIntegrity: () => setIntegrityDismissed(roomId ?? null),
-    chooseStrategy: sync.chooseStrategy, revealStrategies: sync.revealStrategies, forfeit: sync.forfeit,
+    chooseStrategy: sync.chooseStrategy, revealStrategies: sync.revealStrategies, forfeit: sync.forfeit, deadlineAt: room.deadlineAt, clockOffsetMs, claimTimeout: sync.claimTimeout,
     exit, connection, busy,
   } : null
   if (binding && duel && !forfeitBy) return <AuctionPage online={binding} onDraftFree={exit} />
@@ -224,7 +229,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
       <header className="draft-header"><span className="brand"><span className="brand-emblem">R</span><span>Reclutador</span></span><div className="header-actions"><AudioControls /><LanguageSelector /></div></header>
       <main className="online-main"><section className="online-card" role="status">
         <h1>{t('online.duel.forfeitTitle')}</h1>
-        <p>{t('online.duel.forfeitBody', { loser: names[forfeitBy], winner: names[otherSide(forfeitBy)] })}</p>
+        <p>{t(timedOut ? 'online.duel.timeoutBody' : 'online.duel.forfeitBody', { loser: names[forfeitBy], winner: names[otherSide(forfeitBy)] })}</p>
         <p><strong>{forfeitBy === binding.mySide ? t('online.duel.youLost') : t('online.duel.youWon')}</strong></p>
         <button className="primary-action" onClick={exit}>{t('navigation.rooms')}</button>
       </section></main>

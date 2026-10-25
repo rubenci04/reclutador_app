@@ -26,6 +26,7 @@ function fakeGateway() {
     create: vi.fn(async () => structuredClone(state)),
     join: vi.fn(async () => structuredClone(state)),
     snapshot: vi.fn(async () => structuredClone(state)),
+    claimTimeout: vi.fn(async () => structuredClone(state)),
     flipCoin: vi.fn(async () => structuredClone(state)),
     command: vi.fn(async command => {
       if (command.actionType === 'LEAVE') return null
@@ -203,5 +204,28 @@ describe('online lobby presentation using an explicit test adapter', () => {
     expect(fake.gateway.closeRoom).not.toHaveBeenCalled()
     expect(fake.gateway.submitState).not.toHaveBeenCalled()
     expect(fake.gateway.startDuel).not.toHaveBeenCalled()
+  })
+})
+
+describe('losing and recovering the network', () => {
+  it.each([['the browser comes back online', () => window.dispatchEvent(new Event('online'))], ['the tab gets focus again', () => window.dispatchEvent(new Event('focus'))], ['the tab becomes visible', () => document.dispatchEvent(new Event('visibilitychange'))]] as const)('shows the connection notice and resyncs when %s', async (_name, trigger) => {
+    const fake = fakeGateway(); rememberRoom(host, fixture().roomId)
+    let latest = fixture(); let down = false
+    fake.gateway.snapshot = vi.fn(async () => { if (down) throw new OnlineError('NETWORK_ERROR'); return structuredClone(latest) })
+    const { i18n } = await show(fake.gateway, 'en')
+    await screen.findByText('Boca')
+    expect(await screen.findByText(i18n.t('online.connection.connected'))).toBeInTheDocument()
+    down = true
+    await act(async () => { trigger() })
+    expect(await screen.findByText(i18n.t('online.connection.offline'))).toBeInTheDocument()
+    expect(screen.getByRole('alert')).toHaveTextContent(i18n.t('online.errors.NETWORK_ERROR'))
+    // The rival joined while we were away: the first snapshot after the network returns brings it.
+    latest = { ...fixture(), version: 3, status: 'READY', members: [{ userId: host, name: 'Boca', seat: 1, ready: true }, { userId: guest, name: 'River', seat: 2, ready: true }] }
+    down = false
+    await act(async () => { trigger() })
+    expect(await screen.findByText('River')).toBeInTheDocument()
+    expect(screen.queryByText(i18n.t('online.connection.offline'))).not.toBeInTheDocument()
+    expect(screen.getByText(i18n.t('online.connection.connected'))).toBeInTheDocument()
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   })
 })

@@ -25,6 +25,10 @@ export interface OnlineDuelBinding {
   /** Both strategies, only once both people have chosen. */
   readonly revealStrategies: () => Promise<Readonly<Record<RecruiterId, StrategyId>>>
   readonly forfeit: () => void
+  /** End of the current deadline (server time), how far the server clock was from this device when the snapshot arrived, and the claim of the win when the rival let it pass. */
+  readonly deadlineAt?: string | null
+  readonly clockOffsetMs?: number
+  readonly claimTimeout?: () => void
   readonly exit: () => void
   readonly connection: 'connecting' | 'connected' | 'offline'
   readonly busy: boolean

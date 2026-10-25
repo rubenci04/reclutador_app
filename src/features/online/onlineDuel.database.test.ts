@@ -54,6 +54,7 @@ beforeAll(async () => {
   await db.exec(readFileSync('supabase/migrations/202610180002_online_lobby.sql', 'utf8'))
   await db.exec(readFileSync('supabase/migrations/202610190001_online_duel.sql', 'utf8'))
   await db.exec(readFileSync('supabase/migrations/202610250001_online_fair_coin.sql', 'utf8'))
+  await db.exec(readFileSync('supabase/migrations/202610250002_online_turn_timer.sql', 'utf8'))
   await asUser(host)
   const created = await call<{ roomId: string; inviteCode: string; version: number }>("public.online_create_room('Ana',$1)", [nextAction()])
   room = created.roomId
@@ -234,6 +235,7 @@ describe('online duel: migration and room names', () => {
     await db.exec(readFileSync('supabase/migrations/202610190001_online_duel.sql', 'utf8'))
     // The later migration replaces online_submit_state again, as it does on the server.
     await db.exec(readFileSync('supabase/migrations/202610250001_online_fair_coin.sql', 'utf8'))
+    await db.exec(readFileSync('supabase/migrations/202610250002_online_turn_timer.sql', 'utf8'))
   })
   it('stores a room name, hands out a short code and lets the guest join with it', async () => {
     await asUser(host)
@@ -315,5 +317,118 @@ describe('online duel: coin tossed by the server', () => {
   it('can be applied again without errors', async () => {
     await db.exec('reset role')
     await db.exec(readFileSync('supabase/migrations/202610250001_online_fair_coin.sql', 'utf8'))
+  })
+})
+
+describe('online duel: turn timer and claiming the win', () => {
+  interface Table { roomId: string; version: number; coinCall: string; coinResult: string; seed: string }
+  async function atTable(seed: string): Promise<Table> {
+    await asUser(host)
+    const created = await call<{ roomId: string; inviteCode: string }>("public.online_create_room('Ana',$1)", [nextAction()])
+    await asUser(guest)
+    let latest = (await call<{ version: number }>('public.online_join_room($1,$2,$3)', [created.inviteCode, 'Beto', nextAction()])).version
+    for (const user of [host, guest]) {
+      await asUser(user)
+      latest = (await call<{ version: number }>("public.online_command($1,$2,$3,'SET_READY','{\"ready\":true}'::jsonb)", [created.roomId, nextAction(), latest])).version
+    }
+    await asUser(host)
+    latest = (await call<{ version: number }>('public.online_start_duel($1,$2,$3,$4::jsonb)', [created.roomId, nextAction(), latest, JSON.stringify({ ...state(), phase: 'LOBBY', seed, coinCall: null, coinResult: null })])).version
+    const flipped = await call<{ version: number; state: { coinCall: string; coinResult: string } }>('public.online_flip_coin($1,$2,$3,$4)', [created.roomId, nextAction(), latest, 'heads'])
+    return { roomId: created.roomId, version: flipped.version, coinCall: flipped.state.coinCall, coinResult: flipped.state.coinResult, seed }
+  }
+  async function put(table: Table, user: string, patch: Record<string, unknown>) {
+    await asUser(user)
+    const snapshot = await call<{ version: number; deadlineAt: string | null }>('public.online_submit_state($1,$2,$3,$4::jsonb)', [table.roomId, nextAction(), table.version, JSON.stringify({ ...state(), seed: table.seed, coinCall: table.coinCall, coinResult: table.coinResult, ...patch })])
+    table.version = snapshot.version
+    return snapshot
+  }
+  const stored = async (table: Table) => { await db.exec('reset role'); return (await db.query<{ seconds: number | null }>('select extract(epoch from (deadline_at - now()))::float as seconds from public.game_state where room_id=$1', [table.roomId])).rows[0].seconds }
+  // Moves the stored deadline `seconds` into the past (negative: into the future). A plain update of deadline_at does not fire the trigger.
+  const backdate = async (table: Table, seconds: number) => { await db.exec('reset role'); await db.query('update public.game_state set deadline_at = now() - make_interval(secs => $2) where room_id=$1', [table.roomId, seconds]) }
+  const claim = (table: Table, id = nextAction()) => call<{ status: string; state: { forfeitBy: string } }>('public.online_claim_timeout($1,$2)', [table.roomId, id])
+  const bidding = (table: Table, active: string) => put(table, host, { phase: 'BIDDING', activeParticipant: active, record: [{ type: 'x' }] })
+
+  it('sets and clears deadline_at by engine phase, restarting it on every bidding turn', async () => {
+    const table = await atTable('timer-phase')
+    expect(await stored(table)).toBeNull()
+    const first = await bidding(table, 'recruiter_one')
+    expect(first.deadlineAt).not.toBeNull()
+    expect(await stored(table)).toBeGreaterThan(115); expect(await stored(table)).toBeLessThanOrEqual(120)
+    await backdate(table, 100)
+    expect(await stored(table)).toBeLessThan(0)
+    await put(table, host, { phase: 'BIDDING', activeParticipant: 'recruiter_two', record: [{ type: 'x' }, { type: 'y' }] })
+    expect(await stored(table)).toBeGreaterThan(115)
+    await put(table, guest, { phase: 'ROUND_RESULT', record: [{ type: 'x' }, { type: 'y' }, { type: 'z' }] })
+    expect(await stored(table)).toBeNull()
+    await put(table, host, { phase: 'TEAMS_COMPLETED', record: [{}, {}, {}, {}] })
+    expect(await stored(table)).toBeGreaterThan(295); expect(await stored(table)).toBeLessThanOrEqual(300)
+    // Later writes in the same phase do not give more time.
+    await backdate(table, 100)
+    await put(table, host, { phase: 'TEAMS_COMPLETED', record: [{}, {}, {}, {}], teams: { recruiter_one: { spent: 5 }, recruiter_two: { spent: 0 } } })
+    expect(await stored(table)).toBeLessThan(205)
+  })
+  it('carries the server clock in the snapshot', async () => {
+    const table = await atTable('timer-now')
+    await asUser(guest)
+    const seen = await call<{ serverNow: string }>('public.online_snapshot($1)', [table.roomId])
+    expect(Math.abs(Date.parse(seen.serverNow) - Date.now())).toBeLessThan(60000)
+  })
+  it('refuses a claim before the deadline (with grace), from the player whose turn it is, outside bidding/arranging and from non-members', async () => {
+    const table = await atTable('timer-reject')
+    await asUser(host)
+    await expect(claim(table)).rejects.toThrow(/INVALID_PHASE/)
+    await bidding(table, 'recruiter_two')
+    await asUser(host)
+    await expect(claim(table)).rejects.toThrow(/INVALID_PHASE/)
+    await backdate(table, 2)
+    await asUser(host)
+    await expect(claim(table)).rejects.toThrow(/INVALID_PHASE/)
+    await backdate(table, 200)
+    await asUser(guest)
+    await expect(claim(table)).rejects.toThrow(/NOT_YOUR_TURN/)
+    await asUser(outsider)
+    await expect(claim(table)).rejects.toThrow(/NOT_ROOM_MEMBER/)
+    await put(table, guest, { phase: 'ROUND_RESULT', record: [{ type: 'x' }, { type: 'y' }] })
+    await backdate(table, 200)
+    await asUser(host)
+    await expect(claim(table)).rejects.toThrow(/INVALID_PHASE/)
+  })
+  it('accepts a claim once the deadline passed, records the one who left and is idempotent', async () => {
+    const table = await atTable('timer-claim')
+    await bidding(table, 'recruiter_two')
+    await backdate(table, 200)
+    await asUser(host)
+    const id = nextAction()
+    expect(await claim(table, id)).toMatchObject({ status: 'FINISHED', state: { forfeitBy: 'recruiter_two' } })
+    expect((await claim(table, id)).status).toBe('FINISHED')
+    expect(await stored(table)).toBeNull()
+    await asUser(host)
+    await expect(claim(table)).rejects.toThrow(/INVALID_PHASE/)
+    await db.exec('reset role')
+    expect((await db.query('select action_type from public.game_actions where action_id=$1', [id])).rows[0]).toEqual({ action_type: 'TIMEOUT_CLAIM' })
+    // The other way round: the host is the one who left.
+    const second = await atTable('timer-claim-2')
+    await bidding(second, 'recruiter_one')
+    await backdate(second, 200)
+    await asUser(guest)
+    expect(await claim(second)).toMatchObject({ state: { forfeitBy: 'recruiter_one' } })
+  })
+  it('while strategies are pending only the one who already chose can claim, and not when both chose', async () => {
+    const table = await atTable('timer-strategy')
+    await put(table, host, { phase: 'TEAMS_COMPLETED', record: [{}] })
+    await asUser(guest)
+    await call('public.online_set_strategy($1,$2)', [table.roomId, 'WIDE_PLAY'])
+    await backdate(table, 400)
+    await asUser(host)
+    await expect(claim(table)).rejects.toThrow(/NOT_YOUR_TURN/)
+    await call('public.online_set_strategy($1,$2)', [table.roomId, 'HIGH_PRESS'])
+    await asUser(guest)
+    await expect(claim(table)).rejects.toThrow(/INVALID_PHASE/)
+    const other = await atTable('timer-strategy-2')
+    await put(other, host, { phase: 'TEAMS_COMPLETED', record: [{}] })
+    await asUser(guest)
+    await call('public.online_set_strategy($1,$2)', [other.roomId, 'WIDE_PLAY'])
+    await backdate(other, 400)
+    expect(await claim(other)).toMatchObject({ status: 'FINISHED', state: { forfeitBy: 'recruiter_one' } })
   })
 })

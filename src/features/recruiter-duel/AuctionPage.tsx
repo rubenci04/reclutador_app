@@ -65,6 +65,7 @@ import { Wallet } from './Wallet'
 import { AuctionHeader } from './AuctionHeader'
 import { rankBadge } from '../player-catalog/categoryRanking'
 import type { OnlineDuelBinding } from './onlineBinding'
+import { OnlineTurnClock } from './OnlineTurnClock'
 import { OnlineTeamsStage } from './OnlineTeamsStage'
 import { WinCelebration } from './WinCelebration'
 
@@ -481,7 +482,7 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
       {online && online.connection !== 'connected' && <p className="auction-banner auction-banner-blocked" role="status">{t('online.connection.' + online.connection)}</p>}
       {online?.error && <p className="draft-alert" role="alert">{t('online.errors.' + online.error)}</p>}
       {online?.integrityIssue && <section className="auction-banner auction-banner-blocked" role="alert"><strong>{t('online.integrity.title')}</strong><p>{t('online.integrity.body')}</p><div className="duel-actions"><button className="secondary-action" onClick={online.exit}>{t('online.integrity.leave')}</button><button className="secondary-action" onClick={online.forfeit}>{t('online.integrity.forfeit')}</button>{online.dismissIntegrity && <button className="secondary-action" onClick={online.dismissIntegrity}>{t('online.integrity.keep')}</button>}</div></section>}
-      {game && walletSide && (hud ? <AuctionHeader game={game} catalog={catalog} side={walletSide} name={names[walletSide]} hud={hud} /> : <Wallet game={game} catalog={catalog} side={walletSide} name={names[walletSide]} />)}
+      {game && walletSide && (hud ? <AuctionHeader game={game} catalog={catalog} side={walletSide} name={names[walletSide]} hud={hud} clock={online ? <OnlineTurnClock game={game} online={online} names={names} /> : undefined} /> : <Wallet game={game} catalog={catalog} side={walletSide} name={names[walletSide]} />)}
       {game && !game.categoryPair && !hud && <p className="discard-counter" role="status">{t('discards.available', { count: game.discardsRemaining })}{game.discardsRemaining === 0 && <span> · {t('discards.exhausted')}</span>}</p>}
       {game?.phase === 'DISCARD_RESULT' && game.lastDiscard && <section className="discard-scene" aria-live="polite"><h2>{t('discards.newDraw')}</h2><DiceRoller key={game.lastDiscard.playerId} position={playerById(game.lastDiscard.playerId).position} tier={diceTier(playerById(game.lastDiscard.playerId).overall_rating)} roundNumber={game.roundIndex + 1} /><div className="card-discard"><PlayerIdentity player={playerById(game.lastDiscard.playerId)} /></div></section>}
       {hud && game && <AuctionHud hud={hud} names={names} viewer={walletSide ?? 'recruiter_one'} currentPosition={game.phase === 'BIDDING' || game.phase === 'REVEAL_PLAYER' ? footballer?.position : undefined} onShowPitches={() => { setPitchesOpen(true); const court = document.getElementById('team-progress'); court?.focus({ preventScroll: true }); court?.scrollIntoView?.({ behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }) }} />}

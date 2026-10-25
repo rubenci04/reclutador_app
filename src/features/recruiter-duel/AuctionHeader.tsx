@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
 import type { RecruiterDuelGame, RecruiterId } from './auctionTypes'
@@ -9,13 +10,15 @@ interface Props {
   readonly side: RecruiterId
   readonly name: string
   readonly hud: HudModel
+  /** Online only: the countdown of the turn in progress. */
+  readonly clock?: ReactNode
 }
 
 /**
  * The single sticky header of the auction: team, balance, signings, discards and round. Every figure comes from the engine
  * (wallet model and scoreboard model); the maximum bid lives only next to the offer controls.
  */
-export function AuctionHeader({ game, catalog, side, name, hud }: Props) {
+export function AuctionHeader({ game, catalog, side, name, hud, clock }: Props) {
   const { t } = useTranslation()
   const wallet = buildWalletModel(game, catalog, side)
   const me = hud.participants[side]
@@ -28,6 +31,7 @@ export function AuctionHeader({ game, catalog, side, name, hud }: Props) {
       <li>{t('hud.discards', { count: hud.discardsRemaining, total: hud.discardsTotal })}</li>
       <li>{t('duel.round', { current: game.roundIndex + 1, total: game.rounds.length })}</li>
     </ul>
+    {clock}
     <details className="wallet-details"><summary>{t('wallet.details')}</summary>
       <ul><li>{t('wallet.total', { amount: wallet.budget })}</li><li>{t('hud.spent', { amount: wallet.spent })}</li>{wallet.reserve > 0 && <li>{t('wallet.reserve', { amount: wallet.reserve })}</li>}</ul>
     </details>

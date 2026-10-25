@@ -17,6 +17,8 @@ export interface OnlineGateway {
   setStrategy(roomId: string, strategy: string): Promise<RoomSnapshot>
   revealStrategies(roomId: string): Promise<Record<'recruiter_one' | 'recruiter_two', string>>
   forfeit(roomId: string, actionId: string): Promise<RoomSnapshot>
+  /** The server decides by its own clock: allowed only once the rival's deadline passed. The match ends like a forfeit by the one who did not answer. */
+  claimTimeout(roomId: string, actionId: string): Promise<RoomSnapshot>
   /** Host: deletes the room. Guest: leaves it (not while a match is running). */
   closeRoom(roomId: string, actionId: string): Promise<void>
   watch(roomId: string, changed: () => void, status: (status: ConnectionStatus) => void): () => void
@@ -26,6 +28,8 @@ function backendError(error: { message: string; code?: string }): OnlineError {
   if (error.code === 'PGRST202' || /Could not find the function/i.test(error.message)) return new OnlineError('BACKEND_OUTDATED')
   return new OnlineError(ONLINE_ERRORS.find(code => code === error.message) ?? 'NETWORK_ERROR')
 }
+/** A validated snapshot stamped with this device's time, so the countdown can use the server clock. */
+const received = (value: unknown): RoomSnapshot => ({ ...parseSnapshot(value), receivedAt: Date.now() })
 export function createOnlineGateway(client: SupabaseClient = getOnlineClient()): OnlineGateway {
   async function rpc(name: string, args: Record<string, unknown>): Promise<unknown> {
     const { data, error } = await client.rpc(name, args)
@@ -37,37 +41,37 @@ export function createOnlineGateway(client: SupabaseClient = getOnlineClient()):
     async create(name, actionId, roomName) {
       if (!isUuid(actionId)) throw new OnlineError('INVALID_ACTION')
       const label = roomName?.trim() ? parseOnlineName(roomName) : null
-      return parseSnapshot(await rpc('online_create_room', { p_name: parseOnlineName(name), p_action_id: actionId, p_room_name: label }))
+      return received(await rpc('online_create_room', { p_name: parseOnlineName(name), p_action_id: actionId, p_room_name: label }))
     },
     async join(code, name, actionId) {
       if (!isInviteCode(code) || !isUuid(actionId)) throw new OnlineError('INVALID_ACTION')
-      return parseSnapshot(await rpc('online_join_room', { p_code: code.length === 6 ? code.toUpperCase() : code, p_name: parseOnlineName(name), p_action_id: actionId }))
+      return received(await rpc('online_join_room', { p_code: code.length === 6 ? code.toUpperCase() : code, p_name: parseOnlineName(name), p_action_id: actionId }))
     },
     async snapshot(roomId) {
       if (!isUuid(roomId)) throw new OnlineError('INVALID_ACTION')
-      return parseSnapshot(await rpc('online_snapshot', { p_room_id: roomId }))
+      return received(await rpc('online_snapshot', { p_room_id: roomId }))
     },
     async command(command) {
       validateCommand(command)
       const result = await rpc('online_command', { p_room_id: command.roomId, p_action_id: command.actionId, p_expected_version: command.expectedVersion, p_action_type: command.actionType, p_payload: command.payload })
       if (command.actionType === 'LEAVE' && result === null) return null
-      return parseSnapshot(result)
+      return received(result)
     },
     async startDuel(roomId, expectedVersion, state, actionId) {
       if (!isUuid(roomId) || !isUuid(actionId) || !Number.isSafeInteger(expectedVersion) || expectedVersion < 0) throw new OnlineError('INVALID_ACTION')
-      return parseSnapshot(await rpc('online_start_duel', { p_room_id: roomId, p_action_id: actionId, p_expected_version: expectedVersion, p_state: state }))
+      return received(await rpc('online_start_duel', { p_room_id: roomId, p_action_id: actionId, p_expected_version: expectedVersion, p_state: state }))
     },
     async submitState(roomId, expectedVersion, state, actionId) {
       if (!isUuid(roomId) || !isUuid(actionId) || !Number.isSafeInteger(expectedVersion) || expectedVersion < 0) throw new OnlineError('INVALID_ACTION')
-      return parseSnapshot(await rpc('online_submit_state', { p_room_id: roomId, p_action_id: actionId, p_expected_version: expectedVersion, p_state: state }))
+      return received(await rpc('online_submit_state', { p_room_id: roomId, p_action_id: actionId, p_expected_version: expectedVersion, p_state: state }))
     },
     async flipCoin(roomId, expectedVersion, calledSide, actionId) {
       if (!isUuid(roomId) || !isUuid(actionId) || !Number.isSafeInteger(expectedVersion) || expectedVersion < 0 || (calledSide !== 'heads' && calledSide !== 'tails')) throw new OnlineError('INVALID_ACTION')
-      return parseSnapshot(await rpc('online_flip_coin', { p_room_id: roomId, p_action_id: actionId, p_expected_version: expectedVersion, p_called_side: calledSide }))
+      return received(await rpc('online_flip_coin', { p_room_id: roomId, p_action_id: actionId, p_expected_version: expectedVersion, p_called_side: calledSide }))
     },
     async setStrategy(roomId, strategy) {
       if (!isUuid(roomId)) throw new OnlineError('INVALID_ACTION')
-      return parseSnapshot(await rpc('online_set_strategy', { p_room_id: roomId, p_strategy: strategy }))
+      return received(await rpc('online_set_strategy', { p_room_id: roomId, p_strategy: strategy }))
     },
     async revealStrategies(roomId) {
       if (!isUuid(roomId)) throw new OnlineError('INVALID_ACTION')
@@ -77,7 +81,11 @@ export function createOnlineGateway(client: SupabaseClient = getOnlineClient()):
     },
     async forfeit(roomId, actionId) {
       if (!isUuid(roomId) || !isUuid(actionId)) throw new OnlineError('INVALID_ACTION')
-      return parseSnapshot(await rpc('online_forfeit', { p_room_id: roomId, p_action_id: actionId }))
+      return received(await rpc('online_forfeit', { p_room_id: roomId, p_action_id: actionId }))
+    },
+    async claimTimeout(roomId, actionId) {
+      if (!isUuid(roomId) || !isUuid(actionId)) throw new OnlineError('INVALID_ACTION')
+      return received(await rpc('online_claim_timeout', { p_room_id: roomId, p_action_id: actionId }))
     },
     async closeRoom(roomId, actionId) {
       if (!isUuid(roomId) || !isUuid(actionId)) throw new OnlineError('INVALID_ACTION')
