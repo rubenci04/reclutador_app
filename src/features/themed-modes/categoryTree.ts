@@ -12,3 +12,6 @@ export const CATEGORY_GROUPS = [
   { id: 'europe', modes: ['EUROPE_CURRENT', 'EUROPE_LEGENDS'] },
 ] as const satisfies readonly { readonly id: string; readonly modes: readonly ThemedModeId[] }[]
 export type CategoryGroupId = (typeof CATEGORY_GROUPS)[number]['id']
+
+/** First category shown when the game opens: the Argentine league, Current edition. */
+export const DEFAULT_MODE: ThemedModeId = 'ARGENTINA_CURRENT'

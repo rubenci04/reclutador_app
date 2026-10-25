@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
 import type { PendingPlay, PlayChoice } from './interactive'
@@ -7,6 +7,12 @@ import { DribblePanel } from './DribblePanel'
 import { DefensePanel, type DefenseDriver } from './DefensePanel'
 import { ShotPanel } from './ShotPanel'
 import type { LaneDriver } from './timing'
+
+/** When the pitch above takes the decision by touch, the cards move into a closed <details>: the accessible alternative, one click each. */
+function Cards({ alt, summary, children }: { readonly alt: boolean; readonly summary: string; readonly children: ReactNode }) {
+  const grid = <div className="play-cards">{children}</div>
+  return alt ? <details className="board-alt"><summary>{summary}</summary>{grid}</details> : grid
+}
 
 /** One interactive node as two big cards: no forms, one tap resolves it. */
 export function PlayPanel({ play, catalog, onChoose, ovrDuels = false, precisionShot = false, boardDriven = false, defenseDriver, laneDriver }: { readonly play: PendingPlay; readonly catalog: readonly Player[]; readonly onChoose: (choice: PlayChoice, precision?: number) => void; readonly ovrDuels?: boolean; /** SIM-MINI-002: the direct free kick is taken with the close-up shot. */ readonly precisionShot?: boolean; /** SIM-FIELD-002: the pitch above takes the decision by touch; the cards stay as the accessible alternative. */ readonly boardDriven?: boolean; readonly defenseDriver?: DefenseDriver; readonly laneDriver?: LaneDriver }) {
@@ -26,7 +32,7 @@ export function PlayPanel({ play, catalog, onChoose, ovrDuels = false, precision
   return <section className={`live-play${boardDriven ? ' is-board-secondary' : ''}${isHeader || fkDirect || play.node === 'CORNER_ATTACK' ? ' live-header' : ''}`} ref={card} aria-label={t(fk ? 'freeKick.label' : cornerRoot ? 'corner.label' : isHeader ? 'aerial.label' : play.node === 'DEFEND' ? 'moments.label' : 'play.label')}>
     <h2 tabIndex={-1} ref={heading}>{title}</h2>
     <p className="live-moment">{`${(play.freeKick && !isHeader ? player(play.freeKick.kickerId) : play.node === 'FINISH' || isHeader ? receiver : protagonist)?.name ?? ''}`}</p>
-    <div className="play-cards">
+    <Cards alt={boardDriven} summary={t('field.chooseWithButtons')}>
       {play.options.map((option) => {
         const mate = player(option.playerId)
         const description = fk && !isHeader ? t(`freeKick.hint.${option.choice}`) : cornerRoot ? t(`corner.hint.${option.choice}`) : isHeader ? t(`aerial.hint.${option.choice}`) : play.node === 'DEFEND' ? t(`moments.hint.${option.choice}`) : !option.available ? (play.node === 'DIRECTION' ? t('play.noReceiver') : t('play.noTarget')) : play.node === 'DIRECTION'
@@ -38,7 +44,7 @@ export function PlayPanel({ play, catalog, onChoose, ovrDuels = false, precision
           <span id={`play-detail-${option.choice}`}>{description}</span>
         </button>
       })}
-    </div>
+    </Cards>
     <details className="moment-detail"><summary>{t('moments.detail')}</summary><p>{t(fk ? 'freeKick.detail' : cornerRoot || play.node === 'CORNER_HEADER' ? 'corner.detail' : ovrDuels ? 'halftime.duels' : play.node === 'HEADER' ? 'aerial.detailHint' : 'moments.attributes')}</p>{[...new Set([play.protagonistId, play.receiverId, ...play.options.flatMap((o) => [o.playerId, o.rivalId])])].flatMap((id) => { const p = player(id); return p ? <p key={p.id}>{p.name} · {t('moments.ratings', { overall: p.overall_rating, attack: p.att_rating, defense: p.def_rating, physical: p.phy_rating, mental: p.men_rating })}</p> : [] })}</details>
   </section>
 }

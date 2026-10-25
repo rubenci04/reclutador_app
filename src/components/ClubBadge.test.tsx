@@ -51,11 +51,12 @@ describe('club colours and generic badges', () => {
     expect(screen.getByRole('img',{name:fallback})).toHaveClass('club-badge')
     expect(screen.getByText('River Plate')).toBeInTheDocument()
   })
-  it('integrates with the auction card while preserving its photograph, flag, rating and price', async () => {
+  it('integrates with the auction card while preserving its figure (no photo), flag, rating and price', async () => {
     const i18n=await createI18n('en'); const player=DRAFT_CATALOG.find((candidate)=>candidate.id==='plr_038')!
     render(<I18nextProvider i18n={i18n}><PlayerIdentity player={player} /></I18nextProvider>)
     expect(screen.getByRole('img',{name:'Colours of FC Barcelona'})).toBeInTheDocument()
-    expect(screen.getByRole('img',{name:'Photograph of Lionel Messi'})).toHaveAttribute('src','/assets/players/plr_038.jpg')
+    expect(screen.queryByRole('img',{name:'Photograph of Lionel Messi'})).not.toBeInTheDocument()
+    expect(screen.getByRole('img',{name:i18n.t('playtest.avatar',{name:player.name})})).toBeInTheDocument()
     expect(screen.getByRole('img',{name:'Flag of ARG'})).toBeInTheDocument()
     expect(screen.getByText(`Base ${player.price}M`)).toBeInTheDocument()
   })

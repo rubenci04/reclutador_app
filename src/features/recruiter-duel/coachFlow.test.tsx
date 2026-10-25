@@ -22,6 +22,7 @@ it('requires the coach decision before bench and ordering, then shows only power
   try {
     render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={() => {}} /></I18nextProvider>)
     fireEvent.click(screen.getByRole('button', { name: 'Two players on this device' }))
+    fireEvent.click(screen.getByRole('button', { name: /^Global/ }))
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     expect(screen.queryByRole('button', { name: 'Confirm eleven' })).toBeNull()
     const coachButton = document.querySelector('.coach-grid .primary-action')!
@@ -56,6 +57,7 @@ it.each(['es-AR', 'en', 'pt-BR'] as const)('shows both coaches before the shared
   try {
     const { container } = render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={() => {}} /></I18nextProvider>)
     fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.local') }))
+    fireEvent.click(screen.getByRole('button', { name: /^Global/ }))
     fireEvent.click(screen.getByRole('button', { name: i18n.t('duel.start') }))
     const steps = screen.getByRole('list', { name: i18n.t('locker.stepsLabel') })
     expect(steps.children).toHaveLength(3)

@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { PRECISION_BAR_KEY, setPrecisionBar } from './precisionSetting'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { I18nextProvider } from 'react-i18next'
 import { createI18n } from '../../i18n'
@@ -26,12 +27,14 @@ const mateTap = () => { const mate = drawn.text.filter((c) => c.t === 'A').at(-1
 const pressTap = () => { const ring = drawn.arcs.filter((c) => Math.abs(c.r - RADIUS * 2.7) < .01).at(-1)!; tap(ring.x, ring.y) }
 const laneTap = (lane: 'LEFT' | 'CENTER' | 'RIGHT') => tap(40, { LEFT: 100, CENTER: 207, RIGHT: 315 }[lane])
 
+// These tests cover the two-step flow (pick, then stop the bar), which is what the precision-bar setting turns on; the default one-tap flow has its own tests.
 beforeEach(() => {
+  setPrecisionBar(true)
   drawn.text.length = 0; drawn.arcs.length = 0
   const fake = new Proxy({ measureText: () => ({ width: 30 }), fillText: (t: string, x: number, y: number) => drawn.text.push({ t, x, y }), arc: (x: number, y: number, r: number) => drawn.arcs.push({ x, y, r }) } as Record<string, unknown>, { get: (target, key: string) => key in target ? target[key] : () => {}, set: () => true })
   vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(fake as never)
 })
-afterEach(() => { cleanup(); vi.useRealTimers(); vi.unstubAllGlobals(); vi.restoreAllMocks() })
+afterEach(() => { cleanup(); vi.useRealTimers(); localStorage.removeItem(PRECISION_BAR_KEY); vi.unstubAllGlobals(); vi.restoreAllMocks() })
 
 async function openMatch(seed: string) {
   vi.useFakeTimers()
@@ -330,5 +333,115 @@ describe('SIM-FIELD-003 held pass', () => {
     press(again.x, again.y); tick(100); release(again.x, again.y); tap(again.x, again.y)
     expect(submit).toHaveBeenCalledTimes(1)
     expect(submit.mock.calls[0][1]).not.toHaveProperty('precision')
+  })
+})
+
+// Sprint 9: with the precision bar off (the default) one touch on a destination resolves the play.
+describe('one touch resolves the play (precision bar off, the default)', () => {
+  beforeEach(() => setPrecisionBar(false))
+  const laneChoice = (node: string, lane: string) => `${node === 'DRIBBLE' ? 'DRIBBLE' : 'FK'}_${lane}`
+
+  it.each(['DRIBBLE', 'FK_ATTACK'] as const)('%s: a touch on the pitch highlights the destination, then plays it once with the neutral precision, with no confirm step', async node => {
+    const origin = pendingNode(node)
+    vi.useFakeTimers()
+    const submit = vi.spyOn(interactive, 'submitPlay')
+    await openNode(origin)
+    expect(document.querySelector('.board-pick-hint')).toHaveTextContent('Tap a destination to play')
+    expect(document.querySelector('.tactical-board .dribble-bar')).toBeNull()
+    expect(document.querySelector('.dribble-panel .primary-action')).toBeNull()
+    expect(screen.queryByText(/Tap again to stop the bar|Tap again to confirm/)).toBeNull()
+    decisionTap('B')
+    // The chosen destination shows for a moment before the result; a second touch on the same moment changes nothing.
+    expect(submit).not.toHaveBeenCalled()
+    expect(screen.getByRole('radio', { name: /Centre/ })).toHaveAttribute('aria-checked', 'true')
+    decisionTap('B'); decisionTap('C')
+    tick(300)
+    expect(submit).toHaveBeenCalledTimes(1)
+    expect(submit.mock.calls[0][1]).toMatchObject({ node, choice: laneChoice(node, 'CENTER'), precision: .5 })
+    tick(3000)
+    expect(submit.mock.calls.filter(([, command]) => (command as { node: string }).node === node)).toHaveLength(1)
+  })
+
+  it('with reduced motion the touch plays at once (nothing to wait for)', async () => {
+    const origin = pendingNode('DRIBBLE')
+    vi.useFakeTimers()
+    vi.stubGlobal('matchMedia', () => ({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() }))
+    const submit = vi.spyOn(interactive, 'submitPlay')
+    await openNode(origin)
+    decisionTap('A')
+    expect(submit).toHaveBeenCalledTimes(1)
+    expect(submit.mock.calls[0][1]).toMatchObject({ node: 'DRIBBLE', choice: 'DRIBBLE_LEFT', precision: .5 })
+  })
+
+  it('keeps the options as buttons inside a closed "Choose with buttons" details: one click each, and the keyboard needs a single action', async () => {
+    const origin = pendingNode('DRIBBLE')
+    vi.useFakeTimers()
+    const submit = vi.spyOn(interactive, 'submitPlay')
+    await openNode(origin)
+    const alternative = document.querySelector('details.board-alt') as HTMLDetailsElement
+    expect(alternative).not.toBeNull(); expect(alternative.open).toBe(false)
+    expect(alternative.querySelector('summary')).toHaveTextContent('Choose with buttons')
+    expect(alternative.contains(screen.getByRole('radio', { name: /Centre/ }))).toBe(true)
+    expect(alternative.contains(screen.getByRole('button', { name: 'Resolve with the traditional system' }))).toBe(true)
+    // Keyboard: arrows only move the highlight; Enter is the one action.
+    const region = screen.getByRole('region', { name: 'Interactive dribble' })
+    fireEvent.keyDown(region, { key: 'ArrowRight' })
+    expect(screen.getByRole('radio', { name: /Right/ })).toHaveAttribute('aria-checked', 'true')
+    expect(submit).not.toHaveBeenCalled()
+    fireEvent.keyDown(region, { key: 'Enter' }); tick(300)
+    expect(submit).toHaveBeenCalledTimes(1)
+    expect(submit.mock.calls[0][1]).toMatchObject({ choice: 'DRIBBLE_RIGHT', precision: .5 })
+    // A button inside the details also resolves with a single click.
+    cleanup(); submit.mockClear(); drawn.text.length = 0
+    await openNode(origin)
+    fireEvent.click(screen.getByRole('radio', { name: /Left/ })); tick(300)
+    expect(submit).toHaveBeenCalledTimes(1)
+    expect(submit.mock.calls[0][1]).toMatchObject({ choice: 'DRIBBLE_LEFT', precision: .5 })
+    // The traditional system still resolves without a bar.
+    cleanup(); submit.mockClear(); drawn.text.length = 0
+    await openNode(origin)
+    fireEvent.click(screen.getByRole('button', { name: 'Resolve with the traditional system' }))
+    expect(submit).toHaveBeenCalledTimes(1)
+    expect(submit.mock.calls[0][1]).toMatchObject({ choice: 'DRIBBLE_CENTER' })
+  })
+
+  it('turning the "Precision bar" setting on brings back the two-step flow, and the setting is remembered', async () => {
+    const origin = pendingNode('DRIBBLE')
+    vi.useFakeTimers()
+    const submit = vi.spyOn(interactive, 'submitPlay')
+    await openNode(origin)
+    const toggle = screen.getByLabelText('Precision bar') as HTMLInputElement
+    expect(toggle.checked).toBe(false)
+    fireEvent.click(toggle)
+    expect(toggle.checked).toBe(true); expect(localStorage.getItem(PRECISION_BAR_KEY)).toBe('on')
+    decisionTap('B')
+    expect(submit).not.toHaveBeenCalled()
+    expect(document.querySelector('.tactical-board .dribble-bar')).not.toBeNull()
+    expect(document.querySelector('.board-pick-hint')).toHaveTextContent('Tap again to stop the bar')
+    tick(400); decisionTap('B')
+    expect(submit).toHaveBeenCalledTimes(1)
+    expect(submit.mock.calls[0][1]).toMatchObject({ choice: 'DRIBBLE_CENTER', precision: 1 })
+    // A blocked storage never breaks the screen: the choice made in this session stays in memory.
+    cleanup(); drawn.text.length = 0
+    vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => { throw new Error('blocked') })
+    await openNode(origin)
+    expect((screen.getByLabelText('Precision bar') as HTMLInputElement).checked).toBe(true)
+  })
+
+  it('defence: a lane touch plays at once (no bar, no confirm), once, and the cards stay as the alternative', { timeout: 120_000 }, async () => {
+    const { done } = await reach('field-def', () => defending() && drawn.arcs.length > 0)
+    expect(document.querySelector('.board-pick-hint')?.textContent).toBe('Tap a destination to play')
+    expect(document.querySelector('.defense-panel .primary-action')).toBeNull()
+    expect(document.querySelector('.defense-panel details.board-alt')).not.toBeNull()
+    laneTap('LEFT'); laneTap('LEFT'); laneTap('RIGHT')
+    expect(screen.getByRole('radio', { name: /Anticipate left/ })).toHaveAttribute('aria-checked', 'true')
+    expect(defending()).toBe(true)
+    tick(300)
+    const scene = document.querySelector('.defense-scene') as HTMLElement
+    expect(scene).not.toBeNull(); expect(scene.getAttribute('data-pick')).toBe('LEFT')
+    expect(defending()).toBe(false)
+    tick(3000); advance(() => false)
+    const plays = finishOf(done).filter((e) => e.node === 'DEFEND')
+    expect(plays.filter((e) => e.choice === 'DEFEND_LEFT' && e.precision === .5)).toHaveLength(1)
   })
 })

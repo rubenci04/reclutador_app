@@ -31,6 +31,7 @@ import { autoChooseCoach, chooseCoach, declineCoach, releaseCoach } from './coac
 import { COACH_MARKET_V4, COACH_MAX_PRICE } from '../coaches/coachRules'
 import { StageGuide } from '../onboarding/StageGuide'
 import { ModeSelector } from '../themed-modes/ModeSelector'
+import { DEFAULT_MODE } from '../themed-modes/categoryTree'
 import { EditionHero } from './EditionHero'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
 import { chooseFormation, autoBuySubstitutes, buySubstitute, swapBenchWithStarter, budgetOf, autoCompleteAll, autoCompleteStep, canAutoComplete, previewAutoComplete, beginBidding, completeDuelMatch, createRecruiterDuel, currentRound, positionProgress, auctionAvailability, nextAuctionRound, passAuction, placeBid, reorderTeamLineup, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss, startDuelMatch } from './auctionEngine'
@@ -118,9 +119,10 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
   const [replayText, setReplayText] = useState('')
   const [storageWarning, setStorageWarning] = useState(false)
   const [secondCategory, setSecondCategory] = useState<ThemedModeId | 'same'>('same')
-  const [mode, setMode] = useState<ThemedModeId>('GLOBAL_CLASSIC')
+  // Argentine league, Current edition, unless the person picks another one.
+  const [mode, setMode] = useState<ThemedModeId>(DEFAULT_MODE)
   /** Mode of the running game; the setup screen follows `mode`. */
-  const [gameMode, setGameMode] = useState<ThemedModeId>('GLOBAL_CLASSIC')
+  const [gameMode, setGameMode] = useState<ThemedModeId>(DEFAULT_MODE)
   /** Live draw in progress for two different categories (local games only); becomes a normal game once both elevens are complete. */
   const [dual, setDual] = useState<{ readonly draft: DualDraft; readonly first: ThemedModeId; readonly second: ThemedModeId; readonly vsCpu: boolean } | null>(null)
   const [liveOrigin, setLiveOrigin] = useState<Session | null>(null)

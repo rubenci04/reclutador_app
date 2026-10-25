@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
 import type { DribbleSector } from './interactive/attackTree'
 import { TimingBar } from './TimingBar'
+import { NEUTRAL_PRECISION, usePrecisionBar, useTapOnce } from './precisionSetting'
 import { reducedMotion, useTimingBar, type LaneDriver } from './timing'
 
 export type Lane = DribbleSector
@@ -30,42 +31,56 @@ export function Goal({ mode, lane, onPick }: { readonly mode: ShotMode; readonly
  */
 export function ShotPanel({ mode, kicker, keeper, onShoot, onTraditional, driver }: { readonly mode: ShotMode; readonly kicker: Player | undefined; readonly keeper: Player | undefined; readonly onShoot: (lane: Lane, precision: number) => void; readonly onTraditional?: () => void; readonly driver?: LaneDriver }) {
   const { t } = useTranslation()
+  const bar = usePrecisionBar(); const once = useTapOnce()
   const [ownLane, setOwnLane] = useState<Lane | null>(null)
+  const [keyLane, setKeyLane] = useState<Lane | null>(null)
   const lane = driver ? driver.pick : ownLane
   const setLane = driver ? driver.setPick : setOwnLane
-  const timer = useTimingBar(!driver && lane !== null)
+  const timer = useTimingBar(bar && !driver && lane !== null)
   const { marker } = timer; const stop = driver ? driver.stop : timer.stop; const motionOff = driver ? driver.motionOff : timer.motionOff
   const heading = useRef<HTMLHeadingElement>(null)
   useEffect(() => { heading.current?.focus({ preventScroll: true }) }, [])
+  /** Bar on: select the third. Bar off: touching a third (or its button) takes the shot at once with the neutral precision. */
+  const pickLane = (id: Lane) => {
+    if (bar || driver) return setLane(id)
+    setOwnLane(id); once(() => onShoot(id, NEUTRAL_PRECISION))
+  }
   const shoot = () => { if (lane) onShoot(lane, stop()) }
   const keys = (event: KeyboardEvent) => {
-    if (event.key === 'ArrowLeft') { setLane('LEFT'); event.preventDefault() }
-    else if (event.key === 'ArrowRight') { setLane('RIGHT'); event.preventDefault() }
-    else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') { setLane('CENTER'); event.preventDefault() }
-    else if ((event.key === ' ' || event.key === 'Enter') && lane && event.target === event.currentTarget) { shoot(); event.preventDefault() }
+    const move = (id: Lane) => { if (bar) setLane(id); else setKeyLane(id); event.preventDefault() }
+    if (event.key === 'ArrowLeft') move('LEFT')
+    else if (event.key === 'ArrowRight') move('RIGHT')
+    else if (event.key === 'ArrowUp' || event.key === 'ArrowDown') move('CENTER')
+    else if ((event.key === ' ' || event.key === 'Enter') && event.target === event.currentTarget) {
+      if (bar && lane) { shoot(); event.preventDefault() } else if (!bar && keyLane) { pickLane(keyLane); event.preventDefault() }
+    }
   }
-  return <section className={`live-play dribble-panel shot-panel${driver ? ' is-board-driven is-board-secondary' : ''}`} aria-label={t('shot.label')} tabIndex={-1} onKeyDown={keys} data-mode={mode}>
-    <h2 tabIndex={-1} ref={heading}>{t(mode === 'PENALTY' ? 'shot.titlePenalty' : 'shot.titleFreeKick')}</h2>
-    <p className="live-moment">{t('shot.intro', { kicker: kicker?.name ?? '', keeper: keeper?.name ?? '' })}</p>
+  const shown = lane ?? (bar ? null : keyLane)
+  const controls = <>
     <div className="dribble-field">
       <svg className="dribble-pitch" viewBox="0 0 300 180" aria-hidden="true">
-        <Goal mode={mode} lane={lane} onPick={setLane} />
+        <Goal mode={mode} lane={shown} onPick={pickLane} />
         <g className="shot-keeper" style={{ transform: 'translate(150px, 84px)' }}><circle r="11" /><text textAnchor="middle" y="4">{keeper?.overall_rating ?? ''}</text></g>
         <circle className="dribble-ball" r="5" cx="150" cy="152" />
       </svg>
     </div>
     <div className="dribble-lanes" role="radiogroup" aria-label={t('shot.lanes')}>
-      {LANES.map((id) => <button key={id} type="button" role="radio" aria-checked={lane === id} className={`play-card dribble-lane-button${lane === id ? ' is-chosen' : ''}`} onClick={() => setLane(id)}>
+      {LANES.map((id) => <button key={id} type="button" role="radio" aria-checked={shown === id} className={`play-card dribble-lane-button${shown === id ? ' is-chosen' : ''}`} onClick={() => pickLane(id)}>
         <b className="play-letter" aria-hidden="true">{id === 'LEFT' ? '←' : id === 'RIGHT' ? '→' : '↑'}</b><strong>{t(`shot.lane.${id}`)}</strong>
       </button>)}
     </div>
-    {lane && !motionOff && !driver && <TimingBar marker={marker} label={t('shot.barLabel')} />}
+    {bar && lane && !motionOff && !driver && <TimingBar marker={marker} label={t('shot.barLabel')} />}
     <div className="dribble-actions">
-      <button type="button" className="primary-action" disabled={!lane} onClick={shoot}>{lane ? t(motionOff ? 'shot.confirm' : 'shot.stop') : t('shot.chooseFirst')}</button>
+      {bar && <button type="button" className="primary-action" disabled={!lane} onClick={shoot}>{lane ? t(motionOff ? 'shot.confirm' : 'shot.stop') : t('shot.chooseFirst')}</button>}
       {onTraditional && <button type="button" className="secondary-action" onClick={onTraditional}>{t('shot.traditional')}</button>}
     </div>
     <details className="moment-detail"><summary>{t('moments.detail')}</summary><p>{t(mode === 'PENALTY' ? 'shot.detailPenalty' : 'shot.detailFreeKick')}</p></details>
-    <p className="market-hint">{t('shot.hint')}</p>
+    <p className="market-hint">{t(bar ? 'shot.hint' : 'field.tapTarget')}</p>
+  </>
+  return <section className={`live-play dribble-panel shot-panel${driver ? ' is-board-driven is-board-secondary' : ''}`} aria-label={t('shot.label')} tabIndex={-1} onKeyDown={keys} data-mode={mode}>
+    <h2 tabIndex={-1} ref={heading}>{t(mode === 'PENALTY' ? 'shot.titlePenalty' : 'shot.titleFreeKick')}</h2>
+    <p className="live-moment">{t('shot.intro', { kicker: kicker?.name ?? '', keeper: keeper?.name ?? '' })}</p>
+    {driver ? <details className="board-alt"><summary>{t('field.chooseWithButtons')}</summary>{controls}</details> : controls}
   </section>
 }
 

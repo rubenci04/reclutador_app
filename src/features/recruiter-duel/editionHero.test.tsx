@@ -60,4 +60,42 @@ describe('SIM-FIELD-001 board coordinates', () => {
     expect(nearestHit(hits, boardPoint({ x: 105, y: 52 }, { left: 0, top: 0, width: 320, height: 200 }, { width: 640, height: 400 }).x, 100)?.label).toBe('A')
     expect(nearestHit(hits, 320, 100)).toBeNull()
   })
+  it.each(['es-AR', 'en', 'pt-BR'] as const)('opens on the Argentine league, Current edition, in %s', async (language) => {
+    const i18n = await createI18n(language)
+    render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
+    fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.cpu') }))
+    expect(document.querySelector('.edition-title')!.textContent).toBe(i18n.t('categoryTree.groups.argentina'))
+    expect(document.querySelector('.edition-name')!.textContent).toBe(i18n.t('editionHero.current'))
+  })
+  it.each(['es-AR', 'en', 'pt-BR'] as const)('tapping a category changes the title at once, with its Current edition, and announces it in %s', async (language) => {
+    const i18n = await createI18n(language)
+    const scroll = vi.fn(); window.HTMLElement.prototype.scrollIntoView = scroll
+    render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
+    fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.cpu') }))
+    fireEvent.click(screen.getByRole('button', { name: new RegExp(i18n.t('categoryTree.groups.mexico')) }))
+    expect(document.querySelector('.edition-title')!.textContent).toBe(i18n.t('categoryTree.groups.mexico'))
+    expect(document.querySelector('.edition-name')!.textContent).toBe(i18n.t('editionHero.current'))
+    const live = document.querySelector('.mode-selector [aria-live="polite"]')!
+    expect(live.textContent).toBe(i18n.t('categoryTree.selectedAnnounce', { name: `${i18n.t('categoryTree.groups.mexico')} · ${i18n.t('editionHero.current')}` }))
+    expect(scroll).toHaveBeenCalled()
+    // Tapping Legends inside the open category changes the edition line and the announcement.
+    fireEvent.click(screen.getByRole('button', { name: new RegExp(i18n.t('categoryTree.options.MEXICO_LEGENDS')) }))
+    expect(document.querySelector('.edition-name')!.textContent).toBe(i18n.t('editionHero.legends'))
+    expect(live.textContent).toContain(i18n.t('editionHero.legends'))
+    // Back to the list and tapping the same category keeps the edition already chosen.
+    fireEvent.click(screen.getByRole('button', { name: i18n.t('categoryTree.back') }))
+    fireEvent.click(screen.getByRole('button', { name: new RegExp(i18n.t('categoryTree.groups.mexico')) }))
+    expect(document.querySelector('.edition-name')!.textContent).toBe(i18n.t('editionHero.legends'))
+  })
+  it('keeps the budget and the edition coherent when the category changes', async () => {
+    const i18n = await createI18n('en')
+    render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
+    fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.cpu') }))
+    const meta = () => document.querySelector('.edition-meta')!.textContent
+    fireEvent.click(screen.getByRole('button', { name: new RegExp(i18n.t('categoryTree.groups.brazil')) }))
+    const brazil = meta()
+    fireEvent.click(screen.getByRole('button', { name: new RegExp(i18n.t('categoryTree.options.BRAZIL_LEGENDS')) }))
+    expect(meta()).not.toBe(brazil)
+    expect(meta()).toContain('220')
+  })
 })

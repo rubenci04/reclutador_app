@@ -18,19 +18,21 @@ const player = (id: string, category: Player['category'], nationality = 'ARG'): 
 })
 
 describe('current and legend category variants', () => {
-  it('keeps the selected edition when opening another category or returning to the main menu', async () => {
+  it('selects a category immediately and preserves the controlled edition when returning', async () => {
     const i18n = await createI18n('en')
     const onChange = vi.fn()
     render(<I18nextProvider i18n={i18n}><ModeSelector selected="ARGENTINA_CURRENT" onChange={onChange} /></I18nextProvider>)
     expect(document.querySelector('.mode-card.is-selected')).toHaveTextContent('Argentine league')
     fireEvent.click(screen.getByRole('button', { name: /^Europe/ }))
-    expect(onChange).not.toHaveBeenCalled()
+    expect(onChange).toHaveBeenCalledTimes(1)
+    expect(onChange).toHaveBeenLastCalledWith('EUROPE_CURRENT')
     fireEvent.click(screen.getByRole('button', { name: 'Back to categories' }))
     expect(screen.getAllByRole('button')).toHaveLength(9)
     expect(document.querySelector('.mode-card.is-selected')).toHaveTextContent('Argentine league')
     fireEvent.click(screen.getByRole('button', { name: /^Argentine league/ }))
     expect(screen.getByRole('button', { name: /^Argentine league current players 2026/ })).toHaveAttribute('aria-pressed', 'true')
-    expect(onChange).not.toHaveBeenCalled()
+    expect(onChange).toHaveBeenCalledTimes(2)
+    expect(onChange).toHaveBeenLastCalledWith('ARGENTINA_CURRENT')
   })
   it.each(['es-AR', 'en', 'pt-BR'] as const)('renders the nine categories in the exact 3x3 reading and tab order in %s', async (language) => {
     const i18n = await createI18n(language)
@@ -103,6 +105,7 @@ describe('current and legend category variants', () => {
     for (const group of CATEGORY_GROUPS) {
       fireEvent.click(screen.getByRole('button', { name: new RegExp('^' + i18n.t('categoryTree.groups.' + group.id)) }))
       expect(screen.getByRole('heading', { name: i18n.t('categoryTree.groups.' + group.id) })).toHaveFocus()
+      expect(onChange).toHaveBeenLastCalledWith(group.modes[0])
       for (const id of group.modes) {
         const button = screen.getByRole('button', { name: new RegExp('^' + i18n.t('categoryTree.options.' + id)) })
         expect(button).toBeEnabled()
@@ -111,6 +114,6 @@ describe('current and legend category variants', () => {
       }
       fireEvent.click(screen.getByRole('button', { name: i18n.t('categoryTree.back') }))
     }
-    expect(onChange).toHaveBeenCalledTimes(18)
+    expect(onChange).toHaveBeenCalledTimes(27)
   })
 })

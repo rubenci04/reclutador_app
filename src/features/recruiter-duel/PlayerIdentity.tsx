@@ -3,6 +3,7 @@ import { useState, type CSSProperties } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
 import { getPlayerTier } from '../player-catalog/getPlayerTier'
+import { SHOW_PLAYER_PHOTOS } from '../../config/product'
 import { approvedPhoto, flagUrl, PHOTO_MANIFEST } from './visualAssets'
 import { PlayerClubDetails } from '../../components/PlayerClubDetails'
 import { importedClub } from '../player-catalog/leagueCollections'
@@ -40,5 +41,6 @@ export function PlayerIdentity({ player, rank }: { readonly player:Player; /** P
 
 export function VisualCredits() {
   const { t } = useTranslation()
+  if (!SHOW_PLAYER_PHOTOS) return null
   return <details className="visual-credits"><summary>{t('cpu.credits')}</summary><p>{t('cpu.photoNotice')}</p>{PHOTO_MANIFEST.map((photo) => <p key={photo.playerId}><a href={photo.sourceUrl}>{photo.attribution}</a> · <a href={photo.licenseUrl}>{photo.license}</a></p>)}{coachPhotos.map((photo) => <p key={photo.coachId}><a href={photo.sourceUrl}>{photo.name} — {photo.author}</a> · <a href={photo.licenseUrl}>{photo.license}</a> · {t('playtest.photoCredit')}</p>)}<p><a href="https://github.com/lipis/flag-icons/blob/v7.5.0/LICENSE">flag-icons 7.5.0 — Panayiotis Lipiridis — MIT</a></p></details>
 }

@@ -444,3 +444,7 @@ Cruce de categorías con 5 descartes (3 solo sin marcador); descartes online cru
 ## Sprint 8 volver atrás — 25/10/2026
 
 Se puede volver a editar formación, suplentes y técnico desde la pantalla de poder/táctica (reinicia las tácticas de ambos lados), cambiar la táctica antes de empezar (la de la CPU queda sellada hasta el inicio) y cambiar de técnico con reembolso (`releaseCoach`). Los técnicos no son exclusivos (decisión pendiente). [Registro](logs/SPRINT-8-VOLVER-ATRAS.md).
+
+## Sprint 9 navegación, fotos y tablero — 25/10/2026
+
+Liga Argentina / Actuales inicial, hero reactivo con anuncio y scroll accesible, fotos archivadas y muñecos estándar, decisiones con un toque y precisión opcional; cierre de las 17 fallas por supuestos de categoría/fotos y separación de Fast Refresh. Typecheck/build aprobados; lint: 0 errores, 4 advertencias; 1.554 pruebas pasadas, 3 omitidas opt-in. [Registro y validación](logs/SPRINT-9-NAVEGACION-FOTOS-TABLERO.md). Publicación manual y QA visual pendientes.

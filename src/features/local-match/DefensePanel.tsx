@@ -5,6 +5,7 @@ import { defenseChoice, type DribbleSector, type PendingPlay, type PlayChoice } 
 import { LANE_X } from './DribblePanel'
 import { TimingBar } from './TimingBar'
 import { reducedMotion, useTimingBar } from './timing'
+import { NEUTRAL_PRECISION, usePrecisionBar, useTapOnce } from './precisionSetting'
 
 const LANES: readonly DribbleSector[] = ['LEFT', 'CENTER', 'RIGHT']
 export type DefensePick = DribbleSector | 'PRESS'
@@ -29,38 +30,52 @@ function Field({ attacker, defender, pick, intent, moved }: { readonly attacker:
 export interface DefenseDriver { readonly pick: DefensePick | null; readonly setPick: (pick: DefensePick) => void; readonly stop: () => number; readonly motionOff: boolean }
 export function DefensePanel({ play, catalog, onChoose, driver }: { readonly play: PendingPlay; readonly catalog: readonly Player[]; readonly onChoose: (choice: PlayChoice, precision?: number) => void; readonly driver?: DefenseDriver }) {
   const { t } = useTranslation()
+  const bar = usePrecisionBar(); const once = useTapOnce()
   const attacker = catalog.find((p) => p.id === play.attackerId); const defender = catalog.find((p) => p.id === play.protagonistId)
   const [own, setOwn] = useState<Pick | null>(null)
-  const timer = useTimingBar(!driver && own !== null)
+  const [keyPick, setKeyPick] = useState<Pick | null>(null)
+  const timer = useTimingBar(bar && !driver && own !== null)
   const pick = driver ? driver.pick : own
   const setPick = driver ? driver.setPick : setOwn
   const { marker } = timer; const stop = driver ? driver.stop : timer.stop; const motionOff = driver ? driver.motionOff : timer.motionOff
   const heading = useRef<HTMLHeadingElement>(null)
   useEffect(() => { heading.current?.focus({ preventScroll: true }) }, [])
+  /** Bar on: select what to anticipate. Bar off: the pick resolves the defence at once (the board-driven screen adds its own feedback). */
+  const choose = (id: Pick) => {
+    if (bar || driver) return setPick(id)
+    setOwn(id); once(() => onChoose(defenseChoice(id), NEUTRAL_PRECISION))
+  }
   const confirm = () => { if (pick) onChoose(defenseChoice(pick), stop()) }
   const keys = (event: KeyboardEvent) => {
-    if (event.key === 'ArrowLeft') { setPick('LEFT'); event.preventDefault() }
-    else if (event.key === 'ArrowRight') { setPick('RIGHT'); event.preventDefault() }
-    else if (event.key === 'ArrowUp') { setPick('CENTER'); event.preventDefault() }
-    else if (event.key === 'ArrowDown') { setPick('PRESS'); event.preventDefault() }
-    else if ((event.key === ' ' || event.key === 'Enter') && pick && event.target === event.currentTarget) { confirm(); event.preventDefault() }
+    const move = (id: Pick) => { if (bar) setPick(id); else setKeyPick(id); event.preventDefault() }
+    if (event.key === 'ArrowLeft') move('LEFT')
+    else if (event.key === 'ArrowRight') move('RIGHT')
+    else if (event.key === 'ArrowUp') move('CENTER')
+    else if (event.key === 'ArrowDown') move('PRESS')
+    else if ((event.key === ' ' || event.key === 'Enter') && event.target === event.currentTarget) {
+      if (bar && pick) { confirm(); event.preventDefault() } else if (!bar && keyPick) { choose(keyPick); event.preventDefault() }
+    }
   }
-  return <section className={`live-play dribble-panel defense-panel${driver ? ' is-board-driven' : ''}`} aria-label={t('defenseMini.label')} tabIndex={-1} onKeyDown={keys}>
-    <h2 tabIndex={-1} ref={heading}>{t('defenseMini.title')}</h2>
-    <p className="live-moment">{t('defenseMini.intro', { attacker: attacker?.name ?? '', defender: defender?.name ?? '' })}</p>
-    <div className="dribble-field"><svg className="dribble-pitch" viewBox="0 0 300 180" aria-hidden="true"><Field attacker={attacker} defender={defender} pick={pick} /></svg></div>
+  const shown = pick ?? (bar ? null : keyPick)
+  const controls = <>
+    <div className="dribble-field"><svg className="dribble-pitch" viewBox="0 0 300 180" aria-hidden="true"><Field attacker={attacker} defender={defender} pick={shown} /></svg></div>
     <div className="dribble-lanes defense-picks" role="radiogroup" aria-label={t('defenseMini.picks')}>
-      {([...LANES, 'PRESS'] as const).map((id) => <button key={id} type="button" role="radio" aria-checked={pick === id} className={`play-card dribble-lane-button${pick === id ? ' is-chosen' : ''}`} onClick={() => setPick(id)}>
+      {([...LANES, 'PRESS'] as const).map((id) => <button key={id} type="button" role="radio" aria-checked={shown === id} className={`play-card dribble-lane-button${shown === id ? ' is-chosen' : ''}`} onClick={() => choose(id)}>
         <b className="play-letter" aria-hidden="true">{id === 'LEFT' ? '←' : id === 'RIGHT' ? '→' : id === 'CENTER' ? '↑' : '↓'}</b><strong>{t(id === 'PRESS' ? 'defenseMini.press' : `defenseMini.anticipate.${id}`)}</strong>
       </button>)}
     </div>
-    {pick && !motionOff && !driver && <TimingBar marker={marker} label={t('defenseMini.barLabel')} />}
+    {bar && pick && !motionOff && !driver && <TimingBar marker={marker} label={t('defenseMini.barLabel')} />}
     <div className="dribble-actions">
-      <button type="button" className="primary-action" disabled={!pick} onClick={confirm}>{pick ? t(motionOff ? 'defenseMini.confirm' : 'defenseMini.stop') : t('defenseMini.chooseFirst')}</button>
+      {bar && <button type="button" className="primary-action" disabled={!pick} onClick={confirm}>{pick ? t(motionOff ? 'defenseMini.confirm' : 'defenseMini.stop') : t('defenseMini.chooseFirst')}</button>}
       <button type="button" className="secondary-action" onClick={() => onChoose('INTERCEPT')}>{t('defenseMini.traditional')}</button>
     </div>
     <details className="moment-detail"><summary>{t('moments.detail')}</summary><p>{t('defenseMini.detail')}</p></details>
-    <p className="market-hint">{t('defenseMini.hint')}</p>
+    <p className="market-hint">{t(bar ? 'defenseMini.hint' : 'field.tapTarget')}</p>
+  </>
+  return <section className={`live-play dribble-panel defense-panel${driver ? ' is-board-driven' : ''}`} aria-label={t('defenseMini.label')} tabIndex={-1} onKeyDown={keys}>
+    <h2 tabIndex={-1} ref={heading}>{t('defenseMini.title')}</h2>
+    <p className="live-moment">{t('defenseMini.intro', { attacker: attacker?.name ?? '', defender: defender?.name ?? '' })}</p>
+    {driver ? <details className="board-alt"><summary>{t('field.chooseWithButtons')}</summary>{controls}</details> : controls}
   </section>
 }
 

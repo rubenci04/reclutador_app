@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import type { Player } from '../../types/player'
 import type { MatchSide } from './matchTypes'
 import { LANES, finishAutomatically, startShootout, takeKick, type KickRecord, type Shootout } from './interactive/penaltyShootout'
+import { PrecisionBarToggle } from './PrecisionBarToggle'
 import { GOAL_X, Goal, ShotPanel, ShotScene, type Lane, type ShotSceneData } from './ShotPanel'
 import { reducedMotion } from './timing'
 
@@ -58,6 +59,7 @@ export function PenaltyShootoutScreen({ seed, rosters, catalog, names, onFinishe
   const mark = (kick: KickRecord | undefined) => kick ? t(`penalty.mark.${kick.outcome}`) : '·'
   return <section className="penalty-shootout" aria-label={t('penalty.label')}>
     <h2>{t('penalty.title')}</h2>
+    <PrecisionBarToggle />
     <p role="status" className="penalty-score">{names.local} {state.score.local} – {state.score.cpu} {names.cpu}</p>
     <ol className="penalty-rounds" aria-label={t('penalty.history')}>{rounds.map((round, index) => <li key={index}><b>{index + 1}</b><span className={`kick-${round.local?.outcome ?? 'NONE'}`} aria-label={`${names.local}: ${mark(round.local)}`}>{mark(round.local)}</span><span className={`kick-${round.cpu?.outcome ?? 'NONE'}`} aria-label={`${names.cpu}: ${mark(round.cpu)}`}>{mark(round.cpu)}</span></li>)}</ol>
     {scene && <ShotScene key={scene.key} scene={scene} catalog={catalog} onDone={() => setScene(null)} />}

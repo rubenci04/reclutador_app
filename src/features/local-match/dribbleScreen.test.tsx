@@ -1,4 +1,5 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { PRECISION_BAR_KEY, setPrecisionBar } from './precisionSetting'
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { I18nextProvider } from 'react-i18next'
 import { createI18n } from '../../i18n'
@@ -7,7 +8,9 @@ import { createSession } from './interactive'
 import type { Session } from './interactive'
 import { liveInput, must } from './interactive/liveFixtures.test-support'
 
-afterEach(() => { cleanup(); vi.useRealTimers() })
+// These tests cover the two-step flow (pick, then stop the bar), which is what the precision-bar setting turns on; the default one-tap flow has its own tests.
+beforeEach(() => setPrecisionBar(true))
+afterEach(() => { cleanup(); vi.useRealTimers(); localStorage.removeItem(PRECISION_BAR_KEY) })
 const OPTIONS = { benchMode: { local: 'manual-v1', cpu: 'manual-v1' }, acquisition: { local: { spent: 69, coachPaid: 1, budget: 150 }, cpu: { spent: 70, coachPaid: 0, budget: 150 } }, moments: { version: 'match-moments-v1' }, aerial: { version: 'directed-header-v1' }, matchRules: { version: 'halftime-ovr-v1' }, dribble: { version: 'dribble-mini-v1' } } as const
 const tick = (ms: number) => { for (let elapsed = 0; elapsed < ms; elapsed += 50) act(() => { vi.advanceTimersByTime(50) }) }
 

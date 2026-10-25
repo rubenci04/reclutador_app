@@ -23,7 +23,7 @@ export function EditionHero({ mode, rivalMode, budget, reserve, children }: Prop
   const accent = MODE_VISUALS[mode]?.accent ?? '#d5fb76'
   const top = categoryRanking(mode).size
   const different = rivalMode !== undefined && rivalMode !== mode
-  return <section className="edition-hero" style={{ '--mode-accent': accent } as CSSProperties} aria-label={t('editionHero.label')}>
+  return <section id="edition-hero" className="edition-hero" style={{ '--mode-accent': accent } as CSSProperties} aria-label={t('editionHero.label')}>
     <p className="edition-label">{t('editionHero.label')}</p>
     <h2 className="edition-title" data-testid="edition-title">{own.title}</h2>
     {own.edition && <p className="edition-name">{own.edition}</p>}

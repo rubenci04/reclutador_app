@@ -1,6 +1,6 @@
 import { ConfirmNavigation } from '../../components/ConfirmNavigation'
 import { ModeSelector } from '../themed-modes/ModeSelector'
-import { CATEGORY_GROUPS } from '../themed-modes/categoryTree'
+import { CATEGORY_GROUPS, DEFAULT_MODE } from '../themed-modes/categoryTree'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -26,7 +26,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
   const [room, setRoom] = useState<RoomSnapshot | null>(null)
   const [name, setName] = useState('')
   const [roomName, setRoomName] = useState('')
-  const [category, setCategory] = useState<ThemedModeId>('GLOBAL_CLASSIC')
+  const [category, setCategory] = useState<ThemedModeId>(DEFAULT_MODE)
   const [opponentCategory, setOpponentCategory] = useState<ThemedModeId | 'same'>('same')
   const { notices, push, dismiss } = useToasts()
   const known = useRef<{ roomId: string; members: Map<string, { name: string; ready: boolean }> } | null>(null)

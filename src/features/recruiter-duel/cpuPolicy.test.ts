@@ -38,7 +38,8 @@ describe('CPU private valuations and visual contracts',()=>{
       expect(DRAFT_CATALOG.some(player=>player.id===photo.playerId) || ARGENTINA_PLAYERS.some(player=>player.id===photo.playerId)).toBe(true)
       expect(photo.path).toMatch(/^\/assets\/players\//); expect(photo.author).not.toBe(''); expect(photo.licenseUrl).toMatch(/^https:/); expect(photo.approval).toBe('approved')
       expect(photo.license).not.toBe(''); expect(photo.sourceUrl).toMatch(/^https:\/\/commons\.wikimedia\.org\//); expect(photo.attribution).toContain(photo.license)
-      expect(fs.existsSync(`public${photo.path}`)).toBe(true)
+      // The files are archived outside public/ (not published); the manifest keeps the original /assets/... paths.
+      expect(fs.existsSync(`assets-archive/photos${photo.path.replace('/assets', '')}`)).toBe(true)
     }
     expect(new Set(PHOTO_MANIFEST.map(photo=>photo.playerId)).size).toBe(PHOTO_MANIFEST.length)
   })
