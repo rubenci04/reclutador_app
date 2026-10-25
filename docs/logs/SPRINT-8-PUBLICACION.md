@@ -13,3 +13,9 @@ Guía de integración: docs/PARALLEL_WORK.md. No copiar .env.local ni guardar se
 ## Push y bloqueo de producción
 
 Commit de código bc7648c, subido correctamente a origin/codex/sprint-8-publicacion. La revisión automática rechazó el comando de push a main y despliegue Worker por considerar insuficiente la autorización explícita para producción (también citó la restricción histórica de CODEX-001). No se ejecutaron push a main ni deploy; requieren confirmación explícita del usuario. Producción permanece anterior a sprint 8.
+
+## Publicación autorizada completada — 25/10/2026
+
+El usuario autorizó explícitamente main y producción. Push fast-forward de de39d72 a a7679dc en origin/main; código de juego bc7648c. Wrangler 4.151.3 publicó el Worker existente reclutador-app con --keep-vars --no-autoconfig, compatibility-date 2026-10-12, sin modificar Supabase, bindings ni secretos. Versión b194ae0d-fad8-45d4-bfce-31417c721539 activa al 100 %, etiqueta bc7648c. URL: https://reclutador-app.rea-04.workers.dev/.
+
+Verificación posterior: HTTP 200, HTML y nueve bundles con SHA-256 idénticos a dist. Evidencia: docs/qa/SPRINT-8-deployment.json. Esto no acredita QA visual ni E2E online. La carpeta original de Claude no fue modificada; integrar origin/main en una rama propia tras guardar su trabajo.

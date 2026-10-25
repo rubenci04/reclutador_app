@@ -1,5 +1,9 @@
 # Despliegue: producción actual y antecedentes
 
+## Sprint 8 — 25/10/2026
+
+Código bc7648c, integrado en main mediante fast-forward (a7679dc con documentación). Worker reclutador-app, versión b194ae0d-fad8-45d4-bfce-31417c721539 al 100 %, etiqueta bc7648c. [Abrir juego](https://reclutador-app.rea-04.workers.dev/). HTML y nueve bundles coinciden con dist por SHA-256; [evidencia](qa/SPRINT-8-deployment.json) y [registro](logs/SPRINT-8-PUBLICACION.md). Claude conserva su carpeta original para integrar los sprints posteriores; [guía](PARALLEL_WORK.md).
+
 ## Publicación GAMEPLAY-POLISH-010 — 22/10/2026
 
 Commit **ff15376** en main (push fast-forward). Worker **reclutador-app**, versión **a134976d-df2e-4186-9467-883b15bf8a11** al 100%, etiqueta ff15376; Wrangler 4.151.3, --keep-vars --no-autoconfig. HTML y assets coinciden con dist. [Registro](logs/GAMEPLAY-POLISH-010.md).

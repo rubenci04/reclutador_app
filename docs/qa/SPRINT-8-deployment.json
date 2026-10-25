@@ -1,0 +1,58 @@
+{
+  "code": "bc7648c",
+  "gitMain": "a7679dc",
+  "version": "b194ae0d-fad8-45d4-bfce-31417c721539",
+  "url": "https://reclutador-app.rea-04.workers.dev",
+  "verifiedAt": "2026-10-25T03:35:23.497Z",
+  "html": {
+    "status": 200,
+    "sha256": "ac8dc2a78ae6a264bd2e80598e158b5a451fa74955245d75fc3edd155d3529b3"
+  },
+  "assets": [
+    {
+      "file": "AuctionPage-DbxnnS4L.js",
+      "status": 200,
+      "sha256": "d2c65e80566211d338be999872c4ad9e07c97e18d0c887cb197fc78c22032b9a"
+    },
+    {
+      "file": "Fútbol Draft-BPZW-kkP.css",
+      "status": 200,
+      "sha256": "4cccd7640c9b329fdfdf5c0d537fb017f65e8fe374ad3c537f2e1ac5f8d7a296"
+    },
+    {
+      "file": "Fútbol Draft-jySppzDp.js",
+      "status": 200,
+      "sha256": "70183469f26985eb0ab6fe84ddcae7ac66dc2b265b6065e9ef654b1569b63e32"
+    },
+    {
+      "file": "locale-en-DGUcf2YD.js",
+      "status": 200,
+      "sha256": "f875d12aa3e9880050f2ce74707ed5bc63cd51047b385d49f5e8018f39a9407b"
+    },
+    {
+      "file": "locale-es-AR-CTQomVwr.js",
+      "status": 200,
+      "sha256": "da7e0488716c72ba3151fc8212831275a358abc9981ac84cb9c261d84cf1597d"
+    },
+    {
+      "file": "locale-pt-BR-CraL1YOb.js",
+      "status": 200,
+      "sha256": "53117ec00338912f42f26725829b85bc539672071ae59cc7ad64913eaf0ed808"
+    },
+    {
+      "file": "match-CXkOue01.js",
+      "status": 200,
+      "sha256": "12b7ed8d0d8a643b0944321615190dcf8324b76251702e19bb909245758184bd"
+    },
+    {
+      "file": "OnlinePage-CePk7mj7.js",
+      "status": 200,
+      "sha256": "8b318a9f94ea132597c1ac561c525578e415ad0cf6db820991089e70c823a802"
+    },
+    {
+      "file": "OnlinePage-DauUcxAG.css",
+      "status": 200,
+      "sha256": "35d5b1f50f0629d60ce55453f808201c18f27cc4ba7931290166ee7b26a423e1"
+    }
+  ]
+}
