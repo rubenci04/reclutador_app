@@ -412,3 +412,7 @@ Ataque (arco = SHOOT, compañero = CROSS) y defensa (carriles, presión y barra 
 ## Publicación sprints 9–10 — 25/10/2026
 
 Integrados con el sprint 8 en `main` (merge ad155c9); 1.458 pruebas, build y verificación de chunks aprobados. Worker reclutador-app versión 7d7b523a al 100 %, etiqueta ad155c9; HTTP/HTML/assets verificados. [Registro](logs/SPRINT-9-10-PUBLICACION.md). Pendiente: prueba manual de las interacciones nuevas.
+
+## Sprint 1 CPU — 25/10/2026
+
+HARD más competitiva (+0,78 OVR medio del once frente a antes, +1,1 a +1,5 sobre NORMAL según humano simulado); EASY/NORMAL sin cambios. Pendiente: EASY < NORMAL no se cumple contra cazador de estrellas y comprador de valor. [Registro](logs/SPRINT-1-CPU.md).

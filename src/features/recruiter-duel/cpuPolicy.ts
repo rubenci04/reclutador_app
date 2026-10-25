@@ -22,7 +22,14 @@ export interface CpuPublicContext {
   /** Usable auction budget after the coach reserve; omitted means the classic 100M budget. */
   readonly budget?: number
   readonly difficulty?: CpuDifficulty
+  /** Public standing offer on the card; only HARD reads it. */
+  readonly currentBid?: number | null
 }
+
+const HARD_POINT_VALUE = .6
+const HARD_IDLE_SHARE = .6
+const HARD_PICKY = 1
+const HARD_PICKY_SLOTS = 7
 
 const profiles = {
   CONSERVATIVE: { premium: -1.8, risk: .82, jump: 1 },
@@ -60,11 +67,24 @@ export function privateValuation(context: CpuPublicContext, strategy: CpuStrateg
   const percentile = availablePeers.length ? availablePeers.filter((p) => p.overall_rating < player.overall_rating).length / availablePeers.length : 0
   const comparativeValue = difficulty === 'HARD' ? Math.max(0, percentile - .45) * 7 : 0
   const scouting = comparativeValue + (difficulty === 'HARD' ? Math.max(0, quality) * .6 + (squadTier(player) === 'S+' ? 1.5 : 0) + (strongerPeers < open(player.position) ? 1 : 0) : difficulty === 'EASY' ? -1.5 : 0)
+  if (difficulty === 'HARD') {
+    // Quality against the public pool still on offer at this position; the CPU lets clearly weaker cards go while it has slots to spare.
+    const ratings = availablePeers.map((candidate) => candidate.overall_rating).sort((x, y) => x - y)
+    const median = ratings[Math.floor(ratings.length / 2)] ?? player.overall_rating
+    const gain = player.overall_rating - median
+    if (gain < -HARD_PICKY && slotsLeft > HARD_PICKY_SLOTS) return 0
+    const perSlot = budgetCap / Math.max(1, slotsLeft)
+    // Money not spent is worth nothing: the surplus per open slot keeps growing the cap while slots run out.
+    const hard = player.price + quality + profile.premium + preference + need + Math.max(0, gain) * perSlot * HARD_POINT_VALUE * profile.risk + (gain > -1 ? perSlot * HARD_IDLE_SHARE : 0)
+    // Denying an elite signing to the rival is worth a little more once it is already being contested.
+    const contested = context.currentBid != null && gain >= 4 ? 2 : 0
+    return Math.max(0, Math.floor(Math.min(budgetCap, hard + contested)))
+  }
   return Math.max(0, Math.floor(Math.min(budgetCap, opportunityCap + scouting, player.price + quality + profile.premium + preference + need + scouting)))
 }
 
 export function decideCpu(context: CpuPublicContext, strategy: CpuStrategy, currentBid: number | null, technicalMaximum: number): CpuDecision {
-  const maximum = privateValuation(context, strategy)
+  const maximum = privateValuation({ ...context, currentBid }, strategy)
   const minimum = currentBid === null ? context.player.price : currentBid + 1
   const pass = (reason: CpuReason): CpuDecision => ({ action: 'pass', reason, privateMaximum: maximum })
   if (positionProgress(context.team, context.player.position).remaining === 0) return pass('position_full')
