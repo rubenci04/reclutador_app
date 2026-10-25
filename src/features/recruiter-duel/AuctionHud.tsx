@@ -45,11 +45,11 @@ export function AuctionHud({ hud, names, onShowPitches, currentPosition, viewer 
     <div className="hud-more-body">
     <div className="hud-centre">
       <p className="hud-awards">{t('hud.awards', { done: hud.awards, total: hud.totalAwards })}</p>
-      <details className="hud-discard-details" open={hud.discardsRemaining === 0}><summary>{t('auctionUX.discards')}</summary><p className="hud-discards" aria-label={t('hud.discards', { count: hud.discardsRemaining, total: hud.discardsTotal })}>
+      {hud.discardsTotal > 0 && <><details className="hud-discard-details" open={hud.discardsRemaining === 0}><summary>{t('auctionUX.discards')}</summary><p className="hud-discards" aria-label={t('hud.discards', { count: hud.discardsRemaining, total: hud.discardsTotal })}>
         {Array.from({ length: hud.discardsTotal }, (_, index) => <i key={index} className={index < hud.discardsRemaining ? 'on' : undefined} aria-hidden="true" />)}
         <span>{t('hud.discards', { count: hud.discardsRemaining, total: hud.discardsTotal })}</span>
       </p>
-      </details>{hud.discardsRemaining === 0 && <p className="hud-exhausted">{t('discards.exhausted')}</p>}
+      </details>{hud.discardsRemaining === 0 && <p className="hud-exhausted">{t('discards.exhausted')}</p>}</>}
       {onShowPitches && <button className="secondary-action hud-pitches" onClick={onShowPitches}>{t('hud.showPitches')}</button>}
     </div>
     {ORDER.map((id) => <Panel key={id} hud={hud} side={hud.participants[id]} name={names[id]} active={hud.turn === id} currentPosition={currentPosition} />)}

@@ -28,7 +28,7 @@ export function AuctionHeader({ game, catalog, side, name, hud, clock }: Props) 
     <b className="wallet-balance" role="status" aria-live="polite"><span className="sr-only">{t('wallet.balanceLabel')} </span>{t('wallet.amount', { amount: wallet.remaining })}</b>
     <ul className="auction-header-stats">
       <li>{t('hud.signings', { count: me.signed, total: hud.teamSize })}</li>
-      <li>{t('hud.discards', { count: hud.discardsRemaining, total: hud.discardsTotal })}</li>
+      {hud.discardsTotal > 0 && <li>{t('hud.discards', { count: hud.discardsRemaining, total: hud.discardsTotal })}</li>}
       <li>{t('duel.round', { current: game.roundIndex + 1, total: game.rounds.length })}</li>
     </ul>
     {clock}

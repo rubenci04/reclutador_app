@@ -86,7 +86,8 @@ export function buildHudModel(game: RecruiterDuelGame, catalog: readonly Player[
   }
   return {
     budget: budgetOf(game), awards: game.record.filter((entry) => entry.type === 'award').length, totalAwards: game.rounds.length, teamSize: rosterIds(game.teams.recruiter_one).length,
-    discardsRemaining: game.discardsRemaining, discardsTotal: discardLimitOf(game.config),
+    discardsRemaining: game.discardsRemaining, // A crossed-category game has no shared auction, so there is nothing to discard once it exists.
+    discardsTotal: game.categoryPair ? 0 : discardLimitOf(game.config),
     turn: game.activeParticipant ?? openingPriority(game) ?? null,
     participants: { recruiter_one: participant('recruiter_one'), recruiter_two: participant('recruiter_two') },
   }

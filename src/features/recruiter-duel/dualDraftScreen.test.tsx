@@ -25,8 +25,10 @@ describe('live draw screen for two categories', () => {
     const sign = screen.getByRole('button', { name: /^Sign for \d+M$/ })
     fireEvent.click(sign)
     expect(screen.getByText('1/11 signed')).toBeInTheDocument()
-    fireEvent.click(screen.getByRole('button', { name: /^Discard \(3 left\)$/ }))
-    expect(screen.getByRole('button', { name: /^Discard \(2 left\)$/ })).toBeInTheDocument()
+    // New crossed-category games start with 5 discards per side, shown as 5 pips and as text.
+    expect(screen.getAllByText(/5\/5/).length).toBeGreaterThan(0)
+    fireEvent.click(screen.getByRole('button', { name: /^Discard \(5 left\)$/ }))
+    expect(screen.getByRole('button', { name: /^Discard \(4 left\)$/ })).toBeInTheDocument()
     expect(screen.getByText('CPU is deciding…')).toBeInTheDocument()
     act(() => vi.advanceTimersByTime(1200))
     expect(screen.queryByText('CPU is deciding…')).toBeInTheDocument()

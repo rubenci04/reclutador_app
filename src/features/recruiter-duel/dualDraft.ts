@@ -6,7 +6,7 @@ import { personKey } from '../player-catalog/globalCollection'
 import { catalogForMode } from '../themed-modes/modeCatalog'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
 import { coachReserveFor } from '../coaches/coachRules'
-import type { MatchConfig } from './matchConfig'
+import { discardLimitOf, type MatchConfig } from './matchConfig'
 import type { RecruiterId } from './auctionTypes'
 
 /**
@@ -16,7 +16,8 @@ import type { RecruiterId } from './auctionTypes'
  * and a side without discards left must take the card in front of it.
  */
 export const DUAL_SIDES: readonly RecruiterId[] = ['recruiter_one', 'recruiter_two']
-export const DUAL_DISCARDS = 3
+/** Discards of a configuration without the discards marker; new games take the limit from discardLimitOf(config) (5). */
+export const DUAL_DISCARDS_LEGACY = 3
 const CAPACITY: Readonly<Record<Position, number>> = { ARQ: 1, DEF: 4, MED: 3, DEL: 3 }
 const POSITIONS = ['ARQ', 'DEF', 'MED', 'DEL'] as const
 
@@ -82,7 +83,7 @@ export function createDualDraft(first: ThemedModeId, second: ThemedModeId, seed:
   const decks = [shuffleSeeded(deckOne, createSeededRandom(`${seed}:deck:one`)), shuffleSeeded(deckTwo, createSeededRandom(`${seed}:deck:two`))]
   const empty: Record<Position, number> = { ARQ: 0, DEF: 0, MED: 0, DEL: 0 }
   if (!decks.every((deck) => completable(empty, budget, deck))) return { ok: false, error: 'auction_pool_unavailable' }
-  const side = (category: ThemedModeId, deck: readonly Player[]): DualSide => ({ category, deck: deck.map((player) => player.id), cursor: 0, signed: [], discards: DUAL_DISCARDS, events: [] })
+  const side = (category: ThemedModeId, deck: readonly Player[]): DualSide => ({ category, deck: deck.map((player) => player.id), cursor: 0, signed: [], discards: discardLimitOf(config), events: [] })
   return { ok: true, draft: settleAll({ seed, config, budget, sides: { recruiter_one: side(first, decks[0]), recruiter_two: side(second, decks[1]) } }, byId([...deckOne, ...deckTwo])) }
 }
 

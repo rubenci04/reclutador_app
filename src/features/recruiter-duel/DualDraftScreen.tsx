@@ -1,3 +1,4 @@
+import { discardLimitOf } from './matchConfig'
 import { useTranslation } from 'react-i18next'
 import { ConfirmNavigation } from '../../components/ConfirmNavigation'
 import type { Player } from '../../types/player'
@@ -41,12 +42,13 @@ export function DualDraftScreen({ draft, catalog, names, categoryLabel, humans, 
       const counts = sideCounts(draft, id, catalog)
       const strength = signed.length ? { kind: 'average' as const, value: signed.reduce((sum, candidate) => sum + candidate.overall_rating, 0) / signed.length, count: signed.length } : { kind: 'none' as const, value: 0, count: 0 }
       const allowDiscard = canDiscard(draft, id, catalog)
+      const discardTotal = discardLimitOf(draft.config)
       return <article key={id} className={`dual-column dual-${id}`} aria-label={names[id]}>
         <h2>{names[id]}</h2>
         <p className="dual-category">{categoryLabel(side.category)}</p>
         <PowerBadge strength={strength} />
         <p className="dual-stats"><b>{t('dual.left', { amount: sideBudgetLeft(draft, id) })}</b><span>{t('dual.progress', { count: signed.length })}</span>
-          <span className="hud-discards" aria-label={t('hud.discards', { count: side.discards, total: 3 })}>{[0, 1, 2].map((index) => <i key={index} className={index < side.discards ? 'on' : undefined} aria-hidden="true" />)}<span>{t('hud.discards', { count: side.discards, total: 3 })}</span></span></p>
+          <span className="hud-discards" aria-label={t('hud.discards', { count: side.discards, total: discardTotal })}>{Array.from({ length: discardTotal }, (_, index) => <i key={index} className={index < side.discards ? 'on' : undefined} aria-hidden="true" />)}<span>{t('hud.discards', { count: side.discards, total: discardTotal })}</span></span></p>
         <ul className="dual-positions" aria-label={t('dual.positions')}>{POSITIONS.map((position) => <li key={position} className={`pos-${position}${counts[position] === CAPACITY[position] ? ' is-full' : ''}`}>{position} {counts[position]}/{CAPACITY[position]}</li>)}</ul>
         {complete ? <p className="dual-complete" role="status">{t('dual.complete')}</p>
           : card && <div className="dual-card" key={card.id}><PlayerIdentity player={card} />
