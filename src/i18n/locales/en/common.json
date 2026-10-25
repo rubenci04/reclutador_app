@@ -91,6 +91,8 @@
     "eyebrow": "TWO RECRUITERS · ONE ROOM",
     "title": "Versus Online",
     "sessionNotice": "Your anonymous session identifies your team. Clearing browser data may lose access. Two tabs in the same profile share one identity.",
+    "friendlyNotice": "This is a friendly game: the room state is visible to both players, so it is built on trust. Each browser checks the rules on every update, but there is no referee server.",
+    "integrity": { "title": "The room state does not match the rules", "body": "Something in the shared game does not add up with the auction rules, so it may have been altered. You can leave the room, give up, or keep playing at your own risk.", "leave": "Leave the room", "forfeit": "Give up", "keep": "Keep playing" },
     "setup": "Create or join a room",
     "name": "Team or recruiter name",
     "classic": "CLASSIC · Global · 150M · 11 starters · No substitutes · 5 shared discards",
@@ -142,7 +144,7 @@
       "ROOM_EXPIRED": "The room expired. Create a new invitation.",
       "AUTH_REQUIRED": "Could not authenticate your session. Check anonymous sign-ins in Supabase and reopen Versus Online.",
       "NETWORK_ERROR": "Could not confirm the operation with the server. You can retry without duplicating it.",
-      "BACKEND_OUTDATED": "The server does not have the latest online version yet. Run the migration 202610190001_online_duel.sql in the Supabase SQL editor and try again.", "NOT_CONFIGURED": "Versus Online is not configured yet. You can return to the menu and play locally."
+      "BACKEND_OUTDATED": "The server does not have the latest online version yet. Run the migrations 202610190001_online_duel.sql and 202610250001_online_fair_coin.sql in the Supabase SQL editor and try again.", "NOT_CONFIGURED": "Versus Online is not configured yet. You can return to the menu and play locally."
     }
   }
 ,

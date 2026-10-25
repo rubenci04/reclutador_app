@@ -26,6 +26,7 @@ function fakeGateway() {
     create: vi.fn(async () => structuredClone(state)),
     join: vi.fn(async () => structuredClone(state)),
     snapshot: vi.fn(async () => structuredClone(state)),
+    flipCoin: vi.fn(async () => structuredClone(state)),
     command: vi.fn(async command => {
       if (command.actionType === 'LEAVE') return null
       state = {...state,version:state.version+1,members:state.members.map(m => m.userId === host && command.actionType === 'SET_READY' ? {...m,ready:command.payload.ready} : m)}

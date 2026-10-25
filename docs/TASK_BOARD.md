@@ -416,3 +416,7 @@ Integrados con el sprint 8 en `main` (merge ad155c9); 1.458 pruebas, build y ver
 ## Sprint 1 CPU — 25/10/2026
 
 HARD más competitiva (+0,78 OVR medio del once frente a antes, +1,1 a +1,5 sobre NORMAL según humano simulado); EASY/NORMAL sin cambios. Pendiente: EASY < NORMAL no se cumple contra cazador de estrellas y comprador de valor. [Registro](logs/SPRINT-1-CPU.md).
+
+## Sprint 2 online — 25/10/2026
+
+Moneda tirada por el servidor (`online_flip_coin`, migración 202610250001 pendiente de aplicar en Supabase) y verificación del estado en el navegador del rival (`verifyDuelState`) con aviso en es-AR/en/pt-BR. Límites: cartas futuras visibles y sin servidor autoritativo. [Registro](logs/SPRINT-2-ONLINE.md).

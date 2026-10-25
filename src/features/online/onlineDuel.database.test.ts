@@ -3,8 +3,10 @@ import { readFileSync } from 'node:fs'
 import { PGlite } from '@electric-sql/pglite'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { buildInitialDuel } from './onlineDuel'
-import { startCoinToss, revealCoinToss } from '../recruiter-duel/auctionEngine'
+import { createSeededRandom } from '../local-match/seededRandom'
+import { revealCoinToss } from '../recruiter-duel/auctionEngine'
 import { COACH_MARKET_V4 } from '../coaches/coachRules'
+import type { RecruiterDuelGame } from '../recruiter-duel/auctionTypes'
 import { DISCARDS_MARKER_V2, DISCARDS_V2, parseMatchConfig } from '../recruiter-duel/matchConfig'
 
 const db = new PGlite()
@@ -24,7 +26,9 @@ async function asUser(id: string) {
 async function call<T = unknown>(sql: string, params: unknown[] = []): Promise<T> {
   return (await db.query<{ r: T }>(`select ${sql} as r`, params)).rows[0].r
 }
-const state = (patch: Record<string, unknown> = {}) => ({ phase: 'LOBBY', seed: 'seed-1', config: { budget: 100 }, rounds: [{ playerId: 'plr_001' }], teams: { recruiter_one: { spent: 0 }, recruiter_two: { spent: 0 } }, record: [], ...patch })
+// The server's toss, copied into every later state the way the clients do.
+let coin: Record<string, unknown> = {}
+const state = (patch: Record<string, unknown> = {}) => ({ phase: 'LOBBY', ...coin, seed: 'seed-1', config: { budget: 100 }, rounds: [{ playerId: 'plr_001' }], teams: { recruiter_one: { spent: 0 }, recruiter_two: { spent: 0 } }, record: [], ...patch })
 const nextAction = () => act(++counter)
 async function submit(user: string, patch: Record<string, unknown>) {
   await asUser(user)
@@ -49,6 +53,7 @@ beforeAll(async () => {
     create function realtime.send(payload jsonb,event text,topic text,private boolean) returns void language sql as $$ insert into realtime.messages values(topic,'broadcast',payload) $$;`)
   await db.exec(readFileSync('supabase/migrations/202610180002_online_lobby.sql', 'utf8'))
   await db.exec(readFileSync('supabase/migrations/202610190001_online_duel.sql', 'utf8'))
+  await db.exec(readFileSync('supabase/migrations/202610250001_online_fair_coin.sql', 'utf8'))
   await asUser(host)
   const created = await call<{ roomId: string; inviteCode: string; version: number }>("public.online_create_room('Ana',$1)", [nextAction()])
   room = created.roomId
@@ -77,9 +82,9 @@ describe('online duel: starting', () => {
     expect(initial.config).toMatchObject({ coachMarket: COACH_MARKET_V4, discards: DISCARDS_MARKER_V2 })
     expect(initial.discardsRemaining).toBe(DISCARDS_V2)
     latest = (await call<{ version: number }>('public.online_start_duel($1,$2,$3,$4::jsonb)', [created.roomId, nextAction(), latest, JSON.stringify(initial)])).version
-    const tossed = startCoinToss(initial, 'heads'); if (!tossed.ok) throw new Error(tossed.error)
-    latest = (await call<{ version: number }>('public.online_submit_state($1,$2,$3,$4::jsonb)', [created.roomId, nextAction(), latest, JSON.stringify(tossed.game)])).version
-    const revealed = revealCoinToss(tossed.game); if (!revealed.ok) throw new Error(revealed.error)
+    const flipped = await call<{ version: number; state: RecruiterDuelGame }>('public.online_flip_coin($1,$2,$3,$4)', [created.roomId, nextAction(), latest, 'heads'])
+    latest = flipped.version
+    const revealed = revealCoinToss(flipped.state); if (!revealed.ok) throw new Error(revealed.error)
     await call('public.online_submit_state($1,$2,$3,$4::jsonb)', [created.roomId, nextAction(), latest, JSON.stringify(revealed.game)])
     await asUser(guest)
     const seen = await call<{ state: { phase: string; categoryPair: unknown; config: unknown; discardsRemaining: number } }>('public.online_snapshot($1)', [created.roomId])
@@ -103,6 +108,11 @@ describe('online duel: starting', () => {
     version = started.version
     await asUser(guest)
     expect((await call<{ state: { seed: string } }>('public.online_snapshot($1)', [room])).state.seed).toBe('seed-1')
+    await asUser(host)
+    const flipped = await call<{ version: number; state: { coinCall: string; coinResult: string } }>('public.online_flip_coin($1,$2,$3,$4)', [room, nextAction(), version, 'tails'])
+    version = flipped.version
+    coin = { coinCall: flipped.state.coinCall, coinResult: flipped.state.coinResult }
+    await asUser(guest)
     await asUser(outsider)
     await expect(call('public.online_snapshot($1)', [room])).rejects.toThrow(/NOT_ROOM_MEMBER/)
   })
@@ -222,6 +232,8 @@ describe('online duel: migration and room names', () => {
     await db.exec('reset role')
     await db.exec(readFileSync('supabase/migrations/202610190001_online_duel.sql', 'utf8'))
     await db.exec(readFileSync('supabase/migrations/202610190001_online_duel.sql', 'utf8'))
+    // The later migration replaces online_submit_state again, as it does on the server.
+    await db.exec(readFileSync('supabase/migrations/202610250001_online_fair_coin.sql', 'utf8'))
   })
   it('stores a room name, hands out a short code and lets the guest join with it', async () => {
     await asUser(host)
@@ -240,5 +252,68 @@ describe('online duel: migration and room names', () => {
     await expect(call("public.online_create_room('Ana',$1,'name longer than twenty-four characters!!')", [nextAction()])).rejects.toThrow(/INVALID_ACTION/)
     const unnamed = await call<{ roomName: string | null }>("public.online_create_room('Ana',$1)", [nextAction()])
     expect(unnamed.roomName).toBeNull()
+  })
+})
+
+describe('online duel: coin tossed by the server', () => {
+  async function startedRoom(seed: string) {
+    await asUser(host)
+    const created = await call<{ roomId: string; inviteCode: string }>("public.online_create_room('Ana',$1)", [nextAction()])
+    await asUser(guest)
+    let latest = (await call<{ version: number }>('public.online_join_room($1,$2,$3)', [created.inviteCode, 'Beto', nextAction()])).version
+    for (const user of [host, guest]) {
+      await asUser(user)
+      latest = (await call<{ version: number }>("public.online_command($1,$2,$3,'SET_READY','{\"ready\":true}'::jsonb)", [created.roomId, nextAction(), latest])).version
+    }
+    await asUser(host)
+    latest = (await call<{ version: number }>('public.online_start_duel($1,$2,$3,$4::jsonb)', [created.roomId, nextAction(), latest, JSON.stringify({ ...state(), phase: 'LOBBY', seed, coinCall: null, coinResult: null, coinTossWinner: null })])).version
+    return { roomId: created.roomId, version: latest }
+  }
+  const flip = (roomId: string, version: number, side = 'heads', actionId = nextAction()) => call<{ version: number; phase: string; state: { coinCall: string; coinResult: string; phase: string; seed: string } }>('public.online_flip_coin($1,$2,$3,$4)', [roomId, actionId, version, side])
+
+  it('does not depend on the seed: the same seed gives both faces, and it is not the seeded value', async () => {
+    const results: string[] = []; let seeded = 0
+    for (let index = 0; index < 24; index++) {
+      const started = await startedRoom('fixed-seed')
+      const flipped = await flip(started.roomId, started.version)
+      results.push(flipped.state.coinResult)
+      if (flipped.state.coinResult === (createSeededRandom('fixed-seed:coin')() < .5 ? 'heads' : 'tails')) seeded++
+      expect(flipped).toMatchObject({ phase: 'COIN_TOSS', state: { phase: 'COIN_TOSS', coinCall: 'heads', seed: 'fixed-seed' } })
+    }
+    expect(new Set(results).size).toBe(2)
+    expect(seeded).toBeLessThan(24)
+  })
+  it('only recruiter one can toss, once, with a current version, and a retry returns the same toss', async () => {
+    const started = await startedRoom('seed-guard')
+    await asUser(guest)
+    await expect(flip(started.roomId, started.version)).rejects.toThrow(/NOT_YOUR_TURN/)
+    await asUser(host)
+    await expect(flip(started.roomId, started.version - 1)).rejects.toThrow(/STALE_STATE/)
+    await expect(flip(started.roomId, started.version, 'edge')).rejects.toThrow(/INVALID_ACTION/)
+    const id = nextAction()
+    const first = await flip(started.roomId, started.version, 'tails', id)
+    expect((await flip(started.roomId, started.version, 'tails', id)).state.coinResult).toBe(first.state.coinResult)
+    await expect(flip(started.roomId, first.version)).rejects.toThrow(/INVALID_PHASE/)
+    await asUser(outsider)
+    await expect(flip(started.roomId, first.version)).rejects.toThrow(/NOT_ROOM_MEMBER/)
+  })
+  it('refuses to submit a different toss, a toss written by a client, or a lobby leave without the toss', async () => {
+    const started = await startedRoom('seed-cheat')
+    await asUser(host)
+    const submitRaw = (patch: Record<string, unknown>, at: number) => call('public.online_submit_state($1,$2,$3,$4::jsonb)', [started.roomId, nextAction(), at, JSON.stringify({ ...state(), seed: 'seed-cheat', ...patch })])
+    await expect(submitRaw({ phase: 'COIN_TOSS', coinCall: null, coinResult: null }, started.version)).rejects.toThrow(/INVALID_PHASE/)
+    await expect(submitRaw({ phase: 'LOBBY', coinCall: 'heads', coinResult: 'heads' }, started.version)).rejects.toThrow(/INVALID_ACTION/)
+    const flipped = await flip(started.roomId, started.version)
+    const other = flipped.state.coinResult === 'heads' ? 'tails' : 'heads'
+    await expect(submitRaw({ phase: 'COIN_TOSS', coinCall: flipped.state.coinCall, coinResult: other }, flipped.version)).rejects.toThrow(/INVALID_ACTION/)
+    await expect(submitRaw({ phase: 'COIN_TOSS', coinCall: flipped.state.coinCall === 'heads' ? 'tails' : 'heads', coinResult: flipped.state.coinResult }, flipped.version)).rejects.toThrow(/INVALID_ACTION/)
+    const loser = flipped.state.coinCall === flipped.state.coinResult ? 'recruiter_two' : 'recruiter_one'
+    await expect(submitRaw({ phase: 'REVEAL_PLAYER', coinCall: flipped.state.coinCall, coinResult: flipped.state.coinResult, coinTossWinner: loser }, flipped.version)).rejects.toThrow(/INVALID_ACTION/)
+    const winner = loser === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one'
+    await submitRaw({ phase: 'REVEAL_PLAYER', coinCall: flipped.state.coinCall, coinResult: flipped.state.coinResult, coinTossWinner: winner }, flipped.version)
+  })
+  it('can be applied again without errors', async () => {
+    await db.exec('reset role')
+    await db.exec(readFileSync('supabase/migrations/202610250001_online_fair_coin.sql', 'utf8'))
   })
 })

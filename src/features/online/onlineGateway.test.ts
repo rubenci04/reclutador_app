@@ -48,4 +48,12 @@ describe('official Supabase transport boundaries', () => {
     const gateway = createOnlineGateway({rpc:vi.fn(async () => ({data:snapshot,error:null}))} as unknown as SupabaseClient)
     await expect(gateway.snapshot(snapshot.roomId)).rejects.toEqual(new OnlineError('INVALID_ACTION'))
   })
+  it('tosses the coin on the server and says so clearly when the migration is missing', async () => {
+    const roomId = crypto.randomUUID(); const actionId = crypto.randomUUID()
+    const rpc = vi.fn(async () => ({ data: null, error: { message: 'Could not find the function public.online_flip_coin', code: 'PGRST202' } }))
+    const gateway = createOnlineGateway({ rpc } as unknown as SupabaseClient)
+    await expect(gateway.flipCoin(roomId, 3, 'heads', actionId)).rejects.toEqual(new OnlineError('BACKEND_OUTDATED'))
+    expect(rpc).toHaveBeenCalledWith('online_flip_coin', { p_room_id: roomId, p_action_id: actionId, p_expected_version: 3, p_called_side: 'heads' })
+    await expect(gateway.flipCoin(roomId, 3, 'edge' as 'heads', actionId)).rejects.toEqual(new OnlineError('INVALID_ACTION'))
+  })
 })

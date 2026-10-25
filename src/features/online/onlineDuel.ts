@@ -4,7 +4,7 @@ import { DRAFT_CATALOG } from '../draft/catalog'
 import { createRecruiterDuel } from '../recruiter-duel/auctionEngine'
 import type { RecruiterDuelGame, RecruiterId } from '../recruiter-duel/auctionTypes'
 import { CURRENT_DRAW_POLICY, createDrawContext, newDrawSeed } from '../recruiter-duel/drawHistory'
-import { CLASSIC_CONFIG, DISCARDS_MARKER_V2 } from '../recruiter-duel/matchConfig'
+import { CLASSIC_CONFIG, DISCARDS_MARKER_V2, type MatchConfig } from '../recruiter-duel/matchConfig'
 import type { HistoryEntry, HistoryOutcome } from '../history/matchHistory'
 import { resolveSeries } from '../local-match/matchSeries'
 import { catalogForMode } from '../themed-modes/modeCatalog'
@@ -18,13 +18,18 @@ export const otherSide = (side: RecruiterId): RecruiterId => (side === 'recruite
 /** The shared state stays small: the 150-player catalogue key of the draw context is the same for everyone. */
 export const slimDuel = (game: RecruiterDuelGame): RecruiterDuelGame => ({ ...game, drawContext: undefined, drawDiagnostics: undefined })
 
-/** The host builds the deal once; the seed is random per room and stored with the state. */
-export function buildInitialDuel(names: { readonly host: string; readonly guest: string }, first: ThemedModeId = 'GLOBAL_CLASSIC', second: ThemedModeId = first): RecruiterDuelGame {
-  const config = { ...CLASSIC_CONFIG, budget: Math.max(legacyOnlineBudgetForMode(first), legacyOnlineBudgetForMode(second)), coaches: true, coachReserve: COACH_MAX_PRICE, coachMarket: COACH_MARKET_V4, discards: DISCARDS_MARKER_V2, names: { recruiter_one: names.host, recruiter_two: names.guest } }
-  const catalog = catalogForMode(first); const seed = newDrawSeed()
+/** The one place that turns categories, configuration and seed into the cards of the deal; verifyDuelState rebuilds the deal with it. */
+export function dealFor(first: ThemedModeId, second: ThemedModeId, seed: string, config: MatchConfig): RecruiterDuelGame {
+  const catalog = catalogForMode(first)
   const created = first !== second ? createCrossCategoryDraw(first, second, seed, config) : createRecruiterDuel(catalog, seed, createDrawContext(catalog, [], CURRENT_DRAW_POLICY), config)
   if (!created.ok) throw new Error(created.error)
   return slimDuel({ ...created.game, phase: 'LOBBY', coachMode: first, manualBench: true })
+}
+
+/** The host builds the deal once; the seed is random per room and stored with the state. */
+export function buildInitialDuel(names: { readonly host: string; readonly guest: string }, first: ThemedModeId = 'GLOBAL_CLASSIC', second: ThemedModeId = first, seed: string = newDrawSeed()): RecruiterDuelGame {
+  const config = { ...CLASSIC_CONFIG, budget: Math.max(legacyOnlineBudgetForMode(first), legacyOnlineBudgetForMode(second)), coaches: true, coachReserve: COACH_MAX_PRICE, coachMarket: COACH_MARKET_V4, discards: DISCARDS_MARKER_V2, names: { recruiter_one: names.host, recruiter_two: names.guest } }
+  return dealFor(first, second, seed, config)
 }
 
 /** Structural check of what comes from the server; anything else is treated as "no game yet". */

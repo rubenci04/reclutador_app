@@ -99,7 +99,7 @@ describe('UX-DRAW-007 automatic rounds without a human decision', () => {
     for (const mySide of ['recruiter_one', 'recruiter_two'] as const) {
       vi.useFakeTimers()
       const submit = vi.fn()
-      const online: OnlineDuelBinding = { game: { ...game, legacyCatalog: true }, mySide, submit, strategyReady: { recruiter_one: false, recruiter_two: false }, chooseStrategy: vi.fn(), revealStrategies: vi.fn(), forfeit: vi.fn(), exit: vi.fn(), connection: 'connected', busy: false }
+      const online: OnlineDuelBinding = { game: { ...game, legacyCatalog: true }, mySide, submit, strategyReady: { recruiter_one: false, recruiter_two: false }, flipCoin: vi.fn(), chooseStrategy: vi.fn(), revealStrategies: vi.fn(), forfeit: vi.fn(), exit: vi.fn(), connection: 'connected', busy: false }
       const i18n = await createI18n('en')
       const { unmount } = render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} online={online} /></I18nextProvider>)
       act(() => vi.advanceTimersByTime(20_000))

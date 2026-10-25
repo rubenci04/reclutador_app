@@ -12,6 +12,8 @@ export interface OnlineGateway {
   /** Host only: stores the initial duel and moves the room to IN_PROGRESS. */
   startDuel(roomId: string, expectedVersion: number, state: unknown, actionId: string): Promise<RoomSnapshot>
   submitState(roomId: string, expectedVersion: number, state: unknown, actionId: string): Promise<RoomSnapshot>
+  /** Recruiter one only: the server tosses the coin, so neither browser can know the result beforehand. */
+  flipCoin(roomId: string, expectedVersion: number, calledSide: 'heads' | 'tails', actionId: string): Promise<RoomSnapshot>
   setStrategy(roomId: string, strategy: string): Promise<RoomSnapshot>
   revealStrategies(roomId: string): Promise<Record<'recruiter_one' | 'recruiter_two', string>>
   forfeit(roomId: string, actionId: string): Promise<RoomSnapshot>
@@ -58,6 +60,10 @@ export function createOnlineGateway(client: SupabaseClient = getOnlineClient()):
     async submitState(roomId, expectedVersion, state, actionId) {
       if (!isUuid(roomId) || !isUuid(actionId) || !Number.isSafeInteger(expectedVersion) || expectedVersion < 0) throw new OnlineError('INVALID_ACTION')
       return parseSnapshot(await rpc('online_submit_state', { p_room_id: roomId, p_action_id: actionId, p_expected_version: expectedVersion, p_state: state }))
+    },
+    async flipCoin(roomId, expectedVersion, calledSide, actionId) {
+      if (!isUuid(roomId) || !isUuid(actionId) || !Number.isSafeInteger(expectedVersion) || expectedVersion < 0 || (calledSide !== 'heads' && calledSide !== 'tails')) throw new OnlineError('INVALID_ACTION')
+      return parseSnapshot(await rpc('online_flip_coin', { p_room_id: roomId, p_action_id: actionId, p_expected_version: expectedVersion, p_called_side: calledSide }))
     },
     async setStrategy(roomId, strategy) {
       if (!isUuid(roomId)) throw new OnlineError('INVALID_ACTION')

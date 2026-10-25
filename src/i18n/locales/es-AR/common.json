@@ -91,6 +91,8 @@
     "eyebrow": "DOS RECLUTADORES · UNA SALA",
     "title": "Versus Online",
     "sessionNotice": "Tu sesión anónima identifica a tu equipo. Si borrás los datos del navegador, podés perder el acceso. Dos pestañas del mismo perfil comparten identidad.",
+    "friendlyNotice": "Es una partida amistosa: el estado de la sala es visible para ambos jugadores, así que se juega con confianza. Cada navegador revisa las reglas en cada actualización, pero no hay un servidor árbitro.",
+    "integrity": { "title": "El estado de la sala no coincide con las reglas", "body": "Algo del juego compartido no cuadra con las reglas de la subasta, así que pudo haber sido alterado. Podés salir de la sala, rendirte o seguir jugando bajo tu responsabilidad.", "leave": "Salir de la sala", "forfeit": "Rendirme", "keep": "Seguir jugando" },
     "setup": "Crear o ingresar a una sala",
     "name": "Nombre del equipo o reclutador",
     "classic": "CLÁSICA · Global · 150M · 11 titulares · Sin suplentes · 5 descartes compartidos",
@@ -142,7 +144,7 @@
       "ROOM_EXPIRED": "La sala venció. Creá una nueva invitación.",
       "AUTH_REQUIRED": "No pudimos autenticar tu sesión. Verificá que Supabase permita sesiones anónimas y volvé a abrir Versus Online.",
       "NETWORK_ERROR": "No pudimos confirmar la operación con el servidor. Podés reintentar sin duplicarla.",
-      "BACKEND_OUTDATED": "El servidor todavía no tiene la última versión del modo online. Aplicá la migración 202610190001_online_duel.sql en el editor SQL de Supabase y volvé a intentar.", "NOT_CONFIGURED": "Versus Online todavía no está configurado. Podés volver al menú y jugar en modo local."
+      "BACKEND_OUTDATED": "El servidor todavía no tiene la última versión del modo online. Aplicá las migraciones 202610190001_online_duel.sql y 202610250001_online_fair_coin.sql en el editor SQL de Supabase y volvé a intentar.", "NOT_CONFIGURED": "Versus Online todavía no está configurado. Podés volver al menú y jugar en modo local."
     }
   }
 ,

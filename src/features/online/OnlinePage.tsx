@@ -2,7 +2,7 @@ import { ConfirmNavigation } from '../../components/ConfirmNavigation'
 import { ModeSelector } from '../themed-modes/ModeSelector'
 import { CATEGORY_GROUPS } from '../themed-modes/categoryTree'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { LanguageSelector } from '../../components/LanguageSelector'
 import { AudioControls } from '../audio/AudioControls'
@@ -13,6 +13,7 @@ import { AuctionPage } from '../recruiter-duel/AuctionPage'
 import type { OnlineDuelBinding } from '../recruiter-duel/onlineBinding'
 import { buildInitialDuel, forfeitOf, onlineHistoryEntry, otherSide, parseDuel, seatSide, slimDuel } from './onlineDuel'
 import { useOnlineSync } from './useOnlineSync'
+import { verifyDuelState } from './verifyDuelState'
 import { OnlineError, type LobbyAction, type OnlineErrorCode, type RoomSnapshot } from './contracts'
 import { createOnlineGateway, inviteFromText, invitationFromUrl, invitationUrl, readRememberedRoom, rememberRoom, type ConnectionStatus, type OnlineGateway } from './onlineGateway'
 import './online.css'
@@ -174,6 +175,14 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
   const mySide = own ? seatSide(own.seat) : null
   const duel = room && (room.status === 'IN_PROGRESS' || room.status === 'FINISHED') ? parseDuel(room.state) : null
   const forfeitBy = room ? forfeitOf(room.state) : null
+  // Every state received is re-run with the rules engine; a mismatch shows a warning but never blocks by itself.
+  const roomState = room?.state; const roomOpen = room?.status === 'IN_PROGRESS' || room?.status === 'FINISHED'
+  const verdict = useMemo(() => {
+    const received = roomOpen ? parseDuel(roomState) : null
+    if (!received) return null
+    try { return verifyDuelState(received) } catch { return { ok: false as const, reason: 'replay' as const } }
+  }, [roomState, roomOpen])
+  const [integrityDismissed, setIntegrityDismissed] = useState<string | null>(null)
   // The result is stored on this browser once it is known (a match result, or the rival giving up).
   useEffect(() => {
     if (!duel || !mySide) return
@@ -204,6 +213,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
   const binding: OnlineDuelBinding | null = duel && mySide && room && gateway ? {
     game: duel, mySide, submit: sync.submit,
     strategyReady: { recruiter_one: !!room.strategyReady?.['1'], recruiter_two: !!room.strategyReady?.['2'] },
+    flipCoin: sync.flipCoin, error, integrityIssue: verdict?.ok === false && integrityDismissed !== roomId, dismissIntegrity: () => setIntegrityDismissed(roomId ?? null),
     chooseStrategy: sync.chooseStrategy, revealStrategies: sync.revealStrategies, forfeit: sync.forfeit,
     exit, connection, busy,
   } : null
@@ -225,7 +235,7 @@ export function OnlinePage({ onBack, gateway: provided }: { readonly onBack: () 
     <main className="online-main">
       <button className="secondary-action" onClick={onBack} disabled={busy}>{t('online.back')}</button>
       <p className="eyebrow">{t('online.eyebrow')}</p><h1 ref={heading} tabIndex={-1}>{t('online.title')}</h1>
-      <details className="entry-options"><summary>{t('entry.rules')}</summary><p>{t('online.sessionNotice')}</p></details>
+      <details className="entry-options"><summary>{t('entry.rules')}</summary><p>{t('online.sessionNotice')}</p><p>{t('online.friendlyNotice')}</p></details>
       {error && <p role="alert">{t('online.errors.' + error)}{error === 'NOT_CONFIGURED' && import.meta.env.DEV && <><br />{t('online.configHelp')}</>}</p>}
       {retry && <button className="primary-action" disabled={busy} onClick={() => { void run(retry) }}>{t('online.retry')}</button>}
       {closedNotice && !room && <p className="auction-banner auction-banner-blocked" role="status"><strong>{t('online.roomClosed')}</strong></p>}

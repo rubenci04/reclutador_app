@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, type Dispatch, type SetStateAction } from 'react'
-import type { RecruiterDuelGame, RecruiterId } from '../recruiter-duel/auctionTypes'
+import type { CoinSide, RecruiterDuelGame, RecruiterId } from '../recruiter-duel/auctionTypes'
 import type { StrategyId } from '../tactics/strategies'
 import { OnlineError, type OnlineErrorCode, type RoomSnapshot } from './contracts'
 import type { OnlineGateway } from './onlineGateway'
@@ -50,6 +50,25 @@ export function useOnlineSync(gateway: OnlineGateway | null, room: RoomSnapshot 
   }, [gateway, publish, setError])
   const submit = useCallback((intent: Intent) => { queue.current = queue.current.then(() => apply(intent)) }, [apply])
 
+  /** The coin is tossed by the server; a stale version is refreshed and tried again. */
+  const flipCoin = useCallback(async (side: CoinSide) => {
+    if (!gateway) return
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const base = roomRef.current
+      if (!base) return
+      try { publish(await gateway.flipCoin(base.roomId, base.version, side, crypto.randomUUID())); setError(null); return }
+      catch (e) {
+        const code = errorCode(e)
+        if (code === 'STALE_STATE' || code === 'INVALID_PHASE') {
+          try { publish(await gateway.snapshot(base.roomId)) } catch { return }
+          if (code === 'INVALID_PHASE') return
+          continue
+        }
+        if (mounted.current) setError(code)
+        return
+      }
+    }
+  }, [gateway, publish, setError])
   const chooseStrategy = useCallback(async (strategy: StrategyId) => {
     if (!gateway || !roomId) return
     try { publish(await gateway.setStrategy(roomId, strategy)) } catch (e) { if (mounted.current) setError(errorCode(e)) }
@@ -64,5 +83,5 @@ export function useOnlineSync(gateway: OnlineGateway | null, room: RoomSnapshot 
   }, [gateway, roomId, publish, setError])
   const clear = useCallback(() => { roomRef.current = null }, [])
 
-  return { submit, publish, chooseStrategy, revealStrategies, forfeit, clear }
+  return { submit, publish, flipCoin, chooseStrategy, revealStrategies, forfeit, clear }
 }

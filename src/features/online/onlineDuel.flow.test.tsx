@@ -51,6 +51,7 @@ function gatewayFor(user: string): OnlineGateway {
     },
     startDuel: async (roomId, version, state, actionId) => parseSnapshot(await rpc('online_start_duel', [roomId, actionId, version, JSON.stringify(state)])),
     submitState: async (roomId, version, state, actionId) => parseSnapshot(await rpc('online_submit_state', [roomId, actionId, version, JSON.stringify(state)])),
+    flipCoin: async (roomId, version, side, actionId) => parseSnapshot(await rpc('online_flip_coin', [roomId, actionId, version, side])),
     setStrategy: async (roomId, strategy) => parseSnapshot(await rpc('online_set_strategy', [roomId, strategy])),
     revealStrategies: async (roomId) => (await rpc('online_reveal_strategies', [roomId])) as Record<'recruiter_one' | 'recruiter_two', string>,
     forfeit: async (roomId, actionId) => parseSnapshot(await rpc('online_forfeit', [roomId, actionId])),
@@ -75,6 +76,7 @@ beforeAll(async () => {
     create function realtime.send(payload jsonb,event text,topic text,private boolean) returns void language sql as $$ insert into realtime.messages values(topic,'broadcast',payload) $$;`)
   await db.exec(readFileSync('supabase/migrations/202610180002_online_lobby.sql', 'utf8'))
   await db.exec(readFileSync('supabase/migrations/202610190001_online_duel.sql', 'utf8'))
+  await db.exec(readFileSync('supabase/migrations/202610250001_online_fair_coin.sql', 'utf8'))
 }, 60000)
 afterAll(async () => { await db.close() })
 beforeEach(() => {
@@ -163,6 +165,9 @@ describe('online duel, two browsers against the real database', () => {
     await waitFor(() => { expect(host.getByText('Full time')).toBeInTheDocument(); expect(guest.getByText('Full time')).toBeInTheDocument() }, { timeout: 30000 })
     const finalLine = (view: ReturnType<typeof within>) => view.getByRole('heading', { level: 2, name: /(Victory|Draw|Defeat) · \d–\d/ }).textContent!.split(' · ')[1]
     expect(finalLine(host)).toBe(finalLine(guest))
+    // Both browsers re-ran the whole game with the engine and found nothing to report.
+    expect(host.queryByText('The room state does not match the rules')).toBeNull()
+    expect(guest.queryByText('The room state does not match the rules')).toBeNull()
     expect(host.getAllByText(/Midfield control/).length).toBeGreaterThan(0)
     expect(guest.getAllByText(/Low block/).length).toBeGreaterThan(0)
     // Each browser stored the result from its own point of view.
