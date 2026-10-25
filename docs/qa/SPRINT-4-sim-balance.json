@@ -1,0 +1,109 @@
+{
+  "catalog": "GLOBAL_CLASSIC",
+  "games": 1080,
+  "note": "Better team = higher mean OVR of the eleven (ties count for the human). No coaches, no substitutes. Same squads in both models.",
+  "mirror": {
+    "series": {
+      "n": 540,
+      "localWins": 271,
+      "cpuWins": 269,
+      "penalties": 40,
+      "matches": 1266,
+      "localWinPct": 50.2,
+      "cpuWinPct": 49.8,
+      "penaltyPct": 7.4,
+      "avgMatchesPerSeries": 2.34
+    },
+    "quick": {
+      "n": 540,
+      "localWins": 154,
+      "draws": 231,
+      "cpuWins": 155,
+      "localWinPct": 28.5,
+      "drawPct": 42.8,
+      "cpuWinPct": 28.7
+    }
+  },
+  "byOvrDifference": [
+    {
+      "label": "0-0.5",
+      "n": 138,
+      "seriesBetterWins": 79,
+      "seriesPenalties": 5,
+      "seriesMatches": 317,
+      "quickBetterWins": 40,
+      "quickDraws": 56,
+      "quickWorseWins": 42,
+      "seriesBetterWinPct": 57.2,
+      "seriesPenaltyPct": 3.6,
+      "seriesAvgMatches": 2.3,
+      "quickBetterWinPct": 29,
+      "quickDrawPct": 40.6,
+      "quickWorseWinPct": 30.4
+    },
+    {
+      "label": "0.5-1",
+      "n": 109,
+      "seriesBetterWins": 85,
+      "seriesPenalties": 5,
+      "seriesMatches": 246,
+      "quickBetterWins": 38,
+      "quickDraws": 53,
+      "quickWorseWins": 18,
+      "seriesBetterWinPct": 78,
+      "seriesPenaltyPct": 4.6,
+      "seriesAvgMatches": 2.26,
+      "quickBetterWinPct": 34.9,
+      "quickDrawPct": 48.6,
+      "quickWorseWinPct": 16.5
+    },
+    {
+      "label": "1-2",
+      "n": 248,
+      "seriesBetterWins": 215,
+      "seriesPenalties": 14,
+      "seriesMatches": 561,
+      "quickBetterWins": 87,
+      "quickDraws": 96,
+      "quickWorseWins": 65,
+      "seriesBetterWinPct": 86.7,
+      "seriesPenaltyPct": 5.6,
+      "seriesAvgMatches": 2.26,
+      "quickBetterWinPct": 35.1,
+      "quickDrawPct": 38.7,
+      "quickWorseWinPct": 26.2
+    },
+    {
+      "label": "2-3",
+      "n": 250,
+      "seriesBetterWins": 237,
+      "seriesPenalties": 7,
+      "seriesMatches": 524,
+      "quickBetterWins": 83,
+      "quickDraws": 115,
+      "quickWorseWins": 52,
+      "seriesBetterWinPct": 94.8,
+      "seriesPenaltyPct": 2.8,
+      "seriesAvgMatches": 2.1,
+      "quickBetterWinPct": 33.2,
+      "quickDrawPct": 46,
+      "quickWorseWinPct": 20.8
+    },
+    {
+      "label": ">3",
+      "n": 335,
+      "seriesBetterWins": 332,
+      "seriesPenalties": 0,
+      "seriesMatches": 676,
+      "quickBetterWins": 123,
+      "quickDraws": 149,
+      "quickWorseWins": 63,
+      "seriesBetterWinPct": 99.1,
+      "seriesPenaltyPct": 0,
+      "seriesAvgMatches": 2.02,
+      "quickBetterWinPct": 36.7,
+      "quickDrawPct": 44.5,
+      "quickWorseWinPct": 18.8
+    }
+  ]
+}

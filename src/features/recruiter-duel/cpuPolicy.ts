@@ -28,6 +28,12 @@ export interface CpuPublicContext {
 
 const HARD_POINT_VALUE = .6
 const HARD_IDLE_SHARE = .6
+/** EASY: cards at or above this share of the peers still on offer count as elite; some are overlooked, the rest get at most a small premium. */
+const EASY_ELITE_PERCENTILE = .5
+const EASY_OVERLOOK = .3
+const EASY_ELITE_STRETCH = 1
+const EASY_BARGAIN_PERCENTILE = .35
+const EASY_BARGAIN_STRETCH = 2
 const HARD_PICKY = 1
 const HARD_PICKY_SLOTS = 7
 
@@ -80,7 +86,15 @@ export function privateValuation(context: CpuPublicContext, strategy: CpuStrateg
     const contested = context.currentBid != null && gain >= 4 ? 2 : 0
     return Math.max(0, Math.floor(Math.min(budgetCap, hard + contested)))
   }
-  return Math.max(0, Math.floor(Math.min(budgetCap, opportunityCap + scouting, player.price + quality + profile.premium + preference + need + scouting)))
+  const base = Math.max(0, Math.floor(Math.min(budgetCap, opportunityCap + scouting, player.price + quality + profile.premium + preference + need + scouting)))
+  if (difficulty === 'EASY' && percentile >= EASY_ELITE_PERCENTILE) {
+    // The beginner CPU overlooks many of the best cards on offer and never stretches for the rest.
+    const overlooked = createSeededRandom(`${context.seed}:cpu-easy:${strategy}:${context.roundIndex}:${player.id}`)() < EASY_OVERLOOK
+    return overlooked ? 0 : Math.min(base, player.price + EASY_ELITE_STRETCH)
+  }
+  // ...and it likes bargains too much: the weaker cards of the pool are worth a little extra to it, which fills its slots with them.
+  if (difficulty === 'EASY' && percentile < EASY_BARGAIN_PERCENTILE) return Math.max(base, Math.floor(Math.min(budgetCap, player.price + EASY_BARGAIN_STRETCH)))
+  return base
 }
 
 export function decideCpu(context: CpuPublicContext, strategy: CpuStrategy, currentBid: number | null, technicalMaximum: number): CpuDecision {

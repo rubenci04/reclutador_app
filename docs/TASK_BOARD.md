@@ -424,3 +424,7 @@ Moneda tirada por el servidor (`online_flip_coin`, migración 202610250001 pendi
 ## Sprint 3 online — 25/10/2026
 
 Tiempo por turno (120 s puja / 5 min estrategia) con cuenta regresiva y «Reclamar victoria» si el rival no responde; el aviso de conexión se limpia al reconectar. Las migraciones 202610250001 y 202610250002 deben aplicarse juntas, en ese orden, al publicar la web nueva. [Registro](logs/SPRINT-3-ONLINE.md).
+
+## Sprint 4 CPU y equilibrio — 25/10/2026
+
+EASY ahora queda 1,0-1,7 de OVR medio por debajo de NORMAL (NORMAL/HARD sin cambios). Medición del simulador en series (1.080 duelos): sin sesgo de lado; +0,5 de OVR ya da ~78 % de ganar la serie y +2 da ~95 %; la partida rápida casi no premia la calidad. Recomendación sin aplicar. [Registro](logs/SPRINT-4-BALANCE.md).
