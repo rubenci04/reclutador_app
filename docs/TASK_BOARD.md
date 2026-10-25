@@ -2,7 +2,7 @@
 
 ## Publicación sprint 8 — 25/10/2026
 
-Entrega aislada del trabajo de Codex, excluyendo sprints posteriores de Claude. Validación y publicación en curso. [Registro](logs/SPRINT-8-PUBLICACION.md) y [trabajo paralelo](PARALLEL_WORK.md).
+Entrega aislada del trabajo de Codex, excluyendo sprints posteriores de Claude. Validación completa: 1.447 pruebas; commit bc7648c subido a codex/sprint-8-publicacion. Main y deploy pendientes de autorización explícita tras rechazo automático. [Registro](logs/SPRINT-8-PUBLICACION.md) y [trabajo paralelo](PARALLEL_WORK.md).
 
 ## Todos los nodos sobre la cancha — 24/10/2026
 

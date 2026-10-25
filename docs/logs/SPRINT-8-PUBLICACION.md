@@ -9,3 +9,7 @@ Primera suite aislada: 1.445/1.447; dos hashes de fuentes TXT difirieron sólo p
 Validación final: typecheck, lint, npm test -- --maxWorkers=4 y build aprobados; verificación de chunks (50 JS, máximo 341.461 bytes, 1.200 filas idénticas a las fuentes) y dry-run de Wrangler 4.151.3 aprobados. El build incorpora sólo URL y clave publishable pública de Supabase en memoria; no se copió .env.local. Push/deploy: pendiente de registrar tras ejecución.
 
 Guía de integración: docs/PARALLEL_WORK.md. No copiar .env.local ni guardar secretos en Git.
+
+## Push y bloqueo de producción
+
+Commit de código bc7648c, subido correctamente a origin/codex/sprint-8-publicacion. La revisión automática rechazó el comando de push a main y despliegue Worker por considerar insuficiente la autorización explícita para producción (también citó la restricción histórica de CODEX-001). No se ejecutaron push a main ni deploy; requieren confirmación explícita del usuario. Producción permanece anterior a sprint 8.
