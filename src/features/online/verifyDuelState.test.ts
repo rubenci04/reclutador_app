@@ -1,3 +1,4 @@
+import { ENGINE_VERSION, type EngineVersion } from '../local-match/engine/engineConstants'
 import { describe, expect, it } from 'vitest'
 import { auctionAvailability, autoBuySubstitutes, autoCompleteStep, beginBidding, canAutoComplete, completeDuelMatch, nextAuctionRound, passAuction, placeBid, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss, startDuelMatch } from '../recruiter-duel/auctionEngine'
 import type { AuctionTransition, RecruiterDuelGame, RecruiterId } from '../recruiter-duel/auctionTypes'
@@ -29,10 +30,10 @@ function auctions(seed: string, grab: Readonly<Record<RecruiterId, number>>, tos
   return game
 }
 /** Coaches, substitutes, strategies and the match, as the online squad stage does. */
-function finished(game: RecruiterDuelGame): RecruiterDuelGame {
+function finished(game: RecruiterDuelGame, engine?: EngineVersion): RecruiterDuelGame {
   const catalog = duelCatalog(game)
   const hired = autoBuySubstitutes(autoBuySubstitutes(autoChooseCoach(autoChooseCoach(game, 'recruiter_one'), 'recruiter_two'), 'recruiter_one', catalog), 'recruiter_two', catalog)
-  return must(completeDuelMatch(must(startDuelMatch(hired, catalog, { recruiter_one: 'HIGH_PRESS', recruiter_two: 'LOW_BLOCK' }, true))))
+  return must(completeDuelMatch(must(startDuelMatch(hired, catalog, { recruiter_one: 'HIGH_PRESS', recruiter_two: 'LOW_BLOCK' }, true, engine))))
 }
 const games = [
   ['two cautious bidders', 'verify-1', { recruiter_one: 1, recruiter_two: 1 }, 'heads', false],
@@ -48,6 +49,16 @@ describe('verifyDuelState', () => {
     const done = finished(squads)
     expect(done.matchResult).not.toBeNull()
     expect(verifyDuelState(roundTrip(done))).toEqual({ ok: true, coverage: 'full' })
+  })
+  it('verifies a game played by the figures engine, keeps classic games frozen and rejects an altered score', () => {
+    const squads = auctions('verify-1', { recruiter_one: 1, recruiter_two: 1 })
+    const modern = finished(squads, ENGINE_VERSION)
+    expect(modern.matchResult!.engineVersion).toBe(ENGINE_VERSION)
+    expect(verifyDuelState(roundTrip(modern))).toEqual({ ok: true, coverage: 'full' })
+    const classic = finished(squads)
+    expect(classic.matchResult!.engineVersion).toBeUndefined()
+    expect(verifyDuelState(roundTrip(classic))).toEqual({ ok: true, coverage: 'full' })
+    expect(tamper(modern, (game) => ({ ...game, matchResult: { ...game.matchResult!, score: { local: game.matchResult!.score.local + 1, cpu: game.matchResult!.score.cpu } } }))).toEqual({ ok: false, reason: 'match_result' })
   })
   it('accepts every intermediate state of a game in progress', () => {
     const initial = buildInitialDuel({ host: 'Ana', guest: 'Beto' }, 'GLOBAL_CLASSIC', 'GLOBAL_CLASSIC', 'verify-steps')

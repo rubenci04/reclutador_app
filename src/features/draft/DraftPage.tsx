@@ -6,6 +6,8 @@ import { AudioControls } from '../audio/AudioControls'
 import { DRAFT_BUDGET_MILLIONS } from '../../data/catalogRules'
 import { getPlayerTier } from '../player-catalog/getPlayerTier'
 import { DRAFT_CATALOG } from './catalog'
+import { ENGINE_VERSION } from '../local-match/engine/engineConstants'
+import { playMatch } from '../local-match/engine/figuresMatch'
 import { DraftPitch } from './DraftPitch'
 import { summarizeDraft } from './draftModel'
 import { PlayerSelector } from './PlayerSelector'
@@ -14,7 +16,6 @@ import { DRAFT_SLOTS, type DraftSlotId } from './draftTypes'
 import { generateCpuTeam } from '../local-match/cpuTeam'
 import { MatchSeriesScreen } from '../local-match/MatchSeriesScreen'
 import { MATCH_RULES_VERSION, type MatchResult } from '../local-match/matchTypes'
-import { simulateMatch } from '../local-match/simulator'
 import { createSecureSeed } from '../local-match/seededRandom'
 import { PRODUCT } from '../../config/product'
 
@@ -49,7 +50,7 @@ export function DraftPage({ onDuel, teamName }: DraftPageProps) {
     catch { setMatchError(true); return }
     const cpu = generateCpuTeam(DRAFT_CATALOG, seed)
     setMatchError(false)
-    setMatchResult(simulateMatch({ seriesFormat: 'home-away' as const, actionModel: 'action-v3', localLineup: lineup, cpuLineup: cpu.team.lineup, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed }))
+    setMatchResult(playMatch({ engineVersion: ENGINE_VERSION, seriesFormat: 'home-away' as const, actionModel: 'action-v3', localLineup: lineup, cpuLineup: cpu.team.lineup, catalog: DRAFT_CATALOG, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed }))
   }
   if (matchResult) return <div className="draft-app"><header className="draft-header"><a className="brand" href="#match-main" aria-label={PRODUCT.name}><span className="brand-emblem">R</span><span>{PRODUCT.name}</span></a><div className="header-actions"><AudioControls /><LanguageSelector /></div></header><MatchSeriesScreen localName={teamName} key={matchResult.seed} result={matchResult} onRematch={startCpuMatch} onNewMatch={() => { reset(); setMatchResult(null) }} onReturn={() => { setMatchResult(null); if (onDuel) onDuel(); else window.location.assign('/') }} /></div>
   return <div className="draft-app">

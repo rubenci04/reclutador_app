@@ -4,6 +4,7 @@ import type { Player } from '../../types/player'
 import { DRAFT_SLOTS } from '../draft/draftTypes'
 import { startStrategyChoice } from '../tactics/strategyChoice'
 import { chooseFormation, buySubstitute, reorderTeamLineup, startDuelMatch, swapBenchWithStarter } from './auctionEngine'
+import { ENGINE_VERSION } from '../local-match/engine/engineConstants'
 import { chooseCoach, declineCoach } from './coachHiring'
 import { CoachMarket } from './CoachMarket'
 import { TeamPowerPanel } from './TeamPowerPanel'
@@ -49,7 +50,7 @@ export function OnlineTeamsStage({ game, online, names, catalog }: Props) {
         if (cancelled) return
         submit((current) => {
           if (current.phase !== 'TEAMS_COMPLETED') return current
-          const started = startDuelMatch(current, catalog, strategies, true)
+          const started = startDuelMatch(current, catalog, strategies, true, ENGINE_VERSION)
           return started.ok ? started.game : current
         })
       } catch { if (!cancelled) setStartFailed(true) }

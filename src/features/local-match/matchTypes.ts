@@ -7,11 +7,15 @@ import type { FormationId } from '../tactics/formations'
 import type { DraftLineup } from '../draft/draftTypes'
 import type { StrategyId, TACTICS_VERSION } from '../tactics/strategies'
 import type { TacticalAdjustment } from '../tactics/tacticalModel'
+import type { EngineVersion } from './engine/engineConstants'
+import type { ResolvedMoment } from './engine/figuresModel'
 import type { SquadQuality, SQUAD_QUALITY_VERSION } from './squadQuality'
 
 export const MATCH_RULES_VERSION = 'local-match-v2' as const
 export const MATCH_MINUTES = [15, 30, 45, 60, 75, 90] as const
 export type MatchSide = 'local' | 'cpu'
+/** Set pieces of the figures engine that have no event type of their own. */
+export type SetPiece = 'free-kick' | 'penalty'
 export type MatchEventType = 'corner' | 'attack' | 'shot' | 'save' | 'recovery' | 'goal' | 'final' | 'substitution' | 'pass'
 /** Narration detail of an interactive attack (attack-tree-v1). Absent on every historical event. */
 export type PlayStep = FreeKickStep | CornerStep | 'CARRY_OK' | 'CARRY_LOST' | 'DRIBBLE_OK' | 'DRIBBLE_LOST' | 'AERIAL_CROSS' | 'AERIAL_CONTEST' | 'AERIAL_WON' | 'AERIAL_CLEAR' | 'DIRECTED_HEADER_CONTACT' | 'DIRECTED_HEADER_FLIGHT' | 'DIRECTED_HEADER_BLOCK' | 'DIRECTED_HEADER_OVER' | 'DIRECTED_HEADER_WIDE' | 'DIRECTED_HEADER_GOAL' | 'DIRECTED_HEADER_SAVE' | 'DEFENSE_BUILD' | 'INTERCEPT_OK' | 'PRESS_OK' | 'PRESS_BEATEN' | 'CPU_RETAIN' | 'DEFENSE_BLOCK' | 'CPU_WIDE' | 'CPU_GOAL' | 'DEFENSE_SAVE' | 'BUILD' | 'PASS_LEFT_OK' | 'PASS_RIGHT_OK' | 'PASS_LEFT_LOST' | 'PASS_RIGHT_LOST' | 'CROSS_OK' | 'CROSS_LOST' | 'SHOT_BLOCKED' | 'SHOT_WIDE' | 'SHOT_SAVED' | 'SHOT_GOAL' | 'HEADER_WIDE' | 'HEADER_SAVED' | 'HEADER_GOAL'
@@ -36,6 +40,8 @@ export interface MatchStats {
   readonly saves: number
   readonly recoveries: number
   readonly possession: number
+  /** Figures engine only. */
+  readonly corners?: number
 }
 
 export interface MatchEvent {
@@ -50,6 +56,7 @@ export interface MatchEvent {
   readonly tactic?: StrategyId
   /** Only events produced by the interactive attack tree. */
   readonly step?: PlayStep
+  readonly setPiece?: SetPiece
   readonly aerial?: AerialEvent
   readonly freeKick?: FreeKickEvent
   readonly corner?: CornerEvent
@@ -85,6 +92,10 @@ export interface RosterAdvantage {
 }
 
 export interface MatchResult {
+  /** Present only on matches played by the figures engine; absent ones keep the classic simulator, frozen. */
+  readonly engineVersion?: EngineVersion
+  /** Key moments of a figures-engine match, with the quality that resolved each one. */
+  readonly moments?: readonly ResolvedMoment[]
   readonly formations?: Readonly<Record<MatchSide, FormationId>>
   readonly seriesFormat?: 'home-away'
   readonly actionModel?: 'action-v1' | 'action-v2' | 'action-v3'

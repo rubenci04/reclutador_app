@@ -7,6 +7,7 @@ import { DRAFT_SLOT_IDS, DRAFT_SLOTS, type DraftLineup, type DraftSlotId } from 
 import { eventInfluence } from '../tactics/eventInfluence'
 import { NEUTRAL_SELECTION, TACTICS_VERSION, parseStrategySelection, type StrategySelection } from '../tactics/strategies'
 import { ZERO_ADJUSTMENT, tacticalAdjustment, tacticalFeatures, type TacticalAdjustment } from '../tactics/tacticalModel'
+import type { EngineVersion } from './engine/engineConstants'
 import { createSeededRandom } from './seededRandom'
 import { composeStrength, squadQuality, SQUAD_QUALITY_VERSION } from './squadQuality'
 import { MATCH_MINUTES, MATCH_RULES_VERSION, type MatchBlock, type MatchEvent, type MatchResult, type MatchSide, type MatchStats, type MatchTeam, type RosterAdvantage, type TeamStrength } from './matchTypes'
@@ -31,6 +32,8 @@ export interface SimulationInput {
   readonly benches?: Readonly<Record<MatchSide, readonly string[]>>
   /** Optional coaches: a bounded extra per sector for the side that hired one. Without them the match is exactly the classic one. */
   readonly coaches?: Readonly<Record<MatchSide, (CoachEffect & { readonly id: string }) | null>>
+  /** Only read by playMatch: the classic simulator ignores it, so stored matches stay frozen. */
+  readonly engineVersion?: EngineVersion
 }
 
 /**
@@ -78,7 +81,7 @@ export function isValidOrganizedLineup(lineup: DraftLineup, catalog: readonly Pl
   return summarizeDraft(lineup, catalog, budget).canConfirm
 }
 
-function teamFrom(lineup: DraftLineup, catalog: readonly Player[], budget?: number, formation?: FormationId): MatchTeam {
+export function teamFrom(lineup: DraftLineup, catalog: readonly Player[], budget?: number, formation?: FormationId): MatchTeam {
   if (!isValidOrganizedLineup(lineup, catalog, budget, formation)) throw new Error('invalid_match_lineup')
   const summary = summarizeDraft(lineup, catalog, budget)
   return { lineup, players: summary.selectedPlayers, spent: summary.spent, averageRating: summary.averageRating ?? 0 }

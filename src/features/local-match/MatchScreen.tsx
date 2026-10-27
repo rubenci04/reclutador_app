@@ -44,7 +44,8 @@ export function MatchScreen({ result, onRematch, onNewMatch, onReturn, localName
   const [exitOpen, setExitOpen] = useState(false)
   const main = useRef<HTMLElement>(null)
   const finalHeading = useRef<HTMLHeadingElement>(null)
-  const intervalMs = ((result.actionModel === 'action-v2' || result.actionModel === 'action-v3') ? 625 : 2500) / speed
+  // The figures engine has a variable number of chances: the replay keeps the length of a classic one (24 frames at 625 ms), within bounds.
+  const intervalMs = (result.engineVersion ? Math.min(700, Math.max(400, 15000 / playbackBlocks.length)) : (result.actionModel === 'action-v2' || result.actionModel === 'action-v3') ? 625 : 2500) / speed
   const [blockIndex, setBlockIndex] = useState(0)
   const [replayId, setReplayId] = useState(0)
   const reportedFinished = useRef(false)

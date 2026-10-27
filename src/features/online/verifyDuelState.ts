@@ -102,7 +102,7 @@ export function verifyDuelState(game: RecruiterDuelGame): DuelVerification {
   }
   if (game.matchResult) {
     if (!game.strategies) return fail('match_result')
-    const played = startDuelMatch({ ...game, phase: 'TEAMS_COMPLETED', matchResult: null }, catalog, game.strategies, !!game.matchResult.actionModel)
+    const played = startDuelMatch({ ...game, phase: 'TEAMS_COMPLETED', matchResult: null }, catalog, game.strategies, !!game.matchResult.actionModel, game.matchResult.engineVersion)
     if (!played.ok || !same(played.game.matchResult, game.matchResult)) return fail('match_result')
   }
   return { ok: true, coverage: 'full' }

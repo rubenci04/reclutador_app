@@ -452,3 +452,7 @@ Liga Argentina / Actuales inicial, hero reactivo con anuncio y scroll accesible,
 ## Sprint 9 navegación, muñecos y un toque — 27/10/2026
 
 Categoría por defecto Liga Argentina Actuales y título que sigue a la categoría tocada; sin fotos (muñecos con la apariencia del CSV: color de pelo, rulos, barba, cicatrices…; técnicos de traje); decisiones con un toque (barra de precisión opcional); Leyendas a 200 en Global, Sudamérica, Europa e Italia (las demás ligas siguen en 150 hasta cargar filas). [Registro](logs/SPRINT-9-NAVEGACION-FOTOS-TABLERO.md).
+
+## Partido interactivo, parte 1 — 27/10/2026
+
+Motor `figures-v1` por cifras (ocasiones Poisson, xG, momentos con oscilación ±12 pp), calibrado con 20.000 partidos por caso y probado; los partidos nuevos guardan `engineVersion`, los guardados siguen con el motor viejo. Sin rediseño de pantalla ni despliegue. Detalle: [docs/logs/PARTIDO-INTERACTIVO-PARTE-1.md](logs/PARTIDO-INTERACTIVO-PARTE-1.md), plan: [docs/PLAN-PARTIDO-INTERACTIVO.md](PLAN-PARTIDO-INTERACTIVO.md).

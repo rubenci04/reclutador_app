@@ -8,7 +8,9 @@ import { createEmptyLineup, summarizeDraft } from '../draft/draftModel'
 import { DRAFT_SLOTS } from '../draft/draftTypes'
 import { MATCH_RULES_VERSION } from '../local-match/matchTypes'
 import { createSeededRandom, shuffleSeeded } from '../local-match/seededRandom'
-import { isValidOrganizedLineup, simulateMatch } from '../local-match/simulator'
+import { isValidOrganizedLineup } from '../local-match/simulator'
+import { playMatch } from '../local-match/engine/figuresMatch'
+import type { EngineVersion } from '../local-match/engine/engineConstants'
 import { swapWithinLine, type LineupSwapError } from '../tactics/lineupOrdering'
 import type { FormationRole } from '../tactics/roles'
 import { suggestLineup } from '../tactics/roleProfiles'
@@ -340,7 +342,7 @@ export const revealNextAuctionRound = (game: RecruiterDuelGame): AuctionTransiti
  * Starts the match from the organised elevens. `strategies` are optional (NEUTRAL when omitted) and are validated here,
  * together with both lineups, instead of letting the simulator throw. Secret simultaneous choice belongs to C3.
  */
-export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player[], strategies?: Readonly<Record<RecruiterId, unknown>>, actionModel = false): AuctionTransition {
+export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player[], strategies?: Readonly<Record<RecruiterId, unknown>>, actionModel = false, engineVersion?: EngineVersion): AuctionTransition {
   if (game.phase !== 'TEAMS_COMPLETED') return { ok: false, error: 'invalid_transition' }
   if (![FIRST, SECOND].every((participant) => isValidOrganizedLineup(game.teams[participant].lineup, catalog, budgetOf(game), game.teams[participant].formation))) return { ok: false, error: 'teams_invalid' }
   const chosen = strategies ?? { recruiter_one: 'NEUTRAL', recruiter_two: 'NEUTRAL' }
@@ -350,7 +352,7 @@ export function startDuelMatch(game: RecruiterDuelGame, catalog: readonly Player
   const benches = { local: benchIds(FIRST), cpu: benchIds(SECOND) }
   const coachFor = (participant: RecruiterId) => { const coach = hiredCoachOf(game.teams[participant]); return coach ? { id: coach.id, ...coachEffect(coach, stored[participant]) } : null }
   const coaches = { local: coachFor(FIRST), cpu: coachFor(SECOND) }
-  const matchResult = simulateMatch({ ...(game.teams[FIRST].formation || game.teams[SECOND].formation || actionModel ? { formations: { local: game.teams[FIRST].formation ?? '4-3-3', cpu: game.teams[SECOND].formation ?? '4-3-3' } } : {}), ...(actionModel ? { seriesFormat: 'home-away' as const, actionModel: 'action-v3' as const } : {}), localLineup: game.teams[FIRST].lineup, cpuLineup: game.teams[SECOND].lineup, catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match`, rosterBonus: true, ...(game.config ? { budget: game.config.budget } : {}), ...(!game.manualBench && (benches.local.length || benches.cpu.length) ? { benches } : {}), ...(coaches.local || coaches.cpu ? { coaches } : {}), tactics: { version: TACTICS_VERSION, local: stored.recruiter_one, cpu: stored.recruiter_two } })
+  const matchResult = playMatch({ ...(engineVersion ? { engineVersion } : {}), ...(game.teams[FIRST].formation || game.teams[SECOND].formation || actionModel ? { formations: { local: game.teams[FIRST].formation ?? '4-3-3', cpu: game.teams[SECOND].formation ?? '4-3-3' } } : {}), ...(actionModel ? { seriesFormat: 'home-away' as const, actionModel: 'action-v3' as const } : {}), localLineup: game.teams[FIRST].lineup, cpuLineup: game.teams[SECOND].lineup, catalog, catalogVersion: 'catalog_v1', rulesVersion: MATCH_RULES_VERSION, seed: `${game.seed}:match`, rosterBonus: true, ...(game.config ? { budget: game.config.budget } : {}), ...(!game.manualBench && (benches.local.length || benches.cpu.length) ? { benches } : {}), ...(coaches.local || coaches.cpu ? { coaches } : {}), tactics: { version: TACTICS_VERSION, local: stored.recruiter_one, cpu: stored.recruiter_two } })
   return transition(game, { phase: 'SIMULATING', matchResult, strategies: stored })
 }
 

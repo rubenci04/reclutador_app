@@ -1,4 +1,5 @@
 import { catalogForMode } from '../themed-modes/modeCatalog'
+import { ENGINE_VERSION } from '../local-match/engine/engineConstants'
 import { resolveSeries } from '../local-match/matchSeries'
 import { auctionBudgetOf, startDuelMatch } from './auctionEngine'
 import type { RecruiterDuelGame } from './auctionTypes'
@@ -40,7 +41,7 @@ export function measureBidding(difficulty: CpuDifficulty, strategy: CpuStrategy,
     total.spendPct += game.teams.recruiter_two.spent / auctionBudgetOf(game) * 100
     total.discards += 5 - game.discardsRemaining
     total.cpuOvr += ovr(game, 'recruiter_two'); total.humanOvr += ovr(game, 'recruiter_one')
-    const first = startDuelMatch(game, catalog, undefined, true); if (!first.ok) throw new Error(first.error)
+    const first = startDuelMatch(game, catalog, undefined, true, ENGINE_VERSION); if (!first.ok) throw new Error(first.error)
     total.cpuSeriesWins += Number(resolveSeries(first.game.matchResult!, catalog).winner === 'cpu')
     const single = startDuelMatch(game, catalog); if (single.ok) total.cpuSingleWins += Number(single.game.matchResult!.winner === 'cpu')
   }

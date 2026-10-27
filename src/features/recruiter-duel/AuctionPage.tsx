@@ -8,6 +8,7 @@ import { cpuAct, createDualDraft, discardCard, dualComplete, isSideComplete, sig
 import { DualDraftScreen } from './DualDraftScreen'
 import { useCallback, useEffect, useMemo, useRef, useState, type SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
+import { ENGINE_VERSION } from '../local-match/engine/engineConstants'
 import { LanguageSelector } from '../../components/LanguageSelector'
 import { AudioControls } from '../audio/AudioControls'
 import { CoinFace } from './FootballCoin'
@@ -299,7 +300,7 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
       setLiveOrigin(created.value)
       return true
     }
-    const result = startDuelMatch(current, catalog, { recruiter_one: first, recruiter_two: second }, true)
+    const result = startDuelMatch(current, catalog, { recruiter_one: first, recruiter_two: second }, true, ENGINE_VERSION)
     apply(result)
     // Local history records the series winner after the final playback.
     return result.ok

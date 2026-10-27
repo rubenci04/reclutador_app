@@ -1,6 +1,6 @@
 import { createSeededRandom } from './seededRandom'
 import type { MatchResult, MatchSide } from './matchTypes'
-import { simulateMatch } from './simulator'
+import { playMatch } from './engine/figuresMatch'
 import { TACTICS_VERSION, type StrategyId } from '../tactics/strategies'
 import { organizeFormation, type FormationId } from '../tactics/formations'
 import type { DraftLineup } from '../draft/draftTypes'
@@ -50,7 +50,8 @@ const lineupCost = (lineup: DraftLineup, catalog: readonly Player[]) => Object.v
 
 /** Same budget, coach and roster bonus as the first game; only the event seed changes, plus whatever the setup changed. */
 export function nextSeriesMatch(first: MatchResult, index: number, catalog: readonly Player[], setup: SeriesSetup = seriesSetup(first)) {
-  return simulateMatch({
+  return playMatch({
+    ...(first.engineVersion ? { engineVersion: first.engineVersion } : {}),
     localLineup: setup.lineups.local, cpuLineup: setup.lineups.cpu, catalog,
     catalogVersion: first.catalogVersion, rulesVersion: first.rulesVersion,
     seed: `${first.seed}:series:${index}`, actionModel: first.actionModel,
