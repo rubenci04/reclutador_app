@@ -41,6 +41,10 @@ export interface FiguresRun {
   /** The finished match, or null while a human moment waits. */
   readonly result: MatchResult | null
   readonly waiting: Moment | null
+  /** Blocks played so far (all of them when finished): what a screen shows while a moment waits. */
+  readonly blocks: readonly MatchBlock[]
+  /** Both squads at kickoff and each segment's eleven, for names and the pitch. */
+  readonly lineups: Readonly<Record<MatchSide, readonly MatchTeam[]>>
   readonly segmentsPlayed: number
   readonly score: Readonly<Record<MatchSide, number>>
 }
@@ -121,7 +125,6 @@ export function simulateFiguresMatch(input: SimulationInput, options: FiguresOpt
 
   const setup: FiguresSetup = { seed: input.seed, sides: { local: { lines: lines.local, tempo: TEMPO[selection.local] }, cpu: { lines: lines.cpu, tempo: TEMPO[selection.cpu] } } }
   const progress = runFiguresMatch(setup, options.qualities, options.humanSides)
-  if (!progress.finished) return { result: null, waiting: progress.waiting, segmentsPlayed: progress.segments.length, score: progress.score }
 
   // Events and statistics come from the same chances that decided the score.
   const shooter = (side: MatchSide, segment: number, roll: number) => {
@@ -137,7 +140,7 @@ export function simulateFiguresMatch(input: SimulationInput, options: FiguresOpt
     const player = shooter(side, chance.segment, chance.shooterRoll)
     stats[side].shots++
     if (chance.kind === 'corner') stats[side].corners++
-    const attack: MatchEvent = { minute, side, type: 'attack', playerId: player.id, ...(chance.kind === 'free-kick' || chance.kind === 'penalty' ? { setPiece: chance.kind } : {}) }
+    const attack: MatchEvent = { minute, at: chance.minute, side, type: 'attack', playerId: player.id, ...(chance.kind === 'free-kick' || chance.kind === 'penalty' ? { setPiece: chance.kind } : {}) }
     // One playback frame per chance starts at its attack event; a corner follows it.
     const opening: MatchEvent[] = chance.kind === 'corner' ? [attack, { minute, side, type: 'corner' }] : [attack]
     if (chance.outcome === 'goal') { stats[side].shotsOnTarget++; return [...opening, { minute, side, type: 'goal', playerId: player.id }] }
@@ -151,6 +154,7 @@ export function simulateFiguresMatch(input: SimulationInput, options: FiguresOpt
     if (minute === 90) events.push({ minute, side: null, type: 'final' })
     return { minute, events, score: { ...segment.score } }
   })
+  if (!progress.finished) return { result: null, waiting: progress.waiting, blocks, lineups: lineupsPlayed, segmentsPlayed: progress.segments.length, score: progress.score }
   const possessionLocal = possessionShare(setup, progress)
   stats.local.possession = possessionLocal; stats.cpu.possession = 100 - possessionLocal
 
@@ -176,7 +180,7 @@ export function simulateFiguresMatch(input: SimulationInput, options: FiguresOpt
     ...(input.rosterBonus ? { quality: { version: SQUAD_QUALITY_VERSION, initial: quality, meanBonus: { local: round2(mean(qualityTotals.local)), cpu: round2(mean(qualityTotals.cpu)) } } } : {}),
     tactics: { version: TACTICS_VERSION, selection: { local: selection.local, cpu: selection.cpu }, adjustments: { local: meanAdjustment('local'), cpu: meanAdjustment('cpu') } },
   }
-  return { result, waiting: null, segmentsPlayed: SEGMENTS, score }
+  return { result, waiting: null, blocks, lineups: lineupsPlayed, segmentsPlayed: SEGMENTS, score }
 }
 
 /** The one door for new matches: the figures engine when asked for, the frozen classic simulator otherwise (stored matches never change). */

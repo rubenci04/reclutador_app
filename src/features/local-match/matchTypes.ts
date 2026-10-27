@@ -57,6 +57,8 @@ export interface MatchEvent {
   /** Only events produced by the interactive attack tree. */
   readonly step?: PlayStep
   readonly setPiece?: SetPiece
+  /** Figures engine: exact minute (1-90) of the chance an attack event opens. */
+  readonly at?: number
   readonly aerial?: AerialEvent
   readonly freeKick?: FreeKickEvent
   readonly corner?: CornerEvent

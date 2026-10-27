@@ -456,3 +456,7 @@ Categoría por defecto Liga Argentina Actuales y título que sigue a la categor�
 ## Partido interactivo, parte 1 — 27/10/2026
 
 Motor `figures-v1` por cifras (ocasiones Poisson, xG, momentos con oscilación ±12 pp), calibrado con 20.000 partidos por caso y probado; los partidos nuevos guardan `engineVersion`, los guardados siguen con el motor viejo. Sin rediseño de pantalla ni despliegue. Detalle: [docs/logs/PARTIDO-INTERACTIVO-PARTE-1.md](logs/PARTIDO-INTERACTIVO-PARTE-1.md), plan: [docs/PLAN-PARTIDO-INTERACTIVO.md](PLAN-PARTIDO-INTERACTIVO.md).
+
+## Partido interactivo, parte 2 — 27/10/2026
+
+Pantalla limpia del partido (celular primero): cancha SVG con monigotes, pelota por zonas, relato de una línea, detalle a pedido y capa de momento con minijuego de un toque. El modo «en vivo» usa el motor nuevo por pasos. Ver [registro](logs/PARTIDO-INTERACTIVO-PARTE-2.md). Vista previa sin promover.

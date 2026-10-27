@@ -150,15 +150,16 @@ describe('single-player auction interface', () => {
       const batch = vi.spyOn(engine, 'startDuelMatch')
       const play = screen.getByRole('button', { name: 'Start match' })
       act(() => { play.click(); play.click() })
-      expect(screen.getByRole('heading', { name: 'Manage the match' })).toHaveTextContent('Manage the match')
+      // The live mode plays on the figures engine, stepping segment by segment; hot-seat gives each person their own moments.
+      expect(document.querySelector('.fm-series')).not.toBeNull()
       expect(batch).not.toHaveBeenCalled()
-      fireEvent.click(screen.getByRole('button', { name: 'View next block' }))
-      fireEvent.click(screen.getByRole('button', { name: 'View next block' }))
-      expect(screen.queryByRole('heading', { name: 'Recruiter one’s turn' })).not.toBeInTheDocument()
-      expect(screen.queryByText(i18n.t('halftime.question'))).not.toBeInTheDocument()
-      act(() => vi.advanceTimersByTime(800)) // the internal after-30 window is recorded as KEEP
-      fireEvent.click(screen.getByRole('button', { name: 'View next block' }))
-      expect(screen.getByRole('heading', { name: 'HALF-TIME · Recruiter one' })).toHaveFocus()
+      for (let i = 0; i < 60 && !document.querySelector('.fm-moment'); i++) act(() => vi.advanceTimersByTime(400))
+      expect(screen.getByRole('dialog')).toHaveTextContent(/turn/i)
+      fireEvent.click(screen.getByRole('button', { name: 'Play!' }))
+      act(() => vi.advanceTimersByTime(300))
+      expect(document.querySelector('.fm-moment')).toBeNull()
+      act(() => vi.advanceTimersByTime(1500))
+      expect(document.querySelector('.fm-score')?.textContent).toMatch(/^\d+–\d+$/)
       return
     }
     fireEvent.click(screen.getByRole('radio', { name: 'Quick simulation' }))

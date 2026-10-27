@@ -1024,3 +1024,39 @@ h1,h2,h3,.match-score span,.wallet-balance,.budget-amount strong{font-family:var
 /* Sprint 9: the pitch takes the decision by touch; the same options live in a closed details as the accessible alternative. */
 .board-alt{margin:6px 0}.board-alt>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-size:.9rem;font-weight:700;color:#e2faab}
 .precision-toggle{display:inline-flex;align-items:center;gap:6px;font-size:.8rem}.dribble-lane.is-pickable{cursor:pointer}
+
+/* Match screen on the figures engine (mobile first): scoreboard, drawn pitch, one caption line, moment layer, details on demand. */
+.fm{display:grid;gap:.6rem;width:100%;max-width:460px;margin:0 auto;padding:.4rem .5rem;box-sizing:border-box}
+.fm-board{display:grid;grid-template-columns:1fr auto 1fr;grid-template-areas:"a s b" ". c .";align-items:center;gap:0 .6rem;text-align:center}
+.fm-team{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700;font-size:.95rem}
+.fm-team.fm-local{grid-area:a;text-align:right;color:#7dd3fc}.fm-team.fm-cpu{grid-area:b;text-align:left;color:#fda4af}
+.fm-score{grid-area:s;margin:0;font-family:var(--font-display);font-size:2.3rem;line-height:1.1;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.fm-clock{grid-area:c;font-size:.95rem;color:#c9d6cc;font-variant-numeric:tabular-nums}
+.fm-stage{position:relative;width:min(100%,calc(56dvh * 100 / 130));margin:0 auto}
+.fm-pitch{position:relative;aspect-ratio:100/130;width:100%;border-radius:12px;overflow:hidden;background:#1f6b3a;touch-action:manipulation}
+.fm-pitch>svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.fm-grass{fill:#1f6b3a}.fm-stripe{fill:#237a42}
+.fm-lines{fill:none;stroke:rgba(255,255,255,.75);stroke-width:.5}.fm-lines .fm-goal{fill:rgba(255,255,255,.35)}
+.fm-player{position:absolute;width:13%;transform:translate(-50%,-50%);transition:left .7s ease,top .7s ease,transform .3s ease}
+.fm-player .player-character{width:100%;height:auto;display:block}
+.fm-player::after{content:"";display:block;height:3px;border-radius:2px;margin:1px 18% 0;background:var(--fm-side)}
+.fm-player.fm-local{--fm-side:#38bdf8}.fm-player.fm-cpu{--fm-side:#fb7185}
+.fm-player.is-active{z-index:3;transform:translate(-50%,-50%) scale(1.4);filter:drop-shadow(0 0 5px #fde047)}
+.fm-ball{position:absolute;width:3.6%;aspect-ratio:1;min-width:11px;border-radius:50%;background:#fff;border:2px solid #111;box-shadow:0 1px 3px rgba(0,0,0,.6);transform:translate(-50%,-50%);transition:left .45s ease,top .45s ease;z-index:4}
+.fm-caption{margin:0;min-height:2.6rem;display:flex;align-items:center;justify-content:center;text-align:center;font-size:1.15rem;font-weight:700;line-height:1.25}
+.fm-controls{display:flex;gap:.5rem}.fm-controls button{flex:1;min-height:48px;font-size:1rem}
+.fm-moment{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;padding:1rem;text-align:center;border-radius:12px;background:rgba(8,14,11,.9);color:#f5faf7}
+.fm-moment h2{margin:0;font-family:var(--font-display);font-size:1.7rem;line-height:1.15}
+.fm-moment-turn{margin:0;color:#fde68a;font-weight:700}.fm-moment-hint{margin:0;color:#d5e0d8}
+.fm-moment .dribble-timing{width:100%;max-width:300px}
+.fm-moment-go{width:100%;max-width:300px;min-height:60px;font-size:1.25rem}
+.fm-moment .precision-toggle{min-height:44px;font-size:.9rem}
+.fm-detail{position:fixed;inset:0;z-index:60;overflow:auto;padding:1rem;background:#101713;display:grid;gap:.8rem;align-content:start}
+.fm-detail>button{min-height:48px}.fm-detail h3{margin:.4rem 0 0}
+.fm-corners{display:grid;grid-template-columns:3rem 1fr 3rem;text-align:center;margin:0}
+.fm-lineups{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}.fm-lineups ol{list-style:none;margin:0;padding:0;font-size:.85rem;display:grid;gap:.2rem}
+.fm-lineups small{color:#9db5a6;display:inline-block;width:2.2rem}
+.fm-plays{margin:0;padding-left:1.1rem;font-size:.9rem}
+.fm-series{display:grid;gap:.8rem}
+@media (prefers-reduced-motion:reduce){.fm-player,.fm-ball{transition:none}}
+@media (min-width:700px){.fm-stage{width:min(100%,calc(64dvh * 100 / 130))}}

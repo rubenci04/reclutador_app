@@ -1,6 +1,7 @@
 import { createSeededRandom } from './seededRandom'
 import type { MatchResult, MatchSide } from './matchTypes'
 import { playMatch } from './engine/figuresMatch'
+import type { SimulationInput } from './simulator'
 import { TACTICS_VERSION, type StrategyId } from '../tactics/strategies'
 import { organizeFormation, type FormationId } from '../tactics/formations'
 import type { DraftLineup } from '../draft/draftTypes'
@@ -49,8 +50,8 @@ export function changeSeriesFormation(setup: SeriesSetup, side: MatchSide, forma
 const lineupCost = (lineup: DraftLineup, catalog: readonly Player[]) => Object.values(lineup).reduce((sum, id) => sum + (catalog.find((p) => p.id === id)?.price ?? 0), 0)
 
 /** Same budget, coach and roster bonus as the first game; only the event seed changes, plus whatever the setup changed. */
-export function nextSeriesMatch(first: MatchResult, index: number, catalog: readonly Player[], setup: SeriesSetup = seriesSetup(first)) {
-  return playMatch({
+export function seriesMatchInput(first: MatchResult, index: number, catalog: readonly Player[], setup: SeriesSetup = seriesSetup(first)): SimulationInput {
+  return {
     ...(first.engineVersion ? { engineVersion: first.engineVersion } : {}),
     localLineup: setup.lineups.local, cpuLineup: setup.lineups.cpu, catalog,
     catalogVersion: first.catalogVersion, rulesVersion: first.rulesVersion,
@@ -61,8 +62,10 @@ export function nextSeriesMatch(first: MatchResult, index: number, catalog: read
     rosterBonus: Boolean(first.quality), coaches: first.coaches,
     ...(setup.benches ? { benches: { local: [...setup.benches.local], cpu: [...setup.benches.cpu] } } : {}),
     ...(setup.tactics ? { tactics: { version: TACTICS_VERSION, ...setup.tactics } } : {}),
-  })
+  }
 }
+
+export const nextSeriesMatch = (first: MatchResult, index: number, catalog: readonly Player[], setup: SeriesSetup = seriesSetup(first)) => playMatch(seriesMatchInput(first, index, catalog, setup))
 
 /** Five kicks each, then sudden death; bounded fallback has equal probability. */
 export function seriesPenalties(first: MatchResult): { score: Record<MatchSide, number>; winner: MatchSide } {
