@@ -111,3 +111,7 @@ Mientras tanto, la subida directa sigue funcionando: `npm run build && npx wrang
 Código publicado en main: **8e88a137d1424a010efe564c5193f13d0e62b6d0**. Worker **reclutador-app**, [producción](https://reclutador-app.rea-04.workers.dev/). Deployment **78dc5851-81ba-4110-9837-beec992ed703**, versión **4d12b451-4452-4368-97e3-ae496ea72b3f** al 100%, etiqueta SHA completa. Push fast-forward autorizado directamente, build/dry-run/deploy con Wrangler 4.151.3, compatibility-date 2026-10-12, --keep-vars --no-autoconfig, sin cambios de bindings/variables.
 
 HTML y cinco bundles con HTTP 200 y SHA-256 idénticos a dist; ?online carga HTML correcto. [Registro](logs/SIM-005R-07.md), [evidencia](qa/SIM-005R-07-deployment.json). Smoke funcional de navegador posterior bloqueado por Work settings; sin escucha real ni E2E online. La documentación posterior conserva el SHA del código compilado.
+
+## Vista previa parte 2 — 27/10/2026
+
+Versión **c20301ad-e77c-4561-9647-d6bb22840f24** (código eff5001) subida con `wrangler versions upload`, **sin promover**: https://c20301ad-reclutador-app.rea-04.workers.dev/ . Producción sigue en 862ebe38.
