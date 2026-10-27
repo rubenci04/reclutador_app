@@ -27,9 +27,9 @@ describe('DATA-ITA-001 collections', () => {
       expect(player.category).toBe(index < 200 ? 'contemporary' : 'legend')
       expect(row.sourceClubPeriod).toBe(index < 200 ? null : cells[7])
     }
-    // Master source keeps 200 rows per edition; new games use only the first 150 editorial positions.
+    // Master source keeps 200 rows per edition; new games use the first 150 of Current and (legends-200-v1) all 200 of Legends.
     expect(catalogForMode('ITALY_CURRENT')).toHaveLength(150)
-    expect(catalogForMode('ITALY_LEGENDS')).toHaveLength(150)
+    expect(catalogForMode('ITALY_LEGENDS')).toHaveLength(200)
   })
   it('merges reviewed editions while preserving namesakes and source OVRs', () => {
     for (const group of aliases) expect(new Set(group.map(id => personKey(MASTER_CATALOG.find(p => p.id === id)!))).size).toBe(1)

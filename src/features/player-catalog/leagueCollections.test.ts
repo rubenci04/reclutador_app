@@ -36,7 +36,8 @@ describe('supplied league collections', () => {
   it.each(IMPORTED_MODE_IDS)('%s supports affordable exclusive teams and simulation', (mode) => {
     const catalog = catalogForMode(mode)
     expect(catalog.length).toBeGreaterThanOrEqual(150)
-    if (mode !== 'LEGENDS_ONLY') expect(catalog).toHaveLength(150)
+    // legends-200-v1: Global Leyendas and Italy Leyendas play with 200.
+    expect(catalog).toHaveLength(mode === 'LEGENDS_ONLY' || mode === 'ITALY_LEGENDS' ? 200 : 150)
     const config = { ...CLASSIC_CONFIG, budget: defaultBudgetForMode(mode), coaches: true, coachReserve: 8 }
     expect(preflightMatchConfig(catalog, config), mode).toMatchObject({ ok: true })
     for (let index = 0; index < 5; index++) {

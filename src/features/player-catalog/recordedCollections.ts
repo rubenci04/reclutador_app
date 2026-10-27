@@ -6,13 +6,15 @@ import preEuropeTopV2 from '../../data/league-collections/preEuropeTopV2Collecti
 import preEuropeTop from '../../data/league-collections/preEuropeTopCollections.json'
 import preBalance from '../../data/league-collections/preBalanceCollections.json'
 import preMexico from '../../data/league-collections/preMexicoCollections.json'
+import preLegends200 from '../../data/league-collections/preLegends200Collections.json'
 import { MASTER_CATALOG } from './globalCollection'
+import { BALANCED_LEGEND_EDITIONS, WORLD_EDITIONS } from './leagueCollections'
 import { catalogKey } from '../recruiter-duel/drawHistory'
 import type { ThemedModeId } from '../themed-modes/modeTypes'
 
 const master = new Map(MASTER_CATALOG.map(p => [p.id, p]))
 /** Frozen memberships: 06a81b4 (before Italy) and 6f0c706 (Italy 200, before the Top-150 rule and Liga MX), b7c2c31 (before legend-balance-v1), a483638 (Europe Actualidad before europe-top-150-v1), 22d3adc (europe-top-150-v1), ad48f05 (Global, Europe and South America before DATA-REG-003B), 670de61 (South America and Europe Legends before DATA-REG-003C), 6b32333 (Global Actual of 1,039 and Global Leyendas of 177 before RANK-008); old seeds keep their exact sporting inputs. */
-export const RECORDED_COLLECTIONS = Object.entries({ ...ids }).concat(Object.entries(preMexico), Object.entries(preBalance), Object.entries(preEuropeTop), Object.entries(preEuropeTopV2), Object.entries(preDataReg003B), Object.entries(preDataReg003C), Object.entries(preRank008)).map(([mode, playerIds]) => ({
+const rows150 = Object.entries({ ...ids }).concat(Object.entries(preMexico), Object.entries(preBalance), Object.entries(preEuropeTop), Object.entries(preEuropeTopV2), Object.entries(preDataReg003B), Object.entries(preDataReg003C), Object.entries(preRank008)).map(([mode, playerIds]) => ({
   mode: mode as ThemedModeId,
   players: playerIds.map(id => {
     const player = master.get(id)
@@ -20,5 +22,12 @@ export const RECORDED_COLLECTIONS = Object.entries({ ...ids }).concat(Object.ent
     return player
   }),
 }))
+/** Legends of Global, South America, Europe and Italy before the move to 200 (legends-200-v1): the exact editions that were played, balanced and world editions included. */
+const effective = new Map([...WORLD_EDITIONS, ...BALANCED_LEGEND_EDITIONS.values()].map((player) => [player.id, player]))
+const legends150 = Object.entries(preLegends200).map(([mode, playerIds]) => ({
+  mode: mode as ThemedModeId,
+  players: playerIds.map((id) => { const player = effective.get(id) ?? master.get(id); if (!player) throw Error(`missing_recorded_player:${id}`); return player }),
+}))
+export const RECORDED_COLLECTIONS = [...rows150, ...legends150]
 const byKey = new Map(RECORDED_COLLECTIONS.map(row => [catalogKey(row.players), row.players]))
 export const recordedCollection = (key?: string) => key ? byKey.get(key) : undefined

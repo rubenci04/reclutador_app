@@ -448,3 +448,7 @@ Se puede volver a editar formación, suplentes y técnico desde la pantalla de p
 ## Sprint 9 navegación, fotos y tablero — 25/10/2026
 
 Liga Argentina / Actuales inicial, hero reactivo con anuncio y scroll accesible, fotos archivadas y muñecos estándar, decisiones con un toque y precisión opcional; cierre de las 17 fallas por supuestos de categoría/fotos y separación de Fast Refresh. Typecheck/build aprobados; lint: 0 errores, 4 advertencias; 1.554 pruebas pasadas, 3 omitidas opt-in. [Registro y validación](logs/SPRINT-9-NAVEGACION-FOTOS-TABLERO.md). Publicación manual y QA visual pendientes.
+
+## Sprint 9 navegación, muñecos y un toque — 27/10/2026
+
+Categoría por defecto Liga Argentina Actuales y título que sigue a la categoría tocada; sin fotos (muñecos con la apariencia del CSV: color de pelo, rulos, barba, cicatrices…; técnicos de traje); decisiones con un toque (barra de precisión opcional); Leyendas a 200 en Global, Sudamérica, Europa e Italia (las demás ligas siguen en 150 hasta cargar filas). [Registro](logs/SPRINT-9-NAVEGACION-FOTOS-TABLERO.md).

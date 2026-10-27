@@ -23,10 +23,11 @@ const byOrigin = (players: readonly Player[]) => players.reduce<Record<string, n
 
 describe('RANK-008 Global Top 150', () => {
   it('has exactly 150 distinct identities per category and no weaker edition while a better one of the position was left out', () => {
-    for (const pool of [GLOBAL_CURRENT, GLOBAL_LEGENDS]) {
-      expect(pool).toHaveLength(150)
-      expect(new Set(pool.map(personKey)).size).toBe(150)
-      expect(new Set(pool.map((p) => p.id)).size).toBe(150)
+    // legends-200-v1: Global Leyendas plays with 200, Global Actual with 150.
+    for (const [pool, size] of [[GLOBAL_CURRENT, 150], [GLOBAL_LEGENDS, 200]] as const) {
+      expect(pool).toHaveLength(size)
+      expect(new Set(pool.map(personKey)).size).toBe(size)
+      expect(new Set(pool.map((p) => p.id)).size).toBe(size)
     }
     expect(catalogForMode('GLOBAL_CLASSIC')).toBe(GLOBAL_CURRENT)
     expect(catalogForMode('LEGENDS_ONLY')).toBe(GLOBAL_LEGENDS)
@@ -77,8 +78,8 @@ describe('RANK-008 ranking in the categories', () => {
   it('is the editorial position in the category played, once per category', () => {
     expect(categoryRanking('GLOBAL_CLASSIC')).toBe(categoryRanking('GLOBAL_CLASSIC'))
     expect(categoryRanking('GLOBAL_CLASSIC').size).toBe(150)
-    expect(rankBadge('LEGENDS_ONLY', GLOBAL_LEGENDS[0].id)).toEqual({ rank: 1, total: 150 })
-    expect(rankBadge('LEGENDS_ONLY', GLOBAL_LEGENDS[2].id)).toEqual({ rank: 3, total: 150 })
+    expect(rankBadge('LEGENDS_ONLY', GLOBAL_LEGENDS[0].id)).toEqual({ rank: 1, total: 200 })
+    expect(rankBadge('LEGENDS_ONLY', GLOBAL_LEGENDS[2].id)).toEqual({ rank: 3, total: 200 })
     expect(rankBadge('GLOBAL_CLASSIC', 'unknown')).toBeNull()
     expect(rankBadge(undefined, 'x')).toBeNull()
     for (const mode of ['SPAIN_LEAGUE', 'ARGENTINA_LEGENDS', 'EUROPE_CURRENT', 'SOUTH_AMERICA_LEGENDS'] as const) {

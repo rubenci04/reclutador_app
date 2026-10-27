@@ -8,7 +8,8 @@ import { SOUTH_AMERICA_MEXICO_NATIONALITIES } from './southAmericaTop150'
 import { EUROPEAN_NATIONALITIES } from '../themed-modes/nationalityRegions'
 import type { Player } from '../../types/player'
 
-export const LEGENDS_TOP_SIZE = 150
+/** legends-200-v1: South America and Europe Leyendas play with 200 (the 150 ranked people plus the best provisional filler). */
+export const LEGENDS_TOP_SIZE = 200
 export const SOUTH_AMERICA_LEGENDS_VERSION: string = southAmericaResolution.version
 export const EUROPE_LEGENDS_VERSION: string = europeResolution.version
 export const SOUTH_AMERICA_LEGENDS_RESOLUTION = southAmericaResolution.rows as readonly TopResolutionRow[]

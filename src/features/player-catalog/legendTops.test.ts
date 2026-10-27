@@ -26,15 +26,15 @@ describe('DATA-REG-003C regional Legends Top 150', () => {
   it.each([
     ['South America + Mexico', south, SOUTH_AMERICA_LEGENDS_POOL, SOUTH_AMERICA_LEGENDS_REPORT, SOUTH_AMERICA_LEGENDS_RESOLUTION, southTop, SOUTH_AMERICA_MEXICO_NATIONALITIES],
     ['Europe', europe, EUROPE_LEGENDS_POOL, EUROPE_LEGENDS_REPORT, EUROPE_LEGENDS_RESOLUTION, europeTop, EUROPEAN_NATIONALITIES],
-  ] as const)('%s is an editorial ranking of 150 unique historical identities, not a nationality filter', (_name, pool, expected, report, resolution, top, nationalities) => {
+  ] as const)('%s is an editorial ranking of 150 people plus provisional filler up to 200 unique historical identities, not a nationality filter', (_name, pool, expected, report, resolution, top, nationalities) => {
     expect(pool).toBe(expected)
     expect(top.rows.map((row) => row.rank)).toEqual(Array.from({ length: 150 }, (_, index) => index + 1))
     expect(resolution).toHaveLength(150)
-    expect(pool).toHaveLength(150)
-    expect(new Set(pool.map(personKey)).size).toBe(150)
-    expect(new Set(pool.map((p) => p.id)).size).toBe(150)
+    expect(pool).toHaveLength(200)
+    expect(new Set(pool.map(personKey)).size).toBe(200)
+    expect(new Set(pool.map((p) => p.id)).size).toBe(200)
     expect(pool.every((p) => p.category === 'legend' && nationalities.has(p.nationality) && !p.id.startsWith('world_'))).toBe(true)
-    expect(report.reconciled + report.provisional.length).toBe(150)
+    expect(report.reconciled + report.provisional.length).toBe(200)
     expect(report.missing).toHaveLength(150 - report.reconciled)
     // Ranked people come first, in ranking order; the rest is documented provisional filler.
     const ranked = resolution.filter((row) => row.status === 'RECONCILED')

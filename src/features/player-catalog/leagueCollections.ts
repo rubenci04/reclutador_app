@@ -55,7 +55,9 @@ export const legacyOnlineBudgetForMode = (id: ThemedModeId) => id.includes('LEGE
 const sourceById = new Map(LEAGUE_PROVENANCE.map((row) => [row.id, row]))
 /** Master sources keep every supplied row (Italy supplies 200 per edition). New games draw only from each league's first ELIGIBLE_TOP_RANK editorial positions. */
 export const ELIGIBLE_TOP_RANK = 150
-export const isEligibleEdition = (id: string) => (sourceById.get(id)?.sourceRank ?? 0) <= ELIGIBLE_TOP_RANK
+/** legends-200-v1: league Leyendas open up to their first 200 editorial positions (Italy supplies 200; the other leagues supply 150 until more rows are loaded). */
+export const ELIGIBLE_LEGEND_RANK = 200
+export const isEligibleEdition = (id: string) => { const row = sourceById.get(id); return (row?.sourceRank ?? 0) <= (row?.category === 'legend' ? ELIGIBLE_LEGEND_RANK : ELIGIBLE_TOP_RANK) }
 /** Eligible catalogue: master rows filtered by sourceRank, never by OVR. */
 export const ELIGIBLE_LEAGUE_PLAYERS: readonly Player[] = LEAGUE_PLAYERS.filter((player) => isEligibleEdition(player.id))
 const scopedPlayers = new Map(Object.entries(modes).map(([id, scope]) => [id, ELIGIBLE_LEAGUE_PLAYERS.filter((player) => sourceById.get(player.id)!.league === scope[0] && player.category === scope[1])]))

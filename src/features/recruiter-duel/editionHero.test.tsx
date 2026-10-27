@@ -98,4 +98,18 @@ describe('SIM-FIELD-001 board coordinates', () => {
     expect(meta()).not.toBe(brazil)
     expect(meta()).toContain('220')
   })
+  it('the title always names the category you are standing on, also after leaving and coming back to the menu', async () => {
+    const i18n = await createI18n('es-AR')
+    render(<I18nextProvider i18n={i18n}><AuctionPage onDraftFree={vi.fn()} /></I18nextProvider>)
+    const title = () => document.querySelector('.edition-title')!.textContent
+    const open = () => fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.cpu') }))
+    const group = (id: string) => fireEvent.click(screen.getByRole('button', { name: new RegExp(i18n.t('categoryTree.groups.' + id)) }))
+    open(); group('brazil'); expect(title()).toBe(i18n.t('categoryTree.groups.brazil'))
+    fireEvent.click(screen.getByRole('button', { name: i18n.t('categoryTree.back') }))
+    group('spain'); expect(title()).toBe(i18n.t('categoryTree.groups.spain'))
+    fireEvent.click(screen.getByRole('button', { name: i18n.t('entry.back') }))
+    open(); expect(title()).toBe(i18n.t('categoryTree.groups.spain'))
+    group('mexico'); expect(title()).toBe(i18n.t('categoryTree.groups.mexico'))
+    expect(document.querySelector('.mode-card.is-selected')).not.toBeNull()
+  })
 })

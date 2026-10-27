@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
 import mexican from '../../data/league-collections/mexico.json'
 import { ELIGIBLE_LEAGUE_PLAYERS, ELIGIBLE_TOP_RANK, LEAGUE_PLAYERS, LEAGUE_PROVENANCE, defaultBudgetForMode } from './leagueCollections'
-import { ALL_CURRENT, ALL_LEGENDS, GLOBAL_LEGENDS, MASTER_CATALOG, personKey } from './globalCollection'
+import { ALL_CURRENT, GLOBAL_LEGENDS, MASTER_CATALOG, personKey } from './globalCollection'
 import { catalogForMode } from '../themed-modes/modeCatalog'
 import { crossCategoryCatalog } from '../recruiter-duel/crossCategoryDraw'
 import { CLASSIC_CONFIG, preflightMatchConfig } from '../recruiter-duel/matchConfig'
@@ -50,20 +50,23 @@ describe('DATA-MX-001 Liga MX import', () => {
 })
 
 describe('DATA-MX-001 Top 150 eligibility', () => {
-  it.each(LEAGUE_MODES)('%s offers exactly the first 150 editorial positions, unique and by rank', (mode) => {
+  it.each(LEAGUE_MODES)('%s offers the first editorial positions (150; 200 for Italy Legends), unique and by rank', (mode) => {
+    const size = mode === 'ITALY_LEGENDS' ? 200 : 150
     const catalog = catalogForMode(mode)
-    expect(catalog).toHaveLength(150)
-    expect(new Set(catalog.map(p => p.id)).size).toBe(150)
+    expect(catalog).toHaveLength(size)
+    expect(new Set(catalog.map(p => p.id)).size).toBe(size)
     const ranks = catalog.map(p => LEAGUE_PROVENANCE.find(row => row.id === p.id)!.sourceRank).sort((a, b) => a - b)
-    expect(ranks).toEqual(Array.from({ length: 150 }, (_, i) => i + 1))
+    expect(ranks).toEqual(Array.from({ length: size }, (_, i) => i + 1))
   })
-  it('keeps the Italian master source whole while excluding positions 151-200 from new games', () => {
+  it('keeps the Italian master source whole while excluding current positions 151-200 from new games (the legends open to 200)', () => {
     const italy = LEAGUE_PROVENANCE.filter(p => p.league === 'ITA')
     expect(italy).toHaveLength(400)
     expect(LEAGUE_PLAYERS.filter(p => p.id.startsWith('import_ita_'))).toHaveLength(400)
     expect(MASTER_CATALOG.filter(p => p.id.startsWith('import_ita_'))).toHaveLength(400)
-    expect(ELIGIBLE_LEAGUE_PLAYERS.filter(p => p.id.startsWith('import_ita_'))).toHaveLength(300)
-    expect(italy.filter(p => p.sourceRank > ELIGIBLE_TOP_RANK).every(p => !ALL_CURRENT.some(c => c.id === p.id) && !ALL_LEGENDS.some(c => c.id === p.id))).toBe(true)
+    expect(ELIGIBLE_LEAGUE_PLAYERS.filter(p => p.id.startsWith('import_ita_'))).toHaveLength(350)
+    // Current positions 151-200 stay out; only the legends (legends-200-v1) use them.
+    expect(italy.filter(p => p.sourceRank > ELIGIBLE_TOP_RANK && p.category === 'contemporary').every(p => !ALL_CURRENT.some(c => c.id === p.id))).toBe(true)
+    expect(italy.filter(p => p.sourceRank > ELIGIBLE_TOP_RANK && p.category === 'legend').every(p => ELIGIBLE_LEAGUE_PLAYERS.some(c => c.id === p.id))).toBe(true)
   })
   it.each(LEAGUE_MODES)('%s is playable: goalkeepers, positions, affordable budget, CPU preflight', (mode) => {
     const catalog = catalogForMode(mode)
