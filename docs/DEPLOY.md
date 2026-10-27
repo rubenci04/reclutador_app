@@ -1,5 +1,9 @@
 # Despliegue: producción actual y antecedentes
 
+## Publicación Sprint 9 — 27/10/2026
+
+Código **67d1dcf** (rama `claude/sprint-9-10`, sin mezclar en `main`). Worker **reclutador-app**, versión **862ebe38-55b9-4c3e-8807-73340b79ba73** al 100 % (subida con `wrangler versions upload` y promovida con `wrangler versions deploy`), etiqueta 67d1dcf. Versión anterior para volver atrás: **7d7b523a-7317-4150-a1bb-f51cab9ad4d8** (`wrangler rollback`). **Las migraciones 202610250001 y 202610250002 de Supabase NO estaban aplicadas al publicar**: hasta aplicarlas, el online muestra el aviso de servidor desactualizado (el modo local no se afecta).
+
 ## Publicación sprints 9–10 + sprint 8 — 25/10/2026
 
 Merge **ad155c9** en `main` (push normal, fast-forward desde 94b1c31). Worker **reclutador-app**, versión **7d7b523a-7317-4150-a1bb-f51cab9ad4d8** al 100 %, etiqueta ad155c9; Wrangler 4.151.3, `--keep-vars --no-autoconfig`, sin cambios de bindings ni Supabase. HTTP 200 y SHA-256 de HTML y assets coinciden con dist. [Registro](logs/SPRINT-9-10-PUBLICACION.md). Interacciones nuevas sin prueba manual en producción.
