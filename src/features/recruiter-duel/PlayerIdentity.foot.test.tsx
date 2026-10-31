@@ -18,7 +18,7 @@ it.each([
     const label = labels[Math.min(index, 3)]
     expect(screen.getByLabelText(`${prefix}: ${label}`)).toHaveTextContent(label)
     expect(container.querySelector('.preferred-foot')?.tagName).toBe('SPAN')
-    expect(container.querySelector('.preferred-foot')?.closest('.player-full-card')).not.toBeNull()
+    expect(container.querySelector('.preferred-foot')?.closest('.player-full-card')).toBeNull()
     unmount()
   }
 })

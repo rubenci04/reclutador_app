@@ -4,7 +4,8 @@ import type { Player } from '../../types/player'
 import type { MatchSide } from './matchTypes'
 import { LANES, finishAutomatically, startShootout, takeKick, type KickRecord, type Shootout } from './interactive/penaltyShootout'
 import { PrecisionBarToggle } from './PrecisionBarToggle'
-import { GOAL_X, Goal, ShotPanel, ShotScene, type Lane, type ShotSceneData } from './ShotPanel'
+import { GOAL_X } from './laneGeometry'
+import { Goal, ShotPanel, ShotScene, type Lane, type ShotSceneData } from './ShotPanel'
 import { reducedMotion } from './timing'
 
 interface Props {

@@ -9,6 +9,7 @@ import { flagUrl, NATIONALITY_FLAGS, PHOTO_MANIFEST } from './visualAssets'
 import { ARGENTINA_PLAYERS } from '../themed-modes/modeCatalog'
 import fs from 'node:fs'
 import { ARGENTINA_CANDIDATES, ARGENTINA_EXPANSION, validateArgentinaCandidates, type ArgentinaCandidate } from '../player-catalog/argentinaExpansion'
+import { generateCpuTeam } from '../local-match/cpuTeam'
 
 function get(result: AuctionTransition) { if (!result.ok) throw new Error(result.error); return result.game }
 function create(seed:string) { const result=createRecruiterDuel(DRAFT_CATALOG,seed); if(!result.ok) throw new Error(result.error); return result.game }
@@ -94,3 +95,37 @@ it('plays 3,000 CPU games against three simulated human policies with no illegal
   }
   if (process.env.WRITE_QA === '1') writeFileSync('docs/qa/CODEX-005C-stress.json',JSON.stringify({games:3000,humanPolicies:['always_pass','base_plus_1','base_plus_4'],report},null,2)+'\n')
 },120000)
+
+describe('TECH-008 CPU reads the rival public squad', () => {
+  const created = createRecruiterDuel(DRAFT_CATALOG, 'tech-008')
+  if (!created.ok) throw new Error(created.error)
+  const empty = created.game.teams.recruiter_two
+  const full = { ...empty, lineup: generateCpuTeam(DRAFT_CATALOG, 'tech-008-rival').team.lineup }
+  const context = (player: typeof DRAFT_CATALOG[number], difficulty: 'EASY' | 'NORMAL' | 'HARD', extra: Partial<CpuPublicContext> = {}): CpuPublicContext => ({ seed: 'tech-008', roundIndex: 2, player, team: empty, publicCatalog: DRAFT_CATALOG, acquiredIds: [], budget: 200, difficulty, ...extra })
+  const worth = (difficulty: 'NORMAL' | 'HARD') => DRAFT_CATALOG.filter((player) => privateValuation(context(player, difficulty), 'AGGRESSIVE') - player.price >= 12)
+  it('opens exactly at base price when the human already filled that line', () => {
+    for (const difficulty of ['NORMAL', 'HARD'] as const) for (const player of worth(difficulty).slice(0, 20)) {
+      const decision = decideCpu(context(player, difficulty, { rivalTeam: full, rivalMaximumBid: 50 }), 'AGGRESSIVE', null, 200)
+      expect(decision).toMatchObject({ action: 'bid', amount: player.price })
+    }
+  })
+  it('opens at base price when the human cannot afford the base price either', () => {
+    const player = worth('NORMAL')[0]
+    expect(decideCpu(context(player, 'NORMAL', { rivalTeam: empty, rivalMaximumBid: player.price - 1 }), 'AGGRESSIVE', null, 200)).toMatchObject({ action: 'bid', amount: player.price })
+  })
+  it('raises by +2 to +4 when the card is worth far more than the current price', () => {
+    let checked = 0
+    for (const difficulty of ['NORMAL', 'HARD'] as const) for (const player of worth(difficulty).slice(0, 20)) {
+      const decision = decideCpu(context(player, difficulty, { rivalTeam: empty, rivalMaximumBid: 200, ownLastBid: player.price }), 'AGGRESSIVE', player.price, 200)
+      if (decision.privateMaximum - (player.price + 1) < 8) continue
+      const raise = decision.amount! - (player.price + 1)
+      expect(raise).toBeGreaterThanOrEqual(2); expect(raise).toBeLessThanOrEqual(4); checked++
+    }
+    expect(checked).toBeGreaterThan(0)
+  })
+  it('changes nothing for EASY or when the rival data is absent', () => {
+    for (const player of DRAFT_CATALOG.slice(0, 60)) for (const current of [null, player.price]) {
+      expect(decideCpu(context(player, 'EASY', { rivalTeam: full, rivalMaximumBid: 0 }), 'BALANCED', current, 200)).toEqual(decideCpu(context(player, 'EASY'), 'BALANCED', current, 200))
+    }
+  })
+})

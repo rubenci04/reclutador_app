@@ -19,7 +19,6 @@ describe('quick bid chips', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
     act(() => vi.advanceTimersByTime(COIN_TOSS_MS))
-    fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
     const input = screen.getByLabelText('Bid amount') as HTMLInputElement
     const minimum = Number(input.min)
     expect(document.querySelector('.bid-panel')?.className).toMatch(/bid-panel-recruiter_(one|two)/)

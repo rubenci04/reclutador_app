@@ -10,6 +10,7 @@ import * as drawHistory from './drawHistory'
 import * as engine from './auctionEngine'
 import { beginBidding, createRecruiterDuel, maximumSafeBid, nextAuctionRound, passAuction, positionProgress, revealCoinToss, revealDiscardReplacement, revealNextAuctionRound, startCoinToss } from './auctionEngine'
 import type { AuctionCreation, AuctionTransition } from './auctionTypes'
+import { clearActiveSession } from './activeSessionStorage'
 
 beforeEach(() => { localStorage.clear(); vi.spyOn(drawHistory, 'newDrawSeed').mockReturnValue('hot-seat-007') })
 afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); vi.unstubAllGlobals(); localStorage.clear() })
@@ -35,7 +36,7 @@ describe('single-player auction interface', () => {
     expect(screen.getByText('The coin landed on Heads. Recruiter one starts recruiting.')).toBeVisible()
     act(() => vi.advanceTimersByTime(3000))
     expect(toss).toHaveBeenCalledTimes(1)
-    expect(screen.getByRole('button', { name: 'Start auction' })).toBeInTheDocument()
+    expect(screen.getByLabelText('Bid amount')).toBeInTheDocument()
   })
   it('explains an excessive bid and resets a stale amount when the round changes', async () => {
     vi.useFakeTimers()
@@ -47,7 +48,6 @@ describe('single-player auction interface', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
     act(() => vi.advanceTimersByTime(COIN_TOSS_MS))
-    fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
     const input = screen.getByLabelText('Bid amount') as HTMLInputElement
     const minimum = Number(input.min)
     fireEvent.change(input, { target: { value: String(minimum - 1) } })
@@ -63,7 +63,6 @@ describe('single-player auction interface', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Pass' }))
     fireEvent.click(screen.getByRole('button', { name: 'Confirm shared discard' }))
     act(() => vi.advanceTimersByTime(350))
-    fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
     expect(screen.getByLabelText('Bid amount')).not.toHaveValue(101)
   })
   it.each(['home', 'rematch', 'live'])('explains full slots, replays the series and navigates to %s', async (destination) => {
@@ -81,8 +80,9 @@ describe('single-player auction interface', () => {
     expected = get(revealCoinToss(get(startCoinToss(expected, 'heads'))))
     let checkedFull = false; let checkedOneDefender = false
     while (expected.phase !== 'TEAMS_COMPLETED') {
-      fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
       expected = get(beginBidding(expected))
+      // Local cards open by themselves; only a round with quick completion on offer still shows the button.
+      if (screen.queryByRole('button', { name: 'Start auction' })) fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
       for (let turn = 0; turn < 2; turn++) {
         const participant = expected.activeParticipant!
         const position = expected.rounds[expected.roundIndex].position
@@ -208,7 +208,8 @@ describe('single-player auction interface', () => {
       const exported = JSON.parse((screen.getByLabelText('Original seed and context') as HTMLTextAreaElement).value)
       expect(exported.seed).toBe(`new-game-${index}`)
       expect(exported.context.recent).toHaveLength(Math.min(5, index))
-      view.unmount()
+      // Each visit starts from the entry screen, not from the game left by the previous one.
+      view.unmount(); clearActiveSession()
     }
     const saved = drawHistory.readDrawHistory(localStorage, DRAFT_CATALOG)
     expect(saved.warning).toBe(false)
@@ -254,20 +255,17 @@ describe('single-player auction interface', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
     act(() => vi.advanceTimersByTime(COIN_TOSS_MS))
-    fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
     fireEvent.click(screen.getByRole('button', { name: 'Pass' }))
     fireEvent.click(screen.getByRole('button', { name: 'Confirm shared discard' }))
     expect(screen.getByRole('heading', { name: 'NEW DRAW' })).toBeInTheDocument()
     act(() => vi.advanceTimersByTime(350))
     for (let remaining = 4; remaining > 0; remaining--) {
-      fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
       fireEvent.click(screen.getByRole('button', { name: 'Pass' }))
       fireEvent.click(screen.getByRole('button', { name: 'Confirm shared discard' }))
       act(() => vi.advanceTimersByTime(350))
     }
     expect(screen.getAllByText('Discards 0/5').length).toBeGreaterThan(0)
     expect(screen.getByText(/No discards left/)).toBeInTheDocument()
-    fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
     fireEvent.click(screen.getByRole('button', { name: 'Pass' }))
     expect(screen.getByText(/Mandatory assignment:/)).toBeVisible()
     fireEvent.click(screen.getByRole('button', { name: 'Confirm mandatory assignment' }))
@@ -292,10 +290,13 @@ describe('single-player auction interface', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     fireEvent.click(screen.getByRole('button', { name: 'Tails' }))
     act(() => vi.advanceTimersByTime(COIN_TOSS_MS))
-    fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
-    expect(screen.getByText(/CPU evaluating…/)).toBeInTheDocument()
+    // The bid panel stays mounted while the CPU decides, with its controls disabled.
+    expect(screen.getAllByText(/CPU evaluating…/).length).toBeGreaterThan(0)
+    expect(document.querySelector('.bid-panel-thinking')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Pass' })).toBeDisabled()
     act(() => vi.advanceTimersByTime(650))
     expect(screen.queryByText(/CPU evaluating…/)).not.toBeInTheDocument()
+    expect(document.querySelector('.bid-panel-thinking')).toBeNull()
     expect(screen.getByRole('button', { name: 'Pass' })).toBeEnabled()
   })
   it('lets the player choose a coin side before revealing and bidding', async () => {
@@ -310,7 +311,6 @@ describe('single-player auction interface', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
     expect(screen.getByRole('heading', { name: 'Coin toss' })).toBeInTheDocument()
     act(() => vi.advanceTimersByTime(COIN_TOSS_MS))
-    fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
     expect(screen.getByRole('button', { name: 'Bid' })).toBeEnabled()
     expect(screen.getByRole('button', { name: 'Pass' })).toBeEnabled()
   })

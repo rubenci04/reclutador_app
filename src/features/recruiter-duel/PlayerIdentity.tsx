@@ -32,9 +32,9 @@ export function PlayerIdentity({ player, rank }: { readonly player:Player; /** P
     <b>{player.overall_rating}</b></div><article><small>{t('duel.playerDrawn')}</small><RankChip rank={rank} /><h2>{player.name}</h2>
     <p className="player-line">{flag && !flagFailed ? <img className="nationality-flag" src={flag} alt={t('cpu.flagAlt',{code:player.nationality})} onError={() => setFlagFailed(true)} /> : <span aria-label={t('cpu.flagMissing')}>◇</span>} {country} · <span className="pos-pill">{t(`positions.${player.position}`)}</span>{club && <span className="player-club"> · {club}</span>}</p>
     <b className="base-price-chip">{t('duel.basePrice',{amount:player.price})}</b>
-    <details className="player-full-card"><summary>{t('playerCard.full')}</summary>
     <ul className="player-ratings" aria-label={t('ratings.label', { rating: player.overall_rating })}>{([['att', player.att_rating], ['def', player.def_rating], ['phy', player.phy_rating], ['men', player.men_rating]] as const).map(([key, value]) => <li key={key} className={value >= 90 ? 'top-rating' : value >= 85 ? 'high-rating' : undefined}><b>{value}</b><small>{t(`ratings.${key}`)}</small><i className="rating-bar" aria-hidden="true" style={{ '--rating': `${Math.min(99, value)}%` } as CSSProperties} /></li>)}</ul>
     <p><span className="tier-badge">{t('duel.tier',{tier})}</span> · <span className="preferred-foot" aria-label={t('foot.label', { foot: t(`foot.${foot}`) })}><FootIcon foot={foot} decorative />{t(`foot.${foot}`)}</span></p>
+    <details className="player-full-card"><summary>{t('playerCard.full')}</summary>
     {roles.length > 0 && <p>{t('playtest.specificPosition', { role: roles.map((code) => t(`playtest.roles.${code}`)).join(' / ') })}</p>}
     <PlayerClubDetails player={player} /></details></article></div>
 }

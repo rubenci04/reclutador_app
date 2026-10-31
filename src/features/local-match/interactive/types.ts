@@ -48,6 +48,8 @@ export interface SessionOptions {
   readonly shootout?: { readonly version: 'penalty-shootout-v1' }
   /** New matches only: halftime tactics, optional substitutions and OVR direct duels. */
   readonly matchRules?: { readonly version: 'halftime-ovr-v1' }
+  /** TECH-005: shouts from the bench change the local side's sector adjustment while they are active. New local matches only. */
+  readonly touchlineShouts?: 'tactical-shouts-v1'
 }
 /** One decision of the interactive attack. `id` is unique per session: a repeated id is a duplicate, never a second resolution. */
 export interface PlayCommand {

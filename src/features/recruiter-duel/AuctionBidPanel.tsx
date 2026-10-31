@@ -27,13 +27,15 @@ interface Props {
   readonly assignmentSpecial: boolean
   readonly onBid: () => void
   readonly onPass: () => void
+  /** The CPU is deciding: the panel stays in place (same height) with its controls disabled. */
+  readonly thinking?: boolean
 }
 
 /**
  * Active bid phase organised around three things: the footballer in play, the offer and balance, and the two main buttons.
  * The engine stays the source of truth: every figure and every enabled state comes from `availability`.
  */
-export function AuctionBidPanel({ game, side, footballer, names, availability, offer, minimum, onOffer, blockedMessage, progress, hud, passLabel, assignment, assignmentSpecial, onBid, onPass }: Props) {
+export function AuctionBidPanel({ game, side, footballer, names, availability, offer, minimum, onOffer, blockedMessage, progress, hud, passLabel, assignment, assignmentSpecial, onBid, onPass, thinking = false }: Props) {
   const { t } = useTranslation()
   const rival = names[side === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one']
   const blocked = availability?.bid.reason
@@ -47,12 +49,14 @@ export function AuctionBidPanel({ game, side, footballer, names, availability, o
   const remaining = participant?.remaining ?? budgetOf(game) - game.teams[side].spent
   const reserved = participant?.reserved ?? Math.max(0, remaining - maximum)
   const showBlocked = blockedMessage && (blocked === 'POSITION_FULL' || blocked === 'FUTURE_BUDGET_RESERVED' || blocked === 'INSUFFICIENT_BUDGET')
-  return <section className={`bid-panel bid-panel-${side}`}>
+  return <section className={`bid-panel bid-panel-${side}${thinking ? ' bid-panel-thinking' : ''}`} aria-busy={thinking || undefined}>
     <header className="bid-turn">
       <p className="turn-strip"><span className="dealer-puck" role="img" aria-label={t('bidTable.dealer', { name: names[side] })}>●</span><span>{t('bidTable.turnNow')}</span></p>
       {missing !== null && <p className="team-status">{missing > 0 && missing <= 2 && <strong className="team-needs">{t('auctionFocus.needs', { positions: needs.map((position) => `${position.position}${position.remaining > 1 ? ` ×${position.remaining}` : ''}`).join(', ') })}</strong>}</p>}
     </header>
-    {showBlocked
+    {thinking
+      ? <div className="auction-banner auction-banner-thinking" role="status"><strong title={t('auctionActions.blocks.CPU_THINKING')}>{t('auctionActions.blocks.CPU_THINKING')}</strong></div>
+      : showBlocked
       ? <div className="auction-banner auction-banner-blocked" role="alert"><strong>{blockedMessage}</strong></div>
       : <div className="auction-banner" role="status"><strong>{game.currentBid ? t('auctionBanner.rivalBid', { rival, amount: game.currentBid.amount }) : t('auctionBanner.open')}</strong></div>}
     <dl className={`bid-figures${game.currentBid ? ' has-bid' : ''}`}>

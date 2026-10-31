@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { markerAt, precisionAt } from './DribblePanel'
+import { markerAt, precisionAt } from './laneGeometry'
 
 /** Shared lane selection/clock when both the pitch and the accessible panel drive the same action. */
 export interface LaneDriver {

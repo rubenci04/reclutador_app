@@ -11,6 +11,7 @@ import { ATTACK_TREE_LIMIT, ATTACK_TREE_VERSION, DEFENSE_VERSION, DRIBBLE_VERSIO
 import { calculateTeamStrength, initiativeChance, rosterAdvantage, isValidOrganizedLineup, isValidBench, SUBSTITUTION_MINUTES, SUBSTITUTION_CHANCE, SUBSTITUTION_RULES_VERSION, type SimulationInput } from '../simulator'
 import { composeStrength, squadQuality, SQUAD_QUALITY_VERSION } from '../squadQuality'
 import { MATCH_MINUTES, MATCH_RULES_VERSION, type MatchBlock, type MatchEvent, type MatchResult, type MatchSide, type MatchStats, type MatchTeam, type TeamStrength } from '../matchTypes'
+import { SHOUTS, TACTICAL_SHOUTS_VERSION, shoutActive, shoutTacticalAdjustment, type ShoutCalls } from '../touchlineShouts'
 
 import { createDirector, eligibleMoment, recordMoment, planDefense, resolveDefense, type MomentDirector } from './matchMoments'
 
@@ -49,7 +50,7 @@ const meanAdjustment = (total: TacticalAdjustment): TacticalAdjustment => ({ att
 type Side = { team: MatchTeam; strength: TeamStrength; features: ReturnType<typeof tacticalFeatures>; unused: string[]; subbed: boolean; baseMidfield: number }
 
 /** Version-frozen block adapter. Historical batch API stays untouched as regression oracle. */
-export function initializeKernel(source: SimulationInput, attackTree: boolean | 'match-moments-v1' = false, aerial = false, duels = false, corners = false, freeKicks = false, dribble = false, minis: { readonly precisionShot?: boolean; readonly defenseMini?: boolean } = {}) {
+export function initializeKernel(source: SimulationInput, attackTree: boolean | 'match-moments-v1' = false, aerial = false, duels = false, corners = false, freeKicks = false, dribble = false, minis: { readonly precisionShot?: boolean; readonly defenseMini?: boolean } = {}, shouts = false) {
   const input = structuredClone(source)
   if (input.rulesVersion !== MATCH_RULES_VERSION || input.catalogVersion !== 'catalog_v1') throw new Error('unsupported_match_rules')
   const local = teamFrom(input.localLineup, input.catalog, input.budget, input.formations?.local)
@@ -79,6 +80,7 @@ export function initializeKernel(source: SimulationInput, attackTree: boolean | 
   const policyRandom = () => { const next = nextCheckpoint(directorRng); directorRng = next.checkpoint; return next.value }
   const director = attackTree === 'match-moments-v1' ? createDirector(policyRandom) : undefined
   return { input, local, cpu, sides, strengths, stats, score, blocks, advantage, quality, qualityTotals, effectiveTotals, adjustmentTotals, substitutionLog, selection, initialSelection: selection, nextBlock: 0, rng: { main: random, substitutions: substitutionRandom, ...(attackTree ? { tree: initialCheckpoint(`${input.seed}:tree`) } : {}), ...(director ? { director: directorRng } : {}), ...(aerial ? { aerial: initialCheckpoint(`${input.seed}:aerial`) } : {}) }, pendingChanges: [] as MatchEvent[], result: null as MatchResult | null,
+    ...(shouts ? { touchlineShouts: TACTICAL_SHOUTS_VERSION, shoutCalls: {} as ShoutCalls } : {}),
     ...(freeKicks ? { freeKicks: { version: FREE_KICKS_VERSION, plan: null, families: [] } as FreeKickState, freeKickRng: initialCheckpoint(`${input.seed}:free-kicks`), freeKickPolicyRng: initialCheckpoint(`${input.seed}:free-kick-policy`) } : {}),
     ...(corners ? { corners: { version: CORNERS_VERSION, plan: null, families: [] } as CornerState, cornerRng: initialCheckpoint(`${input.seed}:corners`), cornerPolicyRng: initialCheckpoint(`${input.seed}:corner-policy`) } : {}),
     ...(duels ? { duels: 'ovr-duels-v1' as const } : {}),
@@ -107,7 +109,9 @@ function blockStrengths(state: KernelState, blockIndex: number) {
   const quality = { local: 0, cpu: 0 }
   for (const key of ['local', 'cpu'] as const) {
     const affinity = input.formations ? formationAffinity(input.formations[key], selection[key]) : NO_ADJUSTMENT
-    adjustment[key] = { attack: adjustment[key].attack + affinity.attack, defense: adjustment[key].defense + affinity.defense, midfield: adjustment[key].midfield + affinity.midfield }
+    // tactical-shouts-v1: shouts are the local bench's, so only the local side gets them.
+    const shout = key === 'local' && state.touchlineShouts === TACTICAL_SHOUTS_VERSION ? shoutTacticalAdjustment(SHOUTS.filter((item) => shoutActive(state.shoutCalls ?? {}, item, MATCH_MINUTES[blockIndex]))) : NO_ADJUSTMENT
+    adjustment[key] = { attack: adjustment[key].attack + affinity.attack + shout.attack, defense: adjustment[key].defense + affinity.defense + shout.defense, midfield: adjustment[key].midfield + affinity.midfield + shout.midfield }
     quality[key] = input.rosterBonus ? squadQuality(sides[key].team.players).bonus : 0
   }
   const effective = {

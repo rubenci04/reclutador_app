@@ -256,3 +256,8 @@ CPU estratégica local implementada como opción junto a hot-seat. Perfiles CONS
 - Tiro libre directo: reacción del arquero previa, precisión acotada, determinismo, sin doble resolución, checkpoint (`interactive/miniGames.test.ts`, `miniGamesScreen.test.tsx`).
 - Tanda de penales: intención CPU previa, ganador derivado de los tiros, alternativa tradicional, muerte súbita, serie completa en la pantalla real.
 - Defensa: carril de la CPU fijado antes, una por partido, continuidad del ataque, ausencia sin la opción. [QA](qa/SIM-MINI-002-003-RANK-REVEAL.md).
+
+## TECH-001 — Recarga de partida local
+
+- `activeSessionStorage.test.tsx`: datos corruptos o de otra versión se descartan y borran; almacenamiento bloqueado no rompe; restauración en `BIDDING` y `TEAMS_COMPLETED`; partido dirigido reconstruido; limpieza al volver al inicio; online no lee ni escribe.
+- `src/test/setup.ts` borra la clave tras cada prueba. Pendiente: celular y varias pestañas. [Registro](logs/TECH-001.md).

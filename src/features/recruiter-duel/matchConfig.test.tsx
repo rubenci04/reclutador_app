@@ -148,7 +148,6 @@ describe('setup screen', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Start duel' }))
     fireEvent.click(screen.getByRole('button', { name: 'Heads' }))
     act(() => vi.advanceTimersByTime(COIN_TOSS_MS))
-    fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
     const hud = screen.getByRole('region', { name: 'Duel scoreboard' })
     expect(hud).toHaveTextContent('Deportivo Pasto'); expect(hud).toHaveTextContent('Club Atlético Pichirica')
     expect(screen.getByRole('img', { name: 'Deportivo Pasto budget: 150M left of 150M' })).toBeInTheDocument()

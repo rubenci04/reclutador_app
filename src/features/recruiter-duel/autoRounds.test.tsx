@@ -12,6 +12,7 @@ import { takeCpuTurn } from './cpuPolicy'
 import * as drawHistory from './drawHistory'
 import { buildLiveMarket, LIVE_HISTORY_SIZE } from './liveMarket'
 import { AppFooter } from '../../components/AppFooter'
+import { clearActiveSession } from './activeSessionStorage'
 
 afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); localStorage.clear() })
 beforeEach(() => localStorage.clear())
@@ -84,7 +85,8 @@ describe('UX-DRAW-007 automatic rounds without a human decision', () => {
     const first = roundLabel()
     act(() => vi.advanceTimersByTime(5_000))
     expect(roundLabel()).toBe(first)
-    expect(screen.getByRole('button', { name: 'Start auction' })).toBeEnabled()
+    // The card opens for bids by itself and the human acts on it.
+    expect(screen.getByLabelText('Bid amount')).toBeInTheDocument()
   })
   it('hot-seat: never resolves a round by itself', async () => {
     const { game } = findReveal('irrelevant')
@@ -92,7 +94,7 @@ describe('UX-DRAW-007 automatic rounds without a human decision', () => {
     const first = roundLabel()
     act(() => vi.advanceTimersByTime(20_000))
     expect(roundLabel()).toBe(first)
-    expect(screen.getByRole('button', { name: 'Start auction' })).toBeInTheDocument()
+    expect(screen.getByLabelText('Bid amount')).toBeInTheDocument()
   })
   it('online: creates no local transition, even for a card nobody on this side can take', async () => {
     const { game } = findReveal('irrelevant')
@@ -167,7 +169,8 @@ describe('UX-DRAW-007 live market panel', () => {
       expect(document.querySelector('.live-market-title')?.textContent).toBe(i18n.t('liveMarket.title'))
       expect(document.querySelector('.notice-stack')).toBeNull()
       expect(document.querySelector('.live-market')?.textContent).not.toMatch(/liveMarket\./)
-      unmount(); vi.restoreAllMocks(); vi.useRealTimers()
+      // The next language starts a new game instead of resuming this one.
+      unmount(); clearActiveSession(); vi.restoreAllMocks(); vi.useRealTimers()
     }
   })
 })

@@ -3,7 +3,7 @@ import type { SimulationInput } from '../local-match/simulator'
 import { ConfirmNavigation } from '../../components/ConfirmNavigation'
 import { DRAFT_CATALOG } from '../draft/catalog'
 import { createCrossCategoryDraw, crossCategoryCatalog, finishDualDraft } from './crossCategoryDraw'
-import { cpuAct, createDualDraft, discardCard, dualComplete, isSideComplete, signCard, type DualDraft } from './dualDraft'
+import { cpuAct, createDualDraft, discardCard, dualComplete, isSideComplete, signCard } from './dualDraft'
 import { DualDraftScreen } from './DualDraftScreen'
 import { useCallback, useEffect, useMemo, useRef, useState, type SetStateAction } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -69,6 +69,7 @@ import type { OnlineDuelBinding } from './onlineBinding'
 import { OnlineTurnClock } from './OnlineTurnClock'
 import { OnlineTeamsStage } from './OnlineTeamsStage'
 import { WinCelebration } from './WinCelebration'
+import { clearActiveSession, readActiveSession, saveActiveSession, type DualSession } from './activeSessionStorage'
 
 interface AuctionPageProps { readonly onDraftFree: () => void; readonly onOnline?: () => void; readonly teamName?: string; readonly onEditName?: () => void; readonly nameStorageWarning?: boolean; /** Plays the shared game of an online room instead of a local one. */ readonly online?: OnlineDuelBinding }
 /** Presentation time of the toss; the result is already stored when it starts. */
@@ -106,28 +107,52 @@ function replayConfig(text: string): MatchConfig {
   try { return parseMatchConfig((JSON.parse(text) as { config?: unknown }).config) ?? CLASSIC_CONFIG } catch { return CLASSIC_CONFIG }
 }
 const RECRUITER_IDS = ['recruiter_one', 'recruiter_two'] as const
+/**
+ * Local games skip the «start auction» click: a revealed card opens for bids at once, unless the interface resolves that round by itself
+ * (quick completion, or a card of a line the human already filled against the CPU). The engine transition is the same `beginBidding`.
+ */
+function openBidding(game: RecruiterDuelGame | null, versusCpu: boolean): RecruiterDuelGame | null {
+  if (game?.phase !== 'REVEAL_PLAYER' || RECRUITER_IDS.some((participant) => canAutoComplete(game, participant))) return game
+  const round = game.rounds[game.roundIndex]
+  if (versusCpu && round && positionProgress(game.teams.recruiter_one, round.position).remaining === 0) return game
+  const begun = beginBidding(game)
+  return begun.ok ? begun.game : game
+}
+/** Cards of the game being played, or of the category picked on the setup screen when there is none. */
+function catalogOf(game: RecruiterDuelGame | null, gameMode: ThemedModeId, mode: ThemedModeId, online: boolean): readonly Player[] {
+  return game && (game.legacyCatalog || online && !game.manualBench) ? DRAFT_CATALOG : recordedCollection(game?.drawContext?.catalogKey) ?? (game?.categoryPair ? crossCategoryCatalog(game.categoryPair.recruiter_one, game.categoryPair.recruiter_two) : catalogForMode(game ? game.coachMode ?? gameMode : mode))
+}
 
 export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorageWarning = false }: AuctionPageProps) {
   const { t } = useTranslation()
   const categoryLabel = (id: ThemedModeId) => t(id === 'ARGENTINA_CLUBS' ? 'modes.items.argentinaClubs.name' : 'categoryTree.options.' + id)
+  /** Local game left running before a reload; read once on mount. */
+  const [restored] = useState(() => online ? null : readActiveSession())
   const [entryChosen, setEntryChosen] = useState(false)
   const entryHeading = useRef<HTMLHeadingElement>(null)
-  const [opponentMode, setOpponentMode] = useState<'hotseat' | 'cpu'>('hotseat')
-  const [strategy, setStrategy] = useState<CpuStrategy>('BALANCED')
-  const [difficulty, setDifficulty] = useState<CpuDifficulty>('HARD')
-  const [pauseMs, setPauseMs] = useState(650)
+  const [opponentMode, setOpponentMode] = useState<'hotseat' | 'cpu'>(restored?.opponentMode ?? 'hotseat')
+  const [strategy, setStrategy] = useState<CpuStrategy>(restored?.strategy ?? 'BALANCED')
+  const [difficulty, setDifficulty] = useState<CpuDifficulty>(restored?.difficulty ?? 'HARD')
+  const [pauseMs, setPauseMs] = useState(restored?.pauseMs ?? 650)
   const [replayText, setReplayText] = useState('')
   const [storageWarning, setStorageWarning] = useState(false)
-  const [secondCategory, setSecondCategory] = useState<ThemedModeId | 'same'>('same')
+  const [secondCategory, setSecondCategory] = useState<ThemedModeId | 'same'>(restored?.secondCategory ?? 'same')
   // Argentine league, Current edition, unless the person picks another one.
-  const [mode, setMode] = useState<ThemedModeId>(DEFAULT_MODE)
+  const [mode, setMode] = useState<ThemedModeId>(restored?.mode ?? DEFAULT_MODE)
   /** Mode of the running game; the setup screen follows `mode`. */
-  const [gameMode, setGameMode] = useState<ThemedModeId>(DEFAULT_MODE)
+  const [gameMode, setGameMode] = useState<ThemedModeId>(restored?.gameMode ?? DEFAULT_MODE)
   /** Live draw in progress for two different categories (local games only); becomes a normal game once both elevens are complete. */
-  const [dual, setDual] = useState<{ readonly draft: DualDraft; readonly first: ThemedModeId; readonly second: ThemedModeId; readonly vsCpu: boolean } | null>(null)
-  const [liveInput, setLiveInput] = useState<SimulationInput | null>(null)
-  const [matchMode, setMatchMode] = useState<'live' | 'quick'>('live')
-  const [localGame, setLocalGame] = useState<RecruiterDuelGame | null>(null)
+  const [dual, setDual] = useState<DualSession | null>(restored?.dual ?? null)
+  // A directed match interrupted by a reload restarts at kick-off with the same elevens and tactics.
+  const [liveInput, setLiveInput] = useState<SimulationInput | null>(() => {
+    const saved = restored?.live ? restored.localGame : null
+    const tactics = saved && restored?.strategyChoice?.seed === saved.seed ? revealedStrategies(restored.strategyChoice.choice) : null
+    if (!restored || !saved || !tactics) return null
+    const created = duelMatchInput(saved, catalogOf(saved, restored.gameMode, restored.mode, false), { recruiter_one: tactics.first, recruiter_two: tactics.second }, true, ENGINE_VERSION)
+    return created.ok ? created.input : null
+  })
+  const [matchMode, setMatchMode] = useState<'live' | 'quick'>(restored?.matchMode ?? 'live')
+  const [localGame, setLocalGame] = useState<RecruiterDuelGame | null>(restored?.localGame ?? null)
   const game = online ? online.game : localGame
   const entryVisible = !game && !dual
   useEffect(() => { if (entryVisible) entryHeading.current?.focus() }, [entryChosen, entryVisible])
@@ -138,24 +163,31 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
     if (game?.phase === 'ROUND_RESULT' || game?.phase === 'REVEAL_PLAYER') auctionAction.current?.focus({ preventScroll: true })
   }, [game?.phase, game?.roundIndex])
   /** Online, every change is an intent applied to the latest shared state; leaving the game exits the room. */
-  const onlineSubmit = online?.submit; const onlineExit = online?.exit
+  const onlineSubmit = online?.submit; const onlineExit = online?.exit; const versusCpu = opponentMode === 'cpu'
   const setGame = useCallback((value: SetStateAction<RecruiterDuelGame | null>) => {
-    if (!onlineSubmit) return setLocalGame(value)
+    if (!onlineSubmit) return setLocalGame((current) => openBidding(typeof value === 'function' ? value(current) : value, versusCpu))
     if (value === null) return onlineExit?.()
     onlineSubmit((current) => (typeof value === 'function' ? value(current) : value) ?? current)
-  }, [onlineSubmit, onlineExit])
-  const catalog = useMemo(() => game && (game.legacyCatalog || online && !game.manualBench) ? DRAFT_CATALOG : recordedCollection(game?.drawContext?.catalogKey) ?? (game?.categoryPair ? crossCategoryCatalog(game.categoryPair.recruiter_one, game.categoryPair.recruiter_two) : catalogForMode(game ? game.coachMode ?? gameMode : mode)), [game, gameMode, mode, online])
+  }, [onlineSubmit, onlineExit, versusCpu])
+  const catalog = useMemo(() => catalogOf(game, gameMode, mode, !!online), [game, gameMode, mode, online])
   const playerById = (id: string) => catalog.find((player) => player.id === id)!
   const [error, setError] = useState<string | null>(null)
   const [autoFailedSeed, setAutoFailedSeed] = useState<string | null>(null)
   /** Rounds the interface closed for the CPU because the human had no legal action in them (shown as automatic awards). */
   const [autoRoundState, setAutoRoundState] = useState<{ seed: string; rounds: ReadonlySet<number> }>({ seed: '', rounds: new Set() })
   const [setup, setSetup] = useState<SetupDraft>(DEFAULT_SETUP_DRAFT)
-  const [strategyChoice, setStrategyChoice] = useState<{ seed: string; choice: StrategyChoice } | null>(null)
+  const [strategyChoice, setStrategyChoice] = useState<{ seed: string; choice: StrategyChoice } | null>(restored?.strategyChoice ?? null)
   const [stageFocus, setStageFocus] = useState(0)
   const stageHeading = useRef<HTMLHeadingElement>(null)
   useEffect(() => { if (stageFocus > 0) stageHeading.current?.focus() }, [stageFocus])
-  const [lineupConfirmed, setLineupConfirmed] = useState<{ seed: string; recruiter_one: boolean; recruiter_two: boolean }>({ seed: '', recruiter_one: false, recruiter_two: false })
+  const [lineupConfirmed, setLineupConfirmed] = useState<{ seed: string; recruiter_one: boolean; recruiter_two: boolean }>(restored?.lineupConfirmed ?? { seed: '', recruiter_one: false, recruiter_two: false })
+  // Every change of a running local game is kept, so a reload resumes it; with no game left the stored one is dropped.
+  const liveRunning = liveInput !== null
+  useEffect(() => {
+    if (online) return
+    if (!localGame && !dual) return clearActiveSession()
+    saveActiveSession({ version: 1, localGame, dual, live: liveRunning, matchMode, strategyChoice, lineupConfirmed, opponentMode, strategy, difficulty, pauseMs, mode, gameMode, secondCategory })
+  }, [online, localGame, dual, liveRunning, matchMode, strategyChoice, lineupConfirmed, opponentMode, strategy, difficulty, pauseMs, mode, gameMode, secondCategory])
   const [offerInput, setOfferInput] = useState<{ key: string; value: number } | null>(null)
   const apply = (result: AuctionTransition) => {
     if (!result.ok) return setError(t(`duel.errors.${result.error}`))
@@ -174,6 +206,7 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
   const canStart = preflightMatchConfig(catalog, config).ok && (setup.mode === 'classic' || (setupPreflight.ok && Object.keys(nameIssues(customConfig.names)).length === 0))
   const start = () => {
     if (!canStart) return
+    clearActiveSession()
     setMatchMode('live')
     const saved = readDrawHistory({ getItem: (key) => window.localStorage.getItem(key) }, catalog, drawHistoryKey(mode))
     const recent = saved.history.games.flatMap((entry) => {
@@ -283,11 +316,13 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
   }
   const goHome = () => {
     if (online) return online.exit()
+    clearActiveSession()
     setLiveInput(null); setDual(null); setGame(null); setEntryChosen(false); setStrategyChoice(null); setError(null)
   }
   const abandon = (participant: 'recruiter_one' | 'recruiter_two') => {
     if (!game) return
     if (online) return online.forfeit()
+    clearActiveSession()
     recordDuel(game.seed, participant === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one', null, participant)
     goHome()
   }
@@ -447,6 +482,7 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
       <main id="duel-main" className="duel-page">
         <DualDraftScreen draft={dual.draft} catalog={dualCatalog} names={dualNames} categoryLabel={(id) => categoryLabel(id as ThemedModeId)} humans={dual.vsCpu ? ['recruiter_one'] : ['recruiter_one', 'recruiter_two']}
           onSign={(id) => dualAct(id, signCard)} onDiscard={(id) => dualAct(id, discardCard)} onContinue={finishDual} onAbandon={goHome} />
+        <AbandonGame versusCpu={dual.vsCpu} names={dualNames} onAbandon={(who) => { recordDuel(dual.draft.seed, who === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one', null, who); goHome() }} />
         {error && <div className="draft-alert" role="alert"><p>{error}</p></div>}
       </main></div>
   }
@@ -513,14 +549,14 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
         {game.phase !== 'TEAMS_COMPLETED' && !cpuAuto && round && footballer && <section className="auction-board" aria-live="polite"><div className="auction-heading"><span className="category-chip">{categoryLabel(game.coachMode ?? mode)}</span><p>{t('duel.opening', { participant: names[game.openingOrder[game.roundIndex]] })}</p></div><div className="auction-candidate" key={footballer.id}><PlayerIdentity player={footballer} /></div>
           {game.phase === 'REVEAL_PLAYER' && <div className="duel-actions reveal-actions">{game.roundIndex === 0 && <><FootballCoin side={game.coinResult!} /><p>{t('coin.result', { side: t(`duel.${game.coinResult}`), participant: names[game.coinTossWinner!] })}</p></>}<button ref={auctionAction} className="primary-action" onClick={() => apply(beginBidding(game))}>{t('duel.beginBidding')}</button></div>}
           {mustSkip && game.activeParticipant && footballer && <section className="bid-panel auction-banner auction-banner-blocked" role="status"><strong>{t('auctionActions.autoSkip', { participant: names[game.activeParticipant], position: t(`positions.${footballer.position}`) })}</strong></section>}
-          {game.phase === 'BIDDING' && game.activeParticipant && !cpuTurn && !remoteTurn && !mustSkip && <AuctionBidPanel game={game} side={game.activeParticipant} footballer={footballer} names={names} availability={availability} offer={offer} minimum={minimum} onOffer={(value) => setOfferInput({ key: offerKey, value })} blockedMessage={blockedMessage} progress={progress} hud={hud ?? null}
-            passLabel={t(availability?.replacement && game.passedParticipants.length ? 'discards.confirm' : availability?.passAward && !game.currentBid && availability.passAward.winner === game.activeParticipant ? 'auctionActions.claim' : availability?.passAward?.reason && availability.passAward.reason !== 'voluntary_bid' ? 'auctionActions.confirmAssignment' : 'duel.pass')}
-            assignmentSpecial={!!availability && !!(availability.replacement || (availability.passAward && availability.passAward.reason !== 'voluntary_bid') || availability.pass.reason)}
+          {game.phase === 'BIDDING' && game.roundIndex === 0 && game.coinResult && game.coinTossWinner && <div className="coin-notice" role="status"><FootballCoin side={game.coinResult} /><p>{t('coin.result', { side: t(`duel.${game.coinResult}`), participant: names[game.coinTossWinner] })}</p></div>}
+          {game.phase === 'BIDDING' && game.activeParticipant && !remoteTurn && !mustSkip && <AuctionBidPanel thinking={cpuTurn} game={game} side={game.activeParticipant} footballer={footballer} names={names} availability={availability} offer={offer} minimum={minimum} onOffer={(value) => setOfferInput({ key: offerKey, value })} blockedMessage={blockedMessage} progress={progress} hud={hud ?? null}
+            passLabel={t(cpuTurn ? 'duel.pass' : availability?.replacement && game.passedParticipants.length ? 'discards.confirm' : availability?.passAward && !game.currentBid && availability.passAward.winner === game.activeParticipant ? 'auctionActions.claim' : availability?.passAward?.reason && availability.passAward.reason !== 'voluntary_bid' ? 'auctionActions.confirmAssignment' : 'duel.pass')}
+            assignmentSpecial={!cpuTurn && !!availability && !!(availability.replacement || (availability.passAward && availability.passAward.reason !== 'voluntary_bid') || availability.pass.reason)}
             assignment={availability ? <p id="auction-assignment" className="assignment-notice" role="status">{availability.replacement ? t('discards.doublePass', { count: game.discardsRemaining, position: t(`positions.${footballer.position}`) }) : availability.passAward ? t(availability.passAward.reason === 'voluntary_bid' ? 'auctionActions.passAwards' : 'auctionActions.mandatory', { participant: names[availability.passAward.winner], amount: availability.passAward.price }) : availability.fallback ? t('auctionActions.doublePass', { participant: names[availability.fallback.winner], amount: availability.fallback.price }) : availability.pass.reason ? t('auctionActions.blocks.' + availability.pass.reason) : null}</p> : null}
             onBid={recordBid} onPass={recordPass} />}
           {game.phase === 'BIDDING' && availability?.discardReason && <p className="assignment-notice" role="status">{t('discards.noReplacement')}</p>}
           {remoteTurn && game.activeParticipant && <section className="bid-panel auction-banner" role="status"><strong>{t('online.duel.waitingBid', { name: names[game.activeParticipant] })}</strong></section>}
-          {cpuTurn && <section className="bid-panel" role="status">{t('auctionActions.blocks.CPU_THINKING')}</section>}
           {lastCpuDecision?.type === 'cpu_decision' && <p className="cpu-status" role="status">{t(lastCpuDecision.action === 'bid' ? 'cpu.bids' : 'cpu.passes', {amount:lastCpuDecision.amount})}</p>}
           {game.phase === 'ROUND_RESULT' && game.lastAward && <section className="award-result"><SigningReveal rank={rankingFor(footballer, game.lastAward.winner)} />{game.lastAward.reason === 'voluntary_bid' && (online ? game.lastAward.winner === online.mySide : (opponentMode !== 'cpu' || game.lastAward.winner === 'recruiter_one')) && <WinCelebration participant={names[game.lastAward.winner]} player={footballer.name} amount={game.lastAward.price} />}{game.lastAward.reason === 'voluntary_bid' && <p className="auction-banner auction-banner-won" role="status"><strong>{(() => { const viewer = online ? online.mySide : opponentMode === 'cpu' ? 'recruiter_one' : null; const award = game.lastAward; return viewer && award.winner !== viewer ? t('auctionBanner.youPassed', { winner: names[award.winner], player: footballer.name, amount: award.price }) : t('auctionBanner.rivalPassed', { rival: names[award.winner === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one'], winner: names[award.winner], player: footballer.name, amount: award.price }) })()}</strong></p>}<h2>{t(game.lastAward.reason === 'voluntary_bid' ? 'duel.roundResult' : 'cpu.mandatory')}</h2>{opponentMode === 'cpu' && game.lastAward.winner === 'recruiter_two' && game.lastAward.reason === 'voluntary_bid' && <p>{t('cpu.wins')}</p>}<p>{t('duel.awardPlayer', { participant: names[game.lastAward.winner], player: footballer.name, amount: game.lastAward.price })}</p><button ref={auctionAction} className="primary-action" onClick={advanceRound}>{t(game.lastAward.reason === 'voluntary_bid' ? 'auctionBanner.confirmSigning' : 'duel.nextRound')}</button></section>}
         </section>}
@@ -548,15 +584,16 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
             {choice && !choice.secondIsCpu && (choice.step === 'HANDOVER' || choice.step === 'SECOND') && <p className="stage-indicator" role="status">{t('stages.waitingSecond', { first: names.recruiter_one, second: names.recruiter_two })}</p>}
             {bothReady && <div className="return-to-edit">{humans.map((participant) => <ConfirmNavigation key={`back-${participant}`} label={opponentMode === 'cpu' ? t('stages.backToEdit') : t('stages.backToEditFor', { name: names[participant] })} message={t('stages.backToEditWarning')} onConfirm={() => reopenOrdering(participant)} />)}</div>}
             {bothReady && <TeamPowerPanel game={game} catalog={catalog} sides={RECRUITER_IDS} names={names} />}
-            {!bothReady && <details className="lineup-recap" open>
+            {!bothReady && <><details className="lineup-recap" open>
               <summary>{t('stages.showTeams')}</summary>
               <div className="team-comparison">{RECRUITER_IDS.map((participant) => <article key={participant}><h2>{names[participant]}</h2><strong>{t('duel.spent', { amount: game.teams[participant].spent })}</strong><p>{DRAFT_SLOTS.map((slot) => playerById(game.teams[participant].lineup[slot.id]!).name).join(' · ')}</p></article>)}</div>
+              </details>
               <ol className="locker-steps" aria-label={t('locker.stepsLabel')}>{(['coach', 'subs', 'lineup'] as const).map((key, index) => <li key={key} className={index + 1 === lockerStep ? 'is-current' : index + 1 < lockerStep ? 'is-done' : undefined} aria-current={index + 1 === lockerStep ? 'step' : undefined}><b>{index + 1}</b> {t(`locker.${key}`)}</li>)}</ol>
               {coachParticipants.map((participant) => <div key={`coach-${participant}`}>{game.config?.coaches && game.teams[participant].coachDeclined && !(strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST') && <section className="coach-market"><p>{t('coach.declinedNote', { name: names[participant] })}</p><div><button className="secondary-action" onClick={() => apply(releaseCoach(game, participant))}>{t('coach.hireAfterDecline')}</button></div></section>}{game.config?.coaches && !game.teams[participant].coachDeclined && <CoachMarket game={game} participant={participant} name={names[participant]} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} onDecline={() => apply(declineCoach(game, participant))} onRelease={() => apply(releaseCoach(game, participant))} onHire={(coachId) => { apply(chooseCoach(game, participant, coachId)) }} />}</div>)}
               {isShowcaseBench(game.config) && !online && <BenchShowcase game={game} catalog={catalog} names={names} humans={humans} onBuy={(participant, playerId) => apply(buyShowcaseCard(game, participant, playerId, catalog))} onPass={(participant) => apply(passShowcaseTurn(game, participant, catalog))} onFinish={finishBench} />}{(pending ? [pending] : humans).map((participant) => <div key={`squad-${participant}`}>{(!game.config?.coaches || game.teams[participant].coachId || game.teams[participant].coachDeclined) && <><SubstituteMarket game={game} participant={participant} name={names[participant]} catalog={catalog} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} onBuy={(playerId) => apply(buySubstitute(game, participant, playerId, catalog))} /><LineupOrganizer rankFor={rankingFor} onFormationChange={(formation) => apply(chooseFormation(game, participant, formation, catalog))} locked={strategyChoice?.seed === game.seed && strategyChoice.choice.step !== 'FIRST'} game={game} participant={participant} name={names[participant]} catalog={catalog} confirmed={orderingDone(participant)} onSwap={(first, second) => swapLineup(participant, first, second)} onBenchSwap={(benchIndex, slot) => benchSwap(participant, benchIndex, slot)} onConfirm={() => setOrderingDone(participant, true)} onEdit={() => setOrderingDone(participant, false)} /></>}</div>)}
 
 
-            </details>}
+            </>}
             {revealed && game.manualBench && <fieldset className="match-mode"><legend>{t('liveDT.mode')}</legend><label><input type="radio" name="match-mode" checked={matchMode === 'live'} onChange={() => setMatchMode('live')} />{t('liveDT.direct')}</label><label><input type="radio" name="match-mode" checked={matchMode === 'quick'} onChange={() => setMatchMode('quick')} />{t('liveDT.quick')}</label></fieldset>}
             {choice && <>
               {opponentMode === 'cpu' && !revealed && <p role="status">{t('strategyChoice.cpuFixed')}</p>}

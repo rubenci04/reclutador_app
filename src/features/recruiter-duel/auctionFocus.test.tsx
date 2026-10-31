@@ -52,7 +52,6 @@ async function openLocal(mode: 'cpu' | 'hot', seed: string, language: 'es-AR' | 
   fireEvent.click(screen.getByRole('button', { name: i18n.t('duel.start') }))
   fireEvent.click(screen.getByRole('button', { name: i18n.t('duel.heads') }))
   act(() => vi.advanceTimersByTime(3000))
-  fireEvent.click(screen.getByRole('button', { name: i18n.t('duel.beginBidding') }))
   return i18n
 }
 

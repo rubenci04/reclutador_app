@@ -5,11 +5,10 @@ import type { DribbleSector } from './interactive/attackTree'
 import { TimingBar } from './TimingBar'
 import { NEUTRAL_PRECISION, usePrecisionBar, useTapOnce } from './precisionSetting'
 import { reducedMotion, useTimingBar, type LaneDriver } from './timing'
+import { GOAL_X } from './laneGeometry'
 
 export type Lane = DribbleSector
 const LANES: readonly Lane[] = ['LEFT', 'CENTER', 'RIGHT']
-/** x of each third of the goal on the 300x180 close-up. */
-export const GOAL_X: Readonly<Record<Lane, number>> = { LEFT: 85, CENTER: 150, RIGHT: 215 }
 export type ShotMode = 'FREE_KICK' | 'PENALTY'
 export type ShotOutcome = 'GOAL' | 'SAVE' | 'WIDE' | 'OVER' | 'BLOCK'
 

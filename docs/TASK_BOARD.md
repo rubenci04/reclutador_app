@@ -460,3 +460,19 @@ Motor `figures-v1` por cifras (ocasiones Poisson, xG, momentos con oscilación �
 ## Partido interactivo, parte 2 — 27/10/2026
 
 Pantalla limpia del partido (celular primero): cancha SVG con monigotes, pelota por zonas, relato de una línea, detalle a pedido y capa de momento con minijuego de un toque. El modo «en vivo» usa el motor nuevo por pasos. Ver [registro](logs/PARTIDO-INTERACTIVO-PARTE-2.md). Vista previa sin promover.
+
+## TECH-001 partida local tras recargar — 31/10/2026
+
+Subasta, vestuario y partido local (mismo dispositivo, CPU y sorteo cruzado) se guardan en `reclutador.active-session.v1` con lectura validada y tolerante a bloqueos; se borra al volver al inicio, abandonar o empezar otra. El partido dirigido se reanuda desde el saque inicial. Online sin cambios. Typecheck/lint/build aprobados; 1.602 pruebas. [Registro](logs/TECH-001.md).
+
+## TECH-002 subasta sin clic por ronda — 31/10/2026
+
+Las cartas locales abren la puja solas (misma transición `beginBidding`, motor intacto), con aviso de la moneda en la ronda 1; el panel de puja queda montado durante el turno de la CPU (`.bid-panel-thinking`), misma altura medida (612 px). Online sin cambios. Cuatro controles aprobados, 1.602 pruebas. [Registro](logs/TECH-002.md).
+
+## TECH-003/004 carta legible y vestuario — 31/10/2026
+
+Atributos, tier y pie visibles sin desplegar; vitrina de suplentes con ATQ/DEF/FÍS/MEN. El resumen de equipos ya no oculta el vestuario; abandono registrado en el sorteo doble (los 5 descartes ya existían desde efe327e). 1.610 pruebas. [Registro](logs/TECH-003-004.md).
+
+## TECH-005 a 008 — 31/10/2026
+
+Gritos con efecto opt-in en el kernel (no conectado a la pantalla actual: registrado), aptitud sugerida por casillero y métricas por posición fuera de 4-3-3, móvil con barra fija de puja y contraste AA (4,94:1), lint sin advertencias, CPU que lee el plantel público del rival. 1.624 pruebas. [Registro](logs/TECH-005-008.md).

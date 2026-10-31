@@ -26,7 +26,6 @@ async function open(language: 'es-AR' | 'en' | 'pt-BR') {
   expect(document.querySelector('.signing-reveal')).toBeNull()
   expect(document.body.textContent).not.toMatch(/#\d+\s*\/\s*150/)
   expect(document.querySelector('[aria-label*="150"]')).toBeNull()
-  fireEvent.click(screen.getByRole('button', { name: i18n.t('duel.beginBidding') }))
   return i18n
 }
 

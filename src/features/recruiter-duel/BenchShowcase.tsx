@@ -40,6 +40,7 @@ export function BenchShowcase({ game, catalog, names, humans, onBuy, onPass, onF
         const affordable = turn !== null && card.price <= budgetLeft(turn)
         return <div key={card.id} className={`showcase-card${owner ? ' is-sold' : ''}`} data-sold={owner ? 'true' : 'false'}>
           <span className="showcase-name">{card.name}</span><b className="showcase-ovr">{card.overall_rating}</b><small>{t('showcase.price', { price: card.price })}</small>
+          <ul className="showcase-ratings" aria-label={t('ratings.label', { rating: card.overall_rating })}>{([['att', card.att_rating], ['def', card.def_rating], ['phy', card.phy_rating], ['men', card.men_rating]] as const).map(([key, value]) => <li key={key}><b>{value}</b><small>{t(`ratings.${key}`)}</small></li>)}</ul>
           {owner ? <em className="showcase-badge">{t('showcase.sold', { name: names[owner] })}</em>
             : <button className="secondary-action" disabled={!mine || !affordable} onClick={() => turn && onBuy(turn, card.id)}>{t('showcase.buy')}</button>}
         </div>

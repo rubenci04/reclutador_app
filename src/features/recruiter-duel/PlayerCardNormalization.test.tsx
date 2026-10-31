@@ -65,3 +65,24 @@ describe('FootIcon', () => {
     expect(container.querySelector('.foot-icon')?.getAttribute('dir')).toBe('ltr')
   })
 })
+
+describe('TECH-003 key facts without opening the full card', () => {
+  it.each(LANGUAGES)('shows the four ratings, tier and foot outside the details in %s', async (language) => {
+    const i18n = await createI18n(language)
+    const p = player('import_ita_act_001')
+    const { container } = render(<I18nextProvider i18n={i18n}><PlayerIdentity player={p} /></I18nextProvider>)
+    const ratings = screen.getByRole('list', { name: i18n.t('ratings.label', { rating: p.overall_rating }) })
+    expect(ratings.closest('.player-full-card')).toBeNull()
+    expect([...ratings.querySelectorAll('li b')].map((node) => Number(node.textContent))).toEqual([p.att_rating, p.def_rating, p.phy_rating, p.men_rating])
+    for (const key of ['att', 'def', 'phy', 'men']) expect(ratings.textContent).toContain(i18n.t(`ratings.${key}`))
+    expect(container.querySelector('.tier-badge')?.closest('.player-full-card')).toBeNull()
+    expect(container.querySelector('.preferred-foot')?.closest('.player-full-card')).toBeNull()
+    expect(container.querySelector('.preferred-foot')).toHaveAttribute('aria-label')
+    // Visible order: price, then ratings, then tier and foot.
+    const price = container.querySelector('.base-price-chip')!
+    expect(price.compareDocumentPosition(ratings) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    const details = container.querySelector('.player-full-card')!
+    expect(details.querySelector('.player-ratings, .tier-badge, .preferred-foot')).toBeNull()
+    expect(details.querySelector('summary')?.textContent).toBe(i18n.t('playerCard.full'))
+  })
+})

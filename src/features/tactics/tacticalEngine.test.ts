@@ -149,3 +149,22 @@ describe('CPU strategy selection', () => {
     expect(seen.size).toBeGreaterThanOrEqual(4)
   })
 })
+
+describe('TECH-006 slot-aware features outside 4-3-3', () => {
+  const base = generateCpuTeam(DRAFT_CATALOG, 'tech-006').team.lineup
+  const used = new Set(Object.values(base))
+  const defenders = DRAFT_CATALOG.filter((p) => p.position === 'DEF' && !used.has(p.id))
+  const attacking = [...defenders].sort((a, b) => (b.att_rating + b.phy_rating) - (a.att_rating + a.phy_rating))[0]
+  const stopper = [...defenders].filter((p) => p.id !== attacking.id).sort((a, b) => (b.def_rating - b.att_rating) - (a.def_rating - a.att_rating))[0]
+  it.each(['4-4-2', '4-2-3-1'] as const)('moving the attacking full-back to the axis and the pure centre-back wide changes flank threat and central defence in %s', (formation) => {
+    const wide = { ...base, LB: attacking.id, LCB: stopper.id }
+    const swapped = { ...base, LB: stopper.id, LCB: attacking.id }
+    const a = tacticalFeatures(wide, DRAFT_CATALOG, formation); const b = tacticalFeatures(swapped, DRAFT_CATALOG, formation)
+    expect(a.flankThreat).toBeGreaterThan(b.flankThreat)
+    expect(a.centralDefense).toBeGreaterThan(b.centralDefense)
+    expect(a.fullbackDefense).toBeLessThan(b.fullbackDefense)
+  })
+  it('keeps the 4-3-3 branch exactly as before (no formation and 4-3-3 agree)', () => {
+    expect(tacticalFeatures(base, DRAFT_CATALOG, '4-3-3')).toEqual(tacticalFeatures(base, DRAFT_CATALOG))
+  })
+})

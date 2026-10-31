@@ -99,7 +99,6 @@ describe('auction sounds', () => {
     expect(play.mock.calls.map(([id]) => id)).toEqual(['coinToss'])
     act(() => vi.advanceTimersByTime(COIN_TOSS_MS))
     expect(play.mock.calls.map(([id]) => id)).toEqual(['coinToss', 'diceRoll', 'coinLand'])
-    fireEvent.click(screen.getByRole('button', { name: 'Start auction' }))
     const minimum = (screen.getByLabelText('Bid amount') as HTMLInputElement).min
     fireEvent.change(screen.getByLabelText('Bid amount'), { target: { value: minimum } })
     expect(play).toHaveBeenCalledTimes(3)

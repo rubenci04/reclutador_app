@@ -8,10 +8,10 @@ import { measureCell, playMeasured } from './cpuSimulation'
 import { fights, measureBidding } from './cpuBidding'
 
 const catalog = catalogForMode('GLOBAL_CLASSIC')
-const baseline = (JSON.parse(readFileSync('docs/qa/SPRINT-7-cpu-cells.json', 'utf8')) as { cells: ReturnType<typeof measureCell>[] }).cells
+const baseline = (JSON.parse(readFileSync('docs/qa/TECH-008-cpu-cells.json', 'utf8')) as { cells: ReturnType<typeof measureCell>[] }).cells
 const easy = (JSON.parse(readFileSync('docs/qa/SPRINT-4-cpu-easy.json', 'utf8')) as { cells: ReturnType<typeof measureCell>[] }).cells
 const pick = (cells: typeof baseline, human: string, difficulty: string) => cells.find((cell) => cell.human === human && cell.difficulty === difficulty && cell.strategy === 'BALANCED')!
-// NORMAL was deliberately changed in sprint 7 (it fights for cards now) and is pinned to the sprint 7 measurement of the sprint 1 harness;
+// NORMAL was deliberately changed in sprint 7 (it fights for cards now) and again in TECH-008 (rival's public data); it is pinned to the TECH-008 re-measurement;
 // EASY was changed in sprint 4 and is pinned to its own measurement. HARD keeps its sprint 1 numbers only through the ordering checks below.
 const baselineCell = (human: string, difficulty: string) => pick(difficulty === 'EASY' ? easy : baseline, human, difficulty)
 

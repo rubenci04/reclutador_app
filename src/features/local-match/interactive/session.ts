@@ -10,6 +10,7 @@ import { advanceKernel, finishKernel, initializeKernel, resolveKernelPlay } from
 import { DEFENSE_VERSION, DRIBBLE_VERSION, SHOT_VERSION, availableChoice } from './attackTree'
 import { canonical, exact, exclusiveRoster, integer, jsonSafe, object, text, validInput } from './validation'
 import { validSnapshotState } from './snapshotValidation'
+import { SHOUTS, TACTICAL_SHOUTS_VERSION, shoutReadyAt, type Shout } from '../touchlineShouts'
 import type { CheckpointAuthority, Decision, PlayCommand, InteractiveResult, Outcome, Pair, Receipt, Rejection, Session, SessionInput, SessionOptions } from './types'
 
 const SIDES = ['local', 'cpu'] as const
@@ -22,7 +23,7 @@ export function createSession(source: SessionInput, options: SessionOptions): Ou
   try {
     if (source.actionModel !== 'action-v3') return fail('UNSUPPORTED_VERSION')
     if (!validInput(source)) return fail('INVALID_ROSTER')
-    if (!object(options) || !jsonSafe(options) || !exact(options, ['sessionId'], ['benchMode', 'acquisition', 'attackTree', 'moments', 'aerial', 'matchRules', 'corners', 'freeKicks', 'dribble', 'precisionShot', 'defenseMini', 'shootout']) || options.attackTree !== undefined && (!object(options.attackTree) || !exact(options.attackTree, ['version']) || options.attackTree.version !== 'attack-tree-v1') || !text(options.sessionId) || options.sessionId.length > 128) return fail('INVALID_PAYLOAD')
+    if (!object(options) || !jsonSafe(options) || !exact(options, ['sessionId'], ['benchMode', 'acquisition', 'attackTree', 'moments', 'aerial', 'matchRules', 'corners', 'freeKicks', 'dribble', 'precisionShot', 'defenseMini', 'shootout', 'touchlineShouts']) || options.touchlineShouts !== undefined && options.touchlineShouts !== TACTICAL_SHOUTS_VERSION || options.attackTree !== undefined && (!object(options.attackTree) || !exact(options.attackTree, ['version']) || options.attackTree.version !== 'attack-tree-v1') || !text(options.sessionId) || options.sessionId.length > 128) return fail('INVALID_PAYLOAD')
     if (options.matchRules !== undefined && (!object(options.matchRules) || !exact(options.matchRules, ['version']) || options.matchRules.version !== 'halftime-ovr-v1' || options.attackTree !== undefined || options.moments && !options.aerial)) return fail('INVALID_PAYLOAD')
     if (options.moments !== undefined && (options.attackTree !== undefined || !object(options.moments) || !exact(options.moments, ['version']) || options.moments.version !== 'match-moments-v1')) return fail('INVALID_PAYLOAD')
     if (options.aerial !== undefined && (!options.moments || !object(options.aerial) || !exact(options.aerial, ['version']) || options.aerial.version !== 'directed-header-v1')) return fail('INVALID_PAYLOAD')
@@ -32,7 +33,7 @@ export function createSession(source: SessionInput, options: SessionOptions): Ou
     if (options.precisionShot !== undefined && (!object(options.precisionShot) || !exact(options.precisionShot, ['version']) || options.precisionShot.version !== SHOT_VERSION || !options.freeKicks)) return fail('INVALID_PAYLOAD')
     if (options.defenseMini !== undefined && (!object(options.defenseMini) || !exact(options.defenseMini, ['version']) || options.defenseMini.version !== DEFENSE_VERSION || !options.moments || !options.aerial || !options.matchRules)) return fail('INVALID_PAYLOAD')
     if (options.shootout !== undefined && (!object(options.shootout) || !exact(options.shootout, ['version']) || options.shootout.version !== 'penalty-shootout-v1' || !options.matchRules)) return fail('INVALID_PAYLOAD')
-    const kernel = initializeKernel(source, options.moments ? 'match-moments-v1' : options.attackTree !== undefined, options.aerial !== undefined, options.matchRules !== undefined, options.corners !== undefined, options.freeKicks !== undefined, options.dribble !== undefined, { precisionShot: options.precisionShot !== undefined, defenseMini: options.defenseMini !== undefined })
+    const kernel = initializeKernel(source, options.moments ? 'match-moments-v1' : options.attackTree !== undefined, options.aerial !== undefined, options.matchRules !== undefined, options.corners !== undefined, options.freeKicks !== undefined, options.dribble !== undefined, { precisionShot: options.precisionShot !== undefined, defenseMini: options.defenseMini !== undefined }, options.touchlineShouts !== undefined)
     const benchMode = options.benchMode ?? { local: source.benches ? 'auto-subs-v1' : 'none', cpu: source.benches ? 'auto-subs-v1' : 'none' }
     if (!object(benchMode) || !exact(benchMode, SIDES) || !SIDES.every((side) => ['none', 'auto-subs-v1', 'manual-v1'].includes(benchMode[side]) && (benchMode[side] !== 'none' || !source.benches?.[side].length))) return fail('INVALID_PAYLOAD')
     const ownership = { local: [...Object.values(source.localLineup), ...(source.benches?.local ?? [])] as string[], cpu: [...Object.values(source.cpuLineup), ...(source.benches?.cpu ?? [])] as string[] }
@@ -53,6 +54,20 @@ export function inspectSession(session: Session) {
   const partial = session.kernel.partial ?? null
   const stats = session.result?.result.stats ?? visibleStats([...session.kernel.blocks.flatMap((block) => block.events), ...(partial?.events ?? [])])
   return copy({ sessionId: session.sessionId, revision: session.revision, phase: session.phase, nextBlock: session.kernel.nextBlock, blocks: session.kernel.blocks, partial: partial ? { minute: MATCH_MINUTES[session.kernel.nextBlock], events: partial.events } : null, play: partial?.play ?? null, score: session.kernel.score, stats, lineups: { local: session.kernel.sides.local.team.lineup, cpu: session.kernel.sides.cpu.team.lineup }, window: session.window ? { id: session.window.id, applyBlock: session.window.applyBlock, ready: { local: Boolean(session.window.plans.local), cpu: Boolean(session.window.plans.cpu) } } : null })
+}
+
+/**
+ * TECH-005: the local bench calls a shout for the next block to be played. It is refused when the session did not opt in, the match is over,
+ * or the same shout was called less than SHOUT_MINUTES ago.
+ */
+export function callTouchlineShout(session: Session, shout: Shout): Outcome {
+  if (session.options.touchlineShouts !== TACTICAL_SHOUTS_VERSION || !session.kernel.shoutCalls) return fail('UNSUPPORTED_ORDER')
+  if (!SHOUTS.includes(shout)) return fail('INVALID_PAYLOAD')
+  if (session.phase === 'FINISHED' || session.kernel.nextBlock >= MATCH_MINUTES.length) return fail('INVALID_PHASE')
+  const minute = MATCH_MINUTES[session.kernel.nextBlock]
+  if (minute < shoutReadyAt(session.kernel.shoutCalls, shout)) return fail('INVALID_PHASE')
+  const next = copy(session)
+  return success({ ...next, kernel: { ...next.kernel, shoutCalls: { ...next.kernel.shoutCalls, [shout]: minute } }, revision: session.revision + 1 })
 }
 
 export function advanceBlock(session: Session): Outcome {

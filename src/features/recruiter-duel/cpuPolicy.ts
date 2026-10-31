@@ -26,6 +26,9 @@ export interface CpuPublicContext {
   readonly currentBid?: number | null
   /** The CPU's own last offer on this card (public: it is in the record); NORMAL and HARD answer a big human jump with a bigger step. */
   readonly ownLastBid?: number | null
+  /** The human's public squad and its public safe maximum (TECH-008). Omitted: the CPU decides as before. */
+  readonly rivalTeam?: RecruiterTeam
+  readonly rivalMaximumBid?: number
 }
 
 const HARD_POINT_VALUE = .15
@@ -129,7 +132,14 @@ export function decideCpu(context: CpuPublicContext, strategy: CpuStrategy, curr
   const humanJump = context.ownLastBid != null && currentBid !== null ? currentBid - context.ownLastBid : 0
   // EASY keeps the old random step; the others raise by the minimum, answer a big jump with a bigger one, and sometimes add one more.
   const step = context.difficulty === 'NORMAL' || context.difficulty === 'HARD' ? (humanJump > 1 ? Math.min(humanJump - 1, profiles[strategy].jump) : random() < .25 ? 1 : 0) : Math.floor(random() * profiles[strategy].jump)
-  const amount = Math.min(maximum, technicalMaximum, minimum + step)
+  // TECH-008, only with the rival's public data: a card the rival cannot take (line full, or no money for the base price) opens at base price,
+  // and a card worth far more than the current price moves by +2 to +4 instead of a long +1 war.
+  if (context.rivalTeam && context.difficulty !== 'EASY' && currentBid === null && (positionProgress(context.rivalTeam, context.player.position).remaining === 0 || (context.rivalMaximumBid ?? Infinity) < minimum)) {
+    return { action: 'bid', amount: minimum, reason: 'opening_value', privateMaximum: maximum }
+  }
+  const gap = maximum - minimum
+  const gapStep = context.rivalTeam && context.difficulty !== 'EASY' && gap >= 8 ? Math.min(4, 2 + Math.floor((gap - 8) / 8)) : 0
+  const amount = Math.min(maximum, technicalMaximum, minimum + Math.max(step, gapStep))
   return { action: 'bid', amount, reason: currentBid === null ? 'opening_value' : 'competitive_value', privateMaximum: maximum }
 }
 
@@ -138,7 +148,7 @@ export function takeCpuTurn(game: RecruiterDuelGame, catalog: readonly Player[],
   if (game.phase !== 'BIDDING' || game.activeParticipant !== 'recruiter_two') return { ok: false, error: 'invalid_transition' }
   const player = catalog.find((candidate) => candidate.id === currentRound(game)?.playerId)
   if (!player) return { ok: false, error: 'invalid_bid' }
-  const context: CpuPublicContext = { budget: auctionBudgetOf(game), difficulty, seed: game.seed, roundIndex: game.roundIndex, player, team: game.teams.recruiter_two, publicCatalog: catalog, ownLastBid: game.record.reduce<number | null>((last, entry) => entry.type === 'bid' && entry.round === game.roundIndex && entry.participant === 'recruiter_two' ? entry.amount : last, null), acquiredIds: Object.values(game.teams).flatMap((team) => Object.values(team.lineup).filter((id): id is string => id !== null)) }
+  const context: CpuPublicContext = { budget: auctionBudgetOf(game), difficulty, seed: game.seed, roundIndex: game.roundIndex, player, team: game.teams.recruiter_two, rivalTeam: game.teams.recruiter_one, rivalMaximumBid: maximumSafeBid(game, 'recruiter_one', catalog), publicCatalog: catalog, ownLastBid: game.record.reduce<number | null>((last, entry) => entry.type === 'bid' && entry.round === game.roundIndex && entry.participant === 'recruiter_two' ? entry.amount : last, null), acquiredIds: Object.values(game.teams).flatMap((team) => Object.values(team.lineup).filter((id): id is string => id !== null)) }
   const decision = decideCpu(context, strategy, game.currentBid?.amount ?? null, maximumSafeBid(game, 'recruiter_two', catalog))
   const audited: RecruiterDuelGame = { ...game, record: [...game.record, { type: 'cpu_decision', round: game.roundIndex, playerId: player.id, strategy, difficulty, ...decision }] }
   return decision.action === 'bid' ? placeBid(audited, 'recruiter_two', decision.amount!, catalog) : passAuction(audited, 'recruiter_two', catalog)

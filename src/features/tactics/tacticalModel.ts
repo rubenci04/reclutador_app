@@ -1,5 +1,5 @@
 import type { Player } from '../../types/player'
-import type { FormationId } from './formations'
+import { formationSlots, type FormationId } from './formations'
 import type { DraftLineup } from '../draft/draftTypes'
 import { STRATEGY_PROFILES, type StrategyId } from './strategies'
 
@@ -56,11 +56,17 @@ export function tacticalFeatures(lineup: DraftLineup, catalog: readonly Player[]
     const players = Object.values(lineup).map((id) => catalog.find((p) => p.id === id)!)
     const defenders = players.filter((p) => p.position === 'DEF'); const mids = players.filter((p) => p.position === 'MED')
     const forwards = players.filter((p) => p.position === 'DEL'); const keeper = players.find((p) => p.position === 'ARQ')!
+    // TECH-006: who stands on a flank (x ≤ 30 or ≥ 70) and who on the axis depends on the slot each player was given.
+    const placed = formationSlots(formation).map((slot) => ({ slot, player: catalog.find((p) => p.id === lineup[slot.id])! }))
+    const where = (wide: boolean, ...lines: Player['position'][]) => placed.filter(({ slot }) => (slot.x <= 30 || slot.x >= 70) === wide && lines.includes(slot.position)).map(({ player }) => player)
+    const or = (list: Player[], fallback: Player[]) => list.length ? list : fallback
+    const wideAttack = or(where(true, 'MED', 'DEL'), forwards); const wideBacks = or(where(true, 'DEF'), defenders)
+    const centreBacks = or(where(false, 'DEF'), defenders); const centreMids = or(where(false, 'MED'), mids)
     return {
-      flankThreat: mean(forwards, (p) => p.att_rating) * .7 + mean(defenders, (p) => (p.att_rating + p.phy_rating) / 2) * .3,
-      fullbackDefense: mean(defenders, (p) => p.def_rating), midfieldControl: mean(mids, (p) => p.men_rating * .6 + p.att_rating * .4),
+      flankThreat: mean(wideAttack, (p) => p.att_rating) * .7 + mean(wideBacks, (p) => (p.att_rating + p.phy_rating) / 2) * .3,
+      fullbackDefense: mean(wideBacks, (p) => p.def_rating), midfieldControl: mean(centreMids, (p) => p.men_rating * .6 + p.att_rating * .4),
       transitionThreat: mean(forwards, (p) => (p.att_rating + p.phy_rating) / 2), stamina: mean([...mids, ...forwards], (p) => p.phy_rating),
-      centralDefense: mean(defenders, (p) => p.def_rating) * .5 + mean(mids, (p) => p.def_rating) * .2 + keeper.def_rating * .3,
+      centralDefense: mean(centreBacks, (p) => p.def_rating) * .5 + mean(or(where(false, 'MED'), mids), (p) => p.def_rating) * .2 + keeper.def_rating * .3,
       backlineRecovery: mean(defenders, (p) => p.phy_rating),
     }
   }

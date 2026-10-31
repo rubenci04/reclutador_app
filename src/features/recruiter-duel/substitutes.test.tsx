@@ -12,8 +12,12 @@ import { auctionAvailability, autoCompleteAll, beginBidding, canAutoComplete, cr
 import type { AuctionTransition, RecruiterDuelGame, RecruiterId } from './auctionTypes'
 import { takeCpuTurn } from './cpuPolicy'
 import { buildHudModel } from './hudModel'
-import { MATCH_CONFIG_VERSION, SUBSTITUTE_POSITIONS, preflightMatchConfig, rosterComposition, rosterSize, type MatchConfig } from './matchConfig'
+import { BENCH_SHOWCASE_V1, CLASSIC_CONFIG, DISCARDS_MARKER_V2, MATCH_CONFIG_VERSION, SUBSTITUTE_POSITIONS, preflightMatchConfig, rosterComposition, rosterSize, type MatchConfig } from './matchConfig'
 import { TeamPitchBoard } from './TeamPitchBoard'
+import { BenchShowcase } from './BenchShowcase'
+import { benchShowcase } from './benchShowcaseModel'
+import { declineCoach } from './coachHiring'
+import { COACH_MAX_PRICE } from '../coaches/coachRules'
 
 afterEach(() => vi.restoreAllMocks())
 const withBench = (budget: number): MatchConfig => ({ version: MATCH_CONFIG_VERSION, budget, names: { recruiter_one: null, recruiter_two: null }, substitutes: true })
@@ -268,5 +272,43 @@ describe('setup with substitutes', () => {
     if (!minimumWith.ok || !minimumWithout.ok) throw new Error('presets must be viable')
     expect(minimumWith.minimumPerTeam).toBeGreaterThan(minimumWithout.minimumPerTeam)
     expect(screen.getByRole('button', { name: 'Start duel' })).toBeEnabled()
+  })
+})
+
+describe('TECH-003 substitutes showcase', () => {
+  const must = (result: AuctionTransition): RecruiterDuelGame => { if (!result.ok) throw new Error(result.error); return result.game }
+  /** Engine-only auction up to TEAMS_COMPLETED; recruiter_two follows the CPU policy, recruiter_one bids the minimum while it can. */
+  function completed(seed: string): RecruiterDuelGame {
+    const created = createRecruiterDuel(DRAFT_CATALOG, seed, undefined, { ...CLASSIC_CONFIG, budget: 300, bench: BENCH_SHOWCASE_V1, discards: DISCARDS_MARKER_V2, coaches: true, coachReserve: COACH_MAX_PRICE })
+    if (!created.ok) throw new Error(created.error)
+    let game = must(beginBidding(must(revealCoinToss(must(startCoinToss(created.game, 'heads'))))))
+    for (let step = 0; step < 2000 && game.phase !== 'TEAMS_COMPLETED'; step++) {
+      if (canAutoComplete(game, 'recruiter_two')) { game = must(autoCompleteAll(game, 'recruiter_two', DRAFT_CATALOG)); continue }
+      if (canAutoComplete(game, 'recruiter_one')) { game = must(autoCompleteAll(game, 'recruiter_one', DRAFT_CATALOG)); continue }
+      if (game.phase === 'DISCARD_RESULT') { game = must(revealDiscardReplacement(game)); continue }
+      if (game.phase === 'NEXT_ROUND') { game = must(revealNextAuctionRound(game)); continue }
+      if (game.phase === 'REVEAL_PLAYER') { game = must(beginBidding(game)); continue }
+      if (game.phase === 'ROUND_RESULT') { game = must(nextAuctionRound(game, DRAFT_CATALOG)); continue }
+      const who = game.activeParticipant!
+      if (who === 'recruiter_two') { game = must(takeCpuTurn(game, DRAFT_CATALOG, 'BALANCED')); continue }
+      const a = auctionAvailability(game, who, DRAFT_CATALOG)
+      game = a.bid.enabled ? must(placeBid(game, who, a.minimum, DRAFT_CATALOG)) : must(passAuction(game, who, DRAFT_CATALOG))
+    }
+    return must(declineCoach(must(declineCoach(game, 'recruiter_one')), 'recruiter_two'))
+  }
+  it.each(['es-AR', 'en', 'pt-BR'] as const)('shows ATT, DEF, PHY and MEN on each of the ten cards in %s', async (language) => {
+    const game = completed('showcase-ratings')
+    const i18n = await createI18n(language)
+    const { container } = render(<I18nextProvider i18n={i18n}><BenchShowcase game={game} catalog={DRAFT_CATALOG} names={{ recruiter_one: 'One', recruiter_two: 'Two' }} humans={['recruiter_one', 'recruiter_two']} onBuy={() => {}} onPass={() => {}} onFinish={() => {}} /></I18nextProvider>)
+    const cards = benchShowcase(game, DRAFT_CATALOG)
+    const shown = container.querySelectorAll('.showcase-card')
+    expect(shown).toHaveLength(10)
+    shown.forEach((node, index) => {
+      const card = cards[index]
+      const ratings = node.querySelector('.showcase-ratings')!
+      expect(ratings).toHaveAttribute('aria-label', i18n.t('ratings.label', { rating: card.overall_rating }))
+      expect([...ratings.querySelectorAll('li b')].map((value) => Number(value.textContent))).toEqual([card.att_rating, card.def_rating, card.phy_rating, card.men_rating])
+      expect([...ratings.querySelectorAll('li small')].map((value) => value.textContent)).toEqual(['att', 'def', 'phy', 'men'].map((key) => i18n.t(`ratings.${key}`)))
+    })
   })
 })

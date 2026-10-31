@@ -4,7 +4,7 @@ import type { Player } from '../../types/player'
 import { DRAFT_SLOTS } from '../draft/draftTypes'
 import { type FormationRole, type RoleAptitude } from '../tactics/roles'
 import { formationSlots } from '../tactics/formations'
-import { roleAptitude } from '../tactics/roleProfiles'
+import { evaluateSlotAptitude } from '../tactics/roleProfiles'
 import { getPlayerTier } from '../player-catalog/getPlayerTier'
 import { PlayerIdentity } from './PlayerIdentity'
 import type { RankBadge } from '../player-catalog/categoryRanking'
@@ -42,7 +42,7 @@ export function TeamPitchBoard({ game, participant, catalog, organize, rankFor }
         const player = catalog.find((candidate) => candidate.id === team.lineup[slot.id])
         const award = game.record.find((entry) => entry.type === 'award' && entry.winner === participant && entry.playerId === player?.id)
         const price = award?.type === 'award' ? award.price : player?.price ?? '—'
-        const aptitude: RoleAptitude = organize ? roleAptitude(player?.id ?? null, slot.id) : 'UNKNOWN'
+        const aptitude: RoleAptitude = organize && player ? evaluateSlotAptitude(player, slot.id, team.formation) : 'UNKNOWN'
         const hasSelection = organize?.selectedSlot || organize?.selectedBench != null
         const sameLine = organize?.selectedBench != null ? team.bench?.[organize.selectedBench]?.position === slot.position : organize?.selectedSlot ? slots.find((s) => s.id === organize.selectedSlot)?.position === slot.position : false
         const position = t(`positions.${slot.position}`)
