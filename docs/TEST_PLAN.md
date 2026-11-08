@@ -1,5 +1,11 @@
 # Plan de pruebas
 
+## Ruleta del turno inicial — 08/11/2026
+
+- Al elegir cara o cruz, comprobar que la ruleta muestra los dos nombres y aterriza en el ganador persistido; doble clic no vuelve a sortear.
+- Verificar el mismo flujo local, CPU y online, el botón para omitir, el movimiento reducido y la alternancia posterior de prioridad.
+- Comprobar encabezado, nombre accesible y textos es-AR, en y pt-BR. En navegador real revisar 360/390 px y escritorio, legibilidad de nombres largos y continuidad de giro y moneda.
+
 ## SIM-005R-05 — Entretiempo y duelos OVR
 
 - Opt-in separado: sin preguntas tácticas en 30/60/75; ocho decisiones internas aplicadas, KEEP trazable fuera del entretiempo, cambio sólo desde el segundo tiempo y prefijos confirmados intactos.

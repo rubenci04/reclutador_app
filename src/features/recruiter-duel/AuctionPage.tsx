@@ -38,6 +38,7 @@ import { chooseFormation, autoBuySubstitutes, buySubstitute, swapBenchWithStarte
 import type { AuctionTransition, CoinSide, RecruiterDuelGame, RecruiterId } from './auctionTypes'
 import { PlayerIdentity, VisualCredits } from './PlayerIdentity'
 import { FootballCoin } from './FootballCoin'
+import { TurnWheel } from './TurnWheel'
 import { LineupOrganizer } from './LineupOrganizer'
 import { SigningReveal } from './SigningReveal'
 import { MatchSetupPanel } from './MatchSetupPanel'
@@ -537,7 +538,7 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
       {error && game?.phase !== 'TEAMS_COMPLETED' && <p className="draft-alert" role="alert">{error}</p>}
       {game?.phase === 'LOBBY' && online && online.mySide !== 'recruiter_one' && <section className="coin-toss" role="status"><h1>{t('duel.chooseCoin')}</h1><p>{t('online.duel.waitingCoin', { name: names.recruiter_one })}</p></section>}
       {game?.phase === 'LOBBY' && !(online && online.mySide !== 'recruiter_one') && <section className="coin-toss coin-choice"><h1>{t('duel.chooseCoin')}</h1><p>{t('duel.chooseCoinDetail')}</p><div className="coin-faces">{(['heads', 'tails'] as const).map((side) => <button key={side} className="coin-face-choice" aria-label={t(`duel.${side}`)} onClick={() => chooseCoin(side)}><CoinFace side={side} /><strong aria-hidden="true">{t(`duel.${side}`)}</strong><small aria-hidden="true">{t(`coin.faces.${side}`)}</small></button>)}</div></section>}
-      {game?.phase === 'COIN_TOSS' && <section className="coin-toss" aria-live="polite"><FootballCoin side={game.coinResult ?? 'heads'} tossing /><h1>{t('duel.coinToss')}</h1><p>{t('duel.coinTossWaiting')}</p><button className="secondary-action" onClick={revealToss}>{t('coin.skip')}</button></section>}
+      {game?.phase === 'COIN_TOSS' && <section className="coin-toss" aria-live="polite"><h1>{t('duel.coinToss')}</h1><p className="turn-wheel-prompt">{t('wheel.title')}</p><TurnWheel names={names} winner={game.coinTossWinner!} /><FootballCoin side={game.coinResult ?? 'heads'} tossing /><p>{t('wheel.detail')}</p><button className="secondary-action" onClick={revealToss}>{t('coin.skip')}</button></section>}
       {game && ['REVEAL_PLAYER', 'BIDDING', 'ROUND_RESULT', 'TEAMS_COMPLETED'].includes(game.phase) && <>
         {humanQuick && quickPreview && game.phase !== 'TEAMS_COMPLETED' && <QuickCompletePanel participantName={names[humanQuick]} rivalName={names[humanQuick === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one']} catalog={catalog} preview={quickPreview} onConfirm={() => apply(autoCompleteAll(game, humanQuick, catalog))} />}
         {cpuAuto && (() => {

@@ -197,9 +197,27 @@
 .coin-face-choice:hover, .coin-face-choice:focus-visible { border-color: #d5fb76; transform: translateY(-2px); }
 .coin-face-choice .coin-art { width: 92px; height: 92px; }
 .coin-face-choice small { color: #c8d7c3; }
+/* Initial turn draw: the pointer lands on the winner stored by the game. */
+.turn-wheel-scene { width: min(240px, 70vw); aspect-ratio: 1; position: relative; margin: 0 auto 4px; filter: drop-shadow(0 12px 18px #0008); }
+.turn-wheel-pointer { position: absolute; z-index: 2; left: 50%; top: -6px; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 28px solid #f7dc69; filter: drop-shadow(0 2px 2px #000a); }
+.turn-wheel-disc { position: absolute; inset: 0; border: 8px solid #eac85c; border-radius: 50%; background: conic-gradient(from 0deg, #326a45 0 180deg, #173c65 180deg 360deg); box-shadow: inset 0 0 0 4px #fff5, inset 0 0 26px #0005; overflow: hidden; }
+.turn-wheel-disc::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; transform: translateX(-50%); background: #eac85c; }
+.turn-wheel-one { animation: turn-wheel-one 2.4s cubic-bezier(.12,.7,.16,1) both; }
+.turn-wheel-two { animation: turn-wheel-two 2.4s cubic-bezier(.12,.7,.16,1) both; }
+.turn-wheel-name { position: absolute; top: 50%; width: 45%; transform: translateY(-50%); color: #fff9da; font-weight: 850; font-size: clamp(.72rem, 2.4vw, 1rem); line-height: 1.15; text-shadow: 0 2px 4px #000b; overflow-wrap: anywhere; }
+.turn-wheel-name-one { right: 2%; }
+.turn-wheel-name-two { left: 2%; }
+.turn-wheel-hub { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; border: 4px solid #eac85c; background: #10271a; font-size: 1.7rem; }
+@keyframes turn-wheel-one { from { transform: rotate(0deg); } to { transform: rotate(1350deg); } }
+@keyframes turn-wheel-two { from { transform: rotate(0deg); } to { transform: rotate(1530deg); } }
+.coin-toss:has(.turn-wheel-scene) { gap: 0; }
+.coin-toss:has(.turn-wheel-scene) .football-coin { transform: scale(.65); margin: -16px auto -12px; }
+.coin-toss:has(.turn-wheel-scene) h1 { font-size: clamp(1.65rem, 5vw, 2.6rem); }
 .audio-control { display: inline-flex; align-items: center; gap: 6px; }
 .audio-control input[type="range"] { width: 72px; }
 @media (prefers-reduced-motion: reduce) {
+  .turn-wheel-one { animation: none; transform: rotate(-90deg); }
+  .turn-wheel-two { animation: none; transform: rotate(90deg); }
   /* Reduced motion: no flight and no spin; the two faces alternate by cross-fading (about one change per second) and rest on the stored face. */
   .football-coin.tossing .coin3d, .football-coin.tossing[data-side="tails"] .coin3d { animation: none; transform: none; }
   .football-coin.tossing .coin-face { backface-visibility: visible; -webkit-backface-visibility: visible; transform: none; }

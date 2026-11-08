@@ -1,5 +1,9 @@
 # Tablero de tareas
 
+## Ruleta del turno inicial — 08/11/2026
+
+Ruleta de dos reclutadores en el sorteo inicial del Duelo de Reclutadores local, CPU y online. La selección de cara o cruz inicia la animación; el puntero aterriza en el ganador ya fijado por el motor y las rondas siguientes mantienen la alternancia existente. Opción de omitir y movimiento reducido conservados; textos en es-AR, en y pt-BR. No cambia subasta, probabilidades ni autoridad de la sala. Ver [registro](logs/TURN-WHEEL-2026-11-08.md).
+
 ## Publicación sprint 8 — 25/10/2026
 
 Entrega aislada del trabajo de Codex, excluyendo sprints posteriores de Claude. Validación completa: 1.447 pruebas; commit bc7648c subido a codex/sprint-8-publicacion. Main actualizado y Worker publicado tras autorización explícita: versión b194ae0d al 100 %, etiqueta bc7648c; HTTP/HTML y nueve bundles verificados. [Registro](logs/SPRINT-8-PUBLICACION.md) y [trabajo paralelo](PARALLEL_WORK.md).
