@@ -14,3 +14,7 @@ El Worker público documentado sigue una publicación anterior. El push de `c723
 ## Verificación y límites
 
 Typecheck, lint y build aprobaron. La primera suite completa tuvo una sola falla: una prueba de interfaz todavía buscaba el botón anterior `Play!`; se actualizó para la barra activa y pasaron las 17 pruebas focalizadas. La segunda suite completa aprobó: 1628 pruebas, 3 omitidas. QA visual real pendiente: el navegador integrado no pudo abrir el Vite local en la entrega anterior. Los minijuegos modifican la calidad de una oportunidad del motor, no garantizan goles ni crean más ocasiones. El control de barrera es la elección defensiva de sector en la simulación de figuras; no se agregó un segundo motor de barrera.
+
+## Entrega
+
+Código y pruebas subidos a `origin/codex/turn-wheel-2026-11-08`. Tras el push, el Worker respondió HTTP 200 con `assets/index-C98c2nwC.js`, mientras el build local usa `assets/index-BbEjJnsh.js`. El push no publicó producción; sigue pendiente el despliegue explícito del Worker. No se tocó la rama `main`, ni `.claude/`, ni servicios externos.
