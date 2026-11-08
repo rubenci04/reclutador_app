@@ -1,4 +1,5 @@
 import { lazy, Suspense, useState } from 'react'
+import { InteractiveBackdrop } from '../../components/InteractiveBackdrop'
 import { useTranslation } from 'react-i18next'
 import { DraftPage } from '../draft/DraftPage'
 import { HelpLauncher } from '../onboarding/HelpLauncher'
@@ -15,6 +16,7 @@ export function HomePage() {
   const [editingName, setEditingName] = useState(false)
   if (mode !== 'online' && (!profile.name || editingName)) return <TeamNameScreen initialName={profile.name} warning={profile.warning} onSave={(name) => { const saved = saveTeamName(name, { setItem: (key, value) => window.localStorage.setItem(key, value) }); setProfile({ name, warning: !saved }); setEditingName(false) }} onCancel={profile.name ? () => setEditingName(false) : undefined} />
   return <>
+    <InteractiveBackdrop />
     {mode === 'online' ? <Suspense fallback={<p role="status">{t('online.loading')}</p>}><OnlinePage onBack={() => {
       const url = new URL(window.location.href); url.searchParams.delete('online'); window.history.replaceState(null,'',url)
       setMode('duel')

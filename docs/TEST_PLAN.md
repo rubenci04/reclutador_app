@@ -1,5 +1,12 @@
 # Plan de pruebas
 
+## Fondo y minijuegos del partido — 08/11/2026
+
+- Verificar que el puntero mueve la pelota decorativa hacia el arco sin interceptar clics; táctil y movimiento reducido no provocan movimiento inesperado.
+- En cada momento de figuras, comprobar pausa, tres destinos, barra por defecto, preferencia apagada, doble clic, calidad 0–1 y rival fijado antes de la elección.
+- Comprobar penal, tiro libre con barrera, remate, atajada y defensa, continuidad del partido y compatibilidad de resultados automáticos.
+- Revisar en navegador real 360/390 px y escritorio; probar mouse, táctil, teclado, reducción de movimiento y textos es-AR/en/pt-BR.
+
 ## Ruleta del turno inicial — 08/11/2026
 
 - Al elegir cara o cruz, comprobar que la ruleta muestra los dos nombres y aterriza en el ganador persistido; doble clic no vuelve a sortear.

@@ -90,7 +90,7 @@ export function FiguresMatchScreen({ input, humanSides, names, onFinished }: Pro
     </header>
     <div className="fm-stage">
       <FiguresPitch teams={teams} formations={formations} ball={ball} attacking={play ? play.side : null} highlightId={play?.playerId} label={t('fm.pitch', { local: names.local, cpu: names.cpu })} />
-      {moment && <FiguresMomentLayer moment={moment} playerName={humanSides.length > 1 ? names[moment.side] : undefined} onResolve={(quality) => setQualities((previous) => ({ ...previous, [moment.segment]: quality }))} />}
+      {moment && <FiguresMomentLayer moment={moment} seed={input.seed} playerName={humanSides.length > 1 ? names[moment.side] : undefined} onResolve={(quality) => setQualities((previous) => ({ ...previous, [moment.segment]: quality }))} />}
     </div>
     <p className="fm-caption" aria-live="polite">{winner ? (winner === 'draw' ? t('fm.result.draw') : t('fm.result.winner', { name: names[winner] })) : caption(frame, phase)}</p>
     <div className="fm-controls">

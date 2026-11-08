@@ -1069,6 +1069,33 @@ h1,h2,h3,.match-score span,.wallet-balance,.budget-amount strong{font-family:var
 .fm-moment .dribble-timing{width:100%;max-width:300px}
 .fm-moment-go{width:100%;max-width:300px;min-height:60px;font-size:1.25rem}
 .fm-moment .precision-toggle{min-height:44px;font-size:.9rem}
+.fm-mini-instruction{margin:0;max-width:320px;font-size:.85rem;line-height:1.3;color:#e3eee5}
+.fm-mini-arena{position:relative;flex:none;width:min(100%,320px);height:clamp(90px,16dvh,126px);overflow:hidden;border:2px solid #e5f5d3;border-radius:10px;background:repeating-linear-gradient(0deg,#246c3c 0 25%,#267944 25% 50%);box-shadow:inset 0 0 25px #10291b}
+.fm-mini-arena::after{content:"";position:absolute;inset:14px 16px;border:1px solid #ffffff8c;border-radius:3px;pointer-events:none}
+.fm-mini-arena.is-goal::after{inset:13px 40px 48px;border:3px solid #fff;border-bottom:0}
+.fm-mini-net{position:absolute;inset:16px 43px 52px;background:repeating-linear-gradient(90deg,#ffffff35 0 1px,transparent 1px 15px),repeating-linear-gradient(0deg,#ffffff35 0 1px,transparent 1px 15px);pointer-events:none}
+.fm-mini-keeper{position:absolute;z-index:2;top:30%;left:50%;width:19px;height:19px;transform:translate(-50%,-50%);border:3px solid #fff;border-radius:50%;background:#f97373;box-shadow:0 0 0 4px #f973733b;transition:left .22s ease}
+.fm-mini-ball{position:absolute;z-index:3;width:18px;height:18px;transform:translate(-50%,-50%);border:2px solid #102015;border-radius:50%;background:radial-gradient(circle at 45% 45%,#fff 0 38%,#18291e 40% 50%,#fff 52%);box-shadow:0 3px 5px #0009;transition:left .22s ease,top .22s ease}
+.fm-mini-wall{position:absolute;z-index:2;top:57%;left:50%;display:flex;gap:2px;transform:translateX(-50%)}
+.fm-mini-wall i{width:13px;height:24px;border-radius:8px 8px 3px 3px;background:#eac46f;box-shadow:inset 0 0 0 2px #402c18}
+.fm-mini-lanes{width:min(100%,320px);display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.fm-mini-lane{min-height:44px;border:2px solid #ffffff70;border-radius:8px;background:#173923;color:#fff;font-weight:750;cursor:pointer}
+.fm-mini-lane.is-selected{border-color:#f4dc63;background:#3e541d;color:#fff9c6}
+.fm-mini-lane:focus-visible{outline:3px solid #fff;outline-offset:2px}
+@media(max-width:600px){.fm-moment{justify-content:flex-start;gap:.4rem;padding:.6rem;overflow-y:auto}.fm-moment h2{font-size:1.35rem}.fm-moment-go{min-height:48px}.fm-moment .precision-toggle{min-height:40px}}
+@media(min-width:700px){.fm-mini-arena{height:155px}}
+@media(prefers-reduced-motion:reduce){.fm-mini-ball,.fm-mini-keeper{transition:none}}
+
+/* The quiet pitch behind the interface reacts to the pointer without intercepting any controls. */
+.draft-app{position:relative;z-index:1}
+.duel-shell{background-color:#0c1911b3}
+.interactive-backdrop{position:fixed;z-index:0;right:0;bottom:0;width:min(46vw,560px);height:min(38vh,290px);pointer-events:none;opacity:.34;overflow:hidden}
+.interactive-backdrop-pitch{position:absolute;inset:16px 0 0 0;border:2px solid #bfe5af70;border-bottom:0;border-radius:40% 0 0 0;background:repeating-linear-gradient(90deg,#2c793344 0 16%,#1f5c2a44 16% 32%)}
+.interactive-backdrop-centre{position:absolute;left:12%;top:16%;width:34%;height:72%;border:2px solid #e9f9df7a;border-radius:50%}
+.interactive-backdrop-goal{position:absolute;right:1%;top:27%;width:13%;height:46%;border:3px solid #e9f9df;border-right:0;border-radius:8px 0 0 8px;box-shadow:inset 8px 0 20px #ffffff16}
+.interactive-backdrop-ball{position:absolute;left:18%;top:76%;font-size:clamp(25px,3vw,42px);line-height:1;transform:translate(-50%,-50%);filter:drop-shadow(2px 4px 3px #000);transition:left .45s cubic-bezier(.15,.75,.22,1),top .45s cubic-bezier(.15,.75,.22,1)}
+@media(max-width:600px){.interactive-backdrop{width:85vw;height:24vh;opacity:.22}}
+@media(prefers-reduced-motion:reduce){.interactive-backdrop-ball{transition:none}}
 .fm-detail{position:fixed;inset:0;z-index:60;overflow:auto;padding:1rem;background:#101713;display:grid;gap:.8rem;align-content:start}
 .fm-detail>button{min-height:48px}.fm-detail h3{margin:.4rem 0 0}
 .fm-corners{display:grid;grid-template-columns:3rem 1fr 3rem;text-align:center;margin:0}

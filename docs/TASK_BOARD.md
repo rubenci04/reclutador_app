@@ -1,5 +1,9 @@
 # Tablero de tareas
 
+## Fondo y minijuegos del partido — 08/11/2026
+
+El fondo de las pantallas del juego ahora sigue el puntero con una pelota decorativa que puede dirigirse hacia un arco; no intercepta controles y respeta movimiento reducido. La simulación actual de figuras reemplaza el panel de momento sólo textual por un campo con tres destinos, barrera en tiros libres y movimiento de pelota/arquero. La barra de sincronización queda activa para nuevas visitas y la preferencia anterior se conserva. La dirección elegida y el tiempo modifican acotadamente la calidad que ya acepta el motor; el rival fija su sector con una semilla separada antes de la decisión. Ver [registro](logs/FIGURES-MINI-2026-11-08.md).
+
 ## Ruleta del turno inicial — 08/11/2026
 
 Ruleta de dos reclutadores en el sorteo inicial del Duelo de Reclutadores local, CPU y online. La selección de cara o cruz inicia la animación; el puntero aterriza en el ganador ya fijado por el motor y las rondas siguientes mantienen la alternancia existente. Opción de omitir y movimiento reducido conservados; textos en es-AR, en y pt-BR. No cambia subasta, probabilidades ni autoridad de la sala. Ver [registro](logs/TURN-WHEEL-2026-11-08.md).
