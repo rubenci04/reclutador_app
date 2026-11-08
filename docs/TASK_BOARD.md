@@ -2,7 +2,7 @@
 
 ## Fondo y minijuegos del partido — 08/11/2026
 
-El fondo de las pantallas del juego ahora sigue el puntero con una pelota decorativa que puede dirigirse hacia un arco; no intercepta controles y respeta movimiento reducido. La simulación actual de figuras reemplaza el panel de momento sólo textual por un campo con tres destinos, barrera en tiros libres y movimiento de pelota/arquero. La barra de sincronización queda activa para nuevas visitas y la preferencia anterior se conserva. La dirección elegida y el tiempo modifican acotadamente la calidad que ya acepta el motor; el rival fija su sector con una semilla separada antes de la decisión. Ver [registro](logs/FIGURES-MINI-2026-11-08.md).
+El fondo de las pantallas del juego ahora sigue el puntero con una pelota decorativa que puede dirigirse hacia un arco; no intercepta controles y respeta movimiento reducido. La simulación actual de figuras reemplaza el panel de momento sólo textual por un campo con tres destinos, barrera en tiros libres y movimiento de pelota/arquero. La barra de sincronización queda activa para nuevas visitas y la preferencia anterior se conserva. La dirección elegida y el tiempo modifican acotadamente la calidad que ya acepta el motor; el rival fija su sector con una semilla separada antes de la decisión. Commit e15736f publicado en producción: Worker d50fa7fa al 100 %, HTTP 200. Ver [registro de funcionalidad](logs/FIGURES-MINI-2026-11-08.md) y [publicación](logs/PRODUCTION-E15736F-2026-11-08.md).
 
 ## Ruleta del turno inicial — 08/11/2026
 

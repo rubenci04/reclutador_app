@@ -1,5 +1,9 @@
 # Despliegue: producción actual y antecedentes
 
+## Publicación de ruleta y minijuegos — 08/11/2026
+
+Commit **e15736f** publicado en el Worker **reclutador-app** con Wrangler 4.151.3, `--keep-vars --no-autoconfig`, compatibility date `2026-10-12`, sin cambios de bindings. Versión **d50fa7fa-b749-4bc4-978c-442d846a1455** al 100 %, etiqueta `e15736f`. Producción y los bundles principales respondieron HTTP 200; el HTML carga `assets/index-BbEjJnsh.js`. El push de código está en `origin/codex/turn-wheel-2026-11-08`; Cloudflare se publicó directamente porque este Worker no despliega automáticamente desde esa rama. [Registro](logs/PRODUCTION-E15736F-2026-11-08.md).
+
 ## Publicación Sprint 9 — 27/10/2026
 
 Código **67d1dcf** (rama `claude/sprint-9-10`, sin mezclar en `main`). Worker **reclutador-app**, versión **862ebe38-55b9-4c3e-8807-73340b79ba73** al 100 % (subida con `wrangler versions upload` y promovida con `wrangler versions deploy`), etiqueta 67d1dcf. Versión anterior para volver atrás: **7d7b523a-7317-4150-a1bb-f51cab9ad4d8** (`wrangler rollback`). **Las migraciones 202610250001 y 202610250002 de Supabase NO estaban aplicadas al publicar**: hasta aplicarlas, el online muestra el aviso de servidor desactualizado (el modo local no se afecta).
