@@ -1,5 +1,9 @@
 # Despliegue: producción actual y antecedentes
 
+## Publicación de ruleta v2 y pelota de fondo — 09/11/2026
+
+Commit **09efd11** (rama `codex/turn-wheel-2026-11-08`, subida a origin; `main` sin tocar). Publicado a mano con Wrangler tras autorización expresa (mismo comando que la publicación anterior). Versión **174d02f0-f475-4412-8e9e-5be823ab9ceb** al 100 %, etiqueta `09efd11`. La URL pública sirve `assets/index-D4YiR96a.js`, igual que `dist/index.html`; los 53 JS y CSS de `dist/assets` responden con SHA-256 idéntico. Versión anterior para `wrangler rollback`: **94407272-fda8-41f6-bb7f-31306fcba3ac**. Sin QA visual en la URL pública. [Registro](logs/CARD-WHEEL-BACKDROP-2026-11-09.md).
+
 ## Publicación de ruleta de cartas y fondo interactivo — 09/11/2026
 
 Commit **6d119d6** (rama `codex/turn-wheel-2026-11-08`, subida a origin; `main` sin tocar). Publicado con Wrangler a mano, tras autorización expresa: `wrangler deploy --name reclutador-app --assets ./dist --compatibility-date 2026-10-12 --keep-vars --no-autoconfig`, sin cambios de bindings. Versión **94407272-fda8-41f6-bb7f-31306fcba3ac** al 100 %, etiqueta `6d119d6`. La URL pública sirve `assets/index-C2hQAbdl.js`, igual que `dist/index.html`; todos los JS y CSS de `dist/assets` responden 200 con SHA-256 idéntico. Versión anterior (para `wrangler rollback`): **d50fa7fa-b749-4bc4-978c-442d846a1455**. [Registro](logs/CARD-WHEEL-BACKDROP-2026-11-09.md).
