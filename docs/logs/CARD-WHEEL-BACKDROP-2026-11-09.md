@@ -26,4 +26,4 @@
 
 - No se verificó en celular ni los demás minijuegos (penales, defensa, córner, gambeta); solo el tiro libre.
 - La ruleta agrega unos 5 s por carta si no se omite (22 cartas): por eso el botón de omitir y la opción de apagarla. Si se prefiere más corta (p. ej. una sola ruleta) es un ajuste de `STAGE_MS` en `CardWheel.tsx`.
-- Sin push ni despliegue al escribir esto.
+- Publicado el mismo día con Wrangler (ver `docs/DEPLOY.md`): versión 94407272-fda8-41f6-bb7f-31306fcba3ac al 100 %. Sin QA visual en la URL pública tras publicar; solo HTTP y SHA-256 de los archivos.

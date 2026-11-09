@@ -1,5 +1,9 @@
 # Despliegue: producción actual y antecedentes
 
+## Publicación de ruleta de cartas y fondo interactivo — 09/11/2026
+
+Commit **6d119d6** (rama `codex/turn-wheel-2026-11-08`, subida a origin; `main` sin tocar). Publicado con Wrangler a mano, tras autorización expresa: `wrangler deploy --name reclutador-app --assets ./dist --compatibility-date 2026-10-12 --keep-vars --no-autoconfig`, sin cambios de bindings. Versión **94407272-fda8-41f6-bb7f-31306fcba3ac** al 100 %, etiqueta `6d119d6`. La URL pública sirve `assets/index-C2hQAbdl.js`, igual que `dist/index.html`; todos los JS y CSS de `dist/assets` responden 200 con SHA-256 idéntico. Versión anterior (para `wrangler rollback`): **d50fa7fa-b749-4bc4-978c-442d846a1455**. [Registro](logs/CARD-WHEEL-BACKDROP-2026-11-09.md).
+
 ## Publicación de ruleta y minijuegos — 08/11/2026
 
 Commit **e15736f** publicado en el Worker **reclutador-app** con Wrangler 4.151.3, `--keep-vars --no-autoconfig`, compatibility date `2026-10-12`, sin cambios de bindings. Versión **d50fa7fa-b749-4bc4-978c-442d846a1455** al 100 %, etiqueta `e15736f`. Producción y los bundles principales respondieron HTTP 200; el HTML carga `assets/index-BbEjJnsh.js`. El push de código está en `origin/codex/turn-wheel-2026-11-08`; Cloudflare se publicó directamente porque este Worker no despliega automáticamente desde esa rama. [Registro](logs/PRODUCTION-E15736F-2026-11-08.md).
