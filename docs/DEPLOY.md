@@ -119,3 +119,7 @@ HTML y cinco bundles con HTTP 200 y SHA-256 idénticos a dist; ?online carga HTM
 ## Vista previa parte 2 — 27/10/2026
 
 Versión **c20301ad-e77c-4561-9647-d6bb22840f24** (código eff5001) subida con `wrangler versions upload`, **sin promover**: https://c20301ad-reclutador-app.rea-04.workers.dev/ . Producción sigue en 862ebe38.
+
+## Cómo se publica (aclaración) — 09/11/2026
+
+El Worker `reclutador-app` no tiene despliegue automático desde Git: todos los despliegues listados por `wrangler deployments list --name reclutador-app` son subidas manuales («Source: Unknown (deployment)»). Subir una rama a GitHub **no** actualiza la web; hay que construir y publicar con Wrangler. Comprobación rápida: `curl -s https://reclutador-app.rea-04.workers.dev/ | grep -o 'assets/index-[^"]*\.js'` contra el `dist/index.html` local.

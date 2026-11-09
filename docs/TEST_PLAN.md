@@ -274,3 +274,8 @@ CPU estratégica local implementada como opción junto a hot-seat. Perfiles CONS
 
 - `activeSessionStorage.test.tsx`: datos corruptos o de otra versión se descartan y borran; almacenamiento bloqueado no rompe; restauración en `BIDDING` y `TEAMS_COMPLETED`; partido dirigido reconstruido; limpieza al volver al inicio; online no lee ni escribe.
 - `src/test/setup.ts` borra la clave tras cada prueba. Pendiente: celular y varias pestañas. [Registro](logs/TECH-001.md).
+
+## Ruleta de cartas y fondo — 09/11/2026
+
+- `CardWheel.test.tsx`: modelo (8 nombres de la misma posición, estables por semilla), etapas y tiempos, ángulo de frenado sobre la carta real, omitir/desactivar, movimiento reducido, la subasta espera a la ruleta y no la repite. `InteractiveBackdrop.test.tsx`: sigue al mouse, ignora táctil y controles, tiro al arco con «¡GOL!», movimiento reducido.
+- Pendiente: celular, resto de minijuegos y ritmo real de 22 cartas con ruleta. [Registro](logs/CARD-WHEEL-BACKDROP-2026-11-09.md).

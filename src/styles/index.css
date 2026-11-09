@@ -197,27 +197,9 @@
 .coin-face-choice:hover, .coin-face-choice:focus-visible { border-color: #d5fb76; transform: translateY(-2px); }
 .coin-face-choice .coin-art { width: 92px; height: 92px; }
 .coin-face-choice small { color: #c8d7c3; }
-/* Initial turn draw: the pointer lands on the winner stored by the game. */
-.turn-wheel-scene { width: min(240px, 70vw); aspect-ratio: 1; position: relative; margin: 0 auto 4px; filter: drop-shadow(0 12px 18px #0008); }
-.turn-wheel-pointer { position: absolute; z-index: 2; left: 50%; top: -6px; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 28px solid #f7dc69; filter: drop-shadow(0 2px 2px #000a); }
-.turn-wheel-disc { position: absolute; inset: 0; border: 8px solid #eac85c; border-radius: 50%; background: conic-gradient(from 0deg, #326a45 0 180deg, #173c65 180deg 360deg); box-shadow: inset 0 0 0 4px #fff5, inset 0 0 26px #0005; overflow: hidden; }
-.turn-wheel-disc::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; transform: translateX(-50%); background: #eac85c; }
-.turn-wheel-one { animation: turn-wheel-one 2.4s cubic-bezier(.12,.7,.16,1) both; }
-.turn-wheel-two { animation: turn-wheel-two 2.4s cubic-bezier(.12,.7,.16,1) both; }
-.turn-wheel-name { position: absolute; top: 50%; width: 45%; transform: translateY(-50%); color: #fff9da; font-weight: 850; font-size: clamp(.72rem, 2.4vw, 1rem); line-height: 1.15; text-shadow: 0 2px 4px #000b; overflow-wrap: anywhere; }
-.turn-wheel-name-one { right: 2%; }
-.turn-wheel-name-two { left: 2%; }
-.turn-wheel-hub { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%; border: 4px solid #eac85c; background: #10271a; font-size: 1.7rem; }
-@keyframes turn-wheel-one { from { transform: rotate(0deg); } to { transform: rotate(1350deg); } }
-@keyframes turn-wheel-two { from { transform: rotate(0deg); } to { transform: rotate(1530deg); } }
-.coin-toss:has(.turn-wheel-scene) { gap: 0; }
-.coin-toss:has(.turn-wheel-scene) .football-coin { transform: scale(.65); margin: -16px auto -12px; }
-.coin-toss:has(.turn-wheel-scene) h1 { font-size: clamp(1.65rem, 5vw, 2.6rem); }
 .audio-control { display: inline-flex; align-items: center; gap: 6px; }
 .audio-control input[type="range"] { width: 72px; }
 @media (prefers-reduced-motion: reduce) {
-  .turn-wheel-one { animation: none; transform: rotate(-90deg); }
-  .turn-wheel-two { animation: none; transform: rotate(90deg); }
   /* Reduced motion: no flight and no spin; the two faces alternate by cross-fading (about one change per second) and rest on the stored face. */
   .football-coin.tossing .coin3d, .football-coin.tossing[data-side="tails"] .coin3d { animation: none; transform: none; }
   .football-coin.tossing .coin-face { backface-visibility: visible; -webkit-backface-visibility: visible; transform: none; }
@@ -1088,14 +1070,7 @@ h1,h2,h3,.match-score span,.wallet-balance,.budget-amount strong{font-family:var
 
 /* The quiet pitch behind the interface reacts to the pointer without intercepting any controls. */
 .draft-app{position:relative;z-index:1}
-.duel-shell{background-color:#0c1911b3}
-.interactive-backdrop{position:fixed;z-index:0;right:0;bottom:0;width:min(46vw,560px);height:min(38vh,290px);pointer-events:none;opacity:.34;overflow:hidden}
-.interactive-backdrop-pitch{position:absolute;inset:16px 0 0 0;border:2px solid #bfe5af70;border-bottom:0;border-radius:40% 0 0 0;background:repeating-linear-gradient(90deg,#2c793344 0 16%,#1f5c2a44 16% 32%)}
-.interactive-backdrop-centre{position:absolute;left:12%;top:16%;width:34%;height:72%;border:2px solid #e9f9df7a;border-radius:50%}
-.interactive-backdrop-goal{position:absolute;right:1%;top:27%;width:13%;height:46%;border:3px solid #e9f9df;border-right:0;border-radius:8px 0 0 8px;box-shadow:inset 8px 0 20px #ffffff16}
-.interactive-backdrop-ball{position:absolute;left:18%;top:76%;font-size:clamp(25px,3vw,42px);line-height:1;transform:translate(-50%,-50%);filter:drop-shadow(2px 4px 3px #000);transition:left .45s cubic-bezier(.15,.75,.22,1),top .45s cubic-bezier(.15,.75,.22,1)}
-@media(max-width:600px){.interactive-backdrop{width:85vw;height:24vh;opacity:.22}}
-@media(prefers-reduced-motion:reduce){.interactive-backdrop-ball{transition:none}}
+.duel-shell{background-color:#0c19118c}
 .fm-detail{position:fixed;inset:0;z-index:60;overflow:auto;padding:1rem;background:#101713;display:grid;gap:.8rem;align-content:start}
 .fm-detail>button{min-height:48px}.fm-detail h3{margin:.4rem 0 0}
 .fm-corners{display:grid;grid-template-columns:3rem 1fr 3rem;text-align:center;margin:0}
@@ -1129,3 +1104,41 @@ h1,h2,h3,.match-score span,.wallet-balance,.budget-amount strong{font-family:var
   .bid-panel .bid-actions { position: fixed; left: 50%; right: 0; bottom: 0; z-index: 6; margin: 0; background: #0e2517f5; padding: 6px 16px; box-shadow: 0 -6px 18px #0008; }
   .duel-page:has(.bid-actions) { padding-bottom: 72px; }
 }
+
+/* Card wheel: position first, then names of that position; the pointer lands on the card already fixed by the draw. */
+.card-wheel { display: grid; justify-items: center; gap: 10px; margin: 0 20px 20px; padding: 18px; border: 1px solid #d5fb7654; border-radius: 16px; background: linear-gradient(135deg,#1d3921e8,#102518eb); box-shadow: 0 22px 50px #0004; text-align: center; }
+.card-wheel h2 { margin: 0; font-size: clamp(1.1rem, 4vw, 1.5rem); }
+.card-wheel-scene { width: min(300px, 78vw); aspect-ratio: 1; position: relative; filter: drop-shadow(0 12px 18px #0008); }
+.card-wheel-pointer { position: absolute; z-index: 2; left: 50%; top: -8px; transform: translateX(-50%); width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 26px solid #f4dc63; filter: drop-shadow(0 2px 2px #0008); }
+.card-wheel-disc { position: absolute; inset: 0; border: 8px solid #eac85c; border-radius: 50%; box-shadow: inset 0 0 0 3px #0006; }
+.card-wheel-position { animation: card-wheel-spin 1.7s cubic-bezier(.12,.7,.16,1) both; }
+.card-wheel-names { animation: card-wheel-spin 2.3s cubic-bezier(.12,.7,.16,1) both; }
+@keyframes card-wheel-spin { from { transform: rotate(0deg); } to { transform: rotate(var(--wheel-end)); } }
+.card-wheel-label { position: absolute; left: 50%; top: 50%; width: 46%; transform-origin: 0 50%; transform: translateY(-50%) rotate(var(--wheel-angle)); padding-left: 38px; text-align: right; color: #fff9da; font-weight: 850; font-size: .68rem; line-height: 1.1; text-shadow: 0 1px 2px #000a; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; box-sizing: border-box; }
+.card-wheel-position .card-wheel-label { font-size: .95rem; padding-left: 36px; }
+.card-wheel-hub { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 4px solid #eac85c; background: #0d2418; }
+.card-wheel-actions { margin-top: 4px; justify-content: center; }
+.card-wheel-never { font-size: .8rem; }
+@media (max-width: 600px) { .card-wheel { margin: 0 12px 12px; padding: 12px; } }
+@media (prefers-reduced-motion: reduce) { .card-wheel-position, .card-wheel-names { animation: none; transform: rotate(var(--wheel-end)); } }
+
+/* Backdrop: a full pitch behind everything, and a football above the interface that trails the mouse and shoots at the goals on click. */
+.interactive-backdrop{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;background:#0c1911}
+.interactive-backdrop-pitch{position:absolute;inset:14px;border:2px solid #bfe5af55;border-radius:10px;background:repeating-linear-gradient(90deg,#2c793338 0 8.33%,#1f5c2a38 8.33% 16.66%)}
+.interactive-backdrop-half{position:absolute;left:50%;top:0;bottom:0;width:2px;background:#e9f9df55}
+.interactive-backdrop-centre{position:absolute;left:50%;top:50%;width:min(22vw,220px);aspect-ratio:1;transform:translate(-50%,-50%);border:2px solid #e9f9df55;border-radius:50%}
+.interactive-backdrop-box{position:absolute;top:24%;bottom:24%;width:min(14vw,170px);border:2px solid #e9f9df55}
+.interactive-backdrop-box-left{left:0;border-left:0}
+.interactive-backdrop-box-right{right:0;border-right:0}
+.interactive-backdrop-goal{position:absolute;top:41%;bottom:41%;width:22px;border:3px solid #e9f9dfcc;background:repeating-linear-gradient(0deg,#ffffff22 0 4px,transparent 4px 8px);box-shadow:0 0 22px #e9f9df33}
+.interactive-backdrop-goal-left{left:-2px;border-left:0;border-radius:0 8px 8px 0}
+.interactive-backdrop-goal-right{right:-2px;border-right:0;border-radius:8px 0 0 8px}
+.interactive-backdrop-ball{position:fixed;left:0;top:0;z-index:45;pointer-events:none;font-size:30px;line-height:1;margin:-15px 0 0 -15px;opacity:0;transform:translate(-100px,-100px);transition:transform .38s cubic-bezier(.2,.8,.25,1),opacity .25s;filter:drop-shadow(2px 5px 3px #000a)}
+.interactive-backdrop-ball.is-live{opacity:1}
+.interactive-backdrop-ball.is-shot{transition:transform .56s cubic-bezier(.45,0,.9,.55);animation:backdrop-spin .56s linear}
+.interactive-backdrop-burst{position:fixed;left:0;top:0;z-index:46;pointer-events:none;opacity:0;transform:translate(-50%,-50%);font-weight:900;font-size:clamp(1.6rem,5vw,3rem);color:#f4dc63;text-shadow:0 3px 0 #0009,0 0 22px #f4dc6399;white-space:nowrap}
+.interactive-backdrop-burst.is-on{animation:backdrop-goal 1.1s ease-out both}
+@keyframes backdrop-spin{to{rotate:720deg}}
+@keyframes backdrop-goal{0%{opacity:0;transform:translate(-50%,-30%) scale(.4)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.25)}70%{opacity:1;transform:translate(-50%,-60%) scale(1)}100%{opacity:0;transform:translate(-50%,-90%) scale(1)}}
+@media(max-width:600px){.interactive-backdrop-box{display:none}}
+@media(prefers-reduced-motion:reduce){.interactive-backdrop-ball,.interactive-backdrop-burst{display:none}}

@@ -38,7 +38,9 @@ import { chooseFormation, autoBuySubstitutes, buySubstitute, swapBenchWithStarte
 import type { AuctionTransition, CoinSide, RecruiterDuelGame, RecruiterId } from './auctionTypes'
 import { PlayerIdentity, VisualCredits } from './PlayerIdentity'
 import { FootballCoin } from './FootballCoin'
-import { TurnWheel } from './TurnWheel'
+import { CardWheel } from './CardWheel'
+import { cardWheelKey, wheelNames } from './cardWheelModel'
+import { cardWheelEnabled, setCardWheelEnabled } from './cardWheelSetting'
 import { LineupOrganizer } from './LineupOrganizer'
 import { SigningReveal } from './SigningReveal'
 import { MatchSetupPanel } from './MatchSetupPanel'
@@ -156,6 +158,10 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
   const [localGame, setLocalGame] = useState<RecruiterDuelGame | null>(restored?.localGame ?? null)
   const game = online ? online.game : localGame
   const entryVisible = !game && !dual
+  /** Card wheel (local games): the card in play is revealed once per card, never again after a reload of the same card. */
+  const [wheelOn, setWheelOn] = useState(() => cardWheelEnabled())
+  const [wheelDone, setWheelDone] = useState(() => restored?.localGame?.phase === 'BIDDING' ? cardWheelKey(restored.localGame) : '')
+  const wheelBusy = !online && wheelOn && game?.phase === 'BIDDING' && wheelDone !== cardWheelKey(game)
   useEffect(() => { if (entryVisible) entryHeading.current?.focus() }, [entryChosen, entryVisible])
   const [pitchesOpen, setPitchesOpen] = useState(false)
 
@@ -295,7 +301,7 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
     const timer = window.setTimeout(() => setGame((current) => (current === game ? withBench : current)), 0)
     return () => window.clearTimeout(timer)
   }, [opponentMode, game, catalog, difficulty, setGame])
-  const cpuTurn = opponentMode === 'cpu' && game?.phase === 'BIDDING' && game.activeParticipant === 'recruiter_two'
+  const cpuTurn = opponentMode === 'cpu' && game?.phase === 'BIDDING' && game.activeParticipant === 'recruiter_two' && !wheelBusy
   /** Online: the other person is the one who has to act. */
   const remoteTurn = !!online && game?.phase === 'BIDDING' && game.activeParticipant !== online.mySide
   useEffect(() => {
@@ -403,7 +409,7 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
     return t('auctionActions.blocks.' + reason)
   })()
   /** The active recruiter already has this position full: nothing to decide, so no buttons and the pass happens by itself. */
-  const mustSkip = !!game && game.phase === 'BIDDING' && !!game.activeParticipant && !cpuTurn && !remoteTurn && availability?.bid.reason === 'POSITION_FULL'
+  const mustSkip = !!game && game.phase === 'BIDDING' && !!game.activeParticipant && !cpuTurn && !remoteTurn && availability?.bid.reason === 'POSITION_FULL' && !wheelBusy
   const skipper = game?.activeParticipant
   useEffect(() => {
     if (!mustSkip || !skipper) return
@@ -538,7 +544,7 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
       {error && game?.phase !== 'TEAMS_COMPLETED' && <p className="draft-alert" role="alert">{error}</p>}
       {game?.phase === 'LOBBY' && online && online.mySide !== 'recruiter_one' && <section className="coin-toss" role="status"><h1>{t('duel.chooseCoin')}</h1><p>{t('online.duel.waitingCoin', { name: names.recruiter_one })}</p></section>}
       {game?.phase === 'LOBBY' && !(online && online.mySide !== 'recruiter_one') && <section className="coin-toss coin-choice"><h1>{t('duel.chooseCoin')}</h1><p>{t('duel.chooseCoinDetail')}</p><div className="coin-faces">{(['heads', 'tails'] as const).map((side) => <button key={side} className="coin-face-choice" aria-label={t(`duel.${side}`)} onClick={() => chooseCoin(side)}><CoinFace side={side} /><strong aria-hidden="true">{t(`duel.${side}`)}</strong><small aria-hidden="true">{t(`coin.faces.${side}`)}</small></button>)}</div></section>}
-      {game?.phase === 'COIN_TOSS' && <section className="coin-toss" aria-live="polite"><h1>{t('duel.coinToss')}</h1><p className="turn-wheel-prompt">{t('wheel.title')}</p><TurnWheel names={names} winner={game.coinTossWinner!} /><FootballCoin side={game.coinResult ?? 'heads'} tossing /><p>{t('wheel.detail')}</p><button className="secondary-action" onClick={revealToss}>{t('coin.skip')}</button></section>}
+      {game?.phase === 'COIN_TOSS' && <section className="coin-toss" aria-live="polite"><FootballCoin side={game.coinResult ?? 'heads'} tossing /><h1>{t('duel.coinToss')}</h1><p>{t('duel.coinTossWaiting')}</p><button className="secondary-action" onClick={revealToss}>{t('coin.skip')}</button></section>}
       {game && ['REVEAL_PLAYER', 'BIDDING', 'ROUND_RESULT', 'TEAMS_COMPLETED'].includes(game.phase) && <>
         {humanQuick && quickPreview && game.phase !== 'TEAMS_COMPLETED' && <QuickCompletePanel participantName={names[humanQuick]} rivalName={names[humanQuick === 'recruiter_one' ? 'recruiter_two' : 'recruiter_one']} catalog={catalog} preview={quickPreview} onConfirm={() => apply(autoCompleteAll(game, humanQuick, catalog))} />}
         {cpuAuto && (() => {
@@ -547,7 +553,8 @@ export function AuctionPage({ onOnline, online, teamName, onEditName, nameStorag
           return <CpuCompletionPanel cpuName={names.recruiter_two} done={signed.length} total={signed.length + game.rounds.length - game.roundIndex} lastPlayer={last?.type === 'award' ? playerById(last.playerId).name : null} lastPrice={last?.type === 'award' ? last.price : null}
             onSkip={() => { const result = autoCompleteAll(game, 'recruiter_two', catalog); if (result.ok) apply(result); else { setAutoFailedSeed(game.seed); setError(t('autoComplete.cpuFailed')) } }} />
         })()}
-        {game.phase !== 'TEAMS_COMPLETED' && !cpuAuto && round && footballer && <section className="auction-board" aria-live="polite"><div className="auction-heading"><span className="category-chip">{categoryLabel(game.coachMode ?? mode)}</span><p>{t('duel.opening', { participant: names[game.openingOrder[game.roundIndex]] })}</p></div><div className="auction-candidate" key={footballer.id}><PlayerIdentity player={footballer} /></div>
+        {wheelBusy && round && footballer && <CardWheel key={cardWheelKey(game)} player={footballer} {...(() => { const drawn = wheelNames(catalog, footballer, game.seed, game.roundIndex); return { names: drawn.names, nameIndex: drawn.index } })()} onDone={() => setWheelDone(cardWheelKey(game))} onDisable={() => { setCardWheelEnabled(false); setWheelOn(false) }} />}
+        {game.phase !== 'TEAMS_COMPLETED' && !wheelBusy && !cpuAuto && round && footballer && <section className="auction-board" aria-live="polite"><div className="auction-heading"><span className="category-chip">{categoryLabel(game.coachMode ?? mode)}</span><p>{t('duel.opening', { participant: names[game.openingOrder[game.roundIndex]] })}</p></div><div className="auction-candidate" key={footballer.id}><PlayerIdentity player={footballer} /></div>
           {game.phase === 'REVEAL_PLAYER' && <div className="duel-actions reveal-actions">{game.roundIndex === 0 && <><FootballCoin side={game.coinResult!} /><p>{t('coin.result', { side: t(`duel.${game.coinResult}`), participant: names[game.coinTossWinner!] })}</p></>}<button ref={auctionAction} className="primary-action" onClick={() => apply(beginBidding(game))}>{t('duel.beginBidding')}</button></div>}
           {mustSkip && game.activeParticipant && footballer && <section className="bid-panel auction-banner auction-banner-blocked" role="status"><strong>{t('auctionActions.autoSkip', { participant: names[game.activeParticipant], position: t(`positions.${footballer.position}`) })}</strong></section>}
           {game.phase === 'BIDDING' && game.roundIndex === 0 && game.coinResult && game.coinTossWinner && <div className="coin-notice" role="status"><FootballCoin side={game.coinResult} /><p>{t('coin.result', { side: t(`duel.${game.coinResult}`), participant: names[game.coinTossWinner] })}</p></div>}

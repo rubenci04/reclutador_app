@@ -57,8 +57,6 @@ describe('coin flow in the duel', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Tails' }))
     const tossing = document.querySelector('.football-coin.tossing')!
     expect(tossing).toHaveAttribute('data-side', expected)
-    expect(screen.getByRole('img', { name: 'Wheel spinning to choose who starts' })).toBeInTheDocument()
-    expect(document.querySelector(`.turn-wheel-${expected === 'tails' ? 'one' : 'two'}`)).not.toBeNull()
     act(() => vi.advanceTimersByTime(COIN_TOSS_MS - 1))
     expect(document.querySelector('.football-coin.tossing')).not.toBeNull()
     act(() => vi.advanceTimersByTime(1))
