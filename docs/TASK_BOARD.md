@@ -488,3 +488,7 @@ Gritos con efecto opt-in en el kernel (no conectado a la pantalla actual: regist
 ## Ruleta de cartas y fondo interactivo — 09/11/2026
 
 Ruleta Preguntados por carta (primero posición, después nombres de esa posición que frenan en la carta ya sorteada; se puede omitir o apagar) en partidas locales; fondo con cancha completa y pelota que sigue al mouse y patea al arco con clic. Diagnóstico: producción ya tenía el último código y ningún despliegue del Worker viene de Git. [Registro](logs/CARD-WHEEL-BACKDROP-2026-11-09.md).
+
+## Ruleta de cartas v2 y pelota de fondo — 09/11/2026
+
+La ruleta la gira quien abre la ronda (persona con botón, CPU sola, jugadores locales por turno), con colores por posición y más efectos; la pelota del fondo ahora vive detrás de la interfaz y no tapa texto. [Registro](logs/CARD-WHEEL-BACKDROP-2026-11-09.md).

@@ -7,8 +7,8 @@ const SHOT_MS = 560
 const BURST_MS = 1100
 
 /**
- * Decorative pitch behind the whole app, plus a football that trails the mouse pointer. Clicking empty space shoots it at the nearest goal.
- * It never captures input, does nothing on touch screens and stays still with reduced motion.
+ * Decorative pitch behind the whole app. The football lives on that pitch, behind the interface, and rolls after the mouse pointer;
+ * clicking empty space shoots it at the nearest goal. It never covers text, captures input, reacts to touch or moves with reduced motion.
  */
 export function InteractiveBackdrop() {
   const { t } = useTranslation()
@@ -18,16 +18,17 @@ export function InteractiveBackdrop() {
     if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
     let frame = 0; let shooting = false
     const timers: number[] = []
+    const viewport = () => ({ x: window.innerWidth, y: window.innerHeight })
     const place = (x: number, y: number) => { if (ball.current) { ball.current.classList.add('is-live'); ball.current.style.transform = `translate(${x}px, ${y}px)` } }
     const move = (event: PointerEvent) => {
       if (event.pointerType === 'touch' || shooting) return
       cancelAnimationFrame(frame)
-      frame = requestAnimationFrame(() => { const at = ballAt({ x: event.clientX, y: event.clientY }); place(at.x, at.y) })
+      frame = requestAnimationFrame(() => { const at = ballAt({ x: event.clientX, y: event.clientY }, viewport()); place(at.x, at.y) })
     }
     const shoot = (event: PointerEvent) => {
       if (event.pointerType === 'touch' || event.button !== 0 || shooting || (event.target instanceof Element && event.target.closest(INTERACTIVE))) return
       shooting = true
-      const goal = shotTarget({ x: event.clientX, y: event.clientY }, { x: window.innerWidth, y: window.innerHeight }, Math.random())
+      const goal = shotTarget({ x: event.clientX, y: event.clientY }, viewport(), Math.random())
       ball.current?.classList.add('is-shot'); place(goal.x, goal.y)
       timers.push(window.setTimeout(() => {
         if (burst.current) { burst.current.style.left = `${goal.x}px`; burst.current.style.top = `${goal.y}px`; burst.current.classList.remove('is-on'); void burst.current.offsetWidth; burst.current.classList.add('is-on') }
@@ -46,8 +47,8 @@ export function InteractiveBackdrop() {
         <span className="interactive-backdrop-box interactive-backdrop-box-left" /><span className="interactive-backdrop-box interactive-backdrop-box-right" />
         <span className="interactive-backdrop-goal interactive-backdrop-goal-left" /><span className="interactive-backdrop-goal interactive-backdrop-goal-right" />
       </div>
+      <span ref={ball} className="interactive-backdrop-ball">⚽</span>
     </div>
-    <span ref={ball} className="interactive-backdrop-ball" aria-hidden="true">⚽</span>
     <span ref={burst} className="interactive-backdrop-burst" aria-hidden="true">{t('backdrop.goal')}</span>
   </>
 }

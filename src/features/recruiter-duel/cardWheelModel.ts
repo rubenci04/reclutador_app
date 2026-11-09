@@ -6,6 +6,10 @@ import type { RecruiterDuelGame } from './auctionTypes'
 /** Positions on the first wheel; the second one lists names of the winning position. Internal codes, labels are translated. */
 export const WHEEL_POSITIONS = ['ARQ', 'DEF', 'MED', 'DEL'] as const
 export const WHEEL_NAMES = 8
+/** One colour per position, so the position being drawn is recognisable at a glance. */
+export const POSITION_COLORS: Readonly<Record<Player['position'], string>> = { ARQ: '#d99a1c', DEF: '#2f7fd1', MED: '#2f9e5b', DEL: '#d6453d' }
+/** Segment colours of the wheel of names: varied on purpose, so the wheel never looks like one flat colour. */
+export const NAME_COLORS = ['#c0392b', '#d35400', '#b7950b', '#1e8449', '#117a8b', '#1f5fa6', '#6c3fb5', '#a8336f'] as const
 
 /** One spin per card: a discard that replaces the card, or the next round, is a new key. */
 export const cardWheelKey = (game: RecruiterDuelGame) => `${game.seed}:${game.roundIndex}:${currentRound(game)?.playerId ?? ''}`

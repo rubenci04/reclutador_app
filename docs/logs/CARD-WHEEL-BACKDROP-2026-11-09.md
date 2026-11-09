@@ -27,3 +27,15 @@
 - No se verificó en celular ni los demás minijuegos (penales, defensa, córner, gambeta); solo el tiro libre.
 - La ruleta agrega unos 5 s por carta si no se omite (22 cartas): por eso el botón de omitir y la opción de apagarla. Si se prefiere más corta (p. ej. una sola ruleta) es un ajuste de `STAGE_MS` en `CardWheel.tsx`.
 - Publicado el mismo día con Wrangler (ver `docs/DEPLOY.md`): versión 94407272-fda8-41f6-bb7f-31306fcba3ac al 100 %. Sin QA visual en la URL pública tras publicar; solo HTTP y SHA-256 de los archivos.
+
+## Segunda iteración (tras probar la versión publicada) — 09/11/2026
+
+Comentarios recibidos: la pelota pegada al puntero incomoda y tapa el texto; la ruleta debe girarla quien tiene el turno; se pidió más claridad en la posición, más colores y más atractivo.
+
+- **Pelota:** ya no flota sobre la interfaz ni va al lado del puntero. Vive en la cancha de fondo (detrás de todo), rueda hasta el puntero acotada a la cancha y patea al arco con clic; no puede tapar texto. Sigue solo con mouse, sin táctil ni con movimiento reducido.
+- **Turno:** gira la ruleta quien abre la ronda (`openingOrder[roundIndex]`, que alterna). Una persona pulsa «¡GIRAR!» (con su nombre en el título); la CPU gira sola a los 0,9 s; en duelo local cada jugador gira en su turno. Si nadie quiere la carta y se reemplaza por descarte, la carta nueva trae una ruleta nueva (el mismo jugador que abría vuelve a girar). Un solo giro hace las dos ruletas seguidas.
+- **Colores:** la ruleta de posiciones usa un color por posición (arquero ámbar, defensor azul, mediocampista verde, delantero rojo) y la de nombres 8 colores distintos; una etiqueta de la posición en su color queda sobre la ruleta de nombres.
+- **Atractivo:** contador «Carta n de 22», luces perimetrales que corren más rápido al girar, puntero que «tickea», nombre ganador resaltado, confeti en los colores de la ruleta, cuadro final con OVR y precio base con el color de la rareza (S+/S/A/B…), sonidos ya existentes (giro, caída, y «fichaje» si OVR ≥ 85) y vibración corta en celulares compatibles. El botón de girar late. La ruleta se centra sola en pantalla (dos intentos, porque la página aún se acomoda al aparecer).
+- **Pruebas:** `CardWheel.test.tsx` (11) e `InteractiveBackdrop.test.tsx` actualizados.
+- **Verificado en navegador:** turno de persona y de CPU (gira sola), colores y etiquetas completas («MEDIOCAMPISTA» ya no se corta), ruleta de nombres con colores variados frenando en la carta, título con el nombre del jugador que gira, centrado sin scroll en 1024×768.
+- **No verificable acá:** el panel del navegador pausa las animaciones CSS (`currentTime` queda en 0), así que el movimiento real (giro, luces, confeti, latido) solo está probado por pruebas y revisión de estilos; falta mirarlo en un navegador normal y en celular.
